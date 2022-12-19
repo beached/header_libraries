@@ -67,21 +67,81 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">cpp_20.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>&quot;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
 </div>
 <p><a href="cpp__20_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1is__unbounded__array.html">daw::is_unbounded_array&lt; T &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
+<tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:a782ceb96627f85b15d3a19e7746f8967"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cpp__20_8h.html#a782ceb96627f85b15d3a19e7746f8967">DAW_CPP20_CX_ALLOC</a></td></tr>
+<tr class="separator:a782ceb96627f85b15d3a19e7746f8967"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac463a384eefdf553a6c05606acff00e1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cpp__20_8h.html#ac463a384eefdf553a6c05606acff00e1">DAW_CPP20_CX_DTOR</a></td></tr>
+<tr class="separator:ac463a384eefdf553a6c05606acff00e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9431ec10ce59b9d01de66832028d5242"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cpp__20_8h.html#a9431ec10ce59b9d01de66832028d5242">DAW_CX_DTOR</a></td></tr>
 <tr class="separator:a9431ec10ce59b9d01de66832028d5242"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ad9828c948ec2a577b6369adf8683f2dd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ad9828c948ec2a577b6369adf8683f2dd"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad9828c948ec2a577b6369adf8683f2dd">daw::is_unbounded_array_v</a> = false</td></tr>
+<tr class="separator:ad9828c948ec2a577b6369adf8683f2dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86f6ab0d795de6e69f1c4f483fae3d34"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a86f6ab0d795de6e69f1c4f483fae3d34"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a86f6ab0d795de6e69f1c4f483fae3d34">daw::is_unbounded_array_v&lt; T[]&gt;</a> = true</td></tr>
+<tr class="separator:a86f6ab0d795de6e69f1c4f483fae3d34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a782ceb96627f85b15d3a19e7746f8967"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a782ceb96627f85b15d3a19e7746f8967">&#9670;&nbsp;</a></span>DAW_CPP20_CX_ALLOC</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_CPP20_CX_ALLOC</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="cpp__20_8h_source.html#l00028">28</a> of file <a class="el" href="cpp__20_8h_source.html">cpp_20.h</a>.</p>
+
+</div>
+</div>
+<a id="ac463a384eefdf553a6c05606acff00e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac463a384eefdf553a6c05606acff00e1">&#9670;&nbsp;</a></span>DAW_CPP20_CX_DTOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_CPP20_CX_DTOR</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="cpp__20_8h_source.html#l00027">27</a> of file <a class="el" href="cpp__20_8h_source.html">cpp_20.h</a>.</p>
+
+</div>
+</div>
 <a id="a9431ec10ce59b9d01de66832028d5242"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9431ec10ce59b9d01de66832028d5242">&#9670;&nbsp;</a></span>DAW_CX_DTOR</h2>
 
@@ -94,7 +154,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpp__20_8h_source.html#l00022">22</a> of file <a class="el" href="cpp__20_8h_source.html">cpp_20.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__20_8h_source.html#l00026">26</a> of file <a class="el" href="cpp__20_8h_source.html">cpp_20.h</a>.</p>
 
 </div>
 </div>

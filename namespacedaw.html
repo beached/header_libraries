@@ -129,6 +129,8 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacedaw_1_1tuple"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1tuple.html">tuple</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacedaw_1_1unique__ptr__del"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1unique__ptr__del.html">unique_ptr_del</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacedaw_1_1utility"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1utility.html">utility</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -436,6 +438,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1is__tuple2.html">is_tuple2</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1is__unbounded__array.html">is_unbounded_array</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1is__unsigned.html">is_unsigned</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1keep__n.html">keep_n</a></td></tr>
@@ -617,6 +621,10 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1union__pair__t.html">union_pair_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__array__t.html">unique_array_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html">unique_ptr&lt; T[], Deleter &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1unique__resource.html">unique_resource</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1770,6 +1778,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a2a0e27c5b8f0bd544580af24794e1f75"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
 <tr class="memitem:a2a0e27c5b8f0bd544580af24794e1f75"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classdaw_1_1tuple.html">tuple</a>&lt; make_tuple_details::unwrap_decay_t&lt; Ts &gt;... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a2a0e27c5b8f0bd544580af24794e1f75">make_tuple</a> (Ts &amp;&amp;...args)</td></tr>
 <tr class="separator:a2a0e27c5b8f0bd544580af24794e1f75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20c477ec9a6aaafbbaab664d8b1e6ef5"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Args&gt; </td></tr>
+<tr class="memitem:a20c477ec9a6aaafbbaab664d8b1e6ef5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="cpp__20_8h.html#a782ceb96627f85b15d3a19e7746f8967">DAW_CPP20_CX_ALLOC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a20c477ec9a6aaafbbaab664d8b1e6ef5">make_unique</a> (Args &amp;&amp;...args) -&gt; std::enable_if_t&lt; not std::is_array_v&lt; T &gt;, <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt;&gt;</td></tr>
+<tr class="separator:a20c477ec9a6aaafbbaab664d8b1e6ef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ecefafa8f12d60910aa7f54c42afd94"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a3ecefafa8f12d60910aa7f54c42afd94"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="cpp__20_8h.html#a782ceb96627f85b15d3a19e7746f8967">DAW_CPP20_CX_ALLOC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3ecefafa8f12d60910aa7f54c42afd94">make_unique</a> (std::size_t count) -&gt; std::enable_if_t&lt; std::is_array_v&lt; T &gt;, <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt;&gt;</td></tr>
+<tr class="separator:a3ecefafa8f12d60910aa7f54c42afd94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a292114a7b457733e1e72455817a55158"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Elements&gt; </td></tr>
+<tr class="memitem:a292114a7b457733e1e72455817a55158"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="cpp__20_8h.html#a782ceb96627f85b15d3a19e7746f8967">DAW_CPP20_CX_ALLOC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a292114a7b457733e1e72455817a55158">make_unique_array</a> (Elements &amp;&amp;...elements) -&gt; std::enable_if_t&lt; std::is_array_v&lt; T &gt;, <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt;&gt;</td></tr>
+<tr class="separator:a292114a7b457733e1e72455817a55158"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebe3f255179e65481900628ff7c9a7a1"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aebe3f255179e65481900628ff7c9a7a1"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="cpp__20_8h.html#a782ceb96627f85b15d3a19e7746f8967">DAW_CPP20_CX_ALLOC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aebe3f255179e65481900628ff7c9a7a1">make_unique_for_overwrite</a> () -&gt; std::enable_if_t&lt; not std::is_array_v&lt; T &gt;, <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt;&gt;</td></tr>
+<tr class="separator:aebe3f255179e65481900628ff7c9a7a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ca392af620af7aef3b14a8e3c37e12d"><td class="memTemplParams" colspan="2">template&lt;typename Function &gt; </td></tr>
 <tr class="memitem:a3ca392af620af7aef3b14a8e3c37e12d"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3ca392af620af7aef3b14a8e3c37e12d">make_void_function</a> (Function &amp;&amp;func) noexcept(noexcept(traits_details::void_function&lt; Function &gt;(<a class="el" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>(Function, func))))</td></tr>
 <tr class="separator:a3ca392af620af7aef3b14a8e3c37e12d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2000,6 +2020,9 @@ Functions</h2></td></tr>
 <tr class="separator:a603c7964e329f42e4a711b4f330ded81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b07dfab9c1b48ed9b5ee697390e2d26"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a8b07dfab9c1b48ed9b5ee697390e2d26">operator!=</a> (<a class="el" href="namespacedaw.html#a3a56e39437a0db585579565481e1885b">UInt8</a> lhs, std::uint8_t rhs) noexcept</td></tr>
 <tr class="separator:a8b07dfab9c1b48ed9b5ee697390e2d26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62d7c9a81e9bcd5229614a9e290c974d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a62d7c9a81e9bcd5229614a9e290c974d"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a62d7c9a81e9bcd5229614a9e290c974d">operator!=</a> (<a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;lhs, <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;rhs) noexcept</td></tr>
+<tr class="separator:a62d7c9a81e9bcd5229614a9e290c974d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7aba301bb40c3efc9cf75f85d75a015"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , value_ptr_details::has_compare_inequality&lt; T, U, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:ae7aba301bb40c3efc9cf75f85d75a015"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ae7aba301bb40c3efc9cf75f85d75a015">operator!=</a> (<a class="el" href="structdaw_1_1value__ptr.html">value_ptr</a>&lt; T &gt; const &amp;lhs, <a class="el" href="structdaw_1_1value__ptr.html">value_ptr</a>&lt; U &gt; const &amp;rhs) noexcept(noexcept(*lhs != *rhs))</td></tr>
 <tr class="separator:ae7aba301bb40c3efc9cf75f85d75a015"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2679,6 +2702,9 @@ Functions</h2></td></tr>
 <tr class="separator:a42c78a603ae9461347e989770a316175"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca6c796ba594be038e290e28368e2584"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aca6c796ba594be038e290e28368e2584">operator&lt;</a> (<a class="el" href="namespacedaw.html#a3a56e39437a0db585579565481e1885b">UInt8</a> lhs, std::uint8_t rhs) noexcept</td></tr>
 <tr class="separator:aca6c796ba594be038e290e28368e2584"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea13733aef216c0689d41848623c94ca"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aea13733aef216c0689d41848623c94ca"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aea13733aef216c0689d41848623c94ca">operator&lt;</a> (<a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;lhs, <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;rhs) noexcept</td></tr>
+<tr class="separator:aea13733aef216c0689d41848623c94ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b753bccdcbf0e11c1243361dbaab73a"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , value_ptr_details::has_compare_less&lt; T, U, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a7b753bccdcbf0e11c1243361dbaab73a"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a7b753bccdcbf0e11c1243361dbaab73a">operator&lt;</a> (<a class="el" href="structdaw_1_1value__ptr.html">value_ptr</a>&lt; T &gt; const &amp;lhs, <a class="el" href="structdaw_1_1value__ptr.html">value_ptr</a>&lt; U &gt; const &amp;rhs) noexcept(noexcept(*lhs&lt; *rhs))</td></tr>
 <tr class="separator:a7b753bccdcbf0e11c1243361dbaab73a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2877,6 +2903,9 @@ Functions</h2></td></tr>
 <tr class="separator:ab42dd3c9117489c8f0fbe7f722b40eda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1383a282e7ce29b9dece7f7e015934e5"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a1383a282e7ce29b9dece7f7e015934e5">operator&lt;=</a> (<a class="el" href="namespacedaw.html#a3a56e39437a0db585579565481e1885b">UInt8</a> lhs, std::uint8_t rhs) noexcept</td></tr>
 <tr class="separator:a1383a282e7ce29b9dece7f7e015934e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73304c642c5188fb9a2770ad76a599b0"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a73304c642c5188fb9a2770ad76a599b0"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a73304c642c5188fb9a2770ad76a599b0">operator&lt;=</a> (<a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;lhs, <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;rhs) noexcept</td></tr>
+<tr class="separator:a73304c642c5188fb9a2770ad76a599b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade5da5470013039d3121e70ed5bb125a"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , value_ptr_details::has_compare_less_equal&lt; T, U, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:ade5da5470013039d3121e70ed5bb125a"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ade5da5470013039d3121e70ed5bb125a">operator&lt;=</a> (<a class="el" href="structdaw_1_1value__ptr.html">value_ptr</a>&lt; T &gt; const &amp;lhs, <a class="el" href="structdaw_1_1value__ptr.html">value_ptr</a>&lt; U &gt; const &amp;rhs) noexcept(noexcept(*lhs&lt;= *rhs))</td></tr>
 <tr class="separator:ade5da5470013039d3121e70ed5bb125a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3028,6 +3057,9 @@ Functions</h2></td></tr>
 <tr class="separator:afe47f999849627ee5759903eb6a451f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c40ec5da80911a4020a48b26eaf389a"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6c40ec5da80911a4020a48b26eaf389a">operator==</a> (<a class="el" href="namespacedaw.html#a3a56e39437a0db585579565481e1885b">UInt8</a> lhs, std::uint8_t rhs) noexcept</td></tr>
 <tr class="separator:a6c40ec5da80911a4020a48b26eaf389a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5cc8eb7384d3f9fb7a9761eb3589732"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ab5cc8eb7384d3f9fb7a9761eb3589732"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ab5cc8eb7384d3f9fb7a9761eb3589732">operator==</a> (<a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;lhs, <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;rhs) noexcept</td></tr>
+<tr class="separator:ab5cc8eb7384d3f9fb7a9761eb3589732"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0431b3f19d94dced85b31e5574efce4"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , value_ptr_details::has_compare_equality&lt; T, U, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:ab0431b3f19d94dced85b31e5574efce4"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ab0431b3f19d94dced85b31e5574efce4">operator==</a> (<a class="el" href="structdaw_1_1value__ptr.html">value_ptr</a>&lt; T &gt; const &amp;lhs, <a class="el" href="structdaw_1_1value__ptr.html">value_ptr</a>&lt; U &gt; const &amp;rhs) noexcept(noexcept(*lhs== *rhs))</td></tr>
 <tr class="separator:ab0431b3f19d94dced85b31e5574efce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3132,6 +3164,9 @@ Functions</h2></td></tr>
 <tr class="separator:a524d616cd784fff47caf74ce9ec99eaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfeeabf897847a9fef4988d6b159ed25"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#adfeeabf897847a9fef4988d6b159ed25">operator&gt;</a> (<a class="el" href="namespacedaw.html#a3a56e39437a0db585579565481e1885b">UInt8</a> lhs, std::uint8_t rhs) noexcept</td></tr>
 <tr class="separator:adfeeabf897847a9fef4988d6b159ed25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae098c09939e28c1f807e811320926a1c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ae098c09939e28c1f807e811320926a1c"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ae098c09939e28c1f807e811320926a1c">operator&gt;</a> (<a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;lhs, <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;rhs) noexcept</td></tr>
+<tr class="separator:ae098c09939e28c1f807e811320926a1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25d1cc8839ea17102b68a22ea4ea4438"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , value_ptr_details::has_compare_greater&lt; T, U, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a25d1cc8839ea17102b68a22ea4ea4438"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a25d1cc8839ea17102b68a22ea4ea4438">operator&gt;</a> (<a class="el" href="structdaw_1_1value__ptr.html">value_ptr</a>&lt; T &gt; const &amp;lhs, <a class="el" href="structdaw_1_1value__ptr.html">value_ptr</a>&lt; U &gt; const &amp;rhs) noexcept(noexcept(*lhs &gt; *rhs))</td></tr>
 <tr class="separator:a25d1cc8839ea17102b68a22ea4ea4438"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3240,6 +3275,9 @@ Functions</h2></td></tr>
 <tr class="separator:a67249939341b62d945081399c1cd805b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a231d614168f4c513e09afb93a302b34f"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a231d614168f4c513e09afb93a302b34f">operator&gt;=</a> (<a class="el" href="namespacedaw.html#a3a56e39437a0db585579565481e1885b">UInt8</a> lhs, std::uint8_t rhs) noexcept</td></tr>
 <tr class="separator:a231d614168f4c513e09afb93a302b34f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a778a4e89f5b0e0ca942a8289899065b7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a778a4e89f5b0e0ca942a8289899065b7"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a778a4e89f5b0e0ca942a8289899065b7">operator&gt;=</a> (<a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;lhs, <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;rhs) noexcept</td></tr>
+<tr class="separator:a778a4e89f5b0e0ca942a8289899065b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57b1a273822af86e5d342ede56038b3d"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , value_ptr_details::has_compare_greater_equal&lt; T, U, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a57b1a273822af86e5d342ede56038b3d"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a57b1a273822af86e5d342ede56038b3d">operator&gt;=</a> (<a class="el" href="structdaw_1_1value__ptr.html">value_ptr</a>&lt; T &gt; const &amp;lhs, <a class="el" href="structdaw_1_1value__ptr.html">value_ptr</a>&lt; U &gt; const &amp;rhs) noexcept(noexcept(*lhs &gt;= *rhs))</td></tr>
 <tr class="separator:a57b1a273822af86e5d342ede56038b3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4224,6 +4262,12 @@ Variables</h2></td></tr>
 <tr class="memitem:a4c408c20541758834b1bfac8d1881fb4"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
 <tr class="memitem:a4c408c20541758834b1bfac8d1881fb4"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a4c408c20541758834b1bfac8d1881fb4">is_tuple2_v&lt; tuple2&lt; Ts... &gt; &gt;</a> = true</td></tr>
 <tr class="separator:a4c408c20541758834b1bfac8d1881fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9828c948ec2a577b6369adf8683f2dd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ad9828c948ec2a577b6369adf8683f2dd"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad9828c948ec2a577b6369adf8683f2dd">is_unbounded_array_v</a> = false</td></tr>
+<tr class="separator:ad9828c948ec2a577b6369adf8683f2dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86f6ab0d795de6e69f1c4f483fae3d34"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a86f6ab0d795de6e69f1c4f483fae3d34"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a86f6ab0d795de6e69f1c4f483fae3d34">is_unbounded_array_v&lt; T[]&gt;</a> = true</td></tr>
+<tr class="separator:a86f6ab0d795de6e69f1c4f483fae3d34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bf218c78227ebd73155aeb469aa0812"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a8bf218c78227ebd73155aeb469aa0812"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a8bf218c78227ebd73155aeb469aa0812">is_unsigned_v</a> = <a class="el" href="structdaw_1_1is__unsigned.html">is_unsigned</a>&lt;T&gt;::value</td></tr>
 <tr class="separator:a8bf218c78227ebd73155aeb469aa0812"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -15400,6 +15444,93 @@ template&lt;typename... Ts&gt; </div>
 
 </div>
 </div>
+<a id="a20c477ec9a6aaafbbaab664d8b1e6ef5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20c477ec9a6aaafbbaab664d8b1e6ef5">&#9670;&nbsp;</a></span>make_unique() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename... Args&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="cpp__20_8h.html#a782ceb96627f85b15d3a19e7746f8967">DAW_CPP20_CX_ALLOC</a> auto daw::make_unique </td>
+          <td>(</td>
+          <td class="paramtype">Args &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td> -&gt; std::enable_if_t&lt;not std::is_array_v&lt;T&gt;, <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt;T&gt;&gt; </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00230">230</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+
+</div>
+</div>
+<a id="a3ecefafa8f12d60910aa7f54c42afd94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ecefafa8f12d60910aa7f54c42afd94">&#9670;&nbsp;</a></span>make_unique() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="cpp__20_8h.html#a782ceb96627f85b15d3a19e7746f8967">DAW_CPP20_CX_ALLOC</a> auto daw::make_unique </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>count</em></td><td>)</td>
+          <td> -&gt; std::enable_if_t&lt;std::is_array_v&lt;T&gt;, <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt;T&gt;&gt; </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00246">246</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+
+</div>
+</div>
+<a id="a292114a7b457733e1e72455817a55158"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a292114a7b457733e1e72455817a55158">&#9670;&nbsp;</a></span>make_unique_array()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename... Elements&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="cpp__20_8h.html#a782ceb96627f85b15d3a19e7746f8967">DAW_CPP20_CX_ALLOC</a> auto daw::make_unique_array </td>
+          <td>(</td>
+          <td class="paramtype">Elements &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>elements</em></td><td>)</td>
+          <td> -&gt; std::enable_if_t&lt;std::is_array_v&lt;T&gt;, <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt;T&gt;&gt; </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00256">256</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+
+</div>
+</div>
+<a id="aebe3f255179e65481900628ff7c9a7a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebe3f255179e65481900628ff7c9a7a1">&#9670;&nbsp;</a></span>make_unique_for_overwrite()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="cpp__20_8h.html#a782ceb96627f85b15d3a19e7746f8967">DAW_CPP20_CX_ALLOC</a> auto daw::make_unique_for_overwrite </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt; std::enable_if_t&lt;not std::is_array_v&lt;T&gt;, <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt;T&gt;&gt; </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00240">240</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+
+</div>
+</div>
 <a id="a3ca392af620af7aef3b14a8e3c37e12d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3ca392af620af7aef3b14a8e3c37e12d">&#9670;&nbsp;</a></span>make_void_function()</h2>
 
@@ -16432,7 +16563,7 @@ template&lt;constructible_from&lt; pointer, size_type &gt; Container&gt; </div>
 </div>
 </div>
 <a id="a0a4822baad8f126490ed7826eab239f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a4822baad8f126490ed7826eab239f5">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[1/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a4822baad8f126490ed7826eab239f5">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[1/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16472,7 +16603,7 @@ template&lt;typename T , typename U , size_t N&gt; </div>
 </div>
 </div>
 <a id="ad313b0519d1753e4235cc778a429aa9c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad313b0519d1753e4235cc778a429aa9c">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[2/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad313b0519d1753e4235cc778a429aa9c">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[2/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16512,7 +16643,7 @@ template&lt;typename CharT , size_t CapacityL, size_t CapacityR&gt; </div>
 </div>
 </div>
 <a id="ae5c7dd23ed1872e68f2b084732490c7e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5c7dd23ed1872e68f2b084732490c7e">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[3/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5c7dd23ed1872e68f2b084732490c7e">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[3/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16552,7 +16683,7 @@ template&lt;typename Key , typename Value &gt; </div>
 </div>
 </div>
 <a id="a38728b881425a3c308b1234b25279a7e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a38728b881425a3c308b1234b25279a7e">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[4/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a38728b881425a3c308b1234b25279a7e">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[4/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16592,7 +16723,7 @@ template&lt;typename Key , typename Value &gt; </div>
 </div>
 </div>
 <a id="a964f968b3b65c1f4a156798c97c2afe0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a964f968b3b65c1f4a156798c97c2afe0">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[5/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a964f968b3b65c1f4a156798c97c2afe0">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[5/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16632,7 +16763,7 @@ template&lt;typename Key &gt; </div>
 </div>
 </div>
 <a id="a51ce0c774de415923f1f79f19351cfde"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a51ce0c774de415923f1f79f19351cfde">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[6/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a51ce0c774de415923f1f79f19351cfde">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[6/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16672,7 +16803,7 @@ template&lt;typename Key &gt; </div>
 </div>
 </div>
 <a id="abf33a23c78b9e104f33b60bde03cf536"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf33a23c78b9e104f33b60bde03cf536">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[7/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abf33a23c78b9e104f33b60bde03cf536">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[7/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16712,7 +16843,7 @@ template&lt;typename CharT , size_t Capacity, size_t N&gt; </div>
 </div>
 </div>
 <a id="a8043eb571b6bb42f9d08b490b08e20df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8043eb571b6bb42f9d08b490b08e20df">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[8/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8043eb571b6bb42f9d08b490b08e20df">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[8/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16752,7 +16883,7 @@ template&lt;typename Key , typename Value &gt; </div>
 </div>
 </div>
 <a id="a445666f567fc46305d7bd3b5b211a387"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a445666f567fc46305d7bd3b5b211a387">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[9/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a445666f567fc46305d7bd3b5b211a387">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[9/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16792,7 +16923,7 @@ template&lt;typename Key , typename Value &gt; </div>
 </div>
 </div>
 <a id="adb586ab2e66e7c87914f2caeece625fe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb586ab2e66e7c87914f2caeece625fe">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[10/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#adb586ab2e66e7c87914f2caeece625fe">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[10/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16832,7 +16963,7 @@ template&lt;typename Key &gt; </div>
 </div>
 </div>
 <a id="a3a280a8e63bc7b9f507d5da65c739ce3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a280a8e63bc7b9f507d5da65c739ce3">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[11/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a280a8e63bc7b9f507d5da65c739ce3">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[11/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16872,7 +17003,7 @@ template&lt;typename Key &gt; </div>
 </div>
 </div>
 <a id="ac8f069e90e11b18aa4f29c73fa8f1f69"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac8f069e90e11b18aa4f29c73fa8f1f69">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[12/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8f069e90e11b18aa4f29c73fa8f1f69">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[12/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16910,7 +17041,7 @@ template&lt;typename Key &gt; </div>
 </div>
 </div>
 <a id="a8a0c2b31a6d563f5359afa5c726ebb69"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a0c2b31a6d563f5359afa5c726ebb69">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[13/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a0c2b31a6d563f5359afa5c726ebb69">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[13/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16950,7 +17081,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a296b77bbd3025910502627e1e8587aa9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a296b77bbd3025910502627e1e8587aa9">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[14/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a296b77bbd3025910502627e1e8587aa9">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[14/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16990,7 +17121,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a21aeec0d2d1ab7df0b52cd9a860e3a99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21aeec0d2d1ab7df0b52cd9a860e3a99">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[15/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a21aeec0d2d1ab7df0b52cd9a860e3a99">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[15/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17030,7 +17161,7 @@ template&lt;typename CharT , size_t Capacity, size_t N&gt; </div>
 </div>
 </div>
 <a id="a993c6f86d2c1bf401f6a224eacc3536b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a993c6f86d2c1bf401f6a224eacc3536b">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[16/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a993c6f86d2c1bf401f6a224eacc3536b">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[16/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17070,7 +17201,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a52a0487a75c76c35cc4ab52af4569f39"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a52a0487a75c76c35cc4ab52af4569f39">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[17/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a52a0487a75c76c35cc4ab52af4569f39">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[17/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17110,7 +17241,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="ae061ec5c8f226040b6bb11fa26922f59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae061ec5c8f226040b6bb11fa26922f59">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[18/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae061ec5c8f226040b6bb11fa26922f59">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[18/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17150,7 +17281,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a7399c1ed091a330640f4c707a12b9315"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7399c1ed091a330640f4c707a12b9315">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[19/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7399c1ed091a330640f4c707a12b9315">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[19/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17190,7 +17321,7 @@ template&lt;typename Lhs , typename Rhs &gt; </div>
 </div>
 </div>
 <a id="a55d7f3bfa3d18b57bb9aa9babcae111b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55d7f3bfa3d18b57bb9aa9babcae111b">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[20/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a55d7f3bfa3d18b57bb9aa9babcae111b">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[20/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17222,7 +17353,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="ad7ffc99fdb4c5e431304e1169e83afd9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad7ffc99fdb4c5e431304e1169e83afd9">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[21/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7ffc99fdb4c5e431304e1169e83afd9">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[21/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17262,7 +17393,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a3beb7010dd0565b961e54d4934aaefdb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3beb7010dd0565b961e54d4934aaefdb">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[22/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3beb7010dd0565b961e54d4934aaefdb">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[22/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17294,7 +17425,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a614e0b8e8050019cab9ec82f5dce3b31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a614e0b8e8050019cab9ec82f5dce3b31">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[23/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a614e0b8e8050019cab9ec82f5dce3b31">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[23/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17326,7 +17457,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a7fce53906a915e0a2e244342f3cd7a7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7fce53906a915e0a2e244342f3cd7a7f">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[24/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fce53906a915e0a2e244342f3cd7a7f">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[24/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17366,7 +17497,7 @@ template&lt;typename T , typename U , std::enable_if_t&lt; not std::is_convertib
 </div>
 </div>
 <a id="a3d8421cee4c59805fc3008fc879bea11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d8421cee4c59805fc3008fc879bea11">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[25/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d8421cee4c59805fc3008fc879bea11">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[25/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17406,7 +17537,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a918d3f82ec5086acfea7c46e7c190ac6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a918d3f82ec5086acfea7c46e7c190ac6">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[26/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a918d3f82ec5086acfea7c46e7c190ac6">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[26/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17446,7 +17577,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a0933b0113eba47e830272c7f694a86b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0933b0113eba47e830272c7f694a86b8">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[27/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0933b0113eba47e830272c7f694a86b8">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[27/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17484,7 +17615,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="aebe92ccc6aa3c089a5d116a53f66bb9a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aebe92ccc6aa3c089a5d116a53f66bb9a">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[28/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aebe92ccc6aa3c089a5d116a53f66bb9a">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[28/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17524,7 +17655,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a3830264a663786d9ba6b947331e24713"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3830264a663786d9ba6b947331e24713">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[29/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3830264a663786d9ba6b947331e24713">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[29/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17564,7 +17695,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a89c419bfa98523bb61f2eeec90995e3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89c419bfa98523bb61f2eeec90995e3a">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[30/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a89c419bfa98523bb61f2eeec90995e3a">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[30/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17604,7 +17735,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="ae53a04136b811a915e14deb9143d063c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae53a04136b811a915e14deb9143d063c">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[31/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae53a04136b811a915e14deb9143d063c">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[31/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17636,7 +17767,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a67380a129068355edc7dfa34caef5d59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a67380a129068355edc7dfa34caef5d59">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[32/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a67380a129068355edc7dfa34caef5d59">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[32/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17676,7 +17807,7 @@ template&lt;typename CharT &gt; </div>
 </div>
 </div>
 <a id="a7fa3c11306fef2b0c00614be0178fd09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7fa3c11306fef2b0c00614be0178fd09">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[33/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fa3c11306fef2b0c00614be0178fd09">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[33/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17716,7 +17847,7 @@ template&lt;typename Iterator1 , typename Iterator2 &gt; </div>
 </div>
 </div>
 <a id="a74f621bc67b8b937bec3fc9fb22b122c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a74f621bc67b8b937bec3fc9fb22b122c">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[34/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a74f621bc67b8b937bec3fc9fb22b122c">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[34/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17756,7 +17887,7 @@ template&lt;typename Iterator &gt; </div>
 </div>
 </div>
 <a id="a6304ea441efea2ee538f1ad6fff559ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6304ea441efea2ee538f1ad6fff559ef">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[35/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6304ea441efea2ee538f1ad6fff559ef">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[35/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17796,7 +17927,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a05b4a3b4eb2d32418083349eb2b5c940"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05b4a3b4eb2d32418083349eb2b5c940">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[36/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a05b4a3b4eb2d32418083349eb2b5c940">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[36/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17836,7 +17967,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="afbac087e6fafc002afcff24a21138631"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afbac087e6fafc002afcff24a21138631">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[37/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afbac087e6fafc002afcff24a21138631">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[37/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17876,7 +18007,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a92383225b72947e9821bc9e323f8be73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92383225b72947e9821bc9e323f8be73">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[38/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a92383225b72947e9821bc9e323f8be73">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[38/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17914,7 +18045,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a29bfb6e6f5cf68d7b74e3a7cce2044ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a29bfb6e6f5cf68d7b74e3a7cce2044ac">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[39/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a29bfb6e6f5cf68d7b74e3a7cce2044ac">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[39/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17952,7 +18083,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a345b35e01f7a7d69e9eaff3a903da1cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a345b35e01f7a7d69e9eaff3a903da1cf">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[40/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a345b35e01f7a7d69e9eaff3a903da1cf">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[40/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -17990,7 +18121,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a1216e4ba67a25c823027884abff28df4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1216e4ba67a25c823027884abff28df4">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[41/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1216e4ba67a25c823027884abff28df4">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[41/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -18028,7 +18159,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="aafd12fe7f905a2394d2be2f9b4cfe1e8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aafd12fe7f905a2394d2be2f9b4cfe1e8">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[42/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aafd12fe7f905a2394d2be2f9b4cfe1e8">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[42/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -18068,7 +18199,7 @@ template&lt;typename CharT &gt; </div>
 </div>
 </div>
 <a id="abe9e9f0770ca4e3563e3c66fd176e7c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abe9e9f0770ca4e3563e3c66fd176e7c6">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[43/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abe9e9f0770ca4e3563e3c66fd176e7c6">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[43/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -18108,7 +18239,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a6196349869c0a32d2e4ec7c5a2b5eae3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6196349869c0a32d2e4ec7c5a2b5eae3">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[44/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6196349869c0a32d2e4ec7c5a2b5eae3">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[44/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -18148,7 +18279,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a928a561bc6afe7ca9285d93bdc16511f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a928a561bc6afe7ca9285d93bdc16511f">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[45/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a928a561bc6afe7ca9285d93bdc16511f">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[45/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -18186,7 +18317,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="ae9c88e61cd1633b749f85ade6430149c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9c88e61cd1633b749f85ade6430149c">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[46/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9c88e61cd1633b749f85ade6430149c">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[46/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -18224,7 +18355,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a603c7964e329f42e4a711b4f330ded81"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a603c7964e329f42e4a711b4f330ded81">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[47/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a603c7964e329f42e4a711b4f330ded81">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[47/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -18262,7 +18393,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a8b07dfab9c1b48ed9b5ee697390e2d26"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8b07dfab9c1b48ed9b5ee697390e2d26">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[48/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b07dfab9c1b48ed9b5ee697390e2d26">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[48/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -18299,8 +18430,48 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 
 </div>
 </div>
+<a id="a62d7c9a81e9bcd5229614a9e290c974d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62d7c9a81e9bcd5229614a9e290c974d">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[49/50]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool <a class="el" href="namespacedaw.html#a4b5346b91ffce4d929d08bf93694afec">daw::operator!</a>= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00273">273</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+
+</div>
+</div>
 <a id="ae7aba301bb40c3efc9cf75f85d75a015"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae7aba301bb40c3efc9cf75f85d75a015">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[49/49]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7aba301bb40c3efc9cf75f85d75a015">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[50/50]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -28712,7 +28883,7 @@ template&lt;typename Iterator1 , class Iterator2 , typename Tag &gt; </div>
 </div>
 </div>
 <a id="acc6c7070ce4140e3abd4d495b9449abe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc6c7070ce4140e3abd4d495b9449abe">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[1/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#acc6c7070ce4140e3abd4d495b9449abe">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[1/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -28752,7 +28923,7 @@ template&lt;typename CharT , size_t CapacityL, size_t CapacityR&gt; </div>
 </div>
 </div>
 <a id="a10214ada5f324a7b061bfa65d1295cb5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a10214ada5f324a7b061bfa65d1295cb5">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[2/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a10214ada5f324a7b061bfa65d1295cb5">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[2/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -28792,7 +28963,7 @@ template&lt;typename CharT , size_t Capacity, size_t N&gt; </div>
 </div>
 </div>
 <a id="a5bac10f17177a0f655c3f26d1a7b9b64"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5bac10f17177a0f655c3f26d1a7b9b64">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[3/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bac10f17177a0f655c3f26d1a7b9b64">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[3/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -28830,7 +29001,7 @@ template&lt;typename CharT , size_t Capacity, size_t N&gt; </div>
 </div>
 </div>
 <a id="ab90358d96c9159f08e5a4043e5199898"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab90358d96c9159f08e5a4043e5199898">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[4/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab90358d96c9159f08e5a4043e5199898">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[4/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -28870,7 +29041,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="aae6889aad868d12acad5868e3407ecd8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aae6889aad868d12acad5868e3407ecd8">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[5/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aae6889aad868d12acad5868e3407ecd8">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[5/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -28910,7 +29081,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a81a0b953886c43d1c7704fa635058851"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81a0b953886c43d1c7704fa635058851">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[6/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a81a0b953886c43d1c7704fa635058851">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[6/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -28950,7 +29121,7 @@ template&lt;typename CharT , size_t Capacity, size_t N&gt; </div>
 </div>
 </div>
 <a id="a7d313701dd8ff1de794c215fc4b99ceb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d313701dd8ff1de794c215fc4b99ceb">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[7/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d313701dd8ff1de794c215fc4b99ceb">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[7/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -28990,7 +29161,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="ae515931592a12c172a12bc667d796ef2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae515931592a12c172a12bc667d796ef2">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[8/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae515931592a12c172a12bc667d796ef2">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[8/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29030,7 +29201,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a4588cc4ba83658e46c322c5804ebd3a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4588cc4ba83658e46c322c5804ebd3a2">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[9/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4588cc4ba83658e46c322c5804ebd3a2">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[9/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29070,7 +29241,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a93dddb24bfb0a2244ed23f51068ecfb0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a93dddb24bfb0a2244ed23f51068ecfb0">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[10/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a93dddb24bfb0a2244ed23f51068ecfb0">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[10/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29110,7 +29281,7 @@ template&lt;typename Lhs , typename Rhs &gt; </div>
 </div>
 </div>
 <a id="a6f7d54caf2f28d5832341b814df1fa37"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f7d54caf2f28d5832341b814df1fa37">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[11/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f7d54caf2f28d5832341b814df1fa37">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[11/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29142,7 +29313,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a805fba6c83af986f873a3b4c1988125a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a805fba6c83af986f873a3b4c1988125a">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[12/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a805fba6c83af986f873a3b4c1988125a">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[12/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29182,7 +29353,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a1baf7d99af294799186507636877f587"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1baf7d99af294799186507636877f587">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[13/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1baf7d99af294799186507636877f587">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[13/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29214,7 +29385,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a4447d15d803412ee116a6a1bd7daf6c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4447d15d803412ee116a6a1bd7daf6c6">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[14/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4447d15d803412ee116a6a1bd7daf6c6">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[14/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29246,7 +29417,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a8a53e3548372f401f375464d64911a08"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a53e3548372f401f375464d64911a08">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[15/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a53e3548372f401f375464d64911a08">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[15/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29286,7 +29457,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="af3995f676a141b1d586451c4d616fa45"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af3995f676a141b1d586451c4d616fa45">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[16/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af3995f676a141b1d586451c4d616fa45">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[16/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29326,7 +29497,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a35a4c5459301e2c556ab841055782ecb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35a4c5459301e2c556ab841055782ecb">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[17/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a35a4c5459301e2c556ab841055782ecb">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[17/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29364,7 +29535,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a90f0a1b84dd397d94deae567959a63dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90f0a1b84dd397d94deae567959a63dc">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[18/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a90f0a1b84dd397d94deae567959a63dc">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[18/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29404,7 +29575,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a5a96cc072158bc5d086c195db2b54fb6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a96cc072158bc5d086c195db2b54fb6">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[19/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a96cc072158bc5d086c195db2b54fb6">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[19/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29444,7 +29615,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="ae11e84e7776f55130aaaa2c8431b6111"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae11e84e7776f55130aaaa2c8431b6111">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[20/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae11e84e7776f55130aaaa2c8431b6111">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[20/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29484,7 +29655,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="afc5d53883ab483ae18459a1d72805ef4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc5d53883ab483ae18459a1d72805ef4">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[21/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afc5d53883ab483ae18459a1d72805ef4">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[21/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29516,7 +29687,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a501afeabaea8fd9dee12cee3444404dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a501afeabaea8fd9dee12cee3444404dd">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[22/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a501afeabaea8fd9dee12cee3444404dd">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[22/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29556,7 +29727,7 @@ template&lt;typename Iterator1 , typename Iterator2 &gt; </div>
 </div>
 </div>
 <a id="a3a7c47fc05f53d62b60c235a00ce88d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a7c47fc05f53d62b60c235a00ce88d0">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[23/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a7c47fc05f53d62b60c235a00ce88d0">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[23/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29596,7 +29767,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a9d0eaaaa3cc9087bad6d1ed0e987e80d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d0eaaaa3cc9087bad6d1ed0e987e80d">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[24/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d0eaaaa3cc9087bad6d1ed0e987e80d">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[24/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29636,7 +29807,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a2722950def269472f4a967925299d1f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2722950def269472f4a967925299d1f0">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[25/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2722950def269472f4a967925299d1f0">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[25/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29676,7 +29847,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a5430dd22cb3a049d919fb0f27141a8cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5430dd22cb3a049d919fb0f27141a8cf">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[26/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5430dd22cb3a049d919fb0f27141a8cf">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[26/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29714,7 +29885,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="acff6cd26c70b027865f2b8266a37227d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acff6cd26c70b027865f2b8266a37227d">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[27/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#acff6cd26c70b027865f2b8266a37227d">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[27/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29752,7 +29923,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="ab124958b68f0b331f7bbde9a632602eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab124958b68f0b331f7bbde9a632602eb">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[28/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab124958b68f0b331f7bbde9a632602eb">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[28/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29790,7 +29961,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a43c555dc8ca45b14ab67a838f81a5d39"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43c555dc8ca45b14ab67a838f81a5d39">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[29/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a43c555dc8ca45b14ab67a838f81a5d39">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[29/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29828,7 +29999,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a5f868c8ccfe4f810afa6c89ef9bab1a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f868c8ccfe4f810afa6c89ef9bab1a8">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[30/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f868c8ccfe4f810afa6c89ef9bab1a8">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[30/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29866,7 +30037,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a031c6e2e5bcb94cbce9bc93d73d311d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a031c6e2e5bcb94cbce9bc93d73d311d7">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[31/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a031c6e2e5bcb94cbce9bc93d73d311d7">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[31/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29904,7 +30075,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="ae87f7ec9332ee3f33d1d9f7b768b7837"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae87f7ec9332ee3f33d1d9f7b768b7837">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[32/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae87f7ec9332ee3f33d1d9f7b768b7837">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[32/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29942,7 +30113,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a7446bfe4042d2985b0775ce3cd3c9e61"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7446bfe4042d2985b0775ce3cd3c9e61">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[33/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7446bfe4042d2985b0775ce3cd3c9e61">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[33/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -29982,7 +30153,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a6f1dd8615ffae874364bf4e49bb081db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f1dd8615ffae874364bf4e49bb081db">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[34/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f1dd8615ffae874364bf4e49bb081db">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[34/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -30022,7 +30193,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a884731cd7c202c2373cc51a16d8057dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a884731cd7c202c2373cc51a16d8057dc">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[35/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a884731cd7c202c2373cc51a16d8057dc">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[35/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -30060,7 +30231,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a8036f33461ab130bca9bd4e08fe94fef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8036f33461ab130bca9bd4e08fe94fef">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[36/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8036f33461ab130bca9bd4e08fe94fef">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[36/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -30098,7 +30269,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a42c78a603ae9461347e989770a316175"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42c78a603ae9461347e989770a316175">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[37/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a42c78a603ae9461347e989770a316175">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[37/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -30136,7 +30307,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="aca6c796ba594be038e290e28368e2584"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca6c796ba594be038e290e28368e2584">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[38/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aca6c796ba594be038e290e28368e2584">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[38/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -30173,8 +30344,48 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 
 </div>
 </div>
+<a id="aea13733aef216c0689d41848623c94ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea13733aef216c0689d41848623c94ca">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[39/40]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool daw::operator&lt; </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00279">279</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+
+</div>
+</div>
 <a id="a7b753bccdcbf0e11c1243361dbaab73a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b753bccdcbf0e11c1243361dbaab73a">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[39/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b753bccdcbf0e11c1243361dbaab73a">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[40/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -31768,7 +31979,7 @@ template&lt;size_t BitWidth&gt; </div>
 </div>
 </div>
 <a id="a3c9980a5b644b3b3a227d448303fe128"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3c9980a5b644b3b3a227d448303fe128">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[1/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c9980a5b644b3b3a227d448303fe128">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[1/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -31808,7 +32019,7 @@ template&lt;typename CharT , size_t CapacityL, size_t CapacityR&gt; </div>
 </div>
 </div>
 <a id="a4bcfa71268632bb3c22d9778aad90fdf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4bcfa71268632bb3c22d9778aad90fdf">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[2/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4bcfa71268632bb3c22d9778aad90fdf">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[2/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -31848,7 +32059,7 @@ template&lt;typename CharT , size_t Capacity, size_t N&gt; </div>
 </div>
 </div>
 <a id="a6bc5f0bfb34c7a5ed6fa080d278716bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6bc5f0bfb34c7a5ed6fa080d278716bd">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[3/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6bc5f0bfb34c7a5ed6fa080d278716bd">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[3/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -31886,7 +32097,7 @@ template&lt;typename CharT , size_t Capacity, size_t N&gt; </div>
 </div>
 </div>
 <a id="ac03d84d0189c4b4fc502096688091c2e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac03d84d0189c4b4fc502096688091c2e">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[4/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac03d84d0189c4b4fc502096688091c2e">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[4/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -31926,7 +32137,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a26e268dfd02853633608bfc32e1903b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26e268dfd02853633608bfc32e1903b6">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[5/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a26e268dfd02853633608bfc32e1903b6">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[5/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -31966,7 +32177,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a1daa8bd89eed8eee74bfd5e4e97ac110"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1daa8bd89eed8eee74bfd5e4e97ac110">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[6/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1daa8bd89eed8eee74bfd5e4e97ac110">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[6/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32006,7 +32217,7 @@ template&lt;typename CharT , size_t Capacity, size_t N&gt; </div>
 </div>
 </div>
 <a id="aa96f14e19a8faeb00071fba432d195aa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa96f14e19a8faeb00071fba432d195aa">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[7/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa96f14e19a8faeb00071fba432d195aa">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[7/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32046,7 +32257,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="ae6b5eb3a33bf86b3239680c7ff1172c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6b5eb3a33bf86b3239680c7ff1172c2">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[8/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6b5eb3a33bf86b3239680c7ff1172c2">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[8/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32086,7 +32297,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a2152fbfcb65b8288de3def1f4e8c89a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2152fbfcb65b8288de3def1f4e8c89a6">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[9/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2152fbfcb65b8288de3def1f4e8c89a6">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[9/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32126,7 +32337,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a3a08417ea15ca18f24d763f80107ff60"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a08417ea15ca18f24d763f80107ff60">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[10/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a08417ea15ca18f24d763f80107ff60">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[10/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32166,7 +32377,7 @@ template&lt;typename Lhs , typename Rhs &gt; </div>
 </div>
 </div>
 <a id="af73a4399178a9117012f5d48cda9dda3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af73a4399178a9117012f5d48cda9dda3">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[11/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af73a4399178a9117012f5d48cda9dda3">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[11/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32198,7 +32409,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a885e311555a4d120e1e981f36aa4488d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a885e311555a4d120e1e981f36aa4488d">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[12/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a885e311555a4d120e1e981f36aa4488d">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[12/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32238,7 +32449,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a94331905e46f61b0617d63ac8dcabf79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a94331905e46f61b0617d63ac8dcabf79">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[13/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a94331905e46f61b0617d63ac8dcabf79">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[13/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32270,7 +32481,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="ab2327eebc8af3dd0853854ecb19ce1b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2327eebc8af3dd0853854ecb19ce1b6">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[14/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2327eebc8af3dd0853854ecb19ce1b6">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[14/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32302,7 +32513,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="aa24be675c39171c3dbc423a6f9e03749"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa24be675c39171c3dbc423a6f9e03749">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[15/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa24be675c39171c3dbc423a6f9e03749">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[15/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32342,7 +32553,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="aad597cfaec157990fd3f1b674611beac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aad597cfaec157990fd3f1b674611beac">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[16/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aad597cfaec157990fd3f1b674611beac">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[16/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32382,7 +32593,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a5b2fb34ecc99e0db4d4157035836d7a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b2fb34ecc99e0db4d4157035836d7a0">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[17/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b2fb34ecc99e0db4d4157035836d7a0">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[17/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32422,7 +32633,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a7d9676c26c7f64fc6091b58072f28158"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d9676c26c7f64fc6091b58072f28158">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[18/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d9676c26c7f64fc6091b58072f28158">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[18/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32462,7 +32673,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="aa551a2095defb75766d05caf2b38af04"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa551a2095defb75766d05caf2b38af04">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[19/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa551a2095defb75766d05caf2b38af04">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[19/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32502,7 +32713,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="adc133b231d86f189fbcef64116df1588"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc133b231d86f189fbcef64116df1588">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[20/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#adc133b231d86f189fbcef64116df1588">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[20/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32534,7 +32745,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a86f5cae57e1395e17b72799173ba829b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a86f5cae57e1395e17b72799173ba829b">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[21/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a86f5cae57e1395e17b72799173ba829b">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[21/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32574,7 +32785,7 @@ template&lt;typename Iterator1 , typename Iterator2 &gt; </div>
 </div>
 </div>
 <a id="a19fbb670cd0854e914dbfccb2ff3ce17"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19fbb670cd0854e914dbfccb2ff3ce17">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[22/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a19fbb670cd0854e914dbfccb2ff3ce17">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[22/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32614,7 +32825,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a72b31423de1f583e3727ff4da64a85ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a72b31423de1f583e3727ff4da64a85ef">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[23/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a72b31423de1f583e3727ff4da64a85ef">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[23/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32654,7 +32865,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a5c8a7daa7c1295b4e1057e734efbfc31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c8a7daa7c1295b4e1057e734efbfc31">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[24/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c8a7daa7c1295b4e1057e734efbfc31">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[24/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32694,7 +32905,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a7cfe6d342ae53037b820bb6a287ad5ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7cfe6d342ae53037b820bb6a287ad5ba">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[25/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7cfe6d342ae53037b820bb6a287ad5ba">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[25/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32732,7 +32943,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a329c3f8b634ddbad4d4d94c2efbfd8d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a329c3f8b634ddbad4d4d94c2efbfd8d0">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[26/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a329c3f8b634ddbad4d4d94c2efbfd8d0">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[26/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32770,7 +32981,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="af4b372451839cd6a75bd3e7bec07f782"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4b372451839cd6a75bd3e7bec07f782">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[27/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af4b372451839cd6a75bd3e7bec07f782">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[27/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32808,7 +33019,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a0b1a67ce583da7fe04f725b47814eb5a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b1a67ce583da7fe04f725b47814eb5a">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[28/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b1a67ce583da7fe04f725b47814eb5a">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[28/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32846,7 +33057,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a895a5bf3cbd8d56b45b05cfdf0ea3041"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a895a5bf3cbd8d56b45b05cfdf0ea3041">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[29/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a895a5bf3cbd8d56b45b05cfdf0ea3041">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[29/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32884,7 +33095,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a9bfd7c8cd16b959faf0ae2ae53172a18"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9bfd7c8cd16b959faf0ae2ae53172a18">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[30/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bfd7c8cd16b959faf0ae2ae53172a18">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[30/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32922,7 +33133,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a2e5c46c3845e4f2ab5b1da9f0c1c341f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e5c46c3845e4f2ab5b1da9f0c1c341f">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[31/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e5c46c3845e4f2ab5b1da9f0c1c341f">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[31/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -32960,7 +33171,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a1496bfc4b6a588bd4647661867bb9499"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1496bfc4b6a588bd4647661867bb9499">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[32/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1496bfc4b6a588bd4647661867bb9499">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[32/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33000,7 +33211,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a2766fbe7942b5a3bdceb42179c1718a1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2766fbe7942b5a3bdceb42179c1718a1">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[33/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2766fbe7942b5a3bdceb42179c1718a1">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[33/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33040,7 +33251,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a2cd8fe462469e263d9f3e54e07da29ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2cd8fe462469e263d9f3e54e07da29ef">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[34/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cd8fe462469e263d9f3e54e07da29ef">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[34/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33078,7 +33289,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="aff0e27a2571c7b540685cdce57be1cf5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff0e27a2571c7b540685cdce57be1cf5">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[35/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aff0e27a2571c7b540685cdce57be1cf5">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[35/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33116,7 +33327,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a256557cd356bff7aedcbef74a7b4d9ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a256557cd356bff7aedcbef74a7b4d9ee">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[36/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a256557cd356bff7aedcbef74a7b4d9ee">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[36/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33154,7 +33365,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a4bf72b5a66f1fd70baed87a0cc030e4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4bf72b5a66f1fd70baed87a0cc030e4b">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[37/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4bf72b5a66f1fd70baed87a0cc030e4b">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[37/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33192,7 +33403,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a6da5416c11306b5e6f505b785777c08e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6da5416c11306b5e6f505b785777c08e">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[38/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6da5416c11306b5e6f505b785777c08e">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[38/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33230,7 +33441,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="ab42dd3c9117489c8f0fbe7f722b40eda"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab42dd3c9117489c8f0fbe7f722b40eda">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[39/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab42dd3c9117489c8f0fbe7f722b40eda">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[39/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33268,7 +33479,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a1383a282e7ce29b9dece7f7e015934e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1383a282e7ce29b9dece7f7e015934e5">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[40/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1383a282e7ce29b9dece7f7e015934e5">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[40/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33305,8 +33516,48 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 
 </div>
 </div>
+<a id="a73304c642c5188fb9a2770ad76a599b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73304c642c5188fb9a2770ad76a599b0">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[41/42]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool daw::operator&lt;= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00285">285</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+
+</div>
+</div>
 <a id="ade5da5470013039d3121e70ed5bb125a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade5da5470013039d3121e70ed5bb125a">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[41/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ade5da5470013039d3121e70ed5bb125a">&#9670;&nbsp;</a></span>operator&lt;=() <span class="overload">[42/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33374,7 +33625,7 @@ template&lt;typename T , typename U , value_ptr_details::has_compare_less_equal&
 </div>
 </div>
 <a id="a399976e3238ac3730c4a27375d78c12b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a399976e3238ac3730c4a27375d78c12b">&#9670;&nbsp;</a></span>operator==() <span class="overload">[1/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a399976e3238ac3730c4a27375d78c12b">&#9670;&nbsp;</a></span>operator==() <span class="overload">[1/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33414,7 +33665,7 @@ template&lt;typename T , typename U , size_t N&gt; </div>
 </div>
 </div>
 <a id="ab85b8f53ed85547c295cd1e7fd170d4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab85b8f53ed85547c295cd1e7fd170d4b">&#9670;&nbsp;</a></span>operator==() <span class="overload">[2/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab85b8f53ed85547c295cd1e7fd170d4b">&#9670;&nbsp;</a></span>operator==() <span class="overload">[2/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33454,7 +33705,7 @@ template&lt;typename CharT , size_t CapacityL, size_t CapacityR&gt; </div>
 </div>
 </div>
 <a id="a82b25fe32cb60eacbfd442038bff57bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a82b25fe32cb60eacbfd442038bff57bb">&#9670;&nbsp;</a></span>operator==() <span class="overload">[3/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a82b25fe32cb60eacbfd442038bff57bb">&#9670;&nbsp;</a></span>operator==() <span class="overload">[3/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33494,7 +33745,7 @@ template&lt;typename Key , typename Value &gt; </div>
 </div>
 </div>
 <a id="ae58ce60ca5e7091477a994a3fcb29e97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae58ce60ca5e7091477a994a3fcb29e97">&#9670;&nbsp;</a></span>operator==() <span class="overload">[4/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae58ce60ca5e7091477a994a3fcb29e97">&#9670;&nbsp;</a></span>operator==() <span class="overload">[4/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33534,7 +33785,7 @@ template&lt;typename Key , typename Value &gt; </div>
 </div>
 </div>
 <a id="ab56e9565fdc3ecdcc73c60682310ad44"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab56e9565fdc3ecdcc73c60682310ad44">&#9670;&nbsp;</a></span>operator==() <span class="overload">[5/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab56e9565fdc3ecdcc73c60682310ad44">&#9670;&nbsp;</a></span>operator==() <span class="overload">[5/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33574,7 +33825,7 @@ template&lt;typename Key &gt; </div>
 </div>
 </div>
 <a id="a1da409bce0b13113540f66f06ee4e030"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1da409bce0b13113540f66f06ee4e030">&#9670;&nbsp;</a></span>operator==() <span class="overload">[6/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1da409bce0b13113540f66f06ee4e030">&#9670;&nbsp;</a></span>operator==() <span class="overload">[6/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33614,7 +33865,7 @@ template&lt;typename Key &gt; </div>
 </div>
 </div>
 <a id="abd6b6bb4333726133c79792552f2e1f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd6b6bb4333726133c79792552f2e1f6">&#9670;&nbsp;</a></span>operator==() <span class="overload">[7/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abd6b6bb4333726133c79792552f2e1f6">&#9670;&nbsp;</a></span>operator==() <span class="overload">[7/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33654,7 +33905,7 @@ template&lt;typename CharT , size_t Capacity, size_t N&gt; </div>
 </div>
 </div>
 <a id="a59ffc55db2804c565876a7c51326ca96"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59ffc55db2804c565876a7c51326ca96">&#9670;&nbsp;</a></span>operator==() <span class="overload">[8/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a59ffc55db2804c565876a7c51326ca96">&#9670;&nbsp;</a></span>operator==() <span class="overload">[8/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33694,7 +33945,7 @@ template&lt;typename Key , typename Value &gt; </div>
 </div>
 </div>
 <a id="a762d6210881589d33387a614378ed3d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a762d6210881589d33387a614378ed3d7">&#9670;&nbsp;</a></span>operator==() <span class="overload">[9/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a762d6210881589d33387a614378ed3d7">&#9670;&nbsp;</a></span>operator==() <span class="overload">[9/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33734,7 +33985,7 @@ template&lt;typename Key , typename Value &gt; </div>
 </div>
 </div>
 <a id="a5704ef4b1fb87e190eeaaa9be72879d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5704ef4b1fb87e190eeaaa9be72879d1">&#9670;&nbsp;</a></span>operator==() <span class="overload">[10/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5704ef4b1fb87e190eeaaa9be72879d1">&#9670;&nbsp;</a></span>operator==() <span class="overload">[10/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33774,7 +34025,7 @@ template&lt;typename Key &gt; </div>
 </div>
 </div>
 <a id="a479ce7ab65ebe95d069369b9b5f7cb2a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a479ce7ab65ebe95d069369b9b5f7cb2a">&#9670;&nbsp;</a></span>operator==() <span class="overload">[11/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a479ce7ab65ebe95d069369b9b5f7cb2a">&#9670;&nbsp;</a></span>operator==() <span class="overload">[11/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33814,7 +34065,7 @@ template&lt;typename Key &gt; </div>
 </div>
 </div>
 <a id="a7a6beb0d0855b1700e4c9f3e1ad95a95"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a6beb0d0855b1700e4c9f3e1ad95a95">&#9670;&nbsp;</a></span>operator==() <span class="overload">[12/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a6beb0d0855b1700e4c9f3e1ad95a95">&#9670;&nbsp;</a></span>operator==() <span class="overload">[12/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33852,7 +34103,7 @@ template&lt;typename Key &gt; </div>
 </div>
 </div>
 <a id="af79aea8327a567d45923df247ee2d970"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af79aea8327a567d45923df247ee2d970">&#9670;&nbsp;</a></span>operator==() <span class="overload">[13/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af79aea8327a567d45923df247ee2d970">&#9670;&nbsp;</a></span>operator==() <span class="overload">[13/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33892,7 +34143,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="ad750a284ded9c9e89b59ec2ada2d4605"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad750a284ded9c9e89b59ec2ada2d4605">&#9670;&nbsp;</a></span>operator==() <span class="overload">[14/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad750a284ded9c9e89b59ec2ada2d4605">&#9670;&nbsp;</a></span>operator==() <span class="overload">[14/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33932,7 +34183,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a28ff3fd0e80c96649470533f7d47a4e9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a28ff3fd0e80c96649470533f7d47a4e9">&#9670;&nbsp;</a></span>operator==() <span class="overload">[15/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a28ff3fd0e80c96649470533f7d47a4e9">&#9670;&nbsp;</a></span>operator==() <span class="overload">[15/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -33972,7 +34223,7 @@ template&lt;typename CharT , size_t Capacity, size_t N&gt; </div>
 </div>
 </div>
 <a id="a8f5c9004b17fc312388693f5adeaebec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f5c9004b17fc312388693f5adeaebec">&#9670;&nbsp;</a></span>operator==() <span class="overload">[16/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f5c9004b17fc312388693f5adeaebec">&#9670;&nbsp;</a></span>operator==() <span class="overload">[16/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34012,7 +34263,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a37d9c742294f1a6db82efc645c77b6e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37d9c742294f1a6db82efc645c77b6e3">&#9670;&nbsp;</a></span>operator==() <span class="overload">[17/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a37d9c742294f1a6db82efc645c77b6e3">&#9670;&nbsp;</a></span>operator==() <span class="overload">[17/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34052,7 +34303,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="aca7f87b346b35ff65d92a404993594ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca7f87b346b35ff65d92a404993594ce">&#9670;&nbsp;</a></span>operator==() <span class="overload">[18/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aca7f87b346b35ff65d92a404993594ce">&#9670;&nbsp;</a></span>operator==() <span class="overload">[18/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34092,7 +34343,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a65372861af2acf112be678ef8f9726b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a65372861af2acf112be678ef8f9726b3">&#9670;&nbsp;</a></span>operator==() <span class="overload">[19/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a65372861af2acf112be678ef8f9726b3">&#9670;&nbsp;</a></span>operator==() <span class="overload">[19/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34132,7 +34383,7 @@ template&lt;typename Lhs , typename Rhs &gt; </div>
 </div>
 </div>
 <a id="abd693c38f0a9806d2517fbcfdf1e9161"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd693c38f0a9806d2517fbcfdf1e9161">&#9670;&nbsp;</a></span>operator==() <span class="overload">[20/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abd693c38f0a9806d2517fbcfdf1e9161">&#9670;&nbsp;</a></span>operator==() <span class="overload">[20/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34164,7 +34415,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a162a832c471f794561771f866784b10b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a162a832c471f794561771f866784b10b">&#9670;&nbsp;</a></span>operator==() <span class="overload">[21/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a162a832c471f794561771f866784b10b">&#9670;&nbsp;</a></span>operator==() <span class="overload">[21/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34204,7 +34455,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="ab762f486bc5805e2cb11d243f4fedfe5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab762f486bc5805e2cb11d243f4fedfe5">&#9670;&nbsp;</a></span>operator==() <span class="overload">[22/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab762f486bc5805e2cb11d243f4fedfe5">&#9670;&nbsp;</a></span>operator==() <span class="overload">[22/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34236,7 +34487,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a99cbfa9e096fbe846e78db1571cbe1a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99cbfa9e096fbe846e78db1571cbe1a7">&#9670;&nbsp;</a></span>operator==() <span class="overload">[23/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a99cbfa9e096fbe846e78db1571cbe1a7">&#9670;&nbsp;</a></span>operator==() <span class="overload">[23/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34268,7 +34519,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a5fd344094b6f1ea0f76deda8585fd04b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5fd344094b6f1ea0f76deda8585fd04b">&#9670;&nbsp;</a></span>operator==() <span class="overload">[24/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fd344094b6f1ea0f76deda8585fd04b">&#9670;&nbsp;</a></span>operator==() <span class="overload">[24/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34308,7 +34559,7 @@ template&lt;typename T , typename U , std::enable_if_t&lt; not std::is_convertib
 </div>
 </div>
 <a id="a7ff36094812e8fe49cc33176feba0378"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ff36094812e8fe49cc33176feba0378">&#9670;&nbsp;</a></span>operator==() <span class="overload">[25/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ff36094812e8fe49cc33176feba0378">&#9670;&nbsp;</a></span>operator==() <span class="overload">[25/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34348,7 +34599,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="ae558585165b0d05beafbac4ade295bb9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae558585165b0d05beafbac4ade295bb9">&#9670;&nbsp;</a></span>operator==() <span class="overload">[26/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae558585165b0d05beafbac4ade295bb9">&#9670;&nbsp;</a></span>operator==() <span class="overload">[26/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34388,7 +34639,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="acff5aab8fe97b8ab75413540b62a3020"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acff5aab8fe97b8ab75413540b62a3020">&#9670;&nbsp;</a></span>operator==() <span class="overload">[27/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#acff5aab8fe97b8ab75413540b62a3020">&#9670;&nbsp;</a></span>operator==() <span class="overload">[27/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34426,7 +34677,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="ae4d76f2d79f944bae43939418d40c8fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae4d76f2d79f944bae43939418d40c8fa">&#9670;&nbsp;</a></span>operator==() <span class="overload">[28/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4d76f2d79f944bae43939418d40c8fa">&#9670;&nbsp;</a></span>operator==() <span class="overload">[28/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34466,7 +34717,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a60e8c46d5b450ef127656a761b2b6f96"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a60e8c46d5b450ef127656a761b2b6f96">&#9670;&nbsp;</a></span>operator==() <span class="overload">[29/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a60e8c46d5b450ef127656a761b2b6f96">&#9670;&nbsp;</a></span>operator==() <span class="overload">[29/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34506,7 +34757,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a3f2deb88aaf36249af54e92c992bddde"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3f2deb88aaf36249af54e92c992bddde">&#9670;&nbsp;</a></span>operator==() <span class="overload">[30/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f2deb88aaf36249af54e92c992bddde">&#9670;&nbsp;</a></span>operator==() <span class="overload">[30/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34546,7 +34797,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="af278cfdc529559526f2a82ff45976de3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af278cfdc529559526f2a82ff45976de3">&#9670;&nbsp;</a></span>operator==() <span class="overload">[31/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af278cfdc529559526f2a82ff45976de3">&#9670;&nbsp;</a></span>operator==() <span class="overload">[31/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34578,7 +34829,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="ad95ec127eabe678d3d7185492231846a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad95ec127eabe678d3d7185492231846a">&#9670;&nbsp;</a></span>operator==() <span class="overload">[32/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad95ec127eabe678d3d7185492231846a">&#9670;&nbsp;</a></span>operator==() <span class="overload">[32/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34618,7 +34869,7 @@ template&lt;typename CharT &gt; </div>
 </div>
 </div>
 <a id="a82a940a0296d788b2ca3830e6003db00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a82a940a0296d788b2ca3830e6003db00">&#9670;&nbsp;</a></span>operator==() <span class="overload">[33/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a82a940a0296d788b2ca3830e6003db00">&#9670;&nbsp;</a></span>operator==() <span class="overload">[33/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34658,7 +34909,7 @@ template&lt;typename Iterator1 , typename Iterator2 &gt; </div>
 </div>
 </div>
 <a id="a3caefeb6f3650b181d5045299907aadd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3caefeb6f3650b181d5045299907aadd">&#9670;&nbsp;</a></span>operator==() <span class="overload">[34/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3caefeb6f3650b181d5045299907aadd">&#9670;&nbsp;</a></span>operator==() <span class="overload">[34/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34698,7 +34949,7 @@ template&lt;typename Iterator &gt; </div>
 </div>
 </div>
 <a id="abcf08270e2e767d6466092349dd8c111"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abcf08270e2e767d6466092349dd8c111">&#9670;&nbsp;</a></span>operator==() <span class="overload">[35/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abcf08270e2e767d6466092349dd8c111">&#9670;&nbsp;</a></span>operator==() <span class="overload">[35/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34738,7 +34989,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a32aa75808af6c460f58b04a3f0448b38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32aa75808af6c460f58b04a3f0448b38">&#9670;&nbsp;</a></span>operator==() <span class="overload">[36/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a32aa75808af6c460f58b04a3f0448b38">&#9670;&nbsp;</a></span>operator==() <span class="overload">[36/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34778,7 +35029,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a350d73a42fe6d9f863680c2ef14697aa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a350d73a42fe6d9f863680c2ef14697aa">&#9670;&nbsp;</a></span>operator==() <span class="overload">[37/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a350d73a42fe6d9f863680c2ef14697aa">&#9670;&nbsp;</a></span>operator==() <span class="overload">[37/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34818,7 +35069,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a3fef4557314c0bbf5faaa9f2050408fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3fef4557314c0bbf5faaa9f2050408fb">&#9670;&nbsp;</a></span>operator==() <span class="overload">[38/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fef4557314c0bbf5faaa9f2050408fb">&#9670;&nbsp;</a></span>operator==() <span class="overload">[38/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34856,7 +35107,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="af076e9b9dc1c8b9ed4c4eb94a3c85684"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af076e9b9dc1c8b9ed4c4eb94a3c85684">&#9670;&nbsp;</a></span>operator==() <span class="overload">[39/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af076e9b9dc1c8b9ed4c4eb94a3c85684">&#9670;&nbsp;</a></span>operator==() <span class="overload">[39/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34894,7 +35145,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="af9dec4e62fda86ed48e038a0f11f4591"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af9dec4e62fda86ed48e038a0f11f4591">&#9670;&nbsp;</a></span>operator==() <span class="overload">[40/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af9dec4e62fda86ed48e038a0f11f4591">&#9670;&nbsp;</a></span>operator==() <span class="overload">[40/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34932,7 +35183,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a5edf8386aa3457dd2e1ba1ed54c1784b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5edf8386aa3457dd2e1ba1ed54c1784b">&#9670;&nbsp;</a></span>operator==() <span class="overload">[41/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5edf8386aa3457dd2e1ba1ed54c1784b">&#9670;&nbsp;</a></span>operator==() <span class="overload">[41/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -34970,7 +35221,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a2d25812fb4bd3178ede6a8f6993079c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2d25812fb4bd3178ede6a8f6993079c5">&#9670;&nbsp;</a></span>operator==() <span class="overload">[42/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d25812fb4bd3178ede6a8f6993079c5">&#9670;&nbsp;</a></span>operator==() <span class="overload">[42/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35008,7 +35259,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a73868d858044b6b47a7fb0f63c467271"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a73868d858044b6b47a7fb0f63c467271">&#9670;&nbsp;</a></span>operator==() <span class="overload">[43/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a73868d858044b6b47a7fb0f63c467271">&#9670;&nbsp;</a></span>operator==() <span class="overload">[43/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35046,7 +35297,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a7e41b2b0e9f624d95a01ec831fde4a6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e41b2b0e9f624d95a01ec831fde4a6a">&#9670;&nbsp;</a></span>operator==() <span class="overload">[44/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e41b2b0e9f624d95a01ec831fde4a6a">&#9670;&nbsp;</a></span>operator==() <span class="overload">[44/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35084,7 +35335,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a3947365e025b1c1d78538ac4e08103fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3947365e025b1c1d78538ac4e08103fb">&#9670;&nbsp;</a></span>operator==() <span class="overload">[45/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3947365e025b1c1d78538ac4e08103fb">&#9670;&nbsp;</a></span>operator==() <span class="overload">[45/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35124,7 +35375,7 @@ template&lt;typename CharT &gt; </div>
 </div>
 </div>
 <a id="aec0757dbcd4a1812bbb150d1b914c48f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec0757dbcd4a1812bbb150d1b914c48f">&#9670;&nbsp;</a></span>operator==() <span class="overload">[46/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aec0757dbcd4a1812bbb150d1b914c48f">&#9670;&nbsp;</a></span>operator==() <span class="overload">[46/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35164,7 +35415,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a617c780e6457feaa4d5fd9197981aad5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a617c780e6457feaa4d5fd9197981aad5">&#9670;&nbsp;</a></span>operator==() <span class="overload">[47/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a617c780e6457feaa4d5fd9197981aad5">&#9670;&nbsp;</a></span>operator==() <span class="overload">[47/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35204,7 +35455,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a07e5693110fdcf670091ff5ee3a1b0cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07e5693110fdcf670091ff5ee3a1b0cf">&#9670;&nbsp;</a></span>operator==() <span class="overload">[48/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a07e5693110fdcf670091ff5ee3a1b0cf">&#9670;&nbsp;</a></span>operator==() <span class="overload">[48/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35242,7 +35493,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a7514bdb1271843ead8537050547e33f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7514bdb1271843ead8537050547e33f2">&#9670;&nbsp;</a></span>operator==() <span class="overload">[49/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7514bdb1271843ead8537050547e33f2">&#9670;&nbsp;</a></span>operator==() <span class="overload">[49/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35280,7 +35531,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a8aaf2468dfdbd1f245e226ddc937a06e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8aaf2468dfdbd1f245e226ddc937a06e">&#9670;&nbsp;</a></span>operator==() <span class="overload">[50/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8aaf2468dfdbd1f245e226ddc937a06e">&#9670;&nbsp;</a></span>operator==() <span class="overload">[50/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35318,7 +35569,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a86a16178e083576b818f61db8c3feb99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a86a16178e083576b818f61db8c3feb99">&#9670;&nbsp;</a></span>operator==() <span class="overload">[51/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a86a16178e083576b818f61db8c3feb99">&#9670;&nbsp;</a></span>operator==() <span class="overload">[51/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35356,7 +35607,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a52e374d312e8662454a7756b2ea53d3e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a52e374d312e8662454a7756b2ea53d3e">&#9670;&nbsp;</a></span>operator==() <span class="overload">[52/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a52e374d312e8662454a7756b2ea53d3e">&#9670;&nbsp;</a></span>operator==() <span class="overload">[52/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35394,7 +35645,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="afe47f999849627ee5759903eb6a451f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe47f999849627ee5759903eb6a451f0">&#9670;&nbsp;</a></span>operator==() <span class="overload">[53/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afe47f999849627ee5759903eb6a451f0">&#9670;&nbsp;</a></span>operator==() <span class="overload">[53/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35432,7 +35683,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a6c40ec5da80911a4020a48b26eaf389a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c40ec5da80911a4020a48b26eaf389a">&#9670;&nbsp;</a></span>operator==() <span class="overload">[54/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c40ec5da80911a4020a48b26eaf389a">&#9670;&nbsp;</a></span>operator==() <span class="overload">[54/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35469,8 +35720,48 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 
 </div>
 </div>
+<a id="ab5cc8eb7384d3f9fb7a9761eb3589732"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5cc8eb7384d3f9fb7a9761eb3589732">&#9670;&nbsp;</a></span>operator==() <span class="overload">[55/56]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool daw::operator== </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00267">267</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+
+</div>
+</div>
 <a id="ab0431b3f19d94dced85b31e5574efce4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab0431b3f19d94dced85b31e5574efce4">&#9670;&nbsp;</a></span>operator==() <span class="overload">[55/55]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0431b3f19d94dced85b31e5574efce4">&#9670;&nbsp;</a></span>operator==() <span class="overload">[56/56]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35510,7 +35801,7 @@ template&lt;typename T , typename U , value_ptr_details::has_compare_equality&lt
 </div>
 </div>
 <a id="a8888dccd1b73f7e685e2758737586564"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8888dccd1b73f7e685e2758737586564">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[1/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8888dccd1b73f7e685e2758737586564">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[1/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35550,7 +35841,7 @@ template&lt;typename CharT , size_t CapacityL, size_t CapacityR&gt; </div>
 </div>
 </div>
 <a id="a910afcf36bab6b92bd2e1fc4b45fa165"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a910afcf36bab6b92bd2e1fc4b45fa165">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[2/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a910afcf36bab6b92bd2e1fc4b45fa165">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[2/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35590,7 +35881,7 @@ template&lt;typename CharT , size_t Capacity, size_t N&gt; </div>
 </div>
 </div>
 <a id="a35207f0b6129f446942830035f014170"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35207f0b6129f446942830035f014170">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[3/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a35207f0b6129f446942830035f014170">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[3/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35628,7 +35919,7 @@ template&lt;typename CharT , size_t Capacity, size_t N&gt; </div>
 </div>
 </div>
 <a id="ad1ee9b877df9fa076e80d87b8b3e00e8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad1ee9b877df9fa076e80d87b8b3e00e8">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[4/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1ee9b877df9fa076e80d87b8b3e00e8">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[4/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35668,7 +35959,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="ac99545fbc9c5fc9aae766821aa10c55f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac99545fbc9c5fc9aae766821aa10c55f">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[5/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac99545fbc9c5fc9aae766821aa10c55f">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[5/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35708,7 +35999,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a1450789cf8b2c6e7c4bf20fb85c5f2f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1450789cf8b2c6e7c4bf20fb85c5f2f1">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[6/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1450789cf8b2c6e7c4bf20fb85c5f2f1">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[6/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35748,7 +36039,7 @@ template&lt;typename CharT , size_t Capacity, size_t N&gt; </div>
 </div>
 </div>
 <a id="a7eaca2e7b88b0e6b88d377fdcf731a61"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7eaca2e7b88b0e6b88d377fdcf731a61">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[7/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7eaca2e7b88b0e6b88d377fdcf731a61">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[7/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35788,7 +36079,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="ab91ed403c2b35937e6f34dd307567fc7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab91ed403c2b35937e6f34dd307567fc7">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[8/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab91ed403c2b35937e6f34dd307567fc7">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[8/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35828,7 +36119,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="ab21358bc60fe31e164d763238a1659b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab21358bc60fe31e164d763238a1659b7">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[9/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab21358bc60fe31e164d763238a1659b7">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[9/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35868,7 +36159,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="ad513c1cbd403518171035ff6312a9371"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad513c1cbd403518171035ff6312a9371">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[10/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad513c1cbd403518171035ff6312a9371">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[10/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35908,7 +36199,7 @@ template&lt;typename Lhs , typename Rhs &gt; </div>
 </div>
 </div>
 <a id="afd017fb3617d675da9f81ed30f3e830a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd017fb3617d675da9f81ed30f3e830a">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[11/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afd017fb3617d675da9f81ed30f3e830a">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[11/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35940,7 +36231,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a43b8dddca03007e8873e0bee6b04900d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43b8dddca03007e8873e0bee6b04900d">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[12/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a43b8dddca03007e8873e0bee6b04900d">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[12/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -35980,7 +36271,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a8dce58cd82265eeb5494d394b5332336"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8dce58cd82265eeb5494d394b5332336">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[13/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8dce58cd82265eeb5494d394b5332336">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[13/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36012,7 +36303,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a2b9cc8210954fd63fd36380e4a819b70"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b9cc8210954fd63fd36380e4a819b70">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[14/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b9cc8210954fd63fd36380e4a819b70">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[14/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36044,7 +36335,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a854ab9d2fe5f0daad57ca3b3804b110d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a854ab9d2fe5f0daad57ca3b3804b110d">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[15/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a854ab9d2fe5f0daad57ca3b3804b110d">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[15/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36084,7 +36375,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="ac8e70982a146c50320a822fcf7fed420"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac8e70982a146c50320a822fcf7fed420">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[16/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8e70982a146c50320a822fcf7fed420">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[16/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36124,7 +36415,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="abc969ce1547c55706c2b0adf5a3cd48e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc969ce1547c55706c2b0adf5a3cd48e">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[17/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abc969ce1547c55706c2b0adf5a3cd48e">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[17/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36164,7 +36455,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a695a602b3657c6e8875fc1e73fd4d3d6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a695a602b3657c6e8875fc1e73fd4d3d6">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[18/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a695a602b3657c6e8875fc1e73fd4d3d6">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[18/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36204,7 +36495,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a4a6fc09b632bcec0810685b2360cd7e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a6fc09b632bcec0810685b2360cd7e5">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[19/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a6fc09b632bcec0810685b2360cd7e5">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[19/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36244,7 +36535,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a501a01cc015f6bb92dc3945fb9767ee3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a501a01cc015f6bb92dc3945fb9767ee3">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[20/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a501a01cc015f6bb92dc3945fb9767ee3">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[20/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36276,7 +36567,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a7bc4d8795691f3e0833f31da5efd6575"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7bc4d8795691f3e0833f31da5efd6575">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[21/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bc4d8795691f3e0833f31da5efd6575">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[21/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36316,7 +36607,7 @@ template&lt;typename Iterator1 , typename Iterator2 &gt; </div>
 </div>
 </div>
 <a id="af40994e85eb0270eb5f3b5f957c97f17"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af40994e85eb0270eb5f3b5f957c97f17">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[22/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af40994e85eb0270eb5f3b5f957c97f17">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[22/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36356,7 +36647,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="ad683e9c070d70d9703d23762f55683e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad683e9c070d70d9703d23762f55683e6">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[23/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad683e9c070d70d9703d23762f55683e6">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[23/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36396,7 +36687,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="ae39ac5351809ad863274484a5d1da5eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae39ac5351809ad863274484a5d1da5eb">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[24/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae39ac5351809ad863274484a5d1da5eb">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[24/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36436,7 +36727,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a8756c6738f2740f6d57980ecdff49235"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8756c6738f2740f6d57980ecdff49235">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[25/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8756c6738f2740f6d57980ecdff49235">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[25/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36474,7 +36765,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="add8d33ec58ccba6fef7bca7c6e45dba2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add8d33ec58ccba6fef7bca7c6e45dba2">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[26/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#add8d33ec58ccba6fef7bca7c6e45dba2">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[26/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36512,7 +36803,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="ade355f5712624c36fde43edfa813e86d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade355f5712624c36fde43edfa813e86d">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[27/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ade355f5712624c36fde43edfa813e86d">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[27/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36550,7 +36841,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="aa4e2c5a630a0fd2dd298b63717a37d77"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4e2c5a630a0fd2dd298b63717a37d77">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[28/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4e2c5a630a0fd2dd298b63717a37d77">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[28/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36588,7 +36879,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="ae78662795a3bd50710661de39342528d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae78662795a3bd50710661de39342528d">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[29/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae78662795a3bd50710661de39342528d">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[29/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36626,7 +36917,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a380f647f6001aec7e21d303189dc0358"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a380f647f6001aec7e21d303189dc0358">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[30/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a380f647f6001aec7e21d303189dc0358">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[30/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36664,7 +36955,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a20cd580123456abdc3104d347dbe37e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a20cd580123456abdc3104d347dbe37e6">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[31/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a20cd580123456abdc3104d347dbe37e6">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[31/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36704,7 +36995,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="ae831a61a2c366981a70426577be80676"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae831a61a2c366981a70426577be80676">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[32/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae831a61a2c366981a70426577be80676">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[32/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36744,7 +37035,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="abf2b4bfb975c96f2b558aaccbb0d3f22"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf2b4bfb975c96f2b558aaccbb0d3f22">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[33/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abf2b4bfb975c96f2b558aaccbb0d3f22">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[33/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36782,7 +37073,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="ae6e8fcde72f034c616224d8f5eee8692"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6e8fcde72f034c616224d8f5eee8692">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[34/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6e8fcde72f034c616224d8f5eee8692">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[34/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36820,7 +37111,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a48b8cc80beb9b87c6bb52f7cea3a0a31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48b8cc80beb9b87c6bb52f7cea3a0a31">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[35/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a48b8cc80beb9b87c6bb52f7cea3a0a31">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[35/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36858,7 +37149,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="af103f6c7d2ecec3a63a58219f199b217"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af103f6c7d2ecec3a63a58219f199b217">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[36/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af103f6c7d2ecec3a63a58219f199b217">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[36/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36896,7 +37187,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a524d616cd784fff47caf74ce9ec99eaf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a524d616cd784fff47caf74ce9ec99eaf">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[37/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a524d616cd784fff47caf74ce9ec99eaf">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[37/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36934,7 +37225,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="adfeeabf897847a9fef4988d6b159ed25"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adfeeabf897847a9fef4988d6b159ed25">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[38/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#adfeeabf897847a9fef4988d6b159ed25">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[38/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -36971,8 +37262,48 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 
 </div>
 </div>
+<a id="ae098c09939e28c1f807e811320926a1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae098c09939e28c1f807e811320926a1c">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[39/40]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool daw::operator&gt; </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00291">291</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+
+</div>
+</div>
 <a id="a25d1cc8839ea17102b68a22ea4ea4438"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a25d1cc8839ea17102b68a22ea4ea4438">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[39/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a25d1cc8839ea17102b68a22ea4ea4438">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[40/40]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37012,7 +37343,7 @@ template&lt;typename T , typename U , value_ptr_details::has_compare_greater&lt;
 </div>
 </div>
 <a id="ad51adc3089239f136ff2f0372d28a9a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad51adc3089239f136ff2f0372d28a9a5">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[1/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad51adc3089239f136ff2f0372d28a9a5">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[1/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37052,7 +37383,7 @@ template&lt;typename CharT , size_t CapacityL, size_t CapacityR&gt; </div>
 </div>
 </div>
 <a id="acc3b8f60f5b62a6d5ddb7b12902adb10"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc3b8f60f5b62a6d5ddb7b12902adb10">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[2/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#acc3b8f60f5b62a6d5ddb7b12902adb10">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[2/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37092,7 +37423,7 @@ template&lt;typename CharT , size_t Capacity, size_t N&gt; </div>
 </div>
 </div>
 <a id="a4ca2014284e194bc70c2161453f27e7b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ca2014284e194bc70c2161453f27e7b">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[3/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ca2014284e194bc70c2161453f27e7b">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[3/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37132,7 +37463,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="afb9b77f887789aa8aeab06bf01d22591"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb9b77f887789aa8aeab06bf01d22591">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[4/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afb9b77f887789aa8aeab06bf01d22591">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[4/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37170,7 +37501,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a687af78fbe6194ad4a95e7a8afa27b1e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a687af78fbe6194ad4a95e7a8afa27b1e">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[5/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a687af78fbe6194ad4a95e7a8afa27b1e">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[5/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37210,7 +37541,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="ac05f213372d472a78532962438a1be0d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac05f213372d472a78532962438a1be0d">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[6/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac05f213372d472a78532962438a1be0d">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[6/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37250,7 +37581,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="ae64d600b685f5dcfc0498c4ba536ff46"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae64d600b685f5dcfc0498c4ba536ff46">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[7/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae64d600b685f5dcfc0498c4ba536ff46">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[7/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37290,7 +37621,7 @@ template&lt;typename CharT , size_t Capacity, size_t N&gt; </div>
 </div>
 </div>
 <a id="ace3944d253a60c66f85ba3e65aeff7b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace3944d253a60c66f85ba3e65aeff7b7">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[8/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ace3944d253a60c66f85ba3e65aeff7b7">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[8/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37330,7 +37661,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a523ed5bcaa77883adfc2b7782b9684fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a523ed5bcaa77883adfc2b7782b9684fd">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[9/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a523ed5bcaa77883adfc2b7782b9684fd">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[9/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37370,7 +37701,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a1a0a9856add0db68c773c216027016ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1a0a9856add0db68c773c216027016ca">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[10/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a0a9856add0db68c773c216027016ca">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[10/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37410,7 +37741,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a3c2792877208cbb37c92edaa1c319da7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3c2792877208cbb37c92edaa1c319da7">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[11/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c2792877208cbb37c92edaa1c319da7">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[11/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37450,7 +37781,7 @@ template&lt;typename Lhs , typename Rhs &gt; </div>
 </div>
 </div>
 <a id="afdc7f3bdffcb89b8e21c02d4d0e8c6ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afdc7f3bdffcb89b8e21c02d4d0e8c6ae">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[12/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afdc7f3bdffcb89b8e21c02d4d0e8c6ae">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[12/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37482,7 +37813,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="ac9a0f92c30c8a2be4c429f83d833c42c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac9a0f92c30c8a2be4c429f83d833c42c">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[13/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9a0f92c30c8a2be4c429f83d833c42c">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[13/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37522,7 +37853,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a839b76f44d00c8362c40941cf1e9a1b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a839b76f44d00c8362c40941cf1e9a1b5">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[14/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a839b76f44d00c8362c40941cf1e9a1b5">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[14/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37554,7 +37885,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="ae83d3ca3b2f077ad69bee0ba61ac59aa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae83d3ca3b2f077ad69bee0ba61ac59aa">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[15/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae83d3ca3b2f077ad69bee0ba61ac59aa">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[15/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37586,7 +37917,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="ab6d09b28cd3ce9e91cf981c2de4126dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6d09b28cd3ce9e91cf981c2de4126dc">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[16/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6d09b28cd3ce9e91cf981c2de4126dc">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[16/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37626,7 +37957,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="ae5d176724a237205d054a39acc689f8b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5d176724a237205d054a39acc689f8b">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[17/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5d176724a237205d054a39acc689f8b">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[17/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37666,7 +37997,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a1f3f65cc0bdb706ab67b78abd3b3a3dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f3f65cc0bdb706ab67b78abd3b3a3dc">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[18/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f3f65cc0bdb706ab67b78abd3b3a3dc">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[18/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37706,7 +38037,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a2f266e099ed934e3a3bbb69d4469b739"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f266e099ed934e3a3bbb69d4469b739">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[19/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f266e099ed934e3a3bbb69d4469b739">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[19/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37746,7 +38077,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="ab93399dd7ba8edfef205aaeaa1164fde"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab93399dd7ba8edfef205aaeaa1164fde">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[20/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab93399dd7ba8edfef205aaeaa1164fde">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[20/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37786,7 +38117,7 @@ template&lt;typename T , typename U &gt; </div>
 </div>
 </div>
 <a id="a849fc468381480a170b5ea31941ed525"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a849fc468381480a170b5ea31941ed525">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[21/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a849fc468381480a170b5ea31941ed525">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[21/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37818,7 +38149,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="af3950fddd8110d673dbc52ddcf45b29f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af3950fddd8110d673dbc52ddcf45b29f">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[22/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af3950fddd8110d673dbc52ddcf45b29f">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[22/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37858,7 +38189,7 @@ template&lt;typename Iterator1 , typename Iterator2 &gt; </div>
 </div>
 </div>
 <a id="ad8c15fe74900e08ed522329c778b3422"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8c15fe74900e08ed522329c778b3422">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[23/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8c15fe74900e08ed522329c778b3422">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[23/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37898,7 +38229,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="af021b9f7ab1f477a93d53a6eec591474"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af021b9f7ab1f477a93d53a6eec591474">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[24/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af021b9f7ab1f477a93d53a6eec591474">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[24/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37938,7 +38269,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a439d30cfda0ce971f4cfd513d27e8454"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a439d30cfda0ce971f4cfd513d27e8454">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[25/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a439d30cfda0ce971f4cfd513d27e8454">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[25/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -37978,7 +38309,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="ad0b8d0f1e05d343ff6562369aef4eed4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0b8d0f1e05d343ff6562369aef4eed4">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[26/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0b8d0f1e05d343ff6562369aef4eed4">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[26/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -38016,7 +38347,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a1d05d3986060f021eb553e3de06c2585"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d05d3986060f021eb553e3de06c2585">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[27/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d05d3986060f021eb553e3de06c2585">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[27/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -38054,7 +38385,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a62eef98297eae615e4d9d8636f12e62f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a62eef98297eae615e4d9d8636f12e62f">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[28/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a62eef98297eae615e4d9d8636f12e62f">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[28/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -38092,7 +38423,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a45a5f04f7e5cc74af2ce5233fc5365aa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45a5f04f7e5cc74af2ce5233fc5365aa">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[29/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a45a5f04f7e5cc74af2ce5233fc5365aa">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[29/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -38130,7 +38461,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a496f7fe61a0bd603c860b5ecaee19033"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a496f7fe61a0bd603c860b5ecaee19033">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[30/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a496f7fe61a0bd603c860b5ecaee19033">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[30/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -38168,7 +38499,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a75d5fec25a560fbb276b113f34455444"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a75d5fec25a560fbb276b113f34455444">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[31/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a75d5fec25a560fbb276b113f34455444">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[31/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -38206,7 +38537,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a709337b8bb0fbe68114f9dea66beec41"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a709337b8bb0fbe68114f9dea66beec41">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[32/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a709337b8bb0fbe68114f9dea66beec41">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[32/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -38244,7 +38575,7 @@ template&lt;typename T1 , typename D1 , typename T2 , typename D2 &gt; </div>
 </div>
 </div>
 <a id="a47d8a071804b48a6411cf197783d7523"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47d8a071804b48a6411cf197783d7523">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[33/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a47d8a071804b48a6411cf197783d7523">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[33/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -38284,7 +38615,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a0e6a657e92e79bdd836aa24d0a86c2fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e6a657e92e79bdd836aa24d0a86c2fa">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[34/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e6a657e92e79bdd836aa24d0a86c2fa">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[34/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -38322,7 +38653,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a05e233387fd1ddda2786a4049d5f604a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05e233387fd1ddda2786a4049d5f604a">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[35/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a05e233387fd1ddda2786a4049d5f604a">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[35/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -38360,7 +38691,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="aa96a23400604867c748fd00bd4eaf244"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa96a23400604867c748fd00bd4eaf244">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[36/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa96a23400604867c748fd00bd4eaf244">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[36/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -38398,7 +38729,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a931e60e9605283cc9546dde9cbdffa26"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a931e60e9605283cc9546dde9cbdffa26">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[37/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a931e60e9605283cc9546dde9cbdffa26">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[37/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -38436,7 +38767,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a43e06dcbb301ee97fbffdc599654406a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43e06dcbb301ee97fbffdc599654406a">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[38/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a43e06dcbb301ee97fbffdc599654406a">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[38/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -38474,7 +38805,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a67249939341b62d945081399c1cd805b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a67249939341b62d945081399c1cd805b">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[39/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a67249939341b62d945081399c1cd805b">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[39/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -38512,7 +38843,7 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 </div>
 </div>
 <a id="a231d614168f4c513e09afb93a302b34f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a231d614168f4c513e09afb93a302b34f">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[40/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a231d614168f4c513e09afb93a302b34f">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[40/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -38549,8 +38880,48 @@ template&lt;typename CharT , size_t Capacity&gt; </div>
 
 </div>
 </div>
+<a id="a778a4e89f5b0e0ca942a8289899065b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a778a4e89f5b0e0ca942a8289899065b7">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[41/42]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool daw::operator&gt;= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; T &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00297">297</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+
+</div>
+</div>
 <a id="a57b1a273822af86e5d342ede56038b3d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a57b1a273822af86e5d342ede56038b3d">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[41/41]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a57b1a273822af86e5d342ede56038b3d">&#9670;&nbsp;</a></span>operator&gt;=() <span class="overload">[42/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -50876,6 +51247,58 @@ template&lt;typename... Ts&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__tuple2_8h_source.html#l00101">101</a> of file <a class="el" href="daw__tuple2_8h_source.html">daw_tuple2.h</a>.</p>
+
+</div>
+</div>
+<a id="ad9828c948ec2a577b6369adf8683f2dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9828c948ec2a577b6369adf8683f2dd">&#9670;&nbsp;</a></span>is_unbounded_array_v</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool daw::is_unbounded_array_v = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="cpp__20_8h_source.html#l00033">33</a> of file <a class="el" href="cpp__20_8h_source.html">cpp_20.h</a>.</p>
+
+</div>
+</div>
+<a id="a86f6ab0d795de6e69f1c4f483fae3d34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86f6ab0d795de6e69f1c4f483fae3d34">&#9670;&nbsp;</a></span>is_unbounded_array_v&lt; T[]&gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool <a class="el" href="namespacedaw.html#ad9828c948ec2a577b6369adf8683f2dd">daw::is_unbounded_array_v</a>&lt; T[]&gt; = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="cpp__20_8h_source.html#l00036">36</a> of file <a class="el" href="cpp__20_8h_source.html">cpp_20.h</a>.</p>
 
 </div>
 </div>
