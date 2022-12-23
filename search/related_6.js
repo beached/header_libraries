@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['value_5fptr_4330',['value_ptr',['../structdaw_1_1value__ptr.html#a63e6f3049af75511f184415fe91eac20',1,'daw::value_ptr']]]
+  ['unique_5fptr_4333',['unique_ptr',['../structdaw_1_1unique__ptr.html#a0444cdb78e46474745edd3edca153793',1,'daw::unique_ptr']]]
 ];

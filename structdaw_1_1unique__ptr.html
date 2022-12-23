@@ -70,6 +70,7 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="structdaw_1_1unique__ptr-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">daw::unique_ptr&lt; T, Deleter &gt; Struct Template Reference</div>  </div>
@@ -83,7 +84,7 @@ Inheritance diagram for daw::unique_ptr&lt; T, Deleter &gt;:</div>
  <div class="center">
   <img src="structdaw_1_1unique__ptr.png" usemap="#daw::unique_5Fptr_3C_20T_2C_20Deleter_20_3E_map" alt=""/>
   <map id="daw::unique_5Fptr_3C_20T_2C_20Deleter_20_3E_map" name="daw::unique_5Fptr_3C_20T_2C_20Deleter_20_3E_map">
-<area href="structdaw_1_1unique__ptr__del_1_1default__deleter.html" alt="daw::unique_ptr_del::default_deleter&lt; T &gt;" shape="rect" coords="0,0,245,24"/>
+<area href="structdaw_1_1default__deleter.html" alt="daw::default_deleter&lt; T &gt;" shape="rect" coords="0,0,181,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -102,17 +103,23 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5751e85102b64f60086e0da531a4671c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a5751e85102b64f60086e0da531a4671c">unique_ptr</a> ()=default</td></tr>
 <tr class="separator:a5751e85102b64f60086e0da531a4671c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8aa5524809948cff749884ac209da693"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a8aa5524809948cff749884ac209da693">unique_ptr</a> (<a class="el" href="structdaw_1_1unique__ptr__del_1_1default__deleter.html#a34b64ffe3a27a56a6212908c043af36b">pointer</a> p) noexcept</td></tr>
+<tr class="memitem:a8aa5524809948cff749884ac209da693"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a8aa5524809948cff749884ac209da693">unique_ptr</a> (<a class="el" href="structdaw_1_1default__deleter.html#a2d5387c064d0b293512005cc31e07286">pointer</a> p) noexcept</td></tr>
 <tr class="separator:a8aa5524809948cff749884ac209da693"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0dfc920aefb3be125b3f6f21b35acec0"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a0dfc920aefb3be125b3f6f21b35acec0">unique_ptr</a> (std::nullptr_t) noexcept(std::is_nothrow_default_constructible_v&lt; <a class="el" href="structdaw_1_1unique__ptr__del_1_1default__deleter.html#a34b64ffe3a27a56a6212908c043af36b">pointer</a> &gt;)</td></tr>
+<tr class="memitem:a0dfc920aefb3be125b3f6f21b35acec0"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a0dfc920aefb3be125b3f6f21b35acec0">unique_ptr</a> (std::nullptr_t) noexcept(std::is_nothrow_default_constructible_v&lt; <a class="el" href="structdaw_1_1default__deleter.html#a2d5387c064d0b293512005cc31e07286">pointer</a> &gt;)</td></tr>
 <tr class="separator:a0dfc920aefb3be125b3f6f21b35acec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b8ac50de9eabb6a6108d8685366c378"><td class="memTemplParams" colspan="2">template&lt;typename U , std::enable_if_t&lt; unique_ptr_details::is_transferrable_child_type_v&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a9b8ac50de9eabb6a6108d8685366c378"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a9b8ac50de9eabb6a6108d8685366c378">unique_ptr</a> (U *p) noexcept</td></tr>
+<tr class="separator:a9b8ac50de9eabb6a6108d8685366c378"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14dc86b195859f8ab8a7689b43f7d3aa"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a14dc86b195859f8ab8a7689b43f7d3aa">unique_ptr</a> (<a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a> &amp;&amp;other) noexcept</td></tr>
 <tr class="separator:a14dc86b195859f8ab8a7689b43f7d3aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1459a9e34fda233b074b9957b950907"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#ac1459a9e34fda233b074b9957b950907">unique_ptr</a> (<a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a> const &amp;)=delete</td></tr>
 <tr class="separator:ac1459a9e34fda233b074b9957b950907"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a226b16cec9c685a17bfa658018c0f6db"><td class="memTemplParams" colspan="2">template&lt;typename U , typename D , std::enable_if_t&lt;(unique_ptr_details::is_transferrable_child_type_v&lt; T, U &gt; and std::is_nothrow_constructible_v&lt; Deleter, D &amp;&amp; &gt;), std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a226b16cec9c685a17bfa658018c0f6db"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a226b16cec9c685a17bfa658018c0f6db">unique_ptr</a> (<a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; U, D &gt; &amp;&amp;other) noexcept</td></tr>
+<tr class="separator:a226b16cec9c685a17bfa658018c0f6db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a392f2ec9ba54fb32e6a5454d98041b4c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="cpp__20_8h.html#a782ceb96627f85b15d3a19e7746f8967">DAW_CPP20_CX_ALLOC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a392f2ec9ba54fb32e6a5454d98041b4c">~unique_ptr</a> () noexcept(<a class="el" href="structdaw_1_1unique__ptr.html#a878cd959d80e0d6a4e2088c7f2a041a8">is_nothrow_resetable_v</a>)</td></tr>
 <tr class="separator:a392f2ec9ba54fb32e6a5454d98041b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a646a49d6af3002956a4eb4b9824345"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1unique__ptr__del_1_1default__deleter.html#a34b64ffe3a27a56a6212908c043af36b">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a7a646a49d6af3002956a4eb4b9824345">get</a> () const</td></tr>
+<tr class="memitem:a7a646a49d6af3002956a4eb4b9824345"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1default__deleter.html#a2d5387c064d0b293512005cc31e07286">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a7a646a49d6af3002956a4eb4b9824345">get</a> () const</td></tr>
 <tr class="separator:a7a646a49d6af3002956a4eb4b9824345"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb65a937b0ff10b09b610c7e13878527"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1unique__ptr.html#a283993c049f1b7d5a734ef4aa5bcf124">deleter_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#afb65a937b0ff10b09b610c7e13878527">get_deleter</a> ()</td></tr>
 <tr class="separator:afb65a937b0ff10b09b610c7e13878527"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,13 +129,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:adbd6840fa3a37f2dabc252fee4ea77c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0035246af10dc7a7d53f7932520403e1"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1unique__ptr.html#a3f7f34600a3605a49f3dff40b0c046ef">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a0035246af10dc7a7d53f7932520403e1">operator*</a> () const noexcept(<a class="el" href="structdaw_1_1unique__ptr.html#a305d28371132a8f494ef9b12c14c3b8a">is_nothrow_derefable_v</a>)</td></tr>
 <tr class="separator:a0035246af10dc7a7d53f7932520403e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a648f7b756f845a4ced92377719fbdaf8"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1unique__ptr__del_1_1default__deleter.html#a34b64ffe3a27a56a6212908c043af36b">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a648f7b756f845a4ced92377719fbdaf8">operator-&gt;</a> () const</td></tr>
+<tr class="memitem:a648f7b756f845a4ced92377719fbdaf8"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1default__deleter.html#a2d5387c064d0b293512005cc31e07286">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a648f7b756f845a4ced92377719fbdaf8">operator-&gt;</a> () const</td></tr>
 <tr class="separator:a648f7b756f845a4ced92377719fbdaf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99521e5053fb367c88e027a64936899c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a99521e5053fb367c88e027a64936899c">operator=</a> (<a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a> &amp;&amp;rhs) noexcept(<a class="el" href="structdaw_1_1unique__ptr.html#a878cd959d80e0d6a4e2088c7f2a041a8">is_nothrow_resetable_v</a>)</td></tr>
 <tr class="separator:a99521e5053fb367c88e027a64936899c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d8cf6f50a24b909ae31d06bb618c4f9"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a1d8cf6f50a24b909ae31d06bb618c4f9">operator=</a> (<a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a> const &amp;)=delete</td></tr>
 <tr class="separator:a1d8cf6f50a24b909ae31d06bb618c4f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37cda6fdae13cd26db374e09dcd86769"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1unique__ptr__del_1_1default__deleter.html#a34b64ffe3a27a56a6212908c043af36b">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a37cda6fdae13cd26db374e09dcd86769">release</a> () noexcept</td></tr>
+<tr class="memitem:aebe09bb51bc7c7ad68d230339a015363"><td class="memTemplParams" colspan="2">template&lt;typename U , std::enable_if_t&lt; unique_ptr_details::is_transferrable_child_type_v&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:aebe09bb51bc7c7ad68d230339a015363"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#aebe09bb51bc7c7ad68d230339a015363">operator=</a> (<a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; U, Deleter &gt; &amp;&amp;rhs) noexcept(<a class="el" href="structdaw_1_1unique__ptr.html#a878cd959d80e0d6a4e2088c7f2a041a8">is_nothrow_resetable_v</a>)</td></tr>
+<tr class="separator:aebe09bb51bc7c7ad68d230339a015363"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37cda6fdae13cd26db374e09dcd86769"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1default__deleter.html#a2d5387c064d0b293512005cc31e07286">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a37cda6fdae13cd26db374e09dcd86769">release</a> () noexcept</td></tr>
 <tr class="separator:a37cda6fdae13cd26db374e09dcd86769"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a372305d3442c912cc078f76093104eff"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a372305d3442c912cc078f76093104eff">reset</a> () noexcept(<a class="el" href="structdaw_1_1unique__ptr.html#a878cd959d80e0d6a4e2088c7f2a041a8">is_nothrow_resetable_v</a>)</td></tr>
 <tr class="separator:a372305d3442c912cc078f76093104eff"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -141,13 +151,19 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:a305d28371132a8f494ef9b12c14c3b8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a878cd959d80e0d6a4e2088c7f2a041a8"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a878cd959d80e0d6a4e2088c7f2a041a8">is_nothrow_resetable_v</a></td></tr>
 <tr class="separator:a878cd959d80e0d6a4e2088c7f2a041a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a0444cdb78e46474745edd3edca153793"><td class="memTemplParams" colspan="2">template&lt;typename , typename &gt; </td></tr>
+<tr class="memitem:a0444cdb78e46474745edd3edca153793"><td class="memTemplItemLeft" align="right" valign="top">class&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a0444cdb78e46474745edd3edca153793">unique_ptr</a></td></tr>
+<tr class="separator:a0444cdb78e46474745edd3edca153793"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename T, typename Deleter = unique_ptr_del::default_deleter&lt;T&gt;&gt;<br />
+<div class="textblock"><h3>template&lt;typename T, typename Deleter = default_deleter&lt;T&gt;&gt;<br />
 struct daw::unique_ptr&lt; T, Deleter &gt;</h3>
 
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00058">58</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00080">80</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a283993c049f1b7d5a734ef4aa5bcf124"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a283993c049f1b7d5a734ef4aa5bcf124">&#9670;&nbsp;</a></span>deleter_t</h2>
@@ -155,7 +171,7 @@ struct daw::unique_ptr&lt; T, Deleter &gt;</h3>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">using <a class="el" href="structdaw_1_1unique__ptr.html">daw::unique_ptr</a>&lt; T, Deleter &gt;::<a class="el" href="structdaw_1_1unique__ptr.html#a283993c049f1b7d5a734ef4aa5bcf124">deleter_t</a> =  Deleter</td>
@@ -163,7 +179,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00062">62</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00084">84</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -173,15 +189,15 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1unique__ptr.html">daw::unique_ptr</a>&lt; T, Deleter &gt;::<a class="el" href="structdaw_1_1unique__ptr__del_1_1default__deleter.html#a34b64ffe3a27a56a6212908c043af36b">pointer</a> =  <a class="el" href="namespacedaw_1_1unique__ptr__del.html#af366626490bbb643b01856644a3eee39">unique_ptr_del::pointer_type_t</a>&lt;<a class="el" href="structdaw_1_1unique__ptr.html#aa279adabde51357cccf7c9bc8419cfca">value_type</a>, Deleter&gt;</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1unique__ptr.html">daw::unique_ptr</a>&lt; T, Deleter &gt;::<a class="el" href="structdaw_1_1default__deleter.html#a2d5387c064d0b293512005cc31e07286">pointer</a> =  <a class="el" href="namespacedaw_1_1unique__ptr__del.html#af366626490bbb643b01856644a3eee39">unique_ptr_del::pointer_type_t</a>&lt;<a class="el" href="structdaw_1_1unique__ptr.html#aa279adabde51357cccf7c9bc8419cfca">value_type</a>, Deleter&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00060">60</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00082">82</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -191,7 +207,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">using <a class="el" href="structdaw_1_1unique__ptr.html">daw::unique_ptr</a>&lt; T, Deleter &gt;::<a class="el" href="structdaw_1_1unique__ptr.html#a3f7f34600a3605a49f3dff40b0c046ef">reference</a> =  std::add_lvalue_reference_t&lt;<a class="el" href="structdaw_1_1unique__ptr.html#aa279adabde51357cccf7c9bc8419cfca">value_type</a>&gt;</td>
@@ -199,7 +215,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00061">61</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00083">83</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -209,7 +225,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">using <a class="el" href="structdaw_1_1unique__ptr.html">daw::unique_ptr</a>&lt; T, Deleter &gt;::<a class="el" href="structdaw_1_1unique__ptr.html#aa279adabde51357cccf7c9bc8419cfca">value_type</a> =  T</td>
@@ -217,18 +233,18 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00059">59</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00081">81</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5751e85102b64f60086e0da531a4671c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5751e85102b64f60086e0da531a4671c">&#9670;&nbsp;</a></span>unique_ptr() <span class="overload">[1/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5751e85102b64f60086e0da531a4671c">&#9670;&nbsp;</a></span>unique_ptr() <span class="overload">[1/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -250,12 +266,12 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 </div>
 </div>
 <a id="a8aa5524809948cff749884ac209da693"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8aa5524809948cff749884ac209da693">&#9670;&nbsp;</a></span>unique_ptr() <span class="overload">[2/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8aa5524809948cff749884ac209da693">&#9670;&nbsp;</a></span>unique_ptr() <span class="overload">[2/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -263,7 +279,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
         <tr>
           <td class="memname">constexpr <a class="el" href="structdaw_1_1unique__ptr.html">daw::unique_ptr</a>&lt; T, Deleter &gt;::<a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1unique__ptr__del_1_1default__deleter.html#a34b64ffe3a27a56a6212908c043af36b">pointer</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1default__deleter.html#a2d5387c064d0b293512005cc31e07286">pointer</a>&#160;</td>
           <td class="paramname"><em>p</em></td><td>)</td>
           <td></td>
         </tr>
@@ -275,17 +291,49 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00076">76</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00101">101</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
-<a id="a0dfc920aefb3be125b3f6f21b35acec0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0dfc920aefb3be125b3f6f21b35acec0">&#9670;&nbsp;</a></span>unique_ptr() <span class="overload">[3/5]</span></h2>
+<a id="a9b8ac50de9eabb6a6108d8685366c378"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b8ac50de9eabb6a6108d8685366c378">&#9670;&nbsp;</a></span>unique_ptr() <span class="overload">[3/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename U , std::enable_if_t&lt; unique_ptr_details::is_transferrable_child_type_v&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1unique__ptr.html">daw::unique_ptr</a>&lt; T, Deleter &gt;::<a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a> </td>
+          <td>(</td>
+          <td class="paramtype">U *&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00108">108</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+
+</div>
+</div>
+<a id="a0dfc920aefb3be125b3f6f21b35acec0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0dfc920aefb3be125b3f6f21b35acec0">&#9670;&nbsp;</a></span>unique_ptr() <span class="overload">[4/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -305,17 +353,17 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00079">79</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00111">111</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
 <a id="a14dc86b195859f8ab8a7689b43f7d3aa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a14dc86b195859f8ab8a7689b43f7d3aa">&#9670;&nbsp;</a></span>unique_ptr() <span class="overload">[4/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a14dc86b195859f8ab8a7689b43f7d3aa">&#9670;&nbsp;</a></span>unique_ptr() <span class="overload">[5/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -335,17 +383,49 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00083">83</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00115">115</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
-<a id="ac1459a9e34fda233b074b9957b950907"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac1459a9e34fda233b074b9957b950907">&#9670;&nbsp;</a></span>unique_ptr() <span class="overload">[5/5]</span></h2>
+<a id="a226b16cec9c685a17bfa658018c0f6db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a226b16cec9c685a17bfa658018c0f6db">&#9670;&nbsp;</a></span>unique_ptr() <span class="overload">[6/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename U , typename D , std::enable_if_t&lt;(unique_ptr_details::is_transferrable_child_type_v&lt; T, U &gt; and std::is_nothrow_constructible_v&lt; Deleter, D &amp;&amp; &gt;), std::nullptr_t &gt;  = nullptr&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1unique__ptr.html">daw::unique_ptr</a>&lt; T, Deleter &gt;::<a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; U, D &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00123">123</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+
+</div>
+</div>
+<a id="ac1459a9e34fda233b074b9957b950907"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1459a9e34fda233b074b9957b950907">&#9670;&nbsp;</a></span>unique_ptr() <span class="overload">[7/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -373,7 +453,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -392,7 +472,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00098">98</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00152">152</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -403,13 +483,13 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1unique__ptr__del_1_1default__deleter.html#a34b64ffe3a27a56a6212908c043af36b">pointer</a> <a class="el" href="structdaw_1_1unique__ptr.html">daw::unique_ptr</a>&lt; T, Deleter &gt;::get </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1default__deleter.html#a2d5387c064d0b293512005cc31e07286">pointer</a> <a class="el" href="structdaw_1_1unique__ptr.html">daw::unique_ptr</a>&lt; T, Deleter &gt;::get </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -422,7 +502,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00120">120</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00174">174</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -432,7 +512,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -451,7 +531,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00106">106</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00160">160</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -461,7 +541,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -480,7 +560,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00110">110</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00164">164</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -490,7 +570,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -509,7 +589,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00132">132</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00186">186</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -519,7 +599,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -538,7 +618,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00128">128</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00182">182</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -548,13 +628,13 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1unique__ptr__del_1_1default__deleter.html#a34b64ffe3a27a56a6212908c043af36b">pointer</a> <a class="el" href="structdaw_1_1unique__ptr.html">daw::unique_ptr</a>&lt; T, Deleter &gt;::operator-&gt; </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1default__deleter.html#a2d5387c064d0b293512005cc31e07286">pointer</a> <a class="el" href="structdaw_1_1unique__ptr.html">daw::unique_ptr</a>&lt; T, Deleter &gt;::operator-&gt; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -567,17 +647,17 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00124">124</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00178">178</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
 <a id="a99521e5053fb367c88e027a64936899c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99521e5053fb367c88e027a64936899c">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a99521e5053fb367c88e027a64936899c">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -597,17 +677,17 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00087">87</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00128">128</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
 <a id="a1d8cf6f50a24b909ae31d06bb618c4f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d8cf6f50a24b909ae31d06bb618c4f9">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d8cf6f50a24b909ae31d06bb618c4f9">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -629,19 +709,51 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 
 </div>
 </div>
+<a id="aebe09bb51bc7c7ad68d230339a015363"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebe09bb51bc7c7ad68d230339a015363">&#9670;&nbsp;</a></span>operator=() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename U , std::enable_if_t&lt; unique_ptr_details::is_transferrable_child_type_v&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&amp; <a class="el" href="structdaw_1_1unique__ptr.html">daw::unique_ptr</a>&lt; T, Deleter &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; U, Deleter &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00140">140</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+
+</div>
+</div>
 <a id="a37cda6fdae13cd26db374e09dcd86769"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a37cda6fdae13cd26db374e09dcd86769">&#9670;&nbsp;</a></span>release()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1unique__ptr__del_1_1default__deleter.html#a34b64ffe3a27a56a6212908c043af36b">pointer</a> <a class="el" href="structdaw_1_1unique__ptr.html">daw::unique_ptr</a>&lt; T, Deleter &gt;::release </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1default__deleter.html#a2d5387c064d0b293512005cc31e07286">pointer</a> <a class="el" href="structdaw_1_1unique__ptr.html">daw::unique_ptr</a>&lt; T, Deleter &gt;::release </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -654,7 +766,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00102">102</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00156">156</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -664,7 +776,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -683,7 +795,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00114">114</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00168">168</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -693,7 +805,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -713,7 +825,36 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00136">136</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00190">190</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a0444cdb78e46474745edd3edca153793"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0444cdb78e46474745edd3edca153793">&#9670;&nbsp;</a></span>unique_ptr</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename , typename &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00095">95</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -724,7 +865,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -742,7 +883,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">      noexcept( *std::declval&lt;pointer&gt;( ) )</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00063">63</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00085">85</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -752,7 +893,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;T&gt;&gt; </div>
+template&lt;typename T , typename Deleter  = default_deleter&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -770,7 +911,7 @@ template&lt;typename T , typename Deleter  = unique_ptr_del::default_deleter&lt;
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">      std::is_nothrow_invocable_v&lt;Deleter, pointer&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00065">65</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00087">87</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
