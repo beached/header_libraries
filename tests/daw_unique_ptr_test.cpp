@@ -10,7 +10,14 @@
 #endif
 
 #include <cassert>
+#include <memory>
 #include <daw/daw_unique_ptr.h>
+
+struct Base {
+	virtual ~Base( ) = default;
+};
+
+struct Child : Base {};
 
 int main( ) {
 	auto a1 = daw::make_unique<int>( 5 );
@@ -43,4 +50,7 @@ int main( ) {
 	assert( *d == 5 );
 	a2.reset( );
 	assert( not a2 );
+
+	std::default_delete<int>{};
+	daw::unique_ptr<Base> my_base = daw::make_unique<Child>();
 }

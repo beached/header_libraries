@@ -18,28 +18,50 @@
 #include <type_traits>
 
 namespace daw {
+	namespace unique_ptr_details {
+		template<typename T, typename U>
+		inline constexpr bool is_transferrable_child_type_v =
+		  not std::is_same_v<T, U> and std::has_virtual_destructor_v<T> and
+		  std::is_base_of_v<T, U>;
+	}
+
+	template<typename T>
+	struct default_deleter {
+		using pointer = T *;
+
+		explicit default_deleter( ) = default;
+		~default_deleter( ) noexcept = default;
+		default_deleter( default_deleter const & ) noexcept = default;
+		default_deleter( default_deleter && ) noexcept = default;
+		default_deleter &operator=( default_deleter const & ) noexcept = default;
+		default_deleter &operator=( default_deleter && ) noexcept = default;
+
+		template<
+		  typename U,
+		  std::enable_if_t<unique_ptr_details::is_transferrable_child_type_v<T, U>,
+		                   std::nullptr_t> = nullptr>
+		constexpr default_deleter( default_deleter<U> const & ) noexcept {}
+
+		DAW_CPP20_CX_ALLOC void operator( )( pointer p ) const
+		  noexcept( std::is_nothrow_destructible_v<T> ) {
+			static_assert( sizeof( T ) > 0,
+			               "One cannot delete a pointer to an incomplete type" );
+			delete p;
+		}
+	};
+
+	template<typename T>
+	struct default_deleter<T[]> {
+		using pointer = T *;
+		explicit default_deleter( ) = default;
+
+		DAW_CPP20_CX_ALLOC void operator( )( pointer p ) const
+		  noexcept( std::is_nothrow_destructible_v<T> ) {
+			delete[] p;
+		}
+	};
+
 	namespace unique_ptr_del {
-		template<typename T>
-		struct default_deleter {
-			using pointer = T *;
-			explicit default_deleter( ) = default;
-			DAW_CPP20_CX_ALLOC void operator( )( pointer p ) const
-			  noexcept( std::is_nothrow_destructible_v<T> ) {
-				delete p;
-			}
-		};
-
-		template<typename T>
-		struct default_deleter<T[]> {
-			using pointer = T *;
-			explicit default_deleter( ) = default;
-
-			DAW_CPP20_CX_ALLOC void operator( )( pointer p ) const
-			  noexcept( std::is_nothrow_destructible_v<T> ) {
-				delete[] p;
-			}
-		};
-
 		template<typename T, typename, typename = void>
 		struct pointer_type {
 			using type = T *;
@@ -54,7 +76,7 @@ namespace daw {
 		using pointer_type_t = typename pointer_type<T, Deleter>::type;
 	} // namespace unique_ptr_del
 
-	template<typename T, typename Deleter = unique_ptr_del::default_deleter<T>>
+	template<typename T, typename Deleter = default_deleter<T>>
 	struct unique_ptr : private Deleter {
 		using value_type = T;
 		using pointer = unique_ptr_del::pointer_type_t<value_type, Deleter>;
@@ -69,11 +91,21 @@ namespace daw {
 		               "T[3], use T[] instead" );
 
 	private:
+		template<typename, typename>
+		friend class unique_ptr;
+
 		pointer m_ptr = pointer{ };
 
 	public:
 		unique_ptr( ) = default;
 		constexpr unique_ptr( pointer p ) noexcept
+		  : m_ptr( p ) {}
+
+		template<
+		  typename U,
+		  std::enable_if_t<unique_ptr_details::is_transferrable_child_type_v<T, U>,
+		                   std::nullptr_t> = nullptr>
+		constexpr unique_ptr( U *p ) noexcept
 		  : m_ptr( p ) {}
 
 		constexpr unique_ptr( std::nullptr_t ) noexcept(
@@ -83,8 +115,30 @@ namespace daw {
 		constexpr unique_ptr( unique_ptr &&other ) noexcept
 		  : m_ptr( other.release( ) ) {}
 
+		template<typename U, typename D,
+		         std::enable_if_t<
+		           (unique_ptr_details::is_transferrable_child_type_v<T, U> and
+		            std::is_nothrow_constructible_v<Deleter, D &&>),
+		           std::nullptr_t> = nullptr>
+		constexpr unique_ptr( unique_ptr<U, D> &&other ) noexcept
+		  : Deleter( static_cast<D &&>( other ) )
+		  , m_ptr( other.release( ) ) {}
+
 		constexpr unique_ptr &
 		operator=( unique_ptr &&rhs ) noexcept( is_nothrow_resetable_v ) {
+			if( this != &rhs ) {
+				reset( );
+				m_ptr = rhs.release( );
+			}
+			return *this;
+		}
+
+		template<
+		  typename U,
+		  std::enable_if_t<unique_ptr_details::is_transferrable_child_type_v<T, U>,
+		                   std::nullptr_t> = nullptr>
+		constexpr unique_ptr &operator=( unique_ptr<U, Deleter> &&rhs ) noexcept(
+		  is_nothrow_resetable_v ) {
 			if( this != &rhs ) {
 				reset( );
 				m_ptr = rhs.release( );
@@ -158,6 +212,13 @@ namespace daw {
 		constexpr unique_ptr( pointer p ) noexcept
 		  : m_ptr( p ) {}
 
+		template<
+		  typename U,
+		  std::enable_if_t<unique_ptr_details::is_transferrable_child_type_v<T, U>,
+		                   std::nullptr_t> = nullptr>
+		constexpr unique_ptr( U *p ) noexcept
+		  : m_ptr( p ) {}
+
 		constexpr unique_ptr( std::nullptr_t ) noexcept(
 		  std::is_nothrow_default_constructible_v<pointer> )
 		  : m_ptr{ } {}
@@ -165,8 +226,28 @@ namespace daw {
 		constexpr unique_ptr( unique_ptr &&other ) noexcept
 		  : m_ptr( other.release( ) ) {}
 
+		template<
+		  typename U,
+		  std::enable_if_t<unique_ptr_details::is_transferrable_child_type_v<T, U>,
+		                   std::nullptr_t> = nullptr>
+		constexpr unique_ptr( unique_ptr<U, Deleter> &&other ) noexcept
+		  : m_ptr( other.release( ) ) {}
+
 		constexpr unique_ptr &
 		operator=( unique_ptr &&rhs ) noexcept( is_nothrow_resetable_v ) {
+			if( this != &rhs ) {
+				reset( );
+				m_ptr = rhs.release( );
+			}
+			return *this;
+		}
+
+		template<
+		  typename U,
+		  std::enable_if_t<unique_ptr_details::is_transferrable_child_type_v<T, U>,
+		                   std::nullptr_t> = nullptr>
+		constexpr unique_ptr &operator=( unique_ptr<U, Deleter> &&rhs ) noexcept(
+		  is_nothrow_resetable_v ) {
 			if( this != &rhs ) {
 				reset( );
 				m_ptr = rhs.release( );
