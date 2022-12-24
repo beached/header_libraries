@@ -24,8 +24,7 @@ namespace daw {
 	struct contiguous_view;
 
 	template<typename T, bool ExplicitConv>
-	requires( not std::is_const_v<T> ) //
-	  struct contiguous_view<T, ExplicitConv> {
+	requires( not std::is_const_v<T> ) struct contiguous_view<T, ExplicitConv> {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
@@ -63,9 +62,8 @@ namespace daw {
 		  , m_last( first + sz ) {}
 
 		template<ContiguousContainerOf<value_type> Container>
-		requires( not_me<contiguous_view, Container> ) //
-		  explicit( ExplicitConv ) constexpr contiguous_view(
-		    Container &&c ) noexcept
+		requires( not_cvref_of<contiguous_view, Container> ) explicit(
+		  ExplicitConv ) constexpr contiguous_view( Container &&c ) noexcept
 		  : m_first( std::data( c ) )
 		  , m_last( daw::data_end( c ) ) {}
 
@@ -154,13 +152,33 @@ namespace daw {
 
 		[[nodiscard]] constexpr reference operator[]( size_type index ) noexcept {
 			assert( static_cast<size_type>( m_last - m_first ) >= index );
-			return m_first + index;
+			return *( m_first + index );
 		}
 
 		[[nodiscard]] constexpr const_reference
 		operator[]( size_type index ) const noexcept {
 			assert( static_cast<size_type>( m_last - m_first ) >= index );
-			return m_first + index;
+			return *( m_first + index );
+		}
+
+		[[nodiscard]] constexpr reference front( ) noexcept {
+			assert( not empty( ) );
+			return *m_first;
+		}
+
+		[[nodiscard]] constexpr const_reference front( ) const noexcept {
+			assert( not empty( ) );
+			return *m_first;
+		}
+
+		[[nodiscard]] constexpr reference back( ) noexcept {
+			assert( not empty( ) );
+			return *( m_last - 1 );
+		}
+
+		[[nodiscard]] constexpr const_reference back( ) const noexcept {
+			assert( not empty( ) );
+			return *( m_last - 1 );
 		}
 
 	private:
@@ -203,29 +221,16 @@ namespace daw {
 			--m_last;
 		}
 
-		constexpr value_type
-		pop_front( ) noexcept( std::is_nothrow_move_constructible_v<value_type> ) {
+		constexpr value_type pop_front( ) noexcept
+		  requires( std::is_trivially_copyable_v<value_type> ) {
 			assert( not empty( ) );
-			if constexpr( std::is_nothrow_move_constructible_v<value_type> ) {
-				return std::move( *m_first++ );
-			} else {
-				auto result = std::move( *m_first );
-				++m_first;
-				return result;
-			}
+			return *m_first++;
 		}
 
-		constexpr value_type
-		pop_back( ) noexcept( std::is_nothrow_move_constructible_v<value_type> ) {
+		constexpr value_type pop_back( ) noexcept
+		  requires( std::is_trivially_copyable_v<value_type> ) {
 			assert( not empty( ) );
-			if constexpr( std::is_nothrow_move_constructible_v<value_type> ) {
-				return std::move( *( --m_last ) );
-			} else {
-				auto pos = m_last - 1;
-				auto result = std::move( *pos );
-				m_last = pos;
-				return result;
-			}
+			return *( --m_last );
 		}
 
 		[[nodiscard]] friend constexpr bool operator==( contiguous_view const &x,
@@ -263,8 +268,7 @@ namespace daw {
 	};
 
 	template<typename T, bool ExplicitConv>
-	requires( std::is_const_v<T> ) //
-	  struct contiguous_view<T, ExplicitConv> {
+	requires( std::is_const_v<T> ) struct contiguous_view<T, ExplicitConv> {
 
 		using value_type = T;
 		using reference = value_type &;
@@ -299,9 +303,8 @@ namespace daw {
 		  , m_last( first + sz ) {}
 
 		template<ContiguousContainerOf<value_type> Container>
-		requires( not_me<contiguous_view, Container> ) //
-		  explicit( ExplicitConv ) constexpr contiguous_view(
-		    Container &&c ) noexcept
+		requires( not_cvref_of<contiguous_view, Container> ) explicit(
+		  ExplicitConv ) constexpr contiguous_view( Container &&c ) noexcept
 		  : m_first( std::data( c ) )
 		  , m_last( daw::data_end( c ) ) {}
 
@@ -401,14 +404,14 @@ namespace daw {
 			if( DAW_UNLIKELY( index >= size( ) ) ) {
 				throw_out_of_range( );
 			}
-			return m_first + index;
+			return *( m_first + index );
 		}
 
 		[[nodiscard]] constexpr const_reference at( size_type index ) const {
 			if( DAW_UNLIKELY( index >= size( ) ) ) {
 				throw_out_of_range( );
 			}
-			return m_first + index;
+			return *( m_first + index );
 		}
 
 		[[nodiscard]] friend constexpr bool operator==( contiguous_view const &x,
