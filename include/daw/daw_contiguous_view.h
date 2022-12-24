@@ -14,6 +14,7 @@
 #include "wrap_iter.h"
 
 #include <algorithm>
+#include <cassert>
 #include <cstddef>
 #include <iterator>
 #include <stdexcept>
@@ -23,8 +24,8 @@ namespace daw {
 	struct contiguous_view;
 
 	template<typename T, bool ExplicitConv>
-	  requires( not std::is_const_v<T> ) //
-	struct contiguous_view<T, ExplicitConv> {
+	requires( not std::is_const_v<T> ) //
+	  struct contiguous_view<T, ExplicitConv> {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
@@ -62,8 +63,9 @@ namespace daw {
 		  , m_last( first + sz ) {}
 
 		template<ContiguousContainerOf<value_type> Container>
-		  requires( not_me<contiguous_view, Container> ) //
-		explicit( ExplicitConv ) constexpr contiguous_view( Container &&c ) noexcept
+		requires( not_me<contiguous_view, Container> ) //
+		  explicit( ExplicitConv ) constexpr contiguous_view(
+		    Container &&c ) noexcept
 		  : m_first( std::data( c ) )
 		  , m_last( daw::data_end( c ) ) {}
 
@@ -72,8 +74,8 @@ namespace daw {
 			return Container{ data( ), size( ) };
 		}
 
-		constexpr contiguous_view subspan( std::size_t offset,
-		                                   std::size_t count = std::size_t(-1) ) const {
+		constexpr contiguous_view
+		subspan( std::size_t offset, std::size_t count = std::size_t( -1 ) ) const {
 			auto sz = std::min( count, size( ) - std::min( size( ), offset ) );
 			return contiguous_view( data( ) + offset, data( ) + sz );
 		}
@@ -151,11 +153,13 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr reference operator[]( size_type index ) noexcept {
+			assert( static_cast<size_type>( m_last - m_first ) >= index );
 			return m_first + index;
 		}
 
 		[[nodiscard]] constexpr const_reference
 		operator[]( size_type index ) const noexcept {
+			assert( static_cast<size_type>( m_last - m_first ) >= index );
 			return m_first + index;
 		}
 
@@ -177,6 +181,26 @@ namespace daw {
 				throw_out_of_range( );
 			}
 			return m_first + index;
+		}
+
+		constexpr void remove_prefix( std::size_t count ) noexcept {
+			assert( static_cast<size_type>( m_last - m_first ) >= count );
+			m_first += count;
+		}
+
+		constexpr void remove_prefix( ) noexcept {
+			assert( static_cast<size_type>( m_last - m_first ) >= 1 );
+			++m_first;
+		}
+
+		constexpr void remove_suffix( std::size_t count ) noexcept {
+			assert( static_cast<size_type>( m_last - m_first ) >= count );
+			m_last -= count;
+		}
+
+		constexpr void remove_suffix( ) noexcept {
+			assert( static_cast<size_type>( m_last - m_first ) >= 1 );
+			--m_first;
 		}
 
 		[[nodiscard]] friend constexpr bool operator==( contiguous_view const &x,
@@ -214,8 +238,8 @@ namespace daw {
 	};
 
 	template<typename T, bool ExplicitConv>
-	  requires( std::is_const_v<T> ) //
-	struct contiguous_view<T, ExplicitConv> {
+	requires( std::is_const_v<T> ) //
+	  struct contiguous_view<T, ExplicitConv> {
 
 		using value_type = T;
 		using reference = value_type &;
@@ -250,8 +274,9 @@ namespace daw {
 		  , m_last( first + sz ) {}
 
 		template<ContiguousContainerOf<value_type> Container>
-		  requires( not_me<contiguous_view, Container> ) //
-		explicit( ExplicitConv ) constexpr contiguous_view( Container &&c ) noexcept
+		requires( not_me<contiguous_view, Container> ) //
+		  explicit( ExplicitConv ) constexpr contiguous_view(
+		    Container &&c ) noexcept
 		  : m_first( std::data( c ) )
 		  , m_last( daw::data_end( c ) ) {}
 

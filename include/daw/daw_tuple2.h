@@ -22,7 +22,7 @@
 
 namespace daw {
 	namespace tuple2_impl {
-		DAW_ATTRIB_INLINE DAW_CONSTEVAL std::size_t
+		DAW_ATTRIB_INLINE constexpr std::size_t
 		encode_location( std::size_t outter, std::size_t inner ) {
 			constexpr std::size_t half_sz = ( sizeof( std::size_t ) * 8U ) / 2U;
 			return ( outter << half_sz ) | inner;
