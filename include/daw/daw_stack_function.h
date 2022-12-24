@@ -181,13 +181,20 @@ namespace daw {
 				}
 			}
 
-			[[nodiscard]] bool empty( ) const override {
-				if constexpr( func_impl::has_empty_member_v<Func> ) {
-					return m_func.empty( );
-				} else if constexpr( func_impl::is_boolable_v<Func> ) {
-					return  not static_cast<bool>( m_func );
+		private:
+			template<typename F>
+			[[nodiscard]] static constexpr bool empty_impl( F &&f ) {
+				if constexpr( func_impl::has_empty_member_v<F> ) {
+					return f.empty( );
+				} else if constexpr( func_impl::is_boolable_v<F> ) {
+					return not static_cast<bool>( f );
 				}
 				return false;
+			}
+
+		public:
+			[[nodiscard]] bool empty( ) const override {
+				return empty_impl( m_func );
 			}
 		};
 
