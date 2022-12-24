@@ -154,13 +154,13 @@ namespace daw {
 
 		[[nodiscard]] constexpr reference operator[]( size_type index ) noexcept {
 			assert( static_cast<size_type>( m_last - m_first ) >= index );
-			return m_first + index;
+			return *(m_first + index);
 		}
 
 		[[nodiscard]] constexpr const_reference
 		operator[]( size_type index ) const noexcept {
 			assert( static_cast<size_type>( m_last - m_first ) >= index );
-			return m_first + index;
+			return *(m_first + index);
 		}
 
 	private:
@@ -401,14 +401,14 @@ namespace daw {
 			if( DAW_UNLIKELY( index >= size( ) ) ) {
 				throw_out_of_range( );
 			}
-			return m_first + index;
+			return *(m_first + index);
 		}
 
 		[[nodiscard]] constexpr const_reference at( size_type index ) const {
 			if( DAW_UNLIKELY( index >= size( ) ) ) {
 				throw_out_of_range( );
 			}
-			return m_first + index;
+			return *(m_first + index);
 		}
 
 		[[nodiscard]] friend constexpr bool operator==( contiguous_view const &x,
