@@ -200,7 +200,32 @@ namespace daw {
 
 		constexpr void remove_suffix( ) noexcept {
 			assert( static_cast<size_type>( m_last - m_first ) >= 1 );
-			--m_first;
+			--m_last;
+		}
+
+		constexpr value_type
+		pop_front( ) noexcept( std::is_nothrow_move_constructible_v<value_type> ) {
+			assert( not empty( ) );
+			if constexpr( std::is_nothrow_move_constructible_v<value_type> ) {
+				return std::move( *m_first++ );
+			} else {
+				auto result = std::move( *m_first );
+				++m_first;
+				return result;
+			}
+		}
+
+		constexpr value_type
+		pop_back( ) noexcept( std::is_nothrow_move_constructible_v<value_type> ) {
+			assert( not empty( ) );
+			if constexpr( std::is_nothrow_move_constructible_v<value_type> ) {
+				return std::move( *( --m_last ) );
+			} else {
+				auto pos = m_last - 1;
+				auto result = std::move( *pos );
+				m_last = pos;
+				return result;
+			}
 		}
 
 		[[nodiscard]] friend constexpr bool operator==( contiguous_view const &x,
