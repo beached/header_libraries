@@ -58,6 +58,7 @@ namespace daw {
 		[[deprecated( "Use not_cvref_of" )]] inline constexpr bool not_me_v =
 		  not same_as<Class, std::remove_cvref_t<Arg>>;
 	}
+
 	template<typename Arg, typename Class>
 	concept not_me = deprecated::not_me_v<Arg, Class>;
 
