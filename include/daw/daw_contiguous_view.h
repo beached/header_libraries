@@ -11,6 +11,7 @@
 #include "daw_concepts.h"
 #include "daw_consteval.h"
 #include "daw_utility.h"
+#include "impl/daw_view_tags.h"
 #include "wrap_iter.h"
 
 #include <algorithm>
@@ -202,35 +203,163 @@ namespace daw {
 		}
 
 		constexpr void remove_prefix( std::size_t count ) noexcept {
+			count = ( std::min )( count, size( ) );
+			m_first += count;
+		}
+
+		constexpr void remove_prefix( std::size_t count,
+		                              dont_clip_to_bounds_t ) noexcept {
 			assert( static_cast<size_type>( m_last - m_first ) >= count );
 			m_first += count;
 		}
 
 		constexpr void remove_prefix( ) noexcept {
-			assert( static_cast<size_type>( m_last - m_first ) >= 1 );
-			++m_first;
+			remove_prefix( 1 );
 		}
 
 		constexpr void remove_suffix( std::size_t count ) noexcept {
+			count = ( std::min )( count, size( ) );
+			m_last -= count;
+		}
+
+		constexpr void remove_suffix( std::size_t count,
+		                              dont_clip_to_bounds_t ) noexcept {
 			assert( static_cast<size_type>( m_last - m_first ) >= count );
 			m_last -= count;
 		}
 
 		constexpr void remove_suffix( ) noexcept {
-			assert( static_cast<size_type>( m_last - m_first ) >= 1 );
-			--m_last;
+			remove_suffix( 1 );
 		}
 
-		constexpr value_type pop_front( ) noexcept
+		[[nodiscard]] constexpr value_type pop_front( ) noexcept
 		  requires( std::is_trivially_copyable_v<value_type> ) {
 			assert( not empty( ) );
 			return *m_first++;
 		}
 
-		constexpr value_type pop_back( ) noexcept
+		[[nodiscard]] constexpr value_type pop_back( ) noexcept
 		  requires( std::is_trivially_copyable_v<value_type> ) {
 			assert( not empty( ) );
 			return *( --m_last );
+		}
+
+	private:
+		[[nodiscard]] constexpr pointer
+		find_raw( const_reference needle ) noexcept {
+			auto pos = m_first;
+			while( pos != m_last and *pos != needle ) {
+				++pos;
+			}
+			return pos;
+		}
+
+		[[nodiscard]] constexpr const_pointer
+		find_raw( const_reference needle ) const noexcept {
+			auto pos = m_first;
+			while( pos != m_last and *pos != needle ) {
+				++pos;
+			}
+			return pos;
+		}
+
+		[[nodiscard]] constexpr pointer
+		find_first_not_of_raw( const_reference needle ) noexcept {
+			auto pos = m_first;
+			while( pos != m_last and *pos == needle ) {
+				++pos;
+			}
+			return pos;
+		}
+
+		[[nodiscard]] constexpr const_pointer
+		find_first_not_of_raw( const_reference needle ) const noexcept {
+			auto pos = m_first;
+			while( pos != m_last and *pos == needle ) {
+				++pos;
+			}
+			return pos;
+		}
+
+	public:
+		[[nodiscard]] constexpr iterator find( const_reference needle ) noexcept {
+			return iterator{ find_raw( needle ) };
+		}
+
+		[[nodiscard]] constexpr const_iterator
+		find( const_reference needle ) const noexcept {
+			return const_iterator{ find_raw( needle ) };
+		}
+
+		[[nodiscard]] constexpr iterator
+		find_first_not_of( const_reference needle ) noexcept {
+			return iterator{ find_first_not_of_raw( needle ) };
+		}
+
+		[[nodiscard]] constexpr const_iterator
+		find_first_not_of( const_reference needle ) const noexcept {
+			return const_iterator{ find_first_not_of_raw( needle ) };
+		}
+
+		constexpr contiguous_view &remove_prefix_until( const_reference needle,
+		                                                discard_t ) noexcept {
+			auto pos = find_raw( needle );
+			remove_prefix( ( pos - m_first ) + 1 );
+			return *this;
+		}
+
+		constexpr contiguous_view &
+		remove_prefix_until( const_reference needle ) noexcept {
+
+			auto pos = find_raw( needle );
+			remove_prefix( pos - m_first, dont_clip_to_bounds );
+			return *this;
+		}
+
+		constexpr contiguous_view &remove_prefix_while( const_reference needle,
+		                                                discard_t ) noexcept {
+			auto pos = find_first_not_of_raw( needle );
+			remove_prefix( ( pos - m_first ) + 1 );
+			return *this;
+		}
+
+		constexpr contiguous_view &
+		remove_prefix_while( const_reference needle ) noexcept {
+			auto pos = find_first_not_of_raw( needle );
+			remove_prefix( pos - m_first, dont_clip_to_bounds );
+			return *this;
+		}
+
+		[[nodiscard]] constexpr contiguous_view
+		pop_front_until( const_reference needle ) noexcept {
+			auto const f = m_first;
+			remove_prefix_until( needle );
+			return contiguous_view( f, m_first );
+		}
+
+		[[nodiscard]] constexpr contiguous_view
+		pop_front_until( const_reference needle, discard_t ) noexcept {
+			auto const f = m_first;
+			remove_prefix_until( needle );
+			auto result = contiguous_view( f, m_first );
+			remove_prefix( );
+			return result;
+		}
+
+		[[nodiscard]] constexpr contiguous_view
+		pop_front_while( const_reference needle ) noexcept {
+			auto const f = m_first;
+			remove_prefix_while( needle );
+			return contiguous_view( f, m_first );
+		}
+
+		[[nodiscard]] constexpr contiguous_view
+		pop_front_while( const_reference needle, discard_t ) noexcept {
+			auto const f = m_first;
+			remove_prefix_while( needle );
+			auto result = contiguous_view( f, m_first );
+			remove_prefix( );
+			return result;
 		}
 
 		[[nodiscard]] friend constexpr bool operator==( contiguous_view const &x,

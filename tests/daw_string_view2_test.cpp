@@ -1431,14 +1431,14 @@ namespace daw {
 
 	void daw_remove_prefix_until_test_002( ) {
 		daw::sv2::string_view sv = "0123456789";
-		sv.remove_prefix_until( '5', daw::sv2::nodiscard );
+		sv.remove_prefix_until( '5', daw::nodiscard );
 		daw_expecting( sv.size( ), 5U );
 		daw_expecting( sv.front( ), '5' );
 	}
 
 	void daw_remove_prefix_until_test_003( ) {
 		daw::sv2::string_view sv = "This is a test";
-		sv.remove_prefix_until( daw::sv2::any_of<' ', '\n', '\t'> );
+		sv.remove_prefix_until( daw::any_of<' ', '\n', '\t'> );
 		daw_expecting( sv.size( ), 9U );
 		daw_expecting( sv, "is a test" );
 	}

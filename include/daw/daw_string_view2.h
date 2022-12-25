@@ -25,6 +25,7 @@
 #include "daw_string_view_version.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
+#include "impl/daw_view_tags.h"
 #include "iterator/daw_back_inserter.h"
 #include "iterator/daw_iterator.h"
 
@@ -112,62 +113,6 @@ namespace daw {
 	inline
 #endif
 	  namespace sv2 {
-		/// @brief Tag type for specifying that the searched for term/item is not
-		/// to be removed from string_view
-		struct nodiscard_t {};
-		inline constexpr auto nodiscard = nodiscard_t{ };
-
-		struct dont_clip_to_bounds_t {};
-		inline constexpr auto dont_clip_to_bounds = dont_clip_to_bounds_t{ };
-
-		/// @brief A predicate type used in the find based routine to return true
-		/// when the element is one of the specified characters
-		template<typename CharT, CharT... needles>
-		struct any_of_t {
-			inline constexpr bool operator( )( CharT c ) const {
-				return ( ( c == needles ) | ... );
-			}
-		};
-
-		/// @brief A predicate value used in the find based routine to return true
-		/// when the element is one of the specified characters
-		template<auto needle, auto... needles>
-		inline static constexpr any_of_t<decltype( needle ), needle, needles...>
-		  any_of{ };
-
-		/// @brief Predicate type that stores the previous element and if it was an
-		/// '\' escape character, it will return false, otherwise returns true if
-		/// the current character matches one of the needles.  Because this is a
-		/// stateful predicate, it cannot be reused
-		template<auto needle, auto... needles>
-		struct escaped_any_of {
-			using CharT = decltype( needle );
-			static_assert( not( needle == CharT{ '\\' } or
-			                    ( ( needles == CharT{ '\\' } ) or ... ) ),
-			               "Escape characters cannot be searched for" );
-			CharT last_char = 0;
-			inline constexpr bool operator( )( CharT c ) {
-				if( last_char == CharT( '\\' ) ) {
-					last_char = 0;
-					return false;
-				}
-				last_char = c;
-				return needle == c or ( ( c == needles ) or ... );
-			}
-		};
-
-		/// @brief A predicate type used in the find based routine to return true
-		/// when the element is none of the specified characters
-		template<typename CharT, CharT... needles>
-		struct none_of_t {
-			inline constexpr bool operator( )( CharT c ) const {
-				return ( ( c != needles ) & ... );
-			}
-		};
-
-		template<auto needle, auto... needles>
-		inline static constexpr none_of_t<decltype( needle ), needle, needles...>
-		  none_of{ };
 
 		namespace sv2_details {
 			template<typename InputIt, typename ForwardIt, typename BinaryPredicate>
@@ -1405,8 +1350,7 @@ namespace daw {
 			/// removed
 			constexpr basic_string_view &remove_prefix_until( CharT where ) {
 				auto pos = find( where );
-				remove_prefix( pos );
-				remove_prefix( 1 );
+				remove_prefix( pos + 1 );
 				return *this;
 			}
 
