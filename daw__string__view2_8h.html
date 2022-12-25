@@ -70,8 +70,7 @@ $(function() {
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a> &#124;
-<a href="#func-members">Functions</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">daw_string_view2.h File Reference</div>  </div>
 </div><!--header-->
@@ -92,6 +91,7 @@ $(function() {
 <code>#include &quot;<a class="el" href="daw__string__view__version_8h_source.html">daw_string_view_version.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__swap_8h_source.html">daw_swap.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__view__tags_8h_source.html">impl/daw_view_tags.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__back__inserter_8h_source.html">iterator/daw_back_inserter.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__iterator_8h_source.html">iterator/daw_iterator.h</a>&quot;</code><br />
 <code>#include &lt;array&gt;</code><br />
@@ -108,24 +108,10 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1sv2_1_1any__of__t.html">daw::sv2::any_of_t&lt; CharT, needles &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A predicate type used in the find based routine to return true when the element is one of the specified characters.  <a href="structdaw_1_1sv2_1_1any__of__t.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The class template <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html" title="The class template basic_string_view describes an object that can refer to a constant contiguous sequ...">basic_string_view</a> describes an object that can refer to a constant contiguous sequence of char-like objects with the first element of the sequence at position zero.  <a href="structdaw_1_1sv2_1_1basic__string__view.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1sv2_1_1dont__clip__to__bounds__t.html">daw::sv2::dont_clip_to_bounds_t</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1sv2_1_1escaped__any__of.html">daw::sv2::escaped_any_of&lt; needle, needles &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Predicate type that stores the previous element and if it was an '\' escape character, it will return false, otherwise returns true if the current character matches one of the needles. Because this is a stateful predicate, it cannot be reused.  <a href="structdaw_1_1sv2_1_1escaped__any__of.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1hash_3_01daw_1_1sv2_1_1basic__string__view_3_01_char_t_00_01_bounds_01_4_01_4.html">std::hash&lt; daw::sv2::basic_string_view&lt; CharT, Bounds &gt; &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1sv2_1_1nodiscard__t.html">daw::sv2::nodiscard_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tag type for specifying that the searched for term/item is not to be removed from string_view.  <a href="structdaw_1_1sv2_1_1nodiscard__t.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1sv2_1_1none__of__t.html">daw::sv2::none_of_t&lt; CharT, needles &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A predicate type used in the find based routine to return true when the element is none of the specified characters.  <a href="structdaw_1_1sv2_1_1none__of__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -186,20 +172,6 @@ Functions</h2></td></tr>
 <tr class="memitem:aa88541d11dcb90d941c674f03c5f0433"><td class="memTemplParams" colspan="2">template&lt;typename CharT , string_view_bounds_type Bounds, typename OStream , std::enable_if_t&lt; daw::traits::is_ostream_like_v&lt; OStream, CharT &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:aa88541d11dcb90d941c674f03c5f0433"><td class="memTemplItemLeft" align="right" valign="top">OStream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#aa88541d11dcb90d941c674f03c5f0433">daw::sv2::operator&lt;&lt;</a> (OStream &amp;os, basic_string_view&lt; CharT, Bounds &gt; v)</td></tr>
 <tr class="separator:aa88541d11dcb90d941c674f03c5f0433"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:a13c3f8a63573774dce7b2e3e336842c3"><td class="memTemplParams" colspan="2">template&lt;auto needle, auto... needles&gt; </td></tr>
-<tr class="memitem:a13c3f8a63573774dce7b2e3e336842c3"><td class="memTemplItemLeft" align="right" valign="top">static constexpr any_of_t&lt; decltype(needle), needle, needles... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#a13c3f8a63573774dce7b2e3e336842c3">daw::sv2::any_of</a> { }</td></tr>
-<tr class="memdesc:a13c3f8a63573774dce7b2e3e336842c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">A predicate value used in the find based routine to return true when the element is one of the specified characters.  <a href="namespacedaw_1_1sv2.html#a13c3f8a63573774dce7b2e3e336842c3">More...</a><br /></td></tr>
-<tr class="separator:a13c3f8a63573774dce7b2e3e336842c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a676414cb342f428be2a54d5ce237e064"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#a676414cb342f428be2a54d5ce237e064">daw::sv2::dont_clip_to_bounds</a> = dont_clip_to_bounds_t{ }</td></tr>
-<tr class="separator:a676414cb342f428be2a54d5ce237e064"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a111099f8d1a5ab353748ec111aef90bf"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">daw::sv2::nodiscard</a> = nodiscard_t{ }</td></tr>
-<tr class="separator:a111099f8d1a5ab353748ec111aef90bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0407e01d709d047a59a750572016d104"><td class="memTemplParams" colspan="2">template&lt;auto needle, auto... needles&gt; </td></tr>
-<tr class="memitem:a0407e01d709d047a59a750572016d104"><td class="memTemplItemLeft" align="right" valign="top">static constexpr none_of_t&lt; decltype(needle), needle, needles... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#a0407e01d709d047a59a750572016d104">daw::sv2::none_of</a> { }</td></tr>
-<tr class="separator:a0407e01d709d047a59a750572016d104"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a75d7ddf716370861bb98bd1b2a545265"></a>
@@ -241,7 +213,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00097">97</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00098">98</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
 
 </div>
 </div>
@@ -283,7 +255,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00090">90</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00091">91</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
 
 </div>
 </div>
@@ -314,7 +286,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00105">105</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00106">106</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
 
 </div>
 </div>
@@ -355,7 +327,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00083">83</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00084">84</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
 
 </div>
 </div>
@@ -385,7 +357,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00053">53</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00054">54</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
 
 </div>
 </div>
@@ -417,7 +389,7 @@ Variables</h2></td></tr>
 <b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">do</span> {                                             \</div>
 <div class="line">  } <span class="keywordflow">while</span>( <span class="keyword">false</span> )</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00071">71</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00072">72</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
 
 </div>
 </div>
@@ -449,7 +421,7 @@ Variables</h2></td></tr>
 <b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">do</span> {                                         \</div>
 <div class="line">  } <span class="keywordflow">while</span>( <span class="keyword">false</span> )</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00075">75</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view2_8h_source.html#l00076">76</a> of file <a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>.</p>
 
 </div>
 </div>

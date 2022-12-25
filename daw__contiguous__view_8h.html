@@ -78,6 +78,7 @@ $(function() {
 <div class="textblock"><code>#include &quot;<a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__consteval_8h_source.html">daw_consteval.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__utility_8h_source.html">daw_utility.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__view__tags_8h_source.html">impl/daw_view_tags.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="wrap__iter_8h_source.html">wrap_iter.h</a>&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cassert&gt;</code><br />
@@ -162,6 +163,10 @@ Functions</h2></td></tr>
 <tr class="separator:a24bbfb3c6debd133e51134e57c4f3ef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0131aaa8982f261f0c4b7eda113cd1ba"><td class="memItemLeft" align="right" valign="top">constexpr iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0131aaa8982f261f0c4b7eda113cd1ba">daw::end</a> () noexcept</td></tr>
 <tr class="separator:a0131aaa8982f261f0c4b7eda113cd1ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ac298ededb39b4dc40853ababb921c8"><td class="memItemLeft" align="right" valign="top">constexpr iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5ac298ededb39b4dc40853ababb921c8">daw::find</a> (const_reference needle) noexcept</td></tr>
+<tr class="separator:a5ac298ededb39b4dc40853ababb921c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abadd8825f375e8dc64c49326ace9cd5e"><td class="memItemLeft" align="right" valign="top">constexpr iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#abadd8825f375e8dc64c49326ace9cd5e">daw::find_first_not_of</a> (const_reference needle) noexcept</td></tr>
+<tr class="separator:abadd8825f375e8dc64c49326ace9cd5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4100b75506c8134056bf9cb4f14fb28"><td class="memItemLeft" align="right" valign="top">constexpr reference&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad4100b75506c8134056bf9cb4f14fb28">daw::front</a> () noexcept</td></tr>
 <tr class="separator:ad4100b75506c8134056bf9cb4f14fb28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3496b0def447a60419b9bfb7b940c47"><td class="memTemplParams" colspan="2">template&lt;constructible_from&lt; pointer, size_type &gt; Container&gt; </td></tr>
@@ -187,16 +192,36 @@ Functions</h2></td></tr>
 <tr class="separator:add6026e03ff913b11569242e78847227"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1fdb49cca76bf67d9fbbeeba00e2305"><td class="memItemLeft" align="right" valign="top">constexpr value_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa1fdb49cca76bf67d9fbbeeba00e2305">daw::pop_front</a> () noexcept requires(std</td></tr>
 <tr class="separator:aa1fdb49cca76bf67d9fbbeeba00e2305"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1467db01b47f7d506def16dac4a4bd7"><td class="memItemLeft" align="right" valign="top">constexpr contiguous_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ac1467db01b47f7d506def16dac4a4bd7">daw::pop_front_until</a> (const_reference needle) noexcept</td></tr>
+<tr class="separator:ac1467db01b47f7d506def16dac4a4bd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c7271bb495147a6ffbf7ec7dd023a3d"><td class="memItemLeft" align="right" valign="top">constexpr contiguous_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6c7271bb495147a6ffbf7ec7dd023a3d">daw::pop_front_until</a> (const_reference needle, discard_t) noexcept</td></tr>
+<tr class="separator:a6c7271bb495147a6ffbf7ec7dd023a3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3401df95ca6969828a6d79a251b76b28"><td class="memItemLeft" align="right" valign="top">constexpr contiguous_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3401df95ca6969828a6d79a251b76b28">daw::pop_front_while</a> (const_reference needle) noexcept</td></tr>
+<tr class="separator:a3401df95ca6969828a6d79a251b76b28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50f1d2a5e52c7c2a9d57e6de75cf8aab"><td class="memItemLeft" align="right" valign="top">constexpr contiguous_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a50f1d2a5e52c7c2a9d57e6de75cf8aab">daw::pop_front_while</a> (const_reference needle, discard_t) noexcept</td></tr>
+<tr class="separator:a50f1d2a5e52c7c2a9d57e6de75cf8aab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82daacb90f394bcef7b324482214e9af"><td class="memItemLeft" align="right" valign="top">constexpr reverse_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a82daacb90f394bcef7b324482214e9af">daw::rbegin</a> () noexcept</td></tr>
 <tr class="separator:a82daacb90f394bcef7b324482214e9af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7dc369fa7ddc11acf0d8147adbc2e97d"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a7dc369fa7ddc11acf0d8147adbc2e97d">daw::remove_prefix</a> () noexcept</td></tr>
 <tr class="separator:a7dc369fa7ddc11acf0d8147adbc2e97d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58d658fa59ed4df013827bac94be80f8"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a58d658fa59ed4df013827bac94be80f8">daw::remove_prefix</a> (std::size_t count) noexcept</td></tr>
 <tr class="separator:a58d658fa59ed4df013827bac94be80f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6050f5b883cb4102ded62ec76d61706"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad6050f5b883cb4102ded62ec76d61706">daw::remove_prefix</a> (std::size_t count, dont_clip_to_bounds_t) noexcept</td></tr>
+<tr class="separator:ad6050f5b883cb4102ded62ec76d61706"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a177e5b92af9bc643e23d55923099d4bd"><td class="memItemLeft" align="right" valign="top">constexpr contiguous_view &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a177e5b92af9bc643e23d55923099d4bd">daw::remove_prefix_until</a> (const_reference needle) noexcept</td></tr>
+<tr class="separator:a177e5b92af9bc643e23d55923099d4bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add799f58cd0489aa2556ccdd4a416b6f"><td class="memItemLeft" align="right" valign="top">constexpr contiguous_view &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#add799f58cd0489aa2556ccdd4a416b6f">daw::remove_prefix_until</a> (const_reference needle, discard_t) noexcept</td></tr>
+<tr class="separator:add799f58cd0489aa2556ccdd4a416b6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c945a05547e4653067e956c484173d8"><td class="memItemLeft" align="right" valign="top">constexpr contiguous_view &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3c945a05547e4653067e956c484173d8">daw::remove_prefix_while</a> (const_reference needle) noexcept</td></tr>
+<tr class="separator:a3c945a05547e4653067e956c484173d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f909fb41b37a5fa3fc1aa88cc1b77c9"><td class="memItemLeft" align="right" valign="top">constexpr contiguous_view &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a8f909fb41b37a5fa3fc1aa88cc1b77c9">daw::remove_prefix_while</a> (const_reference needle, discard_t) noexcept</td></tr>
+<tr class="separator:a8f909fb41b37a5fa3fc1aa88cc1b77c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9955d8dc73ac95b822f2085134f5758"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ab9955d8dc73ac95b822f2085134f5758">daw::remove_suffix</a> () noexcept</td></tr>
 <tr class="separator:ab9955d8dc73ac95b822f2085134f5758"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b0cd9b4e02f578ef371d5a6c30aebb9"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6b0cd9b4e02f578ef371d5a6c30aebb9">daw::remove_suffix</a> (std::size_t count) noexcept</td></tr>
 <tr class="separator:a6b0cd9b4e02f578ef371d5a6c30aebb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a235e83b44b3385bdb7fd171722bba291"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a235e83b44b3385bdb7fd171722bba291">daw::remove_suffix</a> (std::size_t count, dont_clip_to_bounds_t) noexcept</td></tr>
+<tr class="separator:a235e83b44b3385bdb7fd171722bba291"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a126e7436ae8576374232dfa018f9d63a"><td class="memItemLeft" align="right" valign="top">constexpr reverse_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a126e7436ae8576374232dfa018f9d63a">daw::rend</a> () noexcept</td></tr>
 <tr class="separator:a126e7436ae8576374232dfa018f9d63a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd84e1e250c4b3e259bd9ec200007f81"><td class="memTemplParams" colspan="2">template&lt;typename T , bool ExplicitConv&gt; </td></tr>

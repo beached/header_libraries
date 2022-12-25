@@ -150,14 +150,14 @@ $(function() {
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        : m_function{ func } {}</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Args&gt;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr decltype( <span class="keyword">auto</span> )</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr decltype( <span class="keyword">auto</span> )</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      operator( )( Args &amp;&amp;...args ) noexcept(</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        std::is_nothrow_invocable_v&lt;Function, Args...&gt; ) {</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordflow">return</span> not m_function( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( args )... );</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      }</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Args&gt;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr decltype( <span class="keyword">auto</span> )</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr decltype( <span class="keyword">auto</span> )</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      operator( )( Args &amp;&amp;...args ) <span class="keyword">const</span></div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        noexcept( std::is_nothrow_invocable_v&lt;Function, Args...&gt; ) {</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keywordflow">return</span> not m_function( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( args )... );</div>
@@ -166,13 +166,13 @@ $(function() {
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  } <span class="comment">// namespace cpp_17_details</span></div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Function&gt;</div>
-<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="namespacedaw.html#a14efbfb3a7337ab23f1eb126ccdf7398">   97</a></span>&#160;  [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a14efbfb3a7337ab23f1eb126ccdf7398">not_fn</a>( Function &amp;&amp;func ) {</div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="namespacedaw.html#a14efbfb3a7337ab23f1eb126ccdf7398">   97</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a14efbfb3a7337ab23f1eb126ccdf7398">not_fn</a>( Function &amp;&amp;func ) {</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keyword">using</span> func_t = <a class="code" href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">remove_cvref_t&lt;Function&gt;</a>;</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordflow">return</span> cpp_17_details::not_fn_t&lt;func_t&gt;( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( func ) );</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  }</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Function&gt;</div>
-<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="namespacedaw.html#a32287e423f508a6cea66a4239a25150a">  103</a></span>&#160;  [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a14efbfb3a7337ab23f1eb126ccdf7398">not_fn</a>( ) {</div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="namespacedaw.html#a32287e423f508a6cea66a4239a25150a">  103</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a14efbfb3a7337ab23f1eb126ccdf7398">not_fn</a>( ) {</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordflow">return</span> cpp_17_details::not_fn_t&lt;Function&gt;( );</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  }</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
@@ -190,7 +190,7 @@ $(function() {
 <div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="namespacedaw.html#aa25ae0868ddfa68556dd5c862393a31b">  118</a></span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacedaw.html#aa25ae0868ddfa68556dd5c862393a31b">not_trait</a> = std::integral_constant&lt;bool, not T::value&gt;;</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr std::add_const_t&lt;T&gt; &amp;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr std::add_const_t&lt;T&gt; &amp;</div>
 <div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="namespacedaw.html#a758bea5e001d18a44a29396bf469f096">  122</a></span>&#160;  <a class="code" href="namespacedaw.html#a758bea5e001d18a44a29396bf469f096">as_const</a>( T &amp;t ) noexcept {</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keywordflow">return</span> t;</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  }</div>
@@ -290,7 +290,7 @@ $(function() {
 <div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <a class="code" href="namespacedaw.html#a34ddbdd4d019cf55aa2ff68e0178709f">is_detected_convertible</a>&lt;To, Op, Args...&gt;::value;</div>
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
 <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container&gt;</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;  [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr decltype( <span class="keyword">auto</span> )</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr decltype( <span class="keyword">auto</span> )</div>
 <div class="line"><a name="l00222"></a><span class="lineno"><a class="line" href="namespacedaw.html#a7e1138972fcb57605f1f020d89d95213">  222</a></span>&#160;  <a class="code" href="namespacedaw.html#a7e1138972fcb57605f1f020d89d95213">size</a>( Container const &amp;c ) noexcept( noexcept( c.<a class="code" href="namespacedaw.html#a7e1138972fcb57605f1f020d89d95213">size</a>( ) ) ) {</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="keywordflow">return</span> c.size( );</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;  }</div>
@@ -317,7 +317,7 @@ $(function() {
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  <span class="keyword">namespace </span>cpp_17_details {</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Base, <span class="keyword">typename</span> T, <span class="keyword">typename</span> Derived, <span class="keyword">typename</span>... Args&gt;</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] <span class="keyword">auto</span></div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] <span class="keyword">auto</span></div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    INVOKE( T Base::*pmf, Derived &amp;&amp;<a class="code" href="namespacedaw.html#a40854535adee8cf64b91483e5065d31a">ref</a>, Args &amp;&amp;...args ) noexcept(</div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;      noexcept( ( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( <a class="code" href="namespacedaw.html#a40854535adee8cf64b91483e5065d31a">ref</a> ).*pmf )( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( args )... ) ) )</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;      -&gt; <a class="code" href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">std::enable_if_t</a>&lt;</div>
@@ -328,7 +328,7 @@ $(function() {
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    }</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160; </div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Base, <span class="keyword">typename</span> T, <span class="keyword">typename</span> RefWrap, <span class="keyword">typename</span>... Args&gt;</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr <span class="keyword">auto</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr <span class="keyword">auto</span></div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    INVOKE( T Base::*pmf, RefWrap &amp;&amp;<a class="code" href="namespacedaw.html#a40854535adee8cf64b91483e5065d31a">ref</a>, Args &amp;&amp;...args ) noexcept(</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;      noexcept( ( <a class="code" href="namespacedaw.html#a40854535adee8cf64b91483e5065d31a">ref</a>.get( ).*pmf )( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( args )... ) ) )</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;      -&gt; <a class="code" href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">std::enable_if_t</a>&lt;</div>
@@ -340,7 +340,7 @@ $(function() {
 <div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    }</div>
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Base, <span class="keyword">typename</span> T, <span class="keyword">typename</span> Pointer, <span class="keyword">typename</span>... Args&gt;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr <span class="keyword">auto</span></div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr <span class="keyword">auto</span></div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    INVOKE( T Base::*pmf, Pointer &amp;&amp;ptr, Args &amp;&amp;...args ) noexcept(</div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;      noexcept( ( ( *<a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( ptr ) ).*pmf )( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( args )... ) ) )</div>
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;      -&gt; <a class="code" href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">std::enable_if_t</a>&lt;</div>
@@ -354,7 +354,7 @@ $(function() {
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    }</div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160; </div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Base, <span class="keyword">typename</span> T, <span class="keyword">typename</span> Derived&gt;</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr <span class="keyword">auto</span></div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr <span class="keyword">auto</span></div>
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    INVOKE( T Base::*pmd,</div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;            Derived &amp;&amp;<a class="code" href="namespacedaw.html#a40854535adee8cf64b91483e5065d31a">ref</a> ) noexcept( noexcept( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( <a class="code" href="namespacedaw.html#a40854535adee8cf64b91483e5065d31a">ref</a> ).*pmd ) )</div>
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;      -&gt; <a class="code" href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">std::enable_if_t</a>&lt;</div>
@@ -366,7 +366,7 @@ $(function() {
 <div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    }</div>
 <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160; </div>
 <div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Base, <span class="keyword">typename</span> T, <span class="keyword">typename</span> RefWrap&gt;</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr <span class="keyword">auto</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr <span class="keyword">auto</span></div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    INVOKE( T Base::*pmd,</div>
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;            RefWrap &amp;&amp;<a class="code" href="namespacedaw.html#a40854535adee8cf64b91483e5065d31a">ref</a> ) noexcept( noexcept( <a class="code" href="namespacedaw.html#a40854535adee8cf64b91483e5065d31a">ref</a>.get( ).*pmd ) )</div>
 <div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;      -&gt; <a class="code" href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">std::enable_if_t</a>&lt;</div>
@@ -377,7 +377,7 @@ $(function() {
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    }</div>
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160; </div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Base, <span class="keyword">typename</span> T, <span class="keyword">typename</span> Po<span class="keywordtype">int</span>er&gt;</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr <span class="keyword">auto</span></div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr <span class="keyword">auto</span></div>
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    INVOKE( T Base::*pmd,</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;            Pointer &amp;&amp;ptr ) noexcept( noexcept( ( *<a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( ptr ) ).*pmd ) )</div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;      -&gt; <a class="code" href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">std::enable_if_t</a>&lt;</div>
@@ -394,7 +394,7 @@ $(function() {
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;      decltype( std::declval&lt;T&gt;( ).<span class="keyword">operator</span>( )( std::declval&lt;Args&gt;( )... ) );</div>
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160; </div>
 <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span>... Args&gt;</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr decltype( <span class="keyword">auto</span> ) INVOKE(</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr decltype( <span class="keyword">auto</span> ) INVOKE(</div>
 <div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;      F &amp;&amp;f,</div>
 <div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;      Args &amp;&amp;...args ) noexcept( std::is_nothrow_invocable_v&lt;F, Args...&gt; ) {</div>
 <div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160; </div>
@@ -406,7 +406,7 @@ $(function() {
 <div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span>... Args,</div>
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;           <a class="code" href="namespacedaw.html#a0c26fed4f9335fb3a674a5d7350368f8">daw::enable_when_t</a>&lt;<a class="code" href="namespacedaw.html#aa34df83ef466d1e5f89de292bd761bfb">std::conjunction_v</a>&lt;</div>
 <div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;             not_trait&lt;is_reference_wrapper&lt;Args&gt;&gt;...&gt;&gt; = <span class="keyword">nullptr</span>&gt;</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;  [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>]] constexpr decltype( <span class="keyword">auto</span> )</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr decltype( <span class="keyword">auto</span> )</div>
 <div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;  <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">invoke</a>( F &amp;&amp;f,</div>
 <div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;          Args &amp;&amp;...args ) noexcept( <a class="code" href="namespacestd.html">std</a>::is_nothrow_invocable_v&lt;F, Args...&gt; ) {</div>
 <div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160; </div>
@@ -415,7 +415,7 @@ $(function() {
 <div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;  }</div>
 <div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160; </div>
 <div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span>... Args&gt;</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;  [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>]] constexpr decltype( <span class="keyword">auto</span> )</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr decltype( <span class="keyword">auto</span> )</div>
 <div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;  <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">invoke</a>( F &amp;&amp;f, <a class="code" href="namespacestd.html">std</a>::reference_wrapper&lt;Args&gt;... args ) noexcept(</div>
 <div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    <a class="code" href="namespacestd.html">std</a>::is_nothrow_invocable_v&lt;F, Args...&gt; ) {</div>
 <div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160; </div>
@@ -434,7 +434,7 @@ $(function() {
 <div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160; </div>
 <div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;  <span class="keyword">namespace </span>cpp_17_details {</div>
 <div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span> Tuple, std::size_t... I&gt;</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr decltype( <span class="keyword">auto</span> )</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr decltype( <span class="keyword">auto</span> )</div>
 <div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    apply_details( F &amp;&amp;f, Tuple &amp;&amp;t, <a class="code" href="namespacestd.html">std</a>::index_sequence&lt;I...&gt; ) {</div>
 <div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ), std::get&lt;I&gt;( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( t ) )... );</div>
 <div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;    }</div>
@@ -449,14 +449,14 @@ $(function() {
 <div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    <span class="keyword">using</span> is_tuple = std::bool_constant&lt;is_tuple_v&lt;T&gt;&gt;;</div>
 <div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160; </div>
 <div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span> Tuple, std::size_t... Is&gt;</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>]] <span class="keyword">inline</span> constexpr decltype( <span class="keyword">auto</span> )</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] <span class="keyword">inline</span> constexpr decltype( <span class="keyword">auto</span> )</div>
 <div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    apply_impl2( F &amp;&amp;f, Tuple &amp;&amp;t, <a class="code" href="namespacestd.html">std</a>::index_sequence&lt;Is...&gt; ) {</div>
 <div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f )( std::get&lt;Is&gt;( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( t ) )... );</div>
 <div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    }</div>
 <div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;  } <span class="comment">// namespace cpp_17_details</span></div>
 <div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160; </div>
 <div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;  <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> use_invoke = true, <span class="keyword">typename</span> F, <span class="keyword">typename</span> Tuple&gt;</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;  [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] <span class="keyword">inline</span> constexpr decltype( <span class="keyword">auto</span> )</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] <span class="keyword">inline</span> constexpr decltype( <span class="keyword">auto</span> )</div>
 <div class="line"><a name="l00388"></a><span class="lineno"><a class="line" href="namespacedaw.html#aa262c9df4a2234d2089c59a4e13dbfe6">  388</a></span>&#160;  <a class="code" href="namespacedaw.html#aa262c9df4a2234d2089c59a4e13dbfe6">apply</a>( F &amp;&amp;f, Tuple &amp;&amp;t ) {</div>
 <div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    static_assert( cpp_17_details::is_tuple_v&lt;Tuple&gt;,</div>
 <div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;                   <span class="stringliteral">&quot;Attempt to call apply with invalid arguments.  The &quot;</span></div>
@@ -490,7 +490,7 @@ $(function() {
 <div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;<span class="preprocessor">#undef min</span></div>
 <div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;      <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U&gt;</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;      [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr std::common_type_t&lt;T, U&gt;( <a class="code" href="namespacedaw.html#abb3b5cf7b763ba3b534a11d3ed32d76a">min</a> )(</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;      [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr std::common_type_t&lt;T, U&gt;( <a class="code" href="namespacedaw.html#abb3b5cf7b763ba3b534a11d3ed32d76a">min</a> )(</div>
 <div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;        T <span class="keyword">const</span> &amp;lhs, U <span class="keyword">const</span> &amp;rhs ) noexcept {</div>
 <div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;        <span class="keywordflow">if</span>( lhs &lt;= rhs ) {</div>
 <div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;          <span class="keywordflow">return</span> lhs;</div>
@@ -499,7 +499,7 @@ $(function() {
 <div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;      }</div>
 <div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160; </div>
 <div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;      <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U, <span class="keyword">typename</span> V&gt;</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;      [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr T</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;      [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr T</div>
 <div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;      clamp( T val, U <span class="keyword">const</span> &amp;min_val, V <span class="keyword">const</span> &amp;max_val ) noexcept {</div>
 <div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;        <span class="keywordflow">if</span>( val &lt; min_val ) {</div>
 <div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;          val = min_val;</div>
@@ -511,7 +511,7 @@ $(function() {
 <div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;    } <span class="comment">// namespace math</span></div>
 <div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160; </div>
 <div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> InputIterator&gt;</div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;    [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr ptrdiff_t</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;    [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr ptrdiff_t</div>
 <div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;    distance_impl( <a class="code" href="namespacedaw.html#ac16ba4f5d3748863b31ca4004d10c226">InputIterator</a> first, <a class="code" href="namespacedaw.html#ac16ba4f5d3748863b31ca4004d10c226">InputIterator</a> last,</div>
 <div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;                   std::input_iterator_tag ) noexcept( noexcept( ++first ) ) {</div>
 <div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160; </div>
@@ -524,7 +524,7 @@ $(function() {
 <div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;    }</div>
 <div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160; </div>
 <div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Iterator1, <span class="keyword">typename</span> Iterator2&gt;</div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;    [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr ptrdiff_t distance_impl(</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;    [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr ptrdiff_t distance_impl(</div>
 <div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;      Iterator1 first, Iterator2 last,</div>
 <div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;      std::random_access_iterator_tag ) noexcept( noexcept( last - first ) ) {</div>
 <div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160; </div>
@@ -580,7 +580,7 @@ $(function() {
 <div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;  } <span class="comment">// namespace cpp_17_details</span></div>
 <div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160; </div>
 <div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Iterator&gt;</div>
-<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;  [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr ptrdiff_t</div>
+<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr ptrdiff_t</div>
 <div class="line"><a name="l00520"></a><span class="lineno"><a class="line" href="namespacedaw.html#af12f9c7fb9774c53848cf8e9f721c828">  520</a></span>&#160;  <a class="code" href="namespacedaw.html#af12f9c7fb9774c53848cf8e9f721c828">distance</a>( Iterator first, Iterator second ) noexcept(</div>
 <div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;    noexcept( cpp_17_details::distance_impl(</div>
 <div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;      first, second,</div>
@@ -598,7 +598,7 @@ $(function() {
 <div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;  }</div>
 <div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160; </div>
 <div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Iterator&gt;</div>
-<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;  [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr Iterator</div>
+<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr Iterator</div>
 <div class="line"><a name="l00549"></a><span class="lineno"><a class="line" href="namespacedaw.html#a55399937a2ff351c8338d513521b00e1">  549</a></span>&#160;  <a class="code" href="namespacedaw.html#a55399937a2ff351c8338d513521b00e1">next</a>( Iterator it, ptrdiff_t n = 1 ) noexcept {</div>
 <div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160; </div>
 <div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;    <a class="code" href="namespacedaw.html#a557cf75d8b8e24da975f31aa7a3dad69">cpp_17_details::advance</a>(</div>
@@ -607,7 +607,7 @@ $(function() {
 <div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;  }</div>
 <div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160; </div>
 <div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Iterator&gt;</div>
-<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;  [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr Iterator</div>
+<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr Iterator</div>
 <div class="line"><a name="l00564"></a><span class="lineno"><a class="line" href="namespacedaw.html#a6e8d238a833c171fca8ca8edba7b3c3f">  564</a></span>&#160;  <a class="code" href="namespacedaw.html#a6e8d238a833c171fca8ca8edba7b3c3f">prev</a>( Iterator it, ptrdiff_t n = 1 ) noexcept {</div>
 <div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160; </div>
 <div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;    <a class="code" href="namespacedaw.html#a557cf75d8b8e24da975f31aa7a3dad69">cpp_17_details::advance</a>(</div>
@@ -616,7 +616,7 @@ $(function() {
 <div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;  }</div>
 <div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160; </div>
 <div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> To, <span class="keyword">typename</span> From&gt;</div>
-<div class="line"><a name="l00572"></a><span class="lineno"><a class="line" href="namespacedaw.html#a8e28489cdd724f34ad4e4ffcc3790871">  572</a></span>&#160;  [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] To <a class="code" href="namespacedaw.html#a8e28489cdd724f34ad4e4ffcc3790871">bit_cast</a>( From <span class="keyword">const</span> *<span class="keyword">const</span> from ) noexcept(</div>
+<div class="line"><a name="l00572"></a><span class="lineno"><a class="line" href="namespacedaw.html#a8e28489cdd724f34ad4e4ffcc3790871">  572</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] To <a class="code" href="namespacedaw.html#a8e28489cdd724f34ad4e4ffcc3790871">bit_cast</a>( From <span class="keyword">const</span> *<span class="keyword">const</span> from ) noexcept(</div>
 <div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;    std::is_nothrow_constructible_v&lt;To&gt; ) {</div>
 <div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160; </div>
 <div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="daw__bit__cast_8h.html#afff91baa657060c498ccf5afe8e5f5a7">DAW_BIT_CAST</a>( To, *from );</div>
@@ -721,7 +721,7 @@ $(function() {
 <div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;    <a class="code" href="structdaw_1_1is__nothrow__convertible.html">is_nothrow_convertible&lt;From, To&gt;::value</a>;</div>
 <div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160; </div>
 <div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;  [[<a class="code" href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">nodiscard</a>, maybe_unused]] constexpr <span class="keyword">auto</span></div>
+<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>, maybe_unused]] constexpr <span class="keyword">auto</span></div>
 <div class="line"><a name="l00678"></a><span class="lineno"><a class="line" href="namespacedaw.html#ac543c718f73ae0b3058e060031a1dd4f">  678</a></span>&#160;  <a class="code" href="namespacedaw.html#ac543c718f73ae0b3058e060031a1dd4f">decay_copy</a>( T &amp;&amp;v ) noexcept( <a class="code" href="namespacedaw.html#adcbcb3bf1260cedde99c6a856bbd31f0">is_nothrow_convertible_v</a>&lt;T, std::decay_t&lt;T&gt;&gt; )</div>
 <div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;    -&gt; std::enable_if_t&lt;std::is_convertible_v&lt;T, std::decay_t&lt;T&gt;&gt;,</div>
 <div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160;                        std::decay_t&lt;T&gt;&gt; {</div>
@@ -778,7 +778,6 @@ $(function() {
 <div class="ttc" id="adaw__move_8h_html_a92169421367fae95c111acee1e0ebe60"><div class="ttname"><a href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a></div><div class="ttdeci">#define DAW_FWD2(Type, Value)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00041">daw_move.h:41</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1detectors_html_a431ddb1d44f877e91b40b2e624bd9976"><div class="ttname"><a href="namespacedaw_1_1detectors.html#a431ddb1d44f877e91b40b2e624bd9976">daw::detectors::detect_adl_swap</a></div><div class="ttdeci">decltype(swap(std::declval&lt; T &amp; &gt;(), std::declval&lt; T &amp; &gt;())) detect_adl_swap</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00236">cpp_17.h:237</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1detectors_html_af9d8c7769e14c7b97c8b39c66e064ce4"><div class="ttname"><a href="namespacedaw_1_1detectors.html#af9d8c7769e14c7b97c8b39c66e064ce4">daw::detectors::detect_std_swap</a></div><div class="ttdeci">decltype(std::swap(std::declval&lt; T &amp; &gt;(), std::declval&lt; T &amp; &gt;())) detect_std_swap</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00232">cpp_17.h:233</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1sv2_html_a111099f8d1a5ab353748ec111aef90bf"><div class="ttname"><a href="namespacedaw_1_1sv2.html#a111099f8d1a5ab353748ec111aef90bf">daw::sv2::nodiscard</a></div><div class="ttdeci">constexpr auto nodiscard</div><div class="ttdef"><b>Definition:</b> <a href="daw__string__view2_8h_source.html#l00118">daw_string_view2.h:118</a></div></div>
 <div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="compressed__pair_8h_source.html#l00018">compressed_pair.h:18</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a00ea6294fc0d1208169fdd524268e7eb"><div class="ttname"><a href="namespacedaw.html#a00ea6294fc0d1208169fdd524268e7eb">daw::tuple_size_v</a></div><div class="ttdeci">constexpr size_t tuple_size_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple__helper_8h_source.html#l00502">daw_tuple_helper.h:502</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a02606e398f4cd83d35dc01fa281f1ce9"><div class="ttname"><a href="namespacedaw.html#a02606e398f4cd83d35dc01fa281f1ce9">daw::all_true</a></div><div class="ttdeci">std::bool_constant&lt;(values and ...)&gt; all_true</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00055">cpp_17.h:55</a></div></div>
@@ -822,6 +821,7 @@ $(function() {
 <div class="ttc" id="anamespacedaw_html_ac1fed2bfc329128fd5d8b3b9bb677928"><div class="ttname"><a href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">daw::remove_cvref_t</a></div><div class="ttdeci">std::remove_cv_t&lt; std::remove_reference_t&lt; T &gt; &gt; remove_cvref_t</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00026">cpp_17.h:26</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ac543c718f73ae0b3058e060031a1dd4f"><div class="ttname"><a href="namespacedaw.html#ac543c718f73ae0b3058e060031a1dd4f">daw::decay_copy</a></div><div class="ttdeci">constexpr auto decay_copy(T &amp;&amp;v) noexcept(is_nothrow_convertible_v&lt; T, std::decay_t&lt; T &gt;&gt;) -&gt; std::enable_if_t&lt; std::is_convertible_v&lt; T, std::decay_t&lt; T &gt;&gt;, std::decay_t&lt; T &gt;&gt;</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00678">cpp_17.h:678</a></div></div>
 <div class="ttc" id="anamespacedaw_html_aca15c2fd76569c6b23122c8304641c49"><div class="ttname"><a href="namespacedaw.html#aca15c2fd76569c6b23122c8304641c49">daw::is_detected_convertible_v</a></div><div class="ttdeci">constexpr bool is_detected_convertible_v</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00217">cpp_17.h:217</a></div></div>
+<div class="ttc" id="anamespacedaw_html_ad8a64a646f74d139a882242dceee804e"><div class="ttname"><a href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">daw::nodiscard</a></div><div class="ttdeci">constexpr auto nodiscard</div><div class="ttdef"><b>Definition:</b> <a href="daw__view__tags_8h_source.html#l00015">daw_view_tags.h:15</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ad8b37b6c283ce451b25949269438de82"><div class="ttname"><a href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">daw::enable_if_t</a></div><div class="ttdeci">std::enable_if_t&lt; B, T &gt; enable_if_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__enable__if_8h_source.html#l00022">daw_enable_if.h:22</a></div></div>
 <div class="ttc" id="anamespacedaw_html_adcbcb3bf1260cedde99c6a856bbd31f0"><div class="ttname"><a href="namespacedaw.html#adcbcb3bf1260cedde99c6a856bbd31f0">daw::is_nothrow_convertible_v</a></div><div class="ttdeci">constexpr bool is_nothrow_convertible_v</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00673">cpp_17.h:673</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ae05111bed5c0a5675b1c2b78dd0e2a1e"><div class="ttname"><a href="namespacedaw.html#ae05111bed5c0a5675b1c2b78dd0e2a1e">daw::any_true</a></div><div class="ttdeci">std::bool_constant&lt;(values or ...)&gt; any_true</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00061">cpp_17.h:61</a></div></div>
