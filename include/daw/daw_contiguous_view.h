@@ -192,14 +192,14 @@ namespace daw {
 			if( DAW_UNLIKELY( index >= size( ) ) ) {
 				throw_out_of_range( );
 			}
-			return m_first + index;
+			return *(m_first + index);
 		}
 
 		[[nodiscard]] constexpr const_reference at( size_type index ) const {
 			if( DAW_UNLIKELY( index >= size( ) ) ) {
 				throw_out_of_range( );
 			}
-			return m_first + index;
+			return *(m_first + index);
 		}
 
 		constexpr void remove_prefix( std::size_t count ) noexcept {
@@ -515,12 +515,14 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr reference operator[]( size_type index ) noexcept {
-			return m_first + index;
+			assert( index < size( ) );
+			return *(m_first + index);
 		}
 
 		[[nodiscard]] constexpr const_reference
 		operator[]( size_type index ) const noexcept {
-			return m_first + index;
+			assert( index < size( ) );
+			return *(m_first + index);
 		}
 
 	private:
