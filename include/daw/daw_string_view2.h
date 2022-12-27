@@ -1350,7 +1350,8 @@ namespace daw {
 			/// removed
 			constexpr basic_string_view &remove_prefix_until( CharT where ) {
 				auto pos = find( where );
-				remove_prefix( pos + 1 );
+				remove_prefix( pos );
+				remove_prefix( );
 				return *this;
 			}
 
@@ -1361,7 +1362,7 @@ namespace daw {
 			constexpr basic_string_view &remove_prefix_until( CharT where,
 			                                                  nodiscard_t ) {
 				auto pos = find( where );
-				dec_front<BoundsType>( ( std::min )( size( ), pos ) );
+				remove_prefix( pos );
 				return *this;
 			}
 
@@ -1373,7 +1374,8 @@ namespace daw {
 			constexpr basic_string_view &
 			remove_prefix_until( basic_string_view where ) {
 				auto pos = find( where );
-				dec_front<BoundsType>( ( std::min )( size( ), pos + where.size( ) ) );
+				remove_prefix( pos );
+				remove_prefix( where.size( ) );
 				return *this;
 			}
 
@@ -1385,7 +1387,7 @@ namespace daw {
 			constexpr basic_string_view &remove_prefix_until( basic_string_view where,
 			                                                  nodiscard_t ) {
 				auto pos = find( where );
-				dec_front<BoundsType>( ( std::min )( size( ), pos ) );
+				remove_prefix( pos );
 				return *this;
 			}
 
@@ -1398,8 +1400,8 @@ namespace daw {
 			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
 			constexpr basic_string_view &remove_prefix_until( UnaryPredicate pred ) {
 				auto pos = find_first_of_if( pred );
-				dec_front<BoundsType>( ( std::min )(
-				  size( ), pos + sv2_details::find_predicate_result_size( pred ) ) );
+				remove_prefix( pos );
+				remove_prefix( sv2_details::find_predicate_result_size( pred ) );
 				return *this;
 			}
 
@@ -1642,8 +1644,16 @@ namespace daw {
 			}
 
 			[[nodiscard]] constexpr size_type find( CharT c, size_type pos ) const {
-				return find(
-				  basic_string_view<CharT, BoundsType>( std::addressof( c ), 1 ), pos );
+				assert( pos <= size( ) );
+				auto first = data( ) + pos;
+				auto const sz = static_cast<std::size_t>( data_end( ) - first );
+				for( std::size_t n = pos; n < sz; ++n ) {
+					char const test_c = first[n];
+					if( test_c == c ) {
+						return n;
+					}
+				}
+				return npos;
 			}
 
 			[[nodiscard]] constexpr size_type find( CharT c ) const {
@@ -1652,11 +1662,13 @@ namespace daw {
 
 			[[nodiscard]] constexpr size_type find( const_pointer s, size_type pos,
 			                                        size_type count ) const {
+				assert( pos <= size( ) );
 				return find( basic_string_view<CharT, BoundsType>( s, count ), pos );
 			}
 
 			[[nodiscard]] constexpr size_type find( const_pointer s,
 			                                        size_type pos ) const {
+				assert( pos <= size( ) );
 				return find( basic_string_view<CharT, BoundsType>( s ), pos );
 			}
 
@@ -2417,6 +2429,11 @@ namespace daw {
 			template<typename UnaryPred, DAW_REQ_UNARY_PRED( UnaryPred, CharT )>
 			constexpr void remove_suffix_while( UnaryPred is_whitespace ) noexcept {
 				auto pos = find_last_not_of_if( is_whitespace );
+				resize( pos + 1U );
+			}
+
+			constexpr void remove_suffix_while( CharT c ) noexcept {
+				auto pos = find_last_not_of( c );
 				resize( pos + 1U );
 			}
 
