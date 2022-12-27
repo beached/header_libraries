@@ -1442,6 +1442,28 @@ namespace daw {
 		daw_expecting( sv.size( ), 9U );
 		daw_expecting( sv, "is a test" );
 	}
+
+	void daw_remove_prefix_until_test_004( ) {
+		daw::sv2::string_view sv = "'0123456789\n#this is a test\n";
+		sv.remove_prefix_until( '\n' );
+		daw_expecting( sv.size( ), 16U );
+		daw_expecting( sv.front( ), '#' );
+	}
+
+	void daw_remove_suffix_while_test_001( ) {
+		daw::sv2::string_view sv = "test\n";
+		sv.remove_suffix_while( '\n' );
+		auto const sz = sv.size( );
+		daw_expecting( sz, 4 );
+	}
+
+	void daw_remove_suffix_while_test_002( ) {
+		daw::sv2::string_view sv = "test\n";
+		sv.remove_suffix_while( 'a' );
+		auto const sz = sv.size( );
+		daw_expecting( sz, 5 );
+	}
+
 	struct FooSV {
 		using iterator = char const *;
 		using size_type = std::size_t;
@@ -1711,6 +1733,10 @@ int main( )
 	daw::daw_remove_prefix_num_test_003( );
 	daw::daw_remove_prefix_until_test_001( );
 	daw::daw_remove_prefix_until_test_002( );
+	daw::daw_remove_prefix_until_test_003( );
+	daw::daw_remove_prefix_until_test_004( );
+	daw::daw_remove_suffix_while_test_001( );
+	daw::daw_remove_suffix_while_test_002( );
 	daw::daw_arbutrary_string_view_list_001( );
 	daw::daw_trim_prefix_test_001( );
 	daw::daw_trim_prefix_test_002( );
