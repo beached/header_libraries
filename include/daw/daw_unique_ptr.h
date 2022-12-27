@@ -92,7 +92,7 @@ namespace daw {
 
 	private:
 		template<typename, typename>
-		friend class unique_ptr;
+		friend struct unique_ptr;
 
 		pointer m_ptr = pointer{ };
 
