@@ -900,6 +900,16 @@ namespace daw {
 				return result;
 			}
 
+			/// @brief Searches for the first non match of where, returns substring between front and
+			/// where, then pops off the substring
+			/// @param where The pattern to extract
+			/// @return substring from beginning to first non-match of where string
+			[[nodiscard]] constexpr basic_string_view pop_front_while( CharT where ) {
+				auto pos = find_first_not_of( where );
+				auto result = pop_front( pos );
+				return result;
+			}
+
 			/// @brief Searches for where, returns substring between front and
 			/// where, then pops off the substring and the where string
 			/// @param where string to split on and remove from front
@@ -939,6 +949,25 @@ namespace daw {
 			pop_front_until( UnaryPredicate pred, nodiscard_t ) {
 
 				auto pos = find_first_of_if( DAW_MOVE( pred ) );
+				return pop_front( pos );
+			}
+
+			/// @brief Increment data until the predicate is false or the string_view
+			/// is empty.  Return a new string_view formed from the range of the
+			/// previous value of data( ) and the position where predicate was false.
+			/// @tparam UnaryPredicate A predicate taking a single CharT as parameter
+			/// @param pred A predicate that returns false at the end of the newly
+			/// created range.
+			/// @return substring from beginning to position marked by
+			/// predicate
+			/// @post data( ) is set to position where the predicate was false, or one
+			/// past the end of the range
+			template<typename UnaryPredicate,
+			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
+			[[nodiscard]] constexpr basic_string_view
+			pop_front_while( UnaryPredicate pred ) {
+
+				auto pos = find_first_not_of_if( DAW_MOVE( pred ) );
 				return pop_front( pos );
 			}
 
