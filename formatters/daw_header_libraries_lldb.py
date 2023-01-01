@@ -85,8 +85,8 @@ def dawStringLikeSummaryProvider(valobj, dict):
     return 'size=' + str(size) + ': ' + make_string(buf,size)
 
 def __lldb_init_module(debugger, dict):
-    debugger.HandleCommand('type synthetic add -w daw_header_libraries -l daw_header_libraries.dawVectorSynthProvider          -x "^(daw::)vector<.+>$"')
-    debugger.HandleCommand('type summary   add -w daw_header_libraries -F daw_header_libraries.dawVectorSummaryProvider     -e -x "^(daw::)vector<.+>$"')
-    debugger.HandleCommand('type summary   add -w daw_header_libraries -F daw_header_libraries.dawStringLikeSummaryProvider -e -x "^(daw::sv1::)basic_string_view<.+>$"')
-    debugger.HandleCommand('type summary   add -w daw_header_libraries -F daw_header_libraries.dawStringLikeSummaryProvider -e -x "^(daw::sv2::)basic_string_view<.+>$"')
-    debugger.HandleCommand('type category enable daw_header_libraries')
+    debugger.HandleCommand('type synthetic add -w daw_header_libraries_lldb -l daw_header_libraries_lldb.dawVectorSynthProvider          -x "^(daw::)vector<.+>$"')
+    debugger.HandleCommand('type summary   add -w daw_header_libraries_lldb -F daw_header_libraries_lldb.dawVectorSummaryProvider     -e -x "^(daw::)vector<.+>$"')
+    debugger.HandleCommand('type summary   add -w daw_header_libraries_lldb -F daw_header_libraries_lldb.dawStringLikeSummaryProvider -e -x "^(daw::sv1::)basic_string_view<.+>$"')
+    debugger.HandleCommand('type summary   add -w daw_header_libraries_lldb -F daw_header_libraries_lldb.dawStringLikeSummaryProvider -e -x "^(daw::sv2::)basic_string_view<.+>$"')
+    debugger.HandleCommand('type category enable daw_header_libraries_lldb')
