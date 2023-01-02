@@ -79,6 +79,26 @@ namespace daw {
 			return contiguous_view( data( ) + offset, data( ) + sz );
 		}
 
+		/// This is potentially unsafe.  Decrements the start of range
+		void add_prefix( ) noexcept {
+			--m_first;
+		}
+
+		/// This is potentially unsafe.  Decrements the start of range
+		void add_prefix( std::size_t n ) noexcept {
+			m_first -= n;
+		}
+
+		/// This is potentially unsafe.  Decrements the start of range
+		void add_suffix( ) noexcept {
+			++m_last;
+		}
+
+		/// This is potentially unsafe.  Decrements the start of range
+		void add_suffix( std::size_t n ) noexcept {
+			m_last += n;
+		}
+
 		[[nodiscard]] constexpr pointer data( ) noexcept {
 			return m_first;
 		}
