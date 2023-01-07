@@ -25,50 +25,50 @@
 #include <utility>
 
 #if defined( DAW_USE_EXCEPTIONS )
-#define daw_expecting( Lhs, Rhs )                                              \
-	do                                                                           \
-		if( ( Lhs ) != ( Rhs ) ) {                                                 \
-			throw [] {                                                               \
-				std::stringstream ss{ };                                               \
-				ss << "Invalid result. Expecting '" #Lhs << " == " #Rhs << "'\n"       \
-				   << "File: " << __FILE__ << "\nLine: " << __LINE__;                  \
-				return std::logic_error( ss.str( ) );                                  \
-			}( );                                                                    \
-		}                                                                          \
+#define daw_expecting( Lhs, Rhs )                                        \
+	do                                                                     \
+		if( ( Lhs ) != ( Rhs ) ) {                                           \
+			throw [] {                                                         \
+				std::stringstream ss{ };                                         \
+				ss << "Invalid result. Expecting '" #Lhs << " == " #Rhs << "'\n" \
+				   << "File: " << __FILE__ << "\nLine: " << __LINE__;            \
+				return std::logic_error( ss.str( ) );                            \
+			}( );                                                              \
+		}                                                                    \
 	while( false )
 #else
-#define daw_expecting( Lhs, Rhs )                                              \
-	do                                                                           \
-		if( ( Lhs ) != ( Rhs ) ) {                                                 \
-			std::cerr << "Invalid result. Expecting '" #Lhs << " == " #Rhs << "'\n"  \
-			          << "File: " << __FILE__ << "\nLine: " << __LINE__              \
-			          << std::endl;                                                  \
-			std::abort( );                                                           \
-		}                                                                          \
+#define daw_expecting( Lhs, Rhs )                                             \
+	do                                                                          \
+		if( ( Lhs ) != ( Rhs ) ) {                                                \
+			std::cerr << "Invalid result. Expecting '" #Lhs << " == " #Rhs << "'\n" \
+			          << "File: " << __FILE__ << "\nLine: " << __LINE__             \
+			          << std::endl;                                                 \
+			std::abort( );                                                          \
+		}                                                                         \
 	while( false )
 #endif
 
 #if defined( DAW_USE_EXCEPTIONS )
-#define daw_expecting_message( Bool, Message )                                 \
-	do                                                                           \
-		if( not( Bool ) ) {                                                        \
-			std::stringstream ss{ };                                                 \
-			ss << "Invalid result. Expecting '" #Bool << "' to be true\n"            \
-			   << "Message: " #Message << "File: " << __FILE__                       \
-			   << "\nLine: " << __LINE__;                                            \
-			throw std::logic_error( ss.str( ) );                                     \
-		}                                                                          \
+#define daw_expecting_message( Bool, Message )                      \
+	do                                                                \
+		if( not( Bool ) ) {                                             \
+			std::stringstream ss{ };                                      \
+			ss << "Invalid result. Expecting '" #Bool << "' to be true\n" \
+			   << "Message: " #Message << "File: " << __FILE__            \
+			   << "\nLine: " << __LINE__;                                 \
+			throw std::logic_error( ss.str( ) );                          \
+		}                                                               \
 	while( false )
 #else
-#define daw_expecting_message( Bool, Message )                                 \
-	do                                                                           \
-		if( not( Bool ) ) {                                                        \
-			std::stringstream ss{ };                                                 \
-			std::cerr << "Invalid result. Expecting '" #Bool << "' to be true\n"     \
-			          << "Message: " #Message << "File: " << __FILE__                \
-			          << "\nLine: " << __LINE__ << std::endl;                        \
-			std::abort( );                                                           \
-		}                                                                          \
+#define daw_expecting_message( Bool, Message )                             \
+	do                                                                       \
+		if( not( Bool ) ) {                                                    \
+			std::stringstream ss{ };                                             \
+			std::cerr << "Invalid result. Expecting '" #Bool << "' to be true\n" \
+			          << "Message: " #Message << "File: " << __FILE__            \
+			          << "\nLine: " << __LINE__ << std::endl;                    \
+			std::abort( );                                                       \
+		}                                                                      \
 	while( false )
 #endif
 
@@ -176,37 +176,51 @@ namespace daw {
 
 	void daw_string_view_find_first_of_if_001( ) {
 		daw::sv2::string_view const a = "abcdefghijklm";
-		auto pos = a.find_first_of_if( []( auto c ) { return c == 'c'; } );
+		auto pos = a.find_first_of_if( []( auto c ) {
+			return c == 'c';
+		} );
 		daw_expecting( 2U, pos );
 	}
 
 	void daw_string_view_find_first_of_if_002( ) {
 		daw::sv2::string_view const a = "abcdefghijklm";
-		auto pos = a.find_first_of_if( []( auto c ) { return c == 'c'; }, 1000 );
+		auto pos = a.find_first_of_if(
+		  []( auto c ) {
+			  return c == 'c';
+		  },
+		  1000 );
 		daw_expecting( daw::sv2::string_view::npos, pos );
 	}
 
 	void daw_string_view_find_first_of_if_003( ) {
 		daw::sv2::string_view const a = "abcdefghijklm";
-		auto pos = a.find_first_of_if( []( auto c ) { return c == 'x'; } );
+		auto pos = a.find_first_of_if( []( auto c ) {
+			return c == 'x';
+		} );
 		daw_expecting( daw::sv2::string_view::npos, pos );
 	}
 
 	void daw_string_view_find_first_not_of_if_001( ) {
 		daw::sv2::string_view const a = "abcdefghijklm";
-		auto pos = a.find_first_not_of_if( []( auto c ) { return c < 'c'; } );
+		auto pos = a.find_first_not_of_if( []( auto c ) {
+			return c < 'c';
+		} );
 		daw_expecting( 2U, pos );
 	}
 
 	void daw_string_view_find_first_not_of_if_002( ) {
 		daw::sv2::string_view const a = "";
-		auto pos = a.find_first_not_of_if( []( auto c ) { return c < 'c'; } );
+		auto pos = a.find_first_not_of_if( []( auto c ) {
+			return c < 'c';
+		} );
 		daw_expecting( daw::sv2::string_view::npos, pos );
 	}
 
 	void daw_string_view_find_first_not_of_if_003( ) {
 		daw::sv2::string_view const a = "abcdefghijklm";
-		auto pos = a.find_first_not_of_if( []( auto c ) { return c < 'x'; } );
+		auto pos = a.find_first_not_of_if( []( auto c ) {
+			return c < 'x';
+		} );
 		daw_expecting( daw::sv2::string_view::npos, pos );
 	}
 
@@ -297,34 +311,43 @@ namespace daw {
 
 	void daw_string_view_find_last_not_of_if_001( ) {
 		daw::sv2::string_view const sv = "abcabf ghijklm     \n";
-		auto pos_sv =
-		  sv.find_last_not_of_if( []( char c ) { return std::isspace( c ) != 0; } );
+		auto pos_sv = sv.find_last_not_of_if( []( char c ) {
+			return std::isspace( c ) != 0;
+		} );
 		daw_expecting( 13U, pos_sv );
 	}
 
 	void daw_string_view_find_last_not_of_if_002( ) {
 		daw::sv2::string_view const sv = "abcabf ghijklm     \n";
 		auto pos_sv = sv.find_last_not_of_if(
-		  []( char c ) { return std::isspace( c ) != 0; }, 6 );
+		  []( char c ) {
+			  return std::isspace( c ) != 0;
+		  },
+		  6 );
 		daw_expecting( 5U, pos_sv );
 	}
 
 	void daw_string_view_find_last_not_of_if_003( ) {
 		daw::sv2::string_view const sv = "";
-		auto pos_sv =
-		  sv.find_last_not_of_if( []( char c ) { return std::isspace( c ) != 0; } );
+		auto pos_sv = sv.find_last_not_of_if( []( char c ) {
+			return std::isspace( c ) != 0;
+		} );
 		daw_expecting( daw::sv2::string_view::npos, pos_sv );
 	}
 
 	void daw_string_view_find_last_not_of_if_004( ) {
 		daw::sv2::string_view const sv = "abcabf ghijklm     \n";
-		auto pos_sv = sv.find_last_not_of_if( []( char ) { return false; } );
+		auto pos_sv = sv.find_last_not_of_if( []( char ) {
+			return false;
+		} );
 		daw_expecting( sv.size( ) - 1, pos_sv );
 	}
 
 	void daw_string_view_find_last_not_of_if_005( ) {
 		daw::sv2::string_view const sv = "abcabf ghijklm     \n";
-		auto pos_sv = sv.find_last_not_of_if( []( char ) { return true; } );
+		auto pos_sv = sv.find_last_not_of_if( []( char ) {
+			return true;
+		} );
 		daw_expecting( daw::sv2::string_view::npos, pos_sv );
 	}
 
@@ -1153,7 +1176,9 @@ namespace daw {
 
 	void daw_pop_back_until_sv_test_002( ) {
 		daw::sv2::string_view sv = "This is a test";
-		auto result = sv.pop_back_until( []( char c ) { return c == 'x'; } );
+		auto result = sv.pop_back_until( []( char c ) {
+			return c == 'x';
+		} );
 		daw_expecting_message( sv.empty( ), "Expected empty result" );
 		daw_expecting_message( result.end( ) == sv.end( ), "Expected same end( )" );
 	}
@@ -1161,15 +1186,18 @@ namespace daw {
 	void daw_pop_front_pred_test_001( ) {
 		std::string_view str = "This is1a test";
 		daw::sv2::string_view sv{ str.data( ), str.size( ) };
-		auto lhs = sv.pop_front_until( []( auto c ) { return std::isdigit( c ); } );
+		auto lhs = sv.pop_front_until( []( auto c ) {
+			return std::isdigit( c );
+		} );
 		daw_expecting( lhs, "This is" );
 		daw_expecting( sv, "a test" );
 	}
 
 	void daw_pop_back_pred_test_001( ) {
 		daw::sv2::string_view sv = "This is1a test";
-		auto result =
-		  sv.pop_back_until( []( auto c ) { return std::isdigit( c ); } );
+		auto result = sv.pop_back_until( []( auto c ) {
+			return std::isdigit( c );
+		} );
 		daw_expecting( "This is", sv );
 		daw_expecting( "a test", result );
 	}
@@ -1602,6 +1630,18 @@ namespace daw {
 		pos = sv.find_first_match( { "Wor" } );
 		daw_expecting( pos, 11 );
 	}
+
+#if defined( DAW_HAS_CPP20_3WAY_COMPARE )
+	void daw_3way_compare_test_001( ) {
+		daw::string_view lhs = "Hello";
+		daw::string_view rhs = "Bye";
+//clang-format off
+		auto cmp = lhs <=> rhs;
+//clang-format on
+		static_assert( std::is_same_v<std::strong_ordering, decltype( cmp )> );
+		daw_expecting( cmp, std::strong_ordering::greater );
+	}
+#endif
 } // namespace daw
 
 int main( )
@@ -1758,6 +1798,9 @@ int main( )
 	daw::daw_trim_copy( );
 	daw::daw_array_ctad( );
 	daw::daw_find_first_match( );
+#if defined( DAW_HAS_CPP20_3WAY_COMPARE )
+	daw::daw_3way_compare_test_001( );
+#endif
 }
 #if defined( DAW_USE_EXCEPTIONS )
 catch( std::exception const &ex ) {

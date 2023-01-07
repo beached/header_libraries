@@ -49,6 +49,9 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
             # This was removed in clang-13
             add_compile_options(-Wno-return-std-move-in-c++11)
         endif ()
+        if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 16.0.0)
+            add_compile_options(-Wno-unsafe-buffer-usage)
+        endif ()
         if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 14.0.0)
             add_compile_options(-Wno-bitwise-instead-of-logical -Wno-c++20-compat)
         endif ()

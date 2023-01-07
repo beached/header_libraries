@@ -9,6 +9,7 @@
 #pragma once
 
 #include "ciso646.h"
+#include "daw_attributes.h"
 #include "daw_traits.h"
 
 #include <cstddef>
