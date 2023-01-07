@@ -80,22 +80,22 @@ namespace daw {
 		}
 
 		/// This is potentially unsafe.  Decrements the start of range
-		void add_prefix( ) noexcept {
+		constexpr void add_prefix( ) noexcept {
 			--m_first;
 		}
 
 		/// This is potentially unsafe.  Decrements the start of range
-		void add_prefix( std::size_t n ) noexcept {
+		constexpr void add_prefix( std::size_t n ) noexcept {
 			m_first -= n;
 		}
 
 		/// This is potentially unsafe.  Decrements the start of range
-		void add_suffix( ) noexcept {
+		constexpr void add_suffix( ) noexcept {
 			++m_last;
 		}
 
 		/// This is potentially unsafe.  Decrements the start of range
-		void add_suffix( std::size_t n ) noexcept {
+		constexpr void add_suffix( std::size_t n ) noexcept {
 			m_last += n;
 		}
 
@@ -460,6 +460,32 @@ namespace daw {
 		template<constructible_from<pointer, size_type> Container>
 		explicit constexpr operator Container( ) const noexcept {
 			return Container{ data( ), size( ) };
+		}
+
+		constexpr contiguous_view
+		subspan( std::size_t offset, std::size_t count = std::size_t( -1 ) ) const {
+			auto sz = std::min( count, size( ) - std::min( size( ), offset ) );
+			return contiguous_view( data( ) + offset, data( ) + sz );
+		}
+
+		/// This is potentially unsafe.  Decrements the start of range
+		constexpr void add_prefix( ) noexcept {
+			--m_first;
+		}
+
+		/// This is potentially unsafe.  Decrements the start of range
+		constexpr void add_prefix( std::size_t n ) noexcept {
+			m_first -= n;
+		}
+
+		/// This is potentially unsafe.  Decrements the start of range
+		constexpr void add_suffix( ) noexcept {
+			++m_last;
+		}
+
+		/// This is potentially unsafe.  Decrements the start of range
+		constexpr void add_suffix( std::size_t n ) noexcept {
+			m_last += n;
 		}
 
 		[[nodiscard]] constexpr pointer data( ) noexcept {
