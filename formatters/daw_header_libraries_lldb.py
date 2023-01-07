@@ -6,6 +6,8 @@ class dawVectorSynthProvider:
     def __init__(self, valobj, dict):
         self.valobj = valobj
         self.count = None
+        self.start = None
+        self.finish = None
 
     def num_children(self):
         if self.count is None:
@@ -28,7 +30,10 @@ class dawVectorSynthProvider:
             else:
                 num_children = num_children // self.data_size
             return num_children
-        except:
+        except Exception as inst:
+            print(type(inst))    # the exception instance
+            print(inst.args)     # arguments stored in .args
+            print(inst)          # __str__ allows args to be printed directly,
             return 0
 
     def get_child_at_index(self, index):
@@ -47,21 +52,26 @@ class dawVectorSynthProvider:
     def update(self):
         self.count = None
         try:
-            self.start = self.valobj.GetChildMemberWithName('m_begin')
-            self.finish = self.valobj.GetChildMemberWithName('m_end')
+            self.start = self.valobj.GetChildAtIndex(0)
+            self.finish = self.valobj.GetChildAtIndex(1)
             self.data_type = self.start.GetType().GetPointeeType()
             self.data_size = self.data_type.GetByteSize()
-            if self.start.IsValid() and self.finish.IsValid() and self.data_type.IsValid():
-                self.count = None
-            else:
-                self.count = 0
-        except:
+#            if self.start.IsValid() and self.finish.IsValid() and self.data_type.IsValid():
+#                self.count = None
+#            else:
+#                self.count = 0
+        except Exception as inst:
+            print(type(inst))    # the exception instance
+            print(inst.args)     # arguments stored in .args
+            print(inst)          # __str__ allows args to be printed directly,
             self.count = 0
         return False
 
 def dawVectorSummaryProvider(valobj, dict):
-    size = valobj.EvaluateExpression("size()").GetValueAsUnsigned(0)
-    return 'size=' + str(size)
+    sz = valobj.EvaluateExpression("size()").GetValueAsUnsigned(0)
+    #prov = dawVectorSynthProvider(valobj,None)
+    #sz = prov.num_children()
+    return 'size=' + str(sz)
 
 def make_string(S, L):
     if L == 0 or S == None: return '""'
@@ -90,5 +100,8 @@ def __lldb_init_module(debugger, dict):
     debugger.HandleCommand('type summary   add -w daw_header_libraries_lldb -F daw_header_libraries_lldb.dawStringLikeSummaryProvider   -e -x "^(daw::sv1::)basic_string_view<.+>$"')
     debugger.HandleCommand('type summary   add -w daw_header_libraries_lldb -F daw_header_libraries_lldb.dawStringLikeSummaryProvider   -e -x "^(daw::sv2::)basic_string_view<.+>$"')
     debugger.HandleCommand('type summary   add -w daw_header_libraries_lldb  -x "^daw::unique_ptr<.*>" --inline-children')
+    debugger.HandleCommand('type summary   add -w daw_header_libraries_lldb  -x "^daw::not_null<.*>" --inline-children')
+    debugger.HandleCommand('type summary   add -w daw_header_libraries_lldb  -x "^daw::wrap_iter<.*>" --inline-children')
 
     debugger.HandleCommand('type category enable daw_header_libraries_lldb')
+

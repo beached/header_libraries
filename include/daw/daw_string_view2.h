@@ -11,6 +11,7 @@
 #include "daw_string_view2_fwd.h"
 
 #include "ciso646.h"
+#include "cpp_20.h"
 #include "daw_algorithm.h"
 #include "daw_assume.h"
 #include "daw_check_exceptions.h"
@@ -900,8 +901,8 @@ namespace daw {
 				return result;
 			}
 
-			/// @brief Searches for the first non match of where, returns substring between front and
-			/// where, then pops off the substring
+			/// @brief Searches for the first non match of where, returns substring
+			/// between front and where, then pops off the substring
 			/// @param where The pattern to extract
 			/// @return substring from beginning to first non-match of where string
 			[[nodiscard]] constexpr basic_string_view pop_front_while( CharT where ) {
@@ -2326,6 +2327,15 @@ namespace daw {
 			operator==( basic_string_view rhs ) noexcept {
 				return compare( rhs ) == 0;
 			}
+
+#if defined( DAW_HAS_CPP20_3WAY_COMPARE )
+			// clang-format off
+			[[nodiscard]] constexpr std::strong_ordering
+			operator<=>( basic_string_view const &rhs ) const noexcept {
+				return compare( rhs ) <=> 0;
+			}
+			// clang-format on
+#endif
 
 			template<typename StringView,
 			         DAW_REQ_CONTIG_CHAR_RANGE( StringView, CharT )>

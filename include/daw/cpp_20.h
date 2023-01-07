@@ -28,6 +28,15 @@
 #define DAW_CPP20_CX_ALLOC
 #endif
 
+#if defined( __cpp_lib_three_way_comparison )
+#if __cpp_lib_three_way_comparison >= 201907L
+#if __has_include( <compare> )
+#include <compare>
+#define DAW_HAS_CPP20_3WAY_COMPARE
+#endif
+#endif
+#endif
+
 namespace daw {
 	template<typename T>
 	inline constexpr bool is_unbounded_array_v = false;
