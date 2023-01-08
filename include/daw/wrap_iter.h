@@ -7,6 +7,7 @@
 #pragma once
 
 #include "daw_attributes.h"
+#include "daw_compiler_fixups.h"
 
 #include <compare>
 #include <cstddef>
@@ -46,12 +47,14 @@ namespace daw {
 			return *i;
 		}
 
-		constexpr pointer operator->( ) const noexcept {
+		[[nodiscard]] constexpr pointer operator->( ) const noexcept {
 			return std::to_address( i );
 		}
 
 		constexpr wrap_iter &operator++( ) noexcept {
+			DAW_UNSAFE_BUFFER_FUNC_START
 			++i;
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 			return *this;
 		}
 
@@ -62,7 +65,9 @@ namespace daw {
 		}
 
 		constexpr wrap_iter &operator--( ) noexcept {
+			DAW_UNSAFE_BUFFER_FUNC_START
 			--i;
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 			return *this;
 		}
 
@@ -101,7 +106,9 @@ namespace daw {
 		}
 
 		constexpr auto operator<=>( wrap_iter const &rhs ) const noexcept {
+			// clang-format off
 			return base( ) <=> rhs.base( );
+			// clang-format on
 		}
 
 		constexpr bool operator==( wrap_iter const &rhs ) const noexcept {

@@ -10,6 +10,7 @@
 
 #include "ciso646.h"
 #include "cpp_17.h"
+#include "daw_compiler_fixups.h"
 #include "daw_do_n.h"
 #include "daw_enable_if.h"
 #include "daw_exception.h"
@@ -290,11 +291,13 @@ namespace daw::algorithm {
 	template<class InputIterator, class T>
 	constexpr InputIterator find( InputIterator first, InputIterator last,
 	                              T const &value ) {
+		DAW_UNSAFE_BUFFER_FUNC_START
 		for( ; first != last; ++first ) {
 			if( *first == value ) {
 				return first;
 			}
 		}
+		DAW_UNSAFE_BUFFER_FUNC_STOP
 		return last;
 	}
 
@@ -305,12 +308,14 @@ namespace daw::algorithm {
 		traits::is_input_iterator_test<InputIterator>( );
 		traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
 
+		DAW_UNSAFE_BUFFER_FUNC_START
 		while( first != last ) {
 			if( unary_predicate( *first ) ) {
 				return first;
 			}
 			++first;
 		}
+		DAW_UNSAFE_BUFFER_FUNC_STOP
 		return last;
 	}
 
@@ -319,13 +324,14 @@ namespace daw::algorithm {
 	                                     UnaryPredicate &&unary_predicate ) {
 		traits::is_input_iterator_test<InputIterator>( );
 		traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
-
+		DAW_UNSAFE_BUFFER_FUNC_START
 		while( first != last ) {
 			if( not unary_predicate( *first ) ) {
 				return first;
 			}
 			++first;
 		}
+		DAW_UNSAFE_BUFFER_FUNC_STOP
 		return last;
 	}
 
@@ -1177,13 +1183,14 @@ namespace daw::algorithm {
 
 		traits::is_input_iterator_test<InputIterator>( );
 		traits::is_output_iterator_test<OutputIterator, decltype( *first )>( );
-
+		DAW_UNSAFE_BUFFER_FUNC_START
 		while( first != last ) {
 			*first_out = *first;
 			++first;
 			++first_out;
 		}
 		return first_out;
+		DAW_UNSAFE_BUFFER_FUNC_STOP
 	}
 
 	/// @brief Copy input range [first, last) to output range [first_out,
@@ -1235,9 +1242,11 @@ namespace daw::algorithm {
 		traits::is_output_iterator_test<OutputIterator, decltype( *first )>( );
 
 		while( count-- > 0 ) {
+			DAW_UNSAFE_BUFFER_FUNC_START
 			*first_out = *first;
 			++first;
 			++first_out;
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 		struct result_t {
 			InputIterator input;

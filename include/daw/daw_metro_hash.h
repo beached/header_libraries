@@ -9,6 +9,7 @@
 #pragma once
 
 #include "ciso646.h"
+#include "daw_compiler_fixups.h"
 #include "daw_do_n.h"
 #include "daw_view.h"
 
@@ -23,7 +24,9 @@ namespace daw::metro::metro_impl {
 		Unsigned result = 0;
 		daw::algorithm::do_n_arg<sizeof( Unsigned )>( [&]( size_t n ) {
 			// This is needed, the compiler must have it's unsigned char
+			DAW_UNSAFE_BUFFER_FUNC_START
 			auto const tmp = static_cast<unsigned char>( ptr[n] );
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 			result = static_cast<Unsigned>( result | static_cast<Unsigned>( tmp )
 			                                           << ( n * 8U ) );
 		} );

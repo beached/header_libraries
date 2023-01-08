@@ -453,8 +453,11 @@ namespace daw {
 
 		constexpr void destruct_at_end( pointer new_last,
 		                                std::false_type ) noexcept {
-			while( new_last != end_ )
+			DAW_UNSAFE_BUFFER_FUNC_START
+			while( new_last != end_ ) {
 				alloc_traits::destroy( alloc( ), std::to_address( --end_ ) );
+			}
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 
 		constexpr void destruct_at_end( pointer new_last,

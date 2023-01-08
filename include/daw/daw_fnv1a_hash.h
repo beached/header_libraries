@@ -10,6 +10,7 @@
 
 #include "ciso646.h"
 #include "daw_attributes.h"
+#include "daw_compiler_fixups.h"
 #include "daw_traits.h"
 
 #include <cstddef>
@@ -114,7 +115,9 @@ namespace daw {
 			while( *ptr != '\0' ) {
 				hash = hash ^ static_cast<fnv1a_uint_t>( *ptr );
 				hash *= impl::fnv_prime( );
+				DAW_UNSAFE_BUFFER_FUNC_START
 				++ptr;
+				DAW_UNSAFE_BUFFER_FUNC_STOP
 			}
 			return hash;
 		}
@@ -142,7 +145,9 @@ namespace daw {
 		auto hash = impl::fnv_offset( );
 		while( *ptr != 0 ) {
 			hash = fnv1a_hash_t::append_hash( hash, *ptr );
+			DAW_UNSAFE_BUFFER_FUNC_START
 			++ptr;
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 		return hash;
 	}
@@ -154,7 +159,9 @@ namespace daw {
 		auto const last = std::next( ptr, static_cast<std::ptrdiff_t>( len ) );
 		while( ptr != last ) {
 			hash = fnv1a_hash_t::append_hash( hash, *ptr );
+			DAW_UNSAFE_BUFFER_FUNC_START
 			++ptr;
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 		return hash;
 	}
