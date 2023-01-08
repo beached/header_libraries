@@ -20,6 +20,7 @@
 #include <iterator>
 #include <stdexcept>
 
+DAW_UNSAFE_BUFFER_FUNC_START
 namespace daw {
 	template<typename, bool ExplicitConv = false>
 	struct contiguous_view;
@@ -799,3 +800,4 @@ namespace daw {
 	contiguous_view( T ( & )[N] ) -> contiguous_view<T>;
 
 } // namespace daw
+DAW_UNSAFE_BUFFER_FUNC_STOP
