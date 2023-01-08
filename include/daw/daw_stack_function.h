@@ -9,6 +9,7 @@
 #pragma once
 
 #include "ciso646.h"
+#include "daw_compiler_fixups.h"
 #include "daw_exception.h"
 #include "daw_move.h"
 #include "daw_traits.h"
@@ -20,6 +21,12 @@
 #include <memory>
 #include <new>
 #include <type_traits>
+
+#if defined( DAW_HAS_GCC )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Waddress"
+#pragma GCC diagnostic ignored "-Wnonnull-compare"
+#endif
 
 namespace daw {
 	namespace func_impl {
@@ -342,3 +349,7 @@ namespace daw {
 		}
 	};
 } // namespace daw
+
+#if defined( DAW_HAS_GCC )
+#pragma GCC diagnostic pop
+#endif

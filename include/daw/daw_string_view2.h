@@ -15,6 +15,7 @@
 #include "daw_algorithm.h"
 #include "daw_assume.h"
 #include "daw_check_exceptions.h"
+#include "daw_compiler_fixups.h"
 #include "daw_consteval.h"
 #include "daw_cpp_feature_check.h"
 #include "daw_fnv1a_hash.h"
@@ -127,6 +128,7 @@ namespace daw {
 				  "BinaryPredicate p does not fullfill the requires of a binary "
 				  "predicate concept.  See "
 				  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate" );
+				DAW_UNSAFE_BUFFER_FUNC_START
 				for( ; first != last; ++first ) {
 					for( ForwardIt it = s_first; it != s_last; ++it ) {
 						if( p( *first, *it ) ) {
@@ -134,6 +136,7 @@ namespace daw {
 						}
 					}
 				}
+				DAW_UNSAFE_BUFFER_FUNC_STOP
 				return last;
 			}
 
@@ -147,11 +150,13 @@ namespace daw {
 				  "predicate "
 				  "concept.  See "
 				  "http://en.cppreference.com/w/cpp/concept/Predicate" );
+				DAW_UNSAFE_BUFFER_FUNC_START
 				for( ; first != last; ++first ) {
 					if( p( *first ) ) {
 						return first;
 					}
 				}
+				DAW_UNSAFE_BUFFER_FUNC_STOP
 				return last;
 			}
 
@@ -165,11 +170,13 @@ namespace daw {
 				  "predicate "
 				  "concept.  See "
 				  "http://en.cppreference.com/w/cpp/concept/Predicate" );
+				DAW_UNSAFE_BUFFER_FUNC_START
 				for( ; first != last; ++first ) {
 					if( not p( *first ) ) {
 						return first;
 					}
 				}
+				DAW_UNSAFE_BUFFER_FUNC_STOP
 				return last;
 			}
 
@@ -185,6 +192,7 @@ namespace daw {
 				  "predicate concept.  See "
 				  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate" );
 				bool found = false;
+				DAW_UNSAFE_BUFFER_FUNC_START
 				for( ; first != last; ++first ) {
 					found = false;
 					for( ForwardIt it = s_first; it != s_last; ++it ) {
@@ -197,6 +205,7 @@ namespace daw {
 						return first;
 					}
 				}
+				DAW_UNSAFE_BUFFER_FUNC_STOP
 				return last;
 			}
 
@@ -212,8 +221,10 @@ namespace daw {
 					if( diff > 0 ) {
 						return 1;
 					}
+					DAW_UNSAFE_BUFFER_FUNC_START
 					++l_ptr;
 					++r_ptr;
+					DAW_UNSAFE_BUFFER_FUNC_STOP
 				}
 				return 0;
 			}
@@ -225,7 +236,9 @@ namespace daw {
 				}
 				auto pos = str;
 				while( *( pos ) != 0 ) {
+					DAW_UNSAFE_BUFFER_FUNC_START
 					++pos;
+					DAW_UNSAFE_BUFFER_FUNC_STOP
 				}
 				return static_cast<SizeT>( pos - str );
 			}
@@ -234,6 +247,7 @@ namespace daw {
 			[[nodiscard]] constexpr ForwardIt1
 			search( ForwardIt1 first, ForwardIt1 last, ForwardIt2 s_first,
 			        ForwardIt2 s_last ) {
+				DAW_UNSAFE_BUFFER_FUNC_START
 				for( ;; ++first ) {
 					ForwardIt1 it = first;
 					for( ForwardIt2 s_it = s_first;; ++it, ++s_it ) {
@@ -248,6 +262,7 @@ namespace daw {
 						}
 					}
 				}
+				DAW_UNSAFE_BUFFER_FUNC_STOP
 			}
 
 			template<typename CharT, string_view_bounds_type Bounds,
@@ -258,6 +273,7 @@ namespace daw {
 				auto const last = daw::data_end( haystack );
 				for( ; not haystack.empty( ); haystack.remove_prefix( ) ) {
 					auto it = haystack.data( );
+					DAW_UNSAFE_BUFFER_FUNC_START
 					for( auto needle : needles ) {
 						if( needle.size( ) > haystack.size( ) ) {}
 						auto s_first = std::data( needle );
@@ -274,6 +290,7 @@ namespace daw {
 							}
 						}
 					}
+					DAW_UNSAFE_BUFFER_FUNC_STOP
 				}
 				return data_end( haystack );
 			}
@@ -721,7 +738,9 @@ namespace daw {
 			operator[]( size_type pos ) const {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos < size( ), "Attempt to access basic_string_view past end" );
+				DAW_UNSAFE_BUFFER_FUNC_START
 				return m_first[pos];
+				DAW_UNSAFE_BUFFER_FUNC_STOP
 			}
 
 			/// Access to the elements of range
@@ -1556,8 +1575,10 @@ namespace daw {
 						if( c( *p1, *p0 ) ) {
 							return 1;
 						}
+						DAW_UNSAFE_BUFFER_FUNC_START
 						++p0;
 						++p1;
+						DAW_UNSAFE_BUFFER_FUNC_STOP
 					}
 					return 0;
 				};
@@ -1650,11 +1671,13 @@ namespace daw {
 			[[nodiscard]] constexpr size_type
 			find_first_match( std::initializer_list<basic_string_view> needles,
 			                  size_type pos ) const {
+				DAW_UNSAFE_BUFFER_FUNC_START
 				for( auto needle : needles ) {
 					if( needle.empty( ) ) {
 						return pos;
 					}
 				}
+				DAW_UNSAFE_BUFFER_FUNC_STOP
 				auto result = sv2_details::search( substr( pos ), needles );
 				if( data_end( ) == result ) {
 					return npos;
@@ -1678,7 +1701,9 @@ namespace daw {
 				auto first = data( ) + pos;
 				auto const sz = static_cast<std::size_t>( data_end( ) - first );
 				for( std::size_t n = pos; n < sz; ++n ) {
+					DAW_UNSAFE_BUFFER_FUNC_START
 					char const test_c = first[n];
+					DAW_UNSAFE_BUFFER_FUNC_STOP
 					if( test_c == c ) {
 						return n;
 					}
@@ -1783,7 +1808,9 @@ namespace daw {
 					if( cur == begin( ) ) {
 						return npos;
 					}
+					DAW_UNSAFE_BUFFER_FUNC_START
 					--cur;
+					DAW_UNSAFE_BUFFER_FUNC_STOP
 				}
 			}
 
@@ -2195,9 +2222,11 @@ namespace daw {
 					pos = size( ) - 1;
 				}
 				for( auto n = static_cast<difference_type>( pos ); n >= 0; --n ) {
+					DAW_UNSAFE_BUFFER_FUNC_START
 					if( not pred( m_first[n] ) ) {
 						return static_cast<size_type>( n );
 					}
+					DAW_UNSAFE_BUFFER_FUNC_STOP
 				}
 				return npos;
 			}
@@ -2224,9 +2253,11 @@ namespace daw {
 					return pos;
 				}
 				for( auto n = static_cast<difference_type>( pos ); n >= 0; --n ) {
+					DAW_UNSAFE_BUFFER_FUNC_START
 					if( v.find( m_first[n] ) == npos ) {
 						return static_cast<size_type>( n );
 					}
+					DAW_UNSAFE_BUFFER_FUNC_STOP
 				}
 				return npos;
 			}
@@ -2285,7 +2316,9 @@ namespace daw {
 					if( *lhs != s.front( ) ) {
 						return false;
 					}
+					DAW_UNSAFE_BUFFER_FUNC_START
 					++lhs;
+					DAW_UNSAFE_BUFFER_FUNC_STOP
 					s.remove_prefix( );
 				}
 				return true;
@@ -2313,7 +2346,9 @@ namespace daw {
 					if( *lhs != s.back( ) ) {
 						return false;
 					}
+					DAW_UNSAFE_BUFFER_FUNC_START
 					++lhs;
+					DAW_UNSAFE_BUFFER_FUNC_STOP
 					s.remove_suffix( );
 				}
 				return true;

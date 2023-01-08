@@ -7,6 +7,7 @@
 #pragma once
 
 #include "compressed_pair.h"
+#include "daw_compiler_fixups.h"
 #include "daw_concepts.h"
 #include "daw_likely.h"
 #include "daw_move.h"
@@ -41,6 +42,7 @@ namespace daw::impl {
 		               "The specified type does not meet the requirements of "
 		               "Cpp17MoveInsertable" );
 		using traits = std::allocator_traits<Alloc>;
+		DAW_UNSAFE_BUFFER_FUNC_START
 		while( end1 != begin1 ) {
 			traits::construct( a, std::to_address( end2 - 1 ),
 #if defined( DAW_USE_EXCEPTIONS )
@@ -51,6 +53,7 @@ namespace daw::impl {
 			);
 			--end2;
 		}
+		DAW_UNSAFE_BUFFER_FUNC_STOP
 	}
 
 	template<typename Alloc, typename Ptr>
@@ -61,6 +64,7 @@ namespace daw::impl {
 		               "The specified type does not meet the requirements of "
 		               "Cpp17MoveInsertable" );
 		using traits_t = std::allocator_traits<Alloc>;
+		DAW_UNSAFE_BUFFER_FUNC_START
 		for( ; begin1 != end1; ++begin1, (void)++begin2 ) {
 			traits_t::construct( a, std::to_address( begin2 ),
 #if defined( DAW_USE_EXCEPTIONS )
@@ -70,15 +74,18 @@ namespace daw::impl {
 #endif
 			);
 		}
+		DAW_UNSAFE_BUFFER_FUNC_STOP
 	}
 
 	template<typename Alloc, typename Iter, typename Ptr>
 	constexpr void construct_range_forward( Alloc &a, Iter begin1, Iter end1,
 	                                        Ptr &begin2 ) {
 		using traits_t = std::allocator_traits<Alloc>;
+		DAW_UNSAFE_BUFFER_FUNC_START
 		for( ; begin1 != end1; ++begin1, (void)++begin2 ) {
 			traits_t::construct( a, std::to_address( begin2 ), *begin1 );
 		}
+		DAW_UNSAFE_BUFFER_FUNC_STOP
 	}
 } // namespace daw::impl
 
@@ -190,9 +197,11 @@ namespace daw {
 		                             iter_reference_type<InputIterator>> ) //
 		  explicit constexpr vector( InputIterator first, InputIterator last ) {
 
+			DAW_UNSAFE_BUFFER_FUNC_START
 			for( ; first != last; ++first ) {
 				emplace_back( *first );
 			}
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 
 		template<input_iterator InputIterator>
@@ -202,9 +211,11 @@ namespace daw {
 		                             allocator_type const &a )
 		  : m_endcap_( nullptr, a ) {
 
+			DAW_UNSAFE_BUFFER_FUNC_START
 			for( ; first != last; ++first ) {
 				emplace_back( *first );
 			}
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 
 		template<forward_iterator ForwardIterator>
@@ -328,8 +339,11 @@ namespace daw {
 		                             iter_reference_type<InputIterator>> ) //
 		  void assign( InputIterator first, InputIterator last ) {
 			clear( );
-			for( ; first != last; ++first )
+			DAW_UNSAFE_BUFFER_FUNC_START
+			for( ; first != last; ++first ) {
 				emplace_back( *first );
+			}
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 
 		template<forward_iterator ForwardIterator>
@@ -479,26 +493,34 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr reference operator[]( size_type n ) noexcept {
+			DAW_UNSAFE_BUFFER_FUNC_START
 			return m_begin[n];
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 
 		[[nodiscard]] constexpr const_reference
 		operator[]( size_type n ) const noexcept {
+			DAW_UNSAFE_BUFFER_FUNC_START
 			return m_begin[n];
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 
 		[[nodiscard]] reference at( size_type n ) {
 			if( DAW_UNLIKELY( n >= size( ) ) ) {
 				throw_out_of_range( );
 			}
+			DAW_UNSAFE_BUFFER_FUNC_START
 			return m_begin[n];
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 
 		[[nodiscard]] const_reference at( size_type n ) const {
 			if( DAW_UNLIKELY( n >= size( ) ) ) {
 				throw_out_of_range( );
 			}
+			DAW_UNSAFE_BUFFER_FUNC_START
 			return m_begin[n];
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 
 		[[nodiscard]] constexpr reference front( ) noexcept {
@@ -510,11 +532,15 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr reference back( ) noexcept {
+			DAW_UNSAFE_BUFFER_FUNC_START
 			return *( m_end - 1 );
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 
 		[[nodiscard]] constexpr const_reference back( ) const noexcept {
+			DAW_UNSAFE_BUFFER_FUNC_START
 			return *( m_end - 1 );
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 
 		[[nodiscard]] constexpr pointer data( ) noexcept {
@@ -570,7 +596,9 @@ namespace daw {
 					move_range( p, m_end, p + 1 );
 					auto xr = std::pointer_traits<const_pointer>::pointer_to( x );
 					if( p <= xr && xr < m_end ) {
+						DAW_UNSAFE_BUFFER_FUNC_START
 						++xr;
+						DAW_UNSAFE_BUFFER_FUNC_STOP
 					}
 					*p = *xr;
 				}
@@ -1038,7 +1066,7 @@ namespace daw {
 		}
 
 		constexpr void move_assign( vector &c,
-		                  std::false_type ) //
+		                            std::false_type ) //
 		  noexcept( alloc_traits::is_always_equal::value ) {
 			if( alloc( ) != c.alloc( ) ) {
 				using move_it_t = std::move_iterator<iterator>;
@@ -1071,7 +1099,9 @@ namespace daw {
 			  recommend( size( ) + 1 ), size( ), a );
 			// v.push_back(std::forward<_Up>(x));
 			alloc_traits::construct( a, std::to_address( v.end_ ), DAW_FWD2( U, x ) );
+			DAW_UNSAFE_BUFFER_FUNC_START
 			++v.end_;
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 			swap_out_circular_buffer( v );
 		}
 
@@ -1083,7 +1113,9 @@ namespace daw {
 			//    v.emplace_back(std::forward<Args>(args)...);
 			alloc_traits::construct( a, std::to_address( v.end_ ),
 			                         DAW_FWD2( Args, args )... );
+			DAW_UNSAFE_BUFFER_FUNC_START
 			++v.end_;
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 			swap_out_circular_buffer( v );
 		}
 
@@ -1112,7 +1144,9 @@ namespace daw {
 			ConstructTransaction tx( *this, 1 );
 			alloc_traits::construct( alloc( ), std::to_address( tx.pos ),
 			                         DAW_FWD2( Args, args )... );
+			DAW_UNSAFE_BUFFER_FUNC_START
 			++tx.pos;
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 
 		[[nodiscard]] constexpr allocator_type &alloc( ) noexcept {
@@ -1133,9 +1167,11 @@ namespace daw {
 
 		constexpr void base_destruct_at_end( pointer new_last ) noexcept {
 			pointer soon_to_be_end = m_end;
+			DAW_UNSAFE_BUFFER_FUNC_START
 			while( new_last != soon_to_be_end ) {
 				alloc_traits::destroy( alloc( ), std::to_address( --soon_to_be_end ) );
 			}
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 			m_end = new_last;
 		}
 
@@ -1252,6 +1288,7 @@ namespace daw {
 	                                  InputIterator first, InputIterator last,
 	                                  std::size_t block_size = 512 ) {
 		auto cur_size = v.size( );
+		DAW_UNSAFE_BUFFER_FUNC_START
 		while( first != last ) {
 			v.resize_and_overwrite( cur_size + block_size,
 			                        [&]( T *ptr, std::size_t sz ) {
@@ -1265,6 +1302,7 @@ namespace daw {
 				                        return cur_size;
 			                        } );
 		}
+		DAW_UNSAFE_BUFFER_FUNC_STOP
 	}
 
 	template<typename T, typename Allocator = std::allocator<T>,
