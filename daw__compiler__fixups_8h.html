@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>DAW Header Libraries: daw_metro_hash.h File Reference</title>
+<title>DAW Header Libraries: daw_compiler_fixups.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -67,34 +67,55 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">daw_metro_hash.h File Reference</div>  </div>
+<div class="title">daw_compiler_fixups.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="ciso646_8h_source.html">ciso646.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__compiler__fixups_8h_source.html">daw_compiler_fixups.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__do__n_8h_source.html">daw_do_n.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__view_8h_source.html">daw_view.h</a>&quot;</code><br />
-<code>#include &lt;cstddef&gt;</code><br />
-<code>#include &lt;cstdint&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>&quot;</code><br />
 </div>
-<p><a href="daw__metro__hash_8h_source.html">Go to the source code of this file.</a></p>
+<p><a href="daw__compiler__fixups_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
-<tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacedaw_1_1metro"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1metro.html">daw::metro</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:ae3d1fc3c7915b87db302156e3e3a143e"><td class="memItemLeft" align="right" valign="top">constexpr uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1metro.html#ae3d1fc3c7915b87db302156e3e3a143e">daw::metro::hash64</a> (<a class="el" href="structdaw_1_1view.html">daw::view</a>&lt; char const * &gt; buff, uint64_t seed)</td></tr>
-<tr class="separator:ae3d1fc3c7915b87db302156e3e3a143e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a36b599f1320cec1a28af5b5c4ae15ce1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__compiler__fixups_8h.html#a36b599f1320cec1a28af5b5c4ae15ce1">DAW_UNSAFE_BUFFER_FUNC_START</a></td></tr>
+<tr class="separator:a36b599f1320cec1a28af5b5c4ae15ce1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c7dc0ab87f2d36a26c75a9840ca71e3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__compiler__fixups_8h.html#a4c7dc0ab87f2d36a26c75a9840ca71e3">DAW_UNSAFE_BUFFER_FUNC_STOP</a></td></tr>
+<tr class="separator:a4c7dc0ab87f2d36a26c75a9840ca71e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a36b599f1320cec1a28af5b5c4ae15ce1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36b599f1320cec1a28af5b5c4ae15ce1">&#9670;&nbsp;</a></span>DAW_UNSAFE_BUFFER_FUNC_START</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_UNSAFE_BUFFER_FUNC_START</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__compiler__fixups_8h_source.html#l00021">21</a> of file <a class="el" href="daw__compiler__fixups_8h_source.html">daw_compiler_fixups.h</a>.</p>
+
+</div>
+</div>
+<a id="a4c7dc0ab87f2d36a26c75a9840ca71e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c7dc0ab87f2d36a26c75a9840ca71e3">&#9670;&nbsp;</a></span>DAW_UNSAFE_BUFFER_FUNC_STOP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_UNSAFE_BUFFER_FUNC_STOP</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__compiler__fixups_8h_source.html#l00022">22</a> of file <a class="el" href="daw__compiler__fixups_8h_source.html">daw_compiler_fixups.h</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
