@@ -379,11 +379,15 @@ namespace daw {
 						(void)f;
 						return l;
 					} else {
+						DAW_UNSAFE_BUFFER_FUNC_START
 						return static_cast<last_type>( l - f );
+						DAW_UNSAFE_BUFFER_FUNC_STOP
 					}
 				} else {
 					if constexpr( is_last_a_pointer_v<Bounds> ) {
+						DAW_UNSAFE_BUFFER_FUNC_START
 						return f + static_cast<difference_type>( l );
+						DAW_UNSAFE_BUFFER_FUNC_STOP
 					} else {
 						(void)f;
 						return static_cast<size_type>( l );
@@ -404,7 +408,9 @@ namespace daw {
 			DAW_ATTRIB_INLINE static constexpr size_type size( const_pointer f,
 			                                                   last_type l ) {
 				if constexpr( is_last_a_pointer_v<Bounds> ) {
+					DAW_UNSAFE_BUFFER_FUNC_START
 					return static_cast<size_type>( l - f );
+					DAW_UNSAFE_BUFFER_FUNC_STOP
 				} else {
 					(void)f;
 					return l;
@@ -413,7 +419,9 @@ namespace daw {
 
 			template<string_view_bounds_type Bounds>
 			DAW_ATTRIB_INLINE constexpr void dec_front( size_type n ) {
+				DAW_UNSAFE_BUFFER_FUNC_START
 				m_first += static_cast<difference_type>( n );
+				DAW_UNSAFE_BUFFER_FUNC_STOP
 				if constexpr( not is_last_a_pointer_v<Bounds> ) {
 					m_last -= n;
 				}
@@ -421,28 +429,34 @@ namespace daw {
 
 			template<string_view_bounds_type Bounds>
 			DAW_ATTRIB_INLINE constexpr void dec_back( size_type n ) {
+				DAW_UNSAFE_BUFFER_FUNC_START
 				if constexpr( is_last_a_pointer_v<Bounds> ) {
 					m_last -= static_cast<difference_type>( n );
 				} else {
 					m_last -= n;
 				}
+				DAW_UNSAFE_BUFFER_FUNC_STOP
 			}
 
 			template<string_view_bounds_type Bounds>
 			DAW_ATTRIB_INLINE constexpr void inc_front( size_type n ) {
+				DAW_UNSAFE_BUFFER_FUNC_START
 				m_first -= static_cast<difference_type>( n );
 				if constexpr( not is_last_a_pointer_v<Bounds> ) {
 					m_last += n;
 				}
+				DAW_UNSAFE_BUFFER_FUNC_STOP
 			}
 
 			template<string_view_bounds_type Bounds>
 			DAW_ATTRIB_INLINE constexpr void inc_back( size_type n ) {
+				DAW_UNSAFE_BUFFER_FUNC_START
 				if constexpr( is_last_a_pointer_v<Bounds> ) {
 					m_last += static_cast<difference_type>( n );
 				} else {
 					m_last += n;
 				}
+				DAW_UNSAFE_BUFFER_FUNC_STOP
 			}
 
 			const_pointer m_first = nullptr;
@@ -2011,12 +2025,14 @@ namespace daw {
 				if( pos >= size( ) ) {
 					return npos;
 				}
+				DAW_UNSAFE_BUFFER_FUNC_START
 				auto const iter =
 				  sv2_details::find_first_not_of_if( begin( ) + pos, end( ), pred );
 				if( end( ) == iter ) {
 					return npos;
 				}
 				return static_cast<size_type>( std::distance( begin( ), iter ) );
+				DAW_UNSAFE_BUFFER_FUNC_STOP
 			}
 
 			template<typename UnaryPredicate,

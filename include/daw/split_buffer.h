@@ -77,9 +77,11 @@ namespace daw {
 		explicit constexpr split_buffer( size_type cap, size_type start,
 		                                 alloc_rr &a )
 		  : end_cap_( nullptr, a ) {
+			DAW_UNSAFE_BUFFER_FUNC_START
 			first_ = cap != 0 ? alloc_traits::allocate( alloc( ), cap ) : nullptr;
 			begin_ = end_ = first_ + start;
 			end_cap( ) = first_ + cap;
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 
 		explicit constexpr split_buffer( ) noexcept(
