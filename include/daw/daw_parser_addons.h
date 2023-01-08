@@ -12,6 +12,7 @@
 #include "daw_exception.h"
 #include "daw_parser_helper.h"
 
+DAW_UNSAFE_BUFFER_FUNC_START
 namespace daw::parser {
 	template<typename ForwardIterator>
 	constexpr auto find_number( ForwardIterator first, ForwardIterator last ) {
@@ -107,3 +108,4 @@ namespace daw::parser {
 	}
 
 } // namespace daw::parser
+DAW_UNSAFE_BUFFER_FUNC_STOP
