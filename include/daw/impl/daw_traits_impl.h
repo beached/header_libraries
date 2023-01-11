@@ -469,6 +469,7 @@ namespace daw {
 		struct identity {
 			using type = T;
 		};
+
 #if DAW_HAS_BUILTIN( __type_pack_element )
 		template<std::size_t I, typename... Ts>
 		using nth_type = __type_pack_element<I, Ts...>;
