@@ -1626,7 +1626,7 @@ namespace daw {
 	}
 
 	void daw_find_first_match( ) {
-		daw::string_view sv = R"(Hello 😍 World)";
+		daw::sv2::string_view sv = R"(Hello 😍 World)";
 		auto pos = sv.find_first_match( { "😍", "Wor" } );
 		daw_expecting( pos, 6 );
 		pos = sv.find_first_match( { "Wor" } );
@@ -1635,11 +1635,11 @@ namespace daw {
 
 #if defined( DAW_HAS_CPP20_3WAY_COMPARE )
 	void daw_3way_compare_test_001( ) {
-		daw::string_view lhs = "Hello";
-		daw::string_view rhs = "Bye";
-//clang-format off
+		daw::sv2::string_view lhs = "Hello";
+		daw::sv2::string_view rhs = "Bye";
+		// clang-format off
 		auto cmp = lhs <=> rhs;
-//clang-format on
+		// clang-format on
 		static_assert( std::is_same_v<std::strong_ordering, decltype( cmp )> );
 		daw_expecting( cmp, std::strong_ordering::greater );
 	}
@@ -1652,19 +1652,20 @@ int main( )
 #endif
 {
 	/*
-	 * Ensure that daw::string_view s = { "a", "b" }; doesn't work
+	 * Ensure that daw::sv2::string_view s = { "a", "b" }; doesn't work
 	 */
 	static_assert(
-	  not std::is_constructible_v<daw::string_view, char const( & )[4],
+	  not std::is_constructible_v<daw::sv2::string_view, char const( & )[4],
 	                              char const( & )[4]> );
-	static_assert(
-	  std::is_constructible_v<daw::string_view, char const *, char const *> );
+	static_assert( std::is_constructible_v<daw::sv2::string_view, char const *,
+	                                       char const *> );
 	static_assert(
 	  std::is_convertible_v<char const( & )[4], daw::sv2::string_view> );
 	auto a = daw::sv2::string_view( "Hello" );
 	(void)a;
 	daw::sv2::string_view b;
 	b = "Hello";
+	(void)b;
 	daw_expecting( daw::ensure_same_at_ct( ), true );
 	daw::daw_string_view_constexpr_001( );
 	daw::daw_string_view_find_last_of_001( );

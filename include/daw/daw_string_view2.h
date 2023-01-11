@@ -324,6 +324,18 @@ namespace daw {
 			inline constexpr bool is_char_pointer_v =
 			  std::is_pointer_v<T> and std::is_convertible_v<T, PointerType>;
 
+			template<typename T>
+			struct equal_t {
+				explicit DAW_CONSTEVAL equal_t( int ) {}
+
+				DAW_ATTRIB_INLINE constexpr bool operator( )( T l,
+				                                              T r ) const noexcept {
+					return l == r;
+				}
+			};
+
+			template<typename CharT>
+			inline constexpr auto bp_eq = equal_t<CharT>( 42 );
 		} // namespace sv2_details
 
 		/// @brief The class template basic_string_view describes an object that can
@@ -348,10 +360,6 @@ namespace daw {
 			using i_am_a_daw_string_view2 = void;
 
 		private:
-			static constexpr auto bp_eq = []( CharT l, CharT r ) noexcept {
-				return l == r;
-			};
-
 			template<string_view_bounds_type B>
 			static constexpr bool is_last_a_pointer_v =
 			  B == string_view_bounds_type::pointer;
@@ -1859,8 +1867,9 @@ namespace daw {
 				if( pos >= size( ) or v.empty( ) ) {
 					return npos;
 				}
-				auto const iter = sv2_details::find_first_of(
-				  begin( ) + pos, end( ), v.begin( ), v.end( ), bp_eq );
+				auto const iter =
+				  sv2_details::find_first_of( begin( ) + pos, end( ), v.begin( ),
+				                              v.end( ), sv2_details::bp_eq<CharT> );
 
 				if( end( ) == iter ) {
 					return npos;
@@ -2126,7 +2135,8 @@ namespace daw {
 				auto haystack = substr( pos );
 				const_iterator iter = sv2_details::find_first_not_of(
 				  haystack.begin( ), haystack.end( ), v.begin( ),
-				  std::next( v.begin( ), static_cast<ptrdiff_t>( v.size( ) ) ), bp_eq );
+				  std::next( v.begin( ), static_cast<ptrdiff_t>( v.size( ) ) ),
+				  sv2_details::bp_eq<CharT> );
 				if( end( ) == iter ) {
 					return npos;
 				}
