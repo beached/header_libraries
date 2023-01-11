@@ -1673,8 +1673,10 @@ int main( )
 	daw::daw_string_view_find_last_of_003( );
 	daw::daw_string_view_find_last_of_004( );
 	daw::sv2::string_view arg = "";
+	(void)arg;
 	daw::daw_string_view_find_last_of_005( arg );
 	daw::sv2::string_view arg2 = "a";
+	(void)arg2;
 	daw::daw_string_view_find_last_of_006( arg2 );
 	daw::daw_string_view_find_last_of_007( arg2 );
 	daw::daw_string_view_find_first_of_if_001( );

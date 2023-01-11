@@ -361,35 +361,31 @@ namespace daw {
 
 		private:
 			template<string_view_bounds_type B>
-			static constexpr bool is_last_a_pointer_v =
-			  B == string_view_bounds_type::pointer;
+			using is_last_a_pointer =
+			  std::bool_constant<B == string_view_bounds_type::pointer>;
 
-			using last_type = std::conditional_t<is_last_a_pointer_v<BoundsType>,
+			using last_type = std::conditional_t<is_last_a_pointer<BoundsType>::value,
 			                                     const_pointer, size_type>;
-			static inline constexpr last_type default_last = [] {
-				if constexpr( is_last_a_pointer_v<BoundsType> ) {
-					return nullptr;
-				} else {
-					return 0;
-				}
-			}( );
+
+			using default_last_t =
+			  std::integral_constant<last_type, static_cast<last_type>( 0 )>;
+
 			using last_difference_type =
-			  std::conditional_t<is_last_a_pointer_v<BoundsType>, difference_type,
-			                     size_type>;
+			  std::conditional_t<is_last_a_pointer<BoundsType>::value,
+			                     difference_type, size_type>;
 
 			template<string_view_bounds_type Bounds, typename LastType>
 			DAW_ATTRIB_INLINE static constexpr last_type
 			make_last( const_pointer f, LastType l ) noexcept {
 				if constexpr( std::is_pointer_v<LastType> ) {
-					if constexpr( is_last_a_pointer_v<Bounds> ) {
+					if constexpr( is_last_a_pointer<Bounds>::value ) {
 						(void)f;
 						return l;
 					} else {
-
 						return static_cast<last_type>( l - f );
 					}
 				} else {
-					if constexpr( is_last_a_pointer_v<Bounds> ) {
+					if constexpr( is_last_a_pointer<Bounds>::value ) {
 
 						return f + static_cast<difference_type>( l );
 
@@ -402,7 +398,7 @@ namespace daw {
 
 			template<string_view_bounds_type Bounds>
 			DAW_ATTRIB_INLINE constexpr const_pointer last_pointer( ) const {
-				if constexpr( is_last_a_pointer_v<Bounds> ) {
+				if constexpr( is_last_a_pointer<Bounds>::value ) {
 					return m_last;
 				} else {
 					return m_first + static_cast<difference_type>( m_last );
@@ -412,7 +408,7 @@ namespace daw {
 			template<string_view_bounds_type Bounds>
 			DAW_ATTRIB_INLINE static constexpr size_type size( const_pointer f,
 			                                                   last_type l ) {
-				if constexpr( is_last_a_pointer_v<Bounds> ) {
+				if constexpr( is_last_a_pointer<Bounds>::value ) {
 
 					return static_cast<size_type>( l - f );
 
@@ -427,7 +423,7 @@ namespace daw {
 
 				m_first += static_cast<difference_type>( n );
 
-				if constexpr( not is_last_a_pointer_v<Bounds> ) {
+				if constexpr( not is_last_a_pointer<Bounds>::value ) {
 					m_last -= n;
 				}
 			}
@@ -435,7 +431,7 @@ namespace daw {
 			template<string_view_bounds_type Bounds>
 			DAW_ATTRIB_INLINE constexpr void dec_back( size_type n ) {
 
-				if constexpr( is_last_a_pointer_v<Bounds> ) {
+				if constexpr( is_last_a_pointer<Bounds>::value ) {
 					m_last -= static_cast<difference_type>( n );
 				} else {
 					m_last -= n;
@@ -446,7 +442,7 @@ namespace daw {
 			DAW_ATTRIB_INLINE constexpr void inc_front( size_type n ) {
 
 				m_first -= static_cast<difference_type>( n );
-				if constexpr( not is_last_a_pointer_v<Bounds> ) {
+				if constexpr( not is_last_a_pointer<Bounds>::value ) {
 					m_last += n;
 				}
 			}
@@ -454,7 +450,7 @@ namespace daw {
 			template<string_view_bounds_type Bounds>
 			DAW_ATTRIB_INLINE constexpr void inc_back( size_type n ) {
 
-				if constexpr( is_last_a_pointer_v<Bounds> ) {
+				if constexpr( is_last_a_pointer<Bounds>::value ) {
 					m_last += static_cast<difference_type>( n );
 				} else {
 					m_last += n;
@@ -462,10 +458,10 @@ namespace daw {
 			}
 
 			const_pointer m_first = nullptr;
-			last_type m_last = default_last;
+			last_type m_last = default_last_t::value;
 
 		public:
-			static constexpr size_type const npos =
+			static constexpr size_type npos =
 			  ( std::numeric_limits<size_type>::max )( );
 
 			//******************************
