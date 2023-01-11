@@ -24,6 +24,8 @@
 #include <type_traits>
 #include <utility>
 
+static_assert( std::is_trivially_copyable_v<daw::sv2::string_view> );
+
 #if defined( DAW_USE_EXCEPTIONS )
 #define daw_expecting( Lhs, Rhs )                                        \
 	do                                                                     \

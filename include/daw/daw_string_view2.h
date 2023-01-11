@@ -467,7 +467,7 @@ namespace daw {
 			/// @brief Construct an empty string_view
 			/// @post data( ) == nullptr
 			/// @post size( ) == 0
-			basic_string_view( ) = default;
+			DAW_CONSTEVAL basic_string_view( ) = default;
 
 			/// @brief Construct an empty string_view
 			/// @post data( ) == nullptr
@@ -490,7 +490,8 @@ namespace daw {
 			/// @param count Size of character range
 			/// @post data( ) == s
 			/// @post size( ) == count
-			constexpr basic_string_view( const_pointer s, size_type count ) noexcept
+			DAW_ATTRIB_INLINE constexpr basic_string_view( const_pointer s,
+			                                               size_type count ) noexcept
 			  : m_first( s )
 			  , m_last( make_last<BoundsType>( s, count ) ) {}
 
@@ -506,40 +507,6 @@ namespace daw {
 			  , m_last(
 			      make_last<BoundsType>( s, sv2_details::strlen<size_type>( s ) ) ) {}
 
-			/// @brief Converting substr constructor from any string_view with
-			/// matching CharT types.
-			/// @param sv Other string_view
-			/// @param count Maximum number of characters to use in range
-			/// formed by sv
-			/// @post data( ) == sv.data( )
-			/// @post size( ) == min( count, sv.size( ) )
-			template<string_view_bounds_type B>
-			constexpr basic_string_view( basic_string_view<CharT, B> sv,
-			                             size_type count ) noexcept
-			  : m_first( sv.data( ) )
-			  , m_last( make_last<BoundsType>( sv.data( ),
-			                                   ( std::min )( sv.size( ), count ) ) ) {
-			}
-
-			/// @brief Converting substr constructor from any string_view with
-			/// matching CharT types. Does not clip count to sv's bounds
-			/// @param sv Other string_view
-			/// @param count Maximum number of characters to use in range
-			/// formed by sv
-			/// @pre count <= sv.size( )
-			/// @post data( ) == sv.data( )
-			/// @post size( ) == min( count, sv.size( ) )
-			template<string_view_bounds_type B>
-			constexpr basic_string_view( basic_string_view<CharT, B> sv,
-			                             size_type count,
-			                             dont_clip_to_bounds_t ) noexcept
-			  : m_first( sv.data( ) )
-			  , m_last( make_last<BoundsType>( sv.data( ), count ) ) {
-				DAW_STRING_VIEW_DBG_RNG_CHECK(
-				  sv.size( ) >= count,
-				  "Attempt to access more elements that are available" );
-			}
-
 			/// @brief Construct a string_view from a type that forms a
 			/// contiguous range of characters
 			/// @param sv A valid contiguous character range
@@ -547,7 +514,7 @@ namespace daw {
 			/// @post size( ) == std::size( sv )
 			template<typename StringView,
 			         DAW_REQ_CONTIG_CHAR_RANGE( StringView, CharT )>
-			constexpr basic_string_view( StringView &&sv ) noexcept
+			DAW_ATTRIB_INLINE constexpr basic_string_view( StringView &&sv ) noexcept
 			  : m_first( std::data( sv ) )
 			  , m_last( make_last<BoundsType>( m_first, std::size( sv ) ) ) {}
 
@@ -560,7 +527,8 @@ namespace daw {
 			/// @post size( ) == min( count, sv.size( ) )
 			template<typename StringView,
 			         DAW_REQ_CONTIG_CHAR_RANGE( StringView, CharT )>
-			constexpr basic_string_view( StringView &&sv, size_type count ) noexcept
+			DAW_ATTRIB_INLINE constexpr basic_string_view( StringView &&sv,
+			                                               size_type count ) noexcept
 			  : m_first( std::data( sv ) )
 			  , m_last( make_last<BoundsType>(
 			      m_first, ( std::min )( std::size( sv ), count ) ) ) {}
@@ -575,8 +543,8 @@ namespace daw {
 			/// @post size( ) == min( count, sv.size( ) )
 			template<typename StringView,
 			         DAW_REQ_CONTIG_CHAR_RANGE( StringView, CharT )>
-			constexpr basic_string_view( StringView &&sv, size_type count,
-			                             dont_clip_to_bounds_t ) noexcept
+			DAW_ATTRIB_INLINE constexpr basic_string_view(
+			  StringView &&sv, size_type count, dont_clip_to_bounds_t ) noexcept
 			  : m_first( std::data( sv ) )
 			  , m_last( make_last<BoundsType>( m_first, count ) ) {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
@@ -591,7 +559,8 @@ namespace daw {
 			/// @post data( ) == std::data( string_literal )
 			/// @post size( ) == std::size( string_literal ) - 1
 			template<std::size_t N>
-			constexpr basic_string_view( CharT const ( &string_literal )[N] ) noexcept
+			DAW_ATTRIB_INLINE constexpr basic_string_view(
+			  CharT const ( &string_literal )[N] ) noexcept
 			  : m_first( string_literal )
 			  , m_last( make_last<BoundsType>( string_literal, N - 1 ) ) {
 				static_assert( N > 0 );
