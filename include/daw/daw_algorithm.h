@@ -30,6 +30,8 @@
 #include <utility>
 #include <vector>
 
+DAW_UNSAFE_BUFFER_FUNC_START
+
 namespace daw {
 	template<typename Map, typename Key>
 	constexpr auto try_get( Map &container, Key &&k ) {
@@ -2309,3 +2311,5 @@ namespace daw::algorithm {
 		return { first, -std::size_t{ 1 } };
 	}
 } // namespace daw::algorithm
+
+DAW_UNSAFE_BUFFER_FUNC_STOP
