@@ -17,7 +17,7 @@ namespace daw {
 	};
 
 	template<typename...Ts>
-	inline constexpr bool always_false_v = always_false<Ts...>:value;
+	inline constexpr bool always_false_v = always_false<Ts...>::value;
 }
 
 
