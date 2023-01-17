@@ -46,7 +46,19 @@ class daw_string_view_printer:
 
     def to_string(self):
         m_first = self.val['m_first']
-        return m_first.string()
+        if m_first == 0:
+            return "daw::string_view: <null>"
+        m_last = self.val['m_last']
+        size = 0
+        if m_last.type.strip_typedefs().code == gdb.TYPE_CODE_PTR:
+            size = m_last - m_first
+        else:
+            size = int(m_last)
+
+        if size == 0:
+            return "daw::string_view: <empty>"
+
+        return f"daw::string_view[{size}] '{m_first.string()}'"
 
     def children(self):
         m_first = self.val['m_first']
@@ -61,13 +73,13 @@ class daw_string_view_printer:
 
 
 def lookup_daw_string_view(val):
-    lookup_tag = val.type.tag
+    lookup_tag = val.type.strip_typedefs().tag
     if lookup_tag is None:
         return None
     regex = re.compile("^daw::sv2::basic_string_view<.*>$")
     regex2 = re.compile("^daw::sv2::string_view<.*>$")
     regex3 = re.compile("^daw::sv2::string_view$")
-    if regex.match(lookup_tag) or regex2.match( lookup_tag ) or regex3.match( lookup_tag ):
+    if regex.match(lookup_tag) or regex2.match(lookup_tag) or regex3.match(lookup_tag):
         return daw_string_view_printer(val)
     return None
 
