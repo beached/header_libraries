@@ -368,7 +368,7 @@ namespace daw {
 			                                     const_pointer, size_type>;
 
 			using default_last_t =
-			  std::integral_constant<last_type, static_cast<last_type>( 0 )>;
+			  std::integral_constant<last_type, last_type{}>;
 
 			using last_difference_type =
 			  std::conditional_t<is_last_a_pointer<BoundsType>::value,
