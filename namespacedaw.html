@@ -138,6 +138,8 @@ Namespaces</h2></td></tr>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1_alloc_deleter.html">AllocDeleter</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1always__false.html">always_false</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1any__of__t.html">any_of_t</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A predicate type used in the find based routine to return true when the element is one of the specified characters.  <a href="structdaw_1_1any__of__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -647,9 +649,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1value__ptr.html">value_ptr</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1vector.html">vector</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1_vector.html">Vector</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1vector.html">vector</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1view.html">view</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4076,6 +4078,9 @@ Variables</h2></td></tr>
 <tr class="memitem:ab569d3d627459952b23b2d3ea96622e5"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ab569d3d627459952b23b2d3ea96622e5"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ab569d3d627459952b23b2d3ea96622e5">Allocators</a> = true</td></tr>
 <tr class="separator:ab569d3d627459952b23b2d3ea96622e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba34456e7e98a226593bace7d7cbff5f"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
+<tr class="memitem:aba34456e7e98a226593bace7d7cbff5f"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aba34456e7e98a226593bace7d7cbff5f">always_false_v</a> = <a class="el" href="structdaw_1_1always__false.html">always_false</a>&lt;Ts...&gt;:value</td></tr>
+<tr class="separator:aba34456e7e98a226593bace7d7cbff5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb7a1d9129d0b893ceb0ae5fda07ad33"><td class="memTemplParams" colspan="2">template&lt;auto needle, auto... needles&gt; </td></tr>
 <tr class="memitem:abb7a1d9129d0b893ceb0ae5fda07ad33"><td class="memTemplItemLeft" align="right" valign="top">static constexpr <a class="el" href="structdaw_1_1any__of__t.html">any_of_t</a>&lt; decltype(needle), needle, needles... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#abb7a1d9129d0b893ceb0ae5fda07ad33">any_of</a> { }</td></tr>
 <tr class="memdesc:abb7a1d9129d0b893ceb0ae5fda07ad33"><td class="mdescLeft">&#160;</td><td class="mdescRight">A predicate value used in the find based routine to return true when the element is one of the specified characters.  <a href="namespacedaw.html#abb7a1d9129d0b893ceb0ae5fda07ad33">More...</a><br /></td></tr>
@@ -50039,6 +50044,32 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00406">406</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
+
+</div>
+</div>
+<a id="aba34456e7e98a226593bace7d7cbff5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba34456e7e98a226593bace7d7cbff5f">&#9670;&nbsp;</a></span>always_false_v</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... Ts&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool daw::always_false_v = <a class="el" href="structdaw_1_1always__false.html">always_false</a>&lt;Ts...&gt;:value</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__always__false_8h_source.html#l00020">20</a> of file <a class="el" href="daw__always__false_8h_source.html">daw_always_false.h</a>.</p>
 
 </div>
 </div>
