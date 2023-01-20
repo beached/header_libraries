@@ -10,6 +10,7 @@
 
 #include "daw_cpp_feature_check.h"
 
+#include <memory>
 #include <type_traits>
 
 #if defined( __cpp_constexpr_dynamic_alloc )
@@ -37,6 +38,14 @@
 #endif
 #endif
 
+#if defined( __cpp_concepts )
+#if __cpp_concepts >= 201907L
+#if not defined( DAW_CPP20_CONCEPTS )
+#define DAW_CPP20_CONCEPTS
+#endif
+#endif
+#endif
+
 namespace daw {
 	template<typename T>
 	inline constexpr bool is_unbounded_array_v = false;
@@ -46,4 +55,37 @@ namespace daw {
 
 	template<typename T>
 	struct is_unbounded_array : std::bool_constant<is_unbounded_array_v<T>> {};
+
+	namespace cpp_20_details {
+#if defined( DAW_CPP20_CONCEPTS )
+		template<typename T>
+		inline constexpr bool has_pointer_traits_to_address_v =
+		  requires( T const &p ) {
+			std::pointer_traits<T>::to_address( p );
+		};
+#else
+		template<typename T, typename = void>
+		inline constexpr bool has_pointer_traits_to_address_v = false;
+
+		template<typename T>
+		inline constexpr bool has_pointer_traits_to_address_v<
+		  T, std::void_t<decltype( std::pointer_traits<T>::to_address(
+		       std::declval<T const &>( ) ) )>> = true;
+#endif
+	} // namespace cpp_20_details
+
+	template<typename T>
+	constexpr T *to_address( T *p ) noexcept {
+		static_assert( not std::is_function_v<T> );
+		return p;
+	}
+
+	template<typename T>
+	constexpr auto to_address( T const &p ) noexcept {
+		if constexpr( cpp_20_details::has_pointer_traits_to_address_v<T> ) {
+			return std::pointer_traits<T>::to_address( p );
+		} else {
+			return daw::to_address( p.operator->( ) );
+		}
+	}
 } // namespace daw

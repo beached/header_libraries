@@ -351,10 +351,10 @@ namespace daw {
 		}
 
 	public:
-		constexpr bounded_hash_map( ) = default;
+		bounded_hash_map( ) = default;
 
 		template<size_type ItemCount>
-		DAW_CONSTEVAL bounded_hash_map(
+		constexpr bounded_hash_map(
 		  std::pair<Key, Value> const ( &init_values )[ItemCount] ) {
 
 			static_assert( ItemCount <= N );
