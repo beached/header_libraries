@@ -367,8 +367,7 @@ namespace daw {
 			using last_type = std::conditional_t<is_last_a_pointer<BoundsType>::value,
 			                                     const_pointer, size_type>;
 
-			using default_last_t =
-			  std::integral_constant<last_type, last_type{}>;
+			using default_last_t = std::integral_constant<last_type, last_type{ }>;
 
 			using last_difference_type =
 			  std::conditional_t<is_last_a_pointer<BoundsType>::value,
@@ -471,18 +470,19 @@ namespace daw {
 			/// @brief Construct an empty string_view
 			/// @post data( ) == nullptr
 			/// @post size( ) == 0
-			DAW_CONSTEVAL basic_string_view( ) = default;
+			basic_string_view( ) = default;
 
 			/// @brief Construct an empty string_view
 			/// @post data( ) == nullptr
 			/// @post size( ) == 0
-			DAW_CONSTEVAL basic_string_view( std::nullptr_t ) noexcept
+			DAW_ATTRIB_INLINE constexpr basic_string_view( std::nullptr_t ) noexcept
 			  : m_first( nullptr )
 			  , m_last( make_last<BoundsType>( nullptr, nullptr ) ) {}
 
 			/// @brief Prevents nullptr literals and a size_type to construct a
 			/// string_view
-			DAW_CONSTEVAL basic_string_view( std::nullptr_t, size_type n )
+			DAW_ATTRIB_INLINE constexpr basic_string_view( std::nullptr_t,
+			                                               size_type n )
 			  : m_first( nullptr )
 			  , m_last( make_last<BoundsType>( nullptr, nullptr ) ) {
 				DAW_STRING_VIEW_PRECOND_CHECK( n == 0,
