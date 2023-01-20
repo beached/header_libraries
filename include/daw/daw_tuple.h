@@ -138,12 +138,14 @@ namespace daw {
 		template<typename Predicate, std::size_t... Is, typename... Us>
 		constexpr bool and_all( Predicate p, std::index_sequence<Is...>,
 		                        tuple<Us...> const &rhs ) const {
+			(void)p;
 			return ( p( get<Is>( ), rhs.template get<Is>( ) ) and ... );
 		}
 
 		template<typename Predicate, std::size_t... Is, typename... Us>
 		constexpr bool or_all( Predicate p, std::index_sequence<Is...>,
 		                       tuple<Us...> const &rhs ) const {
+			(void)p;
 			return ( p( get<Is>( ), rhs.template get<Is>( ) ) or ... );
 		}
 

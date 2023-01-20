@@ -29,20 +29,10 @@ namespace daw {
 		Iterator m_base{ };
 
 	public:
-		constexpr reverse_iterator( ) = default;
+		explicit reverse_iterator( ) = default;
 
 		explicit constexpr reverse_iterator( Iterator it )
 		  : m_base( DAW_MOVE( it ) ) {}
-
-		template<typename U>
-		constexpr reverse_iterator( reverse_iterator<U> const &other )
-		  : m_base( other.m_base ) {}
-
-		template<typename U>
-		constexpr reverse_iterator &operator=( reverse_iterator<U> const &other ) {
-			m_base = other.m_base;
-			return *this;
-		}
 
 		constexpr Iterator base( ) const {
 			Iterator it = m_base;
@@ -54,22 +44,24 @@ namespace daw {
 			return it;
 		}
 
-		constexpr auto operator*( ) -> decltype( *m_base ) {
+		constexpr decltype( auto ) operator*( ) {
 			auto tmp = m_base;
 			return *( --tmp );
 		}
 
-		constexpr auto operator*( ) const -> decltype( *m_base ) {
+		constexpr decltype( auto ) operator*( ) const {
 			auto tmp = m_base;
 			return *( --tmp );
 		}
 
-		constexpr decltype( auto ) operator->( ) {
-			return &( operator*( ) );
+		constexpr auto operator->( ) {
+			auto tmp = m_base;
+			return daw::to_address( ( --tmp ) );
 		}
 
-		constexpr decltype( auto ) operator->( ) const {
-			return &( operator*( ) );
+		constexpr auto operator->( ) const {
+			auto tmp = m_base;
+			return daw::to_address( ( --tmp ) );
 		}
 
 		constexpr decltype( auto ) operator[]( difference_type n ) {
@@ -126,7 +118,7 @@ namespace daw {
 	operator+( typename reverse_iterator<Iterator>::difference_type n,
 	           reverse_iterator<Iterator> const &it ) {
 
-		return reverse_iterator<Iterator>{ it.current - n };
+		return reverse_iterator<Iterator>{ it.base( ) - n };
 	}
 
 	template<typename Iterator>
@@ -134,7 +126,7 @@ namespace daw {
 	operator-( typename reverse_iterator<Iterator>::difference_type n,
 	           reverse_iterator<Iterator> const &it ) {
 
-		return reverse_iterator<Iterator>{ it.current + n };
+		return reverse_iterator<Iterator>{ it.base( ) + n };
 	}
 
 	template<class Iterator1, class Iterator2>

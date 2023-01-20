@@ -7,6 +7,7 @@
 //
 
 #include "daw/daw_algorithm.h"
+#include "daw/daw_string_view.h"
 #include "daw/iterator/daw_reverse_iterator.h"
 
 #include <array>
@@ -20,6 +21,16 @@ constexpr bool reverse_iterator_test_001( ) {
 	daw::algorithm::copy( first, last, first_out );
 	return daw::algorithm::equal( a.begin( ), a.end( ), b.begin( ) );
 }
+
+constexpr bool reverse_iterator_test_002( ) {
+	daw::string_view message = "Hello World\nGoodbyte Moon";
+	auto first = daw::reverse_iterator<char const *>( message.data_end( ) );
+	auto last = daw::reverse_iterator<char const *>( message.data( ) );
+	auto it = daw::algorithm::find( first, last, '\n' );
+	auto pos = std::distance( first, it );
+	return pos == 13;
+}
 static_assert( reverse_iterator_test_001( ) );
+static_assert( reverse_iterator_test_002( ) );
 
 int main( ) {}
