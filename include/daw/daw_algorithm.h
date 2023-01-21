@@ -2310,6 +2310,28 @@ namespace daw::algorithm {
 		}
 		return { first, -std::size_t{ 1 } };
 	}
+
+	template<typename T, typename Iterator, typename IteratorLast,
+	         typename OutputIterator>
+	constexpr OutputIterator convert_copy( Iterator first, Iterator last,
+	                                       OutputIterator out_first ) {
+		while( first != last ) {
+			*out_first = static_cast<T>( *first );
+			++out_first;
+			++first;
+		}
+	}
+
+	template<typename T, typename Iterator, typename OutputIterator>
+	constexpr OutputIterator
+	convert_copy_n( Iterator first, OutputIterator out_first, std::size_t n ) {
+		auto const last = first + static_cast<std::ptrdiff_t>( n );
+		while( first != last ) {
+			*out_first = static_cast<T>( *first );
+			++out_first;
+			++first;
+		}
+	}
 } // namespace daw::algorithm
 
 DAW_UNSAFE_BUFFER_FUNC_STOP
