@@ -253,14 +253,12 @@ namespace daw {
 			remove_suffix( 1 );
 		}
 
-		[[nodiscard]] constexpr value_type pop_front( ) noexcept
-		  requires( std::is_trivially_copyable_v<value_type> ) {
+		[[nodiscard]] constexpr value_type pop_front( ) {
 			assert( not empty( ) );
 			return *m_first++;
 		}
 
-		[[nodiscard]] constexpr value_type pop_back( ) noexcept
-		  requires( std::is_trivially_copyable_v<value_type> ) {
+		[[nodiscard]] constexpr value_type pop_back( ) {
 			assert( not empty( ) );
 			return *( --m_last );
 		}
@@ -622,14 +620,12 @@ namespace daw {
 			remove_suffix( 1 );
 		}
 
-		[[nodiscard]] constexpr value_type pop_front( ) noexcept
-		  requires( std::is_trivially_copyable_v<value_type> ) {
+		[[nodiscard]] constexpr value_type pop_front( ) {
 			assert( not empty( ) );
 			return *m_first++;
 		}
 
-		[[nodiscard]] constexpr value_type pop_back( ) noexcept
-		  requires( std::is_trivially_copyable_v<value_type> ) {
+		[[nodiscard]] constexpr value_type pop_back( ) {
 			assert( not empty( ) );
 			return *( --m_last );
 		}
