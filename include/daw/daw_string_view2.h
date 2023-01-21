@@ -774,61 +774,75 @@ namespace daw {
 
 			/// @brief Increment the data( ) pointer by n. If string_view is
 			/// empty, it does nothing.
-			constexpr void remove_prefix( size_type n ) {
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_prefix( size_type n ) {
 				dec_front<BoundsType>( ( std::min )( n, size( ) ) );
+				return *this;
 			}
 
 			/// @brief Increment the data( ) pointer by n. If string_view is
 			/// empty, it does nothing.
 			/// @pre n <= size( )
-			constexpr void remove_prefix( size_type n, dont_clip_to_bounds_t ) {
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_prefix( size_type n, dont_clip_to_bounds_t ) {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  size( ) >= n,
 				  "Attempt to remove prefix too many elements in a basic_string_view" );
 				dec_front<BoundsType>( n );
+				return *this;
 			}
 
 			/// @brief Increment the data( ) pointer by 1. If string_view is
 			/// empty, it does nothing.
-			constexpr void remove_prefix( ) {
+			DAW_ATTRIB_INLINE constexpr basic_string_view &remove_prefix( ) {
 				dec_front<BoundsType>( ( std::min )( size_type{ 1U }, size( ) ) );
+				return *this;
 			}
 
 			/// @brief Increment the data( ) pointer by 1.
 			/// @pre size( ) >= 1
-			constexpr void remove_prefix( dont_clip_to_bounds_t ) {
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_prefix( dont_clip_to_bounds_t ) {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  size( ) >= 1,
 				  "Attempt to remove prefix too many elements in a basic_string_view" );
 				dec_front<BoundsType>( size_type{ 1U } );
+				return *this;
 			}
 
 			/// @brief Decrement the size( ) by n. If string_view is empty, it
 			/// does nothing.
-			constexpr void remove_suffix( size_type n ) {
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_suffix( size_type n ) {
 				dec_back<BoundsType>( ( std::min )( n, size( ) ) );
+				return *this;
 			}
 
 			/// @brief Decrement the size( ) by n.
 			/// @pre n <= size( )
-			constexpr void remove_suffix( size_type n, dont_clip_to_bounds_t ) {
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_suffix( size_type n, dont_clip_to_bounds_t ) {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  size( ) >= n,
 				  "Attempt to remove suffix too many elements in a basic_string_view" );
 				dec_back<BoundsType>( n );
+				return *this;
 			}
 
 			/// @brief Decrement the size( ) by 1 if size( ) > 0
-			constexpr void remove_suffix( ) {
+			DAW_ATTRIB_INLINE constexpr basic_string_view &remove_suffix( ) {
 				dec_back<BoundsType>( ( std::min )( size_type{ 1U }, size( ) ) );
+				return *this;
 			}
 
 			/// @brief Decrement the size( ) by 1
 			/// @pre not empty( )
-			constexpr void remove_suffix( dont_clip_to_bounds_t ) {
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_suffix( dont_clip_to_bounds_t ) {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  size( ) >= 1, "Attempt to remove suffix an empty basic_string_view" );
 				dec_back<BoundsType>( size_type{ 1U } );
+				return *this;
 			}
 
 			/// @brief Increment the data( ) pointer by 1.
@@ -1377,7 +1391,8 @@ namespace daw {
 			/// @param where character to find and consume
 			/// @return substring with everything up until the end of where
 			/// removed
-			constexpr basic_string_view &remove_prefix_until( CharT where ) {
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_prefix_until( CharT where ) {
 				auto pos = find( where );
 				remove_prefix( pos );
 				remove_prefix( );
@@ -1388,8 +1403,8 @@ namespace daw {
 			/// where
 			/// @param where character to find
 			/// @return substring with everything up until where removed
-			constexpr basic_string_view &remove_prefix_until( CharT where,
-			                                                  nodiscard_t ) {
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_prefix_until( CharT where, nodiscard_t ) {
 				auto pos = find( where );
 				remove_prefix( pos );
 				return *this;
@@ -1400,7 +1415,7 @@ namespace daw {
 			/// @param where string to find and consume
 			/// @return substring with everything up until the end of where
 			/// removed
-			constexpr basic_string_view &
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
 			remove_prefix_until( basic_string_view where ) {
 				auto pos = find( where );
 				remove_prefix( pos );
@@ -1413,8 +1428,8 @@ namespace daw {
 			/// @param where string to find and consume
 			/// @return substring with everything up until the start of where
 			/// removed
-			constexpr basic_string_view &remove_prefix_until( basic_string_view where,
-			                                                  nodiscard_t ) {
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_prefix_until( basic_string_view where, nodiscard_t ) {
 				auto pos = find( where );
 				remove_prefix( pos );
 				return *this;
@@ -1427,7 +1442,8 @@ namespace daw {
 			/// @return A reference to the current string_view object
 			template<typename UnaryPredicate,
 			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
-			constexpr basic_string_view &remove_prefix_until( UnaryPredicate pred ) {
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_prefix_until( UnaryPredicate pred ) {
 				auto pos = find_first_of_if( pred );
 				remove_prefix( pos );
 				remove_prefix( sv2_details::find_predicate_result_size( pred ) );
@@ -1440,8 +1456,8 @@ namespace daw {
 			/// removed
 			template<typename UnaryPredicate,
 			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
-			constexpr basic_string_view &remove_prefix_until( UnaryPredicate pred,
-			                                                  nodiscard_t ) {
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_prefix_until( UnaryPredicate pred, nodiscard_t ) {
 				auto pos = find_if( pred );
 				dec_front<BoundsType>( ( std::min )( size( ), pos ) );
 				return *this;
@@ -2461,9 +2477,18 @@ namespace daw {
 
 		public:
 			template<typename UnaryPred, DAW_REQ_UNARY_PRED( UnaryPred, CharT )>
-			constexpr void remove_prefix_while( UnaryPred is_whitespace ) noexcept {
-				auto const last_pos = find_first_not_of_if( is_whitespace );
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_prefix_while( UnaryPred pred ) noexcept {
+				auto const last_pos = find_first_not_of_if( pred );
 				remove_prefix( last_pos );
+				return *this;
+			}
+
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_prefix_while( CharT c ) noexcept {
+				auto pos = find_first_not_of( c );
+				remove_prefix( pos );
+				return *this;
 			}
 
 			constexpr basic_string_view &trim_prefix( ) noexcept {
@@ -2478,14 +2503,18 @@ namespace daw {
 			}
 
 			template<typename UnaryPred, DAW_REQ_UNARY_PRED( UnaryPred, CharT )>
-			constexpr void remove_suffix_while( UnaryPred is_whitespace ) noexcept {
-				auto pos = find_last_not_of_if( is_whitespace );
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_suffix_while( UnaryPred pred ) noexcept {
+				auto pos = find_last_not_of_if( pred );
 				resize( pos + 1U );
+				return *this;
 			}
 
-			constexpr void remove_suffix_while( CharT c ) noexcept {
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_suffix_while( CharT c ) noexcept {
 				auto pos = find_last_not_of( c );
 				resize( pos + 1U );
+				return *this;
 			}
 
 			constexpr basic_string_view &trim_suffix( ) noexcept {
