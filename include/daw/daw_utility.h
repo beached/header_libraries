@@ -988,19 +988,38 @@ namespace daw {
 
 	namespace utility_details {
 		template<typename T>
-		using has_data_end_test = decltype( std::declval<T>( ).data_end( ) );
+		using has_data_end_test = decltype( std::declval<T &>( ).data_end( ) );
 
 		template<typename T>
 		inline constexpr bool has_data_end_v =
 		  daw::is_detected_v<has_data_end_test, T>;
+
+		template<typename T>
+		using has_data_test = decltype( std::declval<T &>( ).data( ) );
+
+		template<typename T>
+		inline constexpr bool has_data_v = daw::is_detected_v<has_data_test, T>;
 	} // namespace utility_details
 
 	template<typename Container>
-	inline constexpr auto *data_end( Container &&c ) {
+	[[nodiscard]] inline constexpr auto data( Container &&c ) {
+		if constexpr( utility_details::has_data_v<Container> ) {
+			return c.data( );
+		} else {
+			return std::data( c );
+		}
+	}
+
+	template<typename Container>
+	[[nodiscard]] inline constexpr auto data_end( Container &&c ) {
 		if constexpr( utility_details::has_data_end_v<Container> ) {
 			return c.data_end( );
+		} else if constexpr( utility_details::has_data_v<Container> ) {
+			return std::next( c.data( ),
+			                  static_cast<std::ptrdiff_t>( std::size( c ) ) );
 		} else {
-			return std::data( c ) + static_cast<std::ptrdiff_t>( std::size( c ) );
+			return std::next( std::data( c ),
+			                  static_cast<std::ptrdiff_t>( std::size( c ) ) );
 		}
 	}
 	struct Empty {};

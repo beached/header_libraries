@@ -79,8 +79,8 @@ namespace daw {
 		  : end_cap_( nullptr, a ) {
 			DAW_UNSAFE_BUFFER_FUNC_START
 			first_ = cap != 0 ? alloc_traits::allocate( alloc( ), cap ) : nullptr;
-			begin_ = end_ = first_ + start;
-			end_cap( ) = first_ + cap;
+			begin_ = end_ = first_ + static_cast<difference_type>( start );
+			end_cap( ) = first_ + static_cast<difference_type>( cap );
 			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 
