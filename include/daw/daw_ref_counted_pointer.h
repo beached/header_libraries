@@ -62,17 +62,17 @@ namespace daw {
 		pointer m_pointer = nullptr;
 		std::size_t *m_ref_count = nullptr;
 
-		std::size_t &ref_count( ) {
-			assert( m_ref_count );
-			return *m_ref_count;
-		}
-
-		std::size_t const &ref_count( ) const {
-			assert( m_ref_count );
-			return *m_ref_count;
-		}
-
 	public:
+		[[nodiscard]] constexpr std::size_t &ref_count( ) noexcept {
+			assert( m_ref_count );
+			return *m_ref_count;
+		}
+
+		[[nodiscard]] constexpr std::size_t const &ref_count( ) const noexcept {
+			assert( m_ref_count );
+			return *m_ref_count;
+		}
+
 		rc_ptr( ) = default;
 
 		constexpr rc_ptr( rc_ptr const &other ) noexcept
@@ -87,9 +87,12 @@ namespace daw {
 		operator=( rc_ptr const &rhs ) noexcept( is_t_nothrow_destructible ) {
 			if( this != &rhs ) {
 				reset( );
-				m_pointer = rhs.m_pointer;
-				m_ref_count = rhs.m_ref_count;
-				++ref_count( );
+				if( rhs ) {
+					m_pointer = rhs.m_pointer;
+					m_ref_count = rhs.m_ref_count;
+					assert( m_ref_count );
+					++ref_count( );
+				}
 			}
 			return *this;
 		}
@@ -106,6 +109,11 @@ namespace daw {
 				m_ref_count = std::exchange( rhs.m_ref_count, nullptr );
 			}
 			return *this;
+		}
+
+		constexpr void swap( rc_ptr &other ) {
+			m_pointer = std::exchange( other.m_pointer, std::move( m_pointer ) );
+			m_ref_count = std::exchange( other.m_ref_count, m_ref_count );
 		}
 
 		DAW_CX_DTOR ~rc_ptr( ) noexcept( is_t_nothrow_destructible ) {
@@ -141,12 +149,12 @@ namespace daw {
 
 		constexpr pointer operator->( ) const {
 			assert( m_pointer );
-			return m_pointer;
+			return get( );
 		}
 
 		constexpr reference operator*( ) const noexcept {
 			assert( m_pointer );
-			return *m_pointer;
+			return *get( );
 		}
 
 		constexpr deleter_type &get_deleter( ) noexcept {
@@ -224,25 +232,27 @@ namespace daw {
 		pointer m_pointer = nullptr;
 		std::size_t *m_ref_count = nullptr;
 
-		std::size_t &ref_count( ) {
-			assert( m_ref_count );
-			return *m_ref_count;
-		}
-
-		std::size_t const &ref_count( ) const {
-			assert( m_ref_count );
-			return *m_ref_count;
-		}
-
 	public:
+		[[nodiscard]] constexpr std::size_t &ref_count( ) noexcept {
+			assert( m_ref_count );
+			return *m_ref_count;
+		}
+
+		[[nodiscard]] constexpr std::size_t const &ref_count( ) const noexcept {
+			assert( m_ref_count );
+			return *m_ref_count;
+		}
+
 		rc_ptr( ) = default;
 
 		constexpr rc_ptr( rc_ptr const &other ) noexcept
 		  : m_pointer( other.m_pointer )
 		  , m_ref_count( other.m_ref_count ) {
-			if( m_ref_count ) {
-				++ref_count( );
+			if( not m_ref_count ) {
+				assert( not m_pointer );
+				return;
 			}
+			++ref_count( );
 		}
 
 		constexpr rc_ptr &
@@ -251,7 +261,10 @@ namespace daw {
 				reset( );
 				m_pointer = rhs.m_pointer;
 				m_ref_count = rhs.m_ref_count;
-				++ref_count( );
+				if( m_pointer ) {
+					assert( m_ref_count );
+					++ref_count( );
+				}
 			}
 			return *this;
 		}
@@ -270,6 +283,11 @@ namespace daw {
 			return *this;
 		}
 
+		constexpr void swap( rc_ptr &other ) {
+			m_pointer = std::exchange( other.m_pointer, std::move( m_pointer ) );
+			m_ref_count = std::exchange( other.m_ref_count, m_ref_count );
+		}
+
 		DAW_CX_DTOR ~rc_ptr( ) noexcept( is_t_nothrow_destructible ) {
 			reset( );
 		}
@@ -286,12 +304,13 @@ namespace daw {
 
 		constexpr void reset( ) noexcept( is_t_nothrow_destructible ) {
 			if( not m_pointer ) {
+				assert( not m_ref_count );
 				return;
 			}
 			assert( m_ref_count );
 			if( --ref_count( ) == 0 ) {
-				auto old_ptr = std::exchange( m_pointer, nullptr );
-				auto old_ref = std::exchange( m_ref_count, nullptr );
+				auto *old_ptr = std::exchange( m_pointer, nullptr );
+				auto *old_ref = std::exchange( m_ref_count, nullptr );
 				delete old_ref;
 				Deleter{ }( old_ptr );
 			}
@@ -303,12 +322,12 @@ namespace daw {
 
 		constexpr pointer operator->( ) const {
 			assert( m_pointer );
-			return m_pointer;
+			return get( );
 		}
 
 		constexpr reference operator*( ) const noexcept {
 			assert( m_pointer );
-			return *m_pointer;
+			return *get( );
 		}
 
 		constexpr deleter_type &get_deleter( ) noexcept {
@@ -324,7 +343,7 @@ namespace daw {
 		}
 
 		constexpr reference operator[]( std::size_t index ) const noexcept {
-			assert( m_pointer );
+			assert( m_pointer and m_ref_count );
 			return m_pointer[index];
 		}
 
@@ -376,11 +395,11 @@ namespace daw {
 			return not std::less<>{ }( m_pointer, nullptr );
 		}
 	};
-#if defined( DAW_CPP20_CONSTEXPR_DYNAMIC_ALLOC )
-#define DAW_CPP20_CONSTEXPR constexpr
-#else
-#define DAW_CPP20_CONSTEXPR
-#endif
+
+	template<typename T, typename D>
+	constexpr void swap( rc_ptr<T, D> &lhs, rc_ptr<T, D> &rhs ) {
+		lhs.swap( rhs );
+	}
 
 	namespace rc_ptr_impl {
 		template<typename T>
@@ -400,7 +419,7 @@ namespace daw {
 	} // namespace rc_ptr_impl
 
 	template<typename T, typename... Args>
-	DAW_CPP20_CONSTEXPR rc_ptr_impl::make_rc_ptr_single<T>
+	DAW_CPP20_CX_ALLOC rc_ptr_impl::make_rc_ptr_single<T>
 	make_rc_ptr( Args &&...args ) {
 		static_assert( not std::is_array_v<T>, "Unexpected array type" );
 		if constexpr( std::is_aggregate_v<T> ) {
@@ -411,22 +430,20 @@ namespace daw {
 	}
 
 	template<typename T>
-	DAW_CPP20_CONSTEXPR rc_ptr_impl::make_rc_ptr_array<T>
+	DAW_CPP20_CX_ALLOC rc_ptr_impl::make_rc_ptr_array<T>
 	make_rc_ptr( std::size_t size ) {
 		static_assert( std::is_array_v<T>, "Expected and array type" );
 		return rc_ptr<T>( new std::remove_extent_t<T>[size] {} );
 	}
 
 	template<typename T, typename... Args>
-	DAW_CPP20_CONSTEXPR rc_ptr_impl::make_rc_ptr_single<T>
+	DAW_CPP20_CX_ALLOC rc_ptr_impl::make_rc_ptr_single<T>
 	make_rc_ptr_for_overwrite( Args &&... ) = delete;
 
 	template<typename T>
-	DAW_CPP20_CONSTEXPR rc_ptr_impl::make_rc_ptr_array<T>
+	DAW_CPP20_CX_ALLOC rc_ptr_impl::make_rc_ptr_array<T>
 	make_rc_ptr_for_overwrite( std::size_t size ) {
 		static_assert( std::is_array_v<T>, "Expected and array type" );
 		return rc_ptr<T>( new std::remove_extent_t<T>[size] );
 	}
-#undef DAW_CPP20_CONSTEXPR
 } // namespace daw
-

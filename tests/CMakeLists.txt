@@ -108,7 +108,7 @@ set( TEST_SOURCES
      daw_uninitialized_storage_test.cpp
      daw_union_pair_test.cpp
      daw_unique_array_test.cpp
-		 daw_unique_ptr_test.cpp
+	 daw_unique_ptr_test.cpp
      daw_utility_test.cpp
      daw_validated_test.cpp
      daw_value_ptr_test.cpp
@@ -125,6 +125,7 @@ set( CPP20_TEST_SOURCES
      daw_concepts_test.cpp
      daw_contiguous_view_test.cpp
      daw_named_params_test.cpp
+     daw_tracked_allocator_test.cpp
      vector_test.cpp
      )
 #NOT COMPLETED daw_iterator_split_iterator_test.cpp
