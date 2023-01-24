@@ -106,8 +106,8 @@ $(function() {
 , <a class="el" href="structdaw_1_1sv1_1_1basic__string__view.html#a1c2bab2148b0cbc076005a1a63b8f659">daw::sv1::basic_string_view&lt; CharT, BoundsType, Extent &gt;</a>
 , <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#ad50240265a3236e8e84ab9cfd297e99a">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 , <a class="el" href="structdaw_1_1unique__array__t.html#a8d33e649f5de5848d51918fe01871e75">daw::unique_array_t&lt; T &gt;</a>
-, <a class="el" href="structdaw_1_1_vector.html#aff3bb6d28cb7c68c26efb170e34cd5e9">daw::Vector&lt; T, Alloc &gt;</a>
 , <a class="el" href="structdaw_1_1vector.html#ac19d06778db25ef5806f2f445bd38337">daw::vector&lt; T, Allocator &gt;</a>
+, <a class="el" href="structdaw_1_1_vector.html#aff3bb6d28cb7c68c26efb170e34cd5e9">daw::Vector&lt; T, Alloc &gt;</a>
 , <a class="el" href="structdaw_1_1view.html#a55a8932bf61b72411061d8847a1640ea">daw::view&lt; BidirectionalIterator &gt;</a>
 , <a class="el" href="structdaw_1_1zip__container.html#aebe83909d2f8c66a31ae64d8ba434e8e">daw::zip_container&lt; Containers &gt;</a>
 </li>
@@ -138,6 +138,7 @@ $(function() {
 , <a class="el" href="structdaw_1_1fixed__array.html#ac2595984bc1609c1292dac8da964fa76">daw::fixed_array&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1heap__value.html#a77d1b694fd92d3476f0db3e65c158608">daw::heap_value&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1indexed__iterator.html#a7d4fe89461eca214256a79abe912fe99">daw::indexed_iterator&lt; T &gt;</a>
+, <a class="el" href="structdaw_1_1memory_1_1tracked__allocator.html#a51f50df9ec71782ed675d3b040d77dfa">daw::memory::tracked_allocator&lt; T, Allocator &gt;</a>
 , <a class="el" href="structdaw_1_1optional_3_01_t_00_01std_1_1enable__if__t_3_01not_01std_1_1is__reference__v_3_01_t_01_4_01_4_01_4.html#a5f69cf4f7203a158385584b688765c62">daw::optional&lt; T, std::enable_if_t&lt; not std::is_reference_v&lt; T &gt; &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1optional_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__lvalue__reference__v_3_01_t_01_4_01_4_01_4.html#a2f3dc006b1a9aae50a045390405ce098">daw::optional&lt; T, std::enable_if_t&lt; std::is_lvalue_reference_v&lt; T &gt; &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1ordered__map.html#a84b210a5dae36a74fe4ea3a75a35b080">daw::ordered_map&lt; Key, Value, Compare, Allocator, Container &gt;</a>
@@ -195,6 +196,7 @@ $(function() {
 , <a class="el" href="structdaw_1_1heap__value.html#a17431d770dffc534de65a17552835607">daw::heap_value&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1indexed__iterator.html#a91edfb42686410499875aa5e85596f60">daw::indexed_iterator&lt; T &gt;</a>
 , <a class="el" href="classdaw_1_1keep__n.html#a771b884eafd336c50eee6c908526c3ac">daw::keep_n&lt; T, MaxItems, Order, Predicate &gt;</a>
+, <a class="el" href="structdaw_1_1memory_1_1safe__pointer.html#a0d18aa549860ed73a23e94e9e803e5d1">daw::memory::safe_pointer&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1mixins_1_1_container_proxy.html#a1d19a901b1ae4af2d33d67770d145f33">daw::mixins::ContainerProxy&lt; Derived, ContainerType &gt;</a>
 , <a class="el" href="structdaw_1_1optional_3_01_t_00_01std_1_1enable__if__t_3_01not_01std_1_1is__reference__v_3_01_t_01_4_01_4_01_4.html#a669ca9d0359348fe34e463e71bbd8b52">daw::optional&lt; T, std::enable_if_t&lt; not std::is_reference_v&lt; T &gt; &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1optional_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__lvalue__reference__v_3_01_t_01_4_01_4_01_4.html#a00849b98ac6b6b2bec45866164f5d0eb">daw::optional&lt; T, std::enable_if_t&lt; std::is_lvalue_reference_v&lt; T &gt; &gt; &gt;</a>
@@ -241,6 +243,9 @@ $(function() {
 <li>const_rvalue_reference
 : <a class="el" href="structdaw_1_1optional_3_01_t_00_01std_1_1enable__if__t_3_01not_01std_1_1is__reference__v_3_01_t_01_4_01_4_01_4.html#a194055d4a4d961e56a2f99d491d8f873">daw::optional&lt; T, std::enable_if_t&lt; not std::is_reference_v&lt; T &gt; &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1optional_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__lvalue__reference__v_3_01_t_01_4_01_4_01_4.html#a95379a5411084dc37d629823927d32d4">daw::optional&lt; T, std::enable_if_t&lt; std::is_lvalue_reference_v&lt; T &gt; &gt; &gt;</a>
+</li>
+<li>const_void_pointer
+: <a class="el" href="structdaw_1_1memory_1_1tracked__allocator.html#a9cbbc19cfd3842ba3f06338d3c3c9705">daw::memory::tracked_allocator&lt; T, Allocator &gt;</a>
 </li>
 <li>container_type
 : <a class="el" href="structdaw_1_1container__traits.html#ae0853044f9f94ba87b35557b5ab8bd6c">daw::container_traits&lt; Container &gt;</a>

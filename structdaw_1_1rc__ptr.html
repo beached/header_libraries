@@ -152,8 +152,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a47bdee2d040a9841279de57f564e9758"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68f37e58d3ea2ff59df1ad1525ba2f8d"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1rc__ptr.html#a68f37e58d3ea2ff59df1ad1525ba2f8d">operator&gt;=</a> (std::nullptr_t) const noexcept</td></tr>
 <tr class="separator:a68f37e58d3ea2ff59df1ad1525ba2f8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bb7bcf033c77b54722bb3d8d18c9743"><td class="memItemLeft" align="right" valign="top">constexpr std::size_t const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1rc__ptr.html#a6bb7bcf033c77b54722bb3d8d18c9743">ref_count</a> () const noexcept</td></tr>
+<tr class="separator:a6bb7bcf033c77b54722bb3d8d18c9743"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01c9e66a77402a786b2de4a3c2d240cd"><td class="memItemLeft" align="right" valign="top">constexpr std::size_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1rc__ptr.html#a01c9e66a77402a786b2de4a3c2d240cd">ref_count</a> () noexcept</td></tr>
+<tr class="separator:a01c9e66a77402a786b2de4a3c2d240cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a704d7dfcb5488944917624c6dde1e743"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1rc__ptr.html#a704d7dfcb5488944917624c6dde1e743">reset</a> () noexcept(<a class="el" href="structdaw_1_1rc__ptr.html#ad77a7d26898f730673dd2a6a8cf13077">is_t_nothrow_destructible</a>)</td></tr>
 <tr class="separator:a704d7dfcb5488944917624c6dde1e743"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d548370c0c68b7852527d86fd6eb3b1"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1rc__ptr.html#a4d548370c0c68b7852527d86fd6eb3b1">swap</a> (<a class="el" href="structdaw_1_1rc__ptr.html">rc_ptr</a> &amp;other)</td></tr>
+<tr class="separator:a4d548370c0c68b7852527d86fd6eb3b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structdaw_1_1default__pointer__deleter"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structdaw_1_1default__pointer__deleter')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structdaw_1_1default__pointer__deleter.html">daw::default_pointer_deleter&lt; T &gt;</a></td></tr>
 <tr class="memitem:ad85c0b3d59902878a30de40a045cdb02 inherit pub_methods_structdaw_1_1default__pointer__deleter"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1default__pointer__deleter.html#ad85c0b3d59902878a30de40a045cdb02">operator()</a> (T *ptr) const noexcept(std::is_nothrow_destructible_v&lt; T &gt;)</td></tr>
 <tr class="separator:ad85c0b3d59902878a30de40a045cdb02 inherit pub_methods_structdaw_1_1default__pointer__deleter"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -326,7 +332,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00097">97</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00100">100</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -355,7 +361,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00111">111</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00119">119</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -385,7 +391,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00115">115</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00123">123</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -415,7 +421,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00123">123</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00131">131</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -445,7 +451,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00138">138</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00146">146</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -474,7 +480,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00156">156</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00164">164</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -503,7 +509,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00152">152</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00160">160</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -532,7 +538,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00160">160</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00168">168</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -562,7 +568,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00168">168</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00176">176</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -592,7 +598,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00192">192</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00200">200</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -621,7 +627,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00147">147</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00155">155</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -650,7 +656,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00142">142</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00150">150</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -680,7 +686,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00172">172</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00180">180</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -710,7 +716,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00196">196</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00204">204</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -740,7 +746,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00176">176</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00184">184</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -770,7 +776,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00200">200</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00208">208</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -800,7 +806,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00102">102</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00105">105</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -860,7 +866,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00164">164</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00172">172</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -890,7 +896,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00188">188</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00196">196</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -920,7 +926,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00180">180</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00188">188</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -950,7 +956,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00204">204</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00212">212</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -980,7 +986,7 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00184">184</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00192">192</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -1010,7 +1016,65 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00208">208</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00216">216</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+
+</div>
+</div>
+<a id="a6bb7bcf033c77b54722bb3d8d18c9743"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6bb7bcf033c77b54722bb3d8d18c9743">&#9670;&nbsp;</a></span>ref_count() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr std::size_t const&amp; <a class="el" href="structdaw_1_1rc__ptr.html">daw::rc_ptr</a>&lt; T, Deleter &gt;::ref_count </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00071">71</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+
+</div>
+</div>
+<a id="a01c9e66a77402a786b2de4a3c2d240cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01c9e66a77402a786b2de4a3c2d240cd">&#9670;&nbsp;</a></span>ref_count() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr std::size_t&amp; <a class="el" href="structdaw_1_1rc__ptr.html">daw::rc_ptr</a>&lt; T, Deleter &gt;::ref_count </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00066">66</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>
@@ -1039,7 +1103,37 @@ template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00125">125</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00133">133</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
+
+</div>
+</div>
+<a id="a4d548370c0c68b7852527d86fd6eb3b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d548370c0c68b7852527d86fd6eb3b1">&#9670;&nbsp;</a></span>swap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Deleter  = default_pointer_deleter&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr void <a class="el" href="structdaw_1_1rc__ptr.html">daw::rc_ptr</a>&lt; T, Deleter &gt;::swap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1rc__ptr.html">rc_ptr</a>&lt; T, Deleter &gt; &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__ref__counted__pointer_8h_source.html#l00114">114</a> of file <a class="el" href="daw__ref__counted__pointer_8h_source.html">daw_ref_counted_pointer.h</a>.</p>
 
 </div>
 </div>

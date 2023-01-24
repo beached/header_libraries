@@ -116,6 +116,8 @@ $(function() {
 , <a class="el" href="structdaw_1_1integer__range__iterator.html#a7da254be5b3171e23cf2091d862799de">daw::integer_range_iterator&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1iota__iterator.html#acab63139bf71c6566e63c64353e3bdd6">daw::iota_iterator&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1_malloc_alloc.html#adc885772cb5e449204de18bb07a6cb52">daw::MallocAlloc&lt; T &gt;</a>
+, <a class="el" href="structdaw_1_1memory_1_1safe__pointer.html#a34b2d60ade2fa488bff4a12a6d3945bd">daw::memory::safe_pointer&lt; T &gt;</a>
+, <a class="el" href="structdaw_1_1memory_1_1tracked__allocator.html#a309c94c73bf77cbc9ed551e7a947f650">daw::memory::tracked_allocator&lt; T, Allocator &gt;</a>
 , <a class="el" href="structdaw_1_1_m_map_alloc.html#aebb0993a03bc984b982fb83834165507">daw::MMapAlloc&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1not__null.html#a10b2c54bab330208464ebaec860cde64">daw::not_null&lt; Pointer &gt;</a>
 , <a class="el" href="structdaw_1_1optional_3_01_t_00_01std_1_1enable__if__t_3_01not_01std_1_1is__reference__v_3_01_t_01_4_01_4_01_4.html#aa94ca913e60b8226f7fb15b4d2921882">daw::optional&lt; T, std::enable_if_t&lt; not std::is_reference_v&lt; T &gt; &gt; &gt;</a>
@@ -149,18 +151,23 @@ $(function() {
 , <a class="el" href="structdaw_1_1view.html#aaf09e86d7e44225c2a95d92611ee3900">daw::view&lt; BidirectionalIterator &gt;</a>
 , <a class="el" href="classdaw_1_1wrap__iter.html#a7c8e51b84a39d395c1af2820be1fe1aa">daw::wrap_iter&lt; Iterator, Tag &gt;</a>
 , <a class="el" href="structdaw_1_1zip__iterator.html#a9e31c35bef08473bdaa7891a796827fc">daw::zip_iterator&lt; Iterators &gt;</a>
+, <a class="el" href="structstd_1_1iterator__traits_3_01daw_1_1memory_1_1safe__pointer_3_01_t_01_4_01_4.html#a150e0324a53351813ffaa17237eadca5">std::iterator_traits&lt; daw::memory::safe_pointer&lt; T &gt; &gt;</a>
+, <a class="el" href="structstd_1_1pointer__traits_3_01daw_1_1memory_1_1safe__pointer_3_01_t_01_4_01_4.html#aeec13a2cc45ed0f9e8a57063c222bba9">std::pointer_traits&lt; daw::memory::safe_pointer&lt; T &gt; &gt;</a>
 </li>
 <li>pointer_const
 : <a class="el" href="structdaw_1_1optional__poly.html#abbef7f32b1aca84d7800e9f56d2cf457">daw::optional_poly&lt; ValueType &gt;</a>
 </li>
 <li>pointer_iterator()
-: <a class="el" href="structdaw_1_1pointer__iterator.html#aa9cd6e8f70fc19032072053e23b85325">daw::pointer_iterator&lt; T &gt;</a>
+: <a class="el" href="structdaw_1_1pointer__iterator.html#aa6fcd0804a3ed6f277d0dd56253fa7f5">daw::pointer_iterator&lt; T &gt;</a>
+</li>
+<li>pointer_to()
+: <a class="el" href="structstd_1_1pointer__traits_3_01daw_1_1memory_1_1safe__pointer_3_01_t_01_4_01_4.html#a786e869938efa5047fe369970ba36bfc">std::pointer_traits&lt; daw::memory::safe_pointer&lt; T &gt; &gt;</a>
 </li>
 <li>poly_value()
-: <a class="el" href="classdaw_1_1poly__value.html#abdd553ee5eb0c5fd2cbb9397df9e8c77">daw::poly_value&lt; BaseClass, Deleter, AllowDefaultConstruction, AllowCopy &gt;</a>
+: <a class="el" href="classdaw_1_1poly__value.html#a36e170cd3290248352aa96ebd0a89d03">daw::poly_value&lt; BaseClass, Deleter, AllowDefaultConstruction, AllowCopy &gt;</a>
 </li>
 <li>poly_var()
-: <a class="el" href="structdaw_1_1poly__var.html#acc59907a53ad85efa690a4192281329b">daw::poly_var&lt; Base, Types &gt;</a>
+: <a class="el" href="structdaw_1_1poly__var.html#a322111b4a045da1fe9bef298958c60fa">daw::poly_var&lt; Base, Types &gt;</a>
 </li>
 <li>pop()
 : <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01not_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#af773c723d9c38f8f60c53e641a7fdb46">daw::span&lt; T, std::enable_if_t&lt; not std::is_const_v&lt; T &gt; &gt; &gt;</a>
@@ -178,13 +185,13 @@ $(function() {
 , <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01not_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#aa6e563b6293d84065dfbe4c2f61b682d">daw::span&lt; T, std::enable_if_t&lt; not std::is_const_v&lt; T &gt; &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#abe9e6f671e673d33631fb36f5fba3dbc">daw::span&lt; T, std::enable_if_t&lt; std::is_const_v&lt; T &gt; &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1split__buffer.html#a6a18878dd2e64222a62e7986ce1844e9">daw::split_buffer&lt; Tp, Allocator &gt;</a>
-, <a class="el" href="structdaw_1_1sv1_1_1basic__string__view.html#a6380d527ace4e10d479ab89b8c01ffa9">daw::sv1::basic_string_view&lt; CharT, BoundsType, Extent &gt;</a>
+, <a class="el" href="structdaw_1_1sv1_1_1basic__string__view.html#a8858bfc6f6d238a233715b67eaf81246">daw::sv1::basic_string_view&lt; CharT, BoundsType, Extent &gt;</a>
 , <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#ad483c97aa3b2efd68abef47269b14bee">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 , <a class="el" href="structdaw_1_1_vector.html#a2a109fdf63fe6312aef3300108cfcd86">daw::Vector&lt; T, Alloc &gt;</a>
 , <a class="el" href="structdaw_1_1view.html#a804122cd2a8c0c1f9cd9f27557e3fc6c">daw::view&lt; BidirectionalIterator &gt;</a>
 </li>
 <li>pop_back_until()
-: <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#aba272a9cdfe4d8e24a947945b0a589f0">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
+: <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a8f5b4b35d00efd82973fba6b682a6d4c">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 </li>
 <li>pop_bits()
 : <a class="el" href="structdaw_1_1bit__stream.html#ae30a1148d77a34df1cec4a0433667fc8">daw::bit_stream&lt; InputIteratorF, InputIteratorL, BitQueueLSB &gt;</a>
@@ -195,9 +202,9 @@ $(function() {
 , <a class="el" href="structdaw_1_1bounded__vector__t.html#af68743462315d29eb95f5f80ff28e3ac">daw::bounded_vector_t&lt; T, N &gt;</a>
 , <a class="el" href="structdaw_1_1ring__adaptor.html#a3e1ea0a5abb612647b42140331051c38">daw::ring_adaptor&lt; Container &gt;</a>
 , <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01not_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#a158f71747dd14bf01d4656ed4a4c2576">daw::span&lt; T, std::enable_if_t&lt; not std::is_const_v&lt; T &gt; &gt; &gt;</a>
-, <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#ab8cb7b648c0bd544e4e3041740601b17">daw::span&lt; T, std::enable_if_t&lt; std::is_const_v&lt; T &gt; &gt; &gt;</a>
+, <a class="el" href="structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#a3c21202c479bf33fb93aaba3d95bab20">daw::span&lt; T, std::enable_if_t&lt; std::is_const_v&lt; T &gt; &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1split__buffer.html#ab266a86cacac123f20373085211f3be2">daw::split_buffer&lt; Tp, Allocator &gt;</a>
-, <a class="el" href="structdaw_1_1sv1_1_1basic__string__view.html#ac790e68e40a1800b38d7971eb88a1967">daw::sv1::basic_string_view&lt; CharT, BoundsType, Extent &gt;</a>
+, <a class="el" href="structdaw_1_1sv1_1_1basic__string__view.html#a5e73d0df118dfc89145eb71e5260be95">daw::sv1::basic_string_view&lt; CharT, BoundsType, Extent &gt;</a>
 , <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a47aedf3c63052b5489293d05d467e388">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 , <a class="el" href="structdaw_1_1view.html#a1f3a93d11877d9dad4c8497e406a2a4a">daw::view&lt; BidirectionalIterator &gt;</a>
 </li>
@@ -221,12 +228,21 @@ $(function() {
 <li>prop_const_ptr()
 : <a class="el" href="structdaw_1_1prop__const__ptr.html#a16aee1acccb0c02cfc5c8902669964c0">daw::prop_const_ptr&lt; T &gt;</a>
 </li>
+<li>propagate_on_container_copy_assignment
+: <a class="el" href="structdaw_1_1memory_1_1tracked__allocator.html#ac37e4b8d7c0bbfd3d99c7f97382fd3ac">daw::memory::tracked_allocator&lt; T, Allocator &gt;</a>
+</li>
+<li>propagate_on_container_move_assignment
+: <a class="el" href="structdaw_1_1memory_1_1tracked__allocator.html#aa8ebb36c56ec423a561f39bfefb9ae2d">daw::memory::tracked_allocator&lt; T, Allocator &gt;</a>
+</li>
+<li>propagate_on_container_swap
+: <a class="el" href="structdaw_1_1memory_1_1tracked__allocator.html#a68a791a20d4982d6f91c873a67d643ba">daw::memory::tracked_allocator&lt; T, Allocator &gt;</a>
+</li>
 <li>ptr()
 : <a class="el" href="structdaw_1_1heap__value.html#ab758aefee2277e8daa5bfd5c02e3eeab">daw::heap_value&lt; T &gt;</a>
 , <a class="el" href="classdaw_1_1mutable__capture.html#abf996a23e138e414aba82d9aedc8badd">daw::mutable_capture&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1_random_iterator.html#a17b61059f77abe00b2f54e91a19e83fb">daw::RandomIterator&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1_reference.html#a91f9bc52b4eea4411b833cb671387701">daw::Reference&lt; T &gt;</a>
-, <a class="el" href="structdaw_1_1uninitialized__storage.html#a222583395452830cd284540bf0978cac">daw::uninitialized_storage&lt; T &gt;</a>
+, <a class="el" href="structdaw_1_1uninitialized__storage.html#ab46465ff3d5d00599b2a52868194c28c">daw::uninitialized_storage&lt; T &gt;</a>
 </li>
 <li>ptr_type
 : <a class="el" href="structdaw_1_1_reference.html#a4b4dfdf42e7ca101f68b20cff1049978">daw::Reference&lt; T &gt;</a>
@@ -235,7 +251,7 @@ $(function() {
 : <a class="el" href="classdaw_1_1basic__bit__queue.html#a17ff01c9547049113cc051f7a029004e">daw::basic_bit_queue&lt; queue_type, value_type, BitQueueLSB &gt;</a>
 , <a class="el" href="structdaw_1_1basic__bounded__string.html#a1f0f22770df64a40f75b1cc58a992dd5">daw::basic_bounded_string&lt; CharT, Capacity &gt;</a>
 , <a class="el" href="classdaw_1_1basic__nibble__queue.html#a3e0b449b19a521e9b10e5478ff4792fc">daw::basic_nibble_queue&lt; queue_type, value_type &gt;</a>
-, <a class="el" href="structdaw_1_1bounded__vector__t.html#a5b7ccb6c415f35759ed71bc22978e205">daw::bounded_vector_t&lt; T, N &gt;</a>
+, <a class="el" href="structdaw_1_1bounded__vector__t.html#a91a70a8e517ba5c3677bbf017b95b060">daw::bounded_vector_t&lt; T, N &gt;</a>
 , <a class="el" href="classdaw_1_1mixins_1_1_vector_like_proxy.html#a60bd2ec088a2bd388e7d8861ecb3de55">daw::mixins::VectorLikeProxy&lt; Derived, container_type &gt;</a>
 , <a class="el" href="structdaw_1_1range_1_1_collection_range.html#ab7c4fd6d5cd43b564446ac8bebf13898">daw::range::CollectionRange&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1ring__adaptor.html#a8e7a5cad0244d2d8be99cc2ac39fca86">daw::ring_adaptor&lt; Container &gt;</a>
