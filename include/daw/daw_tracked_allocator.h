@@ -31,7 +31,16 @@ namespace daw::memory {
 		using const_void_pointer = safe_pointer<void const>;
 		using difference_type = typename safe_pointer<value_type>::difference_type;
 		using size_type = typename safe_pointer<value_type>::size_type;
-
+		using propagate_on_container_copy_assignment =
+		  typename std::allocator_traits<
+		    Allocator>::propagate_on_container_copy_assignment;
+		using propagate_on_container_move_assignment =
+		  typename std::allocator_traits<
+		    Allocator>::propagate_on_container_move_assignment;
+		using propagate_on_container_swap =
+		  typename std::allocator_traits<Allocator>::propagate_on_container_swap;
+		using is_always_equal =
+		  typename std::allocator_traits<Allocator>::is_always_equal;
 		using other = tracked_allocator;
 
 		template<typename U>
