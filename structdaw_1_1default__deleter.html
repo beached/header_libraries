@@ -104,8 +104,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1310db2532d7179b747508d60ff423ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b11dd7e5bb2ab2a6697c32a1441fbbc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1default__deleter.html#a5b11dd7e5bb2ab2a6697c32a1441fbbc">~default_deleter</a> () noexcept=default</td></tr>
 <tr class="separator:a5b11dd7e5bb2ab2a6697c32a1441fbbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ee81c518c73ba47b4ed75008a07142b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="cpp__20_8h.html#a782ceb96627f85b15d3a19e7746f8967">DAW_CPP20_CX_ALLOC</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1default__deleter.html#a3ee81c518c73ba47b4ed75008a07142b">operator()</a> (<a class="el" href="structdaw_1_1default__deleter.html#a2d5387c064d0b293512005cc31e07286">pointer</a> p) const noexcept</td></tr>
-<tr class="separator:a3ee81c518c73ba47b4ed75008a07142b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae168eb44384763906a5bc6ab0d09e515"><td class="memTemplParams" colspan="2">template&lt;typename P , std::enable_if_t&lt; std::is_constructible_v&lt; pointer, P * &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:ae168eb44384763906a5bc6ab0d09e515"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="cpp__20_8h.html#a782ceb96627f85b15d3a19e7746f8967">DAW_CPP20_CX_ALLOC</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1default__deleter.html#ae168eb44384763906a5bc6ab0d09e515">operator()</a> (P *p) const noexcept</td></tr>
+<tr class="separator:ae168eb44384763906a5bc6ab0d09e515"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cc3ef453ec12610c44600e443ee8f18"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1default__deleter.html">default_deleter</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1default__deleter.html#a4cc3ef453ec12610c44600e443ee8f18">operator=</a> (<a class="el" href="structdaw_1_1default__deleter.html">default_deleter</a> &amp;&amp;) noexcept=default</td></tr>
 <tr class="separator:a4cc3ef453ec12610c44600e443ee8f18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44485e387942eb1815091725d86b981b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1default__deleter.html">default_deleter</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1default__deleter.html#a44485e387942eb1815091725d86b981b">operator=</a> (<a class="el" href="structdaw_1_1default__deleter.html">default_deleter</a> const &amp;) noexcept=default</td></tr>
@@ -280,13 +281,15 @@ template&lt;typename U , std::enable_if_t&lt; not std::is_same_v&lt; T, U &gt;, 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3ee81c518c73ba47b4ed75008a07142b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ee81c518c73ba47b4ed75008a07142b">&#9670;&nbsp;</a></span>operator()()</h2>
+<a id="ae168eb44384763906a5bc6ab0d09e515"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae168eb44384763906a5bc6ab0d09e515">&#9670;&nbsp;</a></span>operator()()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T &gt; </div>
+<div class="memtemplate">
+template&lt;typename P , std::enable_if_t&lt; std::is_constructible_v&lt; pointer, P * &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -294,7 +297,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="cpp__20_8h.html#a782ceb96627f85b15d3a19e7746f8967">DAW_CPP20_CX_ALLOC</a> void <a class="el" href="structdaw_1_1default__deleter.html">daw::default_deleter</a>&lt; T &gt;::operator() </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1default__deleter.html#a2d5387c064d0b293512005cc31e07286">pointer</a>&#160;</td>
+          <td class="paramtype">P *&#160;</td>
           <td class="paramname"><em>p</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -306,7 +309,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00047">47</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00049">49</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
