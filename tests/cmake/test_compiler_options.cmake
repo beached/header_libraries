@@ -142,6 +142,8 @@ elseif( MSVC )
     add_compile_options( "/permissive-" )
     add_compile_options( "/wd4146" )
     add_compile_options( "/bigobj" )
+    add_compile_options( "/w14868" )
+    add_compile_options( "/w14296" )
     # Ensure that string pooling is enabled. Otherwise it breaks constexpr string literals.
     # This affects debug modes by default, but optionally Release
     # https://developercommunity.visualstudio.com/t/codegen:-constexpr-pointer-to-trailing-z/900648

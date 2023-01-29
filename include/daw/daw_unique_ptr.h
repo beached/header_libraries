@@ -20,7 +20,7 @@
 namespace daw {
 	namespace unique_ptr_details {
 		template<typename T, typename U>
-		inline constexpr bool is_transferrable_child_type_v =
+		inline constexpr bool is_safe_child_type_v =
 		  not std::is_same_v<T, U> and std::has_virtual_destructor_v<T> and
 		  std::is_base_of_v<T, U>;
 	}
@@ -36,11 +36,13 @@ namespace daw {
 		default_deleter &operator=( default_deleter const & ) noexcept = default;
 		default_deleter &operator=( default_deleter && ) noexcept = default;
 
-		template<
-		  typename U,
-		  std::enable_if_t<unique_ptr_details::is_transferrable_child_type_v<T, U>,
-		                   std::nullptr_t> = nullptr>
-		constexpr default_deleter( default_deleter<U> const & ) noexcept {}
+		template<typename U, std::enable_if_t<not std::is_same_v<T, U>,
+		                                      std::nullptr_t> = nullptr>
+		constexpr default_deleter( default_deleter<U> const & ) noexcept {
+			static_assert( unique_ptr_details::is_safe_child_type_v<T, U>,
+			               "One cannot destruct U, if T does not have a virtual "
+			               "destructor, and U being a child of T" );
+		}
 
 		DAW_CPP20_CX_ALLOC void operator( )( pointer p ) const
 		  noexcept( std::is_nothrow_destructible_v<T> ) {
@@ -101,12 +103,14 @@ namespace daw {
 		constexpr unique_ptr( pointer p ) noexcept
 		  : m_ptr( p ) {}
 
-		template<
-		  typename U,
-		  std::enable_if_t<unique_ptr_details::is_transferrable_child_type_v<T, U>,
-		                   std::nullptr_t> = nullptr>
+		template<typename U, std::enable_if_t<not std::is_same_v<T, U>,
+		                                      std::nullptr_t> = nullptr>
 		constexpr unique_ptr( U *p ) noexcept
-		  : m_ptr( p ) {}
+		  : m_ptr( p ) {
+			static_assert( unique_ptr_details::is_safe_child_type_v<T, U>,
+			               "One cannot destruct U, if T does not have a virtual "
+			               "destructor, and U being a child of T" );
+		}
 
 		constexpr unique_ptr( std::nullptr_t ) noexcept(
 		  std::is_nothrow_default_constructible_v<pointer> )
@@ -116,13 +120,16 @@ namespace daw {
 		  : m_ptr( other.release( ) ) {}
 
 		template<typename U, typename D,
-		         std::enable_if_t<
-		           (unique_ptr_details::is_transferrable_child_type_v<T, U> and
-		            std::is_nothrow_constructible_v<Deleter, D &&>),
-		           std::nullptr_t> = nullptr>
+		         std::enable_if_t<(not std::is_same_v<T, U> and
+		                           std::is_nothrow_constructible_v<Deleter, D &&>),
+		                          std::nullptr_t> = nullptr>
 		constexpr unique_ptr( unique_ptr<U, D> &&other ) noexcept
 		  : Deleter( static_cast<D &&>( other ) )
-		  , m_ptr( other.release( ) ) {}
+		  , m_ptr( other.release( ) ) {
+			static_assert( unique_ptr_details::is_safe_child_type_v<T, U>,
+			               "One cannot destruct U, if T does not have a virtual "
+			               "destructor, and U being a child of T" );
+		}
 
 		constexpr unique_ptr &
 		operator=( unique_ptr &&rhs ) noexcept( is_nothrow_resetable_v ) {
@@ -133,12 +140,13 @@ namespace daw {
 			return *this;
 		}
 
-		template<
-		  typename U,
-		  std::enable_if_t<unique_ptr_details::is_transferrable_child_type_v<T, U>,
-		                   std::nullptr_t> = nullptr>
+		template<typename U, std::enable_if_t<not std::is_same_v<T, U>,
+		                                      std::nullptr_t> = nullptr>
 		constexpr unique_ptr &operator=( unique_ptr<U, Deleter> &&rhs ) noexcept(
 		  is_nothrow_resetable_v ) {
+			static_assert( unique_ptr_details::is_safe_child_type_v<T, U>,
+			               "One cannot destruct U, if T does not have a virtual "
+			               "destructor, and U being a child of T" );
 			if( this != &rhs ) {
 				reset( );
 				m_ptr = rhs.release( );
@@ -212,12 +220,14 @@ namespace daw {
 		constexpr unique_ptr( pointer p ) noexcept
 		  : m_ptr( p ) {}
 
-		template<
-		  typename U,
-		  std::enable_if_t<unique_ptr_details::is_transferrable_child_type_v<T, U>,
-		                   std::nullptr_t> = nullptr>
+		template<typename U, std::enable_if_t<not std::is_same_v<T, U>,
+		                                      std::nullptr_t> = nullptr>
 		constexpr unique_ptr( U *p ) noexcept
-		  : m_ptr( p ) {}
+		  : m_ptr( p ) {
+			static_assert( unique_ptr_details::is_safe_child_type_v<T, U>,
+			               "One cannot destruct U, if T does not have a virtual "
+			               "destructor, and U being a child of T" );
+		}
 
 		constexpr unique_ptr( std::nullptr_t ) noexcept(
 		  std::is_nothrow_default_constructible_v<pointer> )
@@ -226,12 +236,14 @@ namespace daw {
 		constexpr unique_ptr( unique_ptr &&other ) noexcept
 		  : m_ptr( other.release( ) ) {}
 
-		template<
-		  typename U,
-		  std::enable_if_t<unique_ptr_details::is_transferrable_child_type_v<T, U>,
-		                   std::nullptr_t> = nullptr>
+		template<typename U, std::enable_if_t<not std::is_same_v<T, U>,
+		                                      std::nullptr_t> = nullptr>
 		constexpr unique_ptr( unique_ptr<U, Deleter> &&other ) noexcept
-		  : m_ptr( other.release( ) ) {}
+		  : m_ptr( other.release( ) ) {
+			static_assert( unique_ptr_details::is_safe_child_type_v<T, U>,
+			               "One cannot destruct U, if T does not have a virtual "
+			               "destructor, and U being a child of T" );
+		}
 
 		constexpr unique_ptr &
 		operator=( unique_ptr &&rhs ) noexcept( is_nothrow_resetable_v ) {
@@ -242,12 +254,13 @@ namespace daw {
 			return *this;
 		}
 
-		template<
-		  typename U,
-		  std::enable_if_t<unique_ptr_details::is_transferrable_child_type_v<T, U>,
-		                   std::nullptr_t> = nullptr>
+		template<typename U, std::enable_if_t<not std::is_same_v<T, U>,
+		                                      std::nullptr_t> = nullptr>
 		constexpr unique_ptr &operator=( unique_ptr<U, Deleter> &&rhs ) noexcept(
 		  is_nothrow_resetable_v ) {
+			static_assert( unique_ptr_details::is_safe_child_type_v<T, U>,
+			               "One cannot destruct U, if T does not have a virtual "
+			               "destructor, and U being a child of T" );
 			if( this != &rhs ) {
 				reset( );
 				m_ptr = rhs.release( );
