@@ -152,25 +152,25 @@ namespace daw {
 	template<typename Iterator1, typename Iterator2>
 	constexpr bool operator<( reverse_iterator<Iterator1> const &lhs,
 	                          reverse_iterator<Iterator2> const &rhs ) {
-		return lhs.base( ) < rhs.base( );
+		return rhs.base( ) < lhs.base( );
 	}
 
 	template<typename Iterator1, typename Iterator2>
 	constexpr bool operator<=( reverse_iterator<Iterator1> const &lhs,
 	                           reverse_iterator<Iterator2> const &rhs ) {
-		return lhs.base( ) <= rhs.base( );
+		return rhs.base( ) <= lhs.base( );
 	}
 
 	template<typename Iterator1, typename Iterator2>
 	constexpr bool operator>( reverse_iterator<Iterator1> const &lhs,
 	                          reverse_iterator<Iterator2> const &rhs ) {
-		return lhs.base( ) > rhs.base( );
+		return rhs.base( ) > lhs.base( );
 	}
 
 	template<typename Iterator1, typename Iterator2>
 	constexpr bool operator>=( reverse_iterator<Iterator1> const &lhs,
 	                           reverse_iterator<Iterator2> const &rhs ) {
-		return lhs.base( ) >= rhs.base( );
+		return rhs.base( ) >= lhs.base( );
 	}
 
 	template<typename Iterator>
