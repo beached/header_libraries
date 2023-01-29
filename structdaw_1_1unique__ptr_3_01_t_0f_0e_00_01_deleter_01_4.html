@@ -103,14 +103,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5bd1e1e9637b8badd24fed74ffb4f9e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a548f7e15408f0ba82d45e14fc4392e13"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a548f7e15408f0ba82d45e14fc4392e13">unique_ptr</a> (std::nullptr_t) noexcept(std::is_nothrow_default_constructible_v&lt; <a class="el" href="structdaw_1_1unique__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a3639739557fe86321d704e2da6c2cb50">pointer</a> &gt;)</td></tr>
 <tr class="separator:a548f7e15408f0ba82d45e14fc4392e13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3176db609c91838292e008253de8bd15"><td class="memTemplParams" colspan="2">template&lt;typename U , std::enable_if_t&lt; unique_ptr_details::is_transferrable_child_type_v&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a3176db609c91838292e008253de8bd15"><td class="memTemplParams" colspan="2">template&lt;typename U , std::enable_if_t&lt; not std::is_same_v&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a3176db609c91838292e008253de8bd15"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a3176db609c91838292e008253de8bd15">unique_ptr</a> (U *p) noexcept</td></tr>
 <tr class="separator:a3176db609c91838292e008253de8bd15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f8390eb18e17e98a3f7a0c4e9ad47c9"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a0f8390eb18e17e98a3f7a0c4e9ad47c9">unique_ptr</a> (<a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a> &amp;&amp;other) noexcept</td></tr>
 <tr class="separator:a0f8390eb18e17e98a3f7a0c4e9ad47c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afeb433f71cad9a64d1d75b658c306b94"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#afeb433f71cad9a64d1d75b658c306b94">unique_ptr</a> (<a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a> const &amp;)=delete</td></tr>
 <tr class="separator:afeb433f71cad9a64d1d75b658c306b94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bf293722791d44d59b54b5b9fcd9795"><td class="memTemplParams" colspan="2">template&lt;typename U , std::enable_if_t&lt; unique_ptr_details::is_transferrable_child_type_v&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a1bf293722791d44d59b54b5b9fcd9795"><td class="memTemplParams" colspan="2">template&lt;typename U , std::enable_if_t&lt; not std::is_same_v&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a1bf293722791d44d59b54b5b9fcd9795"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a1bf293722791d44d59b54b5b9fcd9795">unique_ptr</a> (<a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; U, Deleter &gt; &amp;&amp;other) noexcept</td></tr>
 <tr class="separator:a1bf293722791d44d59b54b5b9fcd9795"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a422c517ca4601bf4d01edcbf3390a7d7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="cpp__20_8h.html#a782ceb96627f85b15d3a19e7746f8967">DAW_CPP20_CX_ALLOC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a422c517ca4601bf4d01edcbf3390a7d7">~unique_ptr</a> () noexcept(<a class="el" href="structdaw_1_1unique__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#ab0df7ede915b5cf5820440761478c796">is_nothrow_resetable_v</a>)</td></tr>
@@ -131,7 +131,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab9c05328c0bc299192e2fc83161b4851"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78696efd1f4c2e3133cd2080c964f458"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a78696efd1f4c2e3133cd2080c964f458">operator=</a> (<a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a> const &amp;)=delete</td></tr>
 <tr class="separator:a78696efd1f4c2e3133cd2080c964f458"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33a785c4490096f6bb1b1d8279a6d87e"><td class="memTemplParams" colspan="2">template&lt;typename U , std::enable_if_t&lt; unique_ptr_details::is_transferrable_child_type_v&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a33a785c4490096f6bb1b1d8279a6d87e"><td class="memTemplParams" colspan="2">template&lt;typename U , std::enable_if_t&lt; not std::is_same_v&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a33a785c4490096f6bb1b1d8279a6d87e"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a33a785c4490096f6bb1b1d8279a6d87e">operator=</a> (<a class="el" href="structdaw_1_1unique__ptr.html">unique_ptr</a>&lt; U, Deleter &gt; &amp;&amp;rhs) noexcept(<a class="el" href="structdaw_1_1unique__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#ab0df7ede915b5cf5820440761478c796">is_nothrow_resetable_v</a>)</td></tr>
 <tr class="separator:a33a785c4490096f6bb1b1d8279a6d87e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbe1cc34932fa350b476b0641a685494"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1unique__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#abd95b7ab3ce120b467030f3048788c98">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#acbe1cc34932fa350b476b0641a685494">operator[]</a> (std::size_t index) const noexcept(<a class="el" href="structdaw_1_1unique__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a1ec27dc2fe568adfe810bd61ad343ce8">is_nothrow_derefable_v</a>)</td></tr>
@@ -155,7 +155,7 @@ Static Public Attributes</h2></td></tr>
 struct daw::unique_ptr&lt; T[], Deleter &gt;</h3>
 
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00197">197</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00205">205</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="ad1c30f62a7d2c5208a967fdea6029054"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad1c30f62a7d2c5208a967fdea6029054">&#9670;&nbsp;</a></span>deleter_t</h2>
@@ -171,7 +171,7 @@ template&lt;typename T , typename Deleter &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00201">201</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00209">209</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -189,7 +189,7 @@ template&lt;typename T , typename Deleter &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00199">199</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00207">207</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -207,7 +207,7 @@ template&lt;typename T , typename Deleter &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00200">200</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00208">208</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -225,7 +225,7 @@ template&lt;typename T , typename Deleter &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00198">198</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00206">206</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -283,7 +283,7 @@ template&lt;typename T , typename Deleter &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00212">212</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00220">220</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -295,7 +295,7 @@ template&lt;typename T , typename Deleter &gt; </div>
 <div class="memtemplate">
 template&lt;typename T , typename Deleter &gt; </div>
 <div class="memtemplate">
-template&lt;typename U , std::enable_if_t&lt; unique_ptr_details::is_transferrable_child_type_v&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+template&lt;typename U , std::enable_if_t&lt; not std::is_same_v&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -315,7 +315,7 @@ template&lt;typename U , std::enable_if_t&lt; unique_ptr_details::is_transferrab
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00219">219</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00225">225</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -345,7 +345,7 @@ template&lt;typename T , typename Deleter &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00222">222</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00232">232</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -375,7 +375,7 @@ template&lt;typename T , typename Deleter &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00226">226</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00236">236</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -387,7 +387,7 @@ template&lt;typename T , typename Deleter &gt; </div>
 <div class="memtemplate">
 template&lt;typename T , typename Deleter &gt; </div>
 <div class="memtemplate">
-template&lt;typename U , std::enable_if_t&lt; unique_ptr_details::is_transferrable_child_type_v&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+template&lt;typename U , std::enable_if_t&lt; not std::is_same_v&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -407,7 +407,7 @@ template&lt;typename U , std::enable_if_t&lt; unique_ptr_details::is_transferrab
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00233">233</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00241">241</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -464,7 +464,7 @@ template&lt;typename T , typename Deleter &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00261">261</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00274">274</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -494,7 +494,7 @@ template&lt;typename T , typename Deleter &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00283">283</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00296">296</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -523,7 +523,7 @@ template&lt;typename T , typename Deleter &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00269">269</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00282">282</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -552,7 +552,7 @@ template&lt;typename T , typename Deleter &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00273">273</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00286">286</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -581,7 +581,7 @@ template&lt;typename T , typename Deleter &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00295">295</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00308">308</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -610,7 +610,7 @@ template&lt;typename T , typename Deleter &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00291">291</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00304">304</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -639,7 +639,7 @@ template&lt;typename T , typename Deleter &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00287">287</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00300">300</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -669,7 +669,7 @@ template&lt;typename T , typename Deleter &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00237">237</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00249">249</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -709,7 +709,7 @@ template&lt;typename T , typename Deleter &gt; </div>
 <div class="memtemplate">
 template&lt;typename T , typename Deleter &gt; </div>
 <div class="memtemplate">
-template&lt;typename U , std::enable_if_t&lt; unique_ptr_details::is_transferrable_child_type_v&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+template&lt;typename U , std::enable_if_t&lt; not std::is_same_v&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -729,7 +729,7 @@ template&lt;typename U , std::enable_if_t&lt; unique_ptr_details::is_transferrab
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00249">249</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00259">259</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -759,7 +759,7 @@ template&lt;typename T , typename Deleter &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00304">304</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00317">317</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -788,7 +788,7 @@ template&lt;typename T , typename Deleter &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00265">265</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00278">278</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -817,7 +817,7 @@ template&lt;typename T , typename Deleter &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00277">277</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00290">290</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -847,7 +847,7 @@ template&lt;typename T , typename Deleter &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00299">299</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00312">312</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -876,7 +876,7 @@ template&lt;typename T , typename Deleter &gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">      noexcept( *std::declval&lt;pointer&gt;( ) )</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00202">202</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00210">210</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -904,7 +904,7 @@ template&lt;typename T , typename Deleter &gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">      std::is_nothrow_invocable_v&lt;Deleter, pointer&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00204">204</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00212">212</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
