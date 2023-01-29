@@ -44,8 +44,7 @@ namespace daw {
 			               "destructor, and U being a child of T" );
 		}
 
-		DAW_CPP20_CX_ALLOC void operator( )( pointer p ) const
-		  noexcept( std::is_nothrow_destructible_v<T> ) {
+		DAW_CPP20_CX_ALLOC void operator( )( pointer p ) const noexcept {
 			static_assert( sizeof( T ) > 0,
 			               "One cannot delete a pointer to an incomplete type" );
 			delete p;
@@ -57,8 +56,7 @@ namespace daw {
 		using pointer = T *;
 		explicit default_deleter( ) = default;
 
-		DAW_CPP20_CX_ALLOC void operator( )( pointer p ) const
-		  noexcept( std::is_nothrow_destructible_v<T> ) {
+		DAW_CPP20_CX_ALLOC void operator( )( pointer p ) const noexcept {
 			delete[] p;
 		}
 	};
@@ -84,10 +82,7 @@ namespace daw {
 		using pointer = unique_ptr_del::pointer_type_t<value_type, Deleter>;
 		using reference = std::add_lvalue_reference_t<value_type>;
 		using deleter_t = Deleter;
-		static constexpr bool is_nothrow_derefable_v =
-		  noexcept( *std::declval<pointer>( ) );
-		static constexpr bool is_nothrow_resetable_v =
-		  std::is_nothrow_invocable_v<Deleter, pointer>;
+
 		static_assert( not std::is_array_v<T>,
 		               "It is an error to specify a bound on the array type. e.g "
 		               "T[3], use T[] instead" );
@@ -112,17 +107,15 @@ namespace daw {
 			               "destructor, and U being a child of T" );
 		}
 
-		constexpr unique_ptr( std::nullptr_t ) noexcept(
-		  std::is_nothrow_default_constructible_v<pointer> )
+		constexpr unique_ptr( std::nullptr_t ) noexcept
 		  : m_ptr{ } {}
 
 		constexpr unique_ptr( unique_ptr &&other ) noexcept
 		  : m_ptr( other.release( ) ) {}
 
-		template<typename U, typename D,
-		         std::enable_if_t<(not std::is_same_v<T, U> and
-		                           std::is_nothrow_constructible_v<Deleter, D &&>),
-		                          std::nullptr_t> = nullptr>
+		template<
+		  typename U, typename D,
+		  std::enable_if_t<not std::is_same_v<T, U>, std::nullptr_t> = nullptr>
 		constexpr unique_ptr( unique_ptr<U, D> &&other ) noexcept
 		  : Deleter( static_cast<D &&>( other ) )
 		  , m_ptr( other.release( ) ) {
@@ -131,8 +124,7 @@ namespace daw {
 			               "destructor, and U being a child of T" );
 		}
 
-		constexpr unique_ptr &
-		operator=( unique_ptr &&rhs ) noexcept( is_nothrow_resetable_v ) {
+		constexpr unique_ptr &operator=( unique_ptr &&rhs ) noexcept {
 			if( this != &rhs ) {
 				reset( );
 				m_ptr = rhs.release( );
@@ -142,8 +134,7 @@ namespace daw {
 
 		template<typename U, std::enable_if_t<not std::is_same_v<T, U>,
 		                                      std::nullptr_t> = nullptr>
-		constexpr unique_ptr &operator=( unique_ptr<U, Deleter> &&rhs ) noexcept(
-		  is_nothrow_resetable_v ) {
+		constexpr unique_ptr &operator=( unique_ptr<U, Deleter> &&rhs ) noexcept {
 			static_assert( unique_ptr_details::is_safe_child_type_v<T, U>,
 			               "One cannot destruct U, if T does not have a virtual "
 			               "destructor, and U being a child of T" );
@@ -157,7 +148,7 @@ namespace daw {
 		constexpr unique_ptr( unique_ptr const & ) = delete;
 		constexpr unique_ptr &operator=( unique_ptr const & ) = delete;
 
-		DAW_CPP20_CX_ALLOC ~unique_ptr( ) noexcept( is_nothrow_resetable_v ) {
+		DAW_CPP20_CX_ALLOC ~unique_ptr( ) noexcept {
 			reset( );
 		}
 
@@ -173,7 +164,7 @@ namespace daw {
 			return *static_cast<Deleter const *>( this );
 		}
 
-		constexpr void reset( ) noexcept( is_nothrow_resetable_v ) {
+		constexpr void reset( ) noexcept {
 			if( m_ptr ) {
 				get_deleter( )( daw::exchange( m_ptr, pointer{ } ) );
 			}
@@ -187,7 +178,7 @@ namespace daw {
 			return m_ptr;
 		}
 
-		constexpr reference operator*( ) const noexcept( is_nothrow_derefable_v ) {
+		constexpr reference operator*( ) const noexcept {
 			return *m_ptr;
 		}
 
@@ -207,10 +198,6 @@ namespace daw {
 		using pointer = unique_ptr_del::pointer_type_t<value_type, Deleter>;
 		using reference = std::add_lvalue_reference_t<value_type>;
 		using deleter_t = Deleter;
-		static constexpr bool is_nothrow_derefable_v =
-		  noexcept( *std::declval<pointer>( ) );
-		static constexpr bool is_nothrow_resetable_v =
-		  std::is_nothrow_invocable_v<Deleter, pointer>;
 
 	private:
 		pointer m_ptr = pointer{ };
@@ -229,8 +216,7 @@ namespace daw {
 			               "destructor, and U being a child of T" );
 		}
 
-		constexpr unique_ptr( std::nullptr_t ) noexcept(
-		  std::is_nothrow_default_constructible_v<pointer> )
+		constexpr unique_ptr( std::nullptr_t ) noexcept
 		  : m_ptr{ } {}
 
 		constexpr unique_ptr( unique_ptr &&other ) noexcept
@@ -245,8 +231,7 @@ namespace daw {
 			               "destructor, and U being a child of T" );
 		}
 
-		constexpr unique_ptr &
-		operator=( unique_ptr &&rhs ) noexcept( is_nothrow_resetable_v ) {
+		constexpr unique_ptr &operator=( unique_ptr &&rhs ) noexcept {
 			if( this != &rhs ) {
 				reset( );
 				m_ptr = rhs.release( );
@@ -256,8 +241,7 @@ namespace daw {
 
 		template<typename U, std::enable_if_t<not std::is_same_v<T, U>,
 		                                      std::nullptr_t> = nullptr>
-		constexpr unique_ptr &operator=( unique_ptr<U, Deleter> &&rhs ) noexcept(
-		  is_nothrow_resetable_v ) {
+		constexpr unique_ptr &operator=( unique_ptr<U, Deleter> &&rhs ) noexcept {
 			static_assert( unique_ptr_details::is_safe_child_type_v<T, U>,
 			               "One cannot destruct U, if T does not have a virtual "
 			               "destructor, and U being a child of T" );
@@ -271,7 +255,7 @@ namespace daw {
 		constexpr unique_ptr( unique_ptr const & ) = delete;
 		constexpr unique_ptr &operator=( unique_ptr const & ) = delete;
 
-		DAW_CPP20_CX_ALLOC ~unique_ptr( ) noexcept( is_nothrow_resetable_v ) {
+		DAW_CPP20_CX_ALLOC ~unique_ptr( ) noexcept {
 			reset( );
 		}
 
@@ -287,7 +271,7 @@ namespace daw {
 			return *static_cast<Deleter const *>( this );
 		}
 
-		constexpr void reset( ) noexcept( is_nothrow_resetable_v ) {
+		constexpr void reset( ) noexcept {
 			if( m_ptr ) {
 				get_deleter( )( daw::exchange( m_ptr, pointer{ } ) );
 			}
@@ -301,7 +285,7 @@ namespace daw {
 			return m_ptr;
 		}
 
-		constexpr reference operator*( ) const noexcept( is_nothrow_derefable_v ) {
+		constexpr reference operator*( ) const noexcept {
 			return *m_ptr;
 		}
 
@@ -314,8 +298,7 @@ namespace daw {
 			swap( m_ptr, other.m_ptr );
 		}
 
-		constexpr reference operator[]( std::size_t index ) const
-		  noexcept( is_nothrow_derefable_v ) {
+		constexpr reference operator[]( std::size_t index ) const noexcept {
 			return m_ptr[index];
 		}
 	};
