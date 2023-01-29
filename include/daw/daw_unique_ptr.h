@@ -44,10 +44,12 @@ namespace daw {
 			               "destructor, and U being a child of T" );
 		}
 
-		DAW_CPP20_CX_ALLOC void operator( )( pointer p ) const noexcept {
-			static_assert( sizeof( T ) > 0,
+		template<typename P, std::enable_if_t<std::is_constructible_v<pointer, P *>,
+		                                      std::nullptr_t> = nullptr>
+		DAW_CPP20_CX_ALLOC void operator( )( P *p ) const noexcept {
+			static_assert( sizeof( P ) > 0,
 			               "One cannot delete a pointer to an incomplete type" );
-			delete p;
+			delete static_cast<pointer>( p );
 		}
 	};
 
