@@ -146,6 +146,7 @@ namespace daw {
 		return utility_details::NotImpl<Function>( func );
 	}
 
+
 	// For generic types that are functors, delegate to its 'operator()'
 
 	template<typename T>
@@ -157,6 +158,7 @@ namespace daw {
 		static constexpr std::size_t arity = sizeof...( Args );
 		using type = std::function<ReturnType( Args... )>;
 		using arg_types = std::tuple<Args...>;
+		using arg_pack = daw::pack_list<Args...>;
 		using result_type = ReturnType;
 	};
 
@@ -166,6 +168,7 @@ namespace daw {
 		static constexpr std::size_t arity = sizeof...( Args );
 		using type = std::function<ReturnType( Args... )>;
 		using arg_types = std::tuple<Args...>;
+		using arg_pack = daw::pack_list<Args...>;
 		using result_type = ReturnType;
 	};
 
@@ -177,6 +180,7 @@ namespace daw {
 		using root_type = std::function<daw::traits::root_type_t<ReturnType>(
 		  daw::traits::root_type_t<Args>... )>;
 		using arg_types = std::tuple<Args...>;
+		using arg_pack = daw::pack_list<Args...>;
 		using result_type = ReturnType;
 	};
 	template<typename F>
