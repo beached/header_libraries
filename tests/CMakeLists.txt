@@ -60,7 +60,6 @@ set( TEST_SOURCES
      daw_iterator_inserter_test.cpp
      daw_iterator_integer_iterator_test.cpp
      daw_iterator_iota_iterator_test.cpp
-     daw_integers_signed_test.cpp
      daw_iterator_output_stream_iterator_test.cpp
      daw_iterator_random_iterator_test.cpp
      daw_iterator_repeat_n_char_iterator_test.cpp
@@ -138,6 +137,7 @@ set( NOT_MSVC_TEST_SOURCES
      daw_bounded_graph_test.cpp
      daw_bounded_hash_map_test.cpp
      daw_bounded_hash_set_test.cpp
+     daw_integers_signed_test.cpp
      daw_parser_helper_test.cpp
      daw_piecewise_factory_test.cpp
      daw_tuple2_test.cpp
