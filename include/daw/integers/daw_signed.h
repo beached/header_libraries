@@ -32,6 +32,7 @@ namespace daw::integers {
 		template<std::size_t Bits, bool Signed>
 		struct IntTypes;
 
+#if defined( DAW_HAS_INT128 )
 		template<>
 		struct IntTypes<128, true> {
 			using type = daw::int128_t;
@@ -41,6 +42,7 @@ namespace daw::integers {
 		struct IntTypes<128, false> {
 			using type = daw::uint128_t;
 		};
+#endif
 
 		template<>
 		struct IntTypes<64, true> {
