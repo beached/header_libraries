@@ -60,6 +60,7 @@ set( TEST_SOURCES
      daw_iterator_inserter_test.cpp
      daw_iterator_integer_iterator_test.cpp
      daw_iterator_iota_iterator_test.cpp
+     daw_integers_signed_test.cpp
      daw_iterator_output_stream_iterator_test.cpp
      daw_iterator_random_iterator_test.cpp
      daw_iterator_repeat_n_char_iterator_test.cpp
@@ -108,7 +109,7 @@ set( TEST_SOURCES
      daw_uninitialized_storage_test.cpp
      daw_union_pair_test.cpp
      daw_unique_array_test.cpp
-	 daw_unique_ptr_test.cpp
+     daw_unique_ptr_test.cpp
      daw_utility_test.cpp
      daw_validated_test.cpp
      daw_value_ptr_test.cpp
