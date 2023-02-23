@@ -25,7 +25,7 @@
 #include <type_traits>
 #include <utility>
 
-namespace daw::integers::int_impl {
+namespace daw::integers::sint_impl {
 	template<typename T>
 	inline constexpr bool is_valid_int_type =
 	  std::is_integral_v<T> and std::is_signed_v<T> and
@@ -171,5 +171,5 @@ namespace daw::integers::int_impl {
 			return lhs >> rhs;
 		}
 	} checked_shr{ };
-} // namespace daw::integers::int_impl
+} // namespace daw::integers::sint_impl
 #endif

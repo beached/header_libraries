@@ -33,7 +33,7 @@ namespace daw::integers {
 	using signed_int_error_handler_t = void ( * )( void *,
 	                                               SignedIntegerErrorType );
 
-	namespace int_impl {
+	namespace sint_impl {
 		inline auto &get_signed_integer_overflow_handler( ) {
 			static struct handler_t {
 				signed_int_error_handler_t cb = nullptr;
@@ -49,13 +49,13 @@ namespace daw::integers {
 			} handler{ };
 			return handler;
 		}
-	} // namespace int_impl
+	} // namespace sint_impl
 
 	DAW_ATTRIB_NOINLINE inline void register_signed_overflow_handler(
 	  signed_int_error_handler_t handler = nullptr,
 	  void *data = nullptr ) noexcept {
-		int_impl::get_signed_integer_overflow_handler( ).cb = handler;
-		int_impl::get_signed_integer_overflow_handler( ).data = data;
+		sint_impl::get_signed_integer_overflow_handler( ).cb = handler;
+		sint_impl::get_signed_integer_overflow_handler( ).data = data;
 	}
 
 	template<typename Func,
@@ -83,8 +83,8 @@ namespace daw::integers {
 	DAW_ATTRIB_NOINLINE inline void register_signed_div_by_zero_handler(
 	  signed_int_error_handler_t handler = nullptr,
 	  void *data = nullptr ) noexcept {
-		int_impl::get_signed_integer_div_by_zero_handler( ).cb = handler;
-		int_impl::get_signed_integer_div_by_zero_handler( ).data = data;
+		sint_impl::get_signed_integer_div_by_zero_handler( ).cb = handler;
+		sint_impl::get_signed_integer_div_by_zero_handler( ).data = data;
 	}
 
 	template<typename Func,
@@ -113,7 +113,7 @@ namespace daw::integers {
 	struct signed_integer_div_by_zero_exception : std::exception {};
 
 	DAW_ATTRIB_NOINLINE inline void on_signed_integer_overflow( ) {
-		auto handler = int_impl::get_signed_integer_overflow_handler( );
+		auto handler = sint_impl::get_signed_integer_overflow_handler( );
 		if( handler.cb ) {
 			handler.cb( handler.data, SignedIntegerErrorType::Overflow );
 			return;
@@ -122,7 +122,7 @@ namespace daw::integers {
 	}
 
 	DAW_ATTRIB_NOINLINE inline void on_signed_integer_div_by_zero( ) {
-		auto handler = int_impl::get_signed_integer_div_by_zero_handler( );
+		auto handler = sint_impl::get_signed_integer_div_by_zero_handler( );
 		if( handler.cb ) {
 			handler.cb( handler.data, SignedIntegerErrorType::DivideByZero );
 			return;
