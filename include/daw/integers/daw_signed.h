@@ -83,10 +83,10 @@ namespace daw::integers {
 			using type = std::uint8_t;
 		};
 
-		template<std::size_t Bits, typename Integer>
+		template<typename SignedInteger, typename Integer>
 		inline constexpr bool convertible_signed_int =
 		  std::is_integral_v<Integer> and std::is_signed_v<Integer> and
-		  ( ( sizeof( Integer ) * CHAR_BIT ) <= Bits );
+		  ( sizeof( Integer ) <= sizeof( SignedInteger ) );
 
 		inline constexpr struct debug_checked_add_t {
 			explicit debug_checked_add_t( ) = default;
@@ -195,11 +195,39 @@ namespace daw::integers {
 #endif
 			}
 		} debug_checked_shr{ };
+
 	} // namespace int_impl
 
-	template<std::size_t Bits>
+	template<typename SignedInteger,
+	         std::enable_if_t<std::is_integral_v<SignedInteger> and
+	                            std::is_signed_v<SignedInteger>,
+	                          std::nullptr_t> = nullptr>
+	struct signed_integer;
+
+	namespace int_impl {
+		template<typename, typename = void>
+		inline constexpr bool is_signed_integral_v = false;
+
+		template<typename T>
+		inline constexpr bool is_signed_integral_v<
+		  T, std::enable_if_t<std::is_integral_v<T> and std::is_signed_v<T>>> =
+		  true;
+
+		template<
+		  typename Lhs, typename Rhs,
+		  std::enable_if_t<is_signed_integral_v<Lhs> and is_signed_integral_v<Rhs>,
+		                   std::nullptr_t> = nullptr>
+		using int_result_t =
+		  std::conditional_t<( sizeof( Lhs ) >= sizeof( Rhs ) ),
+		                     signed_integer<Lhs>, signed_integer<Rhs>>;
+	} // namespace int_impl
+
+	template<typename SignedInteger,
+	         std::enable_if_t<std::is_integral_v<SignedInteger> and
+	                            std::is_signed_v<SignedInteger>,
+	                          std::nullptr_t>>
 	struct signed_integer {
-		using value_type = typename int_impl::IntTypes<Bits, true>::type;
+		using value_type = SignedInteger;
 		using reference = value_type &;
 		using const_reference = value_type const &;
 
@@ -209,17 +237,31 @@ namespace daw::integers {
 	public:
 		explicit signed_integer( ) = default;
 
-		template<typename Integer,
-		         std::enable_if_t<int_impl::convertible_signed_int<Bits, Integer>,
+		template<typename I,
+		         std::enable_if_t<int_impl::convertible_signed_int<value_type, I>,
 		                          std::nullptr_t> = nullptr>
-		DAW_ATTRIB_INLINE constexpr signed_integer( Integer v ) noexcept
+		DAW_ATTRIB_INLINE constexpr signed_integer( I v ) noexcept
 		  : m_value( static_cast<value_type>( v ) ) {}
 
-		template<std::size_t OtherBits,
-		         std::enable_if_t<( OtherBits < Bits ), std::nullptr_t> = nullptr>
+		template<typename I,
+		         std::enable_if_t<int_impl::convertible_signed_int<value_type, I>,
+		                          std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE constexpr signed_integer(
-		  signed_integer<OtherBits> other ) noexcept
-		  : m_value( other.m_value ) {}
+		  signed_integer<I> other ) noexcept
+		  : m_value( other.get( ) ) {}
+
+		template<
+		  typename I,
+		  std::enable_if_t<not int_impl::convertible_signed_int<value_type, I> and
+		                     int_impl::is_signed_integral_v<I>,
+		                   std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE signed_integer( I v )
+		  : m_value( static_cast<value_type>( v ) ) {
+			// We know I can be larger than max( )
+			if( v > static_cast<I>( std::numeric_limits<value_type>::max( ) ) ) {
+				on_signed_integer_overflow( );
+			}
+		}
 
 		template<typename Arithmetic,
 		         std::enable_if_t<std::is_arithmetic_v<Arithmetic>,
@@ -228,12 +270,12 @@ namespace daw::integers {
 			return static_cast<Arithmetic>( m_value );
 		}
 
-		template<std::size_t NewBits>
+		template<typename I,
+		         std::enable_if_t<int_impl::convertible_signed_int<I, value_type>,
+		                          std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE explicit constexpr
-		operator signed_integer<NewBits>( ) const noexcept {
-			using result_t = signed_integer<NewBits>;
-			using new_value_t = typename result_t::value_type;
-			return result_t( static_cast<new_value_t>( m_value ) );
+		operator signed_integer<I>( ) const noexcept {
+			return signed_integer<I>( m_value );
 		}
 
 		DAW_ATTRIB_INLINE constexpr reference get( ) noexcept {
@@ -244,8 +286,8 @@ namespace daw::integers {
 			return m_value;
 		}
 
-		DAW_ATTRIB_INLINE constexpr signed_integer operator!( ) const {
-			return signed_integer( static_cast<value_type>( !m_value ) );
+		DAW_ATTRIB_INLINE constexpr bool operator not( ) const {
+			return not m_value;
 		}
 
 		DAW_ATTRIB_INLINE constexpr signed_integer operator-( ) const {
@@ -260,6 +302,13 @@ namespace daw::integers {
 		operator+=( signed_integer const &rhs ) {
 			m_value = int_impl::debug_checked_add( m_value, rhs.m_value );
 			return *this;
+		}
+
+		template<typename I,
+		         std::enable_if_t<int_impl::convertible_signed_int<value_type, I>,
+		                          std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE constexpr signed_integer &operator+=( I rhs ) {
+			return *this += signed_integer( rhs );
 		}
 
 		DAW_ATTRIB_INLINE constexpr signed_integer
@@ -283,6 +332,13 @@ namespace daw::integers {
 			return *this;
 		}
 
+		template<typename I,
+		         std::enable_if_t<int_impl::convertible_signed_int<value_type, I>,
+		                          std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE constexpr signed_integer &operator-=( I rhs ) {
+			return *this -= signed_integer( rhs );
+		}
+
 		DAW_ATTRIB_INLINE constexpr signed_integer
 		checked_sub( signed_integer const &rhs ) const {
 			return signed_integer( int_impl::checked_sub( m_value, rhs.m_value ) );
@@ -302,6 +358,13 @@ namespace daw::integers {
 		operator*=( signed_integer const &rhs ) {
 			m_value = int_impl::debug_checked_mul( m_value, rhs.m_value );
 			return *this;
+		}
+
+		template<typename I,
+		         std::enable_if_t<int_impl::convertible_signed_int<value_type, I>,
+		                          std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE constexpr signed_integer &operator*=( I rhs ) {
+			return *this *= signed_integer( rhs );
 		}
 
 		DAW_ATTRIB_INLINE constexpr signed_integer
@@ -325,6 +388,13 @@ namespace daw::integers {
 			return *this;
 		}
 
+		template<typename I,
+		         std::enable_if_t<int_impl::convertible_signed_int<value_type, I>,
+		                          std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE constexpr signed_integer &operator/=( I rhs ) {
+			return *this /= signed_integer( rhs );
+		}
+
 		DAW_ATTRIB_INLINE constexpr signed_integer
 		checked_div( signed_integer const &rhs ) const {
 			return signed_integer( int_impl::checked_div( m_value, rhs.m_value ) );
@@ -339,6 +409,13 @@ namespace daw::integers {
 		operator%=( signed_integer const &rhs ) {
 			m_value = int_impl::debug_checked_rem( m_value, rhs.m_value );
 			return *this;
+		}
+
+		template<typename I,
+		         std::enable_if_t<int_impl::convertible_signed_int<value_type, I>,
+		                          std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE constexpr signed_integer &operator%=( I rhs ) {
+			return *this %= signed_integer( rhs );
 		}
 
 		DAW_ATTRIB_INLINE constexpr signed_integer
@@ -357,6 +434,13 @@ namespace daw::integers {
 			return *this;
 		}
 
+		template<typename I,
+		         std::enable_if_t<int_impl::convertible_signed_int<value_type, I>,
+		                          std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE constexpr signed_integer &operator<<=( I rhs ) {
+			return *this <<= signed_integer( rhs );
+		}
+
 		DAW_ATTRIB_INLINE constexpr signed_integer
 		checked_shl( signed_integer const &rhs ) const {
 			return signed_integer( int_impl::checked_shl( m_value, rhs.m_value ) );
@@ -371,6 +455,13 @@ namespace daw::integers {
 		operator>>=( signed_integer const &rhs ) {
 			m_value = int_impl::debug_checked_shr( m_value, rhs.m_value );
 			return *this;
+		}
+
+		template<typename I,
+		         std::enable_if_t<int_impl::convertible_signed_int<value_type, I>,
+		                          std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE constexpr signed_integer &operator>>=( I rhs ) {
+			return *this >>= signed_integer( rhs );
 		}
 
 		DAW_ATTRIB_INLINE constexpr signed_integer
@@ -389,9 +480,25 @@ namespace daw::integers {
 			return *this;
 		}
 
+		template<typename I,
+		         std::enable_if_t<int_impl::convertible_signed_int<value_type, I>,
+		                          std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE constexpr signed_integer &operator|=( I rhs ) {
+			m_value |= static_cast<value_type>( rhs );
+			return *this;
+		}
+
 		DAW_ATTRIB_INLINE constexpr signed_integer &
 		operator&=( signed_integer const &rhs ) const noexcept {
 			m_value &= rhs.m_value;
+			return *this;
+		}
+
+		template<typename I,
+		         std::enable_if_t<int_impl::convertible_signed_int<value_type, I>,
+		                          std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE constexpr signed_integer &operator&=( I rhs ) {
+			m_value &= static_cast<value_type>( rhs );
 			return *this;
 		}
 
@@ -400,262 +507,491 @@ namespace daw::integers {
 			m_value ^= rhs.m_value;
 			return *this;
 		}
+
+		template<typename I,
+		         std::enable_if_t<int_impl::convertible_signed_int<value_type, I>,
+		                          std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE constexpr signed_integer &operator^=( I rhs ) {
+			m_value ^= static_cast<value_type>( rhs );
+			return *this;
+		}
 	};
 
-	namespace int_impl {
-		template<typename Integer, typename = void>
-		struct signed_from_integer;
+	template<typename I,
+	         std::enable_if_t<std::is_signed_v<I> and std::is_integral_v<I>,
+	                          std::nullptr_t> = nullptr>
+	signed_integer( I ) -> signed_integer<I>;
 
-		template<typename Integer>
-		struct signed_from_integer<
-		  Integer, std::enable_if_t<sizeof( Integer ) == sizeof( std::int64_t )>> {
-			using type = signed_integer<64>;
-		};
-
-		template<typename Integer>
-		struct signed_from_integer<
-		  Integer, std::enable_if_t<sizeof( Integer ) == sizeof( std::int32_t )>> {
-			using type = signed_integer<32>;
-		};
-
-		template<typename Integer>
-		struct signed_from_integer<
-		  Integer, std::enable_if_t<sizeof( Integer ) == sizeof( std::int16_t )>> {
-			using type = signed_integer<16>;
-		};
-
-		template<typename Integer>
-		struct signed_from_integer<
-		  Integer, std::enable_if_t<sizeof( Integer ) == sizeof( std::int8_t )>> {
-			using type = signed_integer<8>;
-		};
-
-		template<typename Integer>
-		using signed_from_integer_t = typename signed_from_integer<Integer>::type;
-	} // namespace int_impl
-
-	template<std::size_t LhsBits, std::size_t RhsBits>
-	using int_result_t = signed_integer<( std::max )( LhsBits, RhsBits )>;
-
-	template<std::size_t LhsBits, std::size_t RhsBits>
-	DAW_ATTRIB_INLINE constexpr int_result_t<LhsBits, RhsBits>
-	operator+( signed_integer<LhsBits> lhs, signed_integer<RhsBits> rhs ) {
-		return lhs += rhs;
+	// Addition
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator+( signed_integer<Lhs> lhs, signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		auto result = result_t( lhs.get( ) );
+		result += result_t( rhs.get( ) );
+		return result;
 	}
 
-	template<std::size_t LhsBits, std::size_t RhsBits>
-	DAW_ATTRIB_INLINE constexpr int_result_t<LhsBits, RhsBits>
-	operator-( signed_integer<LhsBits> lhs, signed_integer<RhsBits> rhs ) {
-		return lhs -= rhs;
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator+( signed_integer<Lhs> lhs, Rhs rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		auto result = result_t( lhs.get( ) );
+		result += result_t( rhs );
+		return result;
 	}
 
-	template<std::size_t LhsBits, std::size_t RhsBits>
-	DAW_ATTRIB_INLINE constexpr int_result_t<LhsBits, RhsBits>
-	operator*( signed_integer<LhsBits> lhs, signed_integer<RhsBits> rhs ) {
-		return lhs *= rhs;
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator+( Lhs lhs, signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		auto result = result_t( lhs );
+		result += result_t( rhs.get( ) );
+		return result;
+	}
+	// Subtraction
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator-( signed_integer<Lhs> lhs, signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		auto result = result_t( lhs.get( ) );
+		result += result_t( rhs.get( ) );
+		return result;
 	}
 
-	template<std::size_t LhsBits, std::size_t RhsBits>
-	DAW_ATTRIB_INLINE constexpr int_result_t<LhsBits, RhsBits>
-	operator/( signed_integer<LhsBits> lhs, signed_integer<RhsBits> rhs ) {
-		return lhs /= rhs;
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator-( signed_integer<Lhs> lhs, Rhs rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		auto result = result_t( lhs.get( ) );
+		result -= result_t( rhs );
+		return result;
 	}
 
-	template<std::size_t LhsBits, std::size_t RhsBits>
-	DAW_ATTRIB_INLINE constexpr int_result_t<LhsBits, RhsBits>
-	operator%( signed_integer<LhsBits> lhs, signed_integer<RhsBits> rhs ) {
-		return lhs %= rhs;
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator-( Lhs lhs, signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		auto result = result_t( lhs );
+		result -= result_t( rhs.get( ) );
+		return result;
 	}
 
-	template<std::size_t LhsBits, std::size_t RhsBits>
-	DAW_ATTRIB_INLINE constexpr int_result_t<LhsBits, RhsBits>
-	operator<<( signed_integer<LhsBits> lhs, signed_integer<RhsBits> rhs ) {
-		return lhs <<= rhs;
+	// Multiplication
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator*( signed_integer<Lhs> lhs, signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		auto result = result_t( lhs.get( ) );
+		result *= result_t( rhs.get( ) );
+		return result;
 	}
 
-	template<std::size_t LhsBits, std::size_t RhsBits>
-	DAW_ATTRIB_INLINE constexpr int_result_t<LhsBits, RhsBits>
-	operator>>( signed_integer<LhsBits> lhs, signed_integer<RhsBits> rhs ) {
-		return lhs >>= rhs;
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator*( signed_integer<Lhs> lhs, Rhs rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		auto result = result_t( lhs.get( ) );
+		result *= result_t( rhs );
+		return result;
 	}
 
-	template<std::size_t LhsBits, std::size_t RhsBits>
-	DAW_ATTRIB_INLINE constexpr int_result_t<LhsBits, RhsBits>
-	operator|( signed_integer<LhsBits> lhs, signed_integer<RhsBits> rhs ) {
-		return lhs |= rhs;
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator*( Lhs lhs, signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		auto result = result_t( lhs );
+		result *= result_t( rhs.get( ) );
+		return result;
 	}
 
-	template<std::size_t LhsBits, std::size_t RhsBits>
-	DAW_ATTRIB_INLINE constexpr int_result_t<LhsBits, RhsBits>
-	operator&( signed_integer<LhsBits> lhs, signed_integer<RhsBits> rhs ) {
-		return lhs &= rhs;
+	// Division
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator/( signed_integer<Lhs> lhs, signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		auto result = result_t( lhs.get( ) );
+		result /= result_t( rhs.get( ) );
+		return result;
 	}
 
-	template<std::size_t LhsBits, std::size_t RhsBits>
-	DAW_ATTRIB_INLINE constexpr int_result_t<LhsBits, RhsBits>
-	operator^( signed_integer<LhsBits> lhs, signed_integer<RhsBits> rhs ) {
-		return lhs ^= rhs;
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator/( signed_integer<Lhs> lhs, Rhs rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		auto result = result_t( lhs.get( ) );
+		result /= result_t( rhs );
+		return result;
 	}
 
-	template<std::size_t LhsBits, std::size_t RhsBits>
-	DAW_ATTRIB_INLINE constexpr bool operator==( signed_integer<LhsBits> lhs,
-	                                             signed_integer<RhsBits> rhs ) {
-		return int_result_t<LhsBits, RhsBits>( lhs ).get( ) ==
-		       int_result_t<LhsBits, RhsBits>( rhs ).get( );
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator/( Lhs lhs, signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		auto result = result_t( lhs );
+		result /= result_t( rhs.get( ) );
+		return result;
 	}
 
-	template<std::size_t Bits, typename Integer>
-	DAW_ATTRIB_INLINE constexpr bool operator==( signed_integer<Bits> lhs,
-	                                             Integer rhs ) {
-		return lhs == int_impl::signed_from_integer_t<Integer>( rhs );
+	// Remainder
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator%( signed_integer<Lhs> lhs, signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		auto result = result_t( lhs.get( ) );
+		result %= result_t( rhs.get( ) );
+		return result;
 	}
 
-	template<typename Integer, std::size_t Bits>
-	DAW_ATTRIB_INLINE constexpr bool operator==( Integer lhs,
-	                                             signed_integer<Bits> rhs ) {
-		return int_impl::signed_from_integer_t<Integer>( lhs ) == rhs;
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator%( signed_integer<Lhs> lhs, Rhs rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		auto result = result_t( lhs.get( ) );
+		result %= result_t( rhs );
+		return result;
 	}
 
-	template<std::size_t LhsBits, std::size_t RhsBits>
-	DAW_ATTRIB_INLINE constexpr bool operator!=( signed_integer<LhsBits> lhs,
-	                                             signed_integer<RhsBits> rhs ) {
-		return int_result_t<LhsBits, RhsBits>( lhs ).get( ) !=
-		       int_result_t<LhsBits, RhsBits>( rhs ).get( );
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator%( Lhs lhs, signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		auto result = result_t( lhs );
+		result %= result_t( rhs.get( ) );
+		return result;
+	}
+	// Shift Left
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator<<( signed_integer<Lhs> lhs, signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs.get( ) ) <<= result_t( rhs.get( ) );
 	}
 
-	template<std::size_t Bits, typename Integer>
-	DAW_ATTRIB_INLINE constexpr bool operator!=( signed_integer<Bits> lhs,
-	                                             Integer rhs ) {
-		return lhs != int_impl::signed_from_integer_t<Integer>( rhs );
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator<<( signed_integer<Lhs> lhs, Rhs rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs.get( ) ) <<= result_t( rhs );
 	}
 
-	template<typename Integer, std::size_t Bits>
-	DAW_ATTRIB_INLINE constexpr bool operator!=( Integer lhs,
-	                                             signed_integer<Bits> rhs ) {
-		return int_impl::signed_from_integer_t<Integer>( lhs ) != rhs;
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator<<( Lhs lhs, signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs ) <<= result_t( rhs.get( ) );
 	}
 
-	template<std::size_t LhsBits, std::size_t RhsBits>
-	DAW_ATTRIB_INLINE constexpr bool operator<( signed_integer<LhsBits> lhs,
-	                                            signed_integer<RhsBits> rhs ) {
-		return int_result_t<LhsBits, RhsBits>( lhs ).get( ) <
-		       int_result_t<LhsBits, RhsBits>( rhs ).get( );
+	// Shift Right
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator>>( signed_integer<Lhs> lhs, signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs.get( ) ) >>= result_t( rhs.get( ) );
 	}
 
-	template<std::size_t Bits, typename Integer>
-	DAW_ATTRIB_INLINE constexpr bool operator<( signed_integer<Bits> lhs,
-	                                            Integer rhs ) {
-		return lhs < int_impl::signed_from_integer_t<Integer>( rhs );
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator>>( signed_integer<Lhs> lhs, Rhs rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs.get( ) ) >>= result_t( rhs );
 	}
 
-	template<typename Integer, std::size_t Bits>
-	DAW_ATTRIB_INLINE constexpr bool operator<( Integer lhs,
-	                                            signed_integer<Bits> rhs ) {
-		return int_impl::signed_from_integer_t<Integer>( lhs ) < rhs;
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator>>( Lhs lhs, signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs ) >>= result_t( rhs.get( ) );
 	}
 
-	template<std::size_t LhsBits, std::size_t RhsBits>
-	DAW_ATTRIB_INLINE constexpr bool operator<=( signed_integer<LhsBits> lhs,
-	                                             signed_integer<RhsBits> rhs ) {
-		return int_result_t<LhsBits, RhsBits>( lhs ).get( ) <=
-		       int_result_t<LhsBits, RhsBits>( rhs ).get( );
+	// Bitwise Or
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator|( signed_integer<Lhs> lhs, signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs.get( ) ) |= result_t( rhs.get( ) );
 	}
 
-	template<std::size_t Bits, typename Integer>
-	DAW_ATTRIB_INLINE constexpr bool operator<=( signed_integer<Bits> lhs,
-	                                             Integer rhs ) {
-		return lhs <= int_impl::signed_from_integer_t<Integer>( rhs );
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator|( signed_integer<Lhs> lhs, Rhs rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs.get( ) ) |= result_t( rhs );
 	}
 
-	template<typename Integer, std::size_t Bits>
-	DAW_ATTRIB_INLINE constexpr bool operator<=( Integer lhs,
-	                                             signed_integer<Bits> rhs ) {
-		return int_impl::signed_from_integer_t<Integer>( lhs ) <= rhs;
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator|( Lhs lhs, signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs ) |= result_t( rhs.get( ) );
 	}
 
-	template<std::size_t LhsBits, std::size_t RhsBits>
-	DAW_ATTRIB_INLINE constexpr bool operator>( signed_integer<LhsBits> lhs,
-	                                            signed_integer<RhsBits> rhs ) {
-		return int_result_t<LhsBits, RhsBits>( lhs ).get( ) >
-		       int_result_t<LhsBits, RhsBits>( rhs ).get( );
+	// Bitwise And
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator&( signed_integer<Lhs> lhs, signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs.get( ) ) &= result_t( rhs.get( ) );
 	}
 
-	template<std::size_t Bits, typename Integer>
-	DAW_ATTRIB_INLINE constexpr bool operator>( signed_integer<Bits> lhs,
-	                                            Integer rhs ) {
-		return lhs > int_impl::signed_from_integer_t<Integer>( rhs );
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator&( signed_integer<Lhs> lhs, Rhs rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs.get( ) ) &= result_t( rhs );
 	}
 
-	template<typename Integer, std::size_t Bits>
-	DAW_ATTRIB_INLINE constexpr bool operator>( Integer lhs,
-	                                            signed_integer<Bits> rhs ) {
-		return int_impl::signed_from_integer_t<Integer>( lhs ) > rhs;
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator&( Lhs lhs, signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs ) &= result_t( rhs.get( ) );
 	}
 
-	template<std::size_t LhsBits, std::size_t RhsBits>
-	DAW_ATTRIB_INLINE constexpr bool operator>=( signed_integer<LhsBits> lhs,
-	                                             signed_integer<RhsBits> rhs ) {
-		return int_result_t<LhsBits, RhsBits>( lhs ).get( ) >=
-		       int_result_t<LhsBits, RhsBits>( rhs ).get( );
+	// Bitwise Xor
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator^( signed_integer<Lhs> lhs, signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs.get( ) ) ^= result_t( rhs.get( ) );
 	}
 
-	template<std::size_t Bits, typename Integer>
-	DAW_ATTRIB_INLINE constexpr bool operator>=( signed_integer<Bits> lhs,
-	                                             Integer rhs ) {
-		return lhs >= int_impl::signed_from_integer_t<Integer>( rhs );
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator^( signed_integer<Lhs> lhs, Rhs rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs.get( ) ) ^= result_t( rhs );
 	}
 
-	template<typename Integer, std::size_t Bits>
-	DAW_ATTRIB_INLINE constexpr bool operator>=( Integer lhs,
-	                                             signed_integer<Bits> rhs ) {
-		return int_impl::signed_from_integer_t<Integer>( lhs ) >= rhs;
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr int_impl::int_result_t<Lhs, Rhs>
+	operator^( Lhs lhs, signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs ) ^= result_t( rhs.get( ) );
+	}
+
+	// Equal To
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr bool operator==( signed_integer<Lhs> lhs,
+	                                             signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs ).get( ) == result_t( rhs ).get( );
+	}
+
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr auto operator==( signed_integer<Lhs> lhs,
+	                                             Rhs &&rhs )
+	  -> decltype( lhs.get( ) == rhs ) {
+		return lhs.get( ) == rhs;
+	}
+
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr auto operator==( Lhs &&lhs,
+	                                             signed_integer<Rhs> rhs )
+	  -> decltype( lhs == rhs.get( ) ) {
+		return lhs == rhs.get( );
+	}
+
+	// Not Equal To
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr bool operator!=( signed_integer<Lhs> lhs,
+	                                             signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs ).get( ) != result_t( rhs ).get( );
+	}
+
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr auto operator!=( signed_integer<Lhs> lhs,
+	                                             Rhs &&rhs )
+	  -> decltype( lhs.get( ) != rhs ) {
+		return lhs.get( ) != rhs;
+	}
+
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr auto operator!=( Lhs &&lhs,
+	                                             signed_integer<Rhs> rhs )
+	  -> decltype( lhs != rhs.get( ) ) {
+		return lhs != rhs.get( );
+	}
+
+	// Less Than
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr bool operator<( signed_integer<Lhs> lhs,
+	                                            signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs ).get( ) < result_t( rhs ).get( );
+	}
+
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr auto operator<( signed_integer<Lhs> lhs,
+	                                            Rhs &&rhs )
+	  -> decltype( lhs.get( ) < rhs ) {
+		return lhs.get( ) < rhs;
+	}
+
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr auto operator<( Lhs &&lhs,
+	                                            signed_integer<Rhs> rhs )
+	  -> decltype( lhs < rhs.get( ) ) {
+		return lhs < rhs.get( );
+	}
+
+	// Less Than or Equal To
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr bool operator<=( signed_integer<Lhs> lhs,
+	                                             signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs ).get( ) <= result_t( rhs ).get( );
+	}
+
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr auto operator<=( signed_integer<Lhs> lhs,
+	                                             Rhs &&rhs )
+	  -> decltype( lhs.get( ) <= rhs ) {
+		return lhs.get( ) <= rhs;
+	}
+
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr auto operator<=( Lhs &&lhs,
+	                                             signed_integer<Rhs> rhs )
+	  -> decltype( lhs <= rhs.get( ) ) {
+		return lhs <= rhs.get( );
+	}
+
+	// Greater Than
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr bool operator>( signed_integer<Lhs> lhs,
+	                                            signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs ).get( ) > result_t( rhs ).get( );
+	}
+
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr auto operator>( signed_integer<Lhs> lhs,
+	                                            Rhs &&rhs )
+	  -> decltype( lhs.get( ) > rhs ) {
+		return lhs.get( ) > rhs;
+	}
+
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr auto operator>( Lhs &&lhs,
+	                                            signed_integer<Rhs> rhs )
+	  -> decltype( lhs > rhs.get( ) ) {
+		return lhs > rhs.get( );
+	}
+
+	// Greater Than or Equal To
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr bool operator>=( signed_integer<Lhs> lhs,
+	                                             signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs ).get( ) >= result_t( rhs ).get( );
+	}
+
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr auto operator>=( signed_integer<Lhs> lhs,
+	                                             Rhs &&rhs )
+	  -> decltype( lhs.get( ) >= rhs ) {
+		return lhs.get( ) >= rhs;
+	}
+
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr auto operator>=( Lhs &&lhs,
+	                                             signed_integer<Rhs> rhs )
+	  -> decltype( lhs >= rhs.get( ) ) {
+		return lhs >= rhs.get( );
+	}
+
+	// Logical And
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr bool operator and( signed_integer<Lhs> lhs,
+	                                               signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs ).get( ) and result_t( rhs ).get( );
+	}
+
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr auto operator and( signed_integer<Lhs> lhs,
+	                                               Rhs &&rhs )
+	  -> decltype( lhs.get( ) and rhs ) {
+		return lhs.get( ) and rhs;
+	}
+
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr auto operator and( Lhs &&lhs,
+	                                               signed_integer<Rhs> rhs )
+	  -> decltype( lhs and rhs.get( ) ) {
+		return lhs and rhs.get( );
+	}
+
+	// Logical Or
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr bool operator or( signed_integer<Lhs> lhs,
+	                                              signed_integer<Rhs> rhs ) {
+		using result_t = int_impl::int_result_t<Lhs, Rhs>;
+		return result_t( lhs ).get( ) or result_t( rhs ).get( );
+	}
+
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr auto operator or( signed_integer<Lhs> lhs,
+	                                              Rhs &&rhs )
+	  -> decltype( lhs.get( ) or rhs ) {
+		return lhs.get( ) or rhs;
+	}
+
+	template<typename Lhs, typename Rhs>
+	DAW_ATTRIB_INLINE constexpr auto operator or( Lhs &&lhs,
+	                                              signed_integer<Rhs> rhs )
+	  -> decltype( lhs or rhs.get( ) ) {
+		return lhs or rhs.get( );
 	}
 
 	namespace literals {
-		DAW_CONSTEVAL signed_integer<8>
+		DAW_CONSTEVAL signed_integer<std::int8_t>
 		operator"" _i8( unsigned long long v ) noexcept {
 			using int_t = std::int8_t;
 			if( v > static_cast<unsigned long long>(
 			          std::numeric_limits<int_t>::max( ) ) ) {
 				on_signed_integer_overflow( );
 			}
-			return signed_integer<8>( static_cast<int_t>( v ) );
+			return signed_integer<std::int8_t>( static_cast<int_t>( v ) );
 		}
 
-		DAW_CONSTEVAL signed_integer<16>
+		DAW_CONSTEVAL signed_integer<std::int16_t>
 		operator"" _i16( unsigned long long v ) noexcept {
 			using int_t = std::int16_t;
 			if( v > static_cast<unsigned long long>(
 			          std::numeric_limits<int_t>::max( ) ) ) {
 				on_signed_integer_overflow( );
 			}
-			return signed_integer<16>( static_cast<int_t>( v ) );
+			return signed_integer<std::int16_t>( static_cast<int_t>( v ) );
 		}
 
-		DAW_CONSTEVAL signed_integer<32>
+		DAW_CONSTEVAL signed_integer<std::int32_t>
 		operator"" _i32( unsigned long long v ) noexcept {
 			using int_t = std::int32_t;
 			if( v > static_cast<unsigned long long>(
 			          std::numeric_limits<int_t>::max( ) ) ) {
 				on_signed_integer_overflow( );
 			}
-			return signed_integer<32>( static_cast<int_t>( v ) );
+			return signed_integer<std::int32_t>( static_cast<int_t>( v ) );
 		}
 
-		DAW_CONSTEVAL signed_integer<64>
+		DAW_CONSTEVAL signed_integer<std::int64_t>
 		operator"" _i64( unsigned long long v ) noexcept {
 			using int_t = std::int64_t;
 			if( v > static_cast<unsigned long long>(
 			          std::numeric_limits<int_t>::max( ) ) ) {
 				on_signed_integer_overflow( );
 			}
-			return signed_integer<64>( static_cast<int_t>( v ) );
+			return signed_integer<std::int64_t>( static_cast<int_t>( v ) );
 		}
 	} // namespace literals
-	using i8 = signed_integer<8>;
-	using i16 = signed_integer<16>;
-	using i32 = signed_integer<32>;
-	using i64 = signed_integer<64>;
+
+	using i8 = signed_integer<std::int8_t>;
+	using i16 = signed_integer<std::int16_t>;
+	using i32 = signed_integer<std::int32_t>;
+	using i64 = signed_integer<std::int64_t>;
 } // namespace daw::integers
 
 namespace daw {

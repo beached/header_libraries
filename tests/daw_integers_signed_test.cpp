@@ -34,23 +34,24 @@ int main( ) {
 
 	bool has_overflow = false;
 	bool has_div_by_zero = false;
-	auto const error_handler = [&]( daw::integers::SignedIntegerErrorType error_type ) {
-		switch( error_type ) {
-		case daw::integers::SignedIntegerErrorType::DivideByZero:
-			has_div_by_zero = true;
-			break;
-		case daw::integers::SignedIntegerErrorType::Overflow:
-			has_overflow = true;
-			break;
-		}
-	};
+	auto const error_handler =
+	  [&]( daw::integers::SignedIntegerErrorType error_type ) {
+		  switch( error_type ) {
+		  case daw::integers::SignedIntegerErrorType::DivideByZero:
+			  has_div_by_zero = true;
+			  break;
+		  case daw::integers::SignedIntegerErrorType::Overflow:
+			  has_overflow = true;
+			  break;
+		  }
+	  };
 	daw::integers::register_signed_overflow_handler( error_handler );
 	daw::integers::register_signed_div_by_zero_handler( error_handler );
 
 	test_plus( { 55, 55, 55 }, 165 );
 	test_div( 110, 2, 55 );
 
-	daw::i8 y = 10_i8;
+	daw::i8 y = 10;
 	y *= 100_i8;
 	daw_ensure( has_overflow );
 	has_overflow = false;
@@ -68,4 +69,9 @@ int main( ) {
 	daw_ensure( has_exception );
 	has_exception = false;
 
+	auto x = y * 2;
+	auto xb = x or y;
+	daw_ensure( xb );
+	auto z = x * y;
+	(void)z;
 }
