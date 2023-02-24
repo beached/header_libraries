@@ -33,55 +33,38 @@ namespace daw::integers::sint_impl {
 	  std::is_integral_v<T> and std::is_signed_v<T> and
 	  sizeof( T ) <= sizeof( std::int64_t );
 
-	DAW_ATTRIB_INLINE constexpr bool wrapping_add( std::int8_t l, std::int8_t r,
-	                                               std::int8_t &res ) noexcept {
-		auto const res32 = l + r;
-		res = static_cast<std::int8_t>( res32 );
-		if( r == 0 ) { return false; }
-		if( r > 0 ) { return res < l; }
-		// r < 0
-		return res > l;
-	}
-
-	DAW_ATTRIB_INLINE constexpr bool wrapping_add( std::int16_t l, std::int16_t r,
-	                                               std::int16_t &res ) noexcept {
-		auto res32 = l + r;
-		res = static_cast<std::int16_t>( res32 );
-		if( r == 0 ) { return false; }
-		if( r > 0 ) { return res < l; }
-		// r < 0
-		return res > l;
-	}
-
-	bool wrapping_add( std::int32_t l, std::int32_t r, std::int32_t &res ) {
-		std::int64_t const l64 = l;
-		std::int64_t const r64 = r;
-		auto const res64 = l64 + r64;
-		res = static_cast<std::int32_t>( res64 );
-		if( r == 0 ) { return false; }
-		if( r > 0 ) { return res < l; }
-		// r < 0
-		return res > l;
-	}
-
-	DAW_ATTRIB_INLINE constexpr bool wrapping_add( std::int64_t l, std::int64_t r,
-	                                               std::int64_t &res ) noexcept {
-		auto const l64 = static_cast<std::uint64_t>( l );
-		auto const r64 = static_cast<std::uint64_t>( r );
-		auto const res64 = l64 + r64;
-		res = static_cast<std::int64_t>( res64 );
-		if( r == 0 ) { return false; }
-		if( r > 0 ) { return res < l; }
-		// r < 0
-		return res > l;
+	template<typename SignedInteger>
+	constexpr bool wrapping_add( SignedInteger a, SignedInteger b,
+	                             SignedInteger &result ) {
+		static_assert( std::is_integral_v<SignedInteger> and
+		                 std::is_signed_v<SignedInteger> and
+		                 sizeof( SignedInteger ) <= 8U,
+		               "Invalid signed integer" );
+		if( DAW_IS_CONSTANT_EVALUATED( ) ) {
+			result = static_cast<SignedInteger>( static_cast<std::uint64_t>( a ) +
+			                                     static_cast<std::uint64_t>( b ) );
+			return ( b > 0 and
+			         a > ( std::numeric_limits<SignedInteger>::max( ) - b ) ) or
+			       ( b < 0 and
+			         a < ( std::numeric_limits<SignedInteger>::min( ) - b ) );
+		} else {
+			std::uint64_t r;
+			auto c = _addcarry_u64( 0, std::as_const( a ), std::as_const( b ), &r );
+			result = static_cast<SignedInteger>( r );
+			return c != 0;
+		}
 	}
 
 	DAW_ATTRIB_INLINE constexpr bool wrapping_sub( std::int8_t l, std::int8_t r,
 	                                               std::int8_t &res ) noexcept {
 		auto const res32 = l + r;
 		res = static_cast<std::int8_t>( res32 );
-		if( r == 0 ) { return false; }
-		if( r < 0 ) { return res < l; }
+		if( r == 0 ) {
+			return false;
+		}
+		if( r < 0 ) {
+			return res < l;
+		}
 		// r > 0
 		return res > l;
 	}
@@ -90,8 +73,12 @@ namespace daw::integers::sint_impl {
 	                                               std::int16_t &res ) noexcept {
 		auto const res32 = l + r;
 		res = static_cast<std::int16_t>( res32 );
-		if( r == 0 ) { return false; }
-		if( r < 0 ) { return res < l; }
+		if( r == 0 ) {
+			return false;
+		}
+		if( r < 0 ) {
+			return res < l;
+		}
 		// r > 0
 		return res > l;
 	}
@@ -102,8 +89,12 @@ namespace daw::integers::sint_impl {
 		auto const r64 = r;
 		auto const res64 = l64 + r64;
 		res = static_cast<std::int32_t>( res64 );
-		if( r == 0 ) { return false; }
-		if( r < 0 ) { return res < l; }
+		if( r == 0 ) {
+			return false;
+		}
+		if( r < 0 ) {
+			return res < l;
+		}
 		// r > 0
 		return res > l;
 	}
@@ -114,8 +105,12 @@ namespace daw::integers::sint_impl {
 		auto const r64 = static_cast<std::uint64_t>( r );
 		auto const res64 = l64 - r64;
 		res = static_cast<std::int64_t>( res64 );
-		if( r == 0 ) { return false; }
-		if( r < 0 ) { return res < l; }
+		if( r == 0 ) {
+			return false;
+		}
+		if( r < 0 ) {
+			return res < l;
+		}
 		// r > 0
 		return res > l;
 	}
