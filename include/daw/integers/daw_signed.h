@@ -15,6 +15,7 @@
 #include "daw/daw_likely.h"
 #include "impl/daw_signed_clanggcc.h"
 #include "impl/daw_signed_error_handling.h"
+#include "impl/daw_signed_msvc.h"
 
 #include <algorithm>
 #include <climits>

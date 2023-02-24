@@ -6,6 +6,8 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#define DAW_DEFAULT_SIGNED_CHECKING 0
+
 #include "daw/daw_ensure.h"
 #include "daw/daw_traits.h"
 #include "daw/integers/daw_signed.h"
@@ -74,4 +76,33 @@ int main( ) {
 	daw_ensure( xb );
 	auto z = x * y;
 	(void)z;
+	daw::integers::register_signed_overflow_handler( error_handler );
+	{
+		has_overflow = false;
+		daw::i8 i0 = std::numeric_limits<std::int8_t>::max( );
+		daw::i8 i1 = std::numeric_limits<std::int8_t>::max( );
+		i0 += i1;
+		daw_ensure( has_overflow );
+	}
+	{
+		has_overflow = false;
+		daw::i16 i0 = std::numeric_limits<std::int16_t>::max( );
+		daw::i16 i1 = std::numeric_limits<std::int16_t>::max( );
+		i0 += i1;
+		daw_ensure( has_overflow );
+	}
+	{
+		has_overflow = false;
+		daw::i32 i0 = std::numeric_limits<std::int32_t>::max( );
+		daw::i32 i1 = std::numeric_limits<std::int32_t>::max( );
+		i0 += i1;
+		daw_ensure( has_overflow );
+	}
+	{
+		has_overflow = false;
+		daw::i64 i0 = std::numeric_limits<std::int64_t>::max( );
+		daw::i64 i1 = std::numeric_limits<std::int64_t>::max( );
+		i0 += i1;
+		daw_ensure( has_overflow );
+	}
 }

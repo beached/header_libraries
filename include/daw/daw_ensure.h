@@ -14,7 +14,7 @@
 #include <exception>
 
 namespace daw::ensure {
-	DAW_ATTRIB_NOINLINE [[noreturn]] void do_error( ) {
+	[[noreturn]] DAW_ATTRIB_NOINLINE void do_error( ) {
 		std::terminate( );
 	}
 } // namespace daw::ensure
