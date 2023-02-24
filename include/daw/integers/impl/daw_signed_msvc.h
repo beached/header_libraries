@@ -40,19 +40,13 @@ namespace daw::integers::sint_impl {
 		                 std::is_signed_v<SignedInteger> and
 		                 sizeof( SignedInteger ) <= 8U,
 		               "Invalid signed integer" );
-		if( DAW_IS_CONSTANT_EVALUATED( ) ) {
+		using uint = std::make_unsigned_t<SignedInteger>;
 			result = static_cast<SignedInteger>( static_cast<std::uint64_t>( a ) +
 			                                     static_cast<std::uint64_t>( b ) );
 			return ( b > 0 and
 			         a > ( std::numeric_limits<SignedInteger>::max( ) - b ) ) or
 			       ( b < 0 and
 			         a < ( std::numeric_limits<SignedInteger>::min( ) - b ) );
-		} else {
-			std::uint64_t r;
-			auto c = _addcarry_u64( 0, std::as_const( a ), std::as_const( b ), &r );
-			result = static_cast<SignedInteger>( r );
-			return c != 0;
-		}
 	}
 
 	DAW_ATTRIB_INLINE constexpr bool wrapping_sub( std::int8_t l, std::int8_t r,
