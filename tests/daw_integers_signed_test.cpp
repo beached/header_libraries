@@ -9,7 +9,6 @@
 #define DAW_DEFAULT_SIGNED_CHECKING 0
 
 #include "daw/daw_ensure.h"
-#include "daw/daw_traits.h"
 #include "daw/integers/daw_signed.h"
 
 #include <initializer_list>
@@ -70,6 +69,7 @@ int main( ) {
 	}
 	daw_ensure( has_exception );
 	has_exception = false;
+	(void)has_exception;
 
 	auto x = y * 2;
 	auto xb = x or y;
