@@ -118,11 +118,27 @@ namespace daw::integers::sint_impl {
 				if( DAW_UNLIKELY( rhs == 0 ) ) {
 					on_signed_integer_div_by_zero( );
 					return lhs;
-				} else if( rhs == T{ -1 } and lhs == std::numeric_limits<T>::min( ) ) {
-					on_signed_integer_overflow( );
-					return std::numeric_limits<T>::max( );
 				}
-				return lhs / rhs;
+				if constexpr( sizeof( T ) == 8 ) {
+					auto const l = static_cast<daw::int128_t>( lhs );
+					auto const r = static_cast<daw::int128_t>( rhs );
+					auto const res128 = l / r;
+					auto const res = static_cast<T>( res128 );
+					if( DAW_UNLIKELY( res != res128 ) ) {
+						on_signed_integer_overflow( );
+					}
+					return res;
+				} else {
+					static_assert( sizeof( T ) < 8 );
+					auto const l = static_cast<std::int64_t>( lhs );
+					auto const r = static_cast<std::int64_t>( rhs );
+					auto const res64 = l / r;
+					auto const res = static_cast<T>( res64 );
+					if( DAW_UNLIKELY( res != res64 ) ) {
+						on_signed_integer_overflow( );
+					}
+					return res;
+				}
 			}
 		} checked_div{ };
 

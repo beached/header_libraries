@@ -13,9 +13,11 @@
 
 #include <initializer_list>
 
+using namespace daw::integers::literals;
+
 DAW_ATTRIB_NOINLINE int test_plus( std::initializer_list<daw::i32> const &vals,
-                                   int expected ) {
-	daw::i32 sum = 0;
+                                   daw::i32 expected ) {
+	auto sum = 0_i32;
 	for( auto v : vals ) {
 		sum += v;
 	}
@@ -23,16 +25,21 @@ DAW_ATTRIB_NOINLINE int test_plus( std::initializer_list<daw::i32> const &vals,
 	return sum.value( );
 }
 
-DAW_ATTRIB_NOINLINE int test_div( int first, int inc, int expected ) {
-	daw::i32 x = first;
-	x /= inc;
-	daw_ensure( x == expected );
-	return x.value( );
+DAW_ATTRIB_NOINLINE daw::i32 test_div( daw::i32 first, daw::i32 inc,
+                                       daw::i32 expected ) {
+	first /= inc;
+	daw_ensure( first == expected );
+	return first;
+}
+
+DAW_ATTRIB_NOINLINE daw::i64 test_div( daw::i64 first, daw::i64 inc,
+                                       daw::i64 expected ) {
+	first /= inc;
+	daw_ensure( first == expected );
+	return first;
 }
 
 int main( ) {
-	using namespace daw::integers::literals;
-
 	bool has_overflow = false;
 	bool has_div_by_zero = false;
 	auto const error_handler =
@@ -49,10 +56,11 @@ int main( ) {
 	daw::integers::register_signed_overflow_handler( error_handler );
 	daw::integers::register_signed_div_by_zero_handler( error_handler );
 
-	test_plus( { 55, 55, 55 }, 165 );
-	test_div( 110, 2, 55 );
+	test_plus( { 55_i32, 55_i32, 55_i32 }, 165_i32 );
+	test_div( 110_i32, 2_i32, 55_i32 );
+	test_div( 110_i64, 2_i64, 55_i64 );
 
-	daw::i8 y = 10;
+	auto y = 10_i8;
 	y *= 100_i8;
 	daw_ensure( has_overflow );
 	has_overflow = false;

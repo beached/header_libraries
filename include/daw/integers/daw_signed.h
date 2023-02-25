@@ -253,6 +253,9 @@ namespace daw::integers {
 			return signed_integer( std::numeric_limits<value_type>::min( ) );
 		}
 
+		static constexpr int digits =
+		  static_cast<int>( sizeof( value_type ) * CHAR_BIT - 1 );
+
 	private:
 		value_type m_value{ };
 
@@ -262,7 +265,7 @@ namespace daw::integers {
 		template<typename I,
 		         std::enable_if_t<sint_impl::convertible_signed_int<value_type, I>,
 		                          std::nullptr_t> = nullptr>
-		DAW_ATTRIB_INLINE constexpr signed_integer( I v ) noexcept
+		DAW_ATTRIB_INLINE constexpr explicit signed_integer( I v ) noexcept
 		  : m_value( static_cast<value_type>( v ) ) {}
 
 		template<typename I,
@@ -278,7 +281,7 @@ namespace daw::integers {
 		  std::enable_if_t<not sint_impl::convertible_signed_int<value_type, I> and
 		                     sint_impl::is_signed_integral_v<I>,
 		                   std::nullptr_t> = nullptr>
-		DAW_ATTRIB_INLINE DAW_CONSTEVAL signed_integer( I v )
+		DAW_ATTRIB_INLINE DAW_CONSTEVAL explicit signed_integer( I v )
 		  : m_value( static_cast<value_type>( v ) ) {
 			// We know I can be larger than max( )
 			if( v > static_cast<I>( std::numeric_limits<value_type>::max( ) ) ) {
@@ -1047,3 +1050,72 @@ namespace daw {
 	using daw::integers::i64;
 	using daw::integers::i8;
 } // namespace daw
+
+namespace std {
+	template<typename T>
+	struct numeric_limits<daw::integers::signed_integer<T>> {
+		static constexpr bool is_specialized = true;
+		static constexpr bool is_signed = true;
+		static constexpr bool is_integer = true;
+		static constexpr bool is_exact = true;
+		static constexpr bool has_infinity = false;
+		static constexpr bool has_quiet_NaN = false;
+		static constexpr bool has_signaling_NaN = false;
+		static constexpr bool has_denorm = false;
+		static constexpr bool has_denorm_loss = false;
+		static constexpr std::float_round_style round_style =
+		  std::round_toward_zero;
+		static constexpr bool is_iec559 = false;
+		static constexpr bool is_bounded = true;
+		// Cannot reasonably guess as it's imp defined for signed
+		// static constexpr bool is_modulo = true;
+		static constexpr int digits = daw::integers::signed_integer<T>::digits;
+		static constexpr int digits10 = digits * 3 / 10;
+		static constexpr int max_digits10 = 0;
+		static constexpr int radix = 2;
+		static constexpr int min_exponent = 0;
+		static constexpr int min_exponent10 = 0;
+		static constexpr int max_exponent = 0;
+		static constexpr int max_exponent10 = 0;
+		// Cannot reasonably define
+		// static constexpr bool traps = true;
+		static constexpr bool tinyness_before = false;
+
+		static constexpr daw::integers::signed_integer<T> min( ) noexcept {
+			return daw::integers::signed_integer<T>::min( );
+		}
+
+		static constexpr daw::integers::signed_integer<T> max( ) noexcept {
+			return daw::integers::signed_integer<T>::max( );
+		}
+
+		static constexpr daw::integers::signed_integer<T> lowest( ) noexcept {
+			return daw::integers::signed_integer<T>::min( );
+		}
+
+		static constexpr daw::integers::signed_integer<T> epsilon( ) noexcept {
+			return 0;
+		}
+
+		static constexpr daw::integers::signed_integer<T> round_error( ) noexcept {
+			return 0;
+		}
+
+		static constexpr daw::integers::signed_integer<T> infinity( ) noexcept {
+			return 0;
+		}
+
+		static constexpr daw::integers::signed_integer<T> quiet_NaN( ) noexcept {
+			return 0;
+		}
+
+		static constexpr daw::integers::signed_integer<T>
+		signalling_NaN( ) noexcept {
+			return 0;
+		}
+
+		static constexpr daw::integers::signed_integer<T> denorm_min( ) noexcept {
+			return 0;
+		}
+	};
+} // namespace std
