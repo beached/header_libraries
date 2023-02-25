@@ -347,10 +347,10 @@ namespace daw::integers {
 			return m_value + rhs.m_value;
 		}
 
-		DAW_ATTRIB_INLINE constexpr signed_integer operator++(int) {
+		DAW_ATTRIB_INLINE constexpr signed_integer operator++( int ) {
 			auto result = *this;
-			operator++();
-			return *this;
+			operator++( );
+			return result;
 		}
 
 		template<typename I,
@@ -396,7 +396,7 @@ namespace daw::integers {
 		DAW_ATTRIB_INLINE constexpr signed_integer operator--( int ) {
 			auto result = *this;
 			operator--( );
-			return *this;
+			return result;
 		}
 
 		DAW_ATTRIB_INLINE constexpr signed_integer &operator*=(
