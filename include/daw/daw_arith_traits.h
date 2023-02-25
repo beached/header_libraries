@@ -23,7 +23,7 @@
 #endif
 #elif defined( DAW_HAS_INT128 )
 #elif defined( __SIZEOF_INT128__ )
-#if( defined( __clang__ ) /*and not defined( _WIN32 )*/ ) or \
+#if( defined( __clang__ ) and not defined( _WIN32 ) ) or     \
   ( defined( __CUDACC__ ) and __CUDACC_VER_MAJOR__ >= 9 ) or \
   ( defined( __GNUC__ ) and not defined( __clang__ ) and     \
     !defined( __CUDACC__ ) )

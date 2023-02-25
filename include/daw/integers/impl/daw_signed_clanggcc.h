@@ -120,6 +120,7 @@ namespace daw::integers::sint_impl {
 					return lhs;
 				}
 				if constexpr( sizeof( T ) == 8 ) {
+#if defined( DAW_HAS_INT128 )
 					auto const l = static_cast<daw::int128_t>( lhs );
 					auto const r = static_cast<daw::int128_t>( rhs );
 					auto const res128 = l / r;
@@ -128,6 +129,14 @@ namespace daw::integers::sint_impl {
 						on_signed_integer_overflow( );
 					}
 					return res;
+#else
+					if( DAW_UNLIKELY( rhs == -1 and
+					                  lhs == std::numeric_limits<T>::min( ) ) ) {
+						on_signed_integer_overflow( );
+						return std::numeric_limits<T>::max( );
+					}
+					return lhs / rhs;
+#endif
 				} else {
 					static_assert( sizeof( T ) < 8 );
 					auto const l = static_cast<std::int64_t>( lhs );
