@@ -228,6 +228,8 @@ namespace daw::integers {
 		using value_type = SignedInteger;
 		using reference = value_type &;
 		using const_reference = value_type const &;
+		static constexpr value_type Max = std::numeric_limits<value_type>::max( );
+		static constexpr value_type Min = std::numeric_limits<value_type>::min( );
 
 	private:
 		value_type m_value{ };
@@ -246,7 +248,7 @@ namespace daw::integers {
 		                          std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE constexpr signed_integer(
 		  signed_integer<I> other ) noexcept
-		  : m_value( other.get( ) ) {}
+		  : m_value( other.value( ) ) {}
 
 		/// Construct from a literal
 		template<
@@ -277,11 +279,11 @@ namespace daw::integers {
 			return signed_integer<I>( m_value );
 		}
 
-		DAW_ATTRIB_INLINE constexpr reference get( ) noexcept {
+		DAW_ATTRIB_INLINE constexpr reference value( ) noexcept {
 			return m_value;
 		}
 
-		DAW_ATTRIB_INLINE constexpr const_reference get( ) const noexcept {
+		DAW_ATTRIB_INLINE constexpr const_reference value( ) const noexcept {
 			return m_value;
 		}
 
@@ -526,8 +528,8 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator+( signed_integer<Lhs> lhs, signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		auto result = result_t( lhs.get( ) );
-		result += result_t( rhs.get( ) );
+		auto result = result_t( lhs.value( ) );
+		result += result_t( rhs.value( ) );
 		return result;
 	}
 
@@ -535,7 +537,7 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator+( signed_integer<Lhs> lhs, Rhs rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		auto result = result_t( lhs.get( ) );
+		auto result = result_t( lhs.value( ) );
 		result += result_t( rhs );
 		return result;
 	}
@@ -545,7 +547,7 @@ namespace daw::integers {
 	operator+( Lhs lhs, signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
 		auto result = result_t( lhs );
-		result += result_t( rhs.get( ) );
+		result += result_t( rhs.value( ) );
 		return result;
 	}
 	// Subtraction
@@ -553,8 +555,8 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator-( signed_integer<Lhs> lhs, signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		auto result = result_t( lhs.get( ) );
-		result += result_t( rhs.get( ) );
+		auto result = result_t( lhs.value( ) );
+		result += result_t( rhs.value( ) );
 		return result;
 	}
 
@@ -562,7 +564,7 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator-( signed_integer<Lhs> lhs, Rhs rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		auto result = result_t( lhs.get( ) );
+		auto result = result_t( lhs.value( ) );
 		result -= result_t( rhs );
 		return result;
 	}
@@ -572,7 +574,7 @@ namespace daw::integers {
 	operator-( Lhs lhs, signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
 		auto result = result_t( lhs );
-		result -= result_t( rhs.get( ) );
+		result -= result_t( rhs.value( ) );
 		return result;
 	}
 
@@ -581,8 +583,8 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator*( signed_integer<Lhs> lhs, signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		auto result = result_t( lhs.get( ) );
-		result *= result_t( rhs.get( ) );
+		auto result = result_t( lhs.value( ) );
+		result *= result_t( rhs.value( ) );
 		return result;
 	}
 
@@ -590,7 +592,7 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator*( signed_integer<Lhs> lhs, Rhs rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		auto result = result_t( lhs.get( ) );
+		auto result = result_t( lhs.value( ) );
 		result *= result_t( rhs );
 		return result;
 	}
@@ -600,7 +602,7 @@ namespace daw::integers {
 	operator*( Lhs lhs, signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
 		auto result = result_t( lhs );
-		result *= result_t( rhs.get( ) );
+		result *= result_t( rhs.value( ) );
 		return result;
 	}
 
@@ -609,8 +611,8 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator/( signed_integer<Lhs> lhs, signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		auto result = result_t( lhs.get( ) );
-		result /= result_t( rhs.get( ) );
+		auto result = result_t( lhs.value( ) );
+		result /= result_t( rhs.value( ) );
 		return result;
 	}
 
@@ -618,7 +620,7 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator/( signed_integer<Lhs> lhs, Rhs rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		auto result = result_t( lhs.get( ) );
+		auto result = result_t( lhs.value( ) );
 		result /= result_t( rhs );
 		return result;
 	}
@@ -628,7 +630,7 @@ namespace daw::integers {
 	operator/( Lhs lhs, signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
 		auto result = result_t( lhs );
-		result /= result_t( rhs.get( ) );
+		result /= result_t( rhs.value( ) );
 		return result;
 	}
 
@@ -637,8 +639,8 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator%( signed_integer<Lhs> lhs, signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		auto result = result_t( lhs.get( ) );
-		result %= result_t( rhs.get( ) );
+		auto result = result_t( lhs.value( ) );
+		result %= result_t( rhs.value( ) );
 		return result;
 	}
 
@@ -646,7 +648,7 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator%( signed_integer<Lhs> lhs, Rhs rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		auto result = result_t( lhs.get( ) );
+		auto result = result_t( lhs.value( ) );
 		result %= result_t( rhs );
 		return result;
 	}
@@ -656,7 +658,7 @@ namespace daw::integers {
 	operator%( Lhs lhs, signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
 		auto result = result_t( lhs );
-		result %= result_t( rhs.get( ) );
+		result %= result_t( rhs.value( ) );
 		return result;
 	}
 	// Shift Left
@@ -664,21 +666,21 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator<<( signed_integer<Lhs> lhs, signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs.get( ) ) <<= result_t( rhs.get( ) );
+		return result_t( lhs.value( ) ) <<= result_t( rhs.value( ) );
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator<<( signed_integer<Lhs> lhs, Rhs rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs.get( ) ) <<= result_t( rhs );
+		return result_t( lhs.value( ) ) <<= result_t( rhs );
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator<<( Lhs lhs, signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs ) <<= result_t( rhs.get( ) );
+		return result_t( lhs ) <<= result_t( rhs.value( ) );
 	}
 
 	// Shift Right
@@ -686,21 +688,21 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator>>( signed_integer<Lhs> lhs, signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs.get( ) ) >>= result_t( rhs.get( ) );
+		return result_t( lhs.value( ) ) >>= result_t( rhs.value( ) );
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator>>( signed_integer<Lhs> lhs, Rhs rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs.get( ) ) >>= result_t( rhs );
+		return result_t( lhs.value( ) ) >>= result_t( rhs );
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator>>( Lhs lhs, signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs ) >>= result_t( rhs.get( ) );
+		return result_t( lhs ) >>= result_t( rhs.value( ) );
 	}
 
 	// Bitwise Or
@@ -708,21 +710,21 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator|( signed_integer<Lhs> lhs, signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs.get( ) ) |= result_t( rhs.get( ) );
+		return result_t( lhs.value( ) ) |= result_t( rhs.value( ) );
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator|( signed_integer<Lhs> lhs, Rhs rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs.get( ) ) |= result_t( rhs );
+		return result_t( lhs.value( ) ) |= result_t( rhs );
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator|( Lhs lhs, signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs ) |= result_t( rhs.get( ) );
+		return result_t( lhs ) |= result_t( rhs.value( ) );
 	}
 
 	// Bitwise And
@@ -730,21 +732,21 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator&( signed_integer<Lhs> lhs, signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs.get( ) ) &= result_t( rhs.get( ) );
+		return result_t( lhs.value( ) ) &= result_t( rhs.value( ) );
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator&( signed_integer<Lhs> lhs, Rhs rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs.get( ) ) &= result_t( rhs );
+		return result_t( lhs.value( ) ) &= result_t( rhs );
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator&( Lhs lhs, signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs ) &= result_t( rhs.get( ) );
+		return result_t( lhs ) &= result_t( rhs.value( ) );
 	}
 
 	// Bitwise Xor
@@ -752,21 +754,21 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator^( signed_integer<Lhs> lhs, signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs.get( ) ) ^= result_t( rhs.get( ) );
+		return result_t( lhs.value( ) ) ^= result_t( rhs.value( ) );
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator^( signed_integer<Lhs> lhs, Rhs rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs.get( ) ) ^= result_t( rhs );
+		return result_t( lhs.value( ) ) ^= result_t( rhs );
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr sint_impl::int_result_t<Lhs, Rhs>
 	operator^( Lhs lhs, signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs ) ^= result_t( rhs.get( ) );
+		return result_t( lhs ) ^= result_t( rhs.value( ) );
 	}
 
 	// Equal To
@@ -774,21 +776,21 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr bool operator==( signed_integer<Lhs> lhs,
 	                                             signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs ).get( ) == result_t( rhs ).get( );
+		return result_t( lhs ).value( ) == result_t( rhs ).value( );
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr auto operator==( signed_integer<Lhs> lhs,
 	                                             Rhs &&rhs )
-	  -> decltype( lhs.get( ) == rhs ) {
-		return lhs.get( ) == rhs;
+	  -> decltype( lhs.value( ) == rhs ) {
+		return lhs.value( ) == rhs;
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr auto operator==( Lhs &&lhs,
 	                                             signed_integer<Rhs> rhs )
-	  -> decltype( lhs == rhs.get( ) ) {
-		return lhs == rhs.get( );
+	  -> decltype( lhs == rhs.value( ) ) {
+		return lhs == rhs.value( );
 	}
 
 	// Not Equal To
@@ -796,21 +798,21 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr bool operator!=( signed_integer<Lhs> lhs,
 	                                             signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs ).get( ) != result_t( rhs ).get( );
+		return result_t( lhs ).value( ) != result_t( rhs ).value( );
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr auto operator!=( signed_integer<Lhs> lhs,
 	                                             Rhs &&rhs )
-	  -> decltype( lhs.get( ) != rhs ) {
-		return lhs.get( ) != rhs;
+	  -> decltype( lhs.value( ) != rhs ) {
+		return lhs.value( ) != rhs;
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr auto operator!=( Lhs &&lhs,
 	                                             signed_integer<Rhs> rhs )
-	  -> decltype( lhs != rhs.get( ) ) {
-		return lhs != rhs.get( );
+	  -> decltype( lhs != rhs.value( ) ) {
+		return lhs != rhs.value( );
 	}
 
 	// Less Than
@@ -818,21 +820,21 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr bool operator<( signed_integer<Lhs> lhs,
 	                                            signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs ).get( ) < result_t( rhs ).get( );
+		return result_t( lhs ).value( ) < result_t( rhs ).value( );
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr auto operator<( signed_integer<Lhs> lhs,
 	                                            Rhs &&rhs )
-	  -> decltype( lhs.get( ) < rhs ) {
-		return lhs.get( ) < rhs;
+	  -> decltype( lhs.value( ) < rhs ) {
+		return lhs.value( ) < rhs;
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr auto operator<( Lhs &&lhs,
 	                                            signed_integer<Rhs> rhs )
-	  -> decltype( lhs < rhs.get( ) ) {
-		return lhs < rhs.get( );
+	  -> decltype( lhs < rhs.value( ) ) {
+		return lhs < rhs.value( );
 	}
 
 	// Less Than or Equal To
@@ -840,21 +842,21 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr bool operator<=( signed_integer<Lhs> lhs,
 	                                             signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs ).get( ) <= result_t( rhs ).get( );
+		return result_t( lhs ).value( ) <= result_t( rhs ).value( );
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr auto operator<=( signed_integer<Lhs> lhs,
 	                                             Rhs &&rhs )
-	  -> decltype( lhs.get( ) <= rhs ) {
-		return lhs.get( ) <= rhs;
+	  -> decltype( lhs.value( ) <= rhs ) {
+		return lhs.value( ) <= rhs;
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr auto operator<=( Lhs &&lhs,
 	                                             signed_integer<Rhs> rhs )
-	  -> decltype( lhs <= rhs.get( ) ) {
-		return lhs <= rhs.get( );
+	  -> decltype( lhs <= rhs.value( ) ) {
+		return lhs <= rhs.value( );
 	}
 
 	// Greater Than
@@ -862,21 +864,21 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr bool operator>( signed_integer<Lhs> lhs,
 	                                            signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs ).get( ) > result_t( rhs ).get( );
+		return result_t( lhs ).value( ) > result_t( rhs ).value( );
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr auto operator>( signed_integer<Lhs> lhs,
 	                                            Rhs &&rhs )
-	  -> decltype( lhs.get( ) > rhs ) {
-		return lhs.get( ) > rhs;
+	  -> decltype( lhs.value( ) > rhs ) {
+		return lhs.value( ) > rhs;
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr auto operator>( Lhs &&lhs,
 	                                            signed_integer<Rhs> rhs )
-	  -> decltype( lhs > rhs.get( ) ) {
-		return lhs > rhs.get( );
+	  -> decltype( lhs > rhs.value( ) ) {
+		return lhs > rhs.value( );
 	}
 
 	// Greater Than or Equal To
@@ -884,21 +886,21 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr bool operator>=( signed_integer<Lhs> lhs,
 	                                             signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs ).get( ) >= result_t( rhs ).get( );
+		return result_t( lhs ).value( ) >= result_t( rhs ).value( );
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr auto operator>=( signed_integer<Lhs> lhs,
 	                                             Rhs &&rhs )
-	  -> decltype( lhs.get( ) >= rhs ) {
-		return lhs.get( ) >= rhs;
+	  -> decltype( lhs.value( ) >= rhs ) {
+		return lhs.value( ) >= rhs;
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr auto operator>=( Lhs &&lhs,
 	                                             signed_integer<Rhs> rhs )
-	  -> decltype( lhs >= rhs.get( ) ) {
-		return lhs >= rhs.get( );
+	  -> decltype( lhs >= rhs.value( ) ) {
+		return lhs >= rhs.value( );
 	}
 
 	// Logical And
@@ -906,21 +908,21 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr bool operator and( signed_integer<Lhs> lhs,
 	                                               signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs ).get( ) and result_t( rhs ).get( );
+		return result_t( lhs ).value( ) and result_t( rhs ).value( );
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr auto operator and( signed_integer<Lhs> lhs,
 	                                               Rhs &&rhs )
-	  -> decltype( lhs.get( ) and rhs ) {
-		return lhs.get( ) and rhs;
+	  -> decltype( lhs.value( ) and rhs ) {
+		return lhs.value( ) and rhs;
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr auto operator and( Lhs &&lhs,
 	                                               signed_integer<Rhs> rhs )
-	  -> decltype( lhs and rhs.get( ) ) {
-		return lhs and rhs.get( );
+	  -> decltype( lhs and rhs.value( ) ) {
+		return lhs and rhs.value( );
 	}
 
 	// Logical Or
@@ -928,21 +930,21 @@ namespace daw::integers {
 	DAW_ATTRIB_INLINE constexpr bool operator or( signed_integer<Lhs> lhs,
 	                                              signed_integer<Rhs> rhs ) {
 		using result_t = sint_impl::int_result_t<Lhs, Rhs>;
-		return result_t( lhs ).get( ) or result_t( rhs ).get( );
+		return result_t( lhs ).value( ) or result_t( rhs ).value( );
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr auto operator or( signed_integer<Lhs> lhs,
 	                                              Rhs &&rhs )
-	  -> decltype( lhs.get( ) or rhs ) {
-		return lhs.get( ) or rhs;
+	  -> decltype( lhs.value( ) or rhs ) {
+		return lhs.value( ) or rhs;
 	}
 
 	template<typename Lhs, typename Rhs>
 	DAW_ATTRIB_INLINE constexpr auto operator or( Lhs &&lhs,
 	                                              signed_integer<Rhs> rhs )
-	  -> decltype( lhs or rhs.get( ) ) {
-		return lhs or rhs.get( );
+	  -> decltype( lhs or rhs.value( ) ) {
+		return lhs or rhs.value( );
 	}
 
 	namespace literals {

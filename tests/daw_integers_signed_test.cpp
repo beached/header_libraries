@@ -21,14 +21,14 @@ DAW_ATTRIB_NOINLINE int test_plus( std::initializer_list<daw::i32> const &vals,
 		sum += v;
 	}
 	daw_ensure( sum == expected );
-	return sum.get( );
+	return sum.value( );
 }
 
 DAW_ATTRIB_NOINLINE int test_div( int first, int inc, int expected ) {
 	daw::i32 x = first;
 	x /= inc;
 	daw_ensure( x == expected );
-	return x.get( );
+	return x.value( );
 }
 
 int main( ) {
@@ -79,85 +79,85 @@ int main( ) {
 	daw::integers::register_signed_overflow_handler( error_handler );
 	{
 		has_overflow = false;
-		daw::i8 i0 = std::numeric_limits<std::int8_t>::max( );
-		daw::i8 i1 = std::numeric_limits<std::int8_t>::max( );
+		daw::i8 i0 = daw::i8::Max;
+		daw::i8 i1 = daw::i8::Max;
 		i0 += i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i16 i0 = std::numeric_limits<std::int16_t>::max( );
-		daw::i16 i1 = std::numeric_limits<std::int16_t>::max( );
+		daw::i16 i0 = daw::i16::Max;
+		daw::i16 i1 = daw::i16::Max;
 		i0 += i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i32 i0 = std::numeric_limits<std::int32_t>::max( );
-		daw::i32 i1 = std::numeric_limits<std::int32_t>::max( );
+		daw::i32 i0 = daw::i32::Max;
+		daw::i32 i1 = daw::i32::Max;
 		i0 += i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i64 i0 = std::numeric_limits<std::int64_t>::max( );
-		daw::i64 i1 = std::numeric_limits<std::int64_t>::max( );
+		daw::i64 i0 = daw::i64::Max;
+		daw::i64 i1 = daw::i64::Max;
 		i0 += i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i8 i0 = std::numeric_limits<std::int8_t>::min( );
-		daw::i8 i1 = std::numeric_limits<std::int8_t>::max( );
+		daw::i8 i0 = daw::i8::Min;
+		daw::i8 i1 = daw::i8::Max;
 		i0 -= i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i16 i0 = std::numeric_limits<std::int16_t>::min( );
-		daw::i16 i1 = std::numeric_limits<std::int16_t>::max( );
+		daw::i16 i0 = daw::i16::Min;
+		daw::i16 i1 = daw::i16::Max;
 		i0 -= i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i32 i0 = std::numeric_limits<std::int32_t>::min( );
-		daw::i32 i1 = std::numeric_limits<std::int32_t>::max( );
+		daw::i32 i0 = daw::i32::Min;
+		daw::i32 i1 = daw::i32::Max;
 		i0 -= i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i64 i0 = std::numeric_limits<std::int64_t>::min( );
-		daw::i64 i1 = std::numeric_limits<std::int64_t>::max( );
+		daw::i64 i0 = daw::i16::Min;
+		daw::i64 i1 = daw::i64::Max;
 		i0 -= i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i8 i0 = std::numeric_limits<std::int8_t>::max( );
-		daw::i8 i1 = std::numeric_limits<std::int8_t>::max( );
+		daw::i8 i0 = daw::i8::Max;
+		daw::i8 i1 = daw::i8::Max;
 		i0 *= i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i16 i0 = std::numeric_limits<std::int16_t>::max( );
-		daw::i16 i1 = std::numeric_limits<std::int16_t>::max( );
+		daw::i16 i0 = daw::i16::Max;
+		daw::i16 i1 = daw::i16::Max;
 		i0 *= i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i32 i0 = std::numeric_limits<std::int32_t>::max( );
-		daw::i32 i1 = std::numeric_limits<std::int32_t>::max( );
+		daw::i32 i0 = daw::i32::Max;
+		daw::i32 i1 = daw::i32::Max;
 		i0 *= i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i64 i0 = std::numeric_limits<std::int64_t>::max( );
-		daw::i64 i1 = std::numeric_limits<std::int64_t>::max( );
+		daw::i64 i0 = daw::i64::Max;
+		daw::i64 i1 = daw::i64::Max;
 		i0 *= i1;
 		daw_ensure( has_overflow );
 	}
