@@ -161,4 +161,10 @@ int main( ) {
 		i0 *= i1;
 		daw_ensure( has_overflow );
 	}
+	{
+		has_overflow = false;
+		auto i0 = daw::i64::min( );
+		i0 *= -1;
+		daw_ensure( has_overflow );
+	}
 }
