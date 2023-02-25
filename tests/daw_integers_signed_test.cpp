@@ -79,85 +79,85 @@ int main( ) {
 	daw::integers::register_signed_overflow_handler( error_handler );
 	{
 		has_overflow = false;
-		daw::i8 i0 = daw::i8::Max;
-		daw::i8 i1 = daw::i8::Max;
+		auto i0 = daw::i8::max( );
+		auto i1 = daw::i8::max( );
 		i0 += i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i16 i0 = daw::i16::Max;
-		daw::i16 i1 = daw::i16::Max;
+		auto i0 = daw::i16::max( );
+		auto i1 = daw::i16::max( );
 		i0 += i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i32 i0 = daw::i32::Max;
-		daw::i32 i1 = daw::i32::Max;
+		auto i0 = daw::i32::max( );
+		auto i1 = daw::i32::max( );
 		i0 += i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i64 i0 = daw::i64::Max;
-		daw::i64 i1 = daw::i64::Max;
+		auto i0 = daw::i64::max( );
+		auto i1 = daw::i64::max( );
 		i0 += i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i8 i0 = daw::i8::Min;
-		daw::i8 i1 = daw::i8::Max;
+		auto i0 = daw::i8::min( );
+		auto i1 = daw::i8::max( );
 		i0 -= i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i16 i0 = daw::i16::Min;
-		daw::i16 i1 = daw::i16::Max;
+		auto i0 = daw::i16::min( );
+		auto i1 = daw::i16::max( );
 		i0 -= i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i32 i0 = daw::i32::Min;
-		daw::i32 i1 = daw::i32::Max;
+		auto i0 = daw::i32::min( );
+		auto i1 = daw::i32::max( );
 		i0 -= i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i64 i0 = daw::i16::Min;
-		daw::i64 i1 = daw::i64::Max;
+		auto i0 = daw::i16::min( );
+		auto i1 = daw::i16::max( );
 		i0 -= i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i8 i0 = daw::i8::Max;
-		daw::i8 i1 = daw::i8::Max;
+		auto i0 = daw::i8::max( );
+		auto i1 = daw::i8::max( );
 		i0 *= i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i16 i0 = daw::i16::Max;
-		daw::i16 i1 = daw::i16::Max;
+		auto i0 = daw::i16::max( );
+		auto i1 = daw::i16::max( );
 		i0 *= i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i32 i0 = daw::i32::Max;
-		daw::i32 i1 = daw::i32::Max;
+		auto i0 = daw::i32::max( );
+		auto i1 = daw::i32::max( );
 		i0 *= i1;
 		daw_ensure( has_overflow );
 	}
 	{
 		has_overflow = false;
-		daw::i64 i0 = daw::i64::Max;
-		daw::i64 i1 = daw::i64::Max;
+		auto i0 = daw::i64::max( );
+		auto i1 = daw::i64::max( );
 		i0 *= i1;
 		daw_ensure( has_overflow );
 	}
