@@ -105,4 +105,60 @@ int main( ) {
 		i0 += i1;
 		daw_ensure( has_overflow );
 	}
+	{
+		has_overflow = false;
+		daw::i8 i0 = std::numeric_limits<std::int8_t>::min( );
+		daw::i8 i1 = std::numeric_limits<std::int8_t>::max( );
+		i0 -= i1;
+		daw_ensure( has_overflow );
+	}
+	{
+		has_overflow = false;
+		daw::i16 i0 = std::numeric_limits<std::int16_t>::min( );
+		daw::i16 i1 = std::numeric_limits<std::int16_t>::max( );
+		i0 -= i1;
+		daw_ensure( has_overflow );
+	}
+	{
+		has_overflow = false;
+		daw::i32 i0 = std::numeric_limits<std::int32_t>::min( );
+		daw::i32 i1 = std::numeric_limits<std::int32_t>::max( );
+		i0 -= i1;
+		daw_ensure( has_overflow );
+	}
+	{
+		has_overflow = false;
+		daw::i64 i0 = std::numeric_limits<std::int64_t>::min( );
+		daw::i64 i1 = std::numeric_limits<std::int64_t>::max( );
+		i0 -= i1;
+		daw_ensure( has_overflow );
+	}
+	{
+		has_overflow = false;
+		daw::i8 i0 = std::numeric_limits<std::int8_t>::max( );
+		daw::i8 i1 = std::numeric_limits<std::int8_t>::max( );
+		i0 *= i1;
+		daw_ensure( has_overflow );
+	}
+	{
+		has_overflow = false;
+		daw::i16 i0 = std::numeric_limits<std::int16_t>::max( );
+		daw::i16 i1 = std::numeric_limits<std::int16_t>::max( );
+		i0 *= i1;
+		daw_ensure( has_overflow );
+	}
+	{
+		has_overflow = false;
+		daw::i32 i0 = std::numeric_limits<std::int32_t>::max( );
+		daw::i32 i1 = std::numeric_limits<std::int32_t>::max( );
+		i0 *= i1;
+		daw_ensure( has_overflow );
+	}
+	{
+		has_overflow = false;
+		daw::i64 i0 = std::numeric_limits<std::int64_t>::max( );
+		daw::i64 i1 = std::numeric_limits<std::int64_t>::max( );
+		i0 *= i1;
+		daw_ensure( has_overflow );
+	}
 }

@@ -40,27 +40,43 @@ namespace daw::integers::sint_impl {
 		                 std::is_signed_v<SignedInteger> and
 		                 sizeof( SignedInteger ) <= 8U,
 		               "Invalid signed integer" );
-		using uint = std::make_unsigned_t<SignedInteger>;
-			result = static_cast<SignedInteger>( static_cast<std::uint64_t>( a ) +
-			                                     static_cast<std::uint64_t>( b ) );
+		auto const res64 =
+		  static_cast<std::uint64_t>( a ) + static_cast<std::uint64_t>( b );
+		(void)res64;
+		result = static_cast<SignedInteger>( res64 );
+		if constexpr( sizeof( SignedInteger ) < 8 ) {
+			return result != res64;
+		} else {
 			return ( b > 0 and
 			         a > ( std::numeric_limits<SignedInteger>::max( ) - b ) ) or
 			       ( b < 0 and
 			         a < ( std::numeric_limits<SignedInteger>::min( ) - b ) );
+		}
 	}
 
-	DAW_ATTRIB_INLINE constexpr bool wrapping_sub( std::int8_t l, std::int8_t r,
-	                                               std::int8_t &res ) noexcept {
-		auto const res32 = l + r;
-		res = static_cast<std::int8_t>( res32 );
-		if( r == 0 ) {
-			return false;
+	template<typename SignedInteger>
+	constexpr bool wrapping_sub( SignedInteger a, SignedInteger b,
+	                             SignedInteger &result ) {
+		static_assert( std::is_integral_v<SignedInteger> and
+		                 std::is_signed_v<SignedInteger> and
+		                 sizeof( SignedInteger ) <= 8U,
+		               "Invalid signed integer" );
+		auto const res64 =
+		  static_cast<std::uint64_t>( a ) - static_cast<std::uint64_t>( b );
+		(void)res64;
+		result = static_cast<SignedInteger>( res64 );
+		if constexpr( sizeof( SignedInteger ) < 8 ) {
+			return result != res64;
+		} else {
+			if( b == 0 ) {
+				return false;
+			}
+			if( b < 0 ) {
+				return result < a;
+			}
+			// r > 0
+			return result > a;
 		}
-		if( r < 0 ) {
-			return res < l;
-		}
-		// r > 0
-		return res > l;
 	}
 
 	DAW_ATTRIB_INLINE constexpr bool wrapping_sub( std::int16_t l, std::int16_t r,
@@ -150,8 +166,7 @@ namespace daw::integers::sint_impl {
 		auto r32 = static_cast<std::uint32_t>( r );
 		auto res32 = l32 * r32;
 		res = static_cast<std::int16_t>( res32 );
-		return res32 <= static_cast<std::uint32_t>(
-		                  std::numeric_limits<std::int16_t>::max( ) );
+		return res != res32;
 	}
 
 	DAW_ATTRIB_INLINE constexpr bool wrapping_mul( std::int32_t l, std::int32_t r,
@@ -160,8 +175,7 @@ namespace daw::integers::sint_impl {
 		auto r64 = static_cast<std::uint64_t>( r );
 		auto res64 = l64 * r64;
 		res = static_cast<std::int32_t>( res64 );
-		return res64 <= static_cast<std::uint64_t>(
-		                  std::numeric_limits<std::int32_t>::max( ) );
+		return res != res64;
 	}
 
 	DAW_ATTRIB_INLINE constexpr bool wrapping_mul( std::int64_t l, std::int64_t r,
@@ -180,7 +194,7 @@ namespace daw::integers::sint_impl {
 		         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE constexpr T operator( )( T lhs, T rhs ) const {
 			T result;
-			if( DAW_UNLIKELY( __builtin_sub_overflow( lhs, rhs, &result ) ) ) {
+			if( DAW_UNLIKELY( wrapping_sub( lhs, rhs, result ) ) ) {
 				on_signed_integer_overflow( );
 			}
 			return result;
