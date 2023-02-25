@@ -77,6 +77,7 @@ int main( ) {
 	auto z = x * y;
 	(void)z;
 	daw::integers::register_signed_overflow_handler( error_handler );
+	daw::integers::register_signed_div_by_zero_handler( error_handler );
 	{
 		has_overflow = false;
 		auto i0 = daw::i8::max( );
@@ -166,5 +167,41 @@ int main( ) {
 		auto i0 = daw::i64::min( );
 		i0 *= -1;
 		daw_ensure( has_overflow );
+	}
+	{
+		has_overflow = false;
+		auto i0 = daw::i64::min( );
+		--i0;
+		daw_ensure( has_overflow );
+	}
+	{
+		has_overflow = false;
+		auto i0 = daw::i64::min( );
+		i0--;
+		daw_ensure( has_overflow );
+	}
+	{
+		has_overflow = false;
+		auto i0 = daw::i64::max( );
+		++i0;
+		daw_ensure( has_overflow );
+	}
+	{
+		has_overflow = false;
+		auto i0 = daw::i64::max( );
+		i0++;
+		daw_ensure( has_overflow );
+	}
+	{
+		has_overflow = false;
+		auto i0 = daw::i64::min( );
+		--i0;
+		daw_ensure( has_overflow );
+	}
+	{
+		has_div_by_zero = false;
+		auto i0 = daw::i64::min( );
+		i0 /= 0;
+		daw_ensure( has_div_by_zero );
 	}
 }
