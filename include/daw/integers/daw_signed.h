@@ -92,11 +92,24 @@ namespace daw::integers {
 		  : m_value( static_cast<value_type>( v ) ) {}
 
 		template<typename I,
-		         std::enable_if_t<sint_impl::convertible_signed_int<value_type, I>,
+		         std::enable_if_t<( sizeof( I ) > sizeof( value_type ) ),
+		                          std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE explicit constexpr signed_integer(
+		  signed_integer<I> other ) noexcept
+		  : m_value( static_cast<value_type>( other.value( ) ) ) {
+			if constexpr( sizeof( I ) > sizeof( value_type ) ) {
+				if( DAW_UNLIKELY( m_value != other.value( ) ) ) {
+					on_signed_integer_overflow( );
+				}
+			}
+		}
+
+		template<typename I,
+		         std::enable_if_t<( sizeof( I ) < sizeof( value_type ) ),
 		                          std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE constexpr signed_integer(
 		  signed_integer<I> other ) noexcept
-		  : m_value( other.value( ) ) {}
+		  : m_value( static_cast<value_type>( other.value( ) ) ) {}
 
 		/// Construct from a literal
 		template<

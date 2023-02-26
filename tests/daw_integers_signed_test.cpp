@@ -212,4 +212,18 @@ int main( ) {
 		i0 /= 0;
 		daw_ensure( has_div_by_zero );
 	}
+	{
+		has_overflow = false;
+		has_div_by_zero = false;
+		has_exception = false;
+		auto i0 = 5_i32;
+		daw::i8 i1 = static_cast<daw::i8>( i0 );
+		daw_ensure( not has_overflow );
+		i0 = daw::i32::max( );
+		daw::i8 i2 = static_cast<daw::i8>( i0 );
+		daw_ensure( has_overflow );
+		has_overflow = false;
+		daw::i64 i3 = i2;
+		daw_ensure( not has_overflow );
+	}
 }
