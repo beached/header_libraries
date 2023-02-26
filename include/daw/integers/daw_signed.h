@@ -91,6 +91,49 @@ namespace daw::integers {
 		DAW_ATTRIB_INLINE constexpr explicit signed_integer( I v ) noexcept
 		  : m_value( static_cast<value_type>( v ) ) {}
 
+		template<typename I>
+		[[nodiscard]] static constexpr signed_integer checked_conversion(
+		  signed_integer<I> other ) {
+			if constexpr( sizeof( I ) <= sizeof( value_type ) ) {
+				return signed_integer( static_cast<value_type>( other.value( ) ) );
+			} else {
+				auto val = static_cast<value_type>( other.value( ) );
+				if( DAW_UNLIKELY( val != other.value( ) ) ) {
+					on_signed_integer_overflow( );
+				}
+				return signed_integer( val );
+			}
+		}
+
+		template<typename I,
+		         std::enable_if_t<std::is_integral_v<I> and std::is_signed_v<I>,
+		                          std::nullptr_t> = nullptr>
+		[[nodiscard]] static constexpr signed_integer checked_conversion(
+		  I other ) {
+			if constexpr( sizeof( I ) <= sizeof( value_type ) ) {
+				return signed_integer( static_cast<value_type>( other ) );
+			} else {
+				auto val = static_cast<value_type>( other );
+				if( DAW_UNLIKELY( val != other ) ) {
+					on_signed_integer_overflow( );
+				}
+				return signed_integer( val );
+			}
+		}
+
+		template<typename I>
+		[[nodiscard]] static constexpr signed_integer unchecked_conversion(
+		  signed_integer<I> other ) {
+			return signed_integer( static_cast<value_type>( other.value( ) ) );
+		}
+
+		template<typename I,
+		         std::enable_if_t<std::is_integral_v<I> and std::is_signed_v<I>,
+		                          std::nullptr_t> = nullptr>
+		static constexpr signed_integer unchecked_conversion( I other ) {
+			return signed_integer( static_cast<value_type>( other ) );
+		}
+
 		template<typename I,
 		         std::enable_if_t<( sizeof( I ) > sizeof( value_type ) ),
 		                          std::nullptr_t> = nullptr>
@@ -98,9 +141,11 @@ namespace daw::integers {
 		  signed_integer<I> other ) noexcept
 		  : m_value( static_cast<value_type>( other.value( ) ) ) {
 			if constexpr( sizeof( I ) > sizeof( value_type ) ) {
+#if DAW_DEFAULT_SIGNED_CHECKING == 0
 				if( DAW_UNLIKELY( m_value != other.value( ) ) ) {
 					on_signed_integer_overflow( );
 				}
+#endif
 			}
 		}
 

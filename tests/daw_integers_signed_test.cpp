@@ -218,12 +218,32 @@ int main( ) {
 		has_exception = false;
 		auto i0 = 5_i32;
 		daw::i8 i1 = static_cast<daw::i8>( i0 );
+		(void)i1;
 		daw_ensure( not has_overflow );
 		i0 = daw::i32::max( );
 		daw::i8 i2 = static_cast<daw::i8>( i0 );
+		static_assert( not std::is_convertible_v<daw::i32, daw::i8> );
+		static_assert( std::is_convertible_v<daw::i8, daw::i32> );
+		static_assert( std::is_constructible_v<daw::i8, daw::i32> );
 		daw_ensure( has_overflow );
 		has_overflow = false;
 		daw::i64 i3 = i2;
+		(void)i3;
+		daw_ensure( not has_overflow );
+	}
+	{
+		has_overflow = false;
+		auto i0 = daw::i8::checked_conversion( 12 );
+		daw_ensure( not has_overflow );
+		i0 = daw::i8::checked_conversion( 255 );
+		daw_ensure( has_overflow );
+		has_overflow = false;
+		auto i1 = daw::i32::checked_conversion( 5000 );
+		daw::i8 i2 = daw::i8::checked_conversion( i1 );
+		daw_ensure( has_overflow );
+		has_overflow = false;
+		i1 = daw::i8( 55 );
+		i2 = daw::i8::checked_conversion( i1 );
 		daw_ensure( not has_overflow );
 	}
 }
