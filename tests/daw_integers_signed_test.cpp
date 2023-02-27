@@ -8,12 +8,31 @@
 
 #define DAW_DEFAULT_SIGNED_CHECKING 0
 
+#include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_ensure.h"
 #include "daw/integers/daw_signed.h"
 
 #include <initializer_list>
 
 using namespace daw::integers::literals;
+
+#if defined( __cpp_nontype_template_args )
+#if __cpp_nontype_template_args >= 201911L
+template<daw::i8 num>
+struct foo {
+	static constexpr daw::i8 value = num;
+};
+static_assert( foo<40_i8>::value == 40 );
+#endif
+#endif
+static_assert( std::is_trivially_copyable_v<daw::i8> );
+static_assert( std::is_trivially_copyable_v<daw::i16> );
+static_assert( std::is_trivially_copyable_v<daw::i32> );
+static_assert( std::is_trivially_copyable_v<daw::i64> );
+static_assert( std::is_trivially_destructible_v<daw::i8> );
+static_assert( std::is_trivially_destructible_v<daw::i16> );
+static_assert( std::is_trivially_destructible_v<daw::i32> );
+static_assert( std::is_trivially_destructible_v<daw::i64> );
 
 DAW_ATTRIB_NOINLINE int test_plus( std::initializer_list<daw::i32> const &vals,
                                    daw::i32 expected ) {
