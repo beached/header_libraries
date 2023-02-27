@@ -265,4 +265,13 @@ int main( ) {
 		i2 = daw::i8::checked_conversion( i1 );
 		daw_ensure( not has_overflow );
 	}
+	{
+		std::uint32_t const le_val = 0x0123'4567U;
+		std::uint32_t const be_val = 0x6745'2301U;
+		auto const le_bytes = reinterpret_cast<unsigned char const *>( &le_val );
+		auto const le_le = daw::i32::from_bytes_le( le_bytes );
+		daw_ensure( le_le == le_val );
+		auto const le_be = daw::i32::from_bytes_be( le_bytes );
+		daw_ensure( le_be == be_val );
+	}
 }
