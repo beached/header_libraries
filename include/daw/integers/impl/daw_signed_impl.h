@@ -11,10 +11,31 @@
 #include "daw_signed_clanggcc.h"
 #include "daw_signed_msvc.h"
 
-#include <type_traits>
 #include <cstdint>
+#include <type_traits>
 
 namespace daw::integers::sint_impl {
+	template<typename Unsigned, std::size_t... Is>
+	DAW_ATTRIB_INLINE constexpr Unsigned
+	from_bytes_le( unsigned char const *ptr, std::index_sequence<Is...> ) {
+		constexpr auto f = []( unsigned char c, size_t n ) {
+			return static_cast<Unsigned>( c ) << ( 8U * n );
+		};
+		auto result = Unsigned{ ( f( ptr[Is], Is ) | ... ) };
+		return result;
+	}
+
+	template<typename Unsigned, std::size_t... Is>
+	DAW_ATTRIB_INLINE constexpr Unsigned
+	from_bytes_be( unsigned char const *ptr, std::index_sequence<Is...> ) {
+		constexpr auto StartVal = sizeof( Unsigned ) - 1;
+		constexpr auto f = []( unsigned char c, size_t n ) {
+			return static_cast<Unsigned>( c ) << ( 8U * n );
+		};
+		auto result = Unsigned{ ( f( ptr[StartVal - Is], Is ) | ... ) };
+		return result;
+	}
+
 	template<typename Lhs, typename Rhs>
 	inline constexpr bool size_fits_v = sizeof( Lhs ) <= sizeof( Rhs );
 

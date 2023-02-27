@@ -17,6 +17,7 @@
 #include "impl/daw_signed_impl.h"
 
 #include <algorithm>
+#include <array>
 #include <climits>
 #include <cstdint>
 #include <exception>
@@ -91,6 +92,20 @@ namespace daw::integers {
 		                          std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE constexpr explicit signed_integer( I v ) noexcept
 		  : m_private{ static_cast<value_type>( v ) } {}
+
+		[[nodiscard]] static constexpr signed_integer from_bytes_le(
+		  unsigned char *ptr ) noexcept {
+			return signed_integer(
+			  daw::integers::sint_impl::from_bytes_le<value_type>(
+			    ptr, std::make_index_sequence<sizeof( value_type )>{ } ) );
+		}
+
+		[[nodiscard]] static constexpr signed_integer from_bytes_be(
+		  unsigned char *ptr ) noexcept {
+			return signed_integer(
+			  daw::integers::sint_impl::from_bytes_be<value_type>(
+			    ptr, std::make_index_sequence<sizeof( value_type )>{ } ) );
+		}
 
 		template<typename I>
 		[[nodiscard]] static constexpr signed_integer checked_conversion(
