@@ -33,6 +33,10 @@ static_assert( std::is_trivially_destructible_v<daw::i8> );
 static_assert( std::is_trivially_destructible_v<daw::i16> );
 static_assert( std::is_trivially_destructible_v<daw::i32> );
 static_assert( std::is_trivially_destructible_v<daw::i64> );
+static_assert( sizeof( daw::i8 ) == 1 );
+static_assert( sizeof( daw::i16 ) == 2 );
+static_assert( sizeof( daw::i32 ) == 4 );
+static_assert( sizeof( daw::i64 ) == 8 );
 
 DAW_ATTRIB_NOINLINE int test_plus( std::initializer_list<daw::i32> const &vals,
                                    daw::i32 expected ) {
@@ -270,8 +274,8 @@ int main( ) {
 		std::uint32_t const be_val = 0x6745'2301U;
 		auto const le_bytes = reinterpret_cast<unsigned char const *>( &le_val );
 		auto const le_le = daw::i32::from_bytes_le( le_bytes );
-		daw_ensure( le_le == le_val );
+		daw_ensure( static_cast<std::uint32_t>( le_le ) == le_val );
 		auto const le_be = daw::i32::from_bytes_be( le_bytes );
-		daw_ensure( le_be == be_val );
+		daw_ensure( static_cast<std::uint32_t>( le_be ) == be_val );
 	}
 }
