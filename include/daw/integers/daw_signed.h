@@ -410,6 +410,32 @@ namespace daw::integers {
 			return value( ) << rhs.value( );
 		}
 
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer overflowing_shl(
+		  signed_integer n ) const {
+			if( n < 0 ) {
+				on_signed_integer_overflow( );
+				return *this;
+			} else if( n == 0 ) {
+				return *this;
+			}
+			n &= sizeof( value_type ) * CHAR_BIT - 1;
+			return signed_integer( value( ) << n.value( ) );
+		}
+
+		template<typename I,
+		         std::enable_if_t<std::is_integral_v<I>, std::nullptr_t> = nullptr>
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer overflowing_shl(
+		  I n ) const {
+			if( n < 0 ) {
+				on_signed_integer_overflow( );
+				return *this;
+			} else if( n == 0 ) {
+				return *this;
+			}
+			n &= sizeof( value_type ) * CHAR_BIT - 1;
+			return signed_integer( value( ) << n );
+		}
+
 		DAW_ATTRIB_INLINE constexpr signed_integer &operator>>=(
 		  signed_integer const &rhs ) {
 			value( ) = sint_impl::debug_checked_shr( value( ), rhs.value( ) );
@@ -433,8 +459,46 @@ namespace daw::integers {
 			return value( ) >> rhs.value( );
 		}
 
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer overflowing_shr(
+		  signed_integer n ) const {
+			if( n < 0 ) {
+				on_signed_integer_overflow( );
+				return *this;
+			} else if( n == 0 ) {
+				return *this;
+			}
+			n &= sizeof( value_type ) * CHAR_BIT - 1;
+			return signed_integer( value( ) >> n.value( ) );
+		}
+
+		template<typename I,
+		         std::enable_if_t<std::is_integral_v<I>, std::nullptr_t> = nullptr>
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer overflowing_shr(
+		  I n ) const {
+			if( n < 0 ) {
+				on_signed_integer_overflow( );
+				return *this;
+			} else if( n == 0 ) {
+				return *this;
+			}
+			n &= sizeof( value_type ) * CHAR_BIT - 1;
+			return signed_integer( value( ) >> n );
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer rotate_left(
+		  std::size_t n ) const {
+			return overflowing_shl( n ) |
+			       overflowing_shr( sizeof( value_type ) * CHAR_BIT - n );
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer rotate_right(
+		  std::size_t n ) const {
+			return overflowing_shr( n ) |
+			       overflowing_shl( sizeof( value_type ) * CHAR_BIT - n );
+		}
+
 		DAW_ATTRIB_INLINE constexpr signed_integer &operator|=(
-		  signed_integer const &rhs ) const noexcept {
+		  signed_integer const &rhs ) noexcept {
 			value( ) |= rhs.value( );
 			return *this;
 		}

@@ -278,4 +278,16 @@ int main( ) {
 		auto const le_be = daw::i32::from_bytes_be( le_bytes );
 		daw_ensure( static_cast<std::uint32_t>( le_be ) == be_val );
 	}
+	{
+		auto i0 = 0x10000b3_i32;
+		auto i1 = 0xb301_i32;
+		auto rot0 = i0.rotate_left( 8 );
+		daw_ensure( rot0 == i1 );
+	}
+	{
+		auto i0 = 0xb301_i32;
+		auto i1 = 0x10000b3_i32;
+		auto rot0 = i0.rotate_right( 8 );
+		daw_ensure( rot0 == i1 );
+	}
 }
