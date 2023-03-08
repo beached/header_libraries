@@ -247,7 +247,20 @@ namespace daw {
 			[[nodiscard]] constexpr ForwardIt1
 			search( ForwardIt1 first, ForwardIt1 last, ForwardIt2 s_first,
 			        ForwardIt2 s_last ) {
-
+				// TODO: This is a terrible detection, but not sure what to use yet
+#if not defined( _WIN32 )
+				if constexpr( std::is_convertible_v<ForwardIt1, char const *> and
+				              std::is_convertible_v<ForwardIt2, char const *> ) {
+					if( not DAW_IS_CONSTANT_EVALUATED( ) ) {
+						auto *result =
+						  memmem( first, last - first, s_first, s_last - s_first );
+						if( result == nullptr ) {
+							return last;
+						}
+						return reinterpret_cast<ForwardIt1>( result );
+					}
+				}
+#endif
 				for( ;; ++first ) {
 					ForwardIt1 it = first;
 					for( ForwardIt2 s_it = s_first;; ++it, ++s_it ) {
@@ -1915,12 +1928,12 @@ namespace daw {
 				if( pos + v.size( ) >= size( ) or v.empty( ) ) {
 					return npos;
 				}
-				auto const iter =
-				  sv2_details::search( begin( ) + pos, end( ), v.begin( ), v.end( ) );
-				if( cend( ) == iter ) {
+				auto const iter = sv2_details::search( data( ) + pos, data_end( ),
+				                                       v.data( ), v.data_end( ) );
+				if( data_end( ) == iter ) {
 					return npos;
 				}
-				return static_cast<size_type>( std::distance( begin( ), iter ) );
+				return static_cast<size_type>( std::distance( data( ), iter ) );
 			}
 
 			template<string_view_bounds_type Bounds>
