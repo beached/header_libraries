@@ -25,7 +25,9 @@
 #include <variant>
 
 namespace daw {
-	struct bad_variant_access : std::exception {};
+	using bad_variant_access = std::bad_variant_access;
+	//vtable is showing up in code
+	//struct bad_variant_access : std::exception {};
 
 	namespace get_nt_details {
 		namespace gi_test {
@@ -245,6 +247,7 @@ namespace daw {
 			}
 			DAW_UNREACHABLE( );
 		}
+
 		[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE inline void visit_error( ) {
 			DAW_THROW_OR_TERMINATE_NA( daw::bad_variant_access );
 		}

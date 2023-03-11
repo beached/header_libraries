@@ -247,17 +247,18 @@ namespace daw {
 			[[nodiscard]] constexpr ForwardIt1
 			search( ForwardIt1 first, ForwardIt1 last, ForwardIt2 s_first,
 			        ForwardIt2 s_last ) {
-				// TODO: This is a terrible detection, but not sure what to use yet
+				// TODO: This is a terrible detection, but not sure what to use yet as
+				// it's generally available everywhere but windows
 #if not defined( _WIN32 )
 				if constexpr( std::is_convertible_v<ForwardIt1, char const *> and
 				              std::is_convertible_v<ForwardIt2, char const *> ) {
 					if( not DAW_IS_CONSTANT_EVALUATED( ) ) {
-						auto *result =
+						void *result =
 						  memmem( first, last - first, s_first, s_last - s_first );
 						if( result == nullptr ) {
 							return last;
 						}
-						return reinterpret_cast<ForwardIt1>( result );
+						return static_cast<ForwardIt1>( result );
 					}
 				}
 #endif
