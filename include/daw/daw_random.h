@@ -9,13 +9,19 @@
 #pragma once
 
 #include "ciso646.h"
+#include "daw_arith_traits.h"
 #include "daw_exception.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
 
+#include <iterator>
+#include <limits>
+#include <memory>
 #include <random>
+#include <type_traits>
+#include <vector>
 
 namespace daw::impl {
 	static inline auto &global_rng( ) {
@@ -156,6 +162,71 @@ namespace daw {
 		constexpr size_t operator( )( ) noexcept {
 			m_state = cxrand_impl::rand_lcg<sizeof( size_t )>( m_state );
 			return daw::fnv1a_hash( m_state );
+		}
+	};
+
+	template<typename Integer, typename Engine = std::default_random_engine>
+	struct RandomInteger {
+		static_assert( std::is_integral_v<Integer>,
+		               "Only integer types supported" );
+		using result_type = Integer;
+
+	private:
+		using engine_t = Engine;
+		engine_t m_engine =
+		  engine_t( static_cast<result_type>( std::random_device{ }( ) ) );
+		using distribution_type = std::uniform_int_distribution<Integer>;
+		using param_type = typename distribution_type::param_type;
+		distribution_type m_dist = distribution_type( );
+
+	public:
+		explicit RandomInteger( ) = default;
+		explicit constexpr RandomInteger( result_type seed )
+		  : m_engine( seed ) {}
+
+		constexpr result_type
+		operator( )( Integer MaxInclusive = std::numeric_limits<Integer>::max( ),
+		             Integer MinInclusive = std::numeric_limits<Integer>::min( ) ) {
+			daw::exception::daw_throw_on_false(
+			  MinInclusive < MaxInclusive,
+			  "MinInclusive < MaxInclusive must be true" );
+
+			return m_dist( m_engine, param_type( MinInclusive, MaxInclusive ) );
+		}
+	};
+
+	namespace RandomInteger_impl {
+		template<typename Float>
+		using uint_type = std::conditional_t<std::is_same_v<Float, float>,
+		                                     std::uint32_t, std::uint64_t>;
+	}
+
+	template<typename Float, typename Engine = std::default_random_engine>
+	struct RandomFloat {
+	public:
+		using result_type = Float;
+
+	private:
+		using uint_type = typename Engine::result_type;
+		using engine_t = Engine;
+		engine_t m_engine =
+		  engine_t( static_cast<uint_type>( std::random_device{ }( ) ) );
+		using distribution_type = std::uniform_real_distribution<Float>;
+		using param_type = typename distribution_type::param_type;
+		distribution_type m_dist = distribution_type( );
+
+	public:
+		explicit RandomFloat( ) = default;
+		explicit constexpr RandomFloat( uint_type seed )
+		  : m_engine( seed ) {}
+
+		constexpr result_type operator( )( Float MaxInclusive = Float{ 1.0 },
+		                                   Float MinInclusive = Float{ 0.0 } ) {
+			daw::exception::daw_throw_on_false(
+			  MinInclusive < MaxInclusive,
+			  "MinInclusive < MaxInclusive must be true" );
+
+			return m_dist( m_engine, param_type( MinInclusive, MaxInclusive ) );
 		}
 	};
 } // namespace daw
