@@ -29,6 +29,7 @@ namespace daw {
 	struct default_deleter {
 		using pointer = T *;
 		using does_validity_check = void;
+		static constexpr pointer default_pointer_value = nullptr;
 
 		explicit default_deleter( ) = default;
 		~default_deleter( ) noexcept = default;
@@ -58,6 +59,8 @@ namespace daw {
 	struct default_deleter<T[]> {
 		using pointer = T *;
 		using does_validity_check = void;
+		static constexpr pointer default_pointer_value = nullptr;
+
 		explicit default_deleter( ) = default;
 
 		DAW_CPP20_CX_ALLOC void operator( )( pointer p ) const noexcept {
@@ -103,8 +106,6 @@ namespace daw {
 		using pointer = unique_ptr_del::pointer_type_t<value_type, Deleter>;
 		using reference = std::add_lvalue_reference_t<value_type>;
 		using deleter_t = Deleter;
-		static constexpr pointer default_pointer_value =
-		  unique_ptr_del::default_pointer_value_v<T, Deleter>;
 
 		static_assert( not std::is_array_v<T>,
 		               "It is an error to specify a bound on the array type. e.g "
@@ -114,7 +115,7 @@ namespace daw {
 		template<typename, typename>
 		friend struct unique_ptr;
 
-		pointer m_ptr = default_pointer_value;
+		pointer m_ptr = unique_ptr_del::default_pointer_value_v<T, Deleter>;
 
 	public:
 		unique_ptr( ) = default;
@@ -175,7 +176,8 @@ namespace daw {
 		}
 
 		constexpr pointer release( ) noexcept {
-			return daw::exchange( m_ptr, default_pointer_value );
+			return daw::exchange(
+			  m_ptr, unique_ptr_del::default_pointer_value_v<T, Deleter> );
 		}
 
 		constexpr deleter_t &get_deleter( ) {
@@ -188,7 +190,8 @@ namespace daw {
 
 		constexpr void reset( ) noexcept {
 			if( unique_ptr_del::does_validity_check_v<Deleter> or m_ptr ) {
-				get_deleter( )( daw::exchange( m_ptr, default_pointer_value ) );
+				get_deleter( )( daw::exchange(
+				  m_ptr, unique_ptr_del::default_pointer_value_v<T, Deleter> ) );
 			}
 		}
 
@@ -220,11 +223,9 @@ namespace daw {
 		using pointer = unique_ptr_del::pointer_type_t<value_type, Deleter>;
 		using reference = std::add_lvalue_reference_t<value_type>;
 		using deleter_t = Deleter;
-		static constexpr pointer default_pointer_value =
-		  unique_ptr_del::default_pointer_value_v<T, Deleter>;
 
 	private:
-		pointer m_ptr = default_pointer_value;
+		pointer m_ptr = unique_ptr_del::default_pointer_value_v<T, Deleter>;
 
 	public:
 		unique_ptr( ) = default;
@@ -283,7 +284,7 @@ namespace daw {
 		}
 
 		constexpr pointer release( ) noexcept {
-			return daw::exchange( m_ptr, default_pointer_value );
+			return daw::exchange( m_ptr, unique_ptr_del::default_pointer_value_v<T, Deleter> );
 		}
 
 		constexpr deleter_t &get_deleter( ) {
@@ -296,7 +297,7 @@ namespace daw {
 
 		constexpr void reset( ) noexcept {
 			if( unique_ptr_del::does_validity_check_v<Deleter> or m_ptr ) {
-				get_deleter( )( daw::exchange( m_ptr, default_pointer_value ) );
+				get_deleter( )( daw::exchange( m_ptr, unique_ptr_del::default_pointer_value_v<T, Deleter> ) );
 			}
 		}
 
