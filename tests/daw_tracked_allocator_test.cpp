@@ -30,7 +30,7 @@ int main( ) {
 		  daw::vector<std::size_t, daw::memory::tracked_allocator<std::size_t>>{ };
 		(void)v.append_and_overwrite( 123U, []( auto ptr, std::size_t sz ) {
 			for( std::size_t n = 0; n < sz; ++n ) {
-				ptr[n] = n;
+				ptr[static_cast<std::ptrdiff_t>( n )] = n;
 			}
 			return sz;
 		} );

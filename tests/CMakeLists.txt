@@ -126,7 +126,6 @@ set( CPP20_TEST_SOURCES
      daw_concepts_test.cpp
      daw_contiguous_view_test.cpp
      daw_named_params_test.cpp
-     daw_tracked_allocator_test.cpp
      vector_test.cpp
      )
 #NOT COMPLETED daw_iterator_split_iterator_test.cpp
@@ -156,6 +155,7 @@ set( DEV_TEST_SOURCES
      daw_range_test.cpp
      daw_sort_n_test.cpp
      daw_stack_quick_sort_test.cpp
+     daw_tracked_allocator_test.cpp
      daw_vector_test.cpp
      )
 

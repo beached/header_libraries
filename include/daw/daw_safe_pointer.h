@@ -330,6 +330,7 @@ namespace daw::memory {
 
 		explicit constexpr safe_pointer( pointer base, size_type size ) noexcept
 		  : m_pointer( base ) {
+			(void)size;
 			DAW_SAFE_POINTER_ENSURE( size == 1 );
 			DAW_SAFE_POINTER_ENSURE( base );
 		}

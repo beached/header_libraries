@@ -254,7 +254,8 @@ namespace daw {
 				              std::is_convertible_v<ForwardIt2, char const *> ) {
 					if( not DAW_IS_CONSTANT_EVALUATED( ) ) {
 						void *result =
-						  memmem( first, last - first, s_first, s_last - s_first );
+						  memmem( first, static_cast<std::size_t>( last - first ), s_first,
+						          static_cast<std::size_t>( s_last - s_first ) );
 						if( result == nullptr ) {
 							return last;
 						}
@@ -1926,7 +1927,7 @@ namespace daw {
 			template<string_view_bounds_type Bounds>
 			[[nodiscard]] constexpr size_type
 			search( basic_string_view<CharT, Bounds> v, size_type pos ) const {
-				if( pos + v.size( ) >= size( ) or v.empty( ) ) {
+				if( ( pos + v.size( ) ) >= size( ) or v.empty( ) ) {
 					return npos;
 				}
 				auto const iter = sv2_details::search( data( ) + pos, data_end( ),
