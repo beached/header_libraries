@@ -11,8 +11,8 @@
 
 #pragma once
 
-#if defined( DAW_FORCE_CISO646 ) or defined( _MSC_VER )
-#if defined( DAW_FORCE_CISO646 ) or _MSC_VER < 1930 || _MSVC_LANG < 202002L
+#if defined( _MSC_EXTENSIONS ) || defined( DAW_FORCE_CISO646 ) or defined( _MSC_VER )
+#if defined( _MSC_EXTENSIONS ) || defined( DAW_FORCE_CISO646 ) || _MSC_VER < 1930 || _MSVC_LANG < 202002L
 #include <ciso646>
 #endif
 #endif
