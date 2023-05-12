@@ -34,3 +34,9 @@
 #define DAW_IS_CONSTANT_EVALUATED( ) __builtin_is_constant_evaluated( )
 
 #endif
+
+#if defined( DAW_IS_CONSTANT_EVALUATED )
+#define DAW_IS_CONSTANT_EVALUATED_COMPAT( ) DAW_IS_CONSTANT_EVALUATED()
+#else
+#define DAW_IS_CONSTANT_EVALUATED_COMPAT( ) true
+#endif
