@@ -311,7 +311,7 @@ $(function() {
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;              ForwardIt2 s_last ) {</div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <span class="comment">// TODO: This is a terrible detection, but not sure what to use yet as</span></div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        <span class="comment">// it&#39;s generally available everywhere but windows</span></div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="preprocessor">#if not defined( _WIN32 )</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="preprocessor">#if not defined( _WIN32 ) and defined( DAW_IS_CONSTANT_EVALUATED )</span></div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        <span class="keywordflow">if</span> constexpr( std::is_convertible_v&lt;ForwardIt1, char const *&gt; and</div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;                      std::is_convertible_v&lt;ForwardIt2, char const *&gt; ) {</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;          <span class="keywordflow">if</span>( not DAW_IS_CONSTANT_EVALUATED( ) ) {</div>
