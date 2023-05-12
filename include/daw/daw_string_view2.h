@@ -249,7 +249,7 @@ namespace daw {
 			        ForwardIt2 s_last ) {
 				// TODO: This is a terrible detection, but not sure what to use yet as
 				// it's generally available everywhere but windows
-#if not defined( _WIN32 )
+#if not defined( _WIN32 ) and defined( DAW_IS_CONSTANT_EVALUATED )
 				if constexpr( std::is_convertible_v<ForwardIt1, char const *> and
 				              std::is_convertible_v<ForwardIt2, char const *> ) {
 					if( not DAW_IS_CONSTANT_EVALUATED( ) ) {
