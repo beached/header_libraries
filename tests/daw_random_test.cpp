@@ -87,6 +87,103 @@ void cxrand_test_002( ) {
 	std::cout << '\n';
 }
 
+void random_class_integer_bench_uint64( ) {
+	auto rnd = daw::RandomInteger<std::uint64_t>( );
+	auto values = std::vector<std::uint64_t>( );
+	values.resize( 100'000ULL );
+	daw::bench_n_test<250>( "Random Number Class - uint64 * 100,000", [&] {
+		for( std::size_t n = 0; n < 100'000ULL; ++n ) {
+			values[n] = rnd( );
+		}
+		daw::do_not_optimize( values );
+		daw::do_not_optimize( values.data( ) );
+	} );
+
+	auto rnd2 = daw::RandomInteger<std::uint64_t, std::mt19937_64>( );
+	daw::bench_n_test<250>(
+	  "Random Number Class - mersenne twister - uint64 * 100,000", [&] {
+		  for( std::size_t n = 0; n < 100'000ULL; ++n ) {
+			  values[n] = rnd2( );
+		  }
+		  daw::do_not_optimize( values );
+		  daw::do_not_optimize( values.data( ) );
+	  } );
+}
+
+void random_class_integer_bench_uint32( ) {
+	auto rnd = daw::RandomInteger<std::uint32_t>( );
+	auto values = std::vector<std::uint32_t>( );
+	values.resize( 100'000ULL );
+	daw::bench_n_test<250>( "Random Number Class - uint32 * 100,000", [&] {
+		for( std::size_t n = 0; n < 100'000ULL; ++n ) {
+			values[n] = rnd( );
+		}
+		daw::do_not_optimize( values );
+		daw::do_not_optimize( values.data( ) );
+	} );
+}
+
+void random_class_integer_bench_double( ) {
+	auto rnd = daw::RandomFloat<double>( );
+	auto values = std::vector<double>( );
+	values.resize( 100'000ULL );
+	daw::bench_n_test<250>( "Random Number Class - double * 100,000", [&] {
+		for( std::size_t n = 0; n < 100'000ULL; ++n ) {
+			values[n] = rnd( );
+		}
+		daw::do_not_optimize( values );
+		daw::do_not_optimize( values.data( ) );
+	} );
+}
+
+void random_class_integer_bench_float( ) {
+	auto rnd = daw::RandomFloat<float>( );
+	auto values = std::vector<float>( );
+	values.resize( 100'000ULL );
+	daw::bench_n_test<250>( "Random Number Class - float * 100,000", [&] {
+		for( std::size_t n = 0; n < 100'000ULL; ++n ) {
+			values[n] = rnd( );
+		}
+		daw::do_not_optimize( values );
+		daw::do_not_optimize( values.data( ) );
+	} );
+}
+
+template<typename Integer>
+void show_dist( std::vector<Integer> const &v,
+                typename daw::traits::identity<Integer>::type minimum,
+                typename daw::traits::identity<Integer>::type maximum ) {
+	auto bins = std::vector<std::size_t>{ };
+	auto const sz = maximum - minimum + 1;
+	bins.resize( sz );
+	for( auto val : v ) {
+		++bins[val - minimum];
+	}
+	for( std::size_t n = 0; n < bins.size( ); ++n ) {
+		std::cout << ( static_cast<Integer>( n ) + minimum ) << ": " << bins[n]
+		          << "-> "
+		          << ( static_cast<float>( bins[n] * 1000 / v.size( ) ) / 10.0f )
+		          << "%\n";
+	}
+}
+
+void daw_make_random_02( ) {
+	using uint_t = std::uint64_t;
+	auto rnd = daw::RandomInteger<uint_t>( );
+	auto r = std::vector<uint_t>( );
+	constexpr auto minimum = 0;
+	constexpr auto maximum = 128;
+	constexpr auto sz = maximum - minimum + 1;
+	(void)sz;
+	r.resize( 1'000'000ULL );
+	for( auto &v : r ) {
+		v = rnd( maximum, minimum );
+	}
+	std::cout << "Generated Data: \n";
+	show_dist( r, minimum, maximum );
+	std::cout << "\n\n";
+}
+
 int main( ) {
 	daw_random_01( );
 	daw_random_02( );
@@ -94,4 +191,9 @@ int main( ) {
 	daw_fill_01( );
 	daw_make_random_01( );
 	cxrand_test_002( );
+	random_class_integer_bench_uint64( );
+	random_class_integer_bench_uint32( );
+	random_class_integer_bench_float( );
+	random_class_integer_bench_double( );
+	daw_make_random_02( );
 }

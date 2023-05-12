@@ -21,8 +21,8 @@
 template<bool ForceBitCast = false, typename Float>
 constexpr bool flt_eql_exact( Float lhs, Float rhs ) {
 #if defined( DAW_CX_BIT_CAST )
-	using uint_t = daw::cxmath::cxmath_impl::unsigned_float_type_t<Float>;
-	if( DAW_BIT_CAST( uint_t, lhs ) == DAW_BIT_CAST( uint_t, rhs ) ) {
+	using result_type = daw::cxmath::cxmath_impl::unsigned_float_type_t<Float>;
+	if( DAW_BIT_CAST( result_type, lhs ) == DAW_BIT_CAST( result_type, rhs ) ) {
 		return true;
 	}
 	// This ensures the arguments show up in compiler output

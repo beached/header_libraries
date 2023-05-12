@@ -48,6 +48,7 @@ set( TEST_SOURCES
      daw_hash_set_test.cpp
      daw_heap_array_test.cpp
      daw_heap_value_test.cpp
+     daw_integers_signed_test.cpp
      daw_iterator_argument_iterator_test.cpp
      daw_iterator_back_inserter_test.cpp
      daw_iterator_checked_iterator_proxy_test.cpp
@@ -108,7 +109,7 @@ set( TEST_SOURCES
      daw_uninitialized_storage_test.cpp
      daw_union_pair_test.cpp
      daw_unique_array_test.cpp
-	 daw_unique_ptr_test.cpp
+     daw_unique_ptr_test.cpp
      daw_utility_test.cpp
      daw_validated_test.cpp
      daw_value_ptr_test.cpp
@@ -125,7 +126,6 @@ set( CPP20_TEST_SOURCES
      daw_concepts_test.cpp
      daw_contiguous_view_test.cpp
      daw_named_params_test.cpp
-     daw_tracked_allocator_test.cpp
      vector_test.cpp
      )
 #NOT COMPLETED daw_iterator_split_iterator_test.cpp
@@ -155,6 +155,7 @@ set( DEV_TEST_SOURCES
      daw_range_test.cpp
      daw_sort_n_test.cpp
      daw_stack_quick_sort_test.cpp
+     daw_tracked_allocator_test.cpp
      daw_vector_test.cpp
      )
 

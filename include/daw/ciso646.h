@@ -12,7 +12,7 @@
 #pragma once
 
 #if defined( _MSC_VER )
-#if _MSC_VER < 1930 or _MSVC_LANG < 202002L
+#if _MSC_VER < 1930 || _MSVC_LANG < 202002L
 #include <ciso646>
 #endif
 #endif

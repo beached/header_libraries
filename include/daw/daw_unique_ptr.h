@@ -28,6 +28,8 @@ namespace daw {
 	template<typename T>
 	struct default_deleter {
 		using pointer = T *;
+		using does_validity_check = void;
+		static constexpr pointer default_pointer_value = nullptr;
 
 		explicit default_deleter( ) = default;
 		~default_deleter( ) noexcept = default;
@@ -56,6 +58,9 @@ namespace daw {
 	template<typename T>
 	struct default_deleter<T[]> {
 		using pointer = T *;
+		using does_validity_check = void;
+		static constexpr pointer default_pointer_value = nullptr;
+
 		explicit default_deleter( ) = default;
 
 		DAW_CPP20_CX_ALLOC void operator( )( pointer p ) const noexcept {
@@ -64,6 +69,14 @@ namespace daw {
 	};
 
 	namespace unique_ptr_del {
+		template<typename T, typename = void>
+		inline constexpr bool does_validity_check_v = false;
+
+		template<typename T>
+		inline constexpr bool
+		  does_validity_check_v<T, std::void_t<typename T::does_validity_check>> =
+		    true;
+
 		template<typename T, typename, typename = void>
 		struct pointer_type {
 			using type = T *;
@@ -76,6 +89,15 @@ namespace daw {
 
 		template<typename T, typename Deleter>
 		using pointer_type_t = typename pointer_type<T, Deleter>::type;
+
+		template<typename T, typename Deleter, typename = void>
+		inline constexpr auto default_pointer_value_v =
+		  pointer_type_t<T, Deleter>{ };
+
+		template<typename T, typename Deleter>
+		inline constexpr auto default_pointer_value_v<
+		  T, Deleter, std::void_t<decltype( Deleter::default_pointer_value )>> =
+		  Deleter::default_pointer_value;
 	} // namespace unique_ptr_del
 
 	template<typename T, typename Deleter = default_deleter<T>>
@@ -93,7 +115,7 @@ namespace daw {
 		template<typename, typename>
 		friend struct unique_ptr;
 
-		pointer m_ptr = pointer{ };
+		pointer m_ptr = unique_ptr_del::default_pointer_value_v<T, Deleter>;
 
 	public:
 		unique_ptr( ) = default;
@@ -109,8 +131,7 @@ namespace daw {
 			               "destructor, and U being a child of T" );
 		}
 
-		constexpr unique_ptr( std::nullptr_t ) noexcept
-		  : m_ptr{ } {}
+		constexpr unique_ptr( std::nullptr_t ) noexcept {}
 
 		constexpr unique_ptr( unique_ptr &&other ) noexcept
 		  : m_ptr( other.release( ) ) {}
@@ -155,7 +176,8 @@ namespace daw {
 		}
 
 		constexpr pointer release( ) noexcept {
-			return daw::exchange( m_ptr, pointer{ } );
+			return daw::exchange(
+			  m_ptr, unique_ptr_del::default_pointer_value_v<T, Deleter> );
 		}
 
 		constexpr deleter_t &get_deleter( ) {
@@ -167,8 +189,9 @@ namespace daw {
 		}
 
 		constexpr void reset( ) noexcept {
-			if( m_ptr ) {
-				get_deleter( )( daw::exchange( m_ptr, pointer{ } ) );
+			if( unique_ptr_del::does_validity_check_v<Deleter> or m_ptr ) {
+				get_deleter( )( daw::exchange(
+				  m_ptr, unique_ptr_del::default_pointer_value_v<T, Deleter> ) );
 			}
 		}
 
@@ -202,7 +225,7 @@ namespace daw {
 		using deleter_t = Deleter;
 
 	private:
-		pointer m_ptr = pointer{ };
+		pointer m_ptr = unique_ptr_del::default_pointer_value_v<T, Deleter>;
 
 	public:
 		unique_ptr( ) = default;
@@ -218,8 +241,7 @@ namespace daw {
 			               "destructor, and U being a child of T" );
 		}
 
-		constexpr unique_ptr( std::nullptr_t ) noexcept
-		  : m_ptr{ } {}
+		constexpr unique_ptr( std::nullptr_t ) noexcept {}
 
 		constexpr unique_ptr( unique_ptr &&other ) noexcept
 		  : m_ptr( other.release( ) ) {}
@@ -262,7 +284,7 @@ namespace daw {
 		}
 
 		constexpr pointer release( ) noexcept {
-			return daw::exchange( m_ptr, pointer{ } );
+			return daw::exchange( m_ptr, unique_ptr_del::default_pointer_value_v<T, Deleter> );
 		}
 
 		constexpr deleter_t &get_deleter( ) {
@@ -274,8 +296,8 @@ namespace daw {
 		}
 
 		constexpr void reset( ) noexcept {
-			if( m_ptr ) {
-				get_deleter( )( daw::exchange( m_ptr, pointer{ } ) );
+			if( unique_ptr_del::does_validity_check_v<Deleter> or m_ptr ) {
+				get_deleter( )( daw::exchange( m_ptr, unique_ptr_del::default_pointer_value_v<T, Deleter> ) );
 			}
 		}
 
