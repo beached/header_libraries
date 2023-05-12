@@ -68,7 +68,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">daw::unique_ptr_del Namespace Reference</div>  </div>
 </div><!--header-->
@@ -86,6 +87,15 @@ Typedefs</h2></td></tr>
 <tr class="memitem:af366626490bbb643b01856644a3eee39"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Deleter &gt; </td></tr>
 <tr class="memitem:af366626490bbb643b01856644a3eee39"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1unique__ptr__del.html#af366626490bbb643b01856644a3eee39">pointer_type_t</a> = typename <a class="el" href="structdaw_1_1unique__ptr__del_1_1pointer__type.html">pointer_type</a>&lt; T, Deleter &gt;::type</td></tr>
 <tr class="separator:af366626490bbb643b01856644a3eee39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a8babf090e0eee5cdc07b947c8557025e"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Deleter , typename  = void&gt; </td></tr>
+<tr class="memitem:a8babf090e0eee5cdc07b947c8557025e"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1unique__ptr__del.html#a8babf090e0eee5cdc07b947c8557025e">default_pointer_value_v</a></td></tr>
+<tr class="separator:a8babf090e0eee5cdc07b947c8557025e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ede956f778f49970f0869ac630bcb89"><td class="memTemplParams" colspan="2">template&lt;typename T , typename  = void&gt; </td></tr>
+<tr class="memitem:a6ede956f778f49970f0869ac630bcb89"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1unique__ptr__del.html#a6ede956f778f49970f0869ac630bcb89">does_validity_check_v</a> = false</td></tr>
+<tr class="separator:a6ede956f778f49970f0869ac630bcb89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="af366626490bbb643b01856644a3eee39"></a>
@@ -102,7 +112,62 @@ template&lt;typename T , typename Deleter &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00078">78</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00091">91</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a8babf090e0eee5cdc07b947c8557025e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8babf090e0eee5cdc07b947c8557025e">&#9670;&nbsp;</a></span>default_pointer_value_v</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Deleter , typename  = void&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto daw::unique_ptr_del::default_pointer_value_v</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">      pointer_type_t&lt;T, Deleter&gt;{ }</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00094">94</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+
+</div>
+</div>
+<a id="a6ede956f778f49970f0869ac630bcb89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ede956f778f49970f0869ac630bcb89">&#9670;&nbsp;</a></span>does_validity_check_v</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename  = void&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool daw::unique_ptr_del::does_validity_check_v = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00073">73</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>

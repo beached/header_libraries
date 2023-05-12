@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['read_4384',['read',['../namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447aecae13117d6f0584c25a9da6c8f8415e',1,'daw::filesystem']]],
-  ['read_5fwrite_4385',['read_write',['../namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447a06ad287ea83b37a6f9db3d8d10d72c8f',1,'daw::filesystem']]]
+  ['pointer_4523',['pointer',['../namespacedaw_1_1sv2.html#aa920a6f0aaad67c79fdcd6eb1001a8bcaccac8a66d468e2522611be86933cc0d9',1,'daw::sv2']]]
 ];

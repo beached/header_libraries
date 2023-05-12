@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>DAW Header Libraries: daw::bad_variant_access Struct Reference</title>
+<title>DAW Header Libraries: daw_signed_impl.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,28 +62,32 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="namespacedaw.html">daw</a></li><li class="navelem"><a class="el" href="structdaw_1_1bad__variant__access.html">bad_variant_access</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_bbe37f38b13c9c6d535338573ad492f6.html">daw</a></li><li class="navelem"><a class="el" href="dir_2b78e0a2d5cc3da0044885b2f638f158.html">integers</a></li><li class="navelem"><a class="el" href="dir_a9e92e2a9420a34c98571bcc1223d7c1.html">impl</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">daw::bad_variant_access Struct Reference</div>  </div>
+<div class="title">daw_signed_impl.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p><code>#include &lt;<a class="el" href="daw__visit_8h_source.html">daw_visit.h</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for daw::bad_variant_access:</div>
-<div class="dyncontent">
- <div class="center">
-  <img src="structdaw_1_1bad__variant__access.png" alt=""/>
- </div></div>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="daw__visit_8h_source.html#l00028">28</a> of file <a class="el" href="daw__visit_8h_source.html">daw_visit.h</a>.</p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="daw__visit_8h_source.html">daw_visit.h</a></li>
-</ul>
+<div class="textblock"><code>#include &quot;<a class="el" href="daw__signed__clanggcc_8h_source.html">daw_signed_clanggcc.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__signed__msvc_8h_source.html">daw_signed_msvc.h</a>&quot;</code><br />
+<code>#include &lt;cstdint&gt;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
+</div>
+<p><a href="daw__signed__impl_8h_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
+<tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacedaw_1_1integers"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1integers.html">daw::integers</a></td></tr>
+<tr class="memdesc:namespacedaw_1_1integers"><td class="mdescLeft">&#160;</td><td class="mdescRight">DAW_DEFAULT_SIGNED_CHECKING can be defined to the following 0 - Checked with wrapping(for add/sub/mul) 1 - Unchecked 2 - Wrapped for add/sub/mul, uncheckd for others. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
