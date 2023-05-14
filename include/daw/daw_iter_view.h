@@ -91,15 +91,6 @@ namespace daw {
 		  : m_first( std::begin( c ) )
 		  , m_last( std::end( c ) ) {}
 
-		/*
-		template<size_type N>
-		explicit( ExplicitConv ) constexpr iter_view(
-		  value_type ( &c )[N] ) noexcept
-		  : m_first( std::data( c ) )
-		  , m_last( daw::data_end( c ) )
-		  , m_size( N ) {}
-		  */
-
 		constexpr iter_view
 		subspan( size_type offset,
 		         size_type count = std::numeric_limits<size_type>::max( ) ) const {
@@ -186,7 +177,16 @@ namespace daw {
 			return *m_first;
 		}
 
-	public:
+		constexpr reference operator[]( size_type idx ) noexcept {
+			assert( idx < size( ) );
+			return *std::next( m_first, static_cast<difference_type>( idx ) );
+		}
+
+		constexpr const_reference operator[]( size_type idx ) const noexcept {
+			assert( idx < size( ) );
+			return *std::next( m_first, static_cast<difference_type>( idx ) );
+		}
+
 		constexpr void remove_prefix( size_type count ) noexcept {
 			if constexpr( std::is_base_of_v<std::random_access_iterator_tag,
 			                                typename std::iterator_traits<
