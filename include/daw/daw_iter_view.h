@@ -23,11 +23,7 @@
 namespace daw {
 	template<typename ForwardIterator, typename Last = ForwardIterator,
 	         bool ExplicitConv = false>
-	requires(
-	  std::is_base_of_v<
-	    std::forward_iterator_tag,
-	    typename std::iterator_traits<ForwardIterator>::iterator_category> ) //
-	  struct iter_view {
+	struct iter_view {
 		using iterator = ForwardIterator;
 		using const_iterator = iterator;
 		using value_type = typename std::iterator_traits<iterator>::value_type;
