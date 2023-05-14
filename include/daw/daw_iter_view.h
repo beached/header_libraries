@@ -21,11 +21,17 @@
 #include <stdexcept>
 
 namespace daw {
-	template<typename Iterator, typename Last = Iterator,
+	template<typename ForwardIterator, typename Last = ForwardIterator,
 	         bool ExplicitConv = false>
-	struct iter_view {
-		using value_type = typename std::iterator_traits<Iterator>::value_type;
-		using reference = typename std::iterator_traits<Iterator>::reference;
+	requires(
+	  std::is_base_of_v<
+	    std::forward_iterator_tag,
+	    typename std::iterator_traits<ForwardIterator>::iterator_category> ) //
+	  struct iter_view {
+		using iterator = ForwardIterator;
+		using const_iterator = iterator;
+		using value_type = typename std::iterator_traits<iterator>::value_type;
+		using reference = typename std::iterator_traits<iterator>::reference;
 		using const_reference = std::conditional_t<
 		  std::is_rvalue_reference_v<reference>,
 		  std::add_rvalue_reference_t<
@@ -34,8 +40,6 @@ namespace daw {
 		    std::add_const_t<std::remove_reference_t<reference>>>>;
 		using size_type = std::size_t;
 		using difference_type = std::ptrdiff_t;
-		using iterator = Iterator;
-		using const_iterator = Iterator;
 		using last_iterator = Last;
 		using reverse_iterator = std::reverse_iterator<iterator>;
 		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
@@ -124,18 +128,6 @@ namespace daw {
 			m_size += n;
 		}
 
-		/// This is potentially unsafe.  Decrements the start of range
-		constexpr void add_suffix( ) noexcept {
-			std::advance( m_last, 1 );
-			++m_size;
-		}
-
-		/// This is potentially unsafe.  Decrements the start of range
-		constexpr void add_suffix( size_type n ) noexcept {
-			std::advance( m_last, static_cast<difference_type>( n ) );
-			m_size += n;
-		}
-
 		[[nodiscard]] constexpr iterator begin( ) noexcept {
 			return m_first;
 		}
@@ -200,9 +192,9 @@ namespace daw {
 
 	public:
 		constexpr void remove_prefix( size_type count ) noexcept {
-			if constexpr( std::is_base_of_v<
-			                std::random_access_iterator_tag,
-			                typename std::iterator_traits<iterator>::category> ) {
+			if constexpr( std::is_base_of_v<std::random_access_iterator_tag,
+			                                typename std::iterator_traits<
+			                                  iterator>::iterator_category> ) {
 				count = ( std::min )( count, size( ) );
 				std::advance( m_first, count );
 				m_size -= count;
@@ -402,13 +394,17 @@ namespace daw {
 			return not( y < x );
 		}
 	};
-	template<typename Iterator, typename Last>
-	iter_view( Iterator, Last ) -> iter_view<Iterator, Last>;
+
+	template<typename ForwardIterator, typename Last>
+	iter_view( ForwardIterator, Last ) -> iter_view<ForwardIterator, Last>;
 
 	template<typename Container>
 	iter_view( Container ) -> iter_view<typename Container::iterator>;
 
 	template<typename T, std::size_t N>
 	iter_view( T ( & )[N] ) -> iter_view<T *>;
+
+	template<typename T, std::size_t N>
+	iter_view( T ( && )[N] ) -> iter_view<T *>;
 
 } // namespace daw
