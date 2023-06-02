@@ -218,8 +218,9 @@ namespace daw {
 	  is_detected_convertible<To, Op, Args...>::value;
 
 	template<typename Container>
-	[[nodiscard, maybe_unused]] constexpr decltype( auto )
-	size( Container const &c ) noexcept( noexcept( c.size( ) ) ) {
+	[[nodiscard, maybe_unused]] constexpr auto
+	size( Container const &c ) noexcept( noexcept( c.size( ) ) )
+	  -> decltype( c.size( ) ) {
 		return c.size( );
 	}
 
