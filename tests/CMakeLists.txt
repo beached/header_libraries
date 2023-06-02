@@ -125,6 +125,7 @@ set( TEST_SOURCES
 set( CPP20_TEST_SOURCES
      daw_concepts_test.cpp
      daw_contiguous_view_test.cpp
+     daw_iter_view_test.cpp
      daw_named_params_test.cpp
      vector_test.cpp
      )
