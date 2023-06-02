@@ -456,6 +456,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1is__unsigned.html">is_unsigned</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html">iter_view</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1keep__n.html">keep_n</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1key__value__t.html">key_value_t</a></td></tr>
@@ -1648,6 +1650,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a8ab2c9a78e84308ef075d1555b1f51c6"><td class="memTemplParams" colspan="2">template&lt;typename ForwardIterator1 , typename ForwardIterator2 &gt; </td></tr>
 <tr class="memitem:a8ab2c9a78e84308ef075d1555b1f51c6"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a8ab2c9a78e84308ef075d1555b1f51c6">iter_swap</a> (ForwardIterator1 lhs, ForwardIterator2 rhs) noexcept(std::conjunction_v&lt; std::is_nothrow_move_assignable&lt; decltype(*lhs)&gt;, std::is_nothrow_move_assignable&lt; decltype(*rhs)&gt;&gt;)</td></tr>
 <tr class="separator:a8ab2c9a78e84308ef075d1555b1f51c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8710a804ac0bf167b8c7a03d7f5ee88"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
+<tr class="memitem:ae8710a804ac0bf167b8c7a03d7f5ee88"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ae8710a804ac0bf167b8c7a03d7f5ee88">iter_view</a> (Container) -&gt; <a class="el" href="structdaw_1_1iter__view.html">iter_view</a>&lt; typename Container::iterator &gt;</td></tr>
+<tr class="separator:ae8710a804ac0bf167b8c7a03d7f5ee88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21c74734d5764a3bb6e731fe03128d66"><td class="memTemplParams" colspan="2">template&lt;typename ForwardIterator , typename Last &gt; </td></tr>
+<tr class="memitem:a21c74734d5764a3bb6e731fe03128d66"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a21c74734d5764a3bb6e731fe03128d66">iter_view</a> (ForwardIterator, Last) -&gt; <a class="el" href="structdaw_1_1iter__view.html">iter_view</a>&lt; ForwardIterator, Last &gt;</td></tr>
+<tr class="separator:a21c74734d5764a3bb6e731fe03128d66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca67d643fe6bd783fcfd017c5863b4c3"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t N&gt; </td></tr>
+<tr class="memitem:aca67d643fe6bd783fcfd017c5863b4c3"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aca67d643fe6bd783fcfd017c5863b4c3">iter_view</a> (T(&amp;&amp;)[N]) -&gt; <a class="el" href="structdaw_1_1iter__view.html">iter_view</a>&lt; T * &gt;</td></tr>
+<tr class="separator:aca67d643fe6bd783fcfd017c5863b4c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b7bc1115200b1d8629c3f183445e64d"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t N&gt; </td></tr>
+<tr class="memitem:a0b7bc1115200b1d8629c3f183445e64d"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0b7bc1115200b1d8629c3f183445e64d">iter_view</a> (T(&amp;)[N]) -&gt; <a class="el" href="structdaw_1_1iter__view.html">iter_view</a>&lt; T * &gt;</td></tr>
+<tr class="separator:a0b7bc1115200b1d8629c3f183445e64d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9202871f88e6869f2cd12ca61c89274a"><td class="memTemplParams" colspan="2">template&lt;typename T  = make_array_impl::unspecified_type, typename... Args, std::enable_if_t&lt; not std::is_same_v&lt; T, void &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a9202871f88e6869f2cd12ca61c89274a"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9202871f88e6869f2cd12ca61c89274a">make_array</a> (Args &amp;&amp;...args)</td></tr>
 <tr class="separator:a9202871f88e6869f2cd12ca61c89274a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1771,13 +1785,13 @@ Functions</h2></td></tr>
 <tr class="memitem:a9abe96cb10b29c2b9b7a58de4e57452f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="cpp__20_8h.html#a782ceb96627f85b15d3a19e7746f8967">DAW_CPP20_CX_ALLOC</a> rc_ptr_impl::make_rc_ptr_single&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9abe96cb10b29c2b9b7a58de4e57452f">make_rc_ptr</a> (Args &amp;&amp;...args)</td></tr>
 <tr class="separator:a9abe96cb10b29c2b9b7a58de4e57452f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada117efb9958db5a0e900cd53408348b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ada117efb9958db5a0e900cd53408348b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="cpp__20_8h.html#a782ceb96627f85b15d3a19e7746f8967">DAW_CPP20_CX_ALLOC</a> rc_ptr_impl::make_rc_ptr_array&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ada117efb9958db5a0e900cd53408348b">make_rc_ptr</a> (std::size_t <a class="el" href="namespacedaw.html#a7e1138972fcb57605f1f020d89d95213">size</a>)</td></tr>
+<tr class="memitem:ada117efb9958db5a0e900cd53408348b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="cpp__20_8h.html#a782ceb96627f85b15d3a19e7746f8967">DAW_CPP20_CX_ALLOC</a> rc_ptr_impl::make_rc_ptr_array&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ada117efb9958db5a0e900cd53408348b">make_rc_ptr</a> (std::size_t <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size</a>)</td></tr>
 <tr class="separator:ada117efb9958db5a0e900cd53408348b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0788f5886bacd9cd054f7991d32d85b8"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Args&gt; </td></tr>
 <tr class="memitem:a0788f5886bacd9cd054f7991d32d85b8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="cpp__20_8h.html#a782ceb96627f85b15d3a19e7746f8967">DAW_CPP20_CX_ALLOC</a> rc_ptr_impl::make_rc_ptr_single&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0788f5886bacd9cd054f7991d32d85b8">make_rc_ptr_for_overwrite</a> (Args &amp;&amp;...)=delete</td></tr>
 <tr class="separator:a0788f5886bacd9cd054f7991d32d85b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39a4613c53c09a9f1074f05fd7f1efea"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a39a4613c53c09a9f1074f05fd7f1efea"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="cpp__20_8h.html#a782ceb96627f85b15d3a19e7746f8967">DAW_CPP20_CX_ALLOC</a> rc_ptr_impl::make_rc_ptr_array&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a39a4613c53c09a9f1074f05fd7f1efea">make_rc_ptr_for_overwrite</a> (std::size_t <a class="el" href="namespacedaw.html#a7e1138972fcb57605f1f020d89d95213">size</a>)</td></tr>
+<tr class="memitem:a39a4613c53c09a9f1074f05fd7f1efea"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="cpp__20_8h.html#a782ceb96627f85b15d3a19e7746f8967">DAW_CPP20_CX_ALLOC</a> rc_ptr_impl::make_rc_ptr_array&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a39a4613c53c09a9f1074f05fd7f1efea">make_rc_ptr_for_overwrite</a> (std::size_t <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size</a>)</td></tr>
 <tr class="separator:a39a4613c53c09a9f1074f05fd7f1efea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e67b53c9ac6cc40abe3a897e776e8e3"><td class="memTemplParams" colspan="2">template&lt;typename Iterator &gt; </td></tr>
 <tr class="memitem:a2e67b53c9ac6cc40abe3a897e776e8e3"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1reverse__iterator.html">reverse_iterator</a>&lt; Iterator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a2e67b53c9ac6cc40abe3a897e776e8e3">make_reverse_iterator</a> (Iterator i)</td></tr>
@@ -3764,9 +3778,9 @@ Functions</h2></td></tr>
 <tr class="separator:a70ee91bc610f248e8f419bbd7af8cc44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16adf6a742c93c9433819fc602dfbd40"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacedaw.html#a39110b6c5c052459b2b3a5c31749a238">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a16adf6a742c93c9433819fc602dfbd40">size</a> () const noexcept</td></tr>
 <tr class="separator:a16adf6a742c93c9433819fc602dfbd40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e1138972fcb57605f1f020d89d95213"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
-<tr class="memitem:a7e1138972fcb57605f1f020d89d95213"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a7e1138972fcb57605f1f020d89d95213">size</a> (Container const &amp;c) noexcept(noexcept(c.size()))</td></tr>
-<tr class="separator:a7e1138972fcb57605f1f020d89d95213"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68c9530c0281d1d5c4f62bc8712229d4"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
+<tr class="memitem:a68c9530c0281d1d5c4f62bc8712229d4"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size</a> (Container const &amp;c) noexcept(noexcept(c.size())) -&gt; decltype(c.size())</td></tr>
+<tr class="separator:a68c9530c0281d1d5c4f62bc8712229d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5100ad4642382568456091411b6eda95"><td class="memTemplParams" colspan="2">template&lt;typename BitStream &gt; </td></tr>
 <tr class="memitem:a5100ad4642382568456091411b6eda95"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5100ad4642382568456091411b6eda95">skip_bits</a> (BitStream &amp;bs, size_t bits_needed)</td></tr>
 <tr class="separator:a5100ad4642382568456091411b6eda95"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4908,7 +4922,7 @@ template&lt;typename... B&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00635">635</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00636">636</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -6453,7 +6467,7 @@ template&lt;typename Iterator , typename Distance &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00535">535</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00536">536</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -6655,7 +6669,7 @@ template&lt;bool use_invoke = true, typename F , typename Tuple &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00388">388</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00389">389</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -8461,7 +8475,7 @@ template&lt;typename To , typename From &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00572">572</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00573">573</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -8499,7 +8513,7 @@ template&lt;typename T  = deduced_type, typename Iterator , typename OutputItera
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00611">611</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00612">612</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -8545,7 +8559,7 @@ template&lt;typename T , typename Iterator , typename Function &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00579">579</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00580">580</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -8589,7 +8603,7 @@ template&lt;typename T , typename U  = deduced_type, typename Iterator , typenam
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00593">593</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00594">594</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -10579,7 +10593,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00678">678</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00679">679</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -10723,7 +10737,7 @@ template&lt;typename Iterator &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a ptrdiff_t of how many steps apart iterators are. If Iterators are RandomAccess it may be &lt;0, otherwise always greater </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00520">520</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00521">521</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -13903,7 +13917,7 @@ template&lt;typename F , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00356">356</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00357">357</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -14066,6 +14080,96 @@ template&lt;typename ForwardIterator1 , typename ForwardIterator2 &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__swap_8h_source.html#l00100">100</a> of file <a class="el" href="daw__swap_8h_source.html">daw_swap.h</a>.</p>
+
+</div>
+</div>
+<a id="ae8710a804ac0bf167b8c7a03d7f5ee88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8710a804ac0bf167b8c7a03d7f5ee88">&#9670;&nbsp;</a></span>iter_view() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Container &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a> </td>
+          <td>(</td>
+          <td class="paramtype">Container&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt;  <a class="el" href="structdaw_1_1iter__view.html">iter_view</a>&lt; typename Container::iterator &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a21c74734d5764a3bb6e731fe03128d66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21c74734d5764a3bb6e731fe03128d66">&#9670;&nbsp;</a></span>iter_view() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ForwardIterator , typename Last &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a> </td>
+          <td>(</td>
+          <td class="paramtype">ForwardIterator&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Last&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt;  <a class="el" href="structdaw_1_1iter__view.html">iter_view</a>&lt; ForwardIterator, Last &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aca67d643fe6bd783fcfd017c5863b4c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca67d643fe6bd783fcfd017c5863b4c3">&#9670;&nbsp;</a></span>iter_view() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , std::size_t N&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a> </td>
+          <td>(</td>
+          <td class="paramtype">T(&amp;&amp;)&#160;</td>
+          <td class="paramname">[N]</td><td>)</td>
+          <td> -&gt;  <a class="el" href="structdaw_1_1iter__view.html">iter_view</a>&lt; T * &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0b7bc1115200b1d8629c3f183445e64d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b7bc1115200b1d8629c3f183445e64d">&#9670;&nbsp;</a></span>iter_view() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , std::size_t N&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a> </td>
+          <td>(</td>
+          <td class="paramtype">T(&amp;)&#160;</td>
+          <td class="paramname">[N]</td><td>)</td>
+          <td> -&gt;  <a class="el" href="structdaw_1_1iter__view.html">iter_view</a>&lt; T * &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -16463,7 +16567,7 @@ template&lt;typename Iterator &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The resulting iterator of advancing it n steps </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00549">549</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00550">550</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -44204,7 +44308,7 @@ template&lt;typename Iterator &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The resulting iterator of advancing it n steps </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00564">564</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00565">565</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -46350,8 +46454,8 @@ template&lt;typename Byte &gt; </div>
 
 </div>
 </div>
-<a id="a7e1138972fcb57605f1f020d89d95213"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e1138972fcb57605f1f020d89d95213">&#9670;&nbsp;</a></span>size() <span class="overload">[2/2]</span></h2>
+<a id="a68c9530c0281d1d5c4f62bc8712229d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68c9530c0281d1d5c4f62bc8712229d4">&#9670;&nbsp;</a></span>size() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -46362,11 +46466,11 @@ template&lt;typename Container &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr decltype( auto ) daw::size </td>
+          <td class="memname">constexpr auto daw::size </td>
           <td>(</td>
           <td class="paramtype">Container const &amp;&#160;</td>
           <td class="paramname"><em>c</em></td><td>)</td>
-          <td></td>
+          <td> -&gt; decltype( c.size( ) ) </td>
         </tr>
       </table>
   </td>
@@ -50984,7 +51088,7 @@ template&lt;typename... B&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00638">638</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00639">639</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -51540,7 +51644,7 @@ template&lt;typename Func , typename... Args&gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="namespacedaw.html#afd84e1e250c4b3e259bd9ec200007f81">requires</a>( Func &amp;&amp; f, Args &amp;&amp;...args ) {</div>
 <div class="line">    <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">std::invoke</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Func, f ), <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Args, args )... );</div>
 <div class="line">  }</div>
-<div class="ttc" id="anamespacedaw_html_aaf04bbb17a0eb3df0e77509eadfffb09"><div class="ttname"><a href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a></div><div class="ttdeci">constexpr decltype(auto) invoke(F &amp;&amp;f, Args &amp;&amp;...args) noexcept(std::is_nothrow_invocable_v&lt; F, Args... &gt;)</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00356">cpp_17.h:356</a></div></div>
+<div class="ttc" id="anamespacedaw_html_aaf04bbb17a0eb3df0e77509eadfffb09"><div class="ttname"><a href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a></div><div class="ttdeci">constexpr decltype(auto) invoke(F &amp;&amp;f, Args &amp;&amp;...args) noexcept(std::is_nothrow_invocable_v&lt; F, Args... &gt;)</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00357">cpp_17.h:357</a></div></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00161">161</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
@@ -52083,7 +52187,7 @@ template&lt;size_t N, typename Invokable , typename TpArgs , typename... Args&gt
 <div class="line">                    <a class="code" href="namespacedaw.html#aeb3fc04fa5e3b0ac090e467f20a6b580">split_args</a>&lt;N, <span class="keyword">sizeof</span>...( Args )&gt;( <a class="code" href="namespacedaw.html#a94f9b8727d7fac14b2248dfaf671ecb8">std::forward_as_tuple</a>(</div>
 <div class="line">                      std::forward&lt;Args&gt;( std::declval&lt;Args&gt;( ) )... ) ) ) ) )</div>
 <div class="ttc" id="anamespacedaw_html_a94f9b8727d7fac14b2248dfaf671ecb8"><div class="ttname"><a href="namespacedaw.html#a94f9b8727d7fac14b2248dfaf671ecb8">daw::forward_as_tuple</a></div><div class="ttdeci">constexpr tuple&lt; Ts &amp;&amp;... &gt; forward_as_tuple(Ts &amp;&amp;...ts) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple_8h_source.html#l00219">daw_tuple.h:219</a></div></div>
-<div class="ttc" id="anamespacedaw_html_aa262c9df4a2234d2089c59a4e13dbfe6"><div class="ttname"><a href="namespacedaw.html#aa262c9df4a2234d2089c59a4e13dbfe6">daw::apply</a></div><div class="ttdeci">constexpr decltype(auto) apply(F &amp;&amp;f, Tuple &amp;&amp;t)</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00388">cpp_17.h:388</a></div></div>
+<div class="ttc" id="anamespacedaw_html_aa262c9df4a2234d2089c59a4e13dbfe6"><div class="ttname"><a href="namespacedaw.html#aa262c9df4a2234d2089c59a4e13dbfe6">daw::apply</a></div><div class="ttdeci">constexpr decltype(auto) apply(F &amp;&amp;f, Tuple &amp;&amp;t)</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00389">cpp_17.h:389</a></div></div>
 <div class="ttc" id="anamespacedaw_html_aeb3fc04fa5e3b0ac090e467f20a6b580"><div class="ttname"><a href="namespacedaw.html#aeb3fc04fa5e3b0ac090e467f20a6b580">daw::split_args</a></div><div class="ttdeci">constexpr auto split_args(std::tuple&lt; Args... &gt; args)</div><div class="ttdef"><b>Definition:</b> <a href="daw__bind__args__at_8h_source.html#l00040">daw_bind_args_at.h:40</a></div></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="daw__bind__args__at_8h_source.html#l00090">90</a> of file <a class="el" href="daw__bind__args__at_8h_source.html">daw_bind_args_at.h</a>.</p>
@@ -52114,7 +52218,7 @@ template&lt;typename From , typename To &gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    is_nothrow_convertible&lt;From, To&gt;::value</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00673">673</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00674">674</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
@@ -52301,7 +52405,7 @@ template&lt;typename T &gt; </div>
 <div class="line">    is_detected_v&lt;detectors::detect_std_swap, T&gt; or</div>
 <div class="line">    is_detected_v&lt;detectors::detect_adl_swap, T&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00241">241</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpp__17_8h_source.html#l00242">242</a> of file <a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>.</p>
 
 </div>
 </div>
