@@ -29,6 +29,7 @@ set( TEST_SOURCES
      daw_checked_expected_test.cpp
      daw_clumpy_sparsy_test.cpp
      daw_container_algorithm_test.cpp
+     daw_container_help_test.cpp
      daw_copiable_unique_ptr_test.cpp
      daw_cx_offset_of_test.cpp
      daw_cxmath_test.cpp

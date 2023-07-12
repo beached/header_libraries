@@ -11,13 +11,7 @@
 #include "ciso646.h"
 #include "daw_cpp_feature_check.h"
 
-#if defined( __cpp_lib_is_constant_evaluated )
-
-#include <type_traits>
-
-#define DAW_IS_CONSTANT_EVALUATED( ) std::is_constant_evaluated( )
-
-#elif DAW_HAS_BUILTIN( __builtin_is_constant_evaluated )
+#if DAW_HAS_BUILTIN( __builtin_is_constant_evaluated )
 
 #define DAW_IS_CONSTANT_EVALUATED( ) __builtin_is_constant_evaluated( )
 
@@ -32,6 +26,11 @@
 #elif DAW_HAS_CLANGCL_VER_GTE( 9, 0 )
 
 #define DAW_IS_CONSTANT_EVALUATED( ) __builtin_is_constant_evaluated( )
+
+#elif defined( __cpp_lib_is_constant_evaluated )
+
+#include <type_traits>
+#define DAW_IS_CONSTANT_EVALUATED( ) std::is_constant_evaluated( )
 
 #endif
 

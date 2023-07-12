@@ -10,6 +10,7 @@
 
 #include "ciso646.h"
 #include "cpp_17.h"
+#include "cpp_20.h"
 #include "daw_cpp_feature_check.h"
 #include "daw_enable_if.h"
 #include "daw_move.h"
@@ -957,19 +958,27 @@ namespace daw::traits {
 	template<typename T, typename U>
 	inline constexpr bool not_same_v = not_same<T, U>::value;
 
-	template<typename To, typename Source>
+	template<typename To, typename From>
 	using copy_ref_t = std::conditional_t<
-	  std::is_lvalue_reference<Source>::value,
-	  std::add_lvalue_reference_t<std::remove_reference_t<To>>,
-	  std::conditional_t<std::is_rvalue_reference<Source>::value,
-	                     std::add_rvalue_reference_t<std::remove_reference_t<To>>,
-	                     std::remove_reference_t<To>>>;
+	  /*if*/ std::is_lvalue_reference_v<From>,
+	  /*then*/ std::add_lvalue_reference_t<std::remove_reference_t<To>>,
+	  /*else if*/
+	  std::conditional_t<
+	    /*if*/ std::is_rvalue_reference_v<From>,
+	    /*then*/ std::add_rvalue_reference_t<std::remove_reference_t<To>>,
+	    /*else*/ std::remove_reference_t<To>
+	    /**/>
+	  /**/>;
 
-	template<typename To, typename Source>
-	using copy_const_t =
-	  std::conditional_t<std::is_const<std::remove_reference_t<Source>>::value,
-	                     copy_ref_t<std::remove_reference_t<To> const, To>,
-	                     copy_ref_t<daw::remove_cvref_t<To>, To>>;
+	template<typename To, typename From>
+	using copy_const_t = std::conditional_t<
+	  /*if*/ std::is_const_v<std::remove_reference_t<From>>,
+	  /*then*/ copy_ref_t<To, std::add_const_t<std::remove_reference_t<To>>>,
+	  /*else*/ copy_ref_t<To, std::remove_const_t<std::remove_reference_t<To>>>
+	  /**/>;
+
+	template <typename To, typename From>
+	using copy_constref_t = copy_ref_t<From, copy_const_t<To, From>>;
 
 	template<typename T>
 	struct member_type_of;
@@ -1034,6 +1043,11 @@ namespace daw {
 	using is_specialization_of =
 	  std::bool_constant<is_specialization_of_v<Primary, T>>;
 
+#if defined( DAW_CPP20_CONCEPTS )
+	template<typename T, template<typename...> typename Template>
+	concept specialization_of = is_specialization_of_v<Template, T>;
+#endif
+
 	template<typename T, bool>
 	struct dependent_type : T {};
 
@@ -1072,6 +1086,7 @@ namespace daw {
 
 	template<typename...>
 	inline constexpr bool deduced_false_v = false;
+
 } // namespace daw
 
 #define DAW_TYPEOF( ... ) daw::remove_cvref_t<decltype( __VA_ARGS__ )>

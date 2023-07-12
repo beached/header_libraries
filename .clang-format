@@ -31,6 +31,7 @@ ExperimentalAutoDetectBinPacking: false
 IndentCaseLabels: false
 IndentWidth: 2
 IndentWrappedFunctionNames: false
+InsertBraces: true
 KeepEmptyLinesAtTheStartOfBlocks: true
 Language: Cpp
 MaxEmptyLinesToKeep: 1
