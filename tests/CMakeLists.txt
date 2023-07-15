@@ -29,7 +29,6 @@ set( TEST_SOURCES
      daw_checked_expected_test.cpp
      daw_clumpy_sparsy_test.cpp
      daw_container_algorithm_test.cpp
-     daw_container_help_test.cpp
      daw_copiable_unique_ptr_test.cpp
      daw_cx_offset_of_test.cpp
      daw_cxmath_test.cpp
@@ -139,6 +138,7 @@ set( NOT_MSVC_TEST_SOURCES
      daw_bounded_graph_test.cpp
      daw_bounded_hash_map_test.cpp
      daw_bounded_hash_set_test.cpp
+     daw_container_help_test.cpp
      daw_parser_helper_test.cpp
      daw_piecewise_factory_test.cpp
      daw_tuple2_test.cpp
