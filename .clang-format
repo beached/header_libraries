@@ -1,13 +1,13 @@
 AccessModifierOffset: -2
-AlignAfterOpenBracket: "true"
+AlignAfterOpenBracket: Align
 AlignEscapedNewlines: Left
-AlignOperands: "true"
+AlignOperands: true
 AlignTrailingComments: true
 AllowAllParametersOfDeclarationOnNextLine: true
 AllowShortBlocksOnASingleLine: Always
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: Empty
-AllowShortIfStatementsOnASingleLine: "false"
+AllowShortIfStatementsOnASingleLine: Never
 AllowShortLoopsOnASingleLine: false
 AlwaysBreakAfterDefinitionReturnType: None
 AlwaysBreakBeforeMultilineStrings: true
@@ -31,6 +31,7 @@ ExperimentalAutoDetectBinPacking: false
 IndentCaseLabels: false
 IndentWidth: 2
 IndentWrappedFunctionNames: false
+InsertBraces: true
 KeepEmptyLinesAtTheStartOfBlocks: true
 Language: Cpp
 MaxEmptyLinesToKeep: 1

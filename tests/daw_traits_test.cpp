@@ -352,7 +352,9 @@ namespace daw_traits_is_callable {
 #pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
 #endif
 #endif
-	auto const blah = []( auto t ) noexcept { return t; };
+	auto const blah = []( auto t ) noexcept {
+		return t;
+	};
 #ifdef __clang__
 #ifndef __ICC // icpc defines the __clang__ macro
 #pragma clang diagnostic pop
@@ -378,7 +380,9 @@ namespace daw_traits_is_callable {
 #pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
 #endif
 #endif
-	auto const blah2 = []( ) noexcept { return true; };
+	auto const blah2 = []( ) noexcept {
+		return true;
+	};
 #ifdef __clang__
 #ifndef __ICC // icpc defines the __clang__ macro
 #pragma clang diagnostic pop
@@ -746,7 +750,9 @@ namespace is_callable_convertible_001 {
 #pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
 #endif
 #endif
-	auto const func = []( auto d ) noexcept { return 2.0 * d; };
+	auto const func = []( auto d ) noexcept {
+		return 2.0 * d;
+	};
 #ifdef __clang__
 #ifndef __ICC // icpc defines the __clang__ macro
 #pragma clang diagnostic pop
@@ -832,6 +838,24 @@ struct incomplete;
 static_assert( not daw::is_complete_type_v<incomplete> );
 static_assert( daw::is_complete_type_v<int> );
 
+#if defined( DAW_CPP20_CONCEPTS )
+constexpr bool test( auto const * ) {
+	return false;
+}
+constexpr bool test( daw::specialization_of<std::vector> auto const * ) {
+	return true;
+}
+#else
+template<typename T>
+constexpr bool test( T const * ) {
+	if( daw::is_specialization_of_v<std::vector, T> ) {
+		return true;
+	} else {
+		return false;
+	}
+}
+#endif
+static_assert( test( static_cast<std::vector<int> const *>( nullptr ) ) );
 int main( ) {
 	(void)daw::expander{ 1, 2, 3 };
 	daw_traits_enable_if_any( );
