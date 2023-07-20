@@ -68,6 +68,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
@@ -98,6 +99,11 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:aef6d11f0973b8c09c066f14a7cdb896f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__visit_8h.html#aef6d11f0973b8c09c066f14a7cdb896f">DAW_VISIT_CASE</a>(Base,  Idx)</td></tr>
+<tr class="separator:aef6d11f0973b8c09c066f14a7cdb896f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:ab18469bb6a2f82c942b28be73b08d0de"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ab18469bb6a2f82c942b28be73b08d0de">daw::bad_variant_access</a> = std::bad_variant_access</td></tr>
@@ -127,6 +133,40 @@ Variables</h2></td></tr>
 <tr class="memitem:a72c4cf895e7b86bbecf78211b287820a"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a72c4cf895e7b86bbecf78211b287820a">daw::is_visitable_v</a></td></tr>
 <tr class="separator:a72c4cf895e7b86bbecf78211b287820a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="aef6d11f0973b8c09c066f14a7cdb896f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef6d11f0973b8c09c066f14a7cdb896f">&#9670;&nbsp;</a></span>DAW_VISIT_CASE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_VISIT_CASE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">Base, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">Idx&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">case</span> Base + Idx:                  \</div>
+<div class="line">    return <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( vis )( get_nt&lt;Base + Idx&gt;( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( var ) ) )</div>
+<div class="ttc" id="adaw__move_8h_html_a46327bbb47123f9650c3b0e0ce807ec9"><div class="ttname"><a href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a></div><div class="ttdeci">#define DAW_FWD(...)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00037">daw_move.h:37</a></div></div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__visit_8h_source.html#l00108">108</a> of file <a class="el" href="daw__visit_8h_source.html">daw_visit.h</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
