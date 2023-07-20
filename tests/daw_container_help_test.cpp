@@ -6,13 +6,16 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#ifndef WIN32
 #include <daw/daw_container_help.h>
 #include <daw/daw_ensure.h>
 
 #include <cstring>
 #include <vector>
+#endif
 
 int main( ) {
+#ifndef WIN32
 	{
 		auto foo = std::vector{ 1, 2, 3 };
 		auto const foo_cap = foo.capacity( );
@@ -39,4 +42,5 @@ int main( ) {
 		daw_ensure( vec.data( ) == buff );
 		daw_ensure( vec == std::vector{ 1, 2, 3 } );
 	}
+#endif
 }

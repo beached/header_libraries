@@ -26,8 +26,8 @@
 
 namespace daw {
 	using bad_variant_access = std::bad_variant_access;
-	//vtable is showing up in code
-	//struct bad_variant_access : std::exception {};
+	// vtable is showing up in code
+	// struct bad_variant_access : std::exception {};
 
 	namespace get_nt_details {
 		namespace gi_test {
@@ -60,7 +60,7 @@ namespace daw {
 				return *ptr;
 			}
 		} else {
-			return get<Idx>( DAW_FWD2( Variant, var ) );
+			return get<Idx>( DAW_FWD( var ) );
 		}
 	}
 	namespace visit_details {
@@ -93,157 +93,380 @@ namespace daw {
 		[[nodiscard, maybe_unused]] constexpr decltype( auto )
 		overload( F &&f, Fs &&...fs ) noexcept {
 			if constexpr( sizeof...( Fs ) > 0 ) {
-				return overload_t{ daw::traits::lift_func( DAW_FWD2( F, f ) ),
-				                   daw::traits::lift_func( DAW_FWD2( Fs, fs ) )... };
+				return overload_t{ daw::traits::lift_func( DAW_FWD( f ) ),
+				                   daw::traits::lift_func( DAW_FWD( fs ) )... };
 			} else {
 				if constexpr( std::is_function_v<daw::remove_cvref_t<F>> ) {
 					static_assert(
 					  daw::traits::func_traits<F>::arity == 1,
 					  "Function pointers only valid for functions with 1 argument" );
 				}
-				return daw::traits::lift_func( DAW_FWD2( F, f ) );
+				return daw::traits::lift_func( DAW_FWD( f ) );
 			}
 		}
 
 		template<std::size_t N, typename R, typename Variant, typename Visitor>
 		[[nodiscard]] constexpr R visit_nt( Variant &&var, Visitor &&vis ) {
 			constexpr std::size_t VSz = get_var_size_v<Variant>;
-			if constexpr( VSz - N >= 8 ) {
+			if constexpr( VSz - N >= 16 ) {
 				switch( get_index( var ) ) {
 				case 0 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<0 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<0 + N>( DAW_FWD( var ) ) );
 				case 1 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<1 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<1 + N>( DAW_FWD( var ) ) );
 				case 2 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<2 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<2 + N>( DAW_FWD( var ) ) );
 				case 3 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<3 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<3 + N>( DAW_FWD( var ) ) );
 				case 4 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<4 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<4 + N>( DAW_FWD( var ) ) );
 				case 5 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<5 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<5 + N>( DAW_FWD( var ) ) );
 				case 6 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<6 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<6 + N>( DAW_FWD( var ) ) );
 				case 7 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<7 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<7 + N>( DAW_FWD( var ) ) );
+				case 8 + N:
+					return DAW_FWD( vis )( get_nt<8 + N>( DAW_FWD( var ) ) );
+				case 9 + N:
+					return DAW_FWD( vis )( get_nt<9 + N>( DAW_FWD( var ) ) );
+				case 10 + N:
+					return DAW_FWD( vis )( get_nt<10 + N>( DAW_FWD( var ) ) );
+				case 11 + N:
+					return DAW_FWD( vis )( get_nt<11 + N>( DAW_FWD( var ) ) );
+				case 12 + N:
+					return DAW_FWD( vis )( get_nt<12 + N>( DAW_FWD( var ) ) );
+				case 13 + N:
+					return DAW_FWD( vis )( get_nt<13 + N>( DAW_FWD( var ) ) );
+				case 14 + N:
+					return DAW_FWD( vis )( get_nt<14 + N>( DAW_FWD( var ) ) );
+				case 15 + N:
+					return DAW_FWD( vis )( get_nt<15 + N>( DAW_FWD( var ) ) );
 				default:
-					if constexpr( VSz - N > 8 ) {
-						return visit_nt<N + 8, R>( DAW_FWD2( Variant, var ),
-						                           DAW_FWD2( Visitor, vis ) );
+					if constexpr( VSz - N > 16 ) {
+						return visit_nt<N + 16, R>( DAW_FWD( var ), DAW_FWD( vis ) );
 					} else {
 						DAW_UNREACHABLE( );
 					}
 				}
+			} else if constexpr( VSz - N == 15 ) {
+				switch( get_index( var ) ) {
+				case 0 + N:
+					return DAW_FWD( vis )( get_nt<0 + N>( DAW_FWD( var ) ) );
+				case 1 + N:
+					return DAW_FWD( vis )( get_nt<1 + N>( DAW_FWD( var ) ) );
+				case 2 + N:
+					return DAW_FWD( vis )( get_nt<2 + N>( DAW_FWD( var ) ) );
+				case 3 + N:
+					return DAW_FWD( vis )( get_nt<3 + N>( DAW_FWD( var ) ) );
+				case 4 + N:
+					return DAW_FWD( vis )( get_nt<4 + N>( DAW_FWD( var ) ) );
+				case 5 + N:
+					return DAW_FWD( vis )( get_nt<5 + N>( DAW_FWD( var ) ) );
+				case 6 + N:
+					return DAW_FWD( vis )( get_nt<6 + N>( DAW_FWD( var ) ) );
+				case 7 + N:
+					return DAW_FWD( vis )( get_nt<7 + N>( DAW_FWD( var ) ) );
+				case 8 + N:
+					return DAW_FWD( vis )( get_nt<8 + N>( DAW_FWD( var ) ) );
+				case 9 + N:
+					return DAW_FWD( vis )( get_nt<9 + N>( DAW_FWD( var ) ) );
+				case 10 + N:
+					return DAW_FWD( vis )( get_nt<10 + N>( DAW_FWD( var ) ) );
+				case 11 + N:
+					return DAW_FWD( vis )( get_nt<11 + N>( DAW_FWD( var ) ) );
+				case 12 + N:
+					return DAW_FWD( vis )( get_nt<12 + N>( DAW_FWD( var ) ) );
+				case 13 + N:
+					return DAW_FWD( vis )( get_nt<13 + N>( DAW_FWD( var ) ) );
+				case 14 + N:
+					return DAW_FWD( vis )( get_nt<14 + N>( DAW_FWD( var ) ) );
+				default:
+					if constexpr( VSz - N > 15 ) {
+						return visit_nt<N + 15, R>( DAW_FWD( var ), DAW_FWD( vis ) );
+					} else {
+						DAW_UNREACHABLE( );
+					}
+				}
+			} else if constexpr( VSz - N == 14 ) {
+				switch( get_index( var ) ) {
+				case 0 + N:
+					return DAW_FWD( vis )( get_nt<0 + N>( DAW_FWD( var ) ) );
+				case 1 + N:
+					return DAW_FWD( vis )( get_nt<1 + N>( DAW_FWD( var ) ) );
+				case 2 + N:
+					return DAW_FWD( vis )( get_nt<2 + N>( DAW_FWD( var ) ) );
+				case 3 + N:
+					return DAW_FWD( vis )( get_nt<3 + N>( DAW_FWD( var ) ) );
+				case 4 + N:
+					return DAW_FWD( vis )( get_nt<4 + N>( DAW_FWD( var ) ) );
+				case 5 + N:
+					return DAW_FWD( vis )( get_nt<5 + N>( DAW_FWD( var ) ) );
+				case 6 + N:
+					return DAW_FWD( vis )( get_nt<6 + N>( DAW_FWD( var ) ) );
+				case 7 + N:
+					return DAW_FWD( vis )( get_nt<7 + N>( DAW_FWD( var ) ) );
+				case 8 + N:
+					return DAW_FWD( vis )( get_nt<8 + N>( DAW_FWD( var ) ) );
+				case 9 + N:
+					return DAW_FWD( vis )( get_nt<9 + N>( DAW_FWD( var ) ) );
+				case 10 + N:
+					return DAW_FWD( vis )( get_nt<10 + N>( DAW_FWD( var ) ) );
+				case 11 + N:
+					return DAW_FWD( vis )( get_nt<11 + N>( DAW_FWD( var ) ) );
+				case 12 + N:
+					return DAW_FWD( vis )( get_nt<12 + N>( DAW_FWD( var ) ) );
+				case 13 + N:
+					return DAW_FWD( vis )( get_nt<13 + N>( DAW_FWD( var ) ) );
+				default:
+					if constexpr( VSz - N > 14 ) {
+						return visit_nt<N + 14, R>( DAW_FWD( var ), DAW_FWD( vis ) );
+					} else {
+						DAW_UNREACHABLE( );
+					}
+				}
+			} else if constexpr( VSz - N == 13 ) {
+				switch( get_index( var ) ) {
+				case 0 + N:
+					return DAW_FWD( vis )( get_nt<0 + N>( DAW_FWD( var ) ) );
+				case 1 + N:
+					return DAW_FWD( vis )( get_nt<1 + N>( DAW_FWD( var ) ) );
+				case 2 + N:
+					return DAW_FWD( vis )( get_nt<2 + N>( DAW_FWD( var ) ) );
+				case 3 + N:
+					return DAW_FWD( vis )( get_nt<3 + N>( DAW_FWD( var ) ) );
+				case 4 + N:
+					return DAW_FWD( vis )( get_nt<4 + N>( DAW_FWD( var ) ) );
+				case 5 + N:
+					return DAW_FWD( vis )( get_nt<5 + N>( DAW_FWD( var ) ) );
+				case 6 + N:
+					return DAW_FWD( vis )( get_nt<6 + N>( DAW_FWD( var ) ) );
+				case 7 + N:
+					return DAW_FWD( vis )( get_nt<7 + N>( DAW_FWD( var ) ) );
+				case 8 + N:
+					return DAW_FWD( vis )( get_nt<8 + N>( DAW_FWD( var ) ) );
+				case 9 + N:
+					return DAW_FWD( vis )( get_nt<9 + N>( DAW_FWD( var ) ) );
+				case 10 + N:
+					return DAW_FWD( vis )( get_nt<10 + N>( DAW_FWD( var ) ) );
+				case 11 + N:
+					return DAW_FWD( vis )( get_nt<11 + N>( DAW_FWD( var ) ) );
+				case 12 + N:
+					return DAW_FWD( vis )( get_nt<12 + N>( DAW_FWD( var ) ) );
+				default:
+					if constexpr( VSz - N > 13 ) {
+						return visit_nt<N + 13, R>( DAW_FWD( var ), DAW_FWD( vis ) );
+					} else {
+						DAW_UNREACHABLE( );
+					}
+				}
+			} else if constexpr( VSz - N == 12 ) {
+				switch( get_index( var ) ) {
+				case 0 + N:
+					return DAW_FWD( vis )( get_nt<0 + N>( DAW_FWD( var ) ) );
+				case 1 + N:
+					return DAW_FWD( vis )( get_nt<1 + N>( DAW_FWD( var ) ) );
+				case 2 + N:
+					return DAW_FWD( vis )( get_nt<2 + N>( DAW_FWD( var ) ) );
+				case 3 + N:
+					return DAW_FWD( vis )( get_nt<3 + N>( DAW_FWD( var ) ) );
+				case 4 + N:
+					return DAW_FWD( vis )( get_nt<4 + N>( DAW_FWD( var ) ) );
+				case 5 + N:
+					return DAW_FWD( vis )( get_nt<5 + N>( DAW_FWD( var ) ) );
+				case 6 + N:
+					return DAW_FWD( vis )( get_nt<6 + N>( DAW_FWD( var ) ) );
+				case 7 + N:
+					return DAW_FWD( vis )( get_nt<7 + N>( DAW_FWD( var ) ) );
+				case 8 + N:
+					return DAW_FWD( vis )( get_nt<8 + N>( DAW_FWD( var ) ) );
+				case 9 + N:
+					return DAW_FWD( vis )( get_nt<9 + N>( DAW_FWD( var ) ) );
+				case 10 + N:
+					return DAW_FWD( vis )( get_nt<10 + N>( DAW_FWD( var ) ) );
+				case 11 + N:
+					return DAW_FWD( vis )( get_nt<11 + N>( DAW_FWD( var ) ) );
+				default:
+					if constexpr( VSz - N > 12 ) {
+						return visit_nt<N + 12, R>( DAW_FWD( var ), DAW_FWD( vis ) );
+					} else {
+						DAW_UNREACHABLE( );
+					}
+				}
+			} else if constexpr( VSz - N >= 11 ) {
+				switch( get_index( var ) ) {
+				case 0 + N:
+					return DAW_FWD( vis )( get_nt<0 + N>( DAW_FWD( var ) ) );
+				case 1 + N:
+					return DAW_FWD( vis )( get_nt<1 + N>( DAW_FWD( var ) ) );
+				case 2 + N:
+					return DAW_FWD( vis )( get_nt<2 + N>( DAW_FWD( var ) ) );
+				case 3 + N:
+					return DAW_FWD( vis )( get_nt<3 + N>( DAW_FWD( var ) ) );
+				case 4 + N:
+					return DAW_FWD( vis )( get_nt<4 + N>( DAW_FWD( var ) ) );
+				case 5 + N:
+					return DAW_FWD( vis )( get_nt<5 + N>( DAW_FWD( var ) ) );
+				case 6 + N:
+					return DAW_FWD( vis )( get_nt<6 + N>( DAW_FWD( var ) ) );
+				case 7 + N:
+					return DAW_FWD( vis )( get_nt<7 + N>( DAW_FWD( var ) ) );
+				case 8 + N:
+					return DAW_FWD( vis )( get_nt<8 + N>( DAW_FWD( var ) ) );
+				case 9 + N:
+					return DAW_FWD( vis )( get_nt<9 + N>( DAW_FWD( var ) ) );
+				case 10 + N:
+					return DAW_FWD( vis )( get_nt<10 + N>( DAW_FWD( var ) ) );
+				default:
+					if constexpr( VSz - N > 11 ) {
+						return visit_nt<N + 11, R>( DAW_FWD( var ), DAW_FWD( vis ) );
+					} else {
+						DAW_UNREACHABLE( );
+					}
+				}
+			} else if constexpr( VSz - N == 10 ) {
+				switch( get_index( var ) ) {
+				case 0 + N:
+					return DAW_FWD( vis )( get_nt<0 + N>( DAW_FWD( var ) ) );
+				case 1 + N:
+					return DAW_FWD( vis )( get_nt<1 + N>( DAW_FWD( var ) ) );
+				case 2 + N:
+					return DAW_FWD( vis )( get_nt<2 + N>( DAW_FWD( var ) ) );
+				case 3 + N:
+					return DAW_FWD( vis )( get_nt<3 + N>( DAW_FWD( var ) ) );
+				case 4 + N:
+					return DAW_FWD( vis )( get_nt<4 + N>( DAW_FWD( var ) ) );
+				case 5 + N:
+					return DAW_FWD( vis )( get_nt<5 + N>( DAW_FWD( var ) ) );
+				case 6 + N:
+					return DAW_FWD( vis )( get_nt<6 + N>( DAW_FWD( var ) ) );
+				case 7 + N:
+					return DAW_FWD( vis )( get_nt<7 + N>( DAW_FWD( var ) ) );
+				case 8 + N:
+					return DAW_FWD( vis )( get_nt<8 + N>( DAW_FWD( var ) ) );
+				case 9 + N:
+					return DAW_FWD( vis )( get_nt<9 + N>( DAW_FWD( var ) ) );
+				default:
+					if constexpr( VSz - N > 10 ) {
+						return visit_nt<N + 10, R>( DAW_FWD( var ), DAW_FWD( vis ) );
+					} else {
+						DAW_UNREACHABLE( );
+					}
+				}
+			} else if constexpr( VSz - N == 9 ) {
+				switch( get_index( var ) ) {
+				case 0 + N:
+					return DAW_FWD( vis )( get_nt<0 + N>( DAW_FWD( var ) ) );
+				case 1 + N:
+					return DAW_FWD( vis )( get_nt<1 + N>( DAW_FWD( var ) ) );
+				case 2 + N:
+					return DAW_FWD( vis )( get_nt<2 + N>( DAW_FWD( var ) ) );
+				case 3 + N:
+					return DAW_FWD( vis )( get_nt<3 + N>( DAW_FWD( var ) ) );
+				case 4 + N:
+					return DAW_FWD( vis )( get_nt<4 + N>( DAW_FWD( var ) ) );
+				case 5 + N:
+					return DAW_FWD( vis )( get_nt<5 + N>( DAW_FWD( var ) ) );
+				case 6 + N:
+					return DAW_FWD( vis )( get_nt<6 + N>( DAW_FWD( var ) ) );
+				case 7 + N:
+					return DAW_FWD( vis )( get_nt<7 + N>( DAW_FWD( var ) ) );
+				case 8 + N:
+					return DAW_FWD( vis )( get_nt<8 + N>( DAW_FWD( var ) ) );
+				}
+			} else if constexpr( VSz - N == 8 ) {
+				switch( get_index( var ) ) {
+				case 0 + N:
+					return DAW_FWD( vis )( get_nt<0 + N>( DAW_FWD( var ) ) );
+				case 1 + N:
+					return DAW_FWD( vis )( get_nt<1 + N>( DAW_FWD( var ) ) );
+				case 2 + N:
+					return DAW_FWD( vis )( get_nt<2 + N>( DAW_FWD( var ) ) );
+				case 3 + N:
+					return DAW_FWD( vis )( get_nt<3 + N>( DAW_FWD( var ) ) );
+				case 4 + N:
+					return DAW_FWD( vis )( get_nt<4 + N>( DAW_FWD( var ) ) );
+				case 5 + N:
+					return DAW_FWD( vis )( get_nt<5 + N>( DAW_FWD( var ) ) );
+				case 6 + N:
+					return DAW_FWD( vis )( get_nt<6 + N>( DAW_FWD( var ) ) );
+				case 7 + N:
+					return DAW_FWD( vis )( get_nt<7 + N>( DAW_FWD( var ) ) );
+				}
 			} else if constexpr( VSz - N == 7 ) {
 				switch( get_index( var ) ) {
 				case 0 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<0 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<0 + N>( DAW_FWD( var ) ) );
 				case 1 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<1 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<1 + N>( DAW_FWD( var ) ) );
 				case 2 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<2 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<2 + N>( DAW_FWD( var ) ) );
 				case 3 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<3 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<3 + N>( DAW_FWD( var ) ) );
 				case 4 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<4 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<4 + N>( DAW_FWD( var ) ) );
 				case 5 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<5 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<5 + N>( DAW_FWD( var ) ) );
 				case 6 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<6 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<6 + N>( DAW_FWD( var ) ) );
 				}
 			} else if constexpr( VSz - N == 6 ) {
 				switch( get_index( var ) ) {
 				case 0 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<0 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<0 + N>( DAW_FWD( var ) ) );
 				case 1 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<1 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<1 + N>( DAW_FWD( var ) ) );
 				case 2 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<2 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<2 + N>( DAW_FWD( var ) ) );
 				case 3 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<3 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<3 + N>( DAW_FWD( var ) ) );
 				case 4 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<4 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<4 + N>( DAW_FWD( var ) ) );
 				case 5 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<5 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<5 + N>( DAW_FWD( var ) ) );
 				}
 			} else if constexpr( VSz - N == 5 ) {
 				switch( get_index( var ) ) {
 				case 0 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<0 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<0 + N>( DAW_FWD( var ) ) );
 				case 1 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<1 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<1 + N>( DAW_FWD( var ) ) );
 				case 2 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<2 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<2 + N>( DAW_FWD( var ) ) );
 				case 3 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<3 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<3 + N>( DAW_FWD( var ) ) );
 				case 4 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<4 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<4 + N>( DAW_FWD( var ) ) );
 				}
 			} else if constexpr( VSz - N == 4 ) {
 				switch( get_index( var ) ) {
 				case 0 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<0 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<0 + N>( DAW_FWD( var ) ) );
 				case 1 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<1 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<1 + N>( DAW_FWD( var ) ) );
 				case 2 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<2 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<2 + N>( DAW_FWD( var ) ) );
 				case 3 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<3 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<3 + N>( DAW_FWD( var ) ) );
 				}
 			} else if constexpr( VSz - N == 3 ) {
 				switch( get_index( var ) ) {
 				case 0 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<0 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<0 + N>( DAW_FWD( var ) ) );
 				case 1 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<1 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<1 + N>( DAW_FWD( var ) ) );
 				case 2 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<2 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<2 + N>( DAW_FWD( var ) ) );
 				}
 			} else if constexpr( VSz - N == 2 ) {
 				switch( get_index( var ) ) {
 				case 0 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<0 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<0 + N>( DAW_FWD( var ) ) );
 				case 1 + N:
-					return DAW_FWD2( Visitor,
-					                 vis )( get_nt<1 + N>( DAW_FWD2( Variant, var ) ) );
+					return DAW_FWD( vis )( get_nt<1 + N>( DAW_FWD( var ) ) );
 				}
 			} else {
-				return DAW_FWD2( Visitor,
-				                 vis )( get_nt<0 + N>( DAW_FWD2( Variant, var ) ) );
+				return DAW_FWD( vis )( get_nt<0 + N>( DAW_FWD( var ) ) );
 			}
 			DAW_UNREACHABLE( );
 		}
@@ -260,12 +483,11 @@ namespace daw {
 	template<typename Variant, typename... Visitors>
 	[[nodiscard, maybe_unused]] constexpr decltype( auto )
 	visit_nt( Variant &&var, Visitors &&...visitors ) {
-		using result_t = decltype( daw::visit_details::overload( DAW_FWD2(
-		  Visitors, visitors )... )( get_nt<0>( DAW_FWD2( Variant, var ) ) ) );
+		using result_t = decltype( daw::visit_details::overload(
+		  DAW_FWD( visitors )... )( get_nt<0>( DAW_FWD( var ) ) ) );
 
 		return daw::visit_details::visit_nt<0, result_t>(
-		  DAW_FWD2( Variant, var ),
-		  daw::visit_details::overload( DAW_FWD2( Visitors, visitors )... ) );
+		  DAW_FWD( var ), daw::visit_details::overload( DAW_FWD( visitors )... ) );
 	}
 
 	// Singe visitation visit.
@@ -274,15 +496,14 @@ namespace daw {
 	template<typename Variant, typename... Visitors>
 	[[nodiscard, maybe_unused]] constexpr decltype( auto )
 	visit( Variant &&var, Visitors &&...visitors ) {
-		using result_t = decltype( daw::visit_details::overload( DAW_FWD2(
-		  Visitors, visitors )... )( get_nt<0>( DAW_FWD2( Variant, var ) ) ) );
+		using result_t = decltype( daw::visit_details::overload(
+		  DAW_FWD( visitors )... )( get_nt<0>( DAW_FWD( var ) ) ) );
 
 		if( DAW_UNLIKELY( var.index( ) < 0 ) ) {
 			visit_details::visit_error( );
 		}
 		return daw::visit_details::visit_nt<0, result_t>(
-		  DAW_FWD2( Variant, var ),
-		  daw::visit_details::overload( DAW_FWD2( Visitors, visitors )... ) );
+		  DAW_FWD( var ), daw::visit_details::overload( DAW_FWD( visitors )... ) );
 	}
 
 	// Singe visitation visit with user choosable result.
@@ -294,8 +515,7 @@ namespace daw {
 			visit_details::visit_error( );
 		}
 		return daw::visit_details::visit_nt<0, Result>(
-		  DAW_FWD2( Variant, var ),
-		  daw::visit_details::overload( DAW_FWD2( Visitors, visitors )... ) );
+		  DAW_FWD( var ), daw::visit_details::overload( DAW_FWD( visitors )... ) );
 	}
 
 	// Singe visitation visit with user choosable result.  Expects that variant is
@@ -304,8 +524,7 @@ namespace daw {
 	[[nodiscard, maybe_unused]] constexpr Result
 	visit_nt( Variant &&var, Visitors &&...visitors ) {
 		return daw::visit_details::visit_nt<0, Result>(
-		  DAW_FWD2( Variant, var ),
-		  daw::visit_details::overload( DAW_FWD2( Visitors, visitors )... ) );
+		  DAW_FWD( var ), daw::visit_details::overload( DAW_FWD( visitors )... ) );
 	}
 
 	template<typename Value, typename... Visitors>
