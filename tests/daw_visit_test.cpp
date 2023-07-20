@@ -9,6 +9,7 @@
 #include "daw/daw_benchmark.h"
 #include "daw/daw_visit.h"
 
+#include <cassert>
 #include <optional>
 #include <variant>
 
@@ -92,85 +93,142 @@ static_assert( ::daw::is_visitable_v<int, A> );
 struct B {};
 static_assert( !::daw::is_visitable_v<int, B> );
 
-namespace test_006 {
-	struct T0 {};
-	struct T1 {};
-	struct T2 {};
-	struct T3 {};
-	struct T4 {};
-	struct T5 {};
-	struct T6 {};
-	struct T7 {};
-	struct T8 {};
-	struct T9 {};
-	struct T10 {};
-	struct T11 {};
-	struct T12 {};
-	struct T13 {};
-	struct T14 {};
-	struct T15 {};
-	struct T16 {};
-	constexpr std::variant<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12,
-	                       T13, T14, T15, T16>
-	foobar( int n ) {
-		switch( n ) {
-		case 0:
-			return T0{ };
-		case 1:
-			return T1{ };
-		case 2:
-			return T2{ };
-		case 3:
-			return T3{ };
-		case 4:
-			return T4{ };
-		case 5:
-			return T5{ };
-		case 6:
-			return T6{ };
-		case 7:
-			return T7{ };
-		case 8:
-			return T8{ };
-		case 9:
-			return T9{ };
-		case 10:
-			return T10{ };
-		case 11:
-			return T11{ };
-		case 12:
-			return T12{ };
-		case 13:
-			return T13{ };
-		case 14:
-			return T14{ };
-		case 15:
-			return T15{ };
-		case 16:
-			return T16{ };
-		}
-		DAW_UNREACHABLE( );
+struct T0 {};
+struct T1 {};
+struct T2 {};
+struct T3 {};
+struct T4 {};
+struct T5 {};
+struct T6 {};
+struct T7 {};
+struct T8 {};
+struct T9 {};
+struct T10 {};
+struct T11 {};
+struct T12 {};
+struct T13 {};
+struct T14 {};
+struct T15 {};
+struct T16 {};
+constexpr std::variant<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12,
+                       T13, T14, T15, T16>
+foobar( int n ) {
+	switch( n ) {
+	case 0:
+		return T0{ };
+	case 1:
+		return T1{ };
+	case 2:
+		return T2{ };
+	case 3:
+		return T3{ };
+	case 4:
+		return T4{ };
+	case 5:
+		return T5{ };
+	case 6:
+		return T6{ };
+	case 7:
+		return T7{ };
+	case 8:
+		return T8{ };
+	case 9:
+		return T9{ };
+	case 10:
+		return T10{ };
+	case 11:
+		return T11{ };
+	case 12:
+		return T12{ };
+	case 13:
+		return T13{ };
+	case 14:
+		return T14{ };
+	case 15:
+		return T15{ };
 	}
-	static_assert( foobar( 0 ).index( ) == 0 );
-	static_assert( foobar( 1 ).index( ) == 1 );
-	static_assert( foobar( 2 ).index( ) == 2 );
-	static_assert( foobar( 3 ).index( ) == 3 );
-	static_assert( foobar( 4 ).index( ) == 4 );
-	static_assert( foobar( 5 ).index( ) == 5 );
-	static_assert( foobar( 6 ).index( ) == 6 );
-	static_assert( foobar( 7 ).index( ) == 7 );
-	static_assert( foobar( 8 ).index( ) == 8 );
-	static_assert( foobar( 9 ).index( ) == 9 );
-	static_assert( foobar( 10 ).index( ) == 10 );
-	static_assert( foobar( 11 ).index( ) == 11 );
-	static_assert( foobar( 12 ).index( ) == 12 );
-	static_assert( foobar( 13 ).index( ) == 13 );
-	static_assert( foobar( 14 ).index( ) == 14 );
-	static_assert( foobar( 15 ).index( ) == 15 );
-	static_assert( foobar( 16 ).index( ) == 16 );
-} // namespace test_006
+	return T16{ };
+}
+
+int foofoo( std::variant<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12,
+                         T13, T14, T15, T16>
+              v ) {
+	if( v.valueless_by_exception( ) ) {
+		return -1;
+	}
+	return daw::visit_nt(
+	  v,
+	  []( T0 ) {
+		  return 0;
+	  },
+	  []( T1 ) {
+		  return 1;
+	  },
+	  []( T2 ) {
+		  return 2;
+	  },
+	  []( T3 ) {
+		  return 3;
+	  },
+	  []( T4 ) {
+		  return 4;
+	  },
+	  []( T5 ) {
+		  return 5;
+	  },
+	  []( T6 ) {
+		  return 6;
+	  },
+	  []( T7 ) {
+		  return 7;
+	  },
+	  []( T8 ) {
+		  return 8;
+	  },
+	  []( T9 ) {
+		  return 9;
+	  },
+	  []( T10 ) {
+		  return 10;
+	  },
+	  []( T11 ) {
+		  return 11;
+	  },
+	  []( T12 ) {
+		  return 12;
+	  },
+	  []( T13 ) {
+		  return 13;
+	  },
+	  []( T14 ) {
+		  return 14;
+	  },
+	  []( T15 ) {
+		  return 15;
+	  },
+	  []( T16 ) {
+		  return 16;
+	  } );
+}
 
 int main( ) {
 	visit_nt_004( );
 	visit_nt_005( );
+	assert( foofoo( foobar( 0 ) ) == 0 );
+	assert( foofoo( foobar( 1 ) ) == 1 );
+	assert( foofoo( foobar( 2 ) ) == 2 );
+	assert( foofoo( foobar( 3 ) ) == 3 );
+	assert( foofoo( foobar( 4 ) ) == 4 );
+	assert( foofoo( foobar( 5 ) ) == 5 );
+	assert( foofoo( foobar( 6 ) ) == 6 );
+	assert( foofoo( foobar( 7 ) ) == 7 );
+	assert( foofoo( foobar( 8 ) ) == 8 );
+	assert( foofoo( foobar( 9 ) ) == 9 );
+	assert( foofoo( foobar( 10 ) ) == 10 );
+	assert( foofoo( foobar( 11 ) ) == 11 );
+	assert( foofoo( foobar( 12 ) ) == 12 );
+	assert( foofoo( foobar( 13 ) ) == 13 );
+	assert( foofoo( foobar( 14 ) ) == 14 );
+	assert( foofoo( foobar( 15 ) ) == 15 );
+	assert( foofoo( foobar( 16 ) ) == 16 );
 }
