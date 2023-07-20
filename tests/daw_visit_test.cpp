@@ -151,23 +151,80 @@ namespace test_006 {
 		}
 		DAW_UNREACHABLE( );
 	}
-	static_assert( foobar( 0 ).index( ) == 0 );
-	static_assert( foobar( 1 ).index( ) == 1 );
-	static_assert( foobar( 2 ).index( ) == 2 );
-	static_assert( foobar( 3 ).index( ) == 3 );
-	static_assert( foobar( 4 ).index( ) == 4 );
-	static_assert( foobar( 5 ).index( ) == 5 );
-	static_assert( foobar( 6 ).index( ) == 6 );
-	static_assert( foobar( 7 ).index( ) == 7 );
-	static_assert( foobar( 8 ).index( ) == 8 );
-	static_assert( foobar( 9 ).index( ) == 9 );
-	static_assert( foobar( 10 ).index( ) == 10 );
-	static_assert( foobar( 11 ).index( ) == 11 );
-	static_assert( foobar( 12 ).index( ) == 12 );
-	static_assert( foobar( 13 ).index( ) == 13 );
-	static_assert( foobar( 14 ).index( ) == 14 );
-	static_assert( foobar( 15 ).index( ) == 15 );
-	static_assert( foobar( 16 ).index( ) == 16 );
+	constexpr int foofoo( std::variant<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9,
+	                                   T10, T11, T12, T13, T14, T15, T16>
+	                        v ) {
+		return daw::visit_nt(
+		  v,
+		  []( T0 ) {
+			  return 0;
+		  },
+		  []( T1 ) {
+			  return 1;
+		  },
+		  []( T2 ) {
+			  return 2;
+		  },
+		  []( T3 ) {
+			  return 3;
+		  },
+		  []( T4 ) {
+			  return 4;
+		  },
+		  []( T5 ) {
+			  return 5;
+		  },
+		  []( T6 ) {
+			  return 6;
+		  },
+		  []( T7 ) {
+			  return 7;
+		  },
+		  []( T8 ) {
+			  return 8;
+		  },
+		  []( T9 ) {
+			  return 9;
+		  },
+		  []( T10 ) {
+			  return 10;
+		  },
+		  []( T11 ) {
+			  return 11;
+		  },
+		  []( T12 ) {
+			  return 12;
+		  },
+		  []( T13 ) {
+			  return 13;
+		  },
+		  []( T14 ) {
+			  return 14;
+		  },
+		  []( T15 ) {
+			  return 15;
+		  },
+		  []( T16 ) {
+			  return 16;
+		  } );
+	}
+	static_assert( foofoo( foobar( 0 ) ) == 0 );
+	static_assert( foofoo( foobar( 1 ) ) == 1 );
+	static_assert( foofoo( foobar( 2 ) ) == 2 );
+	static_assert( foofoo( foobar( 3 ) ) == 3 );
+	static_assert( foofoo( foobar( 4 ) ) == 4 );
+	static_assert( foofoo( foobar( 5 ) ) == 5 );
+	static_assert( foofoo( foobar( 6 ) ) == 6 );
+	static_assert( foofoo( foobar( 7 ) ) == 7 );
+	static_assert( foofoo( foobar( 8 ) ) == 8 );
+	static_assert( foofoo( foobar( 9 ) ) == 9 );
+	static_assert( foofoo( foobar( 10 ) ) == 10 );
+	static_assert( foofoo( foobar( 11 ) ) == 11 );
+	static_assert( foofoo( foobar( 12 ) ) == 12 );
+	static_assert( foofoo( foobar( 13 ) ) == 13 );
+	static_assert( foofoo( foobar( 14 ) ) == 14 );
+	static_assert( foofoo( foobar( 15 ) ) == 15 );
+	static_assert( foofoo( foobar( 16 ) ) == 16 );
 } // namespace test_006
 
 int main( ) {
