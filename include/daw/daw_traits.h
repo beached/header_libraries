@@ -1087,6 +1087,8 @@ namespace daw {
 	template<typename...>
 	inline constexpr bool deduced_false_v = false;
 
+	template<typename T>
+	using fp_t = T *;
 } // namespace daw
 
 #define DAW_TYPEOF( ... ) daw::remove_cvref_t<decltype( __VA_ARGS__ )>

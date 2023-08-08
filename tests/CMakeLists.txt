@@ -39,6 +39,7 @@ set( TEST_SOURCES
      daw_fixed_lookup_test.cpp
      daw_fnv1a_hash_test.cpp
      daw_function_table_test.cpp
+		 daw_function_ref_test.cpp
      daw_function_test.cpp
      daw_function_view_test.cpp
      daw_fwd_pack_apply_test.cpp
