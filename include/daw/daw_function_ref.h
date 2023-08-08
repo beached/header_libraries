@@ -14,6 +14,10 @@
 #include <type_traits>
 
 namespace daw {
+	namespace function_ref_details {
+		template<typename T>
+		using cfp_t = T const *;
+	}
 	template<typename>
 	class function_ref;
 
@@ -29,8 +33,7 @@ namespace daw {
 
 		template<typename T,
 		         std::enable_if_t<not std::is_same_v<function_ref, T> and
-		                            std::is_invocable_r_v<Result, T, Args...> and
-		                            not std::is_function_v<T>,
+		                            std::is_invocable_r_v<Result, T, Args...>,
 		                          std::nullptr_t> = nullptr>
 		constexpr function_ref( T const &fn ) noexcept
 		  : m_data( static_cast<void const *>( std::addressof( fn ) ) )
@@ -38,15 +41,12 @@ namespace daw {
 			  return ( *reinterpret_cast<T const *>( d ) )( DAW_FWD( args )... );
 		  } ) {}
 
-		template<typename T,
-		         std::enable_if_t<not std::is_same_v<function_ref, T> and
-		                            std::is_invocable_r_v<Result, T, Args...> and
-		                            std::is_function_v<T>,
-		                          std::nullptr_t> = nullptr>
-		inline function_ref( T const &fn ) noexcept
-		  : m_data( reinterpret_cast<void const *>( std::addressof( fn ) ) )
+		inline function_ref( fp_t<Result( Args... )> fp ) noexcept
+		  : m_data( reinterpret_cast<void const *>( fp ) )
 		  , m_fp( []( Args... args, void const *d ) -> Result {
-			  return ( *reinterpret_cast<T const *>( d ) )( DAW_FWD( args )... );
+			  auto const f =
+			    reinterpret_cast<fp_t<Result( Args... )>>( const_cast<void *>( d ) );
+			  return f( DAW_FWD( args )... );
 		  } ) {}
 
 		inline Result operator( )( Args... args ) const {
