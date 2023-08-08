@@ -15,12 +15,12 @@
 
 namespace daw {
 	template<typename>
-	struct function_ref;
+	class function_ref;
 
 	template<typename Result, typename... Args>
 	class function_ref<Result( Args... )> {
 		void const *m_data = nullptr;
-		fp_t<Result( void const *, Args... )> m_fp = nullptr;
+		fp_t<Result( Args..., void const * )> m_fp = nullptr;
 
 	public:
 		function_ref( ) = default;
@@ -34,7 +34,7 @@ namespace daw {
 		                          std::nullptr_t> = nullptr>
 		constexpr function_ref( T const &fn ) noexcept
 		  : m_data( static_cast<void const *>( std::addressof( fn ) ) )
-		  , m_fp( []( void const *d, Args... args ) -> Result {
+		  , m_fp( []( Args... args, void const *d ) -> Result {
 			  return ( *reinterpret_cast<T const *>( d ) )( DAW_FWD( args )... );
 		  } ) {}
 
@@ -45,12 +45,12 @@ namespace daw {
 		                          std::nullptr_t> = nullptr>
 		inline function_ref( T const &fn ) noexcept
 		  : m_data( reinterpret_cast<void const *>( std::addressof( fn ) ) )
-		  , m_fp( []( void const *d, Args... args ) -> Result {
+		  , m_fp( []( Args... args, void const *d ) -> Result {
 			  return ( *reinterpret_cast<T const *>( d ) )( DAW_FWD( args )... );
 		  } ) {}
 
 		inline Result operator( )( Args... args ) const {
-			return m_fp( m_data, DAW_FWD( args )... );
+			return m_fp( DAW_FWD( args )..., m_data );
 		}
 
 		explicit constexpr operator bool( ) const noexcept {
