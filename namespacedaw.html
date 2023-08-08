@@ -355,6 +355,10 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1function__iterator.html">function_iterator</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An output iterator that calls supplied function when operator= is called This is like std::back_intsert_iterator.  <a href="structdaw_1_1function__iterator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1function__ref.html">function_ref</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1function__ref_3_01_result_07_args_8_8_8_08_4.html">function_ref&lt; Result(Args...)&gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1function__table__t.html">function_table_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1function__traits.html">function_traits</a></td></tr>
@@ -788,6 +792,9 @@ Typedefs</h2></td></tr>
 <tr class="separator:a4c0b4b0d59bf37a8a4b054b5ac4c1243"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadc4eb8c588b87dacc2326bc2fff4fa5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aadc4eb8c588b87dacc2326bc2fff4fa5">fnv1a_uint_t</a> = std::conditional_t&lt; impl::is_64bit_v, std::uint64_t, std::uint32_t &gt;</td></tr>
 <tr class="separator:aadc4eb8c588b87dacc2326bc2fff4fa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb98f2b7d8727eeffc33c3771a91d08a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aeb98f2b7d8727eeffc33c3771a91d08a"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aeb98f2b7d8727eeffc33c3771a91d08a">fp_t</a> = T *</td></tr>
+<tr class="separator:aeb98f2b7d8727eeffc33c3771a91d08a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70539c2d8bdfff828cba8e093e39c5f8"><td class="memTemplParams" colspan="2">template&lt;typename ResultType , typename... ArgTypes&gt; </td></tr>
 <tr class="memitem:a70539c2d8bdfff828cba8e093e39c5f8"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a70539c2d8bdfff828cba8e093e39c5f8">function_pointer_t</a> = typename utility_details::make_function_pointer_impl&lt; ResultType, ArgTypes... &gt;::type</td></tr>
 <tr class="separator:a70539c2d8bdfff828cba8e093e39c5f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5155,6 +5162,24 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__fnv1a__hash_8h_source.html#l00029">29</a> of file <a class="el" href="daw__fnv1a__hash_8h_source.html">daw_fnv1a_hash.h</a>.</p>
+
+</div>
+</div>
+<a id="aeb98f2b7d8727eeffc33c3771a91d08a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb98f2b7d8727eeffc33c3771a91d08a">&#9670;&nbsp;</a></span>fp_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacedaw.html#aeb98f2b7d8727eeffc33c3771a91d08a">daw::fp_t</a> = typedef T *</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l01091">1091</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
