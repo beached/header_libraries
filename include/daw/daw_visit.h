@@ -90,7 +90,7 @@ namespace daw {
 		overload_t( Fs... ) -> overload_t<Fs...>;
 
 		template<typename F, typename... Fs>
-		DAW_ATTRIB_FLATINLINE [[nodiscard, maybe_unused]] constexpr decltype( auto )
+		DAW_ATTRIB_FLATINLINE [[nodiscard]] constexpr decltype( auto )
 		overload( F &&f, Fs &&...fs ) noexcept {
 			if constexpr( sizeof...( Fs ) > 0 ) {
 				return overload_t{ daw::traits::lift_func( DAW_FWD( f ) ),
@@ -307,7 +307,7 @@ namespace daw {
 
 #undef DAW_VISIT_CASE
 
-		[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE inline void visit_error( ) {
+		[[noreturn]] DAW_ATTRIB_NOINLINE inline void visit_error( ) {
 			DAW_THROW_OR_TERMINATE_NA( daw::bad_variant_access );
 		}
 	} // namespace visit_details
@@ -317,8 +317,8 @@ namespace daw {
 	// The return type assumes that all the visitors have a result convertable
 	// to that of visitor( get_nt<0>( variant ) ) 's result
 	template<typename Variant, typename... Visitors>
-	DAW_ATTRIB_FLATTEN [[nodiscard, maybe_unused]] constexpr decltype( auto )
-	visit_nt( Variant &&var, Visitors &&...visitors ) {
+	[[nodiscard]] constexpr decltype( auto ) visit_nt( Variant &&var,
+	                                                   Visitors &&...visitors ) {
 		using result_t = decltype( daw::visit_details::overload(
 		  DAW_FWD( visitors )... )( get_nt<0>( DAW_FWD( var ) ) ) );
 
@@ -330,8 +330,8 @@ namespace daw {
 	// The return type assumes that all the visitors have a result convertable
 	// to that of visitor( get_nt<0>( variant ) ) 's result
 	template<typename Variant, typename... Visitors>
-	DAW_ATTRIB_FLATTEN [[nodiscard, maybe_unused]] constexpr decltype( auto )
-	visit( Variant &&var, Visitors &&...visitors ) {
+	[[nodiscard]] constexpr decltype( auto ) visit( Variant &&var,
+	                                                Visitors &&...visitors ) {
 		using result_t = decltype( daw::visit_details::overload(
 		  DAW_FWD( visitors )... )( get_nt<0>( DAW_FWD( var ) ) ) );
 
@@ -344,8 +344,8 @@ namespace daw {
 
 	// Singe visitation visit with user choosable result.
 	template<typename Result, typename Variant, typename... Visitors>
-	DAW_ATTRIB_FLATTEN [[nodiscard, maybe_unused]] constexpr Result
-	visit( Variant &&var, Visitors &&...visitors ) {
+	[[nodiscard]] constexpr Result visit( Variant &&var,
+	                                      Visitors &&...visitors ) {
 
 		if( DAW_UNLIKELY( var.index( ) < 0 ) ) {
 			visit_details::visit_error( );
@@ -357,8 +357,8 @@ namespace daw {
 	// Singe visitation visit with user choosable result.  Expects that variant is
 	// valid and not empty
 	template<typename Result, typename Variant, typename... Visitors>
-	DAW_ATTRIB_FLATTEN [[nodiscard, maybe_unused]] constexpr Result
-	visit_nt( Variant &&var, Visitors &&...visitors ) {
+	[[nodiscard]] constexpr Result visit_nt( Variant &&var,
+	                                         Visitors &&...visitors ) {
 		return daw::visit_details::visit_nt<0, Result>(
 		  DAW_FWD( var ), daw::visit_details::overload( DAW_FWD( visitors )... ) );
 	}
