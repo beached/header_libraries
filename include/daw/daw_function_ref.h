@@ -14,10 +14,6 @@
 #include <type_traits>
 
 namespace daw {
-	namespace function_ref_details {
-		template<typename T>
-		using cfp_t = T const *;
-	}
 	template<typename>
 	class function_ref;
 
@@ -38,7 +34,8 @@ namespace daw {
 		constexpr function_ref( T const &fn ) noexcept
 		  : m_data( static_cast<void const *>( std::addressof( fn ) ) )
 		  , m_fp( []( Args... args, void const *d ) -> Result {
-			  return ( *reinterpret_cast<T const *>( d ) )( DAW_FWD( args )... );
+			  auto const &obj = *reinterpret_cast<T const *>( d );
+			  return obj( DAW_FWD( args )... );
 		  } ) {}
 
 		inline function_ref( fp_t<Result( Args... )> fp ) noexcept
