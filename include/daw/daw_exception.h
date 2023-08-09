@@ -69,7 +69,7 @@ namespace daw::exception {
 	template<typename ExceptionType = DefaultException,
 	         std::enable_if_t<std::is_default_constructible_v<ExceptionType>,
 	                          std::nullptr_t> = nullptr>
-	[[noreturn]] void daw_throw( ) {
+	[[noreturn]] DAW_ATTRIB_NOINLINE void daw_throw( ) {
 #if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or \
   defined( _CPPUNWIND )
 		throw ExceptionType{ };
