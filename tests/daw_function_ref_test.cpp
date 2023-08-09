@@ -7,6 +7,7 @@
 //
 
 #include <cstdio>
+#include <daw/daw_ensure.h>
 #include <daw/daw_function_ref.h>
 
 int func( daw::function_ref<int( int, int, int )> f ) {
@@ -43,5 +44,19 @@ int test4( ) {
 		puts( "Hello\n" );
 	} );
 }
+void test6( ) {
+	int foo = 5;
+	daw::function_ref<int( )> x = foo;
+	daw_ensure( x( ) == 5 );
+}
 
-int main( ) {}
+void test7( ) {
+	int foo = 5;
+	daw::function_ref<int( int )> x = foo;
+	daw_ensure( x( 66 ) == 5 );
+}
+
+int main( ) {
+	test6( );
+	test7( );
+}
