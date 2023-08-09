@@ -29,44 +29,56 @@ namespace daw {
 
 		template<typename T,
 		         std::enable_if_t<not std::is_same_v<function_ref, T> and
-		                            std::is_invocable_r_v<Result, T, Args...>,
+		                            std::is_invocable_v<T, Args...> and
+		                            std::is_convertible_v<
+		                              std::invoke_result_t<T, Args...>, Result>,
 		                          std::nullptr_t> = nullptr>
 		constexpr function_ref( T const &fn ) noexcept
 		  : m_data( static_cast<void const *>( std::addressof( fn ) ) )
 		  , m_fp( []( Args... args, void const *d ) -> Result {
 			  auto const &obj = *reinterpret_cast<T const *>( d );
-			  return obj( DAW_FWD( args )... );
+			  return static_cast<Result>( obj( DAW_FWD( args )... ) );
 		  } ) {}
 
 		template<typename T,
 		         std::enable_if_t<not std::is_same_v<function_ref, T> and
-		                            std::is_invocable_r_v<Result, T, Args...>,
+		                            std::is_invocable_v<T, Args...> and
+		                            std::is_convertible_v<
+		                              std::invoke_result_t<T, Args...>, Result>,
 		                          std::nullptr_t> = nullptr>
 		constexpr function_ref &operator=( T const &fn ) noexcept {
 			m_data = static_cast<void const *>( std::addressof( fn ) );
 			m_fp = []( Args... args, void const *d ) -> Result {
 				auto const &obj = *reinterpret_cast<T const *>( d );
-				return obj( DAW_FWD( args )... );
+				return static_cast<Result>( obj( DAW_FWD( args )... ) );
 			};
 		}
 
-		inline function_ref( fp_t<Result( Args... )> fp ) noexcept
+		template<typename R, typename... As,
+		         std::enable_if_t<std::is_invocable_v<R ( * )( As... ), Args...> and
+		                            std::is_convertible_v<R, Result>,
+		                          std::nullptr_t> = nullptr>
+		inline function_ref( fp_t<R( As... )> fp ) noexcept
 		  : m_data( reinterpret_cast<void const *>( fp ) )
 		  , m_fp( []( Args... args, void const *d ) -> Result {
 			  auto const f =
-			    reinterpret_cast<fp_t<Result( Args... )>>( const_cast<void *>( d ) );
-			  return f( DAW_FWD( args )... );
+			    reinterpret_cast<fp_t<R( As... )>>( const_cast<void *>( d ) );
+			  return static_cast<Result>( f( DAW_FWD( args )... ) );
 		  } ) {
 			assert( fp != nullptr );
 		}
 
-		inline function_ref &operator=( fp_t<Result( Args... )> fp ) noexcept {
+		template<typename R, typename... As,
+		         std::enable_if_t<std::is_invocable_v<R ( * )( As... ), Args...> and
+		                            std::is_convertible_v<R, Result>,
+		                          std::nullptr_t> = nullptr>
+		inline function_ref &operator=( fp_t<R( As... )> fp ) noexcept {
 			assert( fp != nullptr );
 			m_data = reinterpret_cast<void const *>( fp );
 			m_fp = []( Args... args, void const *d ) -> Result {
 				auto const f =
-				  reinterpret_cast<fp_t<Result( Args... )>>( const_cast<void *>( d ) );
-				return f( DAW_FWD( args )... );
+				  reinterpret_cast<fp_t<R( As... )>>( const_cast<void *>( d ) );
+				return static_cast<Result>( f( DAW_FWD( args )... ) );
 			};
 		}
 

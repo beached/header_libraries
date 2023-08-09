@@ -14,36 +14,26 @@ int func( daw::function_ref<int( int, int, int )> f ) {
 	return f( 1, 2, 3 ) * f( 4, 5, 7 );
 }
 
-int test( ) {
-	return func( []( int a, int b, int c ) {
+void test( ) {
+	auto const r = func( []( int a, int b, int c ) {
 		return a * b * c;
 	} );
+	daw_ensure( r == 840 );
 }
 
 inline constexpr int add( int a, int b, int c ) {
 	return a + b + c;
 }
 
-int test2( ) {
-	return func( add );
+void test2( ) {
+	auto const r = func( add );
+	daw_ensure( r == 96 );
 }
 
-int func2( daw::function_ref<void( double, double )> f ) {
+void func2( daw::function_ref<void( double, double )> f ) {
 	f( 1.2, 3.4 );
-	return 0;
 }
 
-int test3( ) {
-	return func2( +[]( double, double ) {
-		puts( "Hello\n" );
-	} );
-}
-
-int test4( ) {
-	return func2( []( double, double ) {
-		puts( "Hello\n" );
-	} );
-}
 void test6( ) {
 	int foo = 5;
 	daw::function_ref<int( )> x = foo;
@@ -57,6 +47,8 @@ void test7( ) {
 }
 
 int main( ) {
+	test( );
+	test2( );
 	test6( );
 	test7( );
 }
