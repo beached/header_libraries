@@ -113,4 +113,70 @@ namespace daw {
 			return m_data;
 		}
 	};
+
+	template<typename... Args>
+	class function_ref<void( Args... )> {
+		void const *m_data;
+		fp_t<void( Args..., void const * )> m_fp;
+
+	public:
+		function_ref( std::nullptr_t ) = delete;
+
+		template<typename T,
+		         std::enable_if_t<not std::is_same_v<function_ref, T> and
+		                            std::is_invocable_v<T, Args...>,
+		                          std::nullptr_t> = nullptr>
+		constexpr function_ref( T const &fn ) noexcept
+		  : m_data( static_cast<void const *>( std::addressof( fn ) ) )
+		  , m_fp( []( Args... args, void const *d ) -> void {
+			  auto const &obj = *reinterpret_cast<T const *>( d );
+			  (void)obj( DAW_FWD( args )... );
+		  } ) {}
+
+		template<typename T,
+		         std::enable_if_t<not std::is_same_v<function_ref, T> and
+		                            std::is_invocable_v<T, Args...>,
+		                          std::nullptr_t> = nullptr>
+		constexpr function_ref &operator=( T const &fn ) noexcept {
+			m_data = static_cast<void const *>( std::addressof( fn ) );
+			m_fp = []( Args... args, void const *d ) -> void {
+				auto const &obj = *reinterpret_cast<T const *>( d );
+				(void)obj( DAW_FWD( args )... );
+			};
+		}
+
+		template<typename R, typename... As,
+		         std::enable_if_t<std::is_invocable_v<R ( * )( As... ), Args...>,
+		                          std::nullptr_t> = nullptr>
+		inline function_ref( fp_t<R( As... )> fp ) noexcept
+		  : m_data( reinterpret_cast<void const *>( fp ) )
+		  , m_fp( []( Args... args, void const *d ) -> void {
+			  auto const f =
+			    reinterpret_cast<fp_t<R( As... )>>( const_cast<void *>( d ) );
+			  (void)f( DAW_FWD( args )... );
+		  } ) {
+			assert( fp != nullptr );
+		}
+
+		template<typename R, typename... As,
+		         std::enable_if_t<std::is_invocable_v<R ( * )( As... ), Args...>,
+		                          std::nullptr_t> = nullptr>
+		inline function_ref &operator=( fp_t<R( As... )> fp ) noexcept {
+			assert( fp != nullptr );
+			m_data = reinterpret_cast<void const *>( fp );
+			m_fp = []( Args... args, void const *d ) -> void {
+				auto const f =
+				  reinterpret_cast<fp_t<R( As... )>>( const_cast<void *>( d ) );
+				(void)f( DAW_FWD( args )... );
+			};
+		}
+
+		constexpr void operator( )( Args... args ) const {
+			m_fp( DAW_FWD( args )..., m_data );
+		}
+
+		constexpr void const *data( ) const noexcept {
+			return m_data;
+		}
+	};
 } // namespace daw

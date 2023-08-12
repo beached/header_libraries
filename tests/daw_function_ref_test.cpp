@@ -46,9 +46,18 @@ void test7( ) {
 	daw_ensure( x( 66 ) == 5 );
 }
 
+void test8( ) {
+	auto fn = []( int a, std::string, double ) -> int {
+		return a;
+	};
+	auto fnr = daw::function_ref<void( int, std::string, float )>( fn );
+	fnr( 3, "Hello", 2.2f );
+}
+
 int main( ) {
 	test( );
 	test2( );
 	test6( );
 	test7( );
+	test8( );
 }
