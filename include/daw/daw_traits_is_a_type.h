@@ -21,11 +21,11 @@
 #include <vector>
 
 namespace daw::traits {
-#define GENERATE_IS_STD_CONTAINER1( ContainerName )                            \
-	template<typename T>                                                         \
-	inline constexpr bool is_##ContainerName##_v =                               \
-	  std::is_same_v<T, std::ContainerName<typename T::value_type>>;             \
-	template<typename T>                                                         \
+#define GENERATE_IS_STD_CONTAINER1( ContainerName )                \
+	template<typename T>                                             \
+	inline constexpr bool is_##ContainerName##_v =                   \
+	  std::is_same_v<T, std::ContainerName<typename T::value_type>>; \
+	template<typename T>                                             \
 	using is_##ContainerName = std::bool_constant<is_##ContainerName##_v<T>>
 
 	GENERATE_IS_STD_CONTAINER1( vector );
@@ -36,11 +36,11 @@ namespace daw::traits {
 
 #undef GENERATE_IS_STD_CONTAINER1
 
-#define GENERATE_IS_STD_CONTAINER2( ContainerName )                            \
-	template<typename T>                                                         \
-	inline constexpr bool is_##ContainerName##_v = std::is_same_v<               \
-	  T, std::ContainerName<typename T::key_type, typename T::mapped_type>>;     \
-	template<typename T>                                                         \
+#define GENERATE_IS_STD_CONTAINER2( ContainerName )                        \
+	template<typename T>                                                     \
+	inline constexpr bool is_##ContainerName##_v = std::is_same_v<           \
+	  T, std::ContainerName<typename T::key_type, typename T::mapped_type>>; \
+	template<typename T>                                                     \
 	using is_##ContainerName = std::bool_constant<is_##ContainerName##_v<T>>
 
 	GENERATE_IS_STD_CONTAINER2( map );

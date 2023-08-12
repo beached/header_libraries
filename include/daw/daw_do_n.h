@@ -32,7 +32,7 @@ namespace daw::algorithm {
 				(void)( ( func( Is * by_n ), 0 ) + ... );
 			}
 		}
-	} // namespace DAW_ATTRIB_HIDDEN
+	} // namespace do_n_details DAW_ATTRIB_HIDDEN
 
 	template<std::size_t count, typename Function, typename... Args>
 	DAW_ATTRIB_FLATTEN static inline constexpr void do_n( Function &&func,

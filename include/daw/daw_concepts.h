@@ -260,7 +260,7 @@ namespace daw {
 	concept invocable_result = requires( Func && f, Args &&...args ) {
 		{
 			std::invoke( DAW_FWD( f ), DAW_FWD( args )... )
-		} -> convertible_to<Result>;
+			} -> convertible_to<Result>;
 	};
 
 	template<typename I>

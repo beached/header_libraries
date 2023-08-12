@@ -42,8 +42,9 @@ namespace daw::find_iterator_impl {
 		Filter m_filter;
 
 		constexpr auto filter( ) const {
-			return
-			  [&]( auto &&value ) -> bool { return m_filter( DAW_FWD( value ) ); };
+			return [&]( auto &&value ) -> bool {
+				return m_filter( DAW_FWD( value ) );
+			};
 		}
 	};
 } // namespace daw::find_iterator_impl

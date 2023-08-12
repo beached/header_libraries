@@ -14,7 +14,7 @@
 #include <memory>
 #include <type_traits>
 
-#if not defined( DAW_HAS_3WAY_COMPARE ) and                                    \
+#if not defined( DAW_HAS_3WAY_COMPARE ) and \
   defined( __cpp_lib_three_way_comparison )
 #if __cpp_lib_three_way_comparison >= 201907L
 #define DAW_HAS_3WAY_COMPARE

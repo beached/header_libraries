@@ -163,7 +163,7 @@ namespace daw {
 		}
 	}; // iota_iterator
 
-	iota_iterator( ) -> iota_iterator<int>;
+	iota_iterator( )->iota_iterator<int>;
 
 	template<typename T, typename... Step>
 	iota_iterator( T, Step... ) -> iota_iterator<T>;
@@ -216,7 +216,7 @@ namespace daw {
 			return m_first[idx];
 		}
 	};
-	iota_range( ) -> iota_range<int>;
+	iota_range( )->iota_range<int>;
 
 	template<typename T, typename... EndStep>
 	iota_range( T, EndStep... ) -> iota_range<T>;

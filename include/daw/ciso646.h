@@ -11,18 +11,20 @@
 
 #pragma once
 
-#if defined( _MSC_EXTENSIONS ) || defined( DAW_FORCE_CISO646 ) or defined( _MSC_VER )
-#if defined( _MSC_EXTENSIONS ) || defined( DAW_FORCE_CISO646 ) || _MSC_VER < 1930 || _MSVC_LANG < 202002L
-#define and    &&
+#if defined( _MSC_EXTENSIONS ) || defined( DAW_FORCE_CISO646 ) or \
+  defined( _MSC_VER )
+#if defined( _MSC_EXTENSIONS ) || defined( DAW_FORCE_CISO646 ) || \
+  _MSC_VER < 1930 || _MSVC_LANG < 202002L
+#define and &&
 #define and_eq &=
 #define bitand &
-#define bitor  |
-#define compl  ~
-#define not    !
+#define bitor |
+#define compl ~
+#define not !
 #define not_eq !=
-#define or     ||
-#define or_eq  |=
-#define xor    ^
+#define or ||
+#define or_eq |=
+#define xor ^
 #define xor_eq ^=
 #endif
 #endif

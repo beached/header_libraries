@@ -105,9 +105,9 @@ namespace daw {
 		using Base2 = compressed_pair_elem<T2, 1>;
 
 		template<bool D = true>
-		  requires( std::is_default_constructible_v<T1> and
-		            std::is_default_constructible_v<T2> ) //
-		explicit constexpr compressed_pair( )
+		requires( std::is_default_constructible_v<T1>
+		            and std::is_default_constructible_v<T2> ) //
+		  explicit constexpr compressed_pair( )
 		  : Base1( value_init_tag( ) )
 		  , Base2( value_init_tag( ) ) {}
 

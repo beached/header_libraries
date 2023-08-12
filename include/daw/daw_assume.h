@@ -16,13 +16,14 @@
 
 #define DAW_ASSUME( ... ) assert( ( __VA_ARGS__ ) )
 
-#elif DAW_HAS_BUILTIN( __builtin_unreachable ) or (defined( __GNUC__ ) and not defined( __ICC )) or defined( __clang__ )
+#elif DAW_HAS_BUILTIN( __builtin_unreachable ) or \
+  ( defined( __GNUC__ ) and not defined( __ICC ) ) or defined( __clang__ )
 
-#define DAW_ASSUME( ... )                                                      \
-	do {                                                                         \
-		if( not( ( __VA_ARGS__ ) ) ) {                                             \
-			__builtin_unreachable( );                                                \
-		}                                                                          \
+#define DAW_ASSUME( ... )          \
+	do {                             \
+		if( not( ( __VA_ARGS__ ) ) ) { \
+			__builtin_unreachable( );    \
+		}                              \
 	} while( false )
 
 #elif defined( _MSC_VER ) or defined( __ICC )
@@ -31,11 +32,11 @@
 #else
 
 #include <exception>
-#define DAW_ASSUME( ... )                                                      \
-	do {                                                                         \
-		if( not( ( __VA_ARGS__ ) ) ) {                                             \
-			std::terminate( );                                                       \
-		}                                                                          \
+#define DAW_ASSUME( ... )          \
+	do {                             \
+		if( not( ( __VA_ARGS__ ) ) ) { \
+			std::terminate( );           \
+		}                              \
 	} while( false )
 
 #endif

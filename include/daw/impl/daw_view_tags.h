@@ -19,7 +19,6 @@ namespace daw {
 	struct discard_t {};
 	inline constexpr auto discard = discard_t{ };
 
-
 	struct dont_clip_to_bounds_t {};
 	inline constexpr auto dont_clip_to_bounds = dont_clip_to_bounds_t{ };
 
