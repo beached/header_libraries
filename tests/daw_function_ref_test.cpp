@@ -10,6 +10,8 @@
 #include <daw/daw_ensure.h>
 #include <daw/daw_function_ref.h>
 
+#include <string>
+
 int func( daw::function_ref<int( int, int, int )> f ) {
 	return f( 1, 2, 3 ) * f( 4, 5, 7 );
 }
