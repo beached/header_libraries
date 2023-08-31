@@ -168,8 +168,8 @@ $(function() {
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">#if defined( __clang__ )</span></div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#define DAW_PREF_NAME( ... ) clang::preferred_name( __VA_ARGS__ )</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#elif defined( __GNUC__ )</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#define DAW_PREF_NAME( ... ) gnu::preferred_name( __VA_ARGS__ )</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">//#elif defined( __GNUC__ )</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">//#define DAW_PREF_NAME( ... ) gnu::preferred_name( __VA_ARGS__ )</span></div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">#else</span></div>
 <div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="daw__attributes_8h.html#af248fd122be3e873155e3b1ecaa976fa">  102</a></span>&#160;<span class="preprocessor">#define DAW_PREF_NAME( ... )</span></div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">#endif</span></div>
