@@ -9,7 +9,7 @@
 #pragma once
 
 /// @brief Allow restrict on supported compilers unless it is already defined.
-#if not defined( DAW_RESTRICT ) and                                            \
+#if not defined( DAW_RESTRICT ) and \
   ( defined( _MSC_VER ) or defined( __clang__ ) or defined( __GNUC__ ) )
 #define DAW_RESTRICT __restrict
 #else

@@ -146,7 +146,6 @@ namespace daw {
 		return utility_details::NotImpl<Function>( func );
 	}
 
-
 	// For generic types that are functors, delegate to its 'operator()'
 
 	template<typename T>

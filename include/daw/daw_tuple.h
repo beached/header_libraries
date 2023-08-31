@@ -177,7 +177,9 @@ namespace daw {
 		                                  tuple<Vs...> const &rhs ) {
 			if constexpr( tuple_size == tuple<Vs...>::tuple_size ) {
 				return lhs.and_all(
-				  []( auto const &l, auto const &r ) { return l == r; },
+				  []( auto const &l, auto const &r ) {
+					  return l == r;
+				  },
 				  std::make_index_sequence<sizeof...( Vs )>{ }, rhs );
 			} else {
 				return false;
@@ -189,7 +191,9 @@ namespace daw {
 		                                  tuple<Vs...> const &rhs ) {
 			if constexpr( tuple_size == tuple<Vs...>::tuple_size ) {
 				return lhs.or_all(
-				  []( auto const &l, auto const &r ) { return l != r; },
+				  []( auto const &l, auto const &r ) {
+					  return l != r;
+				  },
 				  std::make_index_sequence<sizeof...( Vs )>{ }, rhs );
 			} else {
 				return true;

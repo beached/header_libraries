@@ -20,17 +20,17 @@ namespace daw::nparam::nparam_details {
 	/// member
 	template<typename T>
 	concept OptionHelper = requires {
-		                       typename std::remove_cvref_t<T>::i_am_an_option;
-		                       std::declval<T>( ).value;
-	                       };
+		typename std::remove_cvref_t<T>::i_am_an_option;
+		std::declval<T>( ).value;
+	};
 
 	template<typename T, typename... Ts>
-	inline constexpr bool
-	  less_than_one_match_v = ( ( std::is_same_v<T, Ts> ? 1 : 0 ) + ... ) <= 1;
+	inline constexpr bool less_than_one_match_v =
+	  ( ( std::is_same_v<T, Ts> ? 1 : 0 ) + ... ) <= 1;
 
 	template<typename... Opts>
-	inline constexpr bool is_unique_v = ( less_than_one_match_v<Opts, Opts...> and
-	                                      ... );
+	inline constexpr bool is_unique_v =
+	  ( less_than_one_match_v<Opts, Opts...> and ... );
 } // namespace daw::nparam::nparam_details
 
 namespace daw::nparam {
@@ -51,8 +51,8 @@ namespace daw::nparam {
 	/// @param opts user set options
 	/// @return The Option set in opts or def_value
 	template<Options Option, typename... Opts>
-	  requires( Options<Opts...> )
-	constexpr auto get_opt( Option &&def_value, Opts &&...vals ) {
+	requires( Options<Opts...> ) constexpr auto get_opt( Option &&def_value,
+	                                                     Opts &&...vals ) {
 		if constexpr( sizeof...( Opts ) == 0 ) {
 			// No replacements found
 			return DAW_FWD2( Option, def_value ).value;
@@ -67,8 +67,7 @@ namespace daw::nparam {
 		} else {
 			// Pop off first option and try next
 			constexpr auto pop_front = []( auto &&def, auto &&, auto &&...vs ) {
-				return get_opt<Option>( DAW_FWD( def ),
-				                                      DAW_FWD( vs )... );
+				return get_opt<Option>( DAW_FWD( def ), DAW_FWD( vs )... );
 			};
 			return pop_front( DAW_FWD2( Option, def_value ),
 			                  DAW_FWD2( Opts, vals )... );
@@ -105,18 +104,18 @@ namespace daw::nparam {
 
 /// @brief Create a named option value of a unique type with value set.  Must be
 /// assigned to a variable
-#define DAW_MAKE_NAMED_OPTION( Type, Name, DefaultValue )                      \
-	[] {                                                                         \
-		struct opt_##Name##_t;                                                     \
-		return ::daw::nparam::details::option_t<Type, opt_##Name##_t>{             \
-		  DefaultValue };                                                          \
+#define DAW_MAKE_NAMED_OPTION( Type, Name, DefaultValue )          \
+	[] {                                                             \
+		struct opt_##Name##_t;                                         \
+		return ::daw::nparam::details::option_t<Type, opt_##Name##_t>{ \
+		  DefaultValue };                                              \
 	}( )
 
 /// @brief Create a named option value of a unique type with value set. Must be
 /// assigned to a variable
-#define DAW_MAKE_NAMED_UNIQUE_OPTION( Type, Name, DefaultValue )               \
-	[] {                                                                         \
-		struct opt_##Name##_t;                                                     \
-		return ::daw::nparam::details::unique_option_t<Type, opt_##Name##_t>{      \
-		  DefaultValue };                                                          \
+#define DAW_MAKE_NAMED_UNIQUE_OPTION( Type, Name, DefaultValue )          \
+	[] {                                                                    \
+		struct opt_##Name##_t;                                                \
+		return ::daw::nparam::details::unique_option_t<Type, opt_##Name##_t>{ \
+		  DefaultValue };                                                     \
 	}( )

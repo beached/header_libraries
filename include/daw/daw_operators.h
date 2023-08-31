@@ -10,52 +10,52 @@
 
 /// Create comparison operators for a class that defines compare( rhs )
 /// and returns an int where 0 means equal <0 means less than...etc
-#define create_comparison_operators( cls_name )                                \
-	bool operator==( cls_name const &lhs, cls_name const &rhs ) {                \
-		return lhs.compare( rhs ) == 0;                                            \
-	}                                                                            \
-                                                                               \
-	bool operator!=( cls_name const &lhs, cls_name const &rhs ) {                \
-		return lhs.compare( rhs ) != 0;                                            \
-	}                                                                            \
-                                                                               \
-	bool operator<( cls_name const &lhs, cls_name const &rhs ) {                 \
-		return lhs.compare( rhs ) < 0;                                             \
-	}                                                                            \
-                                                                               \
-	bool operator>( cls_name const &lhs, cls_name const &rhs ) {                 \
-		return lhs.compare( rhs ) > 0;                                             \
-	}                                                                            \
-                                                                               \
-	bool operator<=( cls_name const &lhs, cls_name const &rhs ) {                \
-		return lhs.compare( rhs ) <= 0;                                            \
-	}                                                                            \
-                                                                               \
-	bool operator>=( cls_name const &lhs, cls_name const &rhs ) {                \
-		return lhs.compare( rhs ) >= 0;                                            \
+#define create_comparison_operators( cls_name )                 \
+	bool operator==( cls_name const &lhs, cls_name const &rhs ) { \
+		return lhs.compare( rhs ) == 0;                             \
+	}                                                             \
+                                                                \
+	bool operator!=( cls_name const &lhs, cls_name const &rhs ) { \
+		return lhs.compare( rhs ) != 0;                             \
+	}                                                             \
+                                                                \
+	bool operator<( cls_name const &lhs, cls_name const &rhs ) {  \
+		return lhs.compare( rhs ) < 0;                              \
+	}                                                             \
+                                                                \
+	bool operator>( cls_name const &lhs, cls_name const &rhs ) {  \
+		return lhs.compare( rhs ) > 0;                              \
+	}                                                             \
+                                                                \
+	bool operator<=( cls_name const &lhs, cls_name const &rhs ) { \
+		return lhs.compare( rhs ) <= 0;                             \
+	}                                                             \
+                                                                \
+	bool operator>=( cls_name const &lhs, cls_name const &rhs ) { \
+		return lhs.compare( rhs ) >= 0;                             \
 	}
 
-#define create_friend_comparison_operators( cls_name )                         \
-	friend bool operator==( cls_name const &lhs, cls_name const &rhs ) {         \
-		return lhs.compare( rhs ) == 0;                                            \
-	}                                                                            \
-                                                                               \
-	friend bool operator!=( cls_name const &lhs, cls_name const &rhs ) {         \
-		return lhs.compare( rhs ) != 0;                                            \
-	}                                                                            \
-                                                                               \
-	friend bool operator<( cls_name const &lhs, cls_name const &rhs ) {          \
-		return lhs.compare( rhs ) < 0;                                             \
-	}                                                                            \
-                                                                               \
-	friend bool operator>( cls_name const &lhs, cls_name const &rhs ) {          \
-		return lhs.compare( rhs ) > 0;                                             \
-	}                                                                            \
-                                                                               \
-	friend bool operator<=( cls_name const &lhs, cls_name const &rhs ) {         \
-		return lhs.compare( rhs ) <= 0;                                            \
-	}                                                                            \
-                                                                               \
-	friend bool operator>=( cls_name const &lhs, cls_name const &rhs ) {         \
-		return lhs.compare( rhs ) >= 0;                                            \
+#define create_friend_comparison_operators( cls_name )                 \
+	friend bool operator==( cls_name const &lhs, cls_name const &rhs ) { \
+		return lhs.compare( rhs ) == 0;                                    \
+	}                                                                    \
+                                                                       \
+	friend bool operator!=( cls_name const &lhs, cls_name const &rhs ) { \
+		return lhs.compare( rhs ) != 0;                                    \
+	}                                                                    \
+                                                                       \
+	friend bool operator<( cls_name const &lhs, cls_name const &rhs ) {  \
+		return lhs.compare( rhs ) < 0;                                     \
+	}                                                                    \
+                                                                       \
+	friend bool operator>( cls_name const &lhs, cls_name const &rhs ) {  \
+		return lhs.compare( rhs ) > 0;                                     \
+	}                                                                    \
+                                                                       \
+	friend bool operator<=( cls_name const &lhs, cls_name const &rhs ) { \
+		return lhs.compare( rhs ) <= 0;                                    \
+	}                                                                    \
+                                                                       \
+	friend bool operator>=( cls_name const &lhs, cls_name const &rhs ) { \
+		return lhs.compare( rhs ) >= 0;                                    \
 	}

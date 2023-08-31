@@ -42,6 +42,8 @@ int main( ) {
 		using pair_t = std::pair<string_t const, int>;
 		using Allocator =
 		  daw::memory::tracked_allocator<pair_t, std::allocator<pair_t>>;
+		static_assert(
+		  std::is_same_v<Allocator::rebind<int>::rebind<pair_t>, Allocator> );
 		auto m = std::map<string_t, int, std::less<string_t>, Allocator>( );
 		(void)m;
 	}

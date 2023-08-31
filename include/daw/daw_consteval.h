@@ -22,7 +22,7 @@
 #endif
 #endif
 
-#if __cplusplus >= 202002 and defined( __clang_major__ ) and                   \
+#if __cplusplus >= 202002 and defined( __clang_major__ ) and \
   not defined( DAW_NO_CONSTEVAL )
 #if __clang_major__ >= 15 and not defined( DAW_HAS_CONSTEVAL )
 #define DAW_HAS_CONSTEVAL

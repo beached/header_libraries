@@ -401,6 +401,6 @@ namespace daw {
 	iter_view( T ( & )[N] ) -> iter_view<T *>;
 
 	template<typename T, std::size_t N>
-	iter_view( T ( && )[N] ) -> iter_view<T *>;
+	iter_view( T ( &&)[N] ) -> iter_view<T *>;
 
 } // namespace daw

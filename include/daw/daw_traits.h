@@ -977,7 +977,7 @@ namespace daw::traits {
 	  /*else*/ copy_ref_t<To, std::remove_const_t<std::remove_reference_t<To>>>
 	  /**/>;
 
-	template <typename To, typename From>
+	template<typename To, typename From>
 	using copy_constref_t = copy_ref_t<From, copy_const_t<To, From>>;
 
 	template<typename T>

@@ -284,7 +284,8 @@ namespace daw {
 		}
 
 		constexpr pointer release( ) noexcept {
-			return daw::exchange( m_ptr, unique_ptr_del::default_pointer_value_v<T, Deleter> );
+			return daw::exchange(
+			  m_ptr, unique_ptr_del::default_pointer_value_v<T, Deleter> );
 		}
 
 		constexpr deleter_t &get_deleter( ) {
@@ -297,7 +298,8 @@ namespace daw {
 
 		constexpr void reset( ) noexcept {
 			if( unique_ptr_del::does_validity_check_v<Deleter> or m_ptr ) {
-				get_deleter( )( daw::exchange( m_ptr, unique_ptr_del::default_pointer_value_v<T, Deleter> ) );
+				get_deleter( )( daw::exchange(
+				  m_ptr, unique_ptr_del::default_pointer_value_v<T, Deleter> ) );
 			}
 		}
 
