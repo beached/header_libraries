@@ -114,11 +114,12 @@ $(function() {
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    Filter m_filter;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    constexpr <span class="keyword">auto</span> filter( )<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        [&amp;]( <span class="keyword">auto</span> &amp;&amp;value ) -&gt; <span class="keywordtype">bool</span> { <span class="keywordflow">return</span> m_filter( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( value ) ); };</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  };</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;} <span class="comment">// namespace daw::find_iterator_impl</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      <span class="keywordflow">return</span> [&amp;]( <span class="keyword">auto</span> &amp;&amp;value ) -&gt; <span class="keywordtype">bool</span> {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordflow">return</span> m_filter( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( value ) );</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      };</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    }</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  };</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;} <span class="comment">// namespace daw::find_iterator_impl</span></div>
 <div class="ttc" id="adaw__move_8h_html_a46327bbb47123f9650c3b0e0ce807ec9"><div class="ttname"><a href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a></div><div class="ttdeci">#define DAW_FWD(...)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00037">daw_move.h:37</a></div></div>
 <div class="ttc" id="astructdaw_1_1traits_1_1identity_html"><div class="ttname"><a href="structdaw_1_1traits_1_1identity.html">daw::traits::identity</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__traits__impl_8h_source.html#l00469">daw_traits_impl.h:469</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

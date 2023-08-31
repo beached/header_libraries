@@ -78,26 +78,28 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a908f8d00d132048ea81a4d39128f0668"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1function__ref_3_01_result_07_args_8_8_8_08_4.html#a908f8d00d132048ea81a4d39128f0668">function_ref</a> (<a class="el" href="namespacedaw.html#aeb98f2b7d8727eeffc33c3771a91d08a">fp_t</a>&lt; Result(Args...)&gt; fp) noexcept</td></tr>
-<tr class="separator:a908f8d00d132048ea81a4d39128f0668"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2218c811b511ae4347d547ba4d82a1c9"><td class="memTemplParams" colspan="2">template&lt;typename R , typename... As, std::enable_if_t&lt; std::is_invocable_v&lt; R(*)(As...), Args... &gt; and std::is_convertible_v&lt; R, Result &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a2218c811b511ae4347d547ba4d82a1c9"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdaw_1_1function__ref_3_01_result_07_args_8_8_8_08_4.html#a2218c811b511ae4347d547ba4d82a1c9">function_ref</a> (<a class="el" href="namespacedaw.html#aeb98f2b7d8727eeffc33c3771a91d08a">fp_t</a>&lt; R(As...)&gt; fp) noexcept</td></tr>
+<tr class="separator:a2218c811b511ae4347d547ba4d82a1c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79b31e872ea8922b6d0466be3709b6e3"><td class="memTemplParams" colspan="2">template&lt;typename R , std::enable_if_t&lt; not std::is_invocable_r_v&lt; Result, R, Args... &gt; and std::is_convertible_v&lt; R, Result &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a79b31e872ea8922b6d0466be3709b6e3"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdaw_1_1function__ref_3_01_result_07_args_8_8_8_08_4.html#a79b31e872ea8922b6d0466be3709b6e3">function_ref</a> (R const &amp;r) noexcept</td></tr>
 <tr class="separator:a79b31e872ea8922b6d0466be3709b6e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75d8af69ede937d6588e8abe634861e5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1function__ref_3_01_result_07_args_8_8_8_08_4.html#a75d8af69ede937d6588e8abe634861e5">function_ref</a> (std::nullptr_t)=delete</td></tr>
 <tr class="separator:a75d8af69ede937d6588e8abe634861e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ec9669347725f64b91045a272b38fbb"><td class="memTemplParams" colspan="2">template&lt;typename T , std::enable_if_t&lt; not std::is_same_v&lt; function_ref, T &gt; and std::is_invocable_r_v&lt; Result, T, Args... &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a9ec9669347725f64b91045a272b38fbb"><td class="memTemplParams" colspan="2">template&lt;typename T , std::enable_if_t&lt; not std::is_same_v&lt; function_ref, T &gt; and std::is_invocable_v&lt; T, Args... &gt; and std::is_convertible_v&lt; std::invoke_result_t&lt; T, Args... &gt;, Result &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a9ec9669347725f64b91045a272b38fbb"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdaw_1_1function__ref_3_01_result_07_args_8_8_8_08_4.html#a9ec9669347725f64b91045a272b38fbb">function_ref</a> (T const &amp;fn) noexcept</td></tr>
 <tr class="separator:a9ec9669347725f64b91045a272b38fbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5ad29b3227ac463863a5d2a76d7e38f"><td class="memItemLeft" align="right" valign="top">constexpr void const  *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1function__ref_3_01_result_07_args_8_8_8_08_4.html#ad5ad29b3227ac463863a5d2a76d7e38f">data</a> () const noexcept</td></tr>
 <tr class="separator:ad5ad29b3227ac463863a5d2a76d7e38f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbec4de4e69528b49de92d91b18dbff5"><td class="memItemLeft" align="right" valign="top">constexpr Result&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1function__ref_3_01_result_07_args_8_8_8_08_4.html#adbec4de4e69528b49de92d91b18dbff5">operator()</a> (Args... args) const</td></tr>
 <tr class="separator:adbec4de4e69528b49de92d91b18dbff5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03c9d128b69155400560a5a098d2b730"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdaw_1_1function__ref.html">function_ref</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1function__ref_3_01_result_07_args_8_8_8_08_4.html#a03c9d128b69155400560a5a098d2b730">operator=</a> (<a class="el" href="namespacedaw.html#aeb98f2b7d8727eeffc33c3771a91d08a">fp_t</a>&lt; Result(Args...)&gt; fp) noexcept</td></tr>
-<tr class="separator:a03c9d128b69155400560a5a098d2b730"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4b0fc5589ff22ee0ddf4f719653fb84"><td class="memTemplParams" colspan="2">template&lt;typename R , typename... As, std::enable_if_t&lt; std::is_invocable_v&lt; R(*)(As...), Args... &gt; and std::is_convertible_v&lt; R, Result &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:ad4b0fc5589ff22ee0ddf4f719653fb84"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdaw_1_1function__ref.html">function_ref</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdaw_1_1function__ref_3_01_result_07_args_8_8_8_08_4.html#ad4b0fc5589ff22ee0ddf4f719653fb84">operator=</a> (<a class="el" href="namespacedaw.html#aeb98f2b7d8727eeffc33c3771a91d08a">fp_t</a>&lt; R(As...)&gt; fp) noexcept</td></tr>
+<tr class="separator:ad4b0fc5589ff22ee0ddf4f719653fb84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a340c7725492c5c60f7b0efbcc2dc87ad"><td class="memTemplParams" colspan="2">template&lt;typename R , std::enable_if_t&lt; not std::is_invocable_r_v&lt; Result, R, Args... &gt; and std::is_convertible_v&lt; R, Result &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a340c7725492c5c60f7b0efbcc2dc87ad"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classdaw_1_1function__ref.html">function_ref</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdaw_1_1function__ref_3_01_result_07_args_8_8_8_08_4.html#a340c7725492c5c60f7b0efbcc2dc87ad">operator=</a> (R const &amp;r) noexcept</td></tr>
 <tr class="separator:a340c7725492c5c60f7b0efbcc2dc87ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2289b7d4df6e4aa0f57f0ea2716208cc"><td class="memTemplParams" colspan="2">template&lt;typename T , std::enable_if_t&lt; not std::is_same_v&lt; function_ref, T &gt; and std::is_invocable_r_v&lt; Result, T, Args... &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a2289b7d4df6e4aa0f57f0ea2716208cc"><td class="memTemplParams" colspan="2">template&lt;typename T , std::enable_if_t&lt; not std::is_same_v&lt; function_ref, T &gt; and std::is_invocable_v&lt; T, Args... &gt; and std::is_convertible_v&lt; std::invoke_result_t&lt; T, Args... &gt;, Result &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a2289b7d4df6e4aa0f57f0ea2716208cc"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classdaw_1_1function__ref.html">function_ref</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdaw_1_1function__ref_3_01_result_07_args_8_8_8_08_4.html#a2289b7d4df6e4aa0f57f0ea2716208cc">operator=</a> (T const &amp;fn) noexcept</td></tr>
 <tr class="separator:a2289b7d4df6e4aa0f57f0ea2716208cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -144,7 +146,7 @@ template&lt;typename Result , typename... Args&gt; </div>
 <div class="memtemplate">
 template&lt;typename Result , typename... Args&gt; </div>
 <div class="memtemplate">
-template&lt;typename T , std::enable_if_t&lt; not std::is_same_v&lt; function_ref, T &gt; and std::is_invocable_r_v&lt; Result, T, Args... &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+template&lt;typename T , std::enable_if_t&lt; not std::is_same_v&lt; function_ref, T &gt; and std::is_invocable_v&lt; T, Args... &gt; and std::is_convertible_v&lt; std::invoke_result_t&lt; T, Args... &gt;, Result &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -164,17 +166,19 @@ template&lt;typename T , std::enable_if_t&lt; not std::is_same_v&lt; function_re
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__function__ref_8h_source.html#l00034">34</a> of file <a class="el" href="daw__function__ref_8h_source.html">daw_function_ref.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__function__ref_8h_source.html#l00036">36</a> of file <a class="el" href="daw__function__ref_8h_source.html">daw_function_ref.h</a>.</p>
 
 </div>
 </div>
-<a id="a908f8d00d132048ea81a4d39128f0668"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a908f8d00d132048ea81a4d39128f0668">&#9670;&nbsp;</a></span>function_ref() <span class="overload">[3/4]</span></h2>
+<a id="a2218c811b511ae4347d547ba4d82a1c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2218c811b511ae4347d547ba4d82a1c9">&#9670;&nbsp;</a></span>function_ref() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename Result , typename... Args&gt; </div>
+<div class="memtemplate">
+template&lt;typename R , typename... As, std::enable_if_t&lt; std::is_invocable_v&lt; R(*)(As...), Args... &gt; and std::is_convertible_v&lt; R, Result &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -182,7 +186,7 @@ template&lt;typename Result , typename... Args&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="classdaw_1_1function__ref.html">daw::function_ref</a>&lt; Result(Args...)&gt;::<a class="el" href="classdaw_1_1function__ref.html">function_ref</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacedaw.html#aeb98f2b7d8727eeffc33c3771a91d08a">fp_t</a>&lt; Result(Args...)&gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw.html#aeb98f2b7d8727eeffc33c3771a91d08a">fp_t</a>&lt; R(As...)&gt;&#160;</td>
           <td class="paramname"><em>fp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -194,7 +198,7 @@ template&lt;typename Result , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__function__ref_8h_source.html#l00053">53</a> of file <a class="el" href="daw__function__ref_8h_source.html">daw_function_ref.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__function__ref_8h_source.html#l00061">61</a> of file <a class="el" href="daw__function__ref_8h_source.html">daw_function_ref.h</a>.</p>
 
 </div>
 </div>
@@ -226,7 +230,7 @@ template&lt;typename R , std::enable_if_t&lt; not std::is_invocable_r_v&lt; Resu
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__function__ref_8h_source.html#l00077">77</a> of file <a class="el" href="daw__function__ref_8h_source.html">daw_function_ref.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__function__ref_8h_source.html#l00089">89</a> of file <a class="el" href="daw__function__ref_8h_source.html">daw_function_ref.h</a>.</p>
 
 </div>
 </div>
@@ -256,7 +260,7 @@ template&lt;typename Result , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__function__ref_8h_source.html#l00100">100</a> of file <a class="el" href="daw__function__ref_8h_source.html">daw_function_ref.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__function__ref_8h_source.html#l00112">112</a> of file <a class="el" href="daw__function__ref_8h_source.html">daw_function_ref.h</a>.</p>
 
 </div>
 </div>
@@ -286,17 +290,19 @@ template&lt;typename Result , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__function__ref_8h_source.html#l00096">96</a> of file <a class="el" href="daw__function__ref_8h_source.html">daw_function_ref.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__function__ref_8h_source.html#l00108">108</a> of file <a class="el" href="daw__function__ref_8h_source.html">daw_function_ref.h</a>.</p>
 
 </div>
 </div>
-<a id="a03c9d128b69155400560a5a098d2b730"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a03c9d128b69155400560a5a098d2b730">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/3]</span></h2>
+<a id="ad4b0fc5589ff22ee0ddf4f719653fb84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4b0fc5589ff22ee0ddf4f719653fb84">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename Result , typename... Args&gt; </div>
+<div class="memtemplate">
+template&lt;typename R , typename... As, std::enable_if_t&lt; std::is_invocable_v&lt; R(*)(As...), Args... &gt; and std::is_convertible_v&lt; R, Result &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -304,7 +310,7 @@ template&lt;typename Result , typename... Args&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="classdaw_1_1function__ref.html">function_ref</a>&amp; <a class="el" href="classdaw_1_1function__ref.html">daw::function_ref</a>&lt; Result(Args...)&gt;::operator= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacedaw.html#aeb98f2b7d8727eeffc33c3771a91d08a">fp_t</a>&lt; Result(Args...)&gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw.html#aeb98f2b7d8727eeffc33c3771a91d08a">fp_t</a>&lt; R(As...)&gt;&#160;</td>
           <td class="paramname"><em>fp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -316,7 +322,7 @@ template&lt;typename Result , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__function__ref_8h_source.html#l00063">63</a> of file <a class="el" href="daw__function__ref_8h_source.html">daw_function_ref.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__function__ref_8h_source.html#l00075">75</a> of file <a class="el" href="daw__function__ref_8h_source.html">daw_function_ref.h</a>.</p>
 
 </div>
 </div>
@@ -348,7 +354,7 @@ template&lt;typename R , std::enable_if_t&lt; not std::is_invocable_r_v&lt; Resu
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__function__ref_8h_source.html#l00088">88</a> of file <a class="el" href="daw__function__ref_8h_source.html">daw_function_ref.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__function__ref_8h_source.html#l00100">100</a> of file <a class="el" href="daw__function__ref_8h_source.html">daw_function_ref.h</a>.</p>
 
 </div>
 </div>
@@ -360,7 +366,7 @@ template&lt;typename R , std::enable_if_t&lt; not std::is_invocable_r_v&lt; Resu
 <div class="memtemplate">
 template&lt;typename Result , typename... Args&gt; </div>
 <div class="memtemplate">
-template&lt;typename T , std::enable_if_t&lt; not std::is_same_v&lt; function_ref, T &gt; and std::is_invocable_r_v&lt; Result, T, Args... &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+template&lt;typename T , std::enable_if_t&lt; not std::is_same_v&lt; function_ref, T &gt; and std::is_invocable_v&lt; T, Args... &gt; and std::is_convertible_v&lt; std::invoke_result_t&lt; T, Args... &gt;, Result &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -380,7 +386,7 @@ template&lt;typename T , std::enable_if_t&lt; not std::is_same_v&lt; function_re
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__function__ref_8h_source.html#l00045">45</a> of file <a class="el" href="daw__function__ref_8h_source.html">daw_function_ref.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__function__ref_8h_source.html#l00049">49</a> of file <a class="el" href="daw__function__ref_8h_source.html">daw_function_ref.h</a>.</p>
 
 </div>
 </div>

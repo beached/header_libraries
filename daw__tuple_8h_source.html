@@ -249,135 +249,139 @@ $(function() {
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;                                      <a class="code" href="classdaw_1_1tuple.html">tuple&lt;Vs...&gt;</a> <span class="keyword">const</span> &amp;rhs ) {</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;      <span class="keywordflow">if</span> constexpr( <a class="code" href="structdaw_1_1tuple__size.html">tuple_size</a> == <a class="code" href="classdaw_1_1tuple.html">tuple&lt;Vs...&gt;::tuple_size</a> ) {</div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        <span class="keywordflow">return</span> lhs.and_all(</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;          []( <span class="keyword">auto</span> <span class="keyword">const</span> &amp;l, <span class="keyword">auto</span> <span class="keyword">const</span> &amp;r ) { <span class="keywordflow">return</span> l == r; },</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;          std::make_index_sequence&lt;<span class="keyword">sizeof</span>...( Vs )&gt;{ }, rhs );</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;      }</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    }</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Vs&gt;</div>
-<div class="line"><a name="l00188"></a><span class="lineno"><a class="line" href="classdaw_1_1tuple.html#a4de4be0ad2a779969d811b9f112f08e0">  188</a></span>&#160;    <span class="keyword">friend</span> constexpr <span class="keywordtype">bool</span> <a class="code" href="classdaw_1_1tuple.html#a4de4be0ad2a779969d811b9f112f08e0">operator!=</a>( <a class="code" href="classdaw_1_1tuple.html">tuple</a> <span class="keyword">const</span> &amp;lhs,</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                                      <a class="code" href="classdaw_1_1tuple.html">tuple&lt;Vs...&gt;</a> <span class="keyword">const</span> &amp;rhs ) {</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;      <span class="keywordflow">if</span> constexpr( <a class="code" href="structdaw_1_1tuple__size.html">tuple_size</a> == <a class="code" href="classdaw_1_1tuple.html">tuple&lt;Vs...&gt;::tuple_size</a> ) {</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        <span class="keywordflow">return</span> lhs.or_all(</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;          []( <span class="keyword">auto</span> <span class="keyword">const</span> &amp;l, <span class="keyword">auto</span> <span class="keyword">const</span> &amp;r ) { <span class="keywordflow">return</span> l != r; },</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;          std::make_index_sequence&lt;<span class="keyword">sizeof</span>...( Vs )&gt;{ }, rhs );</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;      }</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    }</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;  };</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00201"></a><span class="lineno"><a class="line" href="namespacedaw.html#a54804cf04d9ca94837eed849f0096e82">  201</a></span>&#160;  <a class="code" href="namespacedaw.html#a54804cf04d9ca94837eed849f0096e82">tuple</a>( Ts... ) -&gt; <a class="code" href="classdaw_1_1tuple.html">tuple</a>&lt;Ts...&gt;;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160; </div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;  <span class="keyword">template</span>&lt;std::size_t N, <span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00204"></a><span class="lineno"><a class="line" href="namespacedaw.html#a3f6c4e49c3feef611ad2daaa08b45a1c">  204</a></span>&#160;  constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#aec26be2bcbe261d3cea14098d110f63b">get</a>( <a class="code" href="classdaw_1_1tuple.html">tuple</a>&lt;Ts...&gt; const &amp;tp ) {</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="keywordflow">return</span> tp.template get&lt;N&gt;( );</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  }</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;  <span class="keyword">template</span>&lt;std::size_t N, <span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00209"></a><span class="lineno"><a class="line" href="namespacedaw.html#a5ca57e68d9635fe230fe49c4fefdcc11">  209</a></span>&#160;  constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#aec26be2bcbe261d3cea14098d110f63b">get</a>( <a class="code" href="classdaw_1_1tuple.html">tuple</a>&lt;Ts...&gt; &amp;tp ) {</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <span class="keywordflow">return</span> tp.template get&lt;N&gt;( );</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;  }</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;  <span class="keyword">template</span>&lt;std::size_t N, <span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00214"></a><span class="lineno"><a class="line" href="namespacedaw.html#a15f1aae31630816649289e15b156a096">  214</a></span>&#160;  constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#aec26be2bcbe261d3cea14098d110f63b">get</a>( <a class="code" href="classdaw_1_1tuple.html">tuple</a>&lt;Ts...&gt; &amp;&amp;tp ) {</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="keywordflow">return</span> tp.template get&lt;N&gt;( );</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;  }</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; </div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00219"></a><span class="lineno"><a class="line" href="namespacedaw.html#a94f9b8727d7fac14b2248dfaf671ecb8">  219</a></span>&#160;  constexpr <a class="code" href="classdaw_1_1tuple.html">tuple</a>&lt;Ts &amp;&amp;...&gt; <a class="code" href="namespacedaw.html#a94f9b8727d7fac14b2248dfaf671ecb8">forward_as_tuple</a>( Ts &amp;&amp;...ts ) noexcept {</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keywordflow">return</span> { <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( ts )... };</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;  }</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00224"></a><span class="lineno"><a class="line" href="namespacedaw.html#a7b9581103c6919b1c8904362a8f2c073">  224</a></span>&#160;  constexpr <a class="code" href="classdaw_1_1tuple.html">tuple</a>&lt;Ts &amp;...&gt; <a class="code" href="namespacedaw.html#a7b9581103c6919b1c8904362a8f2c073">tie</a>( Ts &amp;...ts ) noexcept {</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <span class="keywordflow">return</span> { ts... };</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  }</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160; </div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  <span class="keyword">namespace </span>make_tuple_details {</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <span class="keyword">struct </span>unwrap_refwrapper {</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;      <span class="keyword">using</span> type = T;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    };</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <span class="keyword">struct </span>unwrap_refwrapper&lt;<a class="code" href="namespacestd.html">std</a>::reference_wrapper&lt;T&gt;&gt; {</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;      <span class="keyword">using</span> type = T &amp;;</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    };</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keyword">using</span> unwrap_decay_t =</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;      <span class="keyword">typename</span> unwrap_refwrapper&lt;typename std::decay&lt;T&gt;::type&gt;::type;</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;  } <span class="comment">// namespace make_tuple_details</span></div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;  constexpr tuple&lt;make_tuple_details::unwrap_decay_t&lt;Ts&gt;...&gt;</div>
-<div class="line"><a name="l00246"></a><span class="lineno"><a class="line" href="namespacedaw.html#a2a0e27c5b8f0bd544580af24794e1f75">  246</a></span>&#160;  <a class="code" href="namespacedaw.html#a2a0e27c5b8f0bd544580af24794e1f75">make_tuple</a>( Ts &amp;&amp;...args ) {</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    <span class="keywordflow">return</span> { <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( args )... };</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;  }</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;} <span class="comment">// namespace daw</span></div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; </div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacestd.html">std</a> {</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;  <a class="code" href="daw__tuple_8h.html#a00e609d902e382f10092b412938fa04a">DAW_TUPLESPECIALCLASS</a> tuple_size&lt;<a class="code" href="classdaw_1_1tuple.html">::daw::tuple</a>&lt;Ts...&gt;&gt;</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    : <span class="keyword">public</span> <a class="code" href="namespacedaw.html#a154129ce0132a086d84a3207b31a925f">daw::index_constant</a>&lt;<a class="code" href="classdaw_1_1tuple.html">::daw::tuple</a>&lt;Ts...&gt;::tuple_size&gt;{ };</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; </div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  <span class="keyword">template</span>&lt;std::size_t I, <span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;  <a class="code" href="daw__tuple_8h.html#a00e609d902e382f10092b412938fa04a">DAW_TUPLESPECIALCLASS</a> tuple_element&lt;I, <a class="code" href="classdaw_1_1tuple.html">::daw::tuple</a>&lt;Ts...&gt;&gt; {</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="keyword">using</span> type = <span class="keyword">typename</span> decltype( ::<a class="code" href="classdaw_1_1tuple.html">daw::tuple&lt;Ts...&gt;::get_type</a>(</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;      <a class="code" href="namespacedaw.html#a154129ce0132a086d84a3207b31a925f">daw::index_constant&lt;I&gt;</a>{ } ) )::type;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;  };</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;} <span class="comment">// namespace std</span></div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160; </div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw.html">daw</a> {</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;  <span class="keyword">namespace </span>tuple_apply_detail {</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span> Tuple, std::size_t... Is&gt;</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <span class="keyword">inline</span> constexpr decltype( <span class="keyword">auto</span> ) apply_impl( F &amp;&amp;f, Tuple &amp;&amp;t,</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                                                  <a class="code" href="namespacestd.html">std</a>::index_sequence&lt;Is...&gt; ) {</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ), daw::get&lt;Is&gt;( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( t ) )... );</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    }</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;  } <span class="comment">// namespace tuple_apply_detail</span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00274"></a><span class="lineno"><a class="line" href="namespacedaw.html#a95b759bb90212e525a48a0cd9d485165">  274</a></span>&#160;  <span class="keyword">inline</span> constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#aa262c9df4a2234d2089c59a4e13dbfe6">apply</a>( F &amp;&amp;f, <a class="code" href="classdaw_1_1tuple.html">tuple</a>&lt;Ts...&gt; &amp;t ) {</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <span class="keywordflow">return</span> tuple_apply_detail::apply_impl(</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;      <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ), t,</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;      std::make_index_sequence&lt;<a class="code" href="namespacedaw.html#a00ea6294fc0d1208169fdd524268e7eb">std::tuple_size_v</a>&lt;<a class="code" href="classdaw_1_1tuple.html">tuple&lt;Ts...&gt;</a>&gt;&gt;{ } );</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;  }</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00281"></a><span class="lineno"><a class="line" href="namespacedaw.html#a4a67c0c0abb2c0d4c4baa74fa3e9dec8">  281</a></span>&#160;  <span class="keyword">inline</span> constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#aa262c9df4a2234d2089c59a4e13dbfe6">apply</a>( F &amp;&amp;f, <a class="code" href="classdaw_1_1tuple.html">tuple</a>&lt;Ts...&gt; const &amp;t ) {</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <span class="keywordflow">return</span> tuple_apply_detail::apply_impl(</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;      <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ), t,</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;      std::make_index_sequence&lt;<a class="code" href="namespacedaw.html#a00ea6294fc0d1208169fdd524268e7eb">std::tuple_size_v</a>&lt;<a class="code" href="classdaw_1_1tuple.html">tuple&lt;Ts...&gt;</a>&gt;&gt;{ } );</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;  }</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160; </div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00288"></a><span class="lineno"><a class="line" href="namespacedaw.html#a3d22cd2adf96c837bad7fc53883901a4">  288</a></span>&#160;  <span class="keyword">inline</span> constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#aa262c9df4a2234d2089c59a4e13dbfe6">apply</a>( F &amp;&amp;f, <a class="code" href="classdaw_1_1tuple.html">tuple</a>&lt;Ts...&gt; &amp;&amp;t ) {</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    <span class="keywordflow">return</span> tuple_apply_detail::apply_impl(</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;      <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ), <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( t ),</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;      std::make_index_sequence&lt;</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        <a class="code" href="namespacedaw.html#a00ea6294fc0d1208169fdd524268e7eb">std::tuple_size_v</a>&lt;std::remove_reference_t&lt;<a class="code" href="classdaw_1_1tuple.html">tuple&lt;Ts...&gt;</a>&gt;&gt;&gt;{ } );</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;  }</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160; </div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00296"></a><span class="lineno"><a class="line" href="namespacedaw.html#aec54baf4afbbcb679e51b41f0ba47e03">  296</a></span>&#160;  <span class="keyword">inline</span> constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#aa262c9df4a2234d2089c59a4e13dbfe6">apply</a>( F &amp;&amp;f, <a class="code" href="classdaw_1_1tuple.html">tuple</a>&lt;Ts...&gt; const &amp;&amp;t ) {</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    <span class="keywordflow">return</span> tuple_apply_detail::apply_impl(</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;      <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ), <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( t ),</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;      std::make_index_sequence&lt;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        <a class="code" href="namespacedaw.html#a00ea6294fc0d1208169fdd524268e7eb">std::tuple_size_v</a>&lt;std::remove_reference_t&lt;<a class="code" href="classdaw_1_1tuple.html">tuple&lt;Ts...&gt;</a>&gt;&gt;&gt;{ } );</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;  }</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;} <span class="comment">// namespace daw</span></div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160; </div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="preprocessor">#ifdef DAW_TUPLESPECIALCLASS</span></div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="preprocessor">#undef DAW_TUPLESPECIALCLASS</span></div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;          []( <span class="keyword">auto</span> <span class="keyword">const</span> &amp;l, <span class="keyword">auto</span> <span class="keyword">const</span> &amp;r ) {</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;            <span class="keywordflow">return</span> l == r;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;          },</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;          std::make_index_sequence&lt;<span class="keyword">sizeof</span>...( Vs )&gt;{ }, rhs );</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;      } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;      }</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    }</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160; </div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Vs&gt;</div>
+<div class="line"><a name="l00190"></a><span class="lineno"><a class="line" href="classdaw_1_1tuple.html#a4de4be0ad2a779969d811b9f112f08e0">  190</a></span>&#160;    <span class="keyword">friend</span> constexpr <span class="keywordtype">bool</span> <a class="code" href="classdaw_1_1tuple.html#a4de4be0ad2a779969d811b9f112f08e0">operator!=</a>( <a class="code" href="classdaw_1_1tuple.html">tuple</a> <span class="keyword">const</span> &amp;lhs,</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                                      <a class="code" href="classdaw_1_1tuple.html">tuple&lt;Vs...&gt;</a> <span class="keyword">const</span> &amp;rhs ) {</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;      <span class="keywordflow">if</span> constexpr( <a class="code" href="structdaw_1_1tuple__size.html">tuple_size</a> == <a class="code" href="classdaw_1_1tuple.html">tuple&lt;Vs...&gt;::tuple_size</a> ) {</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        <span class="keywordflow">return</span> lhs.or_all(</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;          []( <span class="keyword">auto</span> <span class="keyword">const</span> &amp;l, <span class="keyword">auto</span> <span class="keyword">const</span> &amp;r ) {</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;            <span class="keywordflow">return</span> l != r;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;          },</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;          std::make_index_sequence&lt;<span class="keyword">sizeof</span>...( Vs )&gt;{ }, rhs );</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;      } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;      }</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    }</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;  };</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00205"></a><span class="lineno"><a class="line" href="namespacedaw.html#a54804cf04d9ca94837eed849f0096e82">  205</a></span>&#160;  <a class="code" href="namespacedaw.html#a54804cf04d9ca94837eed849f0096e82">tuple</a>( Ts... ) -&gt; <a class="code" href="classdaw_1_1tuple.html">tuple</a>&lt;Ts...&gt;;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  <span class="keyword">template</span>&lt;std::size_t N, <span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00208"></a><span class="lineno"><a class="line" href="namespacedaw.html#a3f6c4e49c3feef611ad2daaa08b45a1c">  208</a></span>&#160;  constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#aec26be2bcbe261d3cea14098d110f63b">get</a>( <a class="code" href="classdaw_1_1tuple.html">tuple</a>&lt;Ts...&gt; const &amp;tp ) {</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="keywordflow">return</span> tp.template get&lt;N&gt;( );</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;  }</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; </div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;  <span class="keyword">template</span>&lt;std::size_t N, <span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00213"></a><span class="lineno"><a class="line" href="namespacedaw.html#a5ca57e68d9635fe230fe49c4fefdcc11">  213</a></span>&#160;  constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#aec26be2bcbe261d3cea14098d110f63b">get</a>( <a class="code" href="classdaw_1_1tuple.html">tuple</a>&lt;Ts...&gt; &amp;tp ) {</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="keywordflow">return</span> tp.template get&lt;N&gt;( );</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;  }</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160; </div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;  <span class="keyword">template</span>&lt;std::size_t N, <span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00218"></a><span class="lineno"><a class="line" href="namespacedaw.html#a15f1aae31630816649289e15b156a096">  218</a></span>&#160;  constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#aec26be2bcbe261d3cea14098d110f63b">get</a>( <a class="code" href="classdaw_1_1tuple.html">tuple</a>&lt;Ts...&gt; &amp;&amp;tp ) {</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keywordflow">return</span> tp.template get&lt;N&gt;( );</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;  }</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160; </div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00223"></a><span class="lineno"><a class="line" href="namespacedaw.html#a94f9b8727d7fac14b2248dfaf671ecb8">  223</a></span>&#160;  constexpr <a class="code" href="classdaw_1_1tuple.html">tuple</a>&lt;Ts &amp;&amp;...&gt; <a class="code" href="namespacedaw.html#a94f9b8727d7fac14b2248dfaf671ecb8">forward_as_tuple</a>( Ts &amp;&amp;...ts ) noexcept {</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="keywordflow">return</span> { <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( ts )... };</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  }</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; </div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00228"></a><span class="lineno"><a class="line" href="namespacedaw.html#a7b9581103c6919b1c8904362a8f2c073">  228</a></span>&#160;  constexpr <a class="code" href="classdaw_1_1tuple.html">tuple</a>&lt;Ts &amp;...&gt; <a class="code" href="namespacedaw.html#a7b9581103c6919b1c8904362a8f2c073">tie</a>( Ts &amp;...ts ) noexcept {</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="keywordflow">return</span> { ts... };</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  }</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;  <span class="keyword">namespace </span>make_tuple_details {</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="keyword">struct </span>unwrap_refwrapper {</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;      <span class="keyword">using</span> type = T;</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    };</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160; </div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keyword">struct </span>unwrap_refwrapper&lt;<a class="code" href="namespacestd.html">std</a>::reference_wrapper&lt;T&gt;&gt; {</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;      <span class="keyword">using</span> type = T &amp;;</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    };</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <span class="keyword">using</span> unwrap_decay_t =</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;      <span class="keyword">typename</span> unwrap_refwrapper&lt;typename std::decay&lt;T&gt;::type&gt;::type;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  } <span class="comment">// namespace make_tuple_details</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160; </div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;  constexpr tuple&lt;make_tuple_details::unwrap_decay_t&lt;Ts&gt;...&gt;</div>
+<div class="line"><a name="l00250"></a><span class="lineno"><a class="line" href="namespacedaw.html#a2a0e27c5b8f0bd544580af24794e1f75">  250</a></span>&#160;  <a class="code" href="namespacedaw.html#a2a0e27c5b8f0bd544580af24794e1f75">make_tuple</a>( Ts &amp;&amp;...args ) {</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="keywordflow">return</span> { <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( args )... };</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;  }</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;} <span class="comment">// namespace daw</span></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacestd.html">std</a> {</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;  <a class="code" href="daw__tuple_8h.html#a00e609d902e382f10092b412938fa04a">DAW_TUPLESPECIALCLASS</a> tuple_size&lt;<a class="code" href="classdaw_1_1tuple.html">::daw::tuple</a>&lt;Ts...&gt;&gt;</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    : <span class="keyword">public</span> <a class="code" href="namespacedaw.html#a154129ce0132a086d84a3207b31a925f">daw::index_constant</a>&lt;<a class="code" href="classdaw_1_1tuple.html">::daw::tuple</a>&lt;Ts...&gt;::tuple_size&gt;{ };</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160; </div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  <span class="keyword">template</span>&lt;std::size_t I, <span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;  <a class="code" href="daw__tuple_8h.html#a00e609d902e382f10092b412938fa04a">DAW_TUPLESPECIALCLASS</a> tuple_element&lt;I, <a class="code" href="classdaw_1_1tuple.html">::daw::tuple</a>&lt;Ts...&gt;&gt; {</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <span class="keyword">using</span> type = <span class="keyword">typename</span> decltype( ::<a class="code" href="classdaw_1_1tuple.html">daw::tuple&lt;Ts...&gt;::get_type</a>(</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;      <a class="code" href="namespacedaw.html#a154129ce0132a086d84a3207b31a925f">daw::index_constant&lt;I&gt;</a>{ } ) )::type;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;  };</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;} <span class="comment">// namespace std</span></div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; </div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw.html">daw</a> {</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;  <span class="keyword">namespace </span>tuple_apply_detail {</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span> Tuple, std::size_t... Is&gt;</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="keyword">inline</span> constexpr decltype( <span class="keyword">auto</span> ) apply_impl( F &amp;&amp;f, Tuple &amp;&amp;t,</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                                                  <a class="code" href="namespacestd.html">std</a>::index_sequence&lt;Is...&gt; ) {</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a>( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ), daw::get&lt;Is&gt;( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( t ) )... );</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    }</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;  } <span class="comment">// namespace tuple_apply_detail</span></div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; </div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00278"></a><span class="lineno"><a class="line" href="namespacedaw.html#a95b759bb90212e525a48a0cd9d485165">  278</a></span>&#160;  <span class="keyword">inline</span> constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#aa262c9df4a2234d2089c59a4e13dbfe6">apply</a>( F &amp;&amp;f, <a class="code" href="classdaw_1_1tuple.html">tuple</a>&lt;Ts...&gt; &amp;t ) {</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <span class="keywordflow">return</span> tuple_apply_detail::apply_impl(</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;      <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ), t,</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;      std::make_index_sequence&lt;<a class="code" href="namespacedaw.html#a00ea6294fc0d1208169fdd524268e7eb">std::tuple_size_v</a>&lt;<a class="code" href="classdaw_1_1tuple.html">tuple&lt;Ts...&gt;</a>&gt;&gt;{ } );</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;  }</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160; </div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00285"></a><span class="lineno"><a class="line" href="namespacedaw.html#a4a67c0c0abb2c0d4c4baa74fa3e9dec8">  285</a></span>&#160;  <span class="keyword">inline</span> constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#aa262c9df4a2234d2089c59a4e13dbfe6">apply</a>( F &amp;&amp;f, <a class="code" href="classdaw_1_1tuple.html">tuple</a>&lt;Ts...&gt; const &amp;t ) {</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="keywordflow">return</span> tuple_apply_detail::apply_impl(</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;      <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ), t,</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;      std::make_index_sequence&lt;<a class="code" href="namespacedaw.html#a00ea6294fc0d1208169fdd524268e7eb">std::tuple_size_v</a>&lt;<a class="code" href="classdaw_1_1tuple.html">tuple&lt;Ts...&gt;</a>&gt;&gt;{ } );</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;  }</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160; </div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00292"></a><span class="lineno"><a class="line" href="namespacedaw.html#a3d22cd2adf96c837bad7fc53883901a4">  292</a></span>&#160;  <span class="keyword">inline</span> constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#aa262c9df4a2234d2089c59a4e13dbfe6">apply</a>( F &amp;&amp;f, <a class="code" href="classdaw_1_1tuple.html">tuple</a>&lt;Ts...&gt; &amp;&amp;t ) {</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <span class="keywordflow">return</span> tuple_apply_detail::apply_impl(</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;      <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ), <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( t ),</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;      std::make_index_sequence&lt;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        <a class="code" href="namespacedaw.html#a00ea6294fc0d1208169fdd524268e7eb">std::tuple_size_v</a>&lt;std::remove_reference_t&lt;<a class="code" href="classdaw_1_1tuple.html">tuple&lt;Ts...&gt;</a>&gt;&gt;&gt;{ } );</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;  }</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00300"></a><span class="lineno"><a class="line" href="namespacedaw.html#aec54baf4afbbcb679e51b41f0ba47e03">  300</a></span>&#160;  <span class="keyword">inline</span> constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#aa262c9df4a2234d2089c59a4e13dbfe6">apply</a>( F &amp;&amp;f, <a class="code" href="classdaw_1_1tuple.html">tuple</a>&lt;Ts...&gt; const &amp;&amp;t ) {</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    <span class="keywordflow">return</span> tuple_apply_detail::apply_impl(</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;      <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ), <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( t ),</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;      std::make_index_sequence&lt;</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        <a class="code" href="namespacedaw.html#a00ea6294fc0d1208169fdd524268e7eb">std::tuple_size_v</a>&lt;std::remove_reference_t&lt;<a class="code" href="classdaw_1_1tuple.html">tuple&lt;Ts...&gt;</a>&gt;&gt;&gt;{ } );</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;  }</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;} <span class="comment">// namespace daw</span></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160; </div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="preprocessor">#ifdef DAW_TUPLESPECIALCLASS</span></div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="preprocessor">#undef DAW_TUPLESPECIALCLASS</span></div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassdaw_1_1tuple_html"><div class="ttname"><a href="classdaw_1_1tuple.html">daw::tuple</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple_8h_source.html#l00124">daw_tuple.h:126</a></div></div>
-<div class="ttc" id="aclassdaw_1_1tuple_html_a4de4be0ad2a779969d811b9f112f08e0"><div class="ttname"><a href="classdaw_1_1tuple.html#a4de4be0ad2a779969d811b9f112f08e0">daw::tuple::operator!=</a></div><div class="ttdeci">constexpr friend bool operator!=(tuple const &amp;lhs, tuple&lt; Vs... &gt; const &amp;rhs)</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple_8h_source.html#l00188">daw_tuple.h:188</a></div></div>
+<div class="ttc" id="aclassdaw_1_1tuple_html_a4de4be0ad2a779969d811b9f112f08e0"><div class="ttname"><a href="classdaw_1_1tuple.html#a4de4be0ad2a779969d811b9f112f08e0">daw::tuple::operator!=</a></div><div class="ttdeci">constexpr friend bool operator!=(tuple const &amp;lhs, tuple&lt; Vs... &gt; const &amp;rhs)</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple_8h_source.html#l00190">daw_tuple.h:190</a></div></div>
 <div class="ttc" id="aclassdaw_1_1tuple_html_aa720c525d7e274964f2fc2072e993395"><div class="ttname"><a href="classdaw_1_1tuple.html#aa720c525d7e274964f2fc2072e993395">daw::tuple::operator==</a></div><div class="ttdeci">constexpr friend bool operator==(tuple const &amp;lhs, tuple&lt; Vs... &gt; const &amp;rhs)</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple_8h_source.html#l00176">daw_tuple.h:176</a></div></div>
 <div class="ttc" id="adaw__move_8h_html"><div class="ttname"><a href="daw__move_8h.html">daw_move.h</a></div></div>
 <div class="ttc" id="adaw__move_8h_html_a46327bbb47123f9650c3b0e0ce807ec9"><div class="ttname"><a href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a></div><div class="ttdeci">#define DAW_FWD(...)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00037">daw_move.h:37</a></div></div>
@@ -388,11 +392,11 @@ $(function() {
 <div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="compressed__pair_8h_source.html#l00018">compressed_pair.h:18</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a00ea6294fc0d1208169fdd524268e7eb"><div class="ttname"><a href="namespacedaw.html#a00ea6294fc0d1208169fdd524268e7eb">daw::tuple_size_v</a></div><div class="ttdeci">constexpr size_t tuple_size_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple__helper_8h_source.html#l00502">daw_tuple_helper.h:502</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a154129ce0132a086d84a3207b31a925f"><div class="ttname"><a href="namespacedaw.html#a154129ce0132a086d84a3207b31a925f">daw::index_constant</a></div><div class="ttdeci">std::integral_constant&lt; std::size_t, N &gt; index_constant</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits_8h_source.html#l01000">daw_traits.h:1000</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a15f1aae31630816649289e15b156a096"><div class="ttname"><a href="namespacedaw.html#a15f1aae31630816649289e15b156a096">daw::get</a></div><div class="ttdeci">constexpr decltype(auto) get(tuple&lt; Ts... &gt; &amp;&amp;tp)</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple_8h_source.html#l00214">daw_tuple.h:214</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a2a0e27c5b8f0bd544580af24794e1f75"><div class="ttname"><a href="namespacedaw.html#a2a0e27c5b8f0bd544580af24794e1f75">daw::make_tuple</a></div><div class="ttdeci">constexpr tuple&lt; make_tuple_details::unwrap_decay_t&lt; Ts &gt;... &gt; make_tuple(Ts &amp;&amp;...args)</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple_8h_source.html#l00246">daw_tuple.h:246</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a15f1aae31630816649289e15b156a096"><div class="ttname"><a href="namespacedaw.html#a15f1aae31630816649289e15b156a096">daw::get</a></div><div class="ttdeci">constexpr decltype(auto) get(tuple&lt; Ts... &gt; &amp;&amp;tp)</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple_8h_source.html#l00218">daw_tuple.h:218</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a2a0e27c5b8f0bd544580af24794e1f75"><div class="ttname"><a href="namespacedaw.html#a2a0e27c5b8f0bd544580af24794e1f75">daw::make_tuple</a></div><div class="ttdeci">constexpr tuple&lt; make_tuple_details::unwrap_decay_t&lt; Ts &gt;... &gt; make_tuple(Ts &amp;&amp;...args)</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple_8h_source.html#l00250">daw_tuple.h:250</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a54804cf04d9ca94837eed849f0096e82"><div class="ttname"><a href="namespacedaw.html#a54804cf04d9ca94837eed849f0096e82">daw::tuple</a></div><div class="ttdeci">tuple(Ts...) -&gt; tuple&lt; Ts... &gt;</div></div>
-<div class="ttc" id="anamespacedaw_html_a7b9581103c6919b1c8904362a8f2c073"><div class="ttname"><a href="namespacedaw.html#a7b9581103c6919b1c8904362a8f2c073">daw::tie</a></div><div class="ttdeci">constexpr tuple&lt; Ts &amp;... &gt; tie(Ts &amp;...ts) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple_8h_source.html#l00224">daw_tuple.h:224</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a94f9b8727d7fac14b2248dfaf671ecb8"><div class="ttname"><a href="namespacedaw.html#a94f9b8727d7fac14b2248dfaf671ecb8">daw::forward_as_tuple</a></div><div class="ttdeci">constexpr tuple&lt; Ts &amp;&amp;... &gt; forward_as_tuple(Ts &amp;&amp;...ts) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple_8h_source.html#l00219">daw_tuple.h:219</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a7b9581103c6919b1c8904362a8f2c073"><div class="ttname"><a href="namespacedaw.html#a7b9581103c6919b1c8904362a8f2c073">daw::tie</a></div><div class="ttdeci">constexpr tuple&lt; Ts &amp;... &gt; tie(Ts &amp;...ts) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple_8h_source.html#l00228">daw_tuple.h:228</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a94f9b8727d7fac14b2248dfaf671ecb8"><div class="ttname"><a href="namespacedaw.html#a94f9b8727d7fac14b2248dfaf671ecb8">daw::forward_as_tuple</a></div><div class="ttdeci">constexpr tuple&lt; Ts &amp;&amp;... &gt; forward_as_tuple(Ts &amp;&amp;...ts) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple_8h_source.html#l00223">daw_tuple.h:223</a></div></div>
 <div class="ttc" id="anamespacedaw_html_aa262c9df4a2234d2089c59a4e13dbfe6"><div class="ttname"><a href="namespacedaw.html#aa262c9df4a2234d2089c59a4e13dbfe6">daw::apply</a></div><div class="ttdeci">constexpr decltype(auto) apply(F &amp;&amp;f, Tuple &amp;&amp;t)</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00389">cpp_17.h:389</a></div></div>
 <div class="ttc" id="anamespacedaw_html_aaf04bbb17a0eb3df0e77509eadfffb09"><div class="ttname"><a href="namespacedaw.html#aaf04bbb17a0eb3df0e77509eadfffb09">daw::invoke</a></div><div class="ttdeci">constexpr decltype(auto) invoke(F &amp;&amp;f, Args &amp;&amp;...args) noexcept(std::is_nothrow_invocable_v&lt; F, Args... &gt;)</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00357">cpp_17.h:357</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ad8b37b6c283ce451b25949269438de82"><div class="ttname"><a href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">daw::enable_if_t</a></div><div class="ttdeci">std::enable_if_t&lt; B, T &gt; enable_if_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__enable__if_8h_source.html#l00022">daw_enable_if.h:22</a></div></div>

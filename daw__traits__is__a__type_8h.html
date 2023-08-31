@@ -182,10 +182,10 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;                                                         \</div>
-<div class="line">  inline constexpr <span class="keywordtype">bool</span> is_##ContainerName##_v =                               \</div>
-<div class="line">    std::is_same_v&lt;T, std::ContainerName&lt;typename T::value_type&gt;&gt;;             \</div>
-<div class="line">  template&lt;typename T&gt;                                                         \</div>
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;                                             \</div>
+<div class="line">  inline constexpr <span class="keywordtype">bool</span> is_##ContainerName##_v =                   \</div>
+<div class="line">    std::is_same_v&lt;T, std::ContainerName&lt;typename T::value_type&gt;&gt;; \</div>
+<div class="line">  template&lt;typename T&gt;                                             \</div>
 <div class="line">  using is_##ContainerName = std::bool_constant&lt;is_##ContainerName##_v&lt;T&gt;&gt;</div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="daw__traits__is__a__type_8h_source.html#l00024">24</a> of file <a class="el" href="daw__traits__is__a__type_8h_source.html">daw_traits_is_a_type.h</a>.</p>
@@ -207,10 +207,10 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;                                                         \</div>
-<div class="line">  inline constexpr <span class="keywordtype">bool</span> is_##ContainerName##_v = std::is_same_v&lt;               \</div>
-<div class="line">    T, std::ContainerName&lt;typename T::key_type, typename T::mapped_type&gt;&gt;;     \</div>
-<div class="line">  template&lt;typename T&gt;                                                         \</div>
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;                                                     \</div>
+<div class="line">  inline constexpr <span class="keywordtype">bool</span> is_##ContainerName##_v = std::is_same_v&lt;           \</div>
+<div class="line">    T, std::ContainerName&lt;typename T::key_type, typename T::mapped_type&gt;&gt;; \</div>
+<div class="line">  template&lt;typename T&gt;                                                     \</div>
 <div class="line">  using is_##ContainerName = std::bool_constant&lt;is_##ContainerName##_v&lt;T&gt;&gt;</div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="daw__traits__is__a__type_8h_source.html#l00039">39</a> of file <a class="el" href="daw__traits__is__a__type_8h_source.html">daw_traits_is_a_type.h</a>.</p>

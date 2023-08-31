@@ -93,11 +93,11 @@ $(function() {
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw_1_1traits.html">daw::traits</a> {</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="daw__traits__is__a__type_8h.html#afe8ca084b0b42c6f625eebf8a910e305">   24</a></span>&#160;<span class="preprocessor">#define GENERATE_IS_STD_CONTAINER1( ContainerName )                            \</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">  template&lt;typename T&gt;                                                         \</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">  inline constexpr bool is_##ContainerName##_v =                               \</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">    std::is_same_v&lt;T, std::ContainerName&lt;typename T::value_type&gt;&gt;;             \</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">  template&lt;typename T&gt;                                                         \</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="daw__traits__is__a__type_8h.html#afe8ca084b0b42c6f625eebf8a910e305">   24</a></span>&#160;<span class="preprocessor">#define GENERATE_IS_STD_CONTAINER1( ContainerName )                \</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">  template&lt;typename T&gt;                                             \</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">  inline constexpr bool is_##ContainerName##_v =                   \</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">    std::is_same_v&lt;T, std::ContainerName&lt;typename T::value_type&gt;&gt;; \</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">  template&lt;typename T&gt;                                             \</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">  using is_##ContainerName = std::bool_constant&lt;is_##ContainerName##_v&lt;T&gt;&gt;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="namespacedaw_1_1traits.html#aec2d82ee6896e2d3f588c201643032ea">   31</a></span>&#160;  <a class="code" href="namespacedaw_1_1traits.html#aec2d82ee6896e2d3f588c201643032ea">GENERATE_IS_STD_CONTAINER1</a>( <a class="code" href="structdaw_1_1vector.html">vector</a> );</div>
@@ -108,11 +108,11 @@ $(function() {
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#undef GENERATE_IS_STD_CONTAINER1</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="daw__traits__is__a__type_8h.html#a8f0f73af1ca3c0956b6b45bbf139d67a">   39</a></span>&#160;<span class="preprocessor">#define GENERATE_IS_STD_CONTAINER2( ContainerName )                            \</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">  template&lt;typename T&gt;                                                         \</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">  inline constexpr bool is_##ContainerName##_v = std::is_same_v&lt;               \</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">    T, std::ContainerName&lt;typename T::key_type, typename T::mapped_type&gt;&gt;;     \</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">  template&lt;typename T&gt;                                                         \</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="daw__traits__is__a__type_8h.html#a8f0f73af1ca3c0956b6b45bbf139d67a">   39</a></span>&#160;<span class="preprocessor">#define GENERATE_IS_STD_CONTAINER2( ContainerName )                        \</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">  template&lt;typename T&gt;                                                     \</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">  inline constexpr bool is_##ContainerName##_v = std::is_same_v&lt;           \</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">    T, std::ContainerName&lt;typename T::key_type, typename T::mapped_type&gt;&gt;; \</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">  template&lt;typename T&gt;                                                     \</span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">  using is_##ContainerName = std::bool_constant&lt;is_##ContainerName##_v&lt;T&gt;&gt;</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="namespacedaw_1_1traits.html#a1d1814631a7ecca8e67d9d72746ec927">   46</a></span>&#160;  <a class="code" href="namespacedaw_1_1traits.html#a1d1814631a7ecca8e67d9d72746ec927">GENERATE_IS_STD_CONTAINER2</a>( <a class="code" href="namespacedaw_1_1algorithm.html#aa8e353a0bcfae6ff014273ee36625c5c">map</a> );</div>
