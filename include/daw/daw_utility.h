@@ -866,7 +866,7 @@ namespace daw {
 	} // namespace utility_details
 
 	template<typename Integer, typename T>
-	[[nodiscard]] constexpr Integer narrow_cast( T value ) noexcept {
+	[[nodiscard]] constexpr Integer narrow_cast( T value ) {
 		if constexpr( std::is_signed_v<T> ) {
 			if constexpr( std::is_signed_v<Integer> ) {
 				if constexpr( sizeof( T ) <= sizeof( Integer ) ) {
