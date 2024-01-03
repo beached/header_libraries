@@ -182,15 +182,15 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a518e830287adce0d461dcd65ac75fbf8"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a518e830287adce0d461dcd65ac75fbf8"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a518e830287adce0d461dcd65ac75fbf8">class_template_parameters</a> = typename <a class="el" href="structdaw_1_1traits_1_1class__parts.html">class_parts</a>&lt; T &gt;::<a class="el" href="namespacedaw_1_1traits.html#a518e830287adce0d461dcd65ac75fbf8">class_template_parameters</a></td></tr>
 <tr class="separator:a518e830287adce0d461dcd65ac75fbf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24c6b912d77e10fdedaa6a45e12fb076"><td class="memTemplParams" colspan="2">template&lt;typename To , typename From &gt; </td></tr>
-<tr class="memitem:a24c6b912d77e10fdedaa6a45e12fb076"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a24c6b912d77e10fdedaa6a45e12fb076">copy_const_t</a> = std::conditional_t&lt; std::is_const_v&lt; std::remove_reference_t&lt; From &gt; &gt;, <a class="el" href="namespacedaw_1_1traits.html#a6a37a6c6d47881ba566f8897a2445eb9">copy_ref_t</a>&lt; To, std::add_const_t&lt; std::remove_reference_t&lt; To &gt; &gt;&gt;, <a class="el" href="namespacedaw_1_1traits.html#a6a37a6c6d47881ba566f8897a2445eb9">copy_ref_t</a>&lt; To, std::remove_const_t&lt; std::remove_reference_t&lt; To &gt; &gt;&gt; &gt;</td></tr>
-<tr class="separator:a24c6b912d77e10fdedaa6a45e12fb076"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c60d1feefb46215061c3bbf99f96de7"><td class="memTemplParams" colspan="2">template&lt;typename To , typename From &gt; </td></tr>
+<tr class="memitem:a8c60d1feefb46215061c3bbf99f96de7"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a8c60d1feefb46215061c3bbf99f96de7">copy_const_t</a> = <a class="el" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt; std::is_const_v&lt; std::remove_reference_t&lt; From &gt; &gt;, <a class="el" href="namespacedaw_1_1traits.html#a26f69ade412e12e9c4230e172a0a1763">copy_ref_t</a>&lt; To, std::add_const_t&lt; std::remove_reference_t&lt; To &gt; &gt;&gt;, <a class="el" href="namespacedaw_1_1traits.html#a26f69ade412e12e9c4230e172a0a1763">copy_ref_t</a>&lt; To, std::remove_const_t&lt; std::remove_reference_t&lt; To &gt; &gt;&gt; &gt;</td></tr>
+<tr class="separator:a8c60d1feefb46215061c3bbf99f96de7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a149ce42ade437f2ffc65a4a0868a0dcd"><td class="memTemplParams" colspan="2">template&lt;typename To , typename From &gt; </td></tr>
-<tr class="memitem:a149ce42ade437f2ffc65a4a0868a0dcd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a149ce42ade437f2ffc65a4a0868a0dcd">copy_constref_t</a> = <a class="el" href="namespacedaw_1_1traits.html#a6a37a6c6d47881ba566f8897a2445eb9">copy_ref_t</a>&lt; From, <a class="el" href="namespacedaw_1_1traits.html#a24c6b912d77e10fdedaa6a45e12fb076">copy_const_t</a>&lt; To, From &gt; &gt;</td></tr>
+<tr class="memitem:a149ce42ade437f2ffc65a4a0868a0dcd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a149ce42ade437f2ffc65a4a0868a0dcd">copy_constref_t</a> = <a class="el" href="namespacedaw_1_1traits.html#a26f69ade412e12e9c4230e172a0a1763">copy_ref_t</a>&lt; From, <a class="el" href="namespacedaw_1_1traits.html#a8c60d1feefb46215061c3bbf99f96de7">copy_const_t</a>&lt; To, From &gt; &gt;</td></tr>
 <tr class="separator:a149ce42ade437f2ffc65a4a0868a0dcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a37a6c6d47881ba566f8897a2445eb9"><td class="memTemplParams" colspan="2">template&lt;typename To , typename From &gt; </td></tr>
-<tr class="memitem:a6a37a6c6d47881ba566f8897a2445eb9"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a6a37a6c6d47881ba566f8897a2445eb9">copy_ref_t</a> = std::conditional_t&lt; std::is_lvalue_reference_v&lt; From &gt;, std::add_lvalue_reference_t&lt; std::remove_reference_t&lt; To &gt; &gt;, std::conditional_t&lt; std::is_rvalue_reference_v&lt; From &gt;, std::add_rvalue_reference_t&lt; std::remove_reference_t&lt; To &gt; &gt;, std::remove_reference_t&lt; To &gt; &gt; &gt;</td></tr>
-<tr class="separator:a6a37a6c6d47881ba566f8897a2445eb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26f69ade412e12e9c4230e172a0a1763"><td class="memTemplParams" colspan="2">template&lt;typename To , typename From &gt; </td></tr>
+<tr class="memitem:a26f69ade412e12e9c4230e172a0a1763"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a26f69ade412e12e9c4230e172a0a1763">copy_ref_t</a> = <a class="el" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt; std::is_lvalue_reference_v&lt; From &gt;, std::add_lvalue_reference_t&lt; std::remove_reference_t&lt; To &gt; &gt;, <a class="el" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt; std::is_rvalue_reference_v&lt; From &gt;, std::add_rvalue_reference_t&lt; std::remove_reference_t&lt; To &gt; &gt;, std::remove_reference_t&lt; To &gt; &gt; &gt;</td></tr>
+<tr class="separator:a26f69ade412e12e9c4230e172a0a1763"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af494e713df6a9218c632d4042f43a102"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:af494e713df6a9218c632d4042f43a102"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#af494e713df6a9218c632d4042f43a102">deref_t</a> = decltype(*std::declval&lt; T &gt;())</td></tr>
 <tr class="separator:af494e713df6a9218c632d4042f43a102"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -749,7 +749,7 @@ template&lt;typename... Ts&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00439">439</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00440">440</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -767,7 +767,7 @@ template&lt;bool... Bools&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00127">127</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00128">128</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -785,7 +785,7 @@ template&lt;bool... Bools&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00136">136</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00137">137</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -803,7 +803,7 @@ template&lt;typename To , typename... Froms&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00182">182</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00183">183</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -821,12 +821,12 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00921">921</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00922">922</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
-<a id="a24c6b912d77e10fdedaa6a45e12fb076"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24c6b912d77e10fdedaa6a45e12fb076">&#9670;&nbsp;</a></span>copy_const_t</h2>
+<a id="a8c60d1feefb46215061c3bbf99f96de7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c60d1feefb46215061c3bbf99f96de7">&#9670;&nbsp;</a></span>copy_const_t</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -834,12 +834,12 @@ template&lt;typename T &gt; </div>
 template&lt;typename To , typename From &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacedaw_1_1traits.html#a24c6b912d77e10fdedaa6a45e12fb076">daw::traits::copy_const_t</a> = typedef std::conditional_t&lt; std::is_const_v&lt;std::remove_reference_t&lt;From&gt; &gt;, <a class="el" href="namespacedaw_1_1traits.html#a6a37a6c6d47881ba566f8897a2445eb9">copy_ref_t</a>&lt;To, std::add_const_t&lt;std::remove_reference_t&lt;To&gt; &gt;&gt;, <a class="el" href="namespacedaw_1_1traits.html#a6a37a6c6d47881ba566f8897a2445eb9">copy_ref_t</a>&lt;To, std::remove_const_t&lt;std::remove_reference_t&lt;To&gt; &gt;&gt; &gt;</td>
+          <td class="memname">using <a class="el" href="namespacedaw_1_1traits.html#a8c60d1feefb46215061c3bbf99f96de7">daw::traits::copy_const_t</a> = typedef <a class="el" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt; std::is_const_v&lt;std::remove_reference_t&lt;From&gt; &gt;, <a class="el" href="namespacedaw_1_1traits.html#a26f69ade412e12e9c4230e172a0a1763">copy_ref_t</a>&lt;To, std::add_const_t&lt;std::remove_reference_t&lt;To&gt; &gt;&gt;, <a class="el" href="namespacedaw_1_1traits.html#a26f69ade412e12e9c4230e172a0a1763">copy_ref_t</a>&lt;To, std::remove_const_t&lt;std::remove_reference_t&lt;To&gt; &gt;&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00974">974</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00975">975</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -852,17 +852,17 @@ template&lt;typename To , typename From &gt; </div>
 template&lt;typename To , typename From &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacedaw_1_1traits.html#a149ce42ade437f2ffc65a4a0868a0dcd">daw::traits::copy_constref_t</a> = typedef <a class="el" href="namespacedaw_1_1traits.html#a6a37a6c6d47881ba566f8897a2445eb9">copy_ref_t</a>&lt;From, <a class="el" href="namespacedaw_1_1traits.html#a24c6b912d77e10fdedaa6a45e12fb076">copy_const_t</a>&lt;To, From&gt; &gt;</td>
+          <td class="memname">using <a class="el" href="namespacedaw_1_1traits.html#a149ce42ade437f2ffc65a4a0868a0dcd">daw::traits::copy_constref_t</a> = typedef <a class="el" href="namespacedaw_1_1traits.html#a26f69ade412e12e9c4230e172a0a1763">copy_ref_t</a>&lt;From, <a class="el" href="namespacedaw_1_1traits.html#a8c60d1feefb46215061c3bbf99f96de7">copy_const_t</a>&lt;To, From&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00981">981</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00982">982</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
-<a id="a6a37a6c6d47881ba566f8897a2445eb9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a37a6c6d47881ba566f8897a2445eb9">&#9670;&nbsp;</a></span>copy_ref_t</h2>
+<a id="a26f69ade412e12e9c4230e172a0a1763"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26f69ade412e12e9c4230e172a0a1763">&#9670;&nbsp;</a></span>copy_ref_t</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -870,12 +870,12 @@ template&lt;typename To , typename From &gt; </div>
 template&lt;typename To , typename From &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacedaw_1_1traits.html#a6a37a6c6d47881ba566f8897a2445eb9">daw::traits::copy_ref_t</a> = typedef std::conditional_t&lt; std::is_lvalue_reference_v&lt;From&gt;, std::add_lvalue_reference_t&lt;std::remove_reference_t&lt;To&gt; &gt;, std::conditional_t&lt; std::is_rvalue_reference_v&lt;From&gt;, std::add_rvalue_reference_t&lt;std::remove_reference_t&lt;To&gt; &gt;, std::remove_reference_t&lt;To&gt; &gt; &gt;</td>
+          <td class="memname">using <a class="el" href="namespacedaw_1_1traits.html#a26f69ade412e12e9c4230e172a0a1763">daw::traits::copy_ref_t</a> = typedef <a class="el" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt; std::is_lvalue_reference_v&lt;From&gt;, std::add_lvalue_reference_t&lt;std::remove_reference_t&lt;To&gt; &gt;, <a class="el" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt; std::is_rvalue_reference_v&lt;From&gt;, std::add_rvalue_reference_t&lt;std::remove_reference_t&lt;To&gt; &gt;, std::remove_reference_t&lt;To&gt; &gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00962">962</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00963">963</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -893,7 +893,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00464">464</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00465">465</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -913,7 +913,7 @@ template&lt;typename R , bool... Bs&gt; </div>
 
 <p>Summary: Similar to enable_if but enabled when all of the parameters is true. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00149">149</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00150">150</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -933,7 +933,7 @@ template&lt;typename R , bool... Bs&gt; </div>
 
 <p>Summary: Similar to enable_if but enabled when any of the parameters is true. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00142">142</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00143">143</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -951,7 +951,7 @@ template&lt;typename T , typename Class , std::size_t StartIdx = 0&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00933">933</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00934">934</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -969,7 +969,7 @@ template&lt;typename ClassA , typename ClassB , std::size_t StartIdx = 0&gt; </d
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00941">941</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00942">942</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -987,7 +987,7 @@ template&lt;typename... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00482">482</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00483">483</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1005,7 +1005,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00733">733</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00734">734</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1023,7 +1023,7 @@ template&lt;typename F , size_t N&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00715">715</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00716">716</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1041,7 +1041,7 @@ template&lt;typename F &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00718">718</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00719">719</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1059,7 +1059,7 @@ template&lt;typename T , typename Class &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00925">925</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00926">926</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1077,7 +1077,7 @@ template&lt;typename Function , typename... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00471">471</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00472">472</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1221,7 +1221,7 @@ template&lt;template&lt; typename... &gt; typename Template, typename Type &gt; 
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00648">648</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00649">649</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1239,7 +1239,7 @@ template&lt;typename T , typename... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00773">773</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00774">774</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1275,7 +1275,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00258">258</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00259">259</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1293,7 +1293,7 @@ template&lt;typename T , typename... Types&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00165">165</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00166">166</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1329,7 +1329,7 @@ template&lt;typename... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00592">592</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00593">593</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1365,7 +1365,7 @@ template&lt;typename... Types&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00072">72</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00073">73</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1383,7 +1383,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00992">992</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00993">993</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1401,7 +1401,7 @@ template&lt;std::size_t Idx, typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00917">917</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00918">918</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1455,7 +1455,7 @@ template&lt;typename... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00620">620</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00621">621</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1473,7 +1473,7 @@ template&lt;typename T , typename... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00623">623</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00624">624</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1491,7 +1491,7 @@ template&lt;typename T , typename... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00626">626</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00627">627</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1509,7 +1509,7 @@ template&lt;typename Function , typename... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00467">467</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00468">468</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1527,7 +1527,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00046">46</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00047">47</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1545,7 +1545,7 @@ template&lt;typename T , typename... Ts&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00748">748</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00749">749</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1563,7 +1563,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00249">249</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00250">250</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1581,7 +1581,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00252">252</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00253">253</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1614,7 +1614,7 @@ template&lt;typename BoolType , daw::enable_when_t&lt; std::is_convertible_v&lt;
 
 <p>Summary: Returns true if all values passed are true. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00082">82</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00083">83</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1654,7 +1654,7 @@ template&lt;typename BoolType1 , typename BoolType2 &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00087">87</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00088">88</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1700,7 +1700,7 @@ template&lt;typename BoolType1 , typename BoolType2 , typename... Booleans&gt; <
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00092">92</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00093">93</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -1740,7 +1740,7 @@ template&lt;bool Bool, typename OnTrue , typename OnFalse  = no_else&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00753">753</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00754">754</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -2374,7 +2374,7 @@ template&lt;typename F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00721">721</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00722">722</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -2459,7 +2459,7 @@ template&lt;typename T , typename U &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00389">389</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00390">390</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -2486,7 +2486,7 @@ template&lt;typename T , typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00043">43</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00044">44</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -2514,7 +2514,7 @@ template&lt;typename To , typename... From&gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    all_true_v&lt;std::is_convertible_v&lt;From, To&gt;...&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00396">396</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00397">397</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -2540,7 +2540,7 @@ template&lt;typename T , typename... Rest&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00112">112</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00113">113</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -2566,7 +2566,7 @@ template&lt;typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00441">441</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00442">442</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -2594,7 +2594,7 @@ template&lt;bool... Bools&gt; </div>
 
 <p>Summary: Integral constant with result of and'ing all bool's supplied. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00124">124</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00125">125</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -2622,7 +2622,7 @@ template&lt;bool... Bools&gt; </div>
 
 <p>Summary: Integral constant with result of or'ing all bool's supplied. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00133">133</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00134">134</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -2650,7 +2650,7 @@ template&lt;typename To , typename... Froms&gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    can_convert_from&lt;To, Froms...&gt;::value</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00185">185</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00186">186</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -2676,7 +2676,7 @@ template&lt;auto Value, auto... Values&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00995">995</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00996">996</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -2704,7 +2704,7 @@ template&lt;typename T , typename Class , std::size_t StartIdx = 0&gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    find_class_template_parameter&lt;T, Class, StartIdx&gt;::value</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00937">937</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00938">938</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -2732,9 +2732,9 @@ template&lt;typename ClassA , typename ClassB , std::size_t StartIdx = 0&gt; </d
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">      <a class="code" href="namespacedaw_1_1traits.html#ad9f6f3c76107536d1ece5f94485f073b">find_first_mismatched_class_template_parameter</a>&lt;ClassA, ClassB,</div>
 <div class="line">                                                     StartIdx&gt;::value</div>
-<div class="ttc" id="anamespacedaw_1_1traits_html_ad9f6f3c76107536d1ece5f94485f073b"><div class="ttname"><a href="namespacedaw_1_1traits.html#ad9f6f3c76107536d1ece5f94485f073b">daw::traits::find_first_mismatched_class_template_parameter</a></div><div class="ttdeci">typename class_parts&lt; ClassA &gt;::template find_first_mismatched_class_template_parameter&lt; class_parts&lt; ClassB &gt;, StartIdx &gt; find_first_mismatched_class_template_parameter</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits_8h_source.html#l00941">daw_traits.h:944</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1traits_html_ad9f6f3c76107536d1ece5f94485f073b"><div class="ttname"><a href="namespacedaw_1_1traits.html#ad9f6f3c76107536d1ece5f94485f073b">daw::traits::find_first_mismatched_class_template_parameter</a></div><div class="ttdeci">typename class_parts&lt; ClassA &gt;::template find_first_mismatched_class_template_parameter&lt; class_parts&lt; ClassB &gt;, StartIdx &gt; find_first_mismatched_class_template_parameter</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits_8h_source.html#l00942">daw_traits.h:945</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00948">948</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00949">949</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -2875,7 +2875,7 @@ template&lt;typename T , typename Class &gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    has_class_template_parameter&lt;T, Class&gt;::value</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00929">929</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00930">930</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -3268,7 +3268,7 @@ template&lt;typename T &gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    is_detected_v&lt;traits_details::detectors::has_substr_member, T&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00238">238</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00239">239</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -3494,7 +3494,7 @@ template&lt;typename Result , typename Function , typename... Args&gt; </div>
 <div class="line">      <a class="code" href="namespacedaw.html#aca15c2fd76569c6b23122c8304641c49">is_detected_convertible_v</a>&lt;Result, <a class="code" href="namespacedaw_1_1traits_1_1detectors.html#ad5f9d15fa87a81a5a057caa5c1aee35d">traits::detectors::callable_with</a>,</div>
 <div class="line">                                Function, Args...&gt;</div>
 <div class="ttc" id="anamespacedaw_1_1traits_1_1detectors_html_ad5f9d15fa87a81a5a057caa5c1aee35d"><div class="ttname"><a href="namespacedaw_1_1traits_1_1detectors.html#ad5f9d15fa87a81a5a057caa5c1aee35d">daw::traits::detectors::callable_with</a></div><div class="ttdeci">decltype(std::declval&lt; Function &gt;()(std::declval&lt; Args &gt;()...)) callable_with</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits__impl_8h_source.html#l00023">daw_traits_impl.h:24</a></div></div>
-<div class="ttc" id="anamespacedaw_html_aca15c2fd76569c6b23122c8304641c49"><div class="ttname"><a href="namespacedaw.html#aca15c2fd76569c6b23122c8304641c49">daw::is_detected_convertible_v</a></div><div class="ttdeci">constexpr bool is_detected_convertible_v</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00217">cpp_17.h:217</a></div></div>
+<div class="ttc" id="anamespacedaw_html_aca15c2fd76569c6b23122c8304641c49"><div class="ttname"><a href="namespacedaw.html#aca15c2fd76569c6b23122c8304641c49">daw::is_detected_convertible_v</a></div><div class="ttdeci">constexpr bool is_detected_convertible_v</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00218">cpp_17.h:218</a></div></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="daw__traits__impl_8h_source.html#l00172">172</a> of file <a class="el" href="daw__traits__impl_8h_source.html">daw_traits_impl.h</a>.</p>
 
@@ -3525,7 +3525,7 @@ template&lt;typename Function , typename... Args&gt; </div>
 <div class="line">      <a class="code" href="namespacedaw.html#a05cb5775a1268bd66ef632bcfd4e4bd7">is_detected_v</a>&lt;<a class="code" href="namespacedaw_1_1traits_1_1detectors.html#ad5f9d15fa87a81a5a057caa5c1aee35d">traits::detectors::callable_with</a>, Function, Args...&gt; or</div>
 <div class="line">      ( is_single_void_arg_v&lt;Args...&gt; and</div>
 <div class="line">        is_detected_v&lt;traits::detectors::callable_with, Function&gt; )</div>
-<div class="ttc" id="anamespacedaw_html_a05cb5775a1268bd66ef632bcfd4e4bd7"><div class="ttname"><a href="namespacedaw.html#a05cb5775a1268bd66ef632bcfd4e4bd7">daw::is_detected_v</a></div><div class="ttdeci">constexpr bool is_detected_v</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00194">cpp_17.h:194</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a05cb5775a1268bd66ef632bcfd4e4bd7"><div class="ttname"><a href="namespacedaw.html#a05cb5775a1268bd66ef632bcfd4e4bd7">daw::is_detected_v</a></div><div class="ttdeci">constexpr bool is_detected_v</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00195">cpp_17.h:195</a></div></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="daw__traits__impl_8h_source.html#l00166">166</a> of file <a class="el" href="daw__traits__impl_8h_source.html">daw_traits_impl.h</a>.</p>
 
@@ -3683,7 +3683,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00589">589</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00590">590</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -4015,7 +4015,7 @@ template&lt;typename T , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00505">505</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00506">506</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -4128,11 +4128,11 @@ template&lt;typename T , typename... Args&gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="namespacedaw.html#a0bcc2a7f2071080849dfcbb61e455990">all_true_v</a>&lt;</div>
 <div class="line">    <a class="code" href="namespacedaw_1_1traits.html#af4f667159f678560ddc5f79b18e264e7">are_same_types_v</a>&lt;Args...&gt;,</div>
 <div class="line">    std::is_constructible_v&lt;T, std::initializer_list&lt;<a class="code" href="namespacedaw_1_1traits.html#a834978f0c82968e5d43de87787584c9a">first_type</a>&lt;Args...&gt;&gt;&gt;&gt;</div>
-<div class="ttc" id="anamespacedaw_1_1traits_html_a834978f0c82968e5d43de87787584c9a"><div class="ttname"><a href="namespacedaw_1_1traits.html#a834978f0c82968e5d43de87787584c9a">daw::traits::first_type</a></div><div class="ttdeci">typename traits_details::first_type_impl&lt; Args... &gt;::type first_type</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits_8h_source.html#l00482">daw_traits.h:482</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1traits_html_af4f667159f678560ddc5f79b18e264e7"><div class="ttname"><a href="namespacedaw_1_1traits.html#af4f667159f678560ddc5f79b18e264e7">daw::traits::are_same_types_v</a></div><div class="ttdeci">constexpr bool are_same_types_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits_8h_source.html#l00112">daw_traits.h:112</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a0bcc2a7f2071080849dfcbb61e455990"><div class="ttname"><a href="namespacedaw.html#a0bcc2a7f2071080849dfcbb61e455990">daw::all_true_v</a></div><div class="ttdeci">constexpr bool all_true_v</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00052">cpp_17.h:52</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1traits_html_a834978f0c82968e5d43de87787584c9a"><div class="ttname"><a href="namespacedaw_1_1traits.html#a834978f0c82968e5d43de87787584c9a">daw::traits::first_type</a></div><div class="ttdeci">typename traits_details::first_type_impl&lt; Args... &gt;::type first_type</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits_8h_source.html#l00483">daw_traits.h:483</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1traits_html_af4f667159f678560ddc5f79b18e264e7"><div class="ttname"><a href="namespacedaw_1_1traits.html#af4f667159f678560ddc5f79b18e264e7">daw::traits::are_same_types_v</a></div><div class="ttdeci">constexpr bool are_same_types_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits_8h_source.html#l00113">daw_traits.h:113</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a0bcc2a7f2071080849dfcbb61e455990"><div class="ttname"><a href="namespacedaw.html#a0bcc2a7f2071080849dfcbb61e455990">daw::all_true_v</a></div><div class="ttdeci">constexpr bool all_true_v</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00053">cpp_17.h:53</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00512">512</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00513">513</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -4272,7 +4272,7 @@ template&lt;template&lt; typename... &gt; typename, typename &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00642">642</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00643">643</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -4298,7 +4298,7 @@ template&lt;template&lt; typename... &gt; typename Template, typename... Args&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00645">645</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00646">646</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -4417,7 +4417,7 @@ template&lt;typename T , typename... Args&gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    <a class="code" href="namespacedaw.html#a05cb5775a1268bd66ef632bcfd4e4bd7">daw::is_detected_v</a>&lt;traits_details::is_list_constructible_test, T, Args...&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00769">769</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00770">770</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -4445,7 +4445,7 @@ template&lt;typename T &gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    all_true_v&lt;is_container_like_v&lt;T&gt;, has_mapped_type_member_v&lt;T&gt;&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00242">242</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00243">243</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -4499,7 +4499,7 @@ template&lt;template&lt; class &gt; class Base, typename Derived &gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    std::is_base_of_v&lt;Base&lt;Derived&gt;, Derived&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00275">275</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00276">276</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -4527,7 +4527,7 @@ template&lt;typename String &gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    not daw::is_detected_v&lt;detectors::is_array_array, String&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00400">400</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00401">401</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -4583,7 +4583,7 @@ template&lt;typename T , typename... Args&gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    is_nothrow_list_constructible&lt;T, Args...&gt;::value</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00798">798</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00799">799</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -4609,7 +4609,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00262">262</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00263">263</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -4635,7 +4635,7 @@ template&lt;typename T , typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00168">168</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00169">169</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -4668,7 +4668,7 @@ template&lt;typename T &gt; </div>
 <div class="line">               traits_details::ostream_detectors::has_width_member_v&lt;T&gt;,</div>
 <div class="line">               traits_details::ostream_detectors::has_flags_member_v&lt;T&gt;&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00575">575</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00576">576</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -4697,7 +4697,7 @@ template&lt;typename T , typename CharT &gt; </div>
 <div class="line">    all_true_v&lt;is_ostream_like_lite_v&lt;T&gt;,</div>
 <div class="line">               traits_details::ostream_detectors::has_write_member_v&lt;T, CharT&gt;&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00584">584</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00585">585</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -5051,7 +5051,7 @@ template&lt;typename OutStream , typename T &gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    daw::is_detected_v&lt;traits_details::detectors::streamable, OutStream &amp;, T&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00271">271</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00272">272</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -5081,7 +5081,7 @@ template&lt;typename String &gt; </div>
 <div class="line">    has_append_memberfn_v&lt;String&gt; and is_container_like_v&lt;String&gt; and</div>
 <div class="line">    has_integer_subscript_v&lt;String&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00411">411</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00412">412</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -5141,7 +5141,7 @@ template&lt;typename String &gt; </div>
 <div class="line">    has_size_memberfn_v&lt;String const&gt; and has_empty_memberfn_v&lt;String const&gt; and</div>
 <div class="line">    is_not_array_array_v&lt;String&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00404">404</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00405">405</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -5167,7 +5167,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00914">914</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00915">915</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -5195,7 +5195,7 @@ template&lt;typename... Ts&gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    <a class="code" href="namespacedaw.html#a05cb5775a1268bd66ef632bcfd4e4bd7">is_detected_v</a>&lt;traits_details::detect_is_tuple, Ts...&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00508">508</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00509">509</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -5280,7 +5280,7 @@ template&lt;typename Container , size_t ExpectedSize&gt; </div>
 <div class="line">    <span class="keyword">sizeof</span>( *<a class="code" href="namespacedaw.html#aa1edb3eac3ab330128319c905a57939e">std::cbegin</a>( std::declval&lt;Container&gt;( ) ) ) == ExpectedSize</div>
 <div class="ttc" id="anamespacedaw_html_aa1edb3eac3ab330128319c905a57939e"><div class="ttname"><a href="namespacedaw.html#aa1edb3eac3ab330128319c905a57939e">daw::cbegin</a></div><div class="ttdeci">constexpr const_iterator cbegin() const noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__contiguous__view_8h_source.html#l00127">daw_contiguous_view.h:127</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00417">417</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00418">418</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -5336,7 +5336,7 @@ template&lt;typename... Ts&gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    traits_details::isnt_cv_ref&lt;Ts...&gt;::value</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00460">460</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00461">461</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -5362,7 +5362,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00246">246</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00247">247</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -5414,7 +5414,7 @@ template&lt;typename... Types&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00075">75</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00076">76</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -5440,7 +5440,7 @@ template&lt;typename T , typename U &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00959">959</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00960">960</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -5466,7 +5466,7 @@ template&lt;typename T , typename... Pack&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00639">639</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00640">640</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -5492,7 +5492,7 @@ template&lt;typename T , typename... Pack&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00636">636</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00637">637</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -5518,7 +5518,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00255">255</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00256">256</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>

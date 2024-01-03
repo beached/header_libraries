@@ -82,8 +82,8 @@ $(function() {
 Public Types</h2></td></tr>
 <tr class="memitem:a625a55eb74cea406cc13af56f56ac59b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a625a55eb74cea406cc13af56f56ac59b">const_iterator</a> = <a class="el" href="structdaw_1_1iter__view.html#ab29820855d8f2e1988509f1fb4fc3723">iterator</a></td></tr>
 <tr class="separator:a625a55eb74cea406cc13af56f56ac59b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b4cfb3c680efaee71590bcd9d2c6e35"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a> = std::conditional_t&lt; std::is_rvalue_reference_v&lt; <a class="el" href="structdaw_1_1iter__view.html#a09995a8d5a1b90c5b13c6e8cf551d11a">reference</a> &gt;, std::add_rvalue_reference_t&lt; std::add_const_t&lt; std::remove_reference_t&lt; <a class="el" href="structdaw_1_1iter__view.html#a09995a8d5a1b90c5b13c6e8cf551d11a">reference</a> &gt; &gt;&gt;, std::add_lvalue_reference_t&lt; std::add_const_t&lt; std::remove_reference_t&lt; <a class="el" href="structdaw_1_1iter__view.html#a09995a8d5a1b90c5b13c6e8cf551d11a">reference</a> &gt; &gt;&gt; &gt;</td></tr>
-<tr class="separator:a5b4cfb3c680efaee71590bcd9d2c6e35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae271e9c23163b0250de1bb9617652479"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a> = <a class="el" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt; std::is_rvalue_reference_v&lt; <a class="el" href="structdaw_1_1iter__view.html#a09995a8d5a1b90c5b13c6e8cf551d11a">reference</a> &gt;, std::add_rvalue_reference_t&lt; std::add_const_t&lt; std::remove_reference_t&lt; <a class="el" href="structdaw_1_1iter__view.html#a09995a8d5a1b90c5b13c6e8cf551d11a">reference</a> &gt; &gt;&gt;, std::add_lvalue_reference_t&lt; std::add_const_t&lt; std::remove_reference_t&lt; <a class="el" href="structdaw_1_1iter__view.html#a09995a8d5a1b90c5b13c6e8cf551d11a">reference</a> &gt; &gt;&gt; &gt;</td></tr>
+<tr class="separator:ae271e9c23163b0250de1bb9617652479"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a923f74727a24dd4c8869bf0b644b4703"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a923f74727a24dd4c8869bf0b644b4703">const_reverse_iterator</a> = std::reverse_iterator&lt; <a class="el" href="structdaw_1_1iter__view.html#a625a55eb74cea406cc13af56f56ac59b">const_iterator</a> &gt;</td></tr>
 <tr class="separator:a923f74727a24dd4c8869bf0b644b4703"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07d8d95d1a0a8763aa19694f0b642993"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a07d8d95d1a0a8763aa19694f0b642993">difference_type</a> = std::ptrdiff_t</td></tr>
@@ -133,31 +133,31 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af948fa403ab74794c4da5a93b7c6c468"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ef575236fe91c9cd271d7491b676877"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html#ab29820855d8f2e1988509f1fb4fc3723">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a2ef575236fe91c9cd271d7491b676877">end</a> () noexcept</td></tr>
 <tr class="separator:a2ef575236fe91c9cd271d7491b676877"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32a120fee4d3eefb590b176a86dbc682"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html#a625a55eb74cea406cc13af56f56ac59b">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a32a120fee4d3eefb590b176a86dbc682">find</a> (<a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a> needle) const noexcept</td></tr>
+<tr class="memitem:a32a120fee4d3eefb590b176a86dbc682"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html#a625a55eb74cea406cc13af56f56ac59b">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a32a120fee4d3eefb590b176a86dbc682">find</a> (<a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a> needle) const noexcept</td></tr>
 <tr class="separator:a32a120fee4d3eefb590b176a86dbc682"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26a234274b71481c43c87b6e298ddb64"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html#ab29820855d8f2e1988509f1fb4fc3723">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a26a234274b71481c43c87b6e298ddb64">find</a> (<a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a> needle) noexcept</td></tr>
+<tr class="memitem:a26a234274b71481c43c87b6e298ddb64"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html#ab29820855d8f2e1988509f1fb4fc3723">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a26a234274b71481c43c87b6e298ddb64">find</a> (<a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a> needle) noexcept</td></tr>
 <tr class="separator:a26a234274b71481c43c87b6e298ddb64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb4bf32cfc55a0ccd46182fb11ef72c1"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html#a625a55eb74cea406cc13af56f56ac59b">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#abb4bf32cfc55a0ccd46182fb11ef72c1">find_first_not_of</a> (<a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a> needle) const noexcept</td></tr>
+<tr class="memitem:abb4bf32cfc55a0ccd46182fb11ef72c1"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html#a625a55eb74cea406cc13af56f56ac59b">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#abb4bf32cfc55a0ccd46182fb11ef72c1">find_first_not_of</a> (<a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a> needle) const noexcept</td></tr>
 <tr class="separator:abb4bf32cfc55a0ccd46182fb11ef72c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad397b9aef07913ffba7ccef5dfb5b179"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html#ab29820855d8f2e1988509f1fb4fc3723">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#ad397b9aef07913ffba7ccef5dfb5b179">find_first_not_of</a> (<a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a> needle) noexcept</td></tr>
+<tr class="memitem:ad397b9aef07913ffba7ccef5dfb5b179"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html#ab29820855d8f2e1988509f1fb4fc3723">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#ad397b9aef07913ffba7ccef5dfb5b179">find_first_not_of</a> (<a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a> needle) noexcept</td></tr>
 <tr class="separator:ad397b9aef07913ffba7ccef5dfb5b179"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb78e50df1d939ee17d06ae8980ef768"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#aeb78e50df1d939ee17d06ae8980ef768">front</a> () const noexcept</td></tr>
+<tr class="memitem:aeb78e50df1d939ee17d06ae8980ef768"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#aeb78e50df1d939ee17d06ae8980ef768">front</a> () const noexcept</td></tr>
 <tr class="separator:aeb78e50df1d939ee17d06ae8980ef768"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d6c2e43c21d19b128f4e080edb8b73d"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html#a09995a8d5a1b90c5b13c6e8cf551d11a">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a6d6c2e43c21d19b128f4e080edb8b73d">front</a> () noexcept</td></tr>
 <tr class="separator:a6d6c2e43c21d19b128f4e080edb8b73d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f5bf298c5829ea23e60ad3a7a3b0649"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a8f5bf298c5829ea23e60ad3a7a3b0649">operator[]</a> (<a class="el" href="structdaw_1_1iter__view.html#a2a39fedf9dbf9f4ea4a0bb87edb85d7e">size_type</a> idx) const noexcept</td></tr>
+<tr class="memitem:a8f5bf298c5829ea23e60ad3a7a3b0649"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a8f5bf298c5829ea23e60ad3a7a3b0649">operator[]</a> (<a class="el" href="structdaw_1_1iter__view.html#a2a39fedf9dbf9f4ea4a0bb87edb85d7e">size_type</a> idx) const noexcept</td></tr>
 <tr class="separator:a8f5bf298c5829ea23e60ad3a7a3b0649"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af49549339cca6554a3a225bd0330661a"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html#a09995a8d5a1b90c5b13c6e8cf551d11a">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#af49549339cca6554a3a225bd0330661a">operator[]</a> (<a class="el" href="structdaw_1_1iter__view.html#a2a39fedf9dbf9f4ea4a0bb87edb85d7e">size_type</a> idx) noexcept</td></tr>
 <tr class="separator:af49549339cca6554a3a225bd0330661a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6bd46714bc58236b4eff3817598af50"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html#ad50fb3241213e318c5354f620fbea5d0">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#ab6bd46714bc58236b4eff3817598af50">pop_front</a> ()</td></tr>
 <tr class="separator:ab6bd46714bc58236b4eff3817598af50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4eb1a585cd392836b26e56c8f628301"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#af4eb1a585cd392836b26e56c8f628301">pop_front_until</a> (<a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a> needle) noexcept</td></tr>
+<tr class="memitem:af4eb1a585cd392836b26e56c8f628301"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#af4eb1a585cd392836b26e56c8f628301">pop_front_until</a> (<a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a> needle) noexcept</td></tr>
 <tr class="separator:af4eb1a585cd392836b26e56c8f628301"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c00b05a74e32c00e9ff3811f102fb15"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a6c00b05a74e32c00e9ff3811f102fb15">pop_front_until</a> (<a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a> needle, <a class="el" href="structdaw_1_1discard__t.html">discard_t</a>) noexcept</td></tr>
+<tr class="memitem:a6c00b05a74e32c00e9ff3811f102fb15"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a6c00b05a74e32c00e9ff3811f102fb15">pop_front_until</a> (<a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a> needle, <a class="el" href="structdaw_1_1discard__t.html">discard_t</a>) noexcept</td></tr>
 <tr class="separator:a6c00b05a74e32c00e9ff3811f102fb15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50ad66bdc3af51860fb03b43f031ab8b"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a50ad66bdc3af51860fb03b43f031ab8b">pop_front_while</a> (<a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a> needle) noexcept</td></tr>
+<tr class="memitem:a50ad66bdc3af51860fb03b43f031ab8b"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a50ad66bdc3af51860fb03b43f031ab8b">pop_front_while</a> (<a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a> needle) noexcept</td></tr>
 <tr class="separator:a50ad66bdc3af51860fb03b43f031ab8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82aa39278fef6c36a64865aa377cfff3"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a82aa39278fef6c36a64865aa377cfff3">pop_front_while</a> (<a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a> needle, <a class="el" href="structdaw_1_1discard__t.html">discard_t</a>) noexcept</td></tr>
+<tr class="memitem:a82aa39278fef6c36a64865aa377cfff3"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a82aa39278fef6c36a64865aa377cfff3">pop_front_while</a> (<a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a> needle, <a class="el" href="structdaw_1_1discard__t.html">discard_t</a>) noexcept</td></tr>
 <tr class="separator:a82aa39278fef6c36a64865aa377cfff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46a45ff60b798a4dd4d325b70ae355e1"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html#a923f74727a24dd4c8869bf0b644b4703">const_reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a46a45ff60b798a4dd4d325b70ae355e1">rbegin</a> () const noexcept</td></tr>
 <tr class="separator:a46a45ff60b798a4dd4d325b70ae355e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,13 +169,13 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aee1344602197112c2aa2e07098471989"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac30cfdd9942e55413728ad863f243cee"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#ac30cfdd9942e55413728ad863f243cee">remove_prefix</a> (<a class="el" href="structdaw_1_1iter__view.html#a2a39fedf9dbf9f4ea4a0bb87edb85d7e">size_type</a> count, <a class="el" href="structdaw_1_1dont__clip__to__bounds__t.html">dont_clip_to_bounds_t</a>) noexcept</td></tr>
 <tr class="separator:ac30cfdd9942e55413728ad863f243cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89f2fde62356802b1039b6e59b0756e3"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a89f2fde62356802b1039b6e59b0756e3">remove_prefix_until</a> (<a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a> needle) noexcept</td></tr>
+<tr class="memitem:a89f2fde62356802b1039b6e59b0756e3"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a89f2fde62356802b1039b6e59b0756e3">remove_prefix_until</a> (<a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a> needle) noexcept</td></tr>
 <tr class="separator:a89f2fde62356802b1039b6e59b0756e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c60075ea61bba617fc8136a37d1008f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a4c60075ea61bba617fc8136a37d1008f">remove_prefix_until</a> (<a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a> needle, <a class="el" href="structdaw_1_1discard__t.html">discard_t</a>) noexcept</td></tr>
+<tr class="memitem:a4c60075ea61bba617fc8136a37d1008f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a4c60075ea61bba617fc8136a37d1008f">remove_prefix_until</a> (<a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a> needle, <a class="el" href="structdaw_1_1discard__t.html">discard_t</a>) noexcept</td></tr>
 <tr class="separator:a4c60075ea61bba617fc8136a37d1008f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7f5a68d61ac4a9f2c923e8d7c760af4"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#ad7f5a68d61ac4a9f2c923e8d7c760af4">remove_prefix_while</a> (<a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a> needle) noexcept</td></tr>
+<tr class="memitem:ad7f5a68d61ac4a9f2c923e8d7c760af4"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#ad7f5a68d61ac4a9f2c923e8d7c760af4">remove_prefix_while</a> (<a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a> needle) noexcept</td></tr>
 <tr class="separator:ad7f5a68d61ac4a9f2c923e8d7c760af4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91d38e9f5a9b64dcdd22dcb8055d1822"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a91d38e9f5a9b64dcdd22dcb8055d1822">remove_prefix_while</a> (<a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a> needle, <a class="el" href="structdaw_1_1discard__t.html">discard_t</a>) noexcept</td></tr>
+<tr class="memitem:a91d38e9f5a9b64dcdd22dcb8055d1822"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a91d38e9f5a9b64dcdd22dcb8055d1822">remove_prefix_while</a> (<a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a> needle, <a class="el" href="structdaw_1_1discard__t.html">discard_t</a>) noexcept</td></tr>
 <tr class="separator:a91d38e9f5a9b64dcdd22dcb8055d1822"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a197731d919344ac30e0d23590197cb60"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1iter__view.html#a923f74727a24dd4c8869bf0b644b4703">const_reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1iter__view.html#a197731d919344ac30e0d23590197cb60">rend</a> () const noexcept</td></tr>
 <tr class="separator:a197731d919344ac30e0d23590197cb60"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -209,7 +209,7 @@ Friends</h2></td></tr>
 struct daw::iter_view&lt; ForwardIterator, Last, ExplicitConv &gt;</h3>
 
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00026">26</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00027">27</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a625a55eb74cea406cc13af56f56ac59b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a625a55eb74cea406cc13af56f56ac59b">&#9670;&nbsp;</a></span>const_iterator</h2>
@@ -225,12 +225,12 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00028">28</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00029">29</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
-<a id="a5b4cfb3c680efaee71590bcd9d2c6e35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b4cfb3c680efaee71590bcd9d2c6e35">&#9670;&nbsp;</a></span>const_reference</h2>
+<a id="ae271e9c23163b0250de1bb9617652479"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae271e9c23163b0250de1bb9617652479">&#9670;&nbsp;</a></span>const_reference</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -238,12 +238,12 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool ExplicitConv = false&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a>&lt; ForwardIterator, Last, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::<a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a> =  std::conditional_t&lt; std::is_rvalue_reference_v&lt;<a class="el" href="structdaw_1_1iter__view.html#a09995a8d5a1b90c5b13c6e8cf551d11a">reference</a>&gt;, std::add_rvalue_reference_t&lt; std::add_const_t&lt;std::remove_reference_t&lt;<a class="el" href="structdaw_1_1iter__view.html#a09995a8d5a1b90c5b13c6e8cf551d11a">reference</a>&gt; &gt;&gt;, std::add_lvalue_reference_t&lt; std::add_const_t&lt;std::remove_reference_t&lt;<a class="el" href="structdaw_1_1iter__view.html#a09995a8d5a1b90c5b13c6e8cf551d11a">reference</a>&gt; &gt;&gt; &gt;</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a>&lt; ForwardIterator, Last, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::<a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a> =  <a class="el" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt; std::is_rvalue_reference_v&lt;<a class="el" href="structdaw_1_1iter__view.html#a09995a8d5a1b90c5b13c6e8cf551d11a">reference</a>&gt;, std::add_rvalue_reference_t&lt; std::add_const_t&lt;std::remove_reference_t&lt;<a class="el" href="structdaw_1_1iter__view.html#a09995a8d5a1b90c5b13c6e8cf551d11a">reference</a>&gt; &gt;&gt;, std::add_lvalue_reference_t&lt; std::add_const_t&lt;std::remove_reference_t&lt;<a class="el" href="structdaw_1_1iter__view.html#a09995a8d5a1b90c5b13c6e8cf551d11a">reference</a>&gt; &gt;&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00031">31</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00032">32</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -261,7 +261,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00041">41</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00042">42</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -279,7 +279,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00038">38</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00039">39</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -297,7 +297,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00027">27</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00028">28</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -315,7 +315,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00039">39</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00040">40</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -333,7 +333,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00030">30</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00031">31</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -351,7 +351,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00040">40</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00041">41</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -369,7 +369,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00037">37</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00038">38</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -387,7 +387,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00029">29</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00030">30</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -455,7 +455,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00076">76</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00077">77</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -495,7 +495,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00080">80</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00081">81</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -527,7 +527,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 
 <p>This is potentially unsafe. Decrements the start of range. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00107">107</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00108">108</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -559,7 +559,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 
 <p>This is potentially unsafe. Decrements the start of range. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00113">113</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00114">114</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -588,7 +588,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00122">122</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00123">123</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -617,7 +617,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00118">118</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00119">119</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -646,7 +646,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00126">126</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00127">127</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -675,7 +675,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00150">150</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00151">151</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -704,7 +704,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00138">138</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00139">139</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -733,7 +733,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00162">162</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00163">163</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -762,7 +762,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00166">166</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00167">167</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -791,7 +791,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00146">146</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00147">147</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -820,7 +820,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00142">142</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00143">143</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -838,7 +838,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
         <tr>
           <td class="memname">constexpr <a class="el" href="structdaw_1_1iter__view.html#a625a55eb74cea406cc13af56f56ac59b">const_iterator</a> <a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a>&lt; ForwardIterator, Last, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::find </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a>&#160;</td>
           <td class="paramname"><em>needle</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -850,7 +850,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00269">269</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00270">270</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -868,7 +868,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
         <tr>
           <td class="memname">constexpr <a class="el" href="structdaw_1_1iter__view.html#ab29820855d8f2e1988509f1fb4fc3723">iterator</a> <a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a>&lt; ForwardIterator, Last, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::find </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a>&#160;</td>
           <td class="paramname"><em>needle</em></td><td>)</td>
           <td></td>
         </tr>
@@ -880,7 +880,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00264">264</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00265">265</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -898,7 +898,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
         <tr>
           <td class="memname">constexpr <a class="el" href="structdaw_1_1iter__view.html#a625a55eb74cea406cc13af56f56ac59b">const_iterator</a> <a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a>&lt; ForwardIterator, Last, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::find_first_not_of </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a>&#160;</td>
           <td class="paramname"><em>needle</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -910,7 +910,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00279">279</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00280">280</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -928,7 +928,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
         <tr>
           <td class="memname">constexpr <a class="el" href="structdaw_1_1iter__view.html#ab29820855d8f2e1988509f1fb4fc3723">iterator</a> <a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a>&lt; ForwardIterator, Last, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::find_first_not_of </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a>&#160;</td>
           <td class="paramname"><em>needle</em></td><td>)</td>
           <td></td>
         </tr>
@@ -940,7 +940,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00274">274</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00275">275</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -956,7 +956,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a> <a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a>&lt; ForwardIterator, Last, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::front </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a> <a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a>&lt; ForwardIterator, Last, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::front </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -969,7 +969,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00175">175</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00176">176</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -998,7 +998,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00170">170</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00171">171</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1014,7 +1014,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a> <a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a>&lt; ForwardIterator, Last, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::operator[] </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a> <a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a>&lt; ForwardIterator, Last, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::operator[] </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#a2a39fedf9dbf9f4ea4a0bb87edb85d7e">size_type</a>&#160;</td>
           <td class="paramname"><em>idx</em></td><td>)</td>
@@ -1028,7 +1028,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00185">185</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00186">186</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1058,7 +1058,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00180">180</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00181">181</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1087,7 +1087,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00218">218</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00219">219</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1105,7 +1105,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
         <tr>
           <td class="memname">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a> <a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a>&lt; ForwardIterator, Last, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::pop_front_until </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a>&#160;</td>
           <td class="paramname"><em>needle</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1117,7 +1117,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00317">317</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00318">318</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1135,7 +1135,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
         <tr>
           <td class="memname">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a> <a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a>&lt; ForwardIterator, Last, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::pop_front_until </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a>&#160;</td>
           <td class="paramname"><em>needle</em>, </td>
         </tr>
         <tr>
@@ -1157,7 +1157,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00323">323</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00324">324</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1175,7 +1175,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
         <tr>
           <td class="memname">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a> <a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a>&lt; ForwardIterator, Last, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::pop_front_while </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a>&#160;</td>
           <td class="paramname"><em>needle</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1187,7 +1187,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00333">333</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00334">334</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1205,7 +1205,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
         <tr>
           <td class="memname">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a> <a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a>&lt; ForwardIterator, Last, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::pop_front_while </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a>&#160;</td>
           <td class="paramname"><em>needle</em>, </td>
         </tr>
         <tr>
@@ -1227,7 +1227,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00339">339</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00340">340</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1256,7 +1256,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00134">134</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00135">135</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1285,7 +1285,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00130">130</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00131">131</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1314,7 +1314,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00212">212</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00213">213</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1344,7 +1344,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00190">190</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00191">191</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1384,7 +1384,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00206">206</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00207">207</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1402,7 +1402,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
         <tr>
           <td class="memname">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a>&amp; <a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a>&lt; ForwardIterator, Last, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::remove_prefix_until </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a>&#160;</td>
           <td class="paramname"><em>needle</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1414,7 +1414,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00292">292</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00293">293</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1432,7 +1432,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
         <tr>
           <td class="memname">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a>&amp; <a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a>&lt; ForwardIterator, Last, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::remove_prefix_until </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a>&#160;</td>
           <td class="paramname"><em>needle</em>, </td>
         </tr>
         <tr>
@@ -1454,7 +1454,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00283">283</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00284">284</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1472,7 +1472,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
         <tr>
           <td class="memname">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a>&amp; <a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a>&lt; ForwardIterator, Last, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::remove_prefix_while </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a>&#160;</td>
           <td class="paramname"><em>needle</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1484,7 +1484,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00309">309</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00310">310</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1502,7 +1502,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
         <tr>
           <td class="memname">constexpr <a class="el" href="structdaw_1_1iter__view.html">iter_view</a>&amp; <a class="el" href="structdaw_1_1iter__view.html">daw::iter_view</a>&lt; ForwardIterator, Last, <a class="el" href="namespacedaw.html#a7c0fa17217d1428ed40258e1a6e05b50">ExplicitConv</a> &gt;::remove_prefix_while </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#a5b4cfb3c680efaee71590bcd9d2c6e35">const_reference</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1iter__view.html#ae271e9c23163b0250de1bb9617652479">const_reference</a>&#160;</td>
           <td class="paramname"><em>needle</em>, </td>
         </tr>
         <tr>
@@ -1524,7 +1524,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00300">300</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00301">301</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1553,7 +1553,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00158">158</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00159">159</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1582,7 +1582,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00154">154</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00155">155</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1614,7 +1614,7 @@ template&lt;typename Container &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00086">86</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00087">87</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1643,7 +1643,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00102">102</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00103">103</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1683,7 +1683,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00095">95</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00096">96</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1724,7 +1724,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00367">367</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00368">368</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1764,7 +1764,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00372">372</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00373">373</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1804,7 +1804,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00388">388</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00389">389</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1844,7 +1844,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00361">361</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00362">362</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1884,7 +1884,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00378">378</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00379">379</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>
@@ -1924,7 +1924,7 @@ template&lt;typename ForwardIterator , typename Last  = ForwardIterator, bool Ex
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00383">383</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iter__view_8h_source.html#l00384">384</a> of file <a class="el" href="daw__iter__view_8h_source.html">daw_iter_view.h</a>.</p>
 
 </div>
 </div>

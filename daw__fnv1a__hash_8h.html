@@ -79,6 +79,7 @@ $(function() {
 <code>#include &quot;<a class="el" href="daw__attributes_8h_source.html">daw_attributes.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__compiler__fixups_8h_source.html">daw_compiler_fixups.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__conditional_8h_source.html">impl/daw_conditional.h</a>&quot;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;iterator&gt;</code><br />
@@ -99,8 +100,8 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:aadc4eb8c588b87dacc2326bc2fff4fa5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aadc4eb8c588b87dacc2326bc2fff4fa5">daw::fnv1a_uint_t</a> = std::conditional_t&lt; impl::is_64bit_v, std::uint64_t, std::uint32_t &gt;</td></tr>
-<tr class="separator:aadc4eb8c588b87dacc2326bc2fff4fa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c2c328fe7f5d102a5b1f072c4d5d8f2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5c2c328fe7f5d102a5b1f072c4d5d8f2">daw::fnv1a_uint_t</a> = conditional_t&lt; impl::is_64bit_v, std::uint64_t, std::uint32_t &gt;</td></tr>
+<tr class="separator:a5c2c328fe7f5d102a5b1f072c4d5d8f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>

@@ -83,6 +83,7 @@ $(function() {
 <code>#include &quot;<a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__enable__if_8h_source.html">daw_enable_if.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__conditional_8h_source.html">impl/daw_conditional.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits__concepts_8h_source.html">impl/daw_traits_concepts.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits__impl_8h_source.html">impl/daw_traits_impl.h</a>&quot;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
@@ -221,15 +222,15 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a518e830287adce0d461dcd65ac75fbf8"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a518e830287adce0d461dcd65ac75fbf8"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a518e830287adce0d461dcd65ac75fbf8">daw::traits::class_template_parameters</a> = typename class_parts&lt; T &gt;::class_template_parameters</td></tr>
 <tr class="separator:a518e830287adce0d461dcd65ac75fbf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24c6b912d77e10fdedaa6a45e12fb076"><td class="memTemplParams" colspan="2">template&lt;typename To , typename From &gt; </td></tr>
-<tr class="memitem:a24c6b912d77e10fdedaa6a45e12fb076"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a24c6b912d77e10fdedaa6a45e12fb076">daw::traits::copy_const_t</a> = std::conditional_t&lt; std::is_const_v&lt; std::remove_reference_t&lt; From &gt; &gt;, copy_ref_t&lt; To, std::add_const_t&lt; std::remove_reference_t&lt; To &gt; &gt;&gt;, copy_ref_t&lt; To, std::remove_const_t&lt; std::remove_reference_t&lt; To &gt; &gt;&gt; &gt;</td></tr>
-<tr class="separator:a24c6b912d77e10fdedaa6a45e12fb076"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c60d1feefb46215061c3bbf99f96de7"><td class="memTemplParams" colspan="2">template&lt;typename To , typename From &gt; </td></tr>
+<tr class="memitem:a8c60d1feefb46215061c3bbf99f96de7"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a8c60d1feefb46215061c3bbf99f96de7">daw::traits::copy_const_t</a> = conditional_t&lt; std::is_const_v&lt; std::remove_reference_t&lt; From &gt; &gt;, copy_ref_t&lt; To, std::add_const_t&lt; std::remove_reference_t&lt; To &gt; &gt;&gt;, copy_ref_t&lt; To, std::remove_const_t&lt; std::remove_reference_t&lt; To &gt; &gt;&gt; &gt;</td></tr>
+<tr class="separator:a8c60d1feefb46215061c3bbf99f96de7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a149ce42ade437f2ffc65a4a0868a0dcd"><td class="memTemplParams" colspan="2">template&lt;typename To , typename From &gt; </td></tr>
 <tr class="memitem:a149ce42ade437f2ffc65a4a0868a0dcd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a149ce42ade437f2ffc65a4a0868a0dcd">daw::traits::copy_constref_t</a> = copy_ref_t&lt; From, copy_const_t&lt; To, From &gt; &gt;</td></tr>
 <tr class="separator:a149ce42ade437f2ffc65a4a0868a0dcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a37a6c6d47881ba566f8897a2445eb9"><td class="memTemplParams" colspan="2">template&lt;typename To , typename From &gt; </td></tr>
-<tr class="memitem:a6a37a6c6d47881ba566f8897a2445eb9"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a6a37a6c6d47881ba566f8897a2445eb9">daw::traits::copy_ref_t</a> = std::conditional_t&lt; std::is_lvalue_reference_v&lt; From &gt;, std::add_lvalue_reference_t&lt; std::remove_reference_t&lt; To &gt; &gt;, std::conditional_t&lt; std::is_rvalue_reference_v&lt; From &gt;, std::add_rvalue_reference_t&lt; std::remove_reference_t&lt; To &gt; &gt;, std::remove_reference_t&lt; To &gt; &gt; &gt;</td></tr>
-<tr class="separator:a6a37a6c6d47881ba566f8897a2445eb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26f69ade412e12e9c4230e172a0a1763"><td class="memTemplParams" colspan="2">template&lt;typename To , typename From &gt; </td></tr>
+<tr class="memitem:a26f69ade412e12e9c4230e172a0a1763"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a26f69ade412e12e9c4230e172a0a1763">daw::traits::copy_ref_t</a> = conditional_t&lt; std::is_lvalue_reference_v&lt; From &gt;, std::add_lvalue_reference_t&lt; std::remove_reference_t&lt; To &gt; &gt;, conditional_t&lt; std::is_rvalue_reference_v&lt; From &gt;, std::add_rvalue_reference_t&lt; std::remove_reference_t&lt; To &gt; &gt;, std::remove_reference_t&lt; To &gt; &gt; &gt;</td></tr>
+<tr class="separator:a26f69ade412e12e9c4230e172a0a1763"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af494e713df6a9218c632d4042f43a102"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:af494e713df6a9218c632d4042f43a102"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#af494e713df6a9218c632d4042f43a102">daw::traits::deref_t</a> = decltype(*std::declval&lt; T &gt;())</td></tr>
 <tr class="separator:af494e713df6a9218c632d4042f43a102"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -565,7 +566,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l01094">1094</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l01096">1096</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -593,7 +594,7 @@ Variables</h2></td></tr>
 <div class="line">    is_detected_v&lt;traits_details::detectors_##MemberName::MemberName##_member, \</div>
 <div class="line">                  T&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00213">213</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00214">214</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -630,9 +631,9 @@ Variables</h2></td></tr>
 <div class="line">  template&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span>... Args&gt;                                  \</div>
 <div class="line">  constexpr <span class="keywordtype">bool</span> name##_v = <a class="code" href="namespacedaw.html#a05cb5775a1268bd66ef632bcfd4e4bd7">is_detected_v</a>&lt;traits_details_##name::name, T, \</div>
 <div class="line">                                          Args...&gt;</div>
-<div class="ttc" id="anamespacedaw_html_a05cb5775a1268bd66ef632bcfd4e4bd7"><div class="ttname"><a href="namespacedaw.html#a05cb5775a1268bd66ef632bcfd4e4bd7">daw::is_detected_v</a></div><div class="ttdeci">constexpr bool is_detected_v</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00194">cpp_17.h:194</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a05cb5775a1268bd66ef632bcfd4e4bd7"><div class="ttname"><a href="namespacedaw.html#a05cb5775a1268bd66ef632bcfd4e4bd7">daw::is_detected_v</a></div><div class="ttdeci">constexpr bool is_detected_v</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00195">cpp_17.h:195</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00202">202</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00203">203</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>

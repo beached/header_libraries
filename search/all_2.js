@@ -47,7 +47,7 @@ var searchData=
   ['bit_5fqueue_142',['bit_queue',['../namespacedaw.html#a6051e8d641ddce840180185ed5e5b0df',1,'daw']]],
   ['bit_5fqueue_5fsource_5fbig_5fendian_143',['bit_queue_source_big_endian',['../structdaw_1_1bit__queue__source__big__endian.html',1,'daw']]],
   ['bit_5fqueue_5fsource_5flittle_5fendian_144',['bit_queue_source_little_endian',['../structdaw_1_1bit__queue__source__little__endian.html',1,'daw']]],
-  ['bit_5fqueue_5fsource_5fnative_5fendian_145',['bit_queue_source_native_endian',['../namespacedaw.html#a9ff6a97c69158954055b4a577fbaf70b',1,'daw']]],
+  ['bit_5fqueue_5fsource_5fnative_5fendian_145',['bit_queue_source_native_endian',['../namespacedaw.html#a818aed1779f077aff2a716b1133c9579',1,'daw']]],
   ['bit_5fstream_146',['bit_stream',['../structdaw_1_1bit__stream.html#a3700a7cfbd3a71b6adc5789cd8774b45',1,'daw::bit_stream::bit_stream()'],['../structdaw_1_1bit__stream.html',1,'daw::bit_stream&lt; InputIteratorF, InputIteratorL, BitQueueLSB &gt;']]],
   ['bitcount_147',['bitcount',['../namespacedaw.html#a52ae8dd0216df66fdbecc5a9ebc8986e',1,'daw::bitcount(Value value) noexcept'],['../namespacedaw.html#aa650f48aa86c5b24491c042f218f2c92',1,'daw::bitcount(Value value, T... values) noexcept']]],
   ['block_5fappend_5ffrom_148',['block_append_from',['../namespacedaw.html#a5bbe8c47cdaf0b35fc95fc585f314ac9',1,'daw']]],
