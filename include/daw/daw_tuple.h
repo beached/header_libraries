@@ -10,6 +10,7 @@
 
 #include "daw_move.h"
 #include "daw_traits.h"
+#include "impl/daw_conditional.h"
 
 #include <cstddef>
 #include <type_traits>
@@ -121,11 +122,11 @@ namespace daw::impl {
 
 namespace daw {
 	template<typename... Ts>
-	class tuple : private std::conditional_t<( sizeof...( Ts ) > 0 ),
+	class tuple : private conditional_t<( sizeof...( Ts ) > 0 ),
 	                                         impl::tuple_storage<0, Ts...>,
 	                                         impl::tuple_storage_empty> {
 		using base_type =
-		  std::conditional_t<( sizeof...( Ts ) > 0 ), impl::tuple_storage<0, Ts...>,
+		  conditional_t<( sizeof...( Ts ) > 0 ), impl::tuple_storage<0, Ts...>,
 		                     impl::tuple_storage_empty>;
 		using base_type::base_type;
 

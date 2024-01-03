@@ -12,6 +12,7 @@
 #include "daw_string_view.h"
 #include "daw_traits.h"
 #include "daw_unique_resource.h"
+#include "impl/daw_conditional.h"
 
 #include <cstddef>
 #include <cstdio>
@@ -41,9 +42,9 @@ namespace daw::filesystem {
 		using value_type = T;
 		using reference = T &;
 		using const_reference =
-		  std::conditional_t<std::is_const_v<T>, T, T const> &;
+		  conditional_t<std::is_const_v<T>, T, T const> &;
 		using pointer = T *;
-		using const_pointer = std::conditional_t<std::is_const_v<T>, T, T const> *;
+		using const_pointer = conditional_t<std::is_const_v<T>, T, T const> *;
 		using size_type = size_t;
 
 	private:

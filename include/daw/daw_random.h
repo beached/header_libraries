@@ -15,6 +15,7 @@
 #include "daw_swap.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
+#include "impl/daw_conditional.h"
 
 #include <iterator>
 #include <limits>
@@ -197,7 +198,7 @@ namespace daw {
 
 	namespace RandomInteger_impl {
 		template<typename Float>
-		using uint_type = std::conditional_t<std::is_same_v<Float, float>,
+		using uint_type = conditional_t<std::is_same_v<Float, float>,
 		                                     std::uint32_t, std::uint64_t>;
 	}
 

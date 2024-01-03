@@ -16,6 +16,7 @@
 #include "daw_traits.h"
 #include "daw_utility.h"
 #include "daw_visit.h"
+#include "impl/daw_conditional.h"
 
 #include <functional>
 #include <optional>
@@ -148,7 +149,7 @@ namespace daw {
 		struct piecewise_factory_impl_t {
 		protected:
 			using ttype_t =
-			  std::conditional_t<use_late,
+			  conditional_t<use_late,
 			                     std::tuple<std::optional<
 			                       std::variant<Args, std::function<Args( )>>>...>,
 			                     std::tuple<std::optional<Args>...>>;

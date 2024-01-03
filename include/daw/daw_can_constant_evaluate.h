@@ -10,6 +10,7 @@
 
 #include "daw_cpp_feature_check.h"
 #include "daw_traits.h"
+#include "impl/daw_conditional.h"
 
 #include <type_traits>
 
@@ -77,7 +78,7 @@ namespace daw {
 	 * @pre Args must all be default constructible, if not false is returned
 	 */
 	template<typename T, typename... Args>
-	using can_potentially_constant_construct = typename std::conditional_t<
+	using can_potentially_constant_construct = typename conditional_t<
 	  ( std::is_default_constructible_v<Args> and ... ),
 	  can_cxeval_impl::can_potentially_constant_construct_impl<T, Args...>,
 	  daw::traits::identity<std::false_type>>::type;

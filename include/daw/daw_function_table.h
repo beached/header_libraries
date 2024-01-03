@@ -12,6 +12,7 @@
 #include "cpp_17.h"
 #include "daw_move.h"
 #include "daw_traits.h"
+#include "impl/daw_conditional.h"
 
 #include <array>
 #include <cstddef>
@@ -107,7 +108,7 @@ namespace daw {
 		static constexpr bool using_array_v =
 		  daw::traits::all_same_v<Function, Functions...>;
 		using value_t =
-		  std::conditional_t<using_array_v,
+		  conditional_t<using_array_v,
 		                     std::array<Function, sizeof...( Functions ) + 1U>,
 		                     std::tuple<Function, Functions...>>;
 

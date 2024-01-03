@@ -15,6 +15,7 @@
 #include "daw_string_view.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
+#include "impl/daw_conditional.h"
 
 #include <array>
 #include <cstdint>
@@ -25,10 +26,10 @@
 namespace daw {
 	namespace bitset_impl {
 		template<typename T>
-		using half_max_t = std::conditional_t<
+		using half_max_t = conditional_t<
 		  sizeof( T ) == 8, uint32_t,
-		  std::conditional_t<sizeof( T ) == 4, uint16_t,
-		                     std::conditional_t<sizeof( T ) == 2, uint8_t, void>>>;
+		  conditional_t<sizeof( T ) == 4, uint16_t,
+		                     conditional_t<sizeof( T ) == 2, uint8_t, void>>>;
 
 		constexpr auto low_part( uintmax_t value ) noexcept {
 			using value_t = half_max_t<uintmax_t>;

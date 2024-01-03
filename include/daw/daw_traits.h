@@ -14,6 +14,7 @@
 #include "daw_cpp_feature_check.h"
 #include "daw_enable_if.h"
 #include "daw_move.h"
+#include "impl/daw_conditional.h"
 #include "impl/daw_traits_concepts.h"
 #include "impl/daw_traits_impl.h"
 
@@ -959,11 +960,11 @@ namespace daw::traits {
 	inline constexpr bool not_same_v = not_same<T, U>::value;
 
 	template<typename To, typename From>
-	using copy_ref_t = std::conditional_t<
+	using copy_ref_t = conditional_t<
 	  /*if*/ std::is_lvalue_reference_v<From>,
 	  /*then*/ std::add_lvalue_reference_t<std::remove_reference_t<To>>,
 	  /*else if*/
-	  std::conditional_t<
+	  conditional_t<
 	    /*if*/ std::is_rvalue_reference_v<From>,
 	    /*then*/ std::add_rvalue_reference_t<std::remove_reference_t<To>>,
 	    /*else*/ std::remove_reference_t<To>
@@ -971,7 +972,7 @@ namespace daw::traits {
 	  /**/>;
 
 	template<typename To, typename From>
-	using copy_const_t = std::conditional_t<
+	using copy_const_t = conditional_t<
 	  /*if*/ std::is_const_v<std::remove_reference_t<From>>,
 	  /*then*/ copy_ref_t<To, std::add_const_t<std::remove_reference_t<To>>>,
 	  /*else*/ copy_ref_t<To, std::remove_const_t<std::remove_reference_t<To>>>
@@ -1089,6 +1090,7 @@ namespace daw {
 
 	template<typename T>
 	using fp_t = T *;
+
 } // namespace daw
 
 #define DAW_TYPEOF( ... ) daw::remove_cvref_t<decltype( __VA_ARGS__ )>

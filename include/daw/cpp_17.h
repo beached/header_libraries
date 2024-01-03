@@ -13,6 +13,7 @@
 #include "daw_cpp_feature_check.h"
 #include "daw_enable_if.h"
 #include "daw_move.h"
+#include "impl/daw_conditional.h"
 
 #include <cstddef>
 #include <cstring>
@@ -39,7 +40,7 @@ namespace daw {
 
 	template<typename B1, typename... Bn>
 	struct conjunction<B1, Bn...>
-	  : std::conditional_t<static_cast<bool>( B1::value ), conjunction<Bn...>,
+	  : conditional_t<static_cast<bool>( B1::value ), conjunction<Bn...>,
 	                       B1> {};
 
 	template<typename... T>
@@ -595,7 +596,7 @@ namespace daw {
 	                                          OutputIterator first_out,
 	                                          Function &&func ) {
 
-		using out_t = std::conditional_t<
+		using out_t = conditional_t<
 		  std::is_same_v<U, deduced_type>,
 		  typename std::iterator_traits<OutputIterator>::value_type, U>;
 
@@ -611,7 +612,7 @@ namespace daw {
 	         typename OutputIterator>
 	[[maybe_unused]] void bit_cast_copy( Iterator first, Iterator last,
 	                                     OutputIterator first_out ) {
-		using out_t = std::conditional_t<
+		using out_t = conditional_t<
 		  std::is_same_v<T, deduced_type>,
 		  typename std::iterator_traits<OutputIterator>::value_type, T>;
 
@@ -630,7 +631,7 @@ namespace daw {
 
 	template<typename B1, typename... Bn>
 	struct disjunction<B1, Bn...>
-	  : std::conditional_t<bool( B1::value ), B1, disjunction<Bn...>> {};
+	  : conditional_t<bool( B1::value ), B1, disjunction<Bn...>> {};
 
 	template<typename... B>
 	using disjunction_t = typename disjunction<B...>::type;

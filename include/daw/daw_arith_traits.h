@@ -11,6 +11,7 @@
 
 #include "ciso646.h"
 #include "daw_cpp_feature_check.h"
+#include "impl/daw_conditional.h"
 
 #include <climits>
 #include <cstdint>
@@ -268,7 +269,7 @@ namespace daw {
 	struct is_arithmetic
 	  : std::disjunction<
 	      is_number<T>, std::is_enum<T>,
-	      std::conditional_t<daw::numeric_limits<T>::is_specialized,
+	      conditional_t<daw::numeric_limits<T>::is_specialized,
 	                         std::true_type, std::false_type>> {};
 
 	template<typename T>
@@ -344,26 +345,26 @@ namespace daw {
 	struct unsupported_int_size;
 
 	template<std::size_t BitSize>
-	using intN_t = std::conditional_t<
+	using intN_t = conditional_t<
 	  is_same_size_v<char, BitSize>, char,
-	  std::conditional_t<
+	  conditional_t<
 	    is_same_size_v<short, BitSize>, short,
-	    std::conditional_t<
+	    conditional_t<
 	      is_same_size_v<int, BitSize>, int,
-	      std::conditional_t<
+	      conditional_t<
 	        is_same_size_v<long, BitSize>, long,
-	        std::conditional_t<is_same_size_v<long long, BitSize>, long long,
+	        conditional_t<is_same_size_v<long long, BitSize>, long long,
 	                           unsupported_int_size<BitSize>>>>>>;
 	template<std::size_t BitSize>
-	using uintN_t = std::conditional_t<
+	using uintN_t = conditional_t<
 	  is_same_size_v<char, BitSize>, unsigned char,
-	  std::conditional_t<
+	  conditional_t<
 	    is_same_size_v<short, BitSize>, unsigned short,
-	    std::conditional_t<
+	    conditional_t<
 	      is_same_size_v<int, BitSize>, unsigned int,
-	      std::conditional_t<
+	      conditional_t<
 	        is_same_size_v<long, BitSize>, unsigned long,
-	        std::conditional_t<is_same_size_v<unsigned long long, BitSize>,
+	        conditional_t<is_same_size_v<unsigned long long, BitSize>,
 	                           long long, unsupported_int_size<BitSize>>>>>>;
 
 } // namespace daw
