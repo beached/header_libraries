@@ -11,6 +11,7 @@
 #include "daw_concepts.h"
 #include "daw_consteval.h"
 #include "daw_utility.h"
+#include "impl/daw_conditional.h"
 #include "impl/daw_view_tags.h"
 #include "wrap_iter.h"
 
@@ -28,7 +29,7 @@ namespace daw {
 		using const_iterator = iterator;
 		using value_type = typename std::iterator_traits<iterator>::value_type;
 		using reference = typename std::iterator_traits<iterator>::reference;
-		using const_reference = std::conditional_t<
+		using const_reference = conditional_t<
 		  std::is_rvalue_reference_v<reference>,
 		  std::add_rvalue_reference_t<
 		    std::add_const_t<std::remove_reference_t<reference>>>,

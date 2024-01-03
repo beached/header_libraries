@@ -27,6 +27,7 @@
 #include "daw_string_view_version.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
+#include "impl/daw_conditional.h"
 #include "impl/daw_view_tags.h"
 #include "iterator/daw_back_inserter.h"
 #include "iterator/daw_iterator.h"
@@ -380,13 +381,13 @@ namespace daw {
 			using is_last_a_pointer =
 			  std::bool_constant<B == string_view_bounds_type::pointer>;
 
-			using last_type = std::conditional_t<is_last_a_pointer<BoundsType>::value,
+			using last_type = conditional_t<is_last_a_pointer<BoundsType>::value,
 			                                     const_pointer, size_type>;
 
 			using default_last_t = std::integral_constant<last_type, last_type{ }>;
 
 			using last_difference_type =
-			  std::conditional_t<is_last_a_pointer<BoundsType>::value,
+			  conditional_t<is_last_a_pointer<BoundsType>::value,
 			                     difference_type, size_type>;
 
 			template<string_view_bounds_type Bounds, typename LastType>

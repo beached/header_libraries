@@ -13,6 +13,7 @@
 #include "daw_endian.h"
 #include "daw_exception.h"
 #include "daw_move.h"
+#include "impl/daw_conditional.h"
 
 #include <cstdint>
 
@@ -21,7 +22,7 @@ namespace daw {
 	struct bit_queue_source_big_endian {};
 
 	using bit_queue_source_native_endian =
-	  typename std::conditional_t<daw::endian::native == daw::endian::little,
+	  typename conditional_t<daw::endian::native == daw::endian::little,
 	                              bit_queue_source_little_endian,
 	                              bit_queue_source_big_endian>;
 

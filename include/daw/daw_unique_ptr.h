@@ -32,11 +32,6 @@ namespace daw {
 		static constexpr pointer default_pointer_value = nullptr;
 
 		explicit default_deleter( ) = default;
-		~default_deleter( ) noexcept = default;
-		default_deleter( default_deleter const & ) noexcept = default;
-		default_deleter( default_deleter && ) noexcept = default;
-		default_deleter &operator=( default_deleter const & ) noexcept = default;
-		default_deleter &operator=( default_deleter && ) noexcept = default;
 
 		template<typename U, std::enable_if_t<not std::is_same_v<T, U>,
 		                                      std::nullptr_t> = nullptr>

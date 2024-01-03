@@ -12,6 +12,7 @@
 #include "daw_attributes.h"
 #include "daw_compiler_fixups.h"
 #include "daw_traits.h"
+#include "impl/daw_conditional.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -27,7 +28,7 @@ namespace daw {
 	using fnv1a_uint_t = DAW_FORCE_FNV1A_TYPE;
 #else
 	using fnv1a_uint_t =
-	  std::conditional_t<impl::is_64bit_v, std::uint64_t, std::uint32_t>;
+	  conditional_t<impl::is_64bit_v, std::uint64_t, std::uint32_t>;
 #endif
 } // namespace daw
 

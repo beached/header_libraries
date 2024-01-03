@@ -12,6 +12,7 @@
 
 #include "daw_attributes.h"
 #include "daw_safe_pointer.h"
+#include "impl/daw_conditional.h"
 
 #include <cassert>
 #include <cstddef>
@@ -27,7 +28,7 @@ namespace daw::memory {
 		using pointer = safe_pointer<value_type>;
 		using const_pointer = safe_pointer<value_type const>;
 		using void_pointer = safe_pointer<
-		  std::conditional_t<std::is_const_v<value_type>, void const, void>>;
+		  conditional_t<std::is_const_v<value_type>, void const, void>>;
 		using const_void_pointer = safe_pointer<void const>;
 		using difference_type = typename safe_pointer<value_type>::difference_type;
 		using size_type = typename safe_pointer<value_type>::size_type;

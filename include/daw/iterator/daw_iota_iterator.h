@@ -13,6 +13,7 @@
 #include "../daw_exception.h"
 #include "../daw_traits.h"
 #include "daw_arrow_proxy.h"
+#include "daw/impl/daw_conditional.h"
 
 #include <cstddef>
 #include <iterator>
@@ -24,11 +25,11 @@ namespace daw {
 		using value_type = T;
 		using reference = T;
 		using size_type =
-		  typename std::conditional_t<std::is_integral_v<value_type>,
+		  typename conditional_t<std::is_integral_v<value_type>,
 		                              std::make_unsigned<value_type>,
 		                              daw::traits::identity<value_type>>::type;
 		using difference_type =
-		  typename std::conditional_t<std::is_integral_v<value_type>,
+		  typename conditional_t<std::is_integral_v<value_type>,
 		                              std::make_signed<value_type>,
 		                              daw::traits::identity<value_type>>::type;
 		using pointer = daw::arrow_proxy<T>;
