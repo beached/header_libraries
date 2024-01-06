@@ -962,7 +962,7 @@ namespace daw::integers {
 
 	namespace literals {
 		[[nodiscard]] DAW_CONSTEVAL signed_integer<std::int8_t>
-		operator"" _i8( unsigned long long v ) noexcept {
+		operator""_i8( unsigned long long v ) noexcept {
 			using int_t = std::int8_t;
 			if( v > static_cast<unsigned long long>(
 			          std::numeric_limits<int_t>::max( ) ) ) {
@@ -972,7 +972,7 @@ namespace daw::integers {
 		}
 
 		[[nodiscard]] DAW_CONSTEVAL signed_integer<std::int16_t>
-		operator"" _i16( unsigned long long v ) noexcept {
+		operator""_i16( unsigned long long v ) noexcept {
 			using int_t = std::int16_t;
 			if( v > static_cast<unsigned long long>(
 			          std::numeric_limits<int_t>::max( ) ) ) {
@@ -982,7 +982,7 @@ namespace daw::integers {
 		}
 
 		[[nodiscard]] DAW_CONSTEVAL signed_integer<std::int32_t>
-		operator"" _i32( unsigned long long v ) noexcept {
+		operator""_i32( unsigned long long v ) noexcept {
 			using int_t = std::int32_t;
 			if( v > static_cast<unsigned long long>(
 			          std::numeric_limits<int_t>::max( ) ) ) {
@@ -992,7 +992,7 @@ namespace daw::integers {
 		}
 
 		[[nodiscard]] DAW_CONSTEVAL signed_integer<std::int64_t>
-		operator"" _i64( unsigned long long v ) noexcept {
+		operator""_i64( unsigned long long v ) noexcept {
 			using int_t = std::int64_t;
 			if( v > static_cast<unsigned long long>(
 			          std::numeric_limits<int_t>::max( ) ) ) {
