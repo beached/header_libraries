@@ -95,7 +95,7 @@ namespace daw::exception {
 	[[noreturn]] void daw_throw( Arg &&arg, Args &&...args ) {
 #if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or \
   defined( _CPPUNWIND )
-		throw ExceptionType( DAW_FWD2( Arg, arg ), DAW_FWD2( Args, args )... );
+		throw ExceptionType( DAW_FWD( arg ), DAW_FWD( args )... );
 #else
 		(void)arg;
 		( (void)args, ... );
@@ -106,7 +106,7 @@ namespace daw::exception {
 #ifndef NODEBUGTHROW
 	template<typename ExceptionType = DefaultException, typename... Args>
 	[[noreturn]] constexpr void debug_throw( Args &&...args ) {
-		daw_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+		daw_throw<ExceptionType>( DAW_FWD( args )... );
 	}
 #else
 	template<typename ExceptionType = DefaultException, typename... Args>
@@ -119,7 +119,7 @@ namespace daw::exception {
 	constexpr void dbg_throw_on_null( ValueType const *const value,
 	                                  Args &&...args ) {
 		if( nullptr == value ) {
-			debug_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+			debug_throw<ExceptionType>( DAW_FWD( args )... );
 		}
 	}
 #else
@@ -135,7 +135,7 @@ namespace daw::exception {
 	constexpr ValueType *dbg_throw_on_null_or_return( ValueType *value,
 	                                                  Args &&...args ) {
 		if( nullptr == value ) {
-			debug_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+			debug_throw<ExceptionType>( DAW_FWD( args )... );
 		}
 		return value;
 	}
@@ -154,15 +154,15 @@ namespace daw::exception {
 	constexpr auto dbg_throw_on_false_or_return( ValueType &&value, bool test,
 	                                             Args &&...args ) {
 		if( not static_cast<bool>( test ) ) {
-			debug_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+			debug_throw<ExceptionType>( DAW_FWD( args )... );
 		}
-		return DAW_FWD2( ValueType, value );
+		return DAW_FWD( value );
 	}
 
 	template<typename ExceptionType = AssertException, typename... Args>
 	constexpr bool dbg_throw_on_false_or_return( bool test, Args &&...args ) {
 		if( not static_cast<bool>( test ) ) {
-			debug_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+			debug_throw<ExceptionType>( DAW_FWD( args )... );
 		}
 		return true;
 	}
@@ -174,16 +174,16 @@ namespace daw::exception {
 	template<typename ExceptionType = AssertException, typename Bool,
 	         typename... Args>
 	constexpr void dbg_throw_on_false( Bool &&test, Args &&...args ) {
-		if( not static_cast<bool>( DAW_FWD2( Bool, test ) ) ) {
-			debug_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+		if( not static_cast<bool>( DAW_FWD( test ) ) ) {
+			debug_throw<ExceptionType>( DAW_FWD( args )... );
 		}
 	}
 
 	template<typename ExceptionType = AssertException, typename Bool,
 	         typename... Args>
 	constexpr void DebugAssert( Bool &&test, Args &&...args ) {
-		if( not static_cast<bool>( DAW_FWD2( Bool, test ) ) ) {
-			debug_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+		if( not static_cast<bool>( DAW_FWD( test ) ) ) {
+			debug_throw<ExceptionType>( DAW_FWD( args )... );
 		}
 	}
 
@@ -211,7 +211,7 @@ namespace daw::exception {
 	constexpr ValueType &dbg_throw_on_true_or_return( ValueType &value, bool test,
 	                                                  Args &&...args ) {
 		if( static_cast<bool>( test ) ) {
-			debug_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+			debug_throw<ExceptionType>( DAW_FWD( args )... );
 		}
 		return value;
 	}
@@ -221,7 +221,7 @@ namespace daw::exception {
 	constexpr bool dbg_throw_on_true_or_return( const Bool &test,
 	                                            Args &&...args ) {
 		if( static_cast<bool>( test ) ) {
-			debug_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+			debug_throw<ExceptionType>( DAW_FWD( args )... );
 		}
 		return test;
 	}
@@ -229,7 +229,7 @@ namespace daw::exception {
 	template<typename ExceptionType = AssertException, typename... Args>
 	constexpr void dbg_throw_on_true( bool test, Args &&...args ) {
 		if( static_cast<bool>( test ) ) {
-			debug_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+			debug_throw<ExceptionType>( DAW_FWD( args )... );
 		}
 	}
 
@@ -238,7 +238,7 @@ namespace daw::exception {
 	constexpr void daw_throw_on_null( ValueType const *const value,
 	                                  Args &&...args ) {
 		if( nullptr == value ) {
-			daw_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+			daw_throw<ExceptionType>( DAW_FWD( args )... );
 		}
 	}
 
@@ -246,7 +246,7 @@ namespace daw::exception {
 	         typename... Args>
 	constexpr void daw_throw_on_null( ValueType *value, Args &&...args ) {
 		if( nullptr == value ) {
-			daw_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+			daw_throw<ExceptionType>( DAW_FWD( args )... );
 		}
 	}
 
@@ -255,7 +255,7 @@ namespace daw::exception {
 	constexpr ValueType *daw_throw_on_null_or_return( ValueType *value,
 	                                                  Args &&...args ) {
 		if( nullptr == value ) {
-			daw_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+			daw_throw<ExceptionType>( DAW_FWD( args )... );
 		}
 		return value;
 	}
@@ -264,7 +264,7 @@ namespace daw::exception {
 	         typename Bool>
 	constexpr bool daw_throw_on_false_or_return( Bool &&test, Args &&...args ) {
 		if( not static_cast<bool>( test ) ) {
-			daw_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+			daw_throw<ExceptionType>( DAW_FWD( args )... );
 		}
 		return true;
 	}
@@ -278,7 +278,7 @@ namespace daw::exception {
 				Unused( args... );
 				std::abort( );
 			} else {
-				daw_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+				daw_throw<ExceptionType>( DAW_FWD( args )... );
 			}
 		}
 	}
@@ -289,7 +289,7 @@ namespace daw::exception {
 			if constexpr( std::is_same_v<Terminator, ExceptionType> ) {
 				std::abort( );
 			} else {
-				daw_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+				daw_throw<ExceptionType>( DAW_FWD( args )... );
 			}
 		}
 	}
@@ -324,17 +324,17 @@ namespace daw::exception {
 	constexpr ValueType daw_throw_on_false_or_return( ValueType &&value,
 	                                                  Bool &&test,
 	                                                  Args &&...args ) {
-		if( not static_cast<bool>( DAW_FWD2( Bool, test ) ) ) {
-			daw_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+		if( not static_cast<bool>( DAW_FWD( test ) ) ) {
+			daw_throw<ExceptionType>( DAW_FWD( args )... );
 		}
-		return DAW_FWD2( ValueType, value );
+		return DAW_FWD( value );
 	}
 
 	template<typename ExceptionType = AssertException, typename Bool,
 	         typename... Args>
 	constexpr void daw_throw_on_false( Bool &&test, Args &&...args ) {
-		if( not static_cast<bool>( DAW_FWD2( Bool, test ) ) ) {
-			daw_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+		if( not static_cast<bool>( DAW_FWD( test ) ) ) {
+			daw_throw<ExceptionType>( DAW_FWD( args )... );
 		}
 	}
 
@@ -342,13 +342,13 @@ namespace daw::exception {
 	         typename... Args>
 	constexpr void Assert( Bool const &test, Args &&...args ) {
 		if( not static_cast<bool>( test ) ) {
-			daw_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+			daw_throw<ExceptionType>( DAW_FWD( args )... );
 		}
 	}
 
 	template<typename ExceptionType = DefaultException, typename Bool>
 	constexpr void daw_throw_on_false( Bool &&test ) {
-		if( not static_cast<bool>( DAW_FWD2( Bool, test ) ) ) {
+		if( not static_cast<bool>( DAW_FWD( test ) ) ) {
 			daw_throw<ExceptionType>( );
 		}
 	}
@@ -363,14 +363,14 @@ namespace daw::exception {
 	template<typename ExceptionType = DefaultException>
 	constexpr void daw_throw_value_on_true( ExceptionType &&test ) {
 		if( static_cast<bool>( test ) ) {
-			daw_throw<ExceptionType>( DAW_FWD2( ExceptionType, test ) );
+			daw_throw<ExceptionType>( DAW_FWD( test ) );
 		}
 	}
 
 	template<typename ExceptionType>
-	constexpr void daw_throw_value_on_false( ExceptionType const &test ) {
+	constexpr void daw_throw_value_on_false( ExceptionType &&test ) {
 		if( not static_cast<bool>( test ) ) {
-			daw_throw<ExceptionType>( DAW_FWD2( ExceptionType, test ) );
+			daw_throw<ExceptionType>( DAW_FWD( test ) );
 		}
 	}
 
@@ -390,9 +390,9 @@ namespace daw::exception {
 	                                                 Bool &&test,
 	                                                 Args &&...args ) {
 		if( static_cast<bool>( test ) ) {
-			daw_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+			daw_throw<ExceptionType>( DAW_FWD( args )... );
 		}
-		return DAW_FWD2( ValueType, value );
+		return DAW_FWD( value );
 	}
 
 	template<typename ExceptionType = AssertException, typename ValueType,
@@ -401,9 +401,9 @@ namespace daw::exception {
 	                                                   Bool &&test,
 	                                                   Args &&...args ) {
 		if( static_cast<bool>( test ) ) {
-			daw_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+			daw_throw<ExceptionType>( DAW_FWD( args )... );
 		}
-		return DAW_FWD2( ValueType, value );
+		return DAW_FWD( value );
 	}
 
 	template<typename ExceptionType = AssertException, typename ValueType,
@@ -411,23 +411,23 @@ namespace daw::exception {
 	constexpr ValueType daw_throw_on_true_or_return( ValueType &&value, bool test,
 	                                                 Args &&...args ) {
 		if( static_cast<bool>( test ) ) {
-			daw_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+			daw_throw<ExceptionType>( DAW_FWD( args )... );
 		}
-		return DAW_FWD2( ValueType, value );
+		return DAW_FWD( value );
 	}
 
 	template<typename ExceptionType = AssertException, typename Bool,
 	         typename... Args>
 	constexpr bool daw_throw_on_true_or_return( Bool &&test, Args &&...args ) {
-		if( static_cast<bool>( DAW_FWD2( Bool, test ) ) ) {
-			daw_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+		if( static_cast<bool>( DAW_FWD( test ) ) ) {
+			daw_throw<ExceptionType>( DAW_FWD( args )... );
 		}
 		return false;
 	}
 
 	template<typename ExceptionType = DefaultException, typename Bool>
 	constexpr void daw_throw_on_true( Bool &&test ) {
-		if( static_cast<bool>( DAW_FWD2( Bool, test ) ) ) {
+		if( static_cast<bool>( DAW_FWD( test ) ) ) {
 			daw_throw<ExceptionType>( );
 		}
 	}
@@ -436,8 +436,8 @@ namespace daw::exception {
 	  typename ExceptionType = AssertException, typename Bool, typename... Args,
 	  std::enable_if_t<( sizeof...( Args ) > 0 ), std::nullptr_t> = nullptr>
 	constexpr void daw_throw_on_true( Bool &&test, Args &&...args ) {
-		if( static_cast<bool>( DAW_FWD2( Bool, test ) ) ) {
-			daw_throw<ExceptionType>( DAW_FWD2( Args, args )... );
+		if( static_cast<bool>( DAW_FWD( test ) ) ) {
+			daw_throw<ExceptionType>( DAW_FWD( args )... );
 		}
 	}
 
@@ -450,7 +450,7 @@ namespace daw::exception {
 		auto last = std::end( container );
 		while( first != last ) {
 			if( predicate( *first ) ) {
-				daw_throw<ExceptionType>( DAW_FWD2( Message, assert_message ) );
+				daw_throw<ExceptionType>( DAW_FWD( assert_message ) );
 			}
 			++first;
 		}
@@ -462,9 +462,9 @@ namespace daw::exception {
 	                                Message &&assert_message,
 	                                Predicate &&predicate ) {
 		assert_all_false<ExceptionType>(
-		  container, DAW_FWD2( Message, assert_message ),
-		  [predicate = DAW_FWD2( Predicate, predicate )]( auto const &v ) {
-			  return not predicate( v );
+		  container, DAW_FWD( assert_message ),
+		  [pred = DAW_FWD( predicate )]( auto const &v ) {
+			  return not pred( v );
 		  } );
 	}
 
@@ -474,7 +474,7 @@ namespace daw::exception {
   defined( _CPPUNWIND )
 		try {
 #endif
-			func( DAW_FWD2( Args, args )... );
+			func( DAW_FWD( args )... );
 #if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or \
   defined( _CPPUNWIND )
 		} catch( ... ) {}
@@ -486,19 +486,19 @@ namespace daw::exception {
 	template<typename Exception, typename... Args>
 	std::exception_ptr make_exception_ptr( Args &&...args ) noexcept {
 		try {
-			throw Exception{ DAW_FWD2( Args, args )... };
+			throw Exception{ DAW_FWD( args )... };
 		} catch( ... ) { return std::current_exception( ); }
 	}
 #endif
 
 	template<typename... Args>
 	[[noreturn]] void throw_length_error( Args &&...args ) {
-		daw_throw<std::length_error>( DAW_FWD2( Args, args )... );
+		daw_throw<std::length_error>( DAW_FWD( args )... );
 	}
 
 	template<typename... Args>
 	[[noreturn]] void throw_out_of_range( Args &&...args ) {
-		daw_throw<std::out_of_range>( DAW_FWD2( Args, args )... );
+		daw_throw<std::out_of_range>( DAW_FWD( args )... );
 	}
 } // namespace daw::exception
 

@@ -79,7 +79,7 @@ void stack_function_test_002( ) {
 	cvf1( );
 
 	daw::function<2000, void( )> fcvf1 =
-	  [cvf1 = daw::mutable_capture( cvf1 )]( ) { ( *cvf1 )( ); };
+	  [_cvf1 = daw::mutable_capture( cvf1 )]( ) { ( *_cvf1 )( ); };
 	fcvf1( );
 }
 

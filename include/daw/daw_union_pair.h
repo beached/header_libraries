@@ -12,6 +12,7 @@
 #include "cpp_17.h"
 #include "daw_exception.h"
 #include "daw_move.h"
+#include "daw_unreachable.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -70,6 +71,8 @@ namespace daw {
 			case data_types::type_1:
 				destroy_type1( );
 				break;
+			default:
+				DAW_UNREACHABLE( );
 			}
 		}
 
@@ -168,6 +171,8 @@ namespace daw {
 			case data_types::type_nothing:
 				nothing = nullptr;
 				break;
+			default:
+				DAW_UNREACHABLE( );
 			}
 		}
 
@@ -184,6 +189,8 @@ namespace daw {
 			case data_types::type_nothing:
 				nothing = nullptr;
 				break;
+			default:
+				DAW_UNREACHABLE( );
 			}
 		}
 
@@ -199,6 +206,8 @@ namespace daw {
 				case data_types::type_nothing:
 					clear( );
 					break;
+				default:
+					DAW_UNREACHABLE( );
 				}
 			}
 			return *this;
@@ -216,6 +225,8 @@ namespace daw {
 				case data_types::type_nothing:
 					clear( );
 					break;
+				default:
+					DAW_UNREACHABLE( );
 				}
 			}
 			return *this;
@@ -230,6 +241,8 @@ namespace daw {
 				return vis( *get_type1_ptr( ) );
 			case data_types::type_nothing:
 				break;
+			default:
+				DAW_UNREACHABLE( );
 			}
 			daw::exception::daw_throw<visit_null_union_pair_exception>( );
 		}
@@ -243,6 +256,8 @@ namespace daw {
 				return vis( *get_type1_ptr( ) );
 			case data_types::type_nothing:
 				break;
+			default:
+				DAW_UNREACHABLE( );
 			}
 			daw::exception::daw_throw<visit_null_union_pair_exception>( );
 		}

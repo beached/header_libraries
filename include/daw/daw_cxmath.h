@@ -1095,6 +1095,7 @@ namespace daw::cxmath {
 			return std::numeric_limits<Real>::infinity( );
 		case fp_classes::subnormal:
 		case fp_classes::normal:
+		default:
 			break;
 		}
 		return sqrt_fast( r );
@@ -1242,6 +1243,7 @@ namespace daw::cxmath {
 		case fp_classes::zero:
 		case fp_classes::subnormal:
 		case fp_classes::normal:
+		default:
 			return true;
 		}
 #else

@@ -25,6 +25,7 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
                 -ftemplate-backtrace-limit=0
                 -Wno-c++98-compat
                 -Wno-covered-switch-default
+								-Wno-double-promotion
                 -Wno-padded
                 -Wno-exit-time-destructors
                 -Wno-c++98-compat-pedantic

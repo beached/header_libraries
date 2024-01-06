@@ -122,6 +122,9 @@ namespace daw {
 			[[fallthrough]];
 		case 1:
 			pt[0] = static_cast<uint8_t>( data_in[0] );
+			[[fallthrough]];
+		default:
+			break;
 		}
 		uint64_t b = static_cast<uint64_t>( sz ) << 56ULL;
 		b |= to_little_endian( sip_impl::to_u64( pt.data( ) ) );

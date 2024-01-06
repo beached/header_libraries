@@ -155,6 +155,8 @@ namespace daw {
 					DAW_VISIT_CASE( N, 12 );
 					DAW_VISIT_CASE( N, 13 );
 					DAW_VISIT_CASE( N, 14 );
+				default:
+					DAW_UNREACHABLE( );
 				}
 			} else if constexpr( VSz - N == 14 ) {
 				switch( get_index( var ) ) {
@@ -172,6 +174,8 @@ namespace daw {
 					DAW_VISIT_CASE( N, 11 );
 					DAW_VISIT_CASE( N, 12 );
 					DAW_VISIT_CASE( N, 13 );
+				default:
+					DAW_UNREACHABLE( );
 				}
 			} else if constexpr( VSz - N == 13 ) {
 				switch( get_index( var ) ) {
@@ -188,6 +192,8 @@ namespace daw {
 					DAW_VISIT_CASE( N, 10 );
 					DAW_VISIT_CASE( N, 11 );
 					DAW_VISIT_CASE( N, 12 );
+				default:
+					DAW_UNREACHABLE( );
 				}
 			} else if constexpr( VSz - N == 12 ) {
 				switch( get_index( var ) ) {
@@ -203,6 +209,8 @@ namespace daw {
 					DAW_VISIT_CASE( N, 9 );
 					DAW_VISIT_CASE( N, 10 );
 					DAW_VISIT_CASE( N, 11 );
+				default:
+					DAW_UNREACHABLE( );
 				}
 			} else if constexpr( VSz - N >= 11 ) {
 				switch( get_index( var ) ) {
@@ -217,6 +225,8 @@ namespace daw {
 					DAW_VISIT_CASE( N, 8 );
 					DAW_VISIT_CASE( N, 9 );
 					DAW_VISIT_CASE( N, 10 );
+				default:
+					DAW_UNREACHABLE( );
 				}
 			} else if constexpr( VSz - N == 10 ) {
 				switch( get_index( var ) ) {
@@ -242,6 +252,8 @@ namespace daw {
 					DAW_VISIT_CASE( N, 6 );
 					DAW_VISIT_CASE( N, 7 );
 					DAW_VISIT_CASE( N, 8 );
+				default:
+					DAW_UNREACHABLE( );
 				}
 			} else if constexpr( VSz - N == 8 ) {
 				switch( get_index( var ) ) {
@@ -253,6 +265,8 @@ namespace daw {
 					DAW_VISIT_CASE( N, 5 );
 					DAW_VISIT_CASE( N, 6 );
 					DAW_VISIT_CASE( N, 7 );
+				default:
+					DAW_UNREACHABLE( );
 				}
 			} else if constexpr( VSz - N == 7 ) {
 				switch( get_index( var ) ) {
@@ -263,6 +277,8 @@ namespace daw {
 					DAW_VISIT_CASE( N, 4 );
 					DAW_VISIT_CASE( N, 5 );
 					DAW_VISIT_CASE( N, 6 );
+				default:
+					DAW_UNREACHABLE( );
 				}
 			} else if constexpr( VSz - N == 6 ) {
 				switch( get_index( var ) ) {
@@ -272,6 +288,8 @@ namespace daw {
 					DAW_VISIT_CASE( N, 3 );
 					DAW_VISIT_CASE( N, 4 );
 					DAW_VISIT_CASE( N, 5 );
+				default:
+					DAW_UNREACHABLE( );
 				}
 			} else if constexpr( VSz - N == 5 ) {
 				switch( get_index( var ) ) {
@@ -280,6 +298,8 @@ namespace daw {
 					DAW_VISIT_CASE( N, 2 );
 					DAW_VISIT_CASE( N, 3 );
 					DAW_VISIT_CASE( N, 4 );
+				default:
+					DAW_UNREACHABLE( );
 				}
 			} else if constexpr( VSz - N == 4 ) {
 				switch( get_index( var ) ) {
@@ -287,17 +307,23 @@ namespace daw {
 					DAW_VISIT_CASE( N, 1 );
 					DAW_VISIT_CASE( N, 2 );
 					DAW_VISIT_CASE( N, 3 );
+				default:
+					DAW_UNREACHABLE( );
 				}
 			} else if constexpr( VSz - N == 3 ) {
 				switch( get_index( var ) ) {
 					DAW_VISIT_CASE( N, 0 );
 					DAW_VISIT_CASE( N, 1 );
 					DAW_VISIT_CASE( N, 2 );
+				default:
+					DAW_UNREACHABLE( );
 				}
 			} else if constexpr( VSz - N == 2 ) {
 				switch( get_index( var ) ) {
 					DAW_VISIT_CASE( N, 0 );
 					DAW_VISIT_CASE( N, 1 );
+				default:
+					DAW_UNREACHABLE( );
 				}
 			} else {
 				return DAW_FWD( vis )( get_nt<0 + N>( DAW_FWD( var ) ) );
