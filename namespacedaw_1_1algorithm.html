@@ -100,7 +100,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a4a2f99ef2a0c36731f352b3f5c0c860a"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator , typename T &gt; </td></tr>
 <tr class="memitem:a4a2f99ef2a0c36731f352b3f5c0c860a"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a4a2f99ef2a0c36731f352b3f5c0c860a">accumulate</a> (<a class="el" href="structdaw_1_1_input_iterator.html">InputIterator</a> first, <a class="el" href="structdaw_1_1_input_iterator.html">InputIterator</a> last, T init) noexcept</td></tr>
 <tr class="separator:a4a2f99ef2a0c36731f352b3f5c0c860a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a944826cf0164d4f289c579cd6668cda5"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator , typename LastType , typename T , typename BinaryOperation  = std::plus&lt;&gt;, daw::enable_when_t&lt; not daw::traits::is_container_like_v&lt; InputIterator &gt;&gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a944826cf0164d4f289c579cd6668cda5"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator , typename LastType , typename T , typename BinaryOperation  = accum_impl::plus, std::enable_if_t&lt; not accum_impl::is_container_like_v&lt; InputIterator &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a944826cf0164d4f289c579cd6668cda5"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a944826cf0164d4f289c579cd6668cda5">accumulate</a> (<a class="el" href="structdaw_1_1_input_iterator.html">InputIterator</a> first, LastType last, T init, BinaryOperation binary_op=BinaryOperation{ }) noexcept(noexcept(binary_op(<a class="el" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>(init), *first)))</td></tr>
 <tr class="separator:a944826cf0164d4f289c579cd6668cda5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ce45ed0b83d6e8567b52d36fc657f7c"><td class="memTemplParams" colspan="2">template&lt;typename ForwardIterator , typename BinaryPredicate &gt; </td></tr>
@@ -410,7 +410,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ada02729717cfab7d8792c98fdd83d5f1"><td class="memTemplParams" colspan="2">template&lt;typename RandomIterator , typename Compare  = std::less&lt;&gt;&gt; </td></tr>
 <tr class="memitem:ada02729717cfab7d8792c98fdd83d5f1"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#ada02729717cfab7d8792c98fdd83d5f1">nth_element</a> (<a class="el" href="structdaw_1_1_random_iterator.html">RandomIterator</a> first, <a class="el" href="structdaw_1_1_random_iterator.html">RandomIterator</a> nth, <a class="el" href="structdaw_1_1_random_iterator.html">RandomIterator</a> const last, Compare comp=Compare{ }) noexcept(noexcept(comp(*first, *nth)) &amp;&amp;noexcept(<a class="el" href="namespacedaw.html#a5944253ecc3d912e3e470e1c4ab17c42">daw::cswap</a>(*first, *nth)))</td></tr>
 <tr class="separator:ada02729717cfab7d8792c98fdd83d5f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adea63be89b34ecad9efac4efd09c514e"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator , typename OutputIterator , typename BinaryOperator  = std::plus&lt;&gt;&gt; </td></tr>
+<tr class="memitem:adea63be89b34ecad9efac4efd09c514e"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator , typename OutputIterator , typename BinaryOperator  = accum_impl::plus&gt; </td></tr>
 <tr class="memitem:adea63be89b34ecad9efac4efd09c514e"><td class="memTemplItemLeft" align="right" valign="top">constexpr OutputIterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#adea63be89b34ecad9efac4efd09c514e">partial_sum</a> (<a class="el" href="structdaw_1_1_input_iterator.html">InputIterator</a> first, <a class="el" href="structdaw_1_1_input_iterator.html">InputIterator</a> last, OutputIterator first_out, BinaryOperator op=BinaryOperator{ })</td></tr>
 <tr class="separator:adea63be89b34ecad9efac4efd09c514e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a566ba24803fb7b10013ddbb6cc1016e7"><td class="memTemplParams" colspan="2">template&lt;typename Container , typename UnaryPredicate &gt; </td></tr>
@@ -661,7 +661,7 @@ template&lt;typename InputIterator , typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01635">1635</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm__accumulate_8h_source.html#l00036">36</a> of file <a class="el" href="daw__algorithm__accumulate_8h_source.html">daw_algorithm_accumulate.h</a>.</p>
 
 </div>
 </div>
@@ -671,7 +671,7 @@ template&lt;typename InputIterator , typename T &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename InputIterator , typename LastType , typename T , typename BinaryOperation  = std::plus&lt;&gt;, daw::enable_when_t&lt; not daw::traits::is_container_like_v&lt; InputIterator &gt;&gt;  = nullptr&gt; </div>
+template&lt;typename InputIterator , typename LastType , typename T , typename BinaryOperation  = accum_impl::plus, std::enable_if_t&lt; not accum_impl::is_container_like_v&lt; InputIterator &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -713,7 +713,7 @@ template&lt;typename InputIterator , typename LastType , typename T , typename B
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01660">1660</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm__accumulate_8h_source.html#l00063">63</a> of file <a class="el" href="daw__algorithm__accumulate_8h_source.html">daw_algorithm_accumulate.h</a>.</p>
 
 </div>
 </div>
@@ -759,7 +759,7 @@ template&lt;typename ForwardIterator , typename BinaryPredicate &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02167">2167</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02126">2126</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -805,7 +805,7 @@ template&lt;class InputIt , class UnaryPredicate &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02018">2018</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01977">1977</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -851,7 +851,7 @@ template&lt;class InputIt , class UnaryPredicate &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02024">2024</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01983">1983</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -1071,7 +1071,7 @@ template&lt;typename Function , typename Iterator1 , typename LastType , typenam
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01944">1944</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01903">1903</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -1129,7 +1129,7 @@ template&lt;typename Function , typename Iterator1 , typename LastType , typenam
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01886">1886</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01845">1845</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -1233,7 +1233,7 @@ template&lt;typename InputIterator1 , typename LastType1 , typename InputIterato
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00923">923</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00922">922</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -1285,7 +1285,7 @@ template&lt;class ForwardIterator , class UnaryPredicate , typename Function &gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01850">1850</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01809">1809</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -1407,7 +1407,7 @@ template&lt;typename Iterator , typename Last , typename Value , typename Compar
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02144">2144</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02103">2103</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -1453,7 +1453,7 @@ template&lt;typename Iterator , typename Last , typename Predicate &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02156">2156</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02115">2115</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -1499,7 +1499,7 @@ template&lt;typename T , typename Iterator , typename IteratorLast , typename Ou
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02242">2242</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02201">2201</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -1545,7 +1545,7 @@ template&lt;typename T , typename Iterator , typename OutputIterator &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02253">2253</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02212">2212</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -1683,7 +1683,7 @@ template&lt;typename InputIterator , typename LastType , typename OutputIterator
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>end of output range written to </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01137">1137</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01135">1135</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -1747,7 +1747,7 @@ template&lt;typename InputIterator , typename OutputIterator &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>end of output range written to </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01166">1166</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01164">1164</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -1793,7 +1793,7 @@ template&lt;typename ResultType  = size_t, typename Iterator , typename Last , t
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02110">2110</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02069">2069</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -2074,7 +2074,7 @@ template&lt;typename InputIterator1 , typename LastType , typename InputIterator
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if both ranges are equal </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01317">1317</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01315">1315</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -2155,7 +2155,7 @@ template&lt;typename InputIterator1 , typename LastType1 , typename InputIterato
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if both ranges are equal </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01258">1258</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01256">1256</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -2194,7 +2194,7 @@ template&lt;typename Value &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if value passed to operator( ) is equal to value constructed with </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00831">831</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00830">830</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -2300,7 +2300,7 @@ template&lt;typename From , typename To &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01993">1993</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01952">1952</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -2346,7 +2346,7 @@ template&lt;typename From , typename To , typename Predicate &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02000">2000</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01959">1959</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -2392,7 +2392,7 @@ template&lt;typename From , typename To , typename Query &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01986">1986</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01945">1945</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -2438,7 +2438,7 @@ template&lt;typename ForwardIterator , typename LastType , typename T &gt; </div
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01466">1466</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01464">1464</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -2484,7 +2484,7 @@ template&lt;typename ForwardIterator , typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01453">1453</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01451">1451</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -2610,7 +2610,7 @@ template&lt;class InputIterator , class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00298">298</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00299">299</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -2754,7 +2754,7 @@ template&lt;typename Iterator , typename UnaryPredicate &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00554">554</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00553">553</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -2972,7 +2972,7 @@ template&lt;typename Iterator , typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02076">2076</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02035">2035</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -3018,7 +3018,7 @@ template&lt;typename Iterator , typename Predicate &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02059">2059</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02018">2018</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -3064,7 +3064,7 @@ template&lt;typename Iterator , typename IteratorLast , typename Value &gt; </di
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02123">2123</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02082">2082</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -3110,7 +3110,7 @@ template&lt;typename Iterator , typename IteratorLast , typename Predicate &gt; 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02133">2133</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02092">2092</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -3194,7 +3194,7 @@ template&lt;typename Iterator , typename IteratorLast , typename... Predicates&g
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02226">2226</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02185">2185</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -3240,7 +3240,7 @@ template&lt;typename IteratorF , typename IteratorL , typename... Predicates&gt;
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02205">2205</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02164">2164</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -3278,7 +3278,7 @@ template&lt;typename RandomIterator , typename Compare  = std::less&lt;&gt;&gt; 
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02085">2085</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02044">2044</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -3332,7 +3332,7 @@ template&lt;typename Iterator , typename Predicate , typename OnEach &gt; </div>
 
 <p>When a predicate is satisfied, call onEach with the read value. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02187">2187</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02146">2146</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -3415,7 +3415,7 @@ template&lt;typename Value &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if value passed to operator( ) is greater than to value constructed with </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00841">841</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00840">840</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -3454,7 +3454,7 @@ template&lt;typename Value &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if value passed to operator( ) is greater than or equal to to value constructed with </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00851">851</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00850">850</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -3504,7 +3504,7 @@ template&lt;typename Lower , typename Upper &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if value passed to operator( ) is within the range [lower, upper] </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00820">820</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00819">819</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -3550,7 +3550,7 @@ template&lt;typename Iterator , typename EndIterator , typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01799">1799</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01758">1758</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -3602,7 +3602,7 @@ template&lt;typename Iterator , typename EndIterator , typename T , typename Set
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01808">1808</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01767">1767</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -3728,7 +3728,7 @@ template&lt;typename ForwardIterator , typename LastType , typename Compare  = s
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01445">1445</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01443">1443</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -3792,7 +3792,7 @@ template&lt;typename ForwardIterator , typename Compare  = std::less&lt;&gt;&gt;
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>ForwardIterator with the last sorted item </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01399">1399</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01397">1397</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -3838,7 +3838,7 @@ template&lt;typename ForwardIterator , typename LastType , typename Compare  = s
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01423">1423</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01421">1421</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -3877,7 +3877,7 @@ template&lt;typename Value &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if value passed to operator( ) is less than to value constructed with </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00862">862</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00861">861</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -3916,7 +3916,7 @@ template&lt;typename Value &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if value passed to operator( ) is less than or equal to to value constructed with </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00872">872</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00871">871</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -3997,7 +3997,7 @@ template&lt;typename InputIterator1 , typename LastType1 , typename InputIterato
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true of range 1 is lexigraphically less than range 2 using supplied comparison </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00893">893</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00892">892</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -4049,7 +4049,7 @@ template&lt;typename ForwardIterator , typename Value , typename Compare  = std:
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00278">278</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00279">279</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -4225,7 +4225,7 @@ template&lt;typename InputIterator , typename OutputIterator , typename UnaryOpe
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01479">1479</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01477">1477</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -4283,7 +4283,7 @@ template&lt;typename InputIterator1 , typename InputIterator2 , typename OutputI
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01498">1498</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01496">1496</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -4347,7 +4347,7 @@ template&lt;typename InputIterator1 , typename InputIterator1Last , typename Inp
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01551">1551</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01549">1549</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -4533,7 +4533,7 @@ template&lt;class ForwardIterator , typename Compare  = std::less&lt;&gt;&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01674">1674</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01633">1633</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -4563,7 +4563,7 @@ template&lt;typename Lhs &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00250">250</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00251">251</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -4603,7 +4603,7 @@ template&lt;typename Lhs , typename... Ts, daw::enable_when_t&lt;(sizeof...(Ts) 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00256">256</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00257">257</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -4633,7 +4633,7 @@ template&lt;typename Lhs &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00238">238</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00239">239</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -4673,7 +4673,7 @@ template&lt;typename Lhs , typename... Ts, daw::enable_when_t&lt;(sizeof...(Ts) 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00244">244</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00245">245</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -4719,7 +4719,7 @@ template&lt;typename ForwardIterator , typename LastType , typename Compare  = s
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01714">1714</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01673">1673</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -4783,7 +4783,7 @@ template&lt;typename T , typename Compare  = std::less&lt;&gt;&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a std::pair&lt;T, T&gt; that has the first member holding min(a, b) and second max(a, b) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01700">1700</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01659">1659</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -4848,7 +4848,7 @@ template&lt;typename InputIterator , typename LastType , typename OutputIterator
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>end of output range written to </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01198">1198</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01196">1196</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -4912,7 +4912,7 @@ template&lt;typename InputIterator , typename OutputIterator &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>end of output range written to </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01223">1223</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01221">1221</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -4958,7 +4958,7 @@ template&lt;class InputIt , class UnaryPredicate &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02029">2029</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01988">1988</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -5023,7 +5023,7 @@ template&lt;typename InputIterator1 , typename LastType , typename InputIterator
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if both ranges are equal </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01340">1340</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01338">1338</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -5104,7 +5104,7 @@ template&lt;typename InputIterator1 , typename LastType1 , typename InputIterato
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if both ranges are equal </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01290">1290</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01288">1288</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -5166,7 +5166,7 @@ template&lt;typename RandomIterator , typename Compare  = std::less&lt;&gt;&gt; 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename InputIterator , typename OutputIterator , typename BinaryOperator  = std::plus&lt;&gt;&gt; </div>
+template&lt;typename InputIterator , typename OutputIterator , typename BinaryOperator  = accum_impl::plus&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -5208,7 +5208,7 @@ template&lt;typename InputIterator , typename OutputIterator , typename BinaryOp
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01961">1961</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01920">1920</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -5324,7 +5324,7 @@ template&lt;size_t MinSize = 1, typename BidirectionalIterator &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02035">2035</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01994">1994</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -5356,7 +5356,7 @@ template&lt;size_t MinSize = 1, typename BidirectionalIterator &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02054">2054</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l02013">2013</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -5438,7 +5438,7 @@ template&lt;typename T , typename RandomIterator , typename RandomIteratorLast ,
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01523">1523</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01521">1521</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -5484,7 +5484,7 @@ template&lt;typename ForwardIterator , typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01818">1818</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01777">1777</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -5530,7 +5530,7 @@ template&lt;class ForwardIterator , class UnaryPredicate &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01833">1833</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01792">1792</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -5749,7 +5749,7 @@ template&lt;typename Iterator , typename Iterator2 , typename UnaryPredicate , t
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if any of the func/funcs return true(e.g. like OR) for any value in range </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00694">694</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00693">693</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -5799,7 +5799,7 @@ template&lt;typename Value , typename UnaryPredicate &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result of func </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00655">655</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00654">654</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -5856,7 +5856,7 @@ template&lt;typename Value , typename UnaryPredicate , typename... UnaryPredicat
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if any of the func/funcs return true(e.g. like OR) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00670">670</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00669">669</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -5920,7 +5920,7 @@ template&lt;typename Iterator , typename Iterator2 , typename UnaryPredicate , t
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if any of the func/funcs return true(e.g. like OR) for any value in range </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00631">631</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00630">630</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -5970,7 +5970,7 @@ template&lt;typename Value , typename UnaryPredicate &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result of func </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00593">593</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00592">592</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -6027,7 +6027,7 @@ template&lt;typename Value , typename UnaryPredicate , typename... UnaryPredicat
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if any of the func/funcs return true(e.g. like OR) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00608">608</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00607">607</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -6085,7 +6085,7 @@ template&lt;typename ForwardIterator1 , typename ForwardIterator2 , typename Com
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01595">1595</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01593">1593</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -6149,7 +6149,7 @@ template&lt;typename InputIterator1 , typename LastType1 , typename InputIterato
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01776">1776</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01735">1735</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -6303,7 +6303,7 @@ template&lt;typename Iterator , typename Value &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00568">568</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00567">567</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -6478,7 +6478,7 @@ template&lt;typename InputIterator , typename LastType , typename OutputIterator
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>last item in output range </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01063">1063</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01062">1062</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -6559,7 +6559,7 @@ template&lt;typename ForwardIterator , typename LastType , typename OutputIterat
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The end of the output range </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00974">974</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l00973">973</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -6632,7 +6632,7 @@ template&lt;typename InputIterator , typename LastType , typename OutputIterator
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>end of output range written to </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01106">1106</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01105">1105</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -6708,7 +6708,7 @@ template&lt;typename InputIt1 , typename InputIt2 , typename InputIt3 , typename
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01934">1934</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01893">1893</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -6778,7 +6778,7 @@ template&lt;typename InputIt1 , typename InputIt2 , typename InputIt3 , typename
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01922">1922</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01881">1881</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -6842,7 +6842,7 @@ template&lt;typename InputIt1 , typename InputIt2 , typename InputIt3 , typename
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01912">1912</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01871">1871</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -6900,7 +6900,7 @@ template&lt;typename InputIt1 , typename InputIt2 , typename OutputIt , typename
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01902">1902</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01861">1861</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -6972,7 +6972,7 @@ template&lt;typename InputIterator , typename OutputIterator , typename UnaryOpe
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>last item in output range </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01013">1013</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01012">1012</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -7042,7 +7042,7 @@ template&lt;typename ForwardIterator , typename T , typename Compare  = std::les
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>position of first element greater than value or last </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01363">1363</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__algorithm_8h_source.html#l01361">1361</a> of file <a class="el" href="daw__algorithm_8h_source.html">daw_algorithm.h</a>.</p>
 
 </div>
 </div>

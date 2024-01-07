@@ -86,6 +86,7 @@ $(function() {
 <code>#include &quot;<a class="el" href="daw__swap_8h_source.html">daw_swap.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__view_8h_source.html">daw_view.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__algorithm__accumulate_8h_source.html">impl/daw_algorithm_accumulate.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__algorithm__copy_8h_source.html">impl/daw_algorithm_copy.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__algorithm__find_8h_source.html">impl/daw_algorithm_find.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__math__impl_8h_source.html">impl/daw_math_impl.h</a>&quot;</code><br />
@@ -124,12 +125,6 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a4a2f99ef2a0c36731f352b3f5c0c860a"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator , typename T &gt; </td></tr>
-<tr class="memitem:a4a2f99ef2a0c36731f352b3f5c0c860a"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a4a2f99ef2a0c36731f352b3f5c0c860a">daw::algorithm::accumulate</a> (InputIterator first, InputIterator last, T init) noexcept</td></tr>
-<tr class="separator:a4a2f99ef2a0c36731f352b3f5c0c860a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a944826cf0164d4f289c579cd6668cda5"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator , typename LastType , typename T , typename BinaryOperation  = std::plus&lt;&gt;, daw::enable_when_t&lt; not daw::traits::is_container_like_v&lt; InputIterator &gt;&gt;  = nullptr&gt; </td></tr>
-<tr class="memitem:a944826cf0164d4f289c579cd6668cda5"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a944826cf0164d4f289c579cd6668cda5">daw::algorithm::accumulate</a> (InputIterator first, LastType last, T init, BinaryOperation binary_op=BinaryOperation{ }) noexcept(noexcept(binary_op(<a class="el" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>(init), *first)))</td></tr>
-<tr class="separator:a944826cf0164d4f289c579cd6668cda5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ce45ed0b83d6e8567b52d36fc657f7c"><td class="memTemplParams" colspan="2">template&lt;typename ForwardIterator , typename BinaryPredicate &gt; </td></tr>
 <tr class="memitem:a5ce45ed0b83d6e8567b52d36fc657f7c"><td class="memTemplItemLeft" align="right" valign="top">constexpr ForwardIterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a5ce45ed0b83d6e8567b52d36fc657f7c">daw::algorithm::adjacent_find</a> (ForwardIterator first, ForwardIterator last, BinaryPredicate p)</td></tr>
 <tr class="separator:a5ce45ed0b83d6e8567b52d36fc657f7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -372,7 +367,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a670de991496fd97b1760dbc45903af23"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a670de991496fd97b1760dbc45903af23">daw::algorithm::not_equal</a> (InputIterator1 first1, LastType1 last1, InputIterator2 first2, LastType2 last2, Compare comp=Compare{ })</td></tr>
 <tr class="memdesc:a670de991496fd97b1760dbc45903af23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine if two ranges [first1, last1) and [first2, last2) using pred.  <a href="namespacedaw_1_1algorithm.html#a670de991496fd97b1760dbc45903af23">More...</a><br /></td></tr>
 <tr class="separator:a670de991496fd97b1760dbc45903af23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adea63be89b34ecad9efac4efd09c514e"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator , typename OutputIterator , typename BinaryOperator  = std::plus&lt;&gt;&gt; </td></tr>
+<tr class="memitem:adea63be89b34ecad9efac4efd09c514e"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator , typename OutputIterator , typename BinaryOperator  = accum_impl::plus&gt; </td></tr>
 <tr class="memitem:adea63be89b34ecad9efac4efd09c514e"><td class="memTemplItemLeft" align="right" valign="top">constexpr OutputIterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#adea63be89b34ecad9efac4efd09c514e">daw::algorithm::partial_sum</a> (InputIterator first, InputIterator last, OutputIterator first_out, BinaryOperator op=BinaryOperator{ })</td></tr>
 <tr class="separator:adea63be89b34ecad9efac4efd09c514e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2016dccce680b2fd954e7e83e2c7f18e"><td class="memTemplParams" colspan="2">template&lt;size_t MinSize = 1, typename BidirectionalIterator &gt; </td></tr>
