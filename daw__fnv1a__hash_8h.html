@@ -78,11 +78,10 @@ $(function() {
 <div class="textblock"><code>#include &quot;<a class="el" href="ciso646_8h_source.html">ciso646.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__attributes_8h_source.html">daw_attributes.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__compiler__fixups_8h_source.html">daw_compiler_fixups.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__conditional_8h_source.html">impl/daw_conditional.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__is__string__view__like_8h_source.html">impl/daw_is_string_view_like.h</a>&quot;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
-<code>#include &lt;iterator&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
 </div>
 <p><a href="daw__fnv1a__hash_8h_source.html">Go to the source code of this file.</a></p>
@@ -100,8 +99,8 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a5c2c328fe7f5d102a5b1f072c4d5d8f2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5c2c328fe7f5d102a5b1f072c4d5d8f2">daw::fnv1a_uint_t</a> = conditional_t&lt; impl::is_64bit_v, std::uint64_t, std::uint32_t &gt;</td></tr>
-<tr class="separator:a5c2c328fe7f5d102a5b1f072c4d5d8f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adac09fd2cee6a142c1dda00a63fb6ae1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#adac09fd2cee6a142c1dda00a63fb6ae1">daw::fnv1a_uint_t</a> = conditional_t&lt; fnv1a_impl::is_64bit_v, std::uint64_t, std::uint32_t &gt;</td></tr>
+<tr class="separator:adac09fd2cee6a142c1dda00a63fb6ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -116,7 +115,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a7e80fcfef88c81853515881097290441"><td class="memTemplParams" colspan="2">template&lt;typename Integer , std::enable_if_t&lt; std::is_integral_v&lt; Integer &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a7e80fcfef88c81853515881097290441"><td class="memTemplItemLeft" align="right" valign="top">constexpr fnv1a_uint_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a7e80fcfef88c81853515881097290441">daw::fnv1a_hash</a> (Integer value) noexcept</td></tr>
 <tr class="separator:a7e80fcfef88c81853515881097290441"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3444feb2fa3b8c54045030093424d0a0"><td class="memTemplParams" colspan="2">template&lt;typename StringViewLike , std::enable_if_t&lt; traits::is_string_view_like_v&lt; StringViewLike &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a3444feb2fa3b8c54045030093424d0a0"><td class="memTemplParams" colspan="2">template&lt;typename StringViewLike , std::enable_if_t&lt; traits_is_sv::is_string_view_like_v&lt; StringViewLike &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a3444feb2fa3b8c54045030093424d0a0"><td class="memTemplItemLeft" align="right" valign="top">fnv1a_uint_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3444feb2fa3b8c54045030093424d0a0">daw::fnv1a_hash</a> (StringViewLike &amp;&amp;sv)</td></tr>
 <tr class="separator:a3444feb2fa3b8c54045030093424d0a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>

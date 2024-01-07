@@ -82,309 +82,314 @@ $(function() {
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="ciso646_8h.html">ciso646.h</a>&quot;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="cpp__17_8h.html">cpp_17.h</a>&quot;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__algorithm_8h.html">daw_algorithm.h</a>&quot;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__scope__guard_8h.html">daw_scope_guard.h</a>&quot;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__traits_8h.html">daw_traits.h</a>&quot;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__utility_8h.html">daw_utility.h</a>&quot;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__math__impl_8h.html">impl/daw_math_impl.h</a>&quot;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;cassert&gt;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;cfenv&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;cstddef&gt;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;limits&gt;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;utility&gt;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__traits_8h.html">daw_traits.h</a>&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">//#include &quot;daw_utility.h&quot;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__math__impl_8h.html">impl/daw_math_impl.h</a>&quot;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;cassert&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;cfenv&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;cstddef&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;limits&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;utility&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw.html">daw</a> {</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html">   27</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw_1_1math.html">daw::math</a> {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Float&gt;</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="structdaw_1_1math_1_1int__for__float.html">   29</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1math_1_1int__for__float.html">int_for_float</a> {</div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="structdaw_1_1math_1_1int__for__float.html#a174437b9b474555c1d06fee9ac5e3877">   30</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="structdaw_1_1math_1_1int__for__float.html#a174437b9b474555c1d06fee9ac5e3877">type</a> = intmax_t;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  };</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="structdaw_1_1math_1_1int__for__float_3_01float_01_4.html">   34</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1math_1_1int__for__float.html">int_for_float</a>&lt;float&gt; {</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="structdaw_1_1math_1_1int__for__float_3_01float_01_4.html#acd8289821421c5fde0966da1d79aa90c">   35</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="structdaw_1_1math_1_1int__for__float_3_01float_01_4.html#acd8289821421c5fde0966da1d79aa90c">type</a> = int32_t;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  };</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Float&gt;</div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a9fd408b2d93ffda01619b40b3df1a448">   39</a></span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacedaw_1_1math.html#a9fd408b2d93ffda01619b40b3df1a448">int_for_float_t</a> = <span class="keyword">typename</span> <a class="code" href="structdaw_1_1math_1_1int__for__float.html#a174437b9b474555c1d06fee9ac5e3877">int_for_float&lt;Float&gt;::type</a>;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a7de9959175eaaafc807ba36b29f472e9">   42</a></span>&#160;  constexpr T <span class="keyword">const</span> <a class="code" href="namespacedaw_1_1math.html#a7de9959175eaaafc807ba36b29f472e9">PI</a> = T(</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    3.14159265358979323846264338327950288419716939937510582097494459230781640628620899 );</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Result = <span class="keywordtype">int</span>_for_<span class="keywordtype">float</span>_t&lt;<span class="keywordtype">float</span>&gt;&gt;</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a414e939bb6975bc92f026e832c4d2acf">   46</a></span>&#160;  constexpr Result <a class="code" href="namespacedaw_1_1math.html#a414e939bb6975bc92f026e832c4d2acf">round</a>( <span class="keywordtype">float</span> d ) noexcept {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    static_assert( std::is_integral_v&lt;Result&gt;, <span class="stringliteral">&quot;Result type must be integral&quot;</span> );</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    static_assert( std::is_floating_point_v&lt;float&gt;,</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                   <span class="stringliteral">&quot;Argument must be a floating point type&quot;</span> );</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Result<span class="keyword">&gt;</span>( d + 0.5 );</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  }</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Result = <span class="keywordtype">int</span>_for_<span class="keywordtype">float</span>_t&lt;<span class="keywordtype">double</span>&gt;&gt;</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a888133e66f3bbbecbcc6c100cbbf4f67">   54</a></span>&#160;  constexpr Result <a class="code" href="namespacedaw_1_1math.html#a414e939bb6975bc92f026e832c4d2acf">round</a>( <span class="keywordtype">double</span> d ) noexcept {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    static_assert( std::is_integral_v&lt;Result&gt;, <span class="stringliteral">&quot;Result type must be integral&quot;</span> );</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    static_assert( std::is_floating_point_v&lt;double&gt;,</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                   <span class="stringliteral">&quot;Argument must be a floating point type&quot;</span> );</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Result<span class="keyword">&gt;</span>( d + 0.5 );</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  }</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Result = <span class="keywordtype">int</span>_for_<span class="keywordtype">float</span>_t&lt;<span class="keywordtype">float</span>&gt;&gt;</div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a1588f36998ef1198045e0b2228acc763">   62</a></span>&#160;  constexpr Result <a class="code" href="namespacedaw_1_1math.html#a1588f36998ef1198045e0b2228acc763">floor</a>( <span class="keywordtype">float</span> d ) noexcept {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    static_assert( std::is_integral_v&lt;Result&gt;, <span class="stringliteral">&quot;Result type must be integral&quot;</span> );</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    static_assert( std::is_floating_point_v&lt;float&gt;,</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                   <span class="stringliteral">&quot;Argument must be a floating point type&quot;</span> );</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Result<span class="keyword">&gt;</span>( d );</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  }</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Result = <span class="keywordtype">int</span>_for_<span class="keywordtype">float</span>_t&lt;<span class="keywordtype">double</span>&gt;&gt;</div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a1494ed85a552baab7f91330b258117b6">   70</a></span>&#160;  constexpr Result <a class="code" href="namespacedaw_1_1math.html#a1588f36998ef1198045e0b2228acc763">floor</a>( <span class="keywordtype">double</span> d ) noexcept {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    static_assert( std::is_integral_v&lt;Result&gt;, <span class="stringliteral">&quot;Result type must be integral&quot;</span> );</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    static_assert( std::is_floating_point_v&lt;double&gt;,</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                   <span class="stringliteral">&quot;Argument must be a doubleing point type&quot;</span> );</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Result<span class="keyword">&gt;</span>( d );</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Result = <span class="keywordtype">int</span>_for_<span class="keywordtype">float</span>_t&lt;<span class="keywordtype">float</span>&gt;&gt;</div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#ad68ebcd0b94f70c498c33b6546b0a62f">   78</a></span>&#160;  constexpr Result <a class="code" href="namespacedaw_1_1math.html#ad68ebcd0b94f70c498c33b6546b0a62f">ceil</a>( <span class="keywordtype">float</span> d ) noexcept {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    static_assert( std::is_integral_v&lt;Result&gt;, <span class="stringliteral">&quot;Result type must be integral&quot;</span> );</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    static_assert( std::is_floating_point_v&lt;float&gt;,</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                   <span class="stringliteral">&quot;Argument must be a floating point type&quot;</span> );</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Result<span class="keyword">&gt;</span>( d + 1.0 );</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  }</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Result = <span class="keywordtype">int</span>_for_<span class="keywordtype">float</span>_t&lt;<span class="keywordtype">double</span>&gt;&gt;</div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a14a8f1d247390ed93923afa69935a10e">   86</a></span>&#160;  constexpr Result <a class="code" href="namespacedaw_1_1math.html#ad68ebcd0b94f70c498c33b6546b0a62f">ceil</a>( <span class="keywordtype">double</span> d ) noexcept {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    static_assert( std::is_integral_v&lt;Result&gt;, <span class="stringliteral">&quot;Result type must be integral&quot;</span> );</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    static_assert( std::is_floating_point_v&lt;double&gt;,</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                   <span class="stringliteral">&quot;Argument must be a doubleing point type&quot;</span> );</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Result<span class="keyword">&gt;</span>( d + 1.0 );</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  }</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#add8427c758b800c2247c8ef8e91f12fa">   94</a></span>&#160;  constexpr T <a class="code" href="namespacedaw_1_1math.html#add8427c758b800c2247c8ef8e91f12fa">round_by</a>( T <span class="keyword">const</span> value, <span class="keywordtype">double</span> <span class="keyword">const</span> rnd_by ) noexcept {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    static_assert( std::is_arithmetic_v&lt;T&gt;,</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                   <span class="stringliteral">&quot;value must be an arithmetic type&quot;</span> );</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keyword">auto</span> <span class="keyword">const</span> rnd =</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>( <a class="code" href="namespacedaw_1_1math.html#a414e939bb6975bc92f026e832c4d2acf">round</a>( <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>( value ) / rnd_by ) );</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>( rnd * rnd_by );</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  }</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a001f47fb2ffbb5844c90f1b736b99eb9">  103</a></span>&#160;  constexpr T <a class="code" href="namespacedaw_1_1math.html#a001f47fb2ffbb5844c90f1b736b99eb9">floor_by</a>( T <span class="keyword">const</span> value, <span class="keywordtype">double</span> <span class="keyword">const</span> rnd_by ) noexcept {</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    static_assert( std::is_arithmetic_v&lt;T&gt;,</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                   <span class="stringliteral">&quot;value must be an arithmetic type&quot;</span> );</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keyword">auto</span> <span class="keyword">const</span> rnd =</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>( <a class="code" href="namespacedaw_1_1math.html#a1588f36998ef1198045e0b2228acc763">floor</a>( <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>( value ) / rnd_by ) );</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>( rnd * rnd_by );</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  }</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a2ab1637ac6ba90da15839b495eb69064">  112</a></span>&#160;  constexpr T <a class="code" href="namespacedaw_1_1math.html#a2ab1637ac6ba90da15839b495eb69064">ceil_by</a>( T <span class="keyword">const</span> value, <span class="keywordtype">double</span> <span class="keyword">const</span> rnd_by ) noexcept {</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    static_assert( std::is_arithmetic_v&lt;T&gt;,</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                   <span class="stringliteral">&quot;value must be an arithmetic type&quot;</span> );</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keyword">auto</span> <span class="keyword">const</span> rnd =</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;      <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>( <a class="code" href="namespacedaw_1_1math.html#ad68ebcd0b94f70c498c33b6546b0a62f">ceil</a>( <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>( value ) / rnd_by ) );</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>( rnd * rnd_by );</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  }</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, std::enable_if_t&lt;not std::is_<span class="keywordtype">int</span>egral_v&lt;T&gt;,</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                                        std::<span class="keywordtype">nullptr</span>_t&gt; = <span class="keywordtype">nullptr</span>&gt;</div>
-<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#af3cbacfe84d317030106cb0a1a10ea9d">  122</a></span>&#160;  constexpr T <a class="code" href="namespacedaw_1_1math.html#af3cbacfe84d317030106cb0a1a10ea9d">abs</a>( T t ) noexcept {</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keywordflow">return</span> t &lt; static_cast&lt;T&gt;( 0 ) ? -t : t;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  }</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T = u<span class="keywordtype">int</span>max_t&gt;</div>
-<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#afb02cfbbf20e36620589767bcb874f5c">  127</a></span>&#160;  constexpr T <a class="code" href="namespacedaw_1_1math.html#afb02cfbbf20e36620589767bcb874f5c">pow2</a>( T n ) noexcept {</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    T result = 1;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keywordflow">while</span>( n-- &gt; 0 ) {</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;      result *= 2ULL;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    }</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  }</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Result = uintmax_t, <span class="keyword">typename</span> SignedInteger,</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;           std::enable_if_t&lt;all_true_v&lt;std::is_integral_v&lt;SignedInteger&gt;,</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;                                       std::is_signed_v&lt;SignedInteger&gt;&gt;,</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                            std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
-<div class="line"><a name="l00139"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a52dfb2afd6e8b0e1cda836cfd2536db0">  139</a></span>&#160;  constexpr Result <a class="code" href="namespacedaw_1_1math.html#af3cbacfe84d317030106cb0a1a10ea9d">abs</a>( SignedInteger v ) noexcept {</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="comment">// This accounts for when negating the number is out of range</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keywordflow">if</span>( <span class="keyword">static_cast&lt;</span>intmax_t<span class="keyword">&gt;</span>( v ) ==</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        ( <a class="code" href="namespacedaw_1_1tuple.html#a85aad7e3b54bb9b033b0b4b628f06846">std::numeric_limits&lt;intmax_t&gt;::min</a> )( ) ) {</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;      <span class="keywordflow">return</span> pow2&lt;Result&gt;( bsizeof&lt;intmax_t&gt; - 1 );</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    }</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keywordflow">if</span>( v &lt; 0 ) {</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;      v = -v;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    }</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Result<span class="keyword">&gt;</span>( v );</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  }</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> UnsignedInteger,</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;           std::enable_if_t&lt;all_true_v&lt;std::is_integral_v&lt;UnsignedInteger&gt;,</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                                       not std::is_signed_v&lt;UnsignedInteger&gt;&gt;,</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                            std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
-<div class="line"><a name="l00155"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a05e164d9c7dac7c55ef108c9f084722b">  155</a></span>&#160;  constexpr UnsignedInteger <a class="code" href="namespacedaw_1_1math.html#af3cbacfe84d317030106cb0a1a10ea9d">abs</a>( UnsignedInteger &amp;&amp;v ) noexcept {</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keywordflow">return</span> std::forward&lt;UnsignedInteger&gt;( v );</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;  }</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00160"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a6581fad8b7fedae5b8bb9e52f87fe0f0">  160</a></span>&#160;  constexpr uintmax_t <a class="code" href="namespacedaw_1_1math.html#a6581fad8b7fedae5b8bb9e52f87fe0f0">factorial</a>( T t ) noexcept {</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    uintmax_t count = <a class="code" href="namespacedaw_1_1math.html#af3cbacfe84d317030106cb0a1a10ea9d">abs</a>( t );</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    uintmax_t result = 1;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keywordflow">for</span>( ; count &gt; 0; --count ) {</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;      result *= count;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    }</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  }</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  <span class="keyword">namespace </span>impl {</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    constexpr T pow_impl( T base, <span class="keywordtype">size_t</span> exponent ) noexcept {</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> k = 0; k &lt; exponent; ++k ) {</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        base *= base;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;      }</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;      <span class="keywordflow">return</span> base;</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    }</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  } <span class="comment">// namespace impl</span></div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00181"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a78a68dcff347a011a3e2b4c379b1ced3">  181</a></span>&#160;  constexpr T <a class="code" href="namespacedaw_1_1math.html#a78a68dcff347a011a3e2b4c379b1ced3">pow</a>( T base, <span class="keywordtype">size_t</span> exponent ) noexcept {</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keywordflow">return</span> base == 0 ? 0 : exponent &gt; 0 ? impl::pow_impl( base, exponent ) : 1;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  }</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;}</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html">   29</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw_1_1math.html">daw::math</a> {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Float&gt;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="structdaw_1_1math_1_1int__for__float.html">   31</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1math_1_1int__for__float.html">int_for_float</a> {</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="structdaw_1_1math_1_1int__for__float.html#a174437b9b474555c1d06fee9ac5e3877">   32</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="structdaw_1_1math_1_1int__for__float.html#a174437b9b474555c1d06fee9ac5e3877">type</a> = intmax_t;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  };</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="structdaw_1_1math_1_1int__for__float_3_01float_01_4.html">   36</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1math_1_1int__for__float.html">int_for_float</a>&lt;float&gt; {</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="structdaw_1_1math_1_1int__for__float_3_01float_01_4.html#acd8289821421c5fde0966da1d79aa90c">   37</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="structdaw_1_1math_1_1int__for__float_3_01float_01_4.html#acd8289821421c5fde0966da1d79aa90c">type</a> = int32_t;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  };</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Float&gt;</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a9fd408b2d93ffda01619b40b3df1a448">   41</a></span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacedaw_1_1math.html#a9fd408b2d93ffda01619b40b3df1a448">int_for_float_t</a> = <span class="keyword">typename</span> <a class="code" href="structdaw_1_1math_1_1int__for__float.html#a174437b9b474555c1d06fee9ac5e3877">int_for_float&lt;Float&gt;::type</a>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a7de9959175eaaafc807ba36b29f472e9">   44</a></span>&#160;  <span class="keyword">inline</span> constexpr T <span class="keyword">const</span> <a class="code" href="namespacedaw_1_1math.html#a7de9959175eaaafc807ba36b29f472e9">PI</a> = T(</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    3.14159265358979323846264338327950288419716939937510582097494459230781640628620899 );</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Result = <span class="keywordtype">int</span>_for_<span class="keywordtype">float</span>_t&lt;<span class="keywordtype">float</span>&gt;&gt;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a414e939bb6975bc92f026e832c4d2acf">   48</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr Result <a class="code" href="namespacedaw_1_1math.html#a414e939bb6975bc92f026e832c4d2acf">round</a>( <span class="keywordtype">float</span> d ) noexcept {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    static_assert( std::is_integral_v&lt;Result&gt;, <span class="stringliteral">&quot;Result type must be integral&quot;</span> );</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    static_assert( std::is_floating_point_v&lt;float&gt;,</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                   <span class="stringliteral">&quot;Argument must be a floating point type&quot;</span> );</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Result<span class="keyword">&gt;</span>( d + 0.5 );</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Result = <span class="keywordtype">int</span>_for_<span class="keywordtype">float</span>_t&lt;<span class="keywordtype">double</span>&gt;&gt;</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a888133e66f3bbbecbcc6c100cbbf4f67">   56</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr Result <a class="code" href="namespacedaw_1_1math.html#a414e939bb6975bc92f026e832c4d2acf">round</a>( <span class="keywordtype">double</span> d ) noexcept {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    static_assert( std::is_integral_v&lt;Result&gt;, <span class="stringliteral">&quot;Result type must be integral&quot;</span> );</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    static_assert( std::is_floating_point_v&lt;double&gt;,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                   <span class="stringliteral">&quot;Argument must be a floating point type&quot;</span> );</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Result<span class="keyword">&gt;</span>( d + 0.5 );</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Result = <span class="keywordtype">int</span>_for_<span class="keywordtype">float</span>_t&lt;<span class="keywordtype">float</span>&gt;&gt;</div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a1588f36998ef1198045e0b2228acc763">   64</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr Result <a class="code" href="namespacedaw_1_1math.html#a1588f36998ef1198045e0b2228acc763">floor</a>( <span class="keywordtype">float</span> d ) noexcept {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    static_assert( std::is_integral_v&lt;Result&gt;, <span class="stringliteral">&quot;Result type must be integral&quot;</span> );</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    static_assert( std::is_floating_point_v&lt;float&gt;,</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                   <span class="stringliteral">&quot;Argument must be a floating point type&quot;</span> );</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Result<span class="keyword">&gt;</span>( d );</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Result = <span class="keywordtype">int</span>_for_<span class="keywordtype">float</span>_t&lt;<span class="keywordtype">double</span>&gt;&gt;</div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a1494ed85a552baab7f91330b258117b6">   72</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr Result <a class="code" href="namespacedaw_1_1math.html#a1588f36998ef1198045e0b2228acc763">floor</a>( <span class="keywordtype">double</span> d ) noexcept {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    static_assert( std::is_integral_v&lt;Result&gt;, <span class="stringliteral">&quot;Result type must be integral&quot;</span> );</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    static_assert( std::is_floating_point_v&lt;double&gt;,</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                   <span class="stringliteral">&quot;Argument must be a doubleing point type&quot;</span> );</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Result<span class="keyword">&gt;</span>( d );</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  }</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Result = <span class="keywordtype">int</span>_for_<span class="keywordtype">float</span>_t&lt;<span class="keywordtype">float</span>&gt;&gt;</div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#ad68ebcd0b94f70c498c33b6546b0a62f">   80</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr Result <a class="code" href="namespacedaw_1_1math.html#ad68ebcd0b94f70c498c33b6546b0a62f">ceil</a>( <span class="keywordtype">float</span> d ) noexcept {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    static_assert( std::is_integral_v&lt;Result&gt;, <span class="stringliteral">&quot;Result type must be integral&quot;</span> );</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    static_assert( std::is_floating_point_v&lt;float&gt;,</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                   <span class="stringliteral">&quot;Argument must be a floating point type&quot;</span> );</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Result<span class="keyword">&gt;</span>( d + 1.0 );</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Result = <span class="keywordtype">int</span>_for_<span class="keywordtype">float</span>_t&lt;<span class="keywordtype">double</span>&gt;&gt;</div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a14a8f1d247390ed93923afa69935a10e">   88</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr Result <a class="code" href="namespacedaw_1_1math.html#ad68ebcd0b94f70c498c33b6546b0a62f">ceil</a>( <span class="keywordtype">double</span> d ) noexcept {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    static_assert( std::is_integral_v&lt;Result&gt;, <span class="stringliteral">&quot;Result type must be integral&quot;</span> );</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    static_assert( std::is_floating_point_v&lt;double&gt;,</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                   <span class="stringliteral">&quot;Argument must be a doubleing point type&quot;</span> );</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Result<span class="keyword">&gt;</span>( d + 1.0 );</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  }</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#add8427c758b800c2247c8ef8e91f12fa">   96</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr T <a class="code" href="namespacedaw_1_1math.html#add8427c758b800c2247c8ef8e91f12fa">round_by</a>( T <span class="keyword">const</span> value,</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                                      <span class="keywordtype">double</span> <span class="keyword">const</span> rnd_by ) noexcept {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    static_assert( std::is_arithmetic_v&lt;T&gt;,</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                   <span class="stringliteral">&quot;value must be an arithmetic type&quot;</span> );</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keyword">auto</span> <span class="keyword">const</span> rnd =</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>( <a class="code" href="namespacedaw_1_1math.html#a414e939bb6975bc92f026e832c4d2acf">round</a>( <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>( value ) / rnd_by ) );</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>( rnd * rnd_by );</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  }</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a001f47fb2ffbb5844c90f1b736b99eb9">  106</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr T <a class="code" href="namespacedaw_1_1math.html#a001f47fb2ffbb5844c90f1b736b99eb9">floor_by</a>( T <span class="keyword">const</span> value,</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                                      <span class="keywordtype">double</span> <span class="keyword">const</span> rnd_by ) noexcept {</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    static_assert( std::is_arithmetic_v&lt;T&gt;,</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                   <span class="stringliteral">&quot;value must be an arithmetic type&quot;</span> );</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keyword">auto</span> <span class="keyword">const</span> rnd =</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;      <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>( <a class="code" href="namespacedaw_1_1math.html#a1588f36998ef1198045e0b2228acc763">floor</a>( <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>( value ) / rnd_by ) );</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>( rnd * rnd_by );</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  }</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a2ab1637ac6ba90da15839b495eb69064">  116</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr T <a class="code" href="namespacedaw_1_1math.html#a2ab1637ac6ba90da15839b495eb69064">ceil_by</a>( T <span class="keyword">const</span> value,</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                                     <span class="keywordtype">double</span> <span class="keyword">const</span> rnd_by ) noexcept {</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    static_assert( std::is_arithmetic_v&lt;T&gt;,</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                   <span class="stringliteral">&quot;value must be an arithmetic type&quot;</span> );</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keyword">auto</span> <span class="keyword">const</span> rnd =</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>( <a class="code" href="namespacedaw_1_1math.html#ad68ebcd0b94f70c498c33b6546b0a62f">ceil</a>( <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>( value ) / rnd_by ) );</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>( rnd * rnd_by );</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  }</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, std::enable_if_t&lt;not std::is_<span class="keywordtype">int</span>egral_v&lt;T&gt;,</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                                        std::<span class="keywordtype">nullptr</span>_t&gt; = <span class="keywordtype">nullptr</span>&gt;</div>
+<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#af3cbacfe84d317030106cb0a1a10ea9d">  127</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr T <a class="code" href="namespacedaw_1_1math.html#af3cbacfe84d317030106cb0a1a10ea9d">abs</a>( T t ) noexcept {</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordflow">return</span> t &lt; static_cast&lt;T&gt;( 0 ) ? -t : t;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  }</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T = u<span class="keywordtype">int</span>max_t&gt;</div>
+<div class="line"><a name="l00132"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#afb02cfbbf20e36620589767bcb874f5c">  132</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr T <a class="code" href="namespacedaw_1_1math.html#afb02cfbbf20e36620589767bcb874f5c">pow2</a>( T n ) noexcept {</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    T result = 1;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keywordflow">while</span>( n-- &gt; 0 ) {</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;      result *= 2ULL;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    }</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  }</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Result = uintmax_t, <span class="keyword">typename</span> SignedInteger,</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;           std::enable_if_t&lt;all_true_v&lt;std::is_integral_v&lt;SignedInteger&gt;,</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                                       std::is_signed_v&lt;SignedInteger&gt;&gt;,</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                            std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
+<div class="line"><a name="l00144"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a52dfb2afd6e8b0e1cda836cfd2536db0">  144</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr Result <a class="code" href="namespacedaw_1_1math.html#af3cbacfe84d317030106cb0a1a10ea9d">abs</a>( SignedInteger v ) noexcept {</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="comment">// This accounts for when negating the number is out of range</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keywordflow">if</span>( <span class="keyword">static_cast&lt;</span>intmax_t<span class="keyword">&gt;</span>( v ) ==</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        ( <a class="code" href="namespacedaw_1_1tuple.html#a85aad7e3b54bb9b033b0b4b628f06846">std::numeric_limits&lt;intmax_t&gt;::min</a> )( ) ) {</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;      <span class="keywordflow">return</span> pow2&lt;Result&gt;( bsizeof&lt;intmax_t&gt; - 1 );</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    }</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="keywordflow">if</span>( v &lt; 0 ) {</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;      v = -v;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    }</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Result<span class="keyword">&gt;</span>( v );</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  }</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> UnsignedInteger,</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;           std::enable_if_t&lt;all_true_v&lt;std::is_integral_v&lt;UnsignedInteger&gt;,</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                                       not std::is_signed_v&lt;UnsignedInteger&gt;&gt;,</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                            std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
+<div class="line"><a name="l00160"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a05e164d9c7dac7c55ef108c9f084722b">  160</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr UnsignedInteger <a class="code" href="namespacedaw_1_1math.html#af3cbacfe84d317030106cb0a1a10ea9d">abs</a>( UnsignedInteger &amp;&amp;v ) noexcept {</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keywordflow">return</span> std::forward&lt;UnsignedInteger&gt;( v );</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  }</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00165"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a6581fad8b7fedae5b8bb9e52f87fe0f0">  165</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr uintmax_t <a class="code" href="namespacedaw_1_1math.html#a6581fad8b7fedae5b8bb9e52f87fe0f0">factorial</a>( T t ) noexcept {</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    std::uintmax_t count = <a class="code" href="namespacedaw_1_1math.html#af3cbacfe84d317030106cb0a1a10ea9d">abs</a>( t );</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    std::uintmax_t result = 1;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="keywordflow">for</span>( ; count &gt; 0; --count ) {</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;      result *= count;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    }</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  }</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  <span class="keyword">namespace </span>impl {</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr T pow_impl( T base, <span class="keywordtype">size_t</span> exponent ) noexcept {</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;      <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> k = 0; k &lt; exponent; ++k ) {</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        base *= base;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;      }</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;      <span class="keywordflow">return</span> base;</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    }</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  } <span class="comment">// namespace impl</span></div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  <span class="keyword">namespace </span>impl {</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keyword">struct </span>constants {</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;      constexpr <span class="keyword">static</span> <span class="keywordtype">double</span> <span class="keyword">const</span> tol = 0.001;</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    };</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00186"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a78a68dcff347a011a3e2b4c379b1ced3">  186</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr T <a class="code" href="namespacedaw_1_1math.html#a78a68dcff347a011a3e2b4c379b1ced3">pow</a>( T base, <span class="keywordtype">size_t</span> exponent ) noexcept {</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keywordflow">return</span> base == 0 ? 0 : exponent &gt; 0 ? impl::pow_impl( base, exponent ) : 1;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  }</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    constexpr <span class="keyword">auto</span> cube( T x ) noexcept {</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;      <span class="keywordflow">return</span> x * x * x;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    }</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  <span class="keyword">namespace </span>impl {</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="keyword">struct </span>constants {</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;      <span class="keyword">static</span> constexpr <span class="keywordtype">double</span> <span class="keyword">const</span> tol = 0.001;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    };</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="comment">// Based on the triple-angle formula: sin 3x = 3 sin x - 4 sin ^3 x</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> R&gt;</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    constexpr R sin_helper( R x ) noexcept {</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;      <span class="keywordflow">return</span> x &lt; constants::tol</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;               ? x</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;               : <span class="keyword">static_cast&lt;</span>R<span class="keyword">&gt;</span>( 3.0 ) *</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;                     ( sin_helper( x / <span class="keyword">static_cast&lt;</span>R<span class="keyword">&gt;</span>( 3.0 ) ) ) -</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;                   <span class="keyword">static_cast&lt;</span>R<span class="keyword">&gt;</span>( 4.0 ) *</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;                     cube( sin_helper( x / <span class="keyword">static_cast&lt;</span>R<span class="keyword">&gt;</span>( 3.0 ) ) );</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    }</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  } <span class="comment">// namespace impl</span></div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> R&gt;</div>
-<div class="line"><a name="l00208"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#ae9f14fd871ebd80cd1fd5e5eae96cebb">  208</a></span>&#160;  constexpr R <a class="code" href="namespacedaw_1_1math.html#ae9f14fd871ebd80cd1fd5e5eae96cebb">sin</a>( R x ) noexcept {</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="keywordflow">return</span> impl::sin_helper( x &lt; 0 ? PI&lt;R&gt; - x : x );</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;  }</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr <span class="keyword">auto</span> cube( T x ) noexcept {</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;      <span class="keywordflow">return</span> x * x * x;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    }</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="comment">// Based on the triple-angle formula: sin 3x = 3 sin x - 4 sin ^3 x</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> R&gt;</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr R sin_helper( R x ) noexcept {</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;      <span class="keywordflow">return</span> x &lt; constants::tol</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;               ? x</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;               : <span class="keyword">static_cast&lt;</span>R<span class="keyword">&gt;</span>( 3.0 ) *</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;                     ( sin_helper( x / <span class="keyword">static_cast&lt;</span>R<span class="keyword">&gt;</span>( 3.0 ) ) ) -</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;                   <span class="keyword">static_cast&lt;</span>R<span class="keyword">&gt;</span>( 4.0 ) *</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;                     cube( sin_helper( x / <span class="keyword">static_cast&lt;</span>R<span class="keyword">&gt;</span>( 3.0 ) ) );</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    }</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;  } <span class="comment">// namespace impl</span></div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; </div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> R&gt;</div>
-<div class="line"><a name="l00213"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a589d1841f956f6bbca93864281795f0c">  213</a></span>&#160;  constexpr R <a class="code" href="namespacedaw_1_1math.html#a589d1841f956f6bbca93864281795f0c">cos</a>( R x ) noexcept {</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="keywordflow">if</span>( 0.0 == x ) {</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;      <span class="keywordflow">return</span> 1.0;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    }</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespacedaw_1_1math.html#ae9f14fd871ebd80cd1fd5e5eae96cebb">sin</a>( ( PI&lt;R&gt; / 2.0 ) - x );</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;  }</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00221"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#aa887390c009b3c38c4b44273cd8eb28d">  221</a></span>&#160;  constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw_1_1math.html#aa887390c009b3c38c4b44273cd8eb28d">sqr</a>( T <span class="keyword">const</span> &amp;value ) noexcept {</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    static_assert( std::is_arithmetic_v&lt;T&gt;,</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                   <span class="stringliteral">&quot;Template parameter must be an arithmetic type&quot;</span> );</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="keywordflow">return</span> value * value;</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  }</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; </div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U&gt;</div>
-<div class="line"><a name="l00231"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#ab0fb7bbdfbc09a448ab188f486d3ed11">  231</a></span>&#160;  constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw_1_1math.html#ab0fb7bbdfbc09a448ab188f486d3ed11">value_or_min</a>( T <span class="keyword">const</span> &amp;value, U <span class="keyword">const</span> &amp;min_value ) noexcept {</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="keywordflow">if</span>( min_value &gt; value ) {</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;      <span class="keywordflow">return</span> min_value;</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    }</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <span class="keywordflow">return</span> value;</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;  }</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160; </div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, std::enable_if_t&lt;not std::is_<span class="keywordtype">float</span>ing_po<span class="keywordtype">int</span>_v&lt;T&gt;,</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;                                        std::<span class="keywordtype">nullptr</span>_t&gt; = <span class="keywordtype">nullptr</span>&gt;</div>
-<div class="line"><a name="l00240"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#abb49f18f72e74ea9b20461899d8cd00a">  240</a></span>&#160;  constexpr <span class="keywordtype">bool</span> <a class="code" href="namespacedaw_1_1math.html#abb49f18f72e74ea9b20461899d8cd00a">nearly_equal</a>( T <span class="keyword">const</span> &amp;a, T <span class="keyword">const</span> &amp;b ) noexcept {</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <span class="keywordflow">return</span> a == b;</div>
+<div class="line"><a name="l00213"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#ae9f14fd871ebd80cd1fd5e5eae96cebb">  213</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr R <a class="code" href="namespacedaw_1_1math.html#ae9f14fd871ebd80cd1fd5e5eae96cebb">sin</a>( R x ) noexcept {</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="keywordflow">return</span> impl::sin_helper( x &lt; 0 ? PI&lt;R&gt; - x : x );</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;  }</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160; </div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> R&gt;</div>
+<div class="line"><a name="l00218"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#a589d1841f956f6bbca93864281795f0c">  218</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr R <a class="code" href="namespacedaw_1_1math.html#a589d1841f956f6bbca93864281795f0c">cos</a>( R x ) noexcept {</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keywordflow">if</span>( 0.0 == x ) {</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;      <span class="keywordflow">return</span> 1.0;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    }</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespacedaw_1_1math.html#ae9f14fd871ebd80cd1fd5e5eae96cebb">sin</a>( ( PI&lt;R&gt; / 2.0 ) - x );</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;  }</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00226"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#aa887390c009b3c38c4b44273cd8eb28d">  226</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw_1_1math.html#aa887390c009b3c38c4b44273cd8eb28d">sqr</a>( T <span class="keyword">const</span> &amp;value ) noexcept {</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    static_assert( std::is_arithmetic_v&lt;T&gt;,</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;                   <span class="stringliteral">&quot;Template parameter must be an arithmetic type&quot;</span> );</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="keywordflow">return</span> value * value;</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  }</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U&gt;</div>
+<div class="line"><a name="l00236"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#ab0fb7bbdfbc09a448ab188f486d3ed11">  236</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw_1_1math.html#ab0fb7bbdfbc09a448ab188f486d3ed11">value_or_min</a>( T <span class="keyword">const</span> &amp;value,</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;                                             U <span class="keyword">const</span> &amp;min_value ) noexcept {</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="keywordflow">if</span>( min_value &gt; value ) {</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;      <span class="keywordflow">return</span> min_value;</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    }</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <span class="keywordflow">return</span> value;</div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;  }</div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="preprocessor">#ifdef __clang__</span></div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<span class="preprocessor">#pragma clang diagnostic push</span></div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="preprocessor">#pragma clang diagnostic ignored &quot;-Wfloat-equal&quot;</span></div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, std::enable_if_t&lt;std::is_<span class="keywordtype">float</span>ing_po<span class="keywordtype">int</span>_v&lt;T&gt;,</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;                                        std::<span class="keywordtype">nullptr</span>_t&gt; = <span class="keywordtype">nullptr</span>&gt;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  constexpr <span class="keywordtype">bool</span></div>
-<div class="line"><a name="l00251"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#aca705399fc7efec64ed73dbe0140dd1e">  251</a></span>&#160;  <a class="code" href="namespacedaw_1_1math.html#abb49f18f72e74ea9b20461899d8cd00a">nearly_equal</a>( T a, T b,</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;                T epsilon = std::numeric_limits&lt;T&gt;::epsilon( ) ) noexcept {</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="keywordflow">if</span>( a != a ) {</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;      <span class="keywordflow">if</span>( b != b ) {</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// both NaN</span></div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;      }</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    }</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="keywordflow">if</span>( b != b ) {</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    }</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    <span class="comment">// Code from http://floating-point-gui.de/errors/comparison/</span></div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <span class="keyword">auto</span> absA = <a class="code" href="namespacedaw_1_1math.html#af3cbacfe84d317030106cb0a1a10ea9d">daw::math::abs</a>( a );</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <span class="keyword">auto</span> absB = <a class="code" href="namespacedaw_1_1math.html#af3cbacfe84d317030106cb0a1a10ea9d">daw::math::abs</a>( b );</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <span class="keyword">auto</span> diff = <a class="code" href="namespacedaw_1_1math.html#af3cbacfe84d317030106cb0a1a10ea9d">daw::math::abs</a>( a - b );</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <span class="keywordflow">if</span>( diff != diff ) {</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;      <span class="comment">// both numbers where either max or min</span></div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    }</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="keywordflow">if</span>( a == b ) { <span class="comment">// shortcut, handles infinities</span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    }</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <span class="keywordflow">if</span>( a == 0 or b == 0 or diff &lt; std::numeric_limits&lt;T&gt;::min_exponent ) {</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;      <span class="comment">// a or b is zero or both are extremely close to it</span></div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;      <span class="comment">//      // relative error is less meaningful here</span></div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;      <span class="keywordflow">return</span> diff &lt; ( epsilon * std::numeric_limits&lt;T&gt;::min_exponent );</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    }</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <span class="comment">// use relative error</span></div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <span class="keywordflow">return</span> diff / ( <a class="code" href="namespacedaw.html#abb3b5cf7b763ba3b534a11d3ed32d76a">daw::min</a> )( ( absA + absB ),</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;                                ( <a class="code" href="namespacedaw_1_1tuple.html#a543ce1a1cb4ea6b89b50c454a74631bd">std::numeric_limits&lt;T&gt;::max</a> )( ) ) &lt;</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;           epsilon;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;  }</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="preprocessor">#ifdef __clang__</span></div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="preprocessor">#pragma clang diagnostic pop</span></div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;} <span class="comment">// namespace daw::math</span></div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, std::enable_if_t&lt;not std::is_<span class="keywordtype">float</span>ing_po<span class="keywordtype">int</span>_v&lt;T&gt;,</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                                        std::<span class="keywordtype">nullptr</span>_t&gt; = <span class="keywordtype">nullptr</span>&gt;</div>
+<div class="line"><a name="l00246"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#abb49f18f72e74ea9b20461899d8cd00a">  246</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr <span class="keywordtype">bool</span> <a class="code" href="namespacedaw_1_1math.html#abb49f18f72e74ea9b20461899d8cd00a">nearly_equal</a>( T <span class="keyword">const</span> &amp;a, T <span class="keyword">const</span> &amp;b ) noexcept {</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    <span class="keywordflow">return</span> a == b;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;  }</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;<span class="preprocessor">#ifdef __clang__</span></div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="preprocessor">#pragma clang diagnostic push</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="preprocessor">#pragma clang diagnostic ignored &quot;-Wfloat-equal&quot;</span></div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, std::enable_if_t&lt;std::is_<span class="keywordtype">float</span>ing_po<span class="keywordtype">int</span>_v&lt;T&gt;,</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;                                        std::<span class="keywordtype">nullptr</span>_t&gt; = <span class="keywordtype">nullptr</span>&gt;</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr <span class="keywordtype">bool</span></div>
+<div class="line"><a name="l00257"></a><span class="lineno"><a class="line" href="namespacedaw_1_1math.html#aca705399fc7efec64ed73dbe0140dd1e">  257</a></span>&#160;  <a class="code" href="namespacedaw_1_1math.html#abb49f18f72e74ea9b20461899d8cd00a">nearly_equal</a>( T a, T b,</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                T epsilon = std::numeric_limits&lt;T&gt;::epsilon( ) ) noexcept {</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="keywordflow">if</span>( a != a ) {</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;      <span class="keywordflow">if</span>( b != b ) {</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// both NaN</span></div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;      }</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    }</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <span class="keywordflow">if</span>( b != b ) {</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    }</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <span class="comment">// Code from http://floating-point-gui.de/errors/comparison/</span></div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    <span class="keyword">auto</span> absA = <a class="code" href="namespacedaw_1_1math.html#af3cbacfe84d317030106cb0a1a10ea9d">daw::math::abs</a>( a );</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="keyword">auto</span> absB = <a class="code" href="namespacedaw_1_1math.html#af3cbacfe84d317030106cb0a1a10ea9d">daw::math::abs</a>( b );</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="keyword">auto</span> diff = <a class="code" href="namespacedaw_1_1math.html#af3cbacfe84d317030106cb0a1a10ea9d">daw::math::abs</a>( a - b );</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <span class="keywordflow">if</span>( diff != diff ) {</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;      <span class="comment">// both numbers where either max or min</span></div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    }</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; </div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="keywordflow">if</span>( a == b ) { <span class="comment">// shortcut, handles infinities</span></div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    }</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <span class="keywordflow">if</span>( a == 0 or b == 0 or diff &lt; std::numeric_limits&lt;T&gt;::min_exponent ) {</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;      <span class="comment">// a or b is zero or both are extremely close to it</span></div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;      <span class="comment">//      // relative error is less meaningful here</span></div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;      <span class="keywordflow">return</span> diff &lt; ( epsilon * std::numeric_limits&lt;T&gt;::min_exponent );</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    }</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    <span class="comment">// use relative error</span></div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="keywordflow">return</span> diff / ( <a class="code" href="namespacedaw.html#abb3b5cf7b763ba3b534a11d3ed32d76a">daw::min</a> )( ( absA + absB ),</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;                                ( <a class="code" href="namespacedaw_1_1tuple.html#a543ce1a1cb4ea6b89b50c454a74631bd">std::numeric_limits&lt;T&gt;::max</a> )( ) ) &lt;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;           epsilon;</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;  }</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="preprocessor">#ifdef __clang__</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="preprocessor">#pragma clang diagnostic pop</span></div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;} <span class="comment">// namespace daw::math</span></div>
 <div class="ttc" id="aciso646_8h_html"><div class="ttname"><a href="ciso646_8h.html">ciso646.h</a></div></div>
 <div class="ttc" id="acpp__17_8h_html"><div class="ttname"><a href="cpp__17_8h.html">cpp_17.h</a></div></div>
-<div class="ttc" id="adaw__algorithm_8h_html"><div class="ttname"><a href="daw__algorithm_8h.html">daw_algorithm.h</a></div></div>
 <div class="ttc" id="adaw__math__impl_8h_html"><div class="ttname"><a href="daw__math__impl_8h.html">daw_math_impl.h</a></div></div>
-<div class="ttc" id="adaw__scope__guard_8h_html"><div class="ttname"><a href="daw__scope__guard_8h.html">daw_scope_guard.h</a></div></div>
 <div class="ttc" id="adaw__traits_8h_html"><div class="ttname"><a href="daw__traits_8h.html">daw_traits.h</a></div></div>
-<div class="ttc" id="adaw__utility_8h_html"><div class="ttname"><a href="daw__utility_8h.html">daw_utility.h</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1math_html"><div class="ttname"><a href="namespacedaw_1_1math.html">daw::math</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00027">daw_math.h:27</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1math_html_a001f47fb2ffbb5844c90f1b736b99eb9"><div class="ttname"><a href="namespacedaw_1_1math.html#a001f47fb2ffbb5844c90f1b736b99eb9">daw::math::floor_by</a></div><div class="ttdeci">constexpr T floor_by(T const value, double const rnd_by) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00103">daw_math.h:103</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1math_html_a1588f36998ef1198045e0b2228acc763"><div class="ttname"><a href="namespacedaw_1_1math.html#a1588f36998ef1198045e0b2228acc763">daw::math::floor</a></div><div class="ttdeci">constexpr Result floor(float d) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00062">daw_math.h:62</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1math_html_a2ab1637ac6ba90da15839b495eb69064"><div class="ttname"><a href="namespacedaw_1_1math.html#a2ab1637ac6ba90da15839b495eb69064">daw::math::ceil_by</a></div><div class="ttdeci">constexpr T ceil_by(T const value, double const rnd_by) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00112">daw_math.h:112</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1math_html_a414e939bb6975bc92f026e832c4d2acf"><div class="ttname"><a href="namespacedaw_1_1math.html#a414e939bb6975bc92f026e832c4d2acf">daw::math::round</a></div><div class="ttdeci">constexpr Result round(float d) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00046">daw_math.h:46</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1math_html_a589d1841f956f6bbca93864281795f0c"><div class="ttname"><a href="namespacedaw_1_1math.html#a589d1841f956f6bbca93864281795f0c">daw::math::cos</a></div><div class="ttdeci">constexpr R cos(R x) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00213">daw_math.h:213</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1math_html_a6581fad8b7fedae5b8bb9e52f87fe0f0"><div class="ttname"><a href="namespacedaw_1_1math.html#a6581fad8b7fedae5b8bb9e52f87fe0f0">daw::math::factorial</a></div><div class="ttdeci">constexpr uintmax_t factorial(T t) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00160">daw_math.h:160</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1math_html_a78a68dcff347a011a3e2b4c379b1ced3"><div class="ttname"><a href="namespacedaw_1_1math.html#a78a68dcff347a011a3e2b4c379b1ced3">daw::math::pow</a></div><div class="ttdeci">constexpr T pow(T base, size_t exponent) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00181">daw_math.h:181</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1math_html_a7de9959175eaaafc807ba36b29f472e9"><div class="ttname"><a href="namespacedaw_1_1math.html#a7de9959175eaaafc807ba36b29f472e9">daw::math::PI</a></div><div class="ttdeci">constexpr T const PI</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00042">daw_math.h:42</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1math_html_a9fd408b2d93ffda01619b40b3df1a448"><div class="ttname"><a href="namespacedaw_1_1math.html#a9fd408b2d93ffda01619b40b3df1a448">daw::math::int_for_float_t</a></div><div class="ttdeci">typename int_for_float&lt; Float &gt;::type int_for_float_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00039">daw_math.h:39</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1math_html_aa887390c009b3c38c4b44273cd8eb28d"><div class="ttname"><a href="namespacedaw_1_1math.html#aa887390c009b3c38c4b44273cd8eb28d">daw::math::sqr</a></div><div class="ttdeci">constexpr auto sqr(T const &amp;value) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00221">daw_math.h:221</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1math_html_ab0fb7bbdfbc09a448ab188f486d3ed11"><div class="ttname"><a href="namespacedaw_1_1math.html#ab0fb7bbdfbc09a448ab188f486d3ed11">daw::math::value_or_min</a></div><div class="ttdeci">constexpr auto value_or_min(T const &amp;value, U const &amp;min_value) noexcept</div><div class="ttdoc">Set the minimum value allowed</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00231">daw_math.h:231</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1math_html_abb49f18f72e74ea9b20461899d8cd00a"><div class="ttname"><a href="namespacedaw_1_1math.html#abb49f18f72e74ea9b20461899d8cd00a">daw::math::nearly_equal</a></div><div class="ttdeci">constexpr bool nearly_equal(T const &amp;a, T const &amp;b) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00240">daw_math.h:240</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1math_html_ad68ebcd0b94f70c498c33b6546b0a62f"><div class="ttname"><a href="namespacedaw_1_1math.html#ad68ebcd0b94f70c498c33b6546b0a62f">daw::math::ceil</a></div><div class="ttdeci">constexpr Result ceil(float d) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00078">daw_math.h:78</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1math_html_add8427c758b800c2247c8ef8e91f12fa"><div class="ttname"><a href="namespacedaw_1_1math.html#add8427c758b800c2247c8ef8e91f12fa">daw::math::round_by</a></div><div class="ttdeci">constexpr T round_by(T const value, double const rnd_by) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00094">daw_math.h:94</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1math_html_ae9f14fd871ebd80cd1fd5e5eae96cebb"><div class="ttname"><a href="namespacedaw_1_1math.html#ae9f14fd871ebd80cd1fd5e5eae96cebb">daw::math::sin</a></div><div class="ttdeci">constexpr R sin(R x) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00208">daw_math.h:208</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1math_html_af3cbacfe84d317030106cb0a1a10ea9d"><div class="ttname"><a href="namespacedaw_1_1math.html#af3cbacfe84d317030106cb0a1a10ea9d">daw::math::abs</a></div><div class="ttdeci">constexpr T abs(T t) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00122">daw_math.h:122</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1math_html_afb02cfbbf20e36620589767bcb874f5c"><div class="ttname"><a href="namespacedaw_1_1math.html#afb02cfbbf20e36620589767bcb874f5c">daw::math::pow2</a></div><div class="ttdeci">constexpr T pow2(T n) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00127">daw_math.h:127</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1math_html"><div class="ttname"><a href="namespacedaw_1_1math.html">daw::math</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00029">daw_math.h:29</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1math_html_a001f47fb2ffbb5844c90f1b736b99eb9"><div class="ttname"><a href="namespacedaw_1_1math.html#a001f47fb2ffbb5844c90f1b736b99eb9">daw::math::floor_by</a></div><div class="ttdeci">constexpr T floor_by(T const value, double const rnd_by) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00106">daw_math.h:106</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1math_html_a1588f36998ef1198045e0b2228acc763"><div class="ttname"><a href="namespacedaw_1_1math.html#a1588f36998ef1198045e0b2228acc763">daw::math::floor</a></div><div class="ttdeci">constexpr Result floor(float d) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00064">daw_math.h:64</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1math_html_a2ab1637ac6ba90da15839b495eb69064"><div class="ttname"><a href="namespacedaw_1_1math.html#a2ab1637ac6ba90da15839b495eb69064">daw::math::ceil_by</a></div><div class="ttdeci">constexpr T ceil_by(T const value, double const rnd_by) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00116">daw_math.h:116</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1math_html_a414e939bb6975bc92f026e832c4d2acf"><div class="ttname"><a href="namespacedaw_1_1math.html#a414e939bb6975bc92f026e832c4d2acf">daw::math::round</a></div><div class="ttdeci">constexpr Result round(float d) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00048">daw_math.h:48</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1math_html_a589d1841f956f6bbca93864281795f0c"><div class="ttname"><a href="namespacedaw_1_1math.html#a589d1841f956f6bbca93864281795f0c">daw::math::cos</a></div><div class="ttdeci">constexpr R cos(R x) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00218">daw_math.h:218</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1math_html_a6581fad8b7fedae5b8bb9e52f87fe0f0"><div class="ttname"><a href="namespacedaw_1_1math.html#a6581fad8b7fedae5b8bb9e52f87fe0f0">daw::math::factorial</a></div><div class="ttdeci">constexpr uintmax_t factorial(T t) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00165">daw_math.h:165</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1math_html_a78a68dcff347a011a3e2b4c379b1ced3"><div class="ttname"><a href="namespacedaw_1_1math.html#a78a68dcff347a011a3e2b4c379b1ced3">daw::math::pow</a></div><div class="ttdeci">constexpr T pow(T base, size_t exponent) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00186">daw_math.h:186</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1math_html_a7de9959175eaaafc807ba36b29f472e9"><div class="ttname"><a href="namespacedaw_1_1math.html#a7de9959175eaaafc807ba36b29f472e9">daw::math::PI</a></div><div class="ttdeci">constexpr T const PI</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00044">daw_math.h:44</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1math_html_a9fd408b2d93ffda01619b40b3df1a448"><div class="ttname"><a href="namespacedaw_1_1math.html#a9fd408b2d93ffda01619b40b3df1a448">daw::math::int_for_float_t</a></div><div class="ttdeci">typename int_for_float&lt; Float &gt;::type int_for_float_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00041">daw_math.h:41</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1math_html_aa887390c009b3c38c4b44273cd8eb28d"><div class="ttname"><a href="namespacedaw_1_1math.html#aa887390c009b3c38c4b44273cd8eb28d">daw::math::sqr</a></div><div class="ttdeci">constexpr auto sqr(T const &amp;value) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00226">daw_math.h:226</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1math_html_ab0fb7bbdfbc09a448ab188f486d3ed11"><div class="ttname"><a href="namespacedaw_1_1math.html#ab0fb7bbdfbc09a448ab188f486d3ed11">daw::math::value_or_min</a></div><div class="ttdeci">constexpr auto value_or_min(T const &amp;value, U const &amp;min_value) noexcept</div><div class="ttdoc">Set the minimum value allowed</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00236">daw_math.h:236</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1math_html_abb49f18f72e74ea9b20461899d8cd00a"><div class="ttname"><a href="namespacedaw_1_1math.html#abb49f18f72e74ea9b20461899d8cd00a">daw::math::nearly_equal</a></div><div class="ttdeci">constexpr bool nearly_equal(T const &amp;a, T const &amp;b) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00246">daw_math.h:246</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1math_html_ad68ebcd0b94f70c498c33b6546b0a62f"><div class="ttname"><a href="namespacedaw_1_1math.html#ad68ebcd0b94f70c498c33b6546b0a62f">daw::math::ceil</a></div><div class="ttdeci">constexpr Result ceil(float d) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00080">daw_math.h:80</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1math_html_add8427c758b800c2247c8ef8e91f12fa"><div class="ttname"><a href="namespacedaw_1_1math.html#add8427c758b800c2247c8ef8e91f12fa">daw::math::round_by</a></div><div class="ttdeci">constexpr T round_by(T const value, double const rnd_by) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00096">daw_math.h:96</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1math_html_ae9f14fd871ebd80cd1fd5e5eae96cebb"><div class="ttname"><a href="namespacedaw_1_1math.html#ae9f14fd871ebd80cd1fd5e5eae96cebb">daw::math::sin</a></div><div class="ttdeci">constexpr R sin(R x) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00213">daw_math.h:213</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1math_html_af3cbacfe84d317030106cb0a1a10ea9d"><div class="ttname"><a href="namespacedaw_1_1math.html#af3cbacfe84d317030106cb0a1a10ea9d">daw::math::abs</a></div><div class="ttdeci">constexpr T abs(T t) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00127">daw_math.h:127</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1math_html_afb02cfbbf20e36620589767bcb874f5c"><div class="ttname"><a href="namespacedaw_1_1math.html#afb02cfbbf20e36620589767bcb874f5c">daw::math::pow2</a></div><div class="ttdeci">constexpr T pow2(T n) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00132">daw_math.h:132</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1tuple_html_a543ce1a1cb4ea6b89b50c454a74631bd"><div class="ttname"><a href="namespacedaw_1_1tuple.html#a543ce1a1cb4ea6b89b50c454a74631bd">daw::tuple::max</a></div><div class="ttdeci">constexpr auto() max(std::tuple&lt; Ts... &gt; const &amp;a, std::tuple&lt; Ts... &gt; const &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple__helper_8h_source.html#l00383">daw_tuple_helper.h:383</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1tuple_html_a85aad7e3b54bb9b033b0b4b628f06846"><div class="ttname"><a href="namespacedaw_1_1tuple.html#a85aad7e3b54bb9b033b0b4b628f06846">daw::tuple::min</a></div><div class="ttdeci">constexpr auto() min(std::tuple&lt; Ts... &gt; const &amp;a, std::tuple&lt; Ts... &gt; const &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple__helper_8h_source.html#l00376">daw_tuple_helper.h:376</a></div></div>
+<div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="compressed__pair_8h_source.html#l00018">compressed_pair.h:18</a></div></div>
 <div class="ttc" id="anamespacedaw_html_abb3b5cf7b763ba3b534a11d3ed32d76a"><div class="ttname"><a href="namespacedaw.html#abb3b5cf7b763ba3b534a11d3ed32d76a">daw::min</a></div><div class="ttdeci">constexpr auto() min(T const &amp;val1, Ts const &amp;...vs) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math__impl_8h_source.html#l00076">daw_math_impl.h:76</a></div></div>
-<div class="ttc" id="astructdaw_1_1math_1_1int__for__float_3_01float_01_4_html_acd8289821421c5fde0966da1d79aa90c"><div class="ttname"><a href="structdaw_1_1math_1_1int__for__float_3_01float_01_4.html#acd8289821421c5fde0966da1d79aa90c">daw::math::int_for_float&lt; float &gt;::type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00035">daw_math.h:35</a></div></div>
-<div class="ttc" id="astructdaw_1_1math_1_1int__for__float_html"><div class="ttname"><a href="structdaw_1_1math_1_1int__for__float.html">daw::math::int_for_float</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00029">daw_math.h:29</a></div></div>
-<div class="ttc" id="astructdaw_1_1math_1_1int__for__float_html_a174437b9b474555c1d06fee9ac5e3877"><div class="ttname"><a href="structdaw_1_1math_1_1int__for__float.html#a174437b9b474555c1d06fee9ac5e3877">daw::math::int_for_float::type</a></div><div class="ttdeci">intmax_t type</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00030">daw_math.h:30</a></div></div>
+<div class="ttc" id="anamespacedaw_html_ad8a64a646f74d139a882242dceee804e"><div class="ttname"><a href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">daw::nodiscard</a></div><div class="ttdeci">constexpr auto nodiscard</div><div class="ttdef"><b>Definition:</b> <a href="daw__view__tags_8h_source.html#l00015">daw_view_tags.h:15</a></div></div>
+<div class="ttc" id="astructdaw_1_1math_1_1int__for__float_3_01float_01_4_html_acd8289821421c5fde0966da1d79aa90c"><div class="ttname"><a href="structdaw_1_1math_1_1int__for__float_3_01float_01_4.html#acd8289821421c5fde0966da1d79aa90c">daw::math::int_for_float&lt; float &gt;::type</a></div><div class="ttdeci">int32_t type</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00037">daw_math.h:37</a></div></div>
+<div class="ttc" id="astructdaw_1_1math_1_1int__for__float_html"><div class="ttname"><a href="structdaw_1_1math_1_1int__for__float.html">daw::math::int_for_float</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00031">daw_math.h:31</a></div></div>
+<div class="ttc" id="astructdaw_1_1math_1_1int__for__float_html_a174437b9b474555c1d06fee9ac5e3877"><div class="ttname"><a href="structdaw_1_1math_1_1int__for__float.html#a174437b9b474555c1d06fee9ac5e3877">daw::math::int_for_float::type</a></div><div class="ttdeci">intmax_t type</div><div class="ttdef"><b>Definition:</b> <a href="daw__math_8h_source.html#l00032">daw_math.h:32</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

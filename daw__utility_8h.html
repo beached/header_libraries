@@ -102,8 +102,6 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1_empty.html">daw::Empty</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1empty__t.html">daw::empty_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1equal__to__last.html">daw::equal_to_last&lt; T &gt;</a></td></tr>
@@ -130,6 +128,8 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a71ad4a3136d8de3dfae98a9ee82e2072"><td class="memTemplParams" colspan="2">template&lt;auto Value&gt; </td></tr>
 <tr class="memitem:a71ad4a3136d8de3dfae98a9ee82e2072"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a71ad4a3136d8de3dfae98a9ee82e2072">daw::constant</a> = std::integral_constant&lt; <a class="el" href="daw__traits_8h.html#acddf9b5f979a91ce8deb198be4008f94">DAW_TYPEOF</a>(Value), Value &gt;</td></tr>
 <tr class="separator:a71ad4a3136d8de3dfae98a9ee82e2072"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba4e5846de33d9e8da107316ee5df110"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aba4e5846de33d9e8da107316ee5df110">daw::Empty</a> = empty_t</td></tr>
+<tr class="separator:aba4e5846de33d9e8da107316ee5df110"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70539c2d8bdfff828cba8e093e39c5f8"><td class="memTemplParams" colspan="2">template&lt;typename ResultType , typename... ArgTypes&gt; </td></tr>
 <tr class="memitem:a70539c2d8bdfff828cba8e093e39c5f8"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a70539c2d8bdfff828cba8e093e39c5f8">daw::function_pointer_t</a> = typename utility_details::make_function_pointer_impl&lt; ResultType, ArgTypes... &gt;::type</td></tr>
 <tr class="separator:a70539c2d8bdfff828cba8e093e39c5f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -220,12 +220,6 @@ Functions</h2></td></tr>
 <tr class="memitem:ab5bfaa47e8a2fea51f8af6945fb1758a"><td class="memTemplParams" colspan="2">template&lt;typename Iterator1 , typename Iterator2 , typename OutputIterator &gt; </td></tr>
 <tr class="memitem:ab5bfaa47e8a2fea51f8af6945fb1758a"><td class="memTemplItemLeft" align="right" valign="top">constexpr OutputIterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ab5bfaa47e8a2fea51f8af6945fb1758a">daw::cxpr_move</a> (Iterator1 first_in, Iterator2 const last_in, OutputIterator first_out)</td></tr>
 <tr class="separator:ab5bfaa47e8a2fea51f8af6945fb1758a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee6a75fdde7dea280f69268a5792d743"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
-<tr class="memitem:aee6a75fdde7dea280f69268a5792d743"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aee6a75fdde7dea280f69268a5792d743">daw::data</a> (Container &amp;&amp;c)</td></tr>
-<tr class="separator:aee6a75fdde7dea280f69268a5792d743"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8334085cf8eddae54006d0f2d35f1a20"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
-<tr class="memitem:a8334085cf8eddae54006d0f2d35f1a20"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a8334085cf8eddae54006d0f2d35f1a20">daw::data_end</a> (Container &amp;&amp;c)</td></tr>
-<tr class="separator:a8334085cf8eddae54006d0f2d35f1a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0767246b1b698d156ba20b1af007ffe7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a0767246b1b698d156ba20b1af007ffe7"><td class="memTemplItemLeft" align="right" valign="top">constexpr utility_details::EqualToImpl&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0767246b1b698d156ba20b1af007ffe7">daw::equal_to</a> (T value)</td></tr>
 <tr class="separator:a0767246b1b698d156ba20b1af007ffe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -355,9 +349,6 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a30cd41d016c1898b2b5a44940193ab42"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a30cd41d016c1898b2b5a44940193ab42"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::size_t const&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a30cd41d016c1898b2b5a44940193ab42">daw::bsizeof</a></td></tr>
-<tr class="separator:a30cd41d016c1898b2b5a44940193ab42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af40b364e481302a9b8a6e2df6b4d793c"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Ts&gt; </td></tr>
 <tr class="memitem:af40b364e481302a9b8a6e2df6b4d793c"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af40b364e481302a9b8a6e2df6b4d793c">daw::pack_index_of_v</a></td></tr>
 <tr class="separator:af40b364e481302a9b8a6e2df6b4d793c"><td class="memSeparator" colspan="2">&#160;</td></tr>

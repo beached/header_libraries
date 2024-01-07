@@ -81,51 +81,51 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a758523e1d6833195fd37e5a2003faae9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a758523e1d6833195fd37e5a2003faae9">hash_value_t</a> = uint32_t</td></tr>
-<tr class="separator:a758523e1d6833195fd37e5a2003faae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6399d49951106f974f3c8d65ba2f628"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> = std::uint32_t</td></tr>
+<tr class="separator:aa6399d49951106f974f3c8d65ba2f628"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a0c381ddecf593de782f5fd043a03cccf"><td class="memTemplParams" colspan="2">template&lt;typename Integral , std::enable_if_t&lt; std::is_integral_v&lt; Integral &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
-<tr class="memitem:a0c381ddecf593de782f5fd043a03cccf"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a758523e1d6833195fd37e5a2003faae9">hash_value_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a0c381ddecf593de782f5fd043a03cccf">operator()</a> (Integral const value) const noexcept</td></tr>
+<tr class="memitem:a0c381ddecf593de782f5fd043a03cccf"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a0c381ddecf593de782f5fd043a03cccf">operator()</a> (Integral const value) const noexcept</td></tr>
 <tr class="separator:a0c381ddecf593de782f5fd043a03cccf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af95a833c22e8c03acb5009ba8cc58673"><td class="memTemplParams" colspan="2">template&lt;typename Iterator1 , typename Iterator2 , std::enable_if_t&lt; std::is_integral_v&lt; typename std::iterator_traits&lt; Iterator1 &gt;::type &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
-<tr class="memitem:af95a833c22e8c03acb5009ba8cc58673"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a758523e1d6833195fd37e5a2003faae9">hash_value_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#af95a833c22e8c03acb5009ba8cc58673">operator()</a> (Iterator1 first, Iterator2 const last) const noexcept</td></tr>
-<tr class="separator:af95a833c22e8c03acb5009ba8cc58673"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aded384289938a4fc6ac5fc8513127a03"><td class="memTemplParams" colspan="2">template&lt;typename Member , size_t N, std::enable_if_t&lt; std::is_integral_v&lt; Member &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
-<tr class="memitem:aded384289938a4fc6ac5fc8513127a03"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a758523e1d6833195fd37e5a2003faae9">hash_value_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aded384289938a4fc6ac5fc8513127a03">operator()</a> (Member const (&amp;member)[N]) const noexcept</td></tr>
+<tr class="memitem:a33e4fe42e025fd8f363c3dd5c510133f"><td class="memTemplParams" colspan="2">template&lt;typename Iterator1 , typename Iterator2 &gt; </td></tr>
+<tr class="memitem:a33e4fe42e025fd8f363c3dd5c510133f"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a33e4fe42e025fd8f363c3dd5c510133f">operator()</a> (Iterator1 first, Iterator2 const last) const noexcept</td></tr>
+<tr class="separator:a33e4fe42e025fd8f363c3dd5c510133f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aded384289938a4fc6ac5fc8513127a03"><td class="memTemplParams" colspan="2">template&lt;typename Member , std::size_t N, std::enable_if_t&lt; std::is_integral_v&lt; Member &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:aded384289938a4fc6ac5fc8513127a03"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aded384289938a4fc6ac5fc8513127a03">operator()</a> (Member const (&amp;member)[N]) const noexcept</td></tr>
 <tr class="separator:aded384289938a4fc6ac5fc8513127a03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a6eeffb09cf2350674db96614003da616"><td class="memTemplParams" colspan="2">template&lt;typename Value , std::enable_if_t&lt; std::is_integral_v&lt; Value &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
-<tr class="memitem:a6eeffb09cf2350674db96614003da616"><td class="memTemplItemLeft" align="right" valign="top">static constexpr <a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a758523e1d6833195fd37e5a2003faae9">hash_value_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a6eeffb09cf2350674db96614003da616">append_hash</a> (<a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a758523e1d6833195fd37e5a2003faae9">hash_value_t</a> current_hash, Value const &amp;value) noexcept</td></tr>
+<tr class="memitem:a6eeffb09cf2350674db96614003da616"><td class="memTemplItemLeft" align="right" valign="top">static constexpr <a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a6eeffb09cf2350674db96614003da616">append_hash</a> (<a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> current_hash, Value const &amp;value) noexcept</td></tr>
 <tr class="separator:a6eeffb09cf2350674db96614003da616"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:ac928c75772b30ed2348e8e8d7d0b5786"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a758523e1d6833195fd37e5a2003faae9">hash_value_t</a> const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#ac928c75772b30ed2348e8e8d7d0b5786">hash_init</a> = 2166136261UL</td></tr>
+<tr class="memitem:ac928c75772b30ed2348e8e8d7d0b5786"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#ac928c75772b30ed2348e8e8d7d0b5786">hash_init</a> = 2166136261UL</td></tr>
 <tr class="separator:ac928c75772b30ed2348e8e8d7d0b5786"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a504a67e1768d46f9b124c0f13b749758"><td class="memItemLeft" align="right" valign="top">static constexpr size_t const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a504a67e1768d46f9b124c0f13b749758">hash_size</a> = 4</td></tr>
-<tr class="separator:a504a67e1768d46f9b124c0f13b749758"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ab94a77ebfef65f7898b302573f22bf"><td class="memItemLeft" align="right" valign="top">static constexpr std::size_t const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a6ab94a77ebfef65f7898b302573f22bf">hash_size</a> = 4</td></tr>
+<tr class="separator:a6ab94a77ebfef65f7898b302573f22bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="daw__generic__hash_8h_source.html#l00091">91</a> of file <a class="el" href="daw__generic__hash_8h_source.html">daw_generic_hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__generic__hash_8h_source.html#l00089">89</a> of file <a class="el" href="daw__generic__hash_8h_source.html">daw_generic_hash.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a758523e1d6833195fd37e5a2003faae9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a758523e1d6833195fd37e5a2003faae9">&#9670;&nbsp;</a></span>hash_value_t</h2>
+<a id="aa6399d49951106f974f3c8d65ba2f628"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6399d49951106f974f3c8d65ba2f628">&#9670;&nbsp;</a></span>hash_value_t</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1generic__hash__t.html">daw::generic_hash_t</a>&lt; 4 &gt;::<a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a758523e1d6833195fd37e5a2003faae9">hash_value_t</a> =  uint32_t</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1generic__hash__t.html">daw::generic_hash_t</a>&lt; 4 &gt;::<a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> =  std::uint32_t</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__generic__hash_8h_source.html#l00092">92</a> of file <a class="el" href="daw__generic__hash_8h_source.html">daw_generic_hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__generic__hash_8h_source.html#l00090">90</a> of file <a class="el" href="daw__generic__hash_8h_source.html">daw_generic_hash.h</a>.</p>
 
 </div>
 </div>
@@ -142,9 +142,9 @@ template&lt;typename Value , std::enable_if_t&lt; std::is_integral_v&lt; Value &
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static constexpr <a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a758523e1d6833195fd37e5a2003faae9">hash_value_t</a> <a class="el" href="structdaw_1_1generic__hash__t.html">daw::generic_hash_t</a>&lt; 4 &gt;::append_hash </td>
+          <td class="memname">static constexpr <a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> <a class="el" href="structdaw_1_1generic__hash__t.html">daw::generic_hash_t</a>&lt; 4 &gt;::append_hash </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a758523e1d6833195fd37e5a2003faae9">hash_value_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a>&#160;</td>
           <td class="paramname"><em>current_hash</em>, </td>
         </tr>
         <tr>
@@ -166,7 +166,7 @@ template&lt;typename Value , std::enable_if_t&lt; std::is_integral_v&lt; Value &
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__generic__hash_8h_source.html#l00098">98</a> of file <a class="el" href="daw__generic__hash_8h_source.html">daw_generic_hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__generic__hash_8h_source.html#l00096">96</a> of file <a class="el" href="daw__generic__hash_8h_source.html">daw_generic_hash.h</a>.</p>
 
 </div>
 </div>
@@ -182,7 +182,7 @@ template&lt;typename Integral , std::enable_if_t&lt; std::is_integral_v&lt; Inte
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a758523e1d6833195fd37e5a2003faae9">hash_value_t</a> <a class="el" href="structdaw_1_1generic__hash__t.html">daw::generic_hash_t</a>&lt; 4 &gt;::operator() </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> <a class="el" href="structdaw_1_1generic__hash__t.html">daw::generic_hash_t</a>&lt; 4 &gt;::operator() </td>
           <td>(</td>
           <td class="paramtype">Integral const&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -196,23 +196,23 @@ template&lt;typename Integral , std::enable_if_t&lt; std::is_integral_v&lt; Inte
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__generic__hash_8h_source.html#l00135">135</a> of file <a class="el" href="daw__generic__hash_8h_source.html">daw_generic_hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__generic__hash_8h_source.html#l00131">131</a> of file <a class="el" href="daw__generic__hash_8h_source.html">daw_generic_hash.h</a>.</p>
 
 </div>
 </div>
-<a id="af95a833c22e8c03acb5009ba8cc58673"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af95a833c22e8c03acb5009ba8cc58673">&#9670;&nbsp;</a></span>operator()() <span class="overload">[2/3]</span></h2>
+<a id="a33e4fe42e025fd8f363c3dd5c510133f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33e4fe42e025fd8f363c3dd5c510133f">&#9670;&nbsp;</a></span>operator()() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Iterator1 , typename Iterator2 , std::enable_if_t&lt; std::is_integral_v&lt; typename std::iterator_traits&lt; Iterator1 &gt;::type &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+template&lt;typename Iterator1 , typename Iterator2 &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a758523e1d6833195fd37e5a2003faae9">hash_value_t</a> <a class="el" href="structdaw_1_1generic__hash__t.html">daw::generic_hash_t</a>&lt; 4 &gt;::operator() </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> <a class="el" href="structdaw_1_1generic__hash__t.html">daw::generic_hash_t</a>&lt; 4 &gt;::operator() </td>
           <td>(</td>
           <td class="paramtype">Iterator1&#160;</td>
           <td class="paramname"><em>first</em>, </td>
@@ -236,7 +236,7 @@ template&lt;typename Iterator1 , typename Iterator2 , std::enable_if_t&lt; std::
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__generic__hash_8h_source.html#l00115">115</a> of file <a class="el" href="daw__generic__hash_8h_source.html">daw_generic_hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__generic__hash_8h_source.html#l00110">110</a> of file <a class="el" href="daw__generic__hash_8h_source.html">daw_generic_hash.h</a>.</p>
 
 </div>
 </div>
@@ -246,13 +246,13 @@ template&lt;typename Iterator1 , typename Iterator2 , std::enable_if_t&lt; std::
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Member , size_t N, std::enable_if_t&lt; std::is_integral_v&lt; Member &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+template&lt;typename Member , std::size_t N, std::enable_if_t&lt; std::is_integral_v&lt; Member &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a758523e1d6833195fd37e5a2003faae9">hash_value_t</a> <a class="el" href="structdaw_1_1generic__hash__t.html">daw::generic_hash_t</a>&lt; 4 &gt;::operator() </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> <a class="el" href="structdaw_1_1generic__hash__t.html">daw::generic_hash_t</a>&lt; 4 &gt;::operator() </td>
           <td>(</td>
           <td class="paramtype">Member const (&amp;)&#160;</td>
           <td class="paramname"><em>member</em>[N]</td><td>)</td>
@@ -266,7 +266,7 @@ template&lt;typename Member , size_t N, std::enable_if_t&lt; std::is_integral_v&
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__generic__hash_8h_source.html#l00128">128</a> of file <a class="el" href="daw__generic__hash_8h_source.html">daw_generic_hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__generic__hash_8h_source.html#l00123">123</a> of file <a class="el" href="daw__generic__hash_8h_source.html">daw_generic_hash.h</a>.</p>
 
 </div>
 </div>
@@ -281,7 +281,7 @@ template&lt;typename Member , size_t N, std::enable_if_t&lt; std::is_integral_v&
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a758523e1d6833195fd37e5a2003faae9">hash_value_t</a> const <a class="el" href="structdaw_1_1generic__hash__t.html">daw::generic_hash_t</a>&lt; 4 &gt;::hash_init = 2166136261UL</td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> const <a class="el" href="structdaw_1_1generic__hash__t.html">daw::generic_hash_t</a>&lt; 4 &gt;::hash_init = 2166136261UL</td>
         </tr>
       </table>
   </td>
@@ -291,12 +291,12 @@ template&lt;typename Member , size_t N, std::enable_if_t&lt; std::is_integral_v&
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__generic__hash_8h_source.html#l00094">94</a> of file <a class="el" href="daw__generic__hash_8h_source.html">daw_generic_hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__generic__hash_8h_source.html#l00092">92</a> of file <a class="el" href="daw__generic__hash_8h_source.html">daw_generic_hash.h</a>.</p>
 
 </div>
 </div>
-<a id="a504a67e1768d46f9b124c0f13b749758"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a504a67e1768d46f9b124c0f13b749758">&#9670;&nbsp;</a></span>hash_size</h2>
+<a id="a6ab94a77ebfef65f7898b302573f22bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ab94a77ebfef65f7898b302573f22bf">&#9670;&nbsp;</a></span>hash_size</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -305,7 +305,7 @@ template&lt;typename Member , size_t N, std::enable_if_t&lt; std::is_integral_v&
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr size_t const <a class="el" href="structdaw_1_1generic__hash__t.html">daw::generic_hash_t</a>&lt; 4 &gt;::hash_size = 4</td>
+          <td class="memname">constexpr std::size_t const <a class="el" href="structdaw_1_1generic__hash__t.html">daw::generic_hash_t</a>&lt; 4 &gt;::hash_size = 4</td>
         </tr>
       </table>
   </td>
@@ -315,7 +315,7 @@ template&lt;typename Member , size_t N, std::enable_if_t&lt; std::is_integral_v&
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__generic__hash_8h_source.html#l00093">93</a> of file <a class="el" href="daw__generic__hash_8h_source.html">daw_generic_hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__generic__hash_8h_source.html#l00091">91</a> of file <a class="el" href="daw__generic__hash_8h_source.html">daw_generic_hash.h</a>.</p>
 
 </div>
 </div>

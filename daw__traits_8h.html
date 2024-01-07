@@ -79,7 +79,6 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="ciso646_8h_source.html">ciso646.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="cpp__20_8h_source.html">cpp_20.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__enable__if_8h_source.html">daw_enable_if.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
@@ -398,6 +397,9 @@ Variables</h2></td></tr>
 <tr class="memitem:ad1a81ce9987fb81eaedf535850cbe122"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#ad1a81ce9987fb81eaedf535850cbe122">daw::traits::bool_or_v</a> = ( Bools or ... )</td></tr>
 <tr class="memdesc:ad1a81ce9987fb81eaedf535850cbe122"><td class="mdescLeft">&#160;</td><td class="mdescRight">Summary: Integral constant with result of or'ing all bool's supplied.  <a href="namespacedaw_1_1traits.html#ad1a81ce9987fb81eaedf535850cbe122">More...</a><br /></td></tr>
 <tr class="separator:ad1a81ce9987fb81eaedf535850cbe122"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30cd41d016c1898b2b5a44940193ab42"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a30cd41d016c1898b2b5a44940193ab42"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::size_t const&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a30cd41d016c1898b2b5a44940193ab42">daw::bsizeof</a></td></tr>
+<tr class="separator:a30cd41d016c1898b2b5a44940193ab42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cc595dcbf5b32e673de19963e90256e"><td class="memTemplParams" colspan="2">template&lt;typename To , typename... Froms&gt; </td></tr>
 <tr class="memitem:a2cc595dcbf5b32e673de19963e90256e"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a2cc595dcbf5b32e673de19963e90256e">daw::traits::can_convert_from_v</a></td></tr>
 <tr class="separator:a2cc595dcbf5b32e673de19963e90256e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -566,7 +568,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l01096">1096</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l01097">1097</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -594,7 +596,7 @@ Variables</h2></td></tr>
 <div class="line">    is_detected_v&lt;traits_details::detectors_##MemberName::MemberName##_member, \</div>
 <div class="line">                  T&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00214">214</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00212">212</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -631,9 +633,9 @@ Variables</h2></td></tr>
 <div class="line">  template&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span>... Args&gt;                                  \</div>
 <div class="line">  constexpr <span class="keywordtype">bool</span> name##_v = <a class="code" href="namespacedaw.html#a05cb5775a1268bd66ef632bcfd4e4bd7">is_detected_v</a>&lt;traits_details_##name::name, T, \</div>
 <div class="line">                                          Args...&gt;</div>
-<div class="ttc" id="anamespacedaw_html_a05cb5775a1268bd66ef632bcfd4e4bd7"><div class="ttname"><a href="namespacedaw.html#a05cb5775a1268bd66ef632bcfd4e4bd7">daw::is_detected_v</a></div><div class="ttdeci">constexpr bool is_detected_v</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00195">cpp_17.h:195</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a05cb5775a1268bd66ef632bcfd4e4bd7"><div class="ttname"><a href="namespacedaw.html#a05cb5775a1268bd66ef632bcfd4e4bd7">daw::is_detected_v</a></div><div class="ttdeci">constexpr bool is_detected_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__is__detected_8h_source.html#l00084">daw_is_detected.h:84</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00203">203</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00201">201</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>

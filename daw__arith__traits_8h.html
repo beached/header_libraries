@@ -87,19 +87,7 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1is__arithmetic.html">daw::is_arithmetic&lt; T &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1is__floating__point.html">daw::is_floating_point&lt; T &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1is__integral.html">daw::is_integral&lt; T &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1is__number.html">daw::is_number&lt; T &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1is__signed.html">daw::is_signed&lt; T &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1is__system__integral.html">daw::is_system_integral&lt; T &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1is__unsigned.html">daw::is_unsigned&lt; T &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1make__unsigned.html">daw::make_unsigned&lt; T &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,9 +105,27 @@ Typedefs</h2></td></tr>
 <tr class="memitem:adccc87538bcac65a3e8d3effa944b66d"><td class="memTemplParams" colspan="2">template&lt;std::size_t BitSize&gt; </td></tr>
 <tr class="memitem:adccc87538bcac65a3e8d3effa944b66d"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#adccc87538bcac65a3e8d3effa944b66d">daw::intN_t</a> = conditional_t&lt; is_same_size_v&lt; char, BitSize &gt;, char, conditional_t&lt; is_same_size_v&lt; short, BitSize &gt;, short, conditional_t&lt; is_same_size_v&lt; int, BitSize &gt;, int, conditional_t&lt; is_same_size_v&lt; long, BitSize &gt;, long, conditional_t&lt; is_same_size_v&lt; long long, BitSize &gt;, long long, unsupported_int_size&lt; BitSize &gt; &gt;&gt; &gt;&gt; &gt;</td></tr>
 <tr class="separator:adccc87538bcac65a3e8d3effa944b66d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3574ae84b83ccc6a02409ccad76677ac"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a3574ae84b83ccc6a02409ccad76677ac"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3574ae84b83ccc6a02409ccad76677ac">daw::is_arithmetic</a> = std::disjunction&lt; is_number&lt; T &gt;, std::is_enum&lt; T &gt;, conditional_t&lt; <a class="el" href="structdaw_1_1numeric__limits.html">daw::numeric_limits</a>&lt; T &gt;::is_specialized, std::true_type, std::false_type &gt; &gt;</td></tr>
+<tr class="separator:a3574ae84b83ccc6a02409ccad76677ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a882215882ffcb4de6d10c129338593e7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a882215882ffcb4de6d10c129338593e7"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a882215882ffcb4de6d10c129338593e7">daw::is_floating_point</a> = std::conjunction&lt; std::negation&lt; is_integral&lt; T &gt; &gt;, arith_traits_details::limits_is_signed&lt; T &gt;, std::negation&lt; arith_traits_details::limits_is_exact&lt; T &gt; &gt;&gt;</td></tr>
+<tr class="separator:a882215882ffcb4de6d10c129338593e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a6a232e926db38d6074e30789149088"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a0a6a232e926db38d6074e30789149088"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0a6a232e926db38d6074e30789149088">daw::is_integral</a> = std::bool_constant&lt; <a class="el" href="structdaw_1_1numeric__limits.html">daw::numeric_limits</a>&lt; T &gt;::is_integer &gt;</td></tr>
+<tr class="separator:a0a6a232e926db38d6074e30789149088"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef880af0ef99dea29e0a859d5c1e420b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aef880af0ef99dea29e0a859d5c1e420b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aef880af0ef99dea29e0a859d5c1e420b">daw::is_number</a> = std::disjunction&lt; is_integral&lt; T &gt;, is_floating_point&lt; T &gt; &gt;</td></tr>
+<tr class="separator:aef880af0ef99dea29e0a859d5c1e420b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9108135a98561ea47f1eb0a4c5dfdfa2"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t BitSize&gt; </td></tr>
 <tr class="memitem:a9108135a98561ea47f1eb0a4c5dfdfa2"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9108135a98561ea47f1eb0a4c5dfdfa2">daw::is_same_size</a> = std::bool_constant&lt;((sizeof(T) *8)==BitSize)&gt;</td></tr>
 <tr class="separator:a9108135a98561ea47f1eb0a4c5dfdfa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33bde176dbe56752560f71c62982c8ec"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a33bde176dbe56752560f71c62982c8ec"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a33bde176dbe56752560f71c62982c8ec">daw::is_signed</a> = std::conjunction&lt; is_number&lt; T &gt;, arith_traits_details::limits_is_signed&lt; T &gt; &gt;</td></tr>
+<tr class="separator:a33bde176dbe56752560f71c62982c8ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a214d465f63cd9ada4a5c7c473cb814cb"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a214d465f63cd9ada4a5c7c473cb814cb"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a214d465f63cd9ada4a5c7c473cb814cb">daw::is_unsigned</a> = std::conjunction&lt; is_integral&lt; T &gt;, std::negation&lt; arith_traits_details::limits_is_signed&lt; T &gt; &gt;&gt;</td></tr>
+<tr class="separator:a214d465f63cd9ada4a5c7c473cb814cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa88d1d77939be042bb671074e68331cd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aa88d1d77939be042bb671074e68331cd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa88d1d77939be042bb671074e68331cd">daw::make_unsigned_t</a> = typename make_unsigned&lt; T &gt;::type</td></tr>
 <tr class="separator:aa88d1d77939be042bb671074e68331cd"><td class="memSeparator" colspan="2">&#160;</td></tr>

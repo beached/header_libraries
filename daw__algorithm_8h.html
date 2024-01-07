@@ -76,6 +76,8 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="ciso646_8h_source.html">ciso646.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="cpp__17__iterator_8h_source.html">cpp_17_iterator.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__apply_8h_source.html">daw_apply.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__compiler__fixups_8h_source.html">daw_compiler_fixups.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__do__n_8h_source.html">daw_do_n.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__enable__if_8h_source.html">daw_enable_if.h</a>&quot;</code><br />
@@ -84,6 +86,8 @@ $(function() {
 <code>#include &quot;<a class="el" href="daw__swap_8h_source.html">daw_swap.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__view_8h_source.html">daw_view.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__algorithm__copy_8h_source.html">impl/daw_algorithm_copy.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__algorithm__find_8h_source.html">impl/daw_algorithm_find.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__math__impl_8h_source.html">impl/daw_math_impl.h</a>&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;array&gt;</code><br />
@@ -188,10 +192,6 @@ Functions</h2></td></tr>
 <tr class="memitem:ac4507521fa575872638ec8e7720efc5d"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Iterator , typename OutputIterator &gt; </td></tr>
 <tr class="memitem:ac4507521fa575872638ec8e7720efc5d"><td class="memTemplItemLeft" align="right" valign="top">constexpr OutputIterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#ac4507521fa575872638ec8e7720efc5d">daw::algorithm::convert_copy_n</a> (Iterator first, OutputIterator out_first, std::size_t n)</td></tr>
 <tr class="separator:ac4507521fa575872638ec8e7720efc5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3507b19c52691aee70a61f643650c963"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator , typename LastType , typename OutputIterator &gt; </td></tr>
-<tr class="memitem:a3507b19c52691aee70a61f643650c963"><td class="memTemplItemLeft" align="right" valign="top">constexpr OutputIterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a3507b19c52691aee70a61f643650c963">daw::algorithm::copy</a> (InputIterator first, LastType last, OutputIterator first_out) noexcept(noexcept(*first_out= *first))</td></tr>
-<tr class="memdesc:a3507b19c52691aee70a61f643650c963"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy input range [first, last) to output range [first_out, first_out + std::distance( first, last ))  <a href="namespacedaw_1_1algorithm.html#a3507b19c52691aee70a61f643650c963">More...</a><br /></td></tr>
-<tr class="separator:a3507b19c52691aee70a61f643650c963"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98b66509bae10796c6b1d708e6d164f8"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator , typename LastType , typename OutputIterator , typename UnaryPredicate &gt; </td></tr>
 <tr class="memitem:a98b66509bae10796c6b1d708e6d164f8"><td class="memTemplItemLeft" align="right" valign="top">constexpr OutputIterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a98b66509bae10796c6b1d708e6d164f8">daw::algorithm::copy_if</a> (InputIterator first, LastType last, OutputIterator destination, UnaryPredicate pred)</td></tr>
 <tr class="memdesc:a98b66509bae10796c6b1d708e6d164f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy input range [first, last) to output range [first_out, first_out + std::distance( first, last ))  <a href="namespacedaw_1_1algorithm.html#a98b66509bae10796c6b1d708e6d164f8">More...</a><br /></td></tr>
@@ -239,18 +239,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a9f06482e2d72b0abd493f5f06b8bc3ec"><td class="memTemplParams" colspan="2">template&lt;class InputIterator , class T &gt; </td></tr>
 <tr class="memitem:a9f06482e2d72b0abd493f5f06b8bc3ec"><td class="memTemplItemLeft" align="right" valign="top">constexpr InputIterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a9f06482e2d72b0abd493f5f06b8bc3ec">daw::algorithm::find</a> (InputIterator first, InputIterator last, T const &amp;value)</td></tr>
 <tr class="separator:a9f06482e2d72b0abd493f5f06b8bc3ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d08fe8bdbb44123d9900af874c5b4a5"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator , typename ForwardIterator &gt; </td></tr>
-<tr class="memitem:a4d08fe8bdbb44123d9900af874c5b4a5"><td class="memTemplItemLeft" align="right" valign="top">constexpr InputIterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a4d08fe8bdbb44123d9900af874c5b4a5">daw::algorithm::find_first_of</a> (InputIterator first, InputIterator last, ForwardIterator sfirst, ForwardIterator slast)</td></tr>
-<tr class="separator:a4d08fe8bdbb44123d9900af874c5b4a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14820bbe71e6c36f83a44266f1351fea"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator , typename UnaryPredicate &gt; </td></tr>
-<tr class="memitem:a14820bbe71e6c36f83a44266f1351fea"><td class="memTemplItemLeft" align="right" valign="top">constexpr InputIterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a14820bbe71e6c36f83a44266f1351fea">daw::algorithm::find_first_of</a> (InputIterator first, InputIterator last, UnaryPredicate pred)</td></tr>
-<tr class="separator:a14820bbe71e6c36f83a44266f1351fea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff9421dd35db72d4a8d1ccc2f5a576c1"><td class="memTemplParams" colspan="2">template&lt;typename Iterator , typename UnaryPredicate &gt; </td></tr>
 <tr class="memitem:aff9421dd35db72d4a8d1ccc2f5a576c1"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#aff9421dd35db72d4a8d1ccc2f5a576c1">daw::algorithm::find_first_range_of</a> (Iterator first, Iterator const last, UnaryPredicate pred)</td></tr>
 <tr class="separator:aff9421dd35db72d4a8d1ccc2f5a576c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a107922750a7d50071fff62745825ba6d"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator , typename InputIteratorLast , typename UnaryPredicate &gt; </td></tr>
-<tr class="memitem:a107922750a7d50071fff62745825ba6d"><td class="memTemplItemLeft" align="right" valign="top">constexpr InputIterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a107922750a7d50071fff62745825ba6d">daw::algorithm::find_if</a> (InputIterator first, InputIteratorLast last, UnaryPredicate &amp;&amp;unary_predicate)</td></tr>
-<tr class="separator:a107922750a7d50071fff62745825ba6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cd788ba1aab1318928d89a64aef094a"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator , typename UnaryPredicate &gt; </td></tr>
 <tr class="memitem:a1cd788ba1aab1318928d89a64aef094a"><td class="memTemplItemLeft" align="right" valign="top">constexpr InputIterator&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a1cd788ba1aab1318928d89a64aef094a">daw::algorithm::find_if_not</a> (InputIterator first, InputIterator last, UnaryPredicate &amp;&amp;unary_predicate)</td></tr>
 <tr class="separator:a1cd788ba1aab1318928d89a64aef094a"><td class="memSeparator" colspan="2">&#160;</td></tr>

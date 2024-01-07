@@ -133,7 +133,7 @@ $(function() {
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">bool</span> is_neg = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordflow">if</span>( <span class="charliteral">&#39;-&#39;</span> == *first ) {</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      daw::exception::precondition_check&lt;ParserOutOfRangeException&gt;(</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        std::numeric_limits&lt;Result&gt;::is_signed,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <a class="code" href="namespacedaw.html#a33bde176dbe56752560f71c62982c8ec">std::numeric_limits&lt;Result&gt;::is_signed</a>,</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="stringliteral">&quot;Negative values are unsupported with unsigned Result&quot;</span> );</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      is_neg = <span class="keyword">true</span>;</div>
@@ -197,6 +197,7 @@ $(function() {
 <div class="ttc" id="anamespacedaw_1_1parser_html_adbfdfbff089ef85fe03fa400835fc037"><div class="ttname"><a href="namespacedaw_1_1parser.html#adbfdfbff089ef85fe03fa400835fc037">daw::parser::is_quote</a></div><div class="ttdeci">constexpr bool is_quote(T val) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__parser__helper_8h_source.html#l00478">daw_parser_helper.h:478</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1parser_html_adfec40fe06fbfd0cc3ba9471a3ecabd2"><div class="ttname"><a href="namespacedaw_1_1parser.html#adfec40fe06fbfd0cc3ba9471a3ecabd2">daw::parser::parse_int</a></div><div class="ttdeci">constexpr void parse_int(ForwardIterator first, ForwardIterator last, Result &amp;result)</div><div class="ttdef"><b>Definition:</b> <a href="daw__parser__addons_8h_source.html#l00057">daw_parser_addons.h:57</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1parser_html_aec95c0fa7ba4cd5eca28151118b75a69"><div class="ttname"><a href="namespacedaw_1_1parser.html#aec95c0fa7ba4cd5eca28151118b75a69">daw::parser::from_to_pred</a></div><div class="ttdeci">constexpr auto from_to_pred(ForwardIterator first, ForwardIterator last, IsFirstPredicate is_first, IsLastPredicate is_last, bool throw_if_end_reached=false)</div><div class="ttdef"><b>Definition:</b> <a href="daw__parser__helper_8h_source.html#l00370">daw_parser_helper.h:370</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a33bde176dbe56752560f71c62982c8ec"><div class="ttname"><a href="namespacedaw.html#a33bde176dbe56752560f71c62982c8ec">daw::is_signed</a></div><div class="ttdeci">std::conjunction&lt; is_number&lt; T &gt;, arith_traits_details::limits_is_signed&lt; T &gt; &gt; is_signed</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00242">daw_arith_traits.h:243</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

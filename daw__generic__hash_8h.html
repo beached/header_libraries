@@ -77,11 +77,11 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="ciso646_8h_source.html">ciso646.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__compiler__fixups_8h_source.html">daw_compiler_fixups.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__is__string__view__like_8h_source.html">impl/daw_is_string_view_like.h</a>&quot;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
-<code>#include &lt;string&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
 </div>
@@ -104,26 +104,23 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:aed07e350ac1a2a9814df616cb702e967"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aed07e350ac1a2a9814df616cb702e967">daw::genhash_uint_t</a> = size_t</td></tr>
-<tr class="separator:aed07e350ac1a2a9814df616cb702e967"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f4958d75a32b663c2230a78867420d4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a4f4958d75a32b663c2230a78867420d4">daw::genhash_uint_t</a> = std::size_t</td></tr>
+<tr class="separator:a4f4958d75a32b663c2230a78867420d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aaa2b91629050597af2a5665453c172b8"><td class="memTemplParams" colspan="2">template&lt;size_t HashBytes = sizeof( genhash_uint_t ), size_t N&gt; </td></tr>
+<tr class="memitem:aaa2b91629050597af2a5665453c172b8"><td class="memTemplParams" colspan="2">template&lt;size_t HashBytes = sizeof( genhash_uint_t ), std::size_t N&gt; </td></tr>
 <tr class="memitem:aaa2b91629050597af2a5665453c172b8"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aaa2b91629050597af2a5665453c172b8">daw::generic_hash</a> (char const (&amp;ptr)[N]) noexcept</td></tr>
 <tr class="separator:aaa2b91629050597af2a5665453c172b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c71de295bac0a2df31136d133b7eb02"><td class="memTemplParams" colspan="2">template&lt;size_t HashBytes = sizeof( genhash_uint_t ), typename Iterator , typename IteratorL &gt; </td></tr>
 <tr class="memitem:a4c71de295bac0a2df31136d133b7eb02"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a4c71de295bac0a2df31136d133b7eb02">daw::generic_hash</a> (Iterator first, IteratorL const last) noexcept</td></tr>
 <tr class="separator:a4c71de295bac0a2df31136d133b7eb02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af15463182312fe5f1d4d41110f961025"><td class="memTemplParams" colspan="2">template&lt;size_t HashBytes = sizeof( genhash_uint_t ), typename Iterator &gt; </td></tr>
-<tr class="memitem:af15463182312fe5f1d4d41110f961025"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af15463182312fe5f1d4d41110f961025">daw::generic_hash</a> (Iterator first, size_t const len) noexcept</td></tr>
-<tr class="separator:af15463182312fe5f1d4d41110f961025"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3347848899d88c22a494b07b09fb2b96"><td class="memTemplParams" colspan="2">template&lt;size_t HashBytes = sizeof( genhash_uint_t ), typename CharT , typename Traits , typename Allocator &gt; </td></tr>
-<tr class="memitem:a3347848899d88c22a494b07b09fb2b96"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3347848899d88c22a494b07b09fb2b96">daw::generic_hash</a> (std::basic_string&lt; CharT, Traits, Allocator &gt; &amp;&amp;str) noexcept</td></tr>
-<tr class="separator:a3347848899d88c22a494b07b09fb2b96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec60f5841a2ca854ef433218161f286a"><td class="memTemplParams" colspan="2">template&lt;size_t HashBytes = sizeof( genhash_uint_t ), typename CharT , typename Traits , typename Allocator &gt; </td></tr>
-<tr class="memitem:aec60f5841a2ca854ef433218161f286a"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aec60f5841a2ca854ef433218161f286a">daw::generic_hash</a> (std::basic_string&lt; CharT, Traits, Allocator &gt; const &amp;str) noexcept</td></tr>
-<tr class="separator:aec60f5841a2ca854ef433218161f286a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a085a8a04a4376a75ceca711fd27a54a2"><td class="memTemplParams" colspan="2">template&lt;size_t HashBytes = sizeof( genhash_uint_t ), typename Iterator &gt; </td></tr>
+<tr class="memitem:a085a8a04a4376a75ceca711fd27a54a2"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a085a8a04a4376a75ceca711fd27a54a2">daw::generic_hash</a> (Iterator first, std::size_t const len) noexcept</td></tr>
+<tr class="separator:a085a8a04a4376a75ceca711fd27a54a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12d3696681d764c8b09334ddbacdba4c"><td class="memTemplParams" colspan="2">template&lt;size_t HashBytes = sizeof( genhash_uint_t ), typename StringViewLike , std::enable_if_t&lt; traits_is_sv::is_string_view_like_v&lt; StringViewLike &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a12d3696681d764c8b09334ddbacdba4c"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a12d3696681d764c8b09334ddbacdba4c">daw::generic_hash</a> (StringViewLike const &amp;&amp;sv) noexcept</td></tr>
+<tr class="separator:a12d3696681d764c8b09334ddbacdba4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f35c883ac3c46d437fbaed77e783e7f"><td class="memTemplParams" colspan="2">template&lt;size_t HashBytes = sizeof( genhash_uint_t ), typename T , std::enable_if_t&lt; std::is_integral_v&lt; T &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a7f35c883ac3c46d437fbaed77e783e7f"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a7f35c883ac3c46d437fbaed77e783e7f">daw::generic_hash</a> (T const value) noexcept</td></tr>
 <tr class="separator:a7f35c883ac3c46d437fbaed77e783e7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
