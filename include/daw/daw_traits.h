@@ -14,7 +14,6 @@
 #include "daw_enable_if.h"
 #include "daw_move.h"
 #include "impl/daw_conditional.h"
-#include "impl/daw_traits_concepts.h"
 #include "impl/daw_traits_impl.h"
 
 #include <cstddef>
@@ -512,77 +511,29 @@ namespace daw::traits {
 	  are_same_types_v<Args...>,
 	  std::is_constructible_v<T, std::initializer_list<first_type<Args...>>>>;
 
-	namespace traits_details::ostream_detectors {
-		template<typename T>
-		using has_char_type_detect = typename T::char_type;
-
-		template<typename T>
-		using has_adjustfield_detect = decltype( T::adjustfield );
-
-		template<typename T>
-		using has_left_detect = decltype( T::left );
-
-		template<typename T>
-		using has_fill_member_detect = decltype( std::declval<T>( ).fill( ) );
-
-		template<typename T>
-		using has_good_member_detect = decltype( std::declval<T>( ).good( ) );
-
-		template<typename T, typename CharT>
-		using has_write_member_detect = decltype( std::declval<T>( ).write(
-		  std::declval<CharT const *>( ), std::declval<int>( ) ) );
-
-		template<typename T>
-		using has_width_member_detect = decltype( std::declval<T>( ).width( ) );
-
-		template<typename T>
-		using has_flags_member_detect = decltype( std::declval<T>( ).flags( ) );
-
-		template<typename T>
-		inline constexpr bool has_adjustfield_v =
-		  daw::is_detected_v<has_adjustfield_detect, T>;
-
-		template<typename T>
-		inline constexpr bool has_left_v = daw::is_detected_v<has_left_detect, T>;
-
-		template<typename T>
-		inline constexpr bool has_char_type_v =
-		  daw::is_detected_v<has_char_type_detect, T>;
-
-		template<typename T>
-		inline constexpr bool has_fill_member_v =
-		  daw::is_detected_v<has_fill_member_detect, T>;
-
-		template<typename T>
-		inline constexpr bool has_good_member_v =
-		  daw::is_detected_v<has_good_member_detect, T>;
-
-		template<typename T, typename CharT>
-		inline constexpr bool has_write_member_v =
-		  daw::is_detected_v<has_write_member_detect, T, CharT>;
-
-		template<typename T>
-		inline constexpr bool has_width_member_v =
-		  daw::is_detected_v<has_width_member_detect, T>;
-
-		template<typename T>
-		inline constexpr bool has_flags_member_v =
-		  daw::is_detected_v<has_flags_member_detect, T>;
-	} // namespace traits_details::ostream_detectors
+	template<typename, typename = void>
+	inline constexpr bool is_ostream_like_lite_v = false;
 
 	template<typename T>
-	inline constexpr bool is_ostream_like_lite_v =
-	  all_true_v<traits_details::ostream_detectors::has_char_type_v<T>,
-	             traits_details::ostream_detectors::has_adjustfield_v<T>,
-	             traits_details::ostream_detectors::has_fill_member_v<T>,
-	             traits_details::ostream_detectors::has_good_member_v<T>,
-	             traits_details::ostream_detectors::has_width_member_v<T>,
-	             traits_details::ostream_detectors::has_flags_member_v<T>>;
+	inline constexpr bool is_ostream_like_lite_v<
+	  T, std::void_t<typename T::char_type, decltype( T::adjustfield ),
+	                 decltype( std::declval<T const &>( ).fill( ) ),
+	                 decltype( std::declval<T const &>( ).good( ) ),
+	                 decltype( std::declval<T const &>( ).width( ) ),
+	                 decltype( std::declval<T const &>( ).flags( ) )>> = true;
+
+	template<typename T, typename CharT, typename = void>
+	inline constexpr bool has_write_member_v = false;
+
+	template<typename T, typename CharT>
+	inline constexpr bool has_write_member_v<
+	  T, CharT,
+	  std::void_t<decltype( std::declval<T &>( ).write(
+	    std::declval<CharT const *>( ), std::declval<int>( ) ) )>> = true;
 
 	template<typename T, typename CharT>
 	inline constexpr bool is_ostream_like_v =
-	  all_true_v<is_ostream_like_lite_v<T>,
-	             traits_details::ostream_detectors::has_write_member_v<T, CharT>>;
+	  is_ostream_like_lite_v<T> and has_write_member_v<T, CharT>;
 
 	template<typename T>
 	inline constexpr bool is_character_v = is_one_of_v<T, char, wchar_t>;
