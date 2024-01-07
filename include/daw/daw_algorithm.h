@@ -20,6 +20,7 @@
 #include "daw_swap.h"
 #include "daw_traits.h"
 #include "daw_view.h"
+#include "impl/daw_algorithm_accumulate.h"
 #include "impl/daw_algorithm_copy.h"
 #include "impl/daw_algorithm_find.h"
 #include "impl/daw_math_impl.h"
@@ -307,7 +308,6 @@ namespace daw::algorithm {
 		return last;
 	}
 
-
 	template<typename InputIterator, typename UnaryPredicate>
 	constexpr InputIterator find_if_not( InputIterator first, InputIterator last,
 	                                     UnaryPredicate &&unary_predicate ) {
@@ -548,7 +548,6 @@ namespace daw::algorithm {
 		}
 		return prev;
 	}
-
 
 	template<typename Iterator, typename UnaryPredicate>
 	constexpr auto find_first_range_of( Iterator first, Iterator const last,
@@ -1120,7 +1119,6 @@ namespace daw::algorithm {
 		return first_out;
 	}
 
-
 	/// @brief Copy input range [first, last) to output range [first_out,
 	/// first_out + std::distance( first, last ))
 	/// @tparam InputIterator type of Iterator of input range
@@ -1631,45 +1629,6 @@ namespace daw::algorithm {
 		}
 	}
 
-	template<typename InputIterator, typename T>
-	constexpr auto accumulate( InputIterator first, InputIterator last,
-	                           T init ) noexcept {
-		for( ; first != last; ++first ) {
-			init = DAW_MOVE( init ) + *first;
-		}
-		return init;
-	}
-
-	/***
-	 * Accumulate values in range
-	 * @tparam InputIterator type of first iterator argument
-	 * @tparam LastType type of sentinal marking end of range
-	 * @tparam T initial value to start accumulating at
-	 * @tparam BinaryOperation Callable that takes the current sum and next value
-	 * and returns the new sum
-	 * @param first beginning position in range
-	 * @param last end of range
-	 * @param init initial value of sum
-	 * @param binary_op operation to run
-	 * @return sum of values
-	 */
-	template<typename InputIterator, typename LastType, typename T,
-	         typename BinaryOperation = std::plus<>,
-	         daw::enable_when_t<
-	           not daw::traits::is_container_like_v<InputIterator>> = nullptr>
-	constexpr auto accumulate(
-	  InputIterator first, LastType last, T init,
-	  BinaryOperation binary_op =
-	    BinaryOperation{ } ) noexcept( noexcept( binary_op( DAW_MOVE( init ),
-	                                                        *first ) ) ) {
-
-		while( first != last ) {
-			init = daw::invoke( binary_op, DAW_MOVE( init ), *first );
-			++first;
-		}
-		return init;
-	}
-
 	template<class ForwardIterator, typename Compare = std::less<>>
 	constexpr ForwardIterator max_element( ForwardIterator first,
 	                                       ForwardIterator last,
@@ -1956,7 +1915,7 @@ namespace daw::algorithm {
 	}
 
 	template<typename InputIterator, typename OutputIterator,
-	         typename BinaryOperator = std::plus<>>
+	         typename BinaryOperator = accum_impl::plus>
 	constexpr OutputIterator
 	partial_sum( InputIterator first, InputIterator last,
 	             OutputIterator first_out,
