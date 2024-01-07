@@ -85,7 +85,7 @@ var searchData=
   ['is_5fnumber_5fv_4161',['is_number_v',['../namespacedaw.html#aa1b67176374705d67ec1ba51413b02bf',1,'daw']]],
   ['is_5fnumeric_5fv_4162',['is_numeric_v',['../namespacedaw_1_1traits.html#a3dff14e7fc8c289c7eeea9938e3ca88b',1,'daw::traits']]],
   ['is_5fone_5fof_5fv_4163',['is_one_of_v',['../namespacedaw_1_1traits.html#a3e147426b76dd482c4d1ca65346ff30f',1,'daw::traits']]],
-  ['is_5fostream_5flike_5flite_5fv_4164',['is_ostream_like_lite_v',['../namespacedaw_1_1traits.html#adae2aa02c03ffa6a102c8e878fd86d03',1,'daw::traits']]],
+  ['is_5fostream_5flike_5flite_5fv_4164',['is_ostream_like_lite_v',['../namespacedaw_1_1traits.html#a0eddf85bb11c659bacf2dd64dd6ebf13',1,'daw::traits']]],
   ['is_5fostream_5flike_5fv_4165',['is_ostream_like_v',['../namespacedaw_1_1traits.html#a27ce133d936b894dfd870844307fb0e8',1,'daw::traits']]],
   ['is_5foutput_5fiterator_4166',['is_output_iterator',['../namespacedaw_1_1traits.html#aabe98ac757c7683294054aec0b72eb93',1,'daw::traits']]],
   ['is_5foutput_5fiterator_5fv_4167',['is_output_iterator_v',['../namespacedaw_1_1traits.html#a205430b65eedf90e1ae7f325c2c92299',1,'daw::traits']]],

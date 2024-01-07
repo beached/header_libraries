@@ -83,7 +83,6 @@ $(function() {
 <code>#include &quot;<a class="el" href="daw__enable__if_8h_source.html">daw_enable_if.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__conditional_8h_source.html">impl/daw_conditional.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__traits__concepts_8h_source.html">impl/daw_traits_concepts.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits__impl_8h_source.html">impl/daw_traits_impl.h</a>&quot;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
@@ -439,6 +438,9 @@ Variables</h2></td></tr>
 <tr class="memitem:a1adfadad3644d0f5c72586b4ff8208c8"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a1adfadad3644d0f5c72586b4ff8208c8"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a1adfadad3644d0f5c72586b4ff8208c8">daw::traits::has_substr_member_v</a></td></tr>
 <tr class="separator:a1adfadad3644d0f5c72586b4ff8208c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b2cd941cea8c085af978d3724ddd535"><td class="memTemplParams" colspan="2">template&lt;typename T , typename CharT , typename  = void&gt; </td></tr>
+<tr class="memitem:a2b2cd941cea8c085af978d3724ddd535"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a2b2cd941cea8c085af978d3724ddd535">daw::traits::has_write_member_v</a> = false</td></tr>
+<tr class="separator:a2b2cd941cea8c085af978d3724ddd535"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e7e9716057b643c2f27802125228272"><td class="memTemplParams" colspan="2">template&lt;std::size_t N&gt; </td></tr>
 <tr class="memitem:a8e7e9716057b643c2f27802125228272"><td class="memTemplItemLeft" align="right" valign="top">constexpr index_constant&lt; N &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a8e7e9716057b643c2f27802125228272">daw::index_constant_v</a> = index_constant&lt;N&gt;{ }</td></tr>
 <tr class="separator:a8e7e9716057b643c2f27802125228272"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -481,9 +483,9 @@ Variables</h2></td></tr>
 <tr class="memitem:a3e147426b76dd482c4d1ca65346ff30f"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Types&gt; </td></tr>
 <tr class="memitem:a3e147426b76dd482c4d1ca65346ff30f"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a3e147426b76dd482c4d1ca65346ff30f">daw::traits::is_one_of_v</a> = is_one_of&lt;T, Types...&gt;::value</td></tr>
 <tr class="separator:a3e147426b76dd482c4d1ca65346ff30f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adae2aa02c03ffa6a102c8e878fd86d03"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:adae2aa02c03ffa6a102c8e878fd86d03"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#adae2aa02c03ffa6a102c8e878fd86d03">daw::traits::is_ostream_like_lite_v</a></td></tr>
-<tr class="separator:adae2aa02c03ffa6a102c8e878fd86d03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0eddf85bb11c659bacf2dd64dd6ebf13"><td class="memTemplParams" colspan="2">template&lt;typename , typename  = void&gt; </td></tr>
+<tr class="memitem:a0eddf85bb11c659bacf2dd64dd6ebf13"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a0eddf85bb11c659bacf2dd64dd6ebf13">daw::traits::is_ostream_like_lite_v</a> = false</td></tr>
+<tr class="separator:a0eddf85bb11c659bacf2dd64dd6ebf13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27ce133d936b894dfd870844307fb0e8"><td class="memTemplParams" colspan="2">template&lt;typename T , typename CharT &gt; </td></tr>
 <tr class="memitem:a27ce133d936b894dfd870844307fb0e8"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a27ce133d936b894dfd870844307fb0e8">daw::traits::is_ostream_like_v</a></td></tr>
 <tr class="separator:a27ce133d936b894dfd870844307fb0e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -568,7 +570,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l01097">1097</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l01048">1048</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -596,7 +598,7 @@ Variables</h2></td></tr>
 <div class="line">    is_detected_v&lt;traits_details::detectors_##MemberName::MemberName##_member, \</div>
 <div class="line">                  T&gt;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00212">212</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00211">211</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
@@ -635,7 +637,7 @@ Variables</h2></td></tr>
 <div class="line">                                          Args...&gt;</div>
 <div class="ttc" id="anamespacedaw_html_a05cb5775a1268bd66ef632bcfd4e4bd7"><div class="ttname"><a href="namespacedaw.html#a05cb5775a1268bd66ef632bcfd4e4bd7">daw::is_detected_v</a></div><div class="ttdeci">constexpr bool is_detected_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__is__detected_8h_source.html#l00084">daw_is_detected.h:84</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00201">201</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__traits_8h_source.html#l00200">200</a> of file <a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>.</p>
 
 </div>
 </div>
