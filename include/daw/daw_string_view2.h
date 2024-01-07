@@ -11,7 +11,6 @@
 #include "daw_string_view2_fwd.h"
 
 #include "ciso646.h"
-// #include "daw_algorithm.h"
 #include "daw_assume.h"
 #include "daw_check_exceptions.h"
 #include "daw_compiler_fixups.h"
@@ -21,7 +20,6 @@
 #include "daw_likely.h"
 #include "daw_logic.h"
 #include "daw_move.h"
-#include "daw_swap.h"
 #include "daw_traits.h"
 #include "impl/daw_algorithm_copy.h"
 #include "impl/daw_algorithm_find.h"
@@ -375,14 +373,14 @@ namespace daw {
 			using is_last_a_pointer =
 			  std::bool_constant<B == string_view_bounds_type::pointer>;
 
-			using last_type = conditional_t<is_last_a_pointer<BoundsType>::value,
-			                                const_pointer, size_type>;
+			using last_type = daw::conditional_t<is_last_a_pointer<BoundsType>::value,
+			                                     const_pointer, size_type>;
 
 			using default_last_t = std::integral_constant<last_type, last_type{ }>;
 
 			using last_difference_type =
-			  conditional_t<is_last_a_pointer<BoundsType>::value, difference_type,
-			                size_type>;
+			  daw::conditional_t<is_last_a_pointer<BoundsType>::value,
+			                     difference_type, size_type>;
 
 			template<string_view_bounds_type Bounds, typename LastType>
 			DAW_ATTRIB_INLINE static constexpr last_type
@@ -2366,15 +2364,6 @@ namespace daw {
 				return compare( rhs ) == 0;
 			}
 
-#if defined( DAW_HAS_CPP20_3WAY_COMPARE )
-			// clang-format off
-			[[nodiscard]] constexpr std::strong_ordering
-			operator<=>( basic_string_view const &rhs ) const noexcept {
-				return compare( rhs ) <=> 0;
-			}
-			// clang-format on
-#endif
-
 			template<typename StringView,
 			         DAW_REQ_CONTIG_CHAR_RANGE( StringView, CharT )>
 			[[nodiscard]] friend constexpr bool
@@ -2405,6 +2394,15 @@ namespace daw {
 				return basic_string_view( std::data( lhs ), std::size( lhs ) )
 				         .compare( rhs ) != 0;
 			}
+
+#if defined( DAW_HAS_CPP20_3WAY_COMPARE )
+			// clang-format off
+			[[nodiscard]] constexpr std::strong_ordering
+			operator<=>( basic_string_view const &rhs ) const noexcept {
+				return compare( rhs ) <=> 0;
+			}
+			// clang-format on
+#else
 
 			[[nodiscard]] constexpr bool operator<( basic_string_view rhs ) noexcept {
 				return compare( rhs ) < 0;
@@ -2475,7 +2473,7 @@ namespace daw {
 				return basic_string_view( std::data( lhs ), std::size( lhs ) )
 				         .compare( rhs ) >= 0;
 			}
-
+#endif
 		private:
 			struct is_space {
 				inline constexpr bool operator( )( CharT c ) const noexcept {
@@ -2629,14 +2627,12 @@ namespace daw {
 
 		namespace sv2_details {
 			template<typename OStream,
-			         std::enable_if_t<daw::traits::is_ostream_like_lite_v<OStream>,
+			         std::enable_if_t<traits::is_ostream_like_lite_v<OStream>,
 			                          std::nullptr_t> = nullptr>
 			inline void sv_insert_fill_chars( OStream &os, std::size_t n ) {
 				using CharT = typename OStream::char_type;
-				static_assert(
-				  traits::traits_details::ostream_detectors::has_write_member_v<OStream,
-				                                                                CharT>,
-				  "OStream Must has write member" );
+				static_assert( traits::has_write_member_v<OStream, CharT>,
+				               "OStream Must has write member" );
 
 				constexpr std::size_t fill_chars_sz = 8;
 				CharT fill_chars[fill_chars_sz] = { };
@@ -2656,7 +2652,7 @@ namespace daw {
 
 			template<typename OStream, typename CharT,
 			         daw::string_view_bounds_type Bounds,
-			         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
+			         std::enable_if_t<traits::is_ostream_like_v<OStream, CharT>,
 			                          std::nullptr_t> = nullptr>
 			void sv_insert_aligned( OStream &os,
 			                        daw::sv2::basic_string_view<CharT, Bounds> str ) {
@@ -2682,7 +2678,7 @@ namespace daw {
 		} // namespace sv2_details
 
 		template<typename CharT, string_view_bounds_type Bounds, typename OStream,
-		         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
+		         std::enable_if_t<traits::is_ostream_like_v<OStream, CharT>,
 		                          std::nullptr_t> = nullptr>
 		OStream &operator<<( OStream &os, basic_string_view<CharT, Bounds> v ) {
 			if( os.good( ) ) {

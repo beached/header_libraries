@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "../ciso646.h"
-#include "../daw_move.h"
+#include "daw/ciso646.h"
+#include "daw/daw_move.h"
 
 #include <cstddef>
 #include <iterator>
@@ -244,7 +244,6 @@ namespace daw {
 		template<typename T>
 		inline constexpr bool has_decrement_operator_v =
 		  daw::is_detected_v<detectors::has_decrement_operator, T>;
-
 
 		template<typename String>
 		inline constexpr bool has_integer_subscript_v =

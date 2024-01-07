@@ -7,7 +7,7 @@
 //
 
 #include "daw/daw_benchmark.h"
-#include "daw/impl/daw_traits_concepts.h"
+#include "daw/daw_traits_concepts.h"
 #include "daw/iterator/daw_inserter.h"
 
 #include <algorithm>
@@ -26,9 +26,10 @@ static_assert( daw::traits::is_output_iterator_test<
 void vector_test_001( ) {
 	std::unordered_map<int, int> v{ };
 	std::array<int, 5> a = { 1, 2, 3, 4, 5 };
-	std::transform(
-	  begin( a ), end( a ), daw::inserter( v ),
-	  []( auto const &val ) { return std::pair<int const, int>( val, val ); } );
+	std::transform( begin( a ), end( a ), daw::inserter( v ),
+	                []( auto const &val ) {
+		                return std::pair<int const, int>( val, val );
+	                } );
 	daw::expecting( a.size( ), v.size( ) );
 }
 

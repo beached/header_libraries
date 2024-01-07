@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include "../ciso646.h"
-#include "../daw_string_view1_fwd.h"
-#include "../daw_traits.h"
+#include "daw/ciso646.h"
+#include "daw/daw_string_view1_fwd.h"
+#include "daw/daw_traits.h"
 
 #include <array>
 #include <cstddef>
@@ -34,7 +34,7 @@ namespace daw {
 					if( it == last ) {
 						return last;
 					}
-					if( !( *it == *s_it ) ) {
+					if( not( *it == *s_it ) ) {
 						break;
 					}
 				}
@@ -184,10 +184,8 @@ namespace daw {
 		                          std::nullptr_t> = nullptr>
 		inline void sv_insert_fill_chars( OStream &os, std::size_t n ) {
 			using CharT = typename OStream::char_type;
-			static_assert(
-			  traits::traits_details::ostream_detectors::has_write_member_v<OStream,
-			                                                                CharT>,
-			  "OStream Must has write member" );
+			static_assert( traits::has_write_member_v<OStream, CharT>,
+			               "OStream Must has write member" );
 
 			std::array<CharT, 8> fill_chars = { 0 };
 			fill_chars.fill( os.fill( ) );
