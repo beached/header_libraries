@@ -10,6 +10,8 @@
 
 #include "ciso646.h"
 #include "cpp_17.h"
+#include "cpp_17_iterator.h"
+#include "daw_apply.h"
 #include "daw_compiler_fixups.h"
 #include "daw_do_n.h"
 #include "daw_enable_if.h"
@@ -18,6 +20,8 @@
 #include "daw_swap.h"
 #include "daw_traits.h"
 #include "daw_view.h"
+#include "impl/daw_algorithm_copy.h"
+#include "impl/daw_algorithm_find.h"
 #include "impl/daw_math_impl.h"
 
 #include <algorithm>
@@ -303,23 +307,6 @@ namespace daw::algorithm {
 		return last;
 	}
 
-	template<typename InputIterator, typename InputIteratorLast,
-	         typename UnaryPredicate>
-	constexpr InputIterator find_if( InputIterator first, InputIteratorLast last,
-	                                 UnaryPredicate &&unary_predicate ) {
-		traits::is_input_iterator_test<InputIterator>( );
-		traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
-
-		DAW_UNSAFE_BUFFER_FUNC_START
-		while( first != last ) {
-			if( unary_predicate( *first ) ) {
-				return first;
-			}
-			++first;
-		}
-		DAW_UNSAFE_BUFFER_FUNC_STOP
-		return last;
-	}
 
 	template<typename InputIterator, typename UnaryPredicate>
 	constexpr InputIterator find_if_not( InputIterator first, InputIterator last,
@@ -562,42 +549,6 @@ namespace daw::algorithm {
 		return prev;
 	}
 
-	template<typename InputIterator, typename UnaryPredicate>
-	[[nodiscard]] constexpr InputIterator find_first_of( InputIterator first,
-	                                                     InputIterator last,
-	                                                     UnaryPredicate pred ) {
-
-		(void)traits::is_input_iterator_test<InputIterator>( );
-		(void)
-		  traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
-
-		while( first != last ) {
-			if( pred( *first ) ) {
-				break;
-			}
-			++first;
-		}
-		return first;
-	}
-
-	template<typename InputIterator, typename ForwardIterator>
-	[[nodiscard]] constexpr InputIterator
-	find_first_of( InputIterator first, InputIterator last,
-	               ForwardIterator sfirst, ForwardIterator slast ) {
-
-		(void)traits::is_input_iterator_test<InputIterator>( );
-		(void)traits::is_forward_access_iterator_test<ForwardIterator>( );
-
-		while( first != last ) {
-			for( auto it = sfirst; it != slast; ++it ) {
-				if( *first == *it ) {
-					return first;
-				}
-			}
-			++first;
-		}
-		return last;
-	}
 
 	template<typename Iterator, typename UnaryPredicate>
 	constexpr auto find_first_range_of( Iterator first, Iterator const last,
@@ -857,7 +808,7 @@ namespace daw::algorithm {
 				return DAW_FWD2( T, value ) <= m_value;
 			}
 		}; // less_than_or_equal_to
-	}    // namespace algorithm_details
+	} // namespace algorithm_details
 
 	/// @brief Returns a callable that returns true if the value passed is in
 	/// the range [Lower, Upper]
@@ -1169,31 +1120,6 @@ namespace daw::algorithm {
 		return first_out;
 	}
 
-	/// @brief Copy input range [first, last) to output range [first_out,
-	/// first_out + std::distance( first, last ))
-	/// @tparam InputIterator type of Iterator of input range
-	/// @tparam LastType type of Iterator marking end of input range
-	/// @tparam OutputIterator type of iterator for output range
-	/// @param first start of input range
-	/// @param last end of input range
-	/// @param first_out first item in output range
-	/// @return end of output range written to
-	template<typename InputIterator, typename LastType, typename OutputIterator>
-	constexpr OutputIterator
-	copy( InputIterator first, LastType last,
-	      OutputIterator first_out ) noexcept( noexcept( *first_out = *first ) ) {
-
-		traits::is_input_iterator_test<InputIterator>( );
-		traits::is_output_iterator_test<OutputIterator, decltype( *first )>( );
-		DAW_UNSAFE_BUFFER_FUNC_START
-		while( first != last ) {
-			*first_out = *first;
-			++first;
-			++first_out;
-		}
-		return first_out;
-		DAW_UNSAFE_BUFFER_FUNC_STOP
-	}
 
 	/// @brief Copy input range [first, last) to output range [first_out,
 	/// first_out + std::distance( first, last ))
@@ -1434,12 +1360,12 @@ namespace daw::algorithm {
 	/// @param value value to compare to
 	/// @return position of first element greater than value or last
 	template<typename ForwardIterator, typename T, typename Compare = std::less<>>
-	constexpr ForwardIterator
-	upper_bound( ForwardIterator first, ForwardIterator last, T const &value,
-	             Compare comp =
-	               Compare{ } ) noexcept( noexcept( daw::advance( first, 1 ) )
-	                                        and noexcept( ++first ) and noexcept(
-	                                          daw::distance( first, last ) ) ) {
+	constexpr ForwardIterator upper_bound(
+	  ForwardIterator first, ForwardIterator last, T const &value,
+	  Compare comp =
+	    Compare{ } ) noexcept( noexcept( daw::advance( first, 1 ) ) and
+	                           noexcept( ++first ) and
+	                           noexcept( daw::distance( first, last ) ) ) {
 
 		traits::is_forward_access_iterator_test<ForwardIterator>( );
 		traits::is_input_iterator_test<ForwardIterator>( );
@@ -1851,8 +1777,8 @@ namespace daw::algorithm {
 	  InputIterator1 first1, LastType1 last1, InputIterator2 first2,
 	  LastType2 last2, OutputIterator d_first,
 	  Compare &&comp =
-	    Compare{ } ) noexcept( noexcept( comp( *first2, *first1 ) )
-	                             and noexcept( comp( *first1, *first2 ) ) ) {
+	    Compare{ } ) noexcept( noexcept( comp( *first2, *first1 ) ) and
+	                           noexcept( comp( *first1, *first2 ) ) ) {
 
 		while( first1 != last1 and first2 != last2 ) {
 			if( daw::invoke( comp, *first1, *first2 ) ) {

@@ -11,8 +11,7 @@
 #include "daw_string_view2_fwd.h"
 
 #include "ciso646.h"
-#include "cpp_20.h"
-#include "daw_algorithm.h"
+// #include "daw_algorithm.h"
 #include "daw_assume.h"
 #include "daw_check_exceptions.h"
 #include "daw_compiler_fixups.h"
@@ -24,21 +23,18 @@
 #include "daw_logic.h"
 #include "daw_math.h"
 #include "daw_move.h"
-#include "daw_string_view_version.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
+#include "impl/daw_algorithm_copy.h"
+#include "impl/daw_algorithm_find.h"
 #include "impl/daw_conditional.h"
+#include "impl/daw_data_end.h"
 #include "impl/daw_view_tags.h"
-#include "iterator/daw_back_inserter.h"
-#include "iterator/daw_iterator.h"
 
-#include <array>
 #include <cstddef>
-#include <cstdint>
 #include <cstdlib>
 #include <functional>
 #include <iterator>
-#include <limits>
 #include <stdexcept>
 #include <type_traits>
 
@@ -382,13 +378,13 @@ namespace daw {
 			  std::bool_constant<B == string_view_bounds_type::pointer>;
 
 			using last_type = conditional_t<is_last_a_pointer<BoundsType>::value,
-			                                     const_pointer, size_type>;
+			                                const_pointer, size_type>;
 
 			using default_last_t = std::integral_constant<last_type, last_type{ }>;
 
 			using last_difference_type =
-			  conditional_t<is_last_a_pointer<BoundsType>::value,
-			                     difference_type, size_type>;
+			  conditional_t<is_last_a_pointer<BoundsType>::value, difference_type,
+			                size_type>;
 
 			template<string_view_bounds_type Bounds, typename LastType>
 			DAW_ATTRIB_INLINE static constexpr last_type
@@ -477,8 +473,7 @@ namespace daw {
 			last_type m_last = default_last_t::value;
 
 		public:
-			static constexpr size_type npos =
-			  ( std::numeric_limits<size_type>::max )( );
+			static constexpr size_type npos = static_cast<size_type>( -1 );
 
 			//******************************
 			// Constructors
@@ -2645,17 +2640,18 @@ namespace daw {
 				                                                                CharT>,
 				  "OStream Must has write member" );
 
-				std::array<CharT, 8> fill_chars = { 0 };
-				fill_chars.fill( os.fill( ) );
+				constexpr std::size_t fill_chars_sz = 8;
+				CharT fill_chars[fill_chars_sz] = { };
+				for( CharT &c : fill_chars ) {
+					c = os.fill( );
+				}
 
-				for( ; n >= fill_chars.size( ) and os.good( );
-				     n -= fill_chars.size( ) ) {
-					os.write( fill_chars.data( ),
-					          static_cast<std::make_signed_t<std::size_t>>(
-					            fill_chars.size( ) ) );
+				for( ; n >= fill_chars_sz and os.good( ); n -= fill_chars_sz ) {
+					os.write( fill_chars, static_cast<std::make_signed_t<std::size_t>>(
+					                        fill_chars_sz ) );
 				}
 				if( n > 0 and os.good( ) ) {
-					os.write( fill_chars.data( ),
+					os.write( fill_chars,
 					          static_cast<std::make_signed_t<std::size_t>>( n ) );
 				}
 			}

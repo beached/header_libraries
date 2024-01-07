@@ -11,41 +11,36 @@
 #include "ciso646.h"
 #include "daw_attributes.h"
 #include "daw_compiler_fixups.h"
-#include "daw_traits.h"
 #include "impl/daw_conditional.h"
+#include "impl/daw_is_string_view_like.h"
 
 #include <cstddef>
 #include <cstdint>
-#include <iterator>
 #include <type_traits>
 
-namespace daw::impl {
-	constexpr bool is_64bit_v = sizeof( size_t ) == sizeof( uint64_t );
-} // namespace daw::impl
-
 namespace daw {
+	namespace fnv1a_impl {
+		inline constexpr bool is_64bit_v = sizeof( size_t ) == sizeof( uint64_t );
+
+	} // namespace fnv1a_impl
 #if defined( DAW_FORCE_FNV1A_TYPE )
 	using fnv1a_uint_t = DAW_FORCE_FNV1A_TYPE;
 #else
 	using fnv1a_uint_t =
-	  conditional_t<impl::is_64bit_v, std::uint64_t, std::uint32_t>;
+	  conditional_t<fnv1a_impl::is_64bit_v, std::uint64_t, std::uint32_t>;
 #endif
 } // namespace daw
 
 namespace daw {
 	namespace impl {
-		[[nodiscard]] constexpr fnv1a_uint_t fnv_prime( ) noexcept {
-			return sizeof( fnv1a_uint_t ) == sizeof( std::uint64_t )
-			         ? 1099511628211ULL
-			         : 16777619UL;
-		}
+		inline constexpr fnv1a_uint_t fnv_prime =
+		  sizeof( fnv1a_uint_t ) == sizeof( std::uint64_t ) ? 1099511628211ULL
+		                                                    : 16777619UL;
 
-		[[nodiscard]] constexpr fnv1a_uint_t fnv_offset( ) noexcept {
-			return sizeof( fnv1a_uint_t ) == sizeof( std::uint64_t )
-			         ? 14695981039346656037ULL
-			         : 2166136261UL;
-		}
-
+		inline constexpr fnv1a_uint_t fnv_offset =
+		  sizeof( fnv1a_uint_t ) == sizeof( std::uint64_t )
+		    ? 14695981039346656037ULL
+		    : 2166136261UL;
 	} // namespace impl
 
 	struct fnv1a_hash_t {
@@ -59,18 +54,15 @@ namespace daw {
 				  ( static_cast<fnv1a_uint_t>( value ) &
 				    ( static_cast<fnv1a_uint_t>( 0xFF ) << ( n * 8u ) ) ) >>
 				  ( n * 8u ) );
-				current_hash *= impl::fnv_prime( );
+				current_hash *= impl::fnv_prime;
 			}
 			return current_hash;
 		}
 
-		template<typename Iterator1, typename Iterator2,
-		         std::enable_if_t<std::is_integral_v<
-		                            typename std::iterator_traits<Iterator1>::type>,
-		                          std::nullptr_t> = nullptr>
+		template<typename Iterator1, typename Iterator2>
 		[[nodiscard]] constexpr fnv1a_uint_t
 		operator( )( Iterator1 first, Iterator2 const last ) const noexcept {
-			auto hash = impl::fnv_offset( );
+			auto hash = impl::fnv_offset;
 			while( first != last ) {
 				hash = append_hash( hash, *first );
 				++first;
@@ -78,15 +70,17 @@ namespace daw {
 			return hash;
 		}
 
-		template<typename StringViewLike,
-		         std::enable_if_t<traits::is_string_view_like_v<StringViewLike>,
-		                          std::nullptr_t> = nullptr>
+		template<
+		  typename StringViewLike,
+		  std::enable_if_t<traits_is_sv::is_string_view_like_v<StringViewLike>,
+		                   std::nullptr_t> = nullptr>
 		[[nodiscard]] constexpr fnv1a_uint_t
 		operator( )( StringViewLike &&sv ) const noexcept {
-			auto const *first = std::data( sv );
+			using namespace std;
+			auto const *first = data( sv );
 			auto const *const last =
-			  std::data( sv ) + static_cast<std::ptrdiff_t>( std::size( sv ) );
-			auto hash = impl::fnv_offset( );
+			  data( sv ) + static_cast<std::ptrdiff_t>( size( sv ) );
+			auto hash = impl::fnv_offset;
 			while( first != last ) {
 				hash = append_hash( hash, *first );
 				++first;
@@ -99,23 +93,24 @@ namespace daw {
 		  std::enable_if_t<std::is_integral_v<Member>, std::nullptr_t> = nullptr>
 		[[nodiscard]] constexpr fnv1a_uint_t
 		operator( )( Member const ( &member )[N] ) const noexcept {
-			return operator( )( member,
-			                    std::next( member, static_cast<intmax_t>( N ) ) );
+			DAW_UNSAFE_BUFFER_FUNC_START
+			return operator( )( member, member + static_cast<intmax_t>( N ) );
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 
 		template<typename Integral, std::enable_if_t<std::is_integral_v<Integral>,
 		                                             std::nullptr_t> = nullptr>
 		[[nodiscard]] constexpr fnv1a_uint_t
 		operator( )( Integral const value ) const noexcept {
-			return append_hash( impl::fnv_offset( ), value );
+			return append_hash( impl::fnv_offset, value );
 		}
 
 		[[nodiscard]] constexpr fnv1a_uint_t
 		operator( )( char const *ptr ) const noexcept {
-			auto hash = impl::fnv_offset( );
+			auto hash = impl::fnv_offset;
 			while( *ptr != '\0' ) {
 				hash = hash ^ static_cast<fnv1a_uint_t>( *ptr );
-				hash *= impl::fnv_prime( );
+				hash *= impl::fnv_prime;
 				DAW_UNSAFE_BUFFER_FUNC_START
 				++ptr;
 				DAW_UNSAFE_BUFFER_FUNC_STOP
@@ -126,11 +121,11 @@ namespace daw {
 		template<typename T>
 		[[nodiscard]] constexpr fnv1a_uint_t
 		operator( )( T const *const ptr ) const noexcept {
-			auto hash = impl::fnv_offset( );
+			auto hash = impl::fnv_offset;
 			auto bptr = static_cast<uint8_t const *const>( ptr );
 			for( fnv1a_uint_t n = 0; n < sizeof( T ); ++n ) {
 				hash = hash ^ static_cast<fnv1a_uint_t>( bptr[n] );
-				hash *= impl::fnv_prime( );
+				hash *= impl::fnv_prime;
 			}
 			return hash;
 		}
@@ -143,7 +138,7 @@ namespace daw {
 	}
 
 	[[nodiscard]] constexpr fnv1a_uint_t fnv1a_hash( char const *ptr ) noexcept {
-		auto hash = impl::fnv_offset( );
+		auto hash = impl::fnv_offset;
 		while( *ptr != 0 ) {
 			hash = fnv1a_hash_t::append_hash( hash, *ptr );
 			DAW_UNSAFE_BUFFER_FUNC_START
@@ -156,11 +151,11 @@ namespace daw {
 	template<typename CharT>
 	[[nodiscard]] constexpr fnv1a_uint_t fnv1a_hash( CharT const *ptr,
 	                                                 std::size_t len ) noexcept {
-		auto hash = impl::fnv_offset( );
-		auto const last = std::next( ptr, static_cast<std::ptrdiff_t>( len ) );
+		auto hash = impl::fnv_offset;
+		DAW_UNSAFE_BUFFER_FUNC_START
+		auto const last = ptr + static_cast<std::ptrdiff_t>( len );
 		while( ptr != last ) {
 			hash = fnv1a_hash_t::append_hash( hash, *ptr );
-			DAW_UNSAFE_BUFFER_FUNC_START
 			++ptr;
 			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
@@ -168,10 +163,11 @@ namespace daw {
 	}
 
 	template<typename StringViewLike,
-	         std::enable_if_t<traits::is_string_view_like_v<StringViewLike>,
+	         std::enable_if_t<traits_is_sv::is_string_view_like_v<StringViewLike>,
 	                          std::nullptr_t> = nullptr>
 	[[nodiscard]] fnv1a_uint_t fnv1a_hash( StringViewLike &&sv ) {
-		return fnv1a_hash( std::data( sv ), std::size( sv ) );
+		using namespace std;
+		return fnv1a_hash( data( sv ), size( sv ) );
 	}
 
 	template<fnv1a_uint_t N>

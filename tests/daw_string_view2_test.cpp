@@ -30,12 +30,13 @@ static_assert( std::is_trivially_copyable_v<daw::sv2::string_view> );
 #define daw_expecting( Lhs, Rhs )                                        \
 	do                                                                     \
 		if( ( Lhs ) != ( Rhs ) ) {                                           \
-			throw [] {                                                         \
+			throw[] {                                                          \
 				std::stringstream ss{ };                                         \
 				ss << "Invalid result. Expecting '" #Lhs << " == " #Rhs << "'\n" \
 				   << "File: " << __FILE__ << "\nLine: " << __LINE__;            \
 				return std::logic_error( ss.str( ) );                            \
-			}( );                                                              \
+			}                                                                  \
+			( );                                                               \
 		}                                                                    \
 	while( false )
 #else
@@ -396,8 +397,8 @@ namespace daw {
 	}
 
 	void daw_string_view_search_last_005( ) {
-		daw::sv2::string_view const a = "abcdeaaaijklm";
-		auto pos = a.search_last( "aaa", 100 );
+		constexpr daw::sv2::string_view a = "abcdeaaaijklm";
+		constexpr auto pos = a.search_last( "aaa", 100 );
 		daw_expecting( daw::sv2::string_view::npos, pos );
 	}
 
@@ -1303,7 +1304,7 @@ namespace daw {
 		std::hash<daw::sv2::string_view> h{ };
 		daw::sv2::string_view message = "Hello World!";
 		auto hash = h( message );
-		if constexpr( daw::impl::is_64bit_v ) {
+		if constexpr( daw::fnv1a_impl::is_64bit_v ) {
 			daw_expecting( std::uint64_t{ 0x8C0E'C8D1'FB9E'6E32ULL }, hash );
 		} else {
 			daw_expecting( std::uint32_t{ 0xB1EA'4872ULL }, hash );

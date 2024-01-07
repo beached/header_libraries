@@ -100,7 +100,7 @@ namespace daw {
 				return m_value == value;
 			}
 		}; // class EqualToImpl
-	}    // namespace utility_details
+	} // namespace utility_details
 	template<typename T>
 	inline constexpr utility_details::EqualToImpl<T> equal_to( T value ) {
 		return utility_details::EqualToImpl<T>( DAW_MOVE( value ) );
@@ -138,7 +138,7 @@ namespace daw {
 				return !m_function( DAW_FWD2( Args, args )... );
 			}
 		}; // class NotImpl
-	}    // namespace utility_details
+	} // namespace utility_details
 
 	template<typename Function>
 	[[nodiscard]] inline constexpr utility_details::NotImpl<Function>
@@ -799,10 +799,6 @@ namespace daw {
 		return result;
 	}
 
-	template<typename T>
-	constexpr std::size_t const bsizeof =
-	  static_cast<size_t>( sizeof( remove_cvref_t<T> ) * 8U );
-
 	/// Checks if value is in the range [lower, upper)
 	template<typename Value, typename LowerBound, typename UpperBound>
 	[[nodiscard]] constexpr bool
@@ -989,46 +985,10 @@ namespace daw {
 #endif
 	}
 
-	namespace utility_details {
-		template<typename T>
-		using has_data_end_test = decltype( std::declval<T &>( ).data_end( ) );
-
-		template<typename T>
-		inline constexpr bool has_data_end_v =
-		  daw::is_detected_v<has_data_end_test, T>;
-
-		template<typename T>
-		using has_data_test = decltype( std::declval<T &>( ).data( ) );
-
-		template<typename T>
-		inline constexpr bool has_data_v = daw::is_detected_v<has_data_test, T>;
-	} // namespace utility_details
-
-	template<typename Container>
-	[[nodiscard]] inline constexpr auto data( Container &&c ) {
-		if constexpr( utility_details::has_data_v<Container> ) {
-			return c.data( );
-		} else {
-			return std::data( c );
-		}
-	}
-
-	template<typename Container>
-	[[nodiscard]] inline constexpr auto data_end( Container &&c ) {
-		if constexpr( utility_details::has_data_end_v<Container> ) {
-			return c.data_end( );
-		} else if constexpr( utility_details::has_data_v<Container> ) {
-			return std::next( c.data( ),
-			                  static_cast<std::ptrdiff_t>( std::size( c ) ) );
-		} else {
-			return std::next( std::data( c ),
-			                  static_cast<std::ptrdiff_t>( std::size( c ) ) );
-		}
-	}
-	struct Empty {};
+	struct empty_t {};
+	using Empty = empty_t;
 
 	template<auto Value>
 	using constant = std::integral_constant<DAW_TYPEOF( Value ), Value>;
 
-	struct empty_t {};
 } // namespace daw

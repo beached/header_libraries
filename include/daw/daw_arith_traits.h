@@ -197,8 +197,7 @@ namespace daw {
 #endif
 
 	template<typename T>
-	struct is_integral : std::bool_constant<daw::numeric_limits<T>::is_integer> {
-	};
+	using is_integral = std::bool_constant<daw::numeric_limits<T>::is_integer>;
 
 	template<typename T>
 	inline constexpr bool is_integral_v = is_integral<T>::value;
@@ -208,21 +207,20 @@ namespace daw {
 
 	namespace arith_traits_details {
 		template<typename T>
-		struct limits_is_signed
-		  : std::bool_constant<daw::numeric_limits<T>::is_signed> {};
+		using limits_is_signed =
+		  std::bool_constant<daw::numeric_limits<T>::is_signed>;
 
 		template<typename T>
-		struct limits_is_exact
-		  : std::bool_constant<daw::numeric_limits<T>::is_exact> {};
+		using limits_is_exact =
+		  std::bool_constant<daw::numeric_limits<T>::is_exact>;
 
 	} // namespace arith_traits_details
 
 	template<typename T>
-	struct is_floating_point
-	  : std::conjunction<
-	      std::negation<is_integral<T>>,
-	      arith_traits_details::limits_is_signed<T>,
-	      std::negation<arith_traits_details::limits_is_exact<T>>> {};
+	using is_floating_point =
+	  std::conjunction<std::negation<is_integral<T>>,
+	                   arith_traits_details::limits_is_signed<T>,
+	                   std::negation<arith_traits_details::limits_is_exact<T>>>;
 
 	template<typename T>
 	inline constexpr bool is_floating_point_v = is_floating_point<T>::value;
@@ -231,7 +229,7 @@ namespace daw {
 	static_assert( not is_floating_point_v<int> );
 
 	template<typename T>
-	struct is_number : std::disjunction<is_integral<T>, is_floating_point<T>> {};
+	using is_number = std::disjunction<is_integral<T>, is_floating_point<T>>;
 
 	template<typename T>
 	inline constexpr bool is_number_v = is_number<T>::value;
@@ -241,9 +239,8 @@ namespace daw {
 	static_assert( not is_number_v<is_integral<int>> );
 
 	template<typename T>
-	struct is_signed
-	  : std::conjunction<is_number<T>,
-	                     arith_traits_details::limits_is_signed<T>> {};
+	using is_signed =
+	  std::conjunction<is_number<T>, arith_traits_details::limits_is_signed<T>>;
 
 	template<typename T>
 	inline constexpr bool is_signed_v = is_signed<T>::value;
@@ -253,10 +250,9 @@ namespace daw {
 	static_assert( not is_signed_v<unsigned> );
 
 	template<typename T>
-	struct is_unsigned
-	  : std::conjunction<
-	      is_integral<T>,
-	      std::negation<arith_traits_details::limits_is_signed<T>>> {};
+	using is_unsigned =
+	  std::conjunction<is_integral<T>,
+	                   std::negation<arith_traits_details::limits_is_signed<T>>>;
 
 	template<typename T>
 	inline constexpr bool is_unsigned_v = is_unsigned<T>::value;
@@ -266,11 +262,10 @@ namespace daw {
 	static_assert( is_unsigned_v<unsigned> );
 
 	template<typename T>
-	struct is_arithmetic
-	  : std::disjunction<
-	      is_number<T>, std::is_enum<T>,
-	      conditional_t<daw::numeric_limits<T>::is_specialized,
-	                         std::true_type, std::false_type>> {};
+	using is_arithmetic =
+	  std::disjunction<is_number<T>, std::is_enum<T>,
+	                   conditional_t<daw::numeric_limits<T>::is_specialized,
+	                                 std::true_type, std::false_type>>;
 
 	template<typename T>
 	inline constexpr bool is_arithmetic_v = is_arithmetic<T>::value;
@@ -329,6 +324,7 @@ namespace daw {
 #if defined( DAW_HAS_INT128 )
 	template<>
 	struct is_system_integral<__uint128_t> : std::true_type {};
+
 	template<>
 	struct is_system_integral<__int128_t> : std::true_type {};
 #endif
@@ -341,7 +337,7 @@ namespace daw {
 	template<typename T, std::size_t BitSize>
 	inline constexpr bool is_same_size_v = is_same_size<T, BitSize>::value;
 
-	template<std::size_t BitSize>
+	template<std::size_t /*BitSize*/>
 	struct unsupported_int_size;
 
 	template<std::size_t BitSize>
@@ -354,7 +350,7 @@ namespace daw {
 	      conditional_t<
 	        is_same_size_v<long, BitSize>, long,
 	        conditional_t<is_same_size_v<long long, BitSize>, long long,
-	                           unsupported_int_size<BitSize>>>>>>;
+	                      unsupported_int_size<BitSize>>>>>>;
 	template<std::size_t BitSize>
 	using uintN_t = conditional_t<
 	  is_same_size_v<char, BitSize>, unsigned char,
@@ -364,7 +360,7 @@ namespace daw {
 	      is_same_size_v<int, BitSize>, unsigned int,
 	      conditional_t<
 	        is_same_size_v<long, BitSize>, unsigned long,
-	        conditional_t<is_same_size_v<unsigned long long, BitSize>,
-	                           long long, unsupported_int_size<BitSize>>>>>>;
+	        conditional_t<is_same_size_v<unsigned long long, BitSize>, long long,
+	                      unsupported_int_size<BitSize>>>>>>;
 
 } // namespace daw
