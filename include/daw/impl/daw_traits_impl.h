@@ -245,6 +245,7 @@ namespace daw {
 		inline constexpr bool has_decrement_operator_v =
 		  daw::is_detected_v<detectors::has_decrement_operator, T>;
 
+
 		template<typename String>
 		inline constexpr bool has_integer_subscript_v =
 		  daw::is_detected_v<detectors::has_integer_subscript, String>;

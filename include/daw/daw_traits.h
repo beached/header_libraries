@@ -10,7 +10,6 @@
 
 #include "ciso646.h"
 #include "cpp_17.h"
-#include "cpp_20.h"
 #include "daw_cpp_feature_check.h"
 #include "daw_enable_if.h"
 #include "daw_move.h"
@@ -20,7 +19,6 @@
 
 #include <cstddef>
 #include <cstdint>
-
 #include <tuple>
 #include <type_traits>
 #include <utility>
@@ -352,7 +350,7 @@ namespace daw::traits {
 			[[maybe_unused]] auto has_op_ge_impl( L const &lhs, R const &rhs, int )
 			  -> std::is_convertible<decltype( lhs >= rhs ), bool>;
 		} // namespace operators
-	}   // namespace traits_details
+	} // namespace traits_details
 
 	namespace operators {
 		template<typename L, typename R = L>
@@ -1091,6 +1089,9 @@ namespace daw {
 	template<typename T>
 	using fp_t = T *;
 
+	template<typename T>
+	inline constexpr std::size_t const bsizeof =
+	  static_cast<size_t>( sizeof( remove_cvref_t<T> ) * 8U );
 } // namespace daw
 
 #define DAW_TYPEOF( ... ) daw::remove_cvref_t<decltype( __VA_ARGS__ )>

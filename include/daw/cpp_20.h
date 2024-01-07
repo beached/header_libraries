@@ -54,7 +54,7 @@ namespace daw {
 	inline constexpr bool is_unbounded_array_v<T[]> = true;
 
 	template<typename T>
-	struct is_unbounded_array : std::bool_constant<is_unbounded_array_v<T>> {};
+	using is_unbounded_array = std::bool_constant<is_unbounded_array_v<T>>;
 
 	namespace cpp_20_details {
 #if defined( DAW_CPP20_CONCEPTS )

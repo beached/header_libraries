@@ -10,14 +10,12 @@
 
 #include "ciso646.h"
 #include "cpp_17.h"
+#include "daw_compiler_fixups.h"
 #include "daw_move.h"
-#include "daw_traits.h"
+#include "impl/daw_is_string_view_like.h"
 
 #include <cstddef>
 #include <cstdint>
-#ifndef NOSTRING
-#include <string>
-#endif
 #include <type_traits>
 #include <utility>
 
@@ -25,7 +23,7 @@ namespace daw {
 #if defined( DAW_GENERIC_HASH_TYPE )
 	using genhash_uint_t = DAW_GENERIC_HASH_TYPE;
 #else
-	using genhash_uint_t = size_t;
+	using genhash_uint_t = std::size_t;
 #endif
 
 	template<size_t HashBytes>
@@ -33,14 +31,14 @@ namespace daw {
 
 	template<>
 	struct generic_hash_t<2> {
-		using hash_value_t = uint16_t;
-		static constexpr size_t const hash_size = 2;
+		using hash_value_t = std::uint16_t;
+		static constexpr std::size_t const hash_size = 2;
 		static constexpr hash_value_t hash_init = 0;
 
 	private:
 		template<typename Result, typename T>
-		static constexpr Result extract_value( T value,
-		                                       size_t rshft_bits = 0 ) noexcept {
+		static constexpr Result
+		extract_value( T value, std::size_t rshft_bits = 0 ) noexcept {
 			static_assert( sizeof( Result ) <= sizeof( T ),
 			               "result size must be <= to source size" );
 			auto const mask = static_cast<T>( ~( Result{ } & 0 ) ) << rshft_bits;
@@ -52,7 +50,7 @@ namespace daw {
 		template<typename Value>
 		static constexpr hash_value_t
 		append_hash_block( hash_value_t current_hash, Value value,
-		                   size_t count = sizeof( Value ) ) noexcept {
+		                   std::size_t count = sizeof( Value ) ) noexcept {
 			hash_value_t const JODY_HASH_CONSTANT = 0x1F5B;
 			hash_value_t const JODY_HASH_SHIFT = 14;
 
@@ -89,8 +87,8 @@ namespace daw {
 
 	template<>
 	struct generic_hash_t<4> {
-		using hash_value_t = uint32_t;
-		static constexpr size_t const hash_size = 4;
+		using hash_value_t = std::uint32_t;
+		static constexpr std::size_t const hash_size = 4;
 		static constexpr hash_value_t const hash_init = 2166136261UL;
 
 		template<typename Value, std::enable_if_t<std::is_integral_v<Value>,
@@ -98,7 +96,7 @@ namespace daw {
 		static constexpr hash_value_t append_hash( hash_value_t current_hash,
 		                                           Value const &value ) noexcept {
 			hash_value_t const fnv1a_prime = 16777619UL;
-			for( size_t n = 0; n < sizeof( Value ); ++n ) {
+			for( std::size_t n = 0; n < sizeof( Value ); ++n ) {
 				current_hash ^= static_cast<hash_value_t>(
 				  ( static_cast<uintmax_t>( value ) &
 				    ( static_cast<uintmax_t>( 0xFF ) << ( n * 8u ) ) ) >>
@@ -108,10 +106,7 @@ namespace daw {
 			return current_hash;
 		}
 
-		template<typename Iterator1, typename Iterator2,
-		         std::enable_if_t<std::is_integral_v<
-		                            typename std::iterator_traits<Iterator1>::type>,
-		                          std::nullptr_t> = nullptr>
+		template<typename Iterator1, typename Iterator2>
 		constexpr hash_value_t operator( )( Iterator1 first,
 		                                    Iterator2 const last ) const noexcept {
 			auto hash = hash_init;
@@ -122,12 +117,13 @@ namespace daw {
 			return hash;
 		}
 		template<
-		  typename Member, size_t N,
+		  typename Member, std::size_t N,
 		  std::enable_if_t<std::is_integral_v<Member>, std::nullptr_t> = nullptr>
 		constexpr hash_value_t
 		operator( )( Member const ( &member )[N] ) const noexcept {
-			return operator( )( member,
-			                    std::next( member, static_cast<intmax_t>( N ) ) );
+			DAW_UNSAFE_BUFFER_FUNC_START
+			return operator( )( member, member + static_cast<intmax_t>( N ) );
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 
 		template<typename Integral, std::enable_if_t<std::is_integral_v<Integral>,
@@ -138,8 +134,8 @@ namespace daw {
 	};
 	template<>
 	struct generic_hash_t<8> {
-		using hash_value_t = uint64_t;
-		static constexpr size_t const hash_size = 8;
+		using hash_value_t = std::uint64_t;
+		static constexpr std::size_t const hash_size = 8;
 		static constexpr hash_value_t const hash_init = 14695981039346656037ULL;
 
 		template<typename Value, std::enable_if_t<std::is_integral_v<Value>,
@@ -147,7 +143,7 @@ namespace daw {
 		static constexpr hash_value_t append_hash( hash_value_t current_hash,
 		                                           Value const &value ) noexcept {
 			hash_value_t const fnv1a_prime = 1099511628211ULL;
-			for( size_t n = 0; n < sizeof( Value ); ++n ) {
+			for( std::size_t n = 0; n < sizeof( Value ); ++n ) {
 				current_hash ^= static_cast<hash_value_t>(
 				  ( static_cast<uintmax_t>( value ) &
 				    ( static_cast<uintmax_t>( 0xFF ) << ( n * 8u ) ) ) >>
@@ -157,10 +153,7 @@ namespace daw {
 			return current_hash;
 		}
 
-		template<typename Iterator1, typename Iterator2,
-		         std::enable_if_t<std::is_integral_v<
-		                            typename std::iterator_traits<Iterator1>::type>,
-		                          std::nullptr_t> = nullptr>
+		template<typename Iterator1, typename Iterator2>
 		constexpr hash_value_t operator( )( Iterator1 first,
 		                                    Iterator2 const last ) const noexcept {
 			auto hash = hash_init;
@@ -171,12 +164,13 @@ namespace daw {
 			return hash;
 		}
 		template<
-		  typename Member, size_t N,
+		  typename Member, std::size_t N,
 		  std::enable_if_t<std::is_integral_v<Member>, std::nullptr_t> = nullptr>
 		constexpr hash_value_t
 		operator( )( Member const ( &member )[N] ) const noexcept {
-			return operator( )( member,
-			                    std::next( member, static_cast<intmax_t>( N ) ) );
+			DAW_UNSAFE_BUFFER_FUNC_START
+			return operator( )( member, member + static_cast<intmax_t>( N ) );
+			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 
 		template<typename Integral, std::enable_if_t<std::is_integral_v<Integral>,
@@ -189,7 +183,7 @@ namespace daw {
 		constexpr hash_value_t operator( )( T const *const ptr ) const noexcept {
 			auto hash = hash_init;
 			auto bptr = static_cast<uint8_t const *const>( ptr );
-			for( size_t n = 0; n < sizeof( T ); ++n ) {
+			for( std::size_t n = 0; n < sizeof( T ); ++n ) {
 				append_hash( hash, bptr[n] );
 			}
 			return hash;
@@ -215,33 +209,25 @@ namespace daw {
 	}
 
 	template<size_t HashBytes = sizeof( genhash_uint_t ), typename Iterator>
-	constexpr auto generic_hash( Iterator first, size_t const len ) noexcept {
+	constexpr auto generic_hash( Iterator first,
+	                             std::size_t const len ) noexcept {
 		using hash_t = generic_hash_t<HashBytes>;
 		auto hash = hash_t::hash_init;
-		for( size_t n = 0; n < len; ++n ) {
+		for( std::size_t n = 0; n < len; ++n ) {
 			hash = hash_t::append_hash( hash, *first );
 			++first;
 		}
 		return hash;
 	}
 
-#ifndef NOSTRING
-	template<size_t HashBytes = sizeof( genhash_uint_t ), typename CharT,
-	         typename Traits, typename Allocator>
-	auto generic_hash(
-	  std::basic_string<CharT, Traits, Allocator> const &str ) noexcept {
-		return generic_hash<HashBytes>( str.data( ), str.size( ) );
+	template<size_t HashBytes = sizeof( genhash_uint_t ), typename StringViewLike,
+	         std::enable_if_t<traits_is_sv::is_string_view_like_v<StringViewLike>,
+	                          std::nullptr_t> = nullptr>
+	auto generic_hash( StringViewLike const &&sv ) noexcept {
+		return generic_hash<HashBytes>( sv.data( ), sv.size( ) );
 	}
 
-	template<size_t HashBytes = sizeof( genhash_uint_t ), typename CharT,
-	         typename Traits, typename Allocator>
-	auto
-	generic_hash( std::basic_string<CharT, Traits, Allocator> &&str ) noexcept {
-		auto tmp = DAW_MOVE( str );
-		return generic_hash<HashBytes>( tmp.data( ), tmp.size( ) );
-	}
-#endif
-	template<size_t HashBytes = sizeof( genhash_uint_t ), size_t N>
+	template<size_t HashBytes = sizeof( genhash_uint_t ), std::size_t N>
 	constexpr auto generic_hash( char const ( &ptr )[N] ) noexcept {
 		return generic_hash<HashBytes>( ptr, N );
 	}

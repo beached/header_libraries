@@ -11,6 +11,7 @@
 #include "daw_concepts.h"
 #include "daw_consteval.h"
 #include "daw_utility.h"
+#include "impl/daw_data_end.h"
 #include "impl/daw_view_tags.h"
 #include "wrap_iter.h"
 

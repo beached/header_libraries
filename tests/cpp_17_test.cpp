@@ -7,7 +7,11 @@
 //
 
 #include "daw/cpp_17.h"
+#include "daw/cpp_17_iterator.h"
+#include "daw/daw_apply.h"
 #include "daw/daw_benchmark.h"
+#include "daw/daw_bind_front.h"
+#include "daw/daw_tuple_traits.h"
 #include "daw/daw_utility.h"
 
 #include <cstdint>
@@ -123,7 +127,7 @@ void bit_cast_001( ) {
 
 void bit_cast_002( ) {
 	constexpr uint32_t const tst = 0x89AB'CDEF;
-	auto const f = daw::bit_cast<float>( &tst );
+	auto const f = daw::bit_cast<float>( tst );
 	auto const i = daw::bit_cast<uint32_t>( f );
 	daw::expecting( tst, i );
 }

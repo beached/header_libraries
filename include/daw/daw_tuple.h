@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw_apply.h"
 #include "daw_move.h"
 #include "daw_traits.h"
 #include "impl/daw_conditional.h"
@@ -38,19 +39,19 @@ namespace daw::impl {
 		struct tuple_value {
 			T m_value;
 
-			constexpr T &get( daw::index_constant<N> ) &noexcept {
+			constexpr T &get( daw::index_constant<N> ) & noexcept {
 				return m_value;
 			}
 
-			constexpr T const &get( daw::index_constant<N> ) const &noexcept {
+			constexpr T const &get( daw::index_constant<N> ) const & noexcept {
 				return m_value;
 			}
 
-			constexpr T &&get( daw::index_constant<N> ) &&noexcept {
+			constexpr T &&get( daw::index_constant<N> ) && noexcept {
 				return DAW_MOVE( m_value );
 			}
 
-			constexpr T const &&get( daw::index_constant<N> ) const &&noexcept {
+			constexpr T const &&get( daw::index_constant<N> ) const && noexcept {
 				return DAW_MOVE( m_value );
 			}
 		};
@@ -58,19 +59,19 @@ namespace daw::impl {
 		template<std::size_t N, typename T>
 		struct tuple_value<N, T, true> : T {
 
-			constexpr T &get( daw::index_constant<N> ) &noexcept {
+			constexpr T &get( daw::index_constant<N> ) & noexcept {
 				return *this;
 			}
 
-			constexpr T const &get( daw::index_constant<N> ) const &noexcept {
+			constexpr T const &get( daw::index_constant<N> ) const & noexcept {
 				return *this;
 			}
 
-			constexpr T &&get( daw::index_constant<N> ) &&noexcept {
+			constexpr T &&get( daw::index_constant<N> ) && noexcept {
 				return DAW_MOVE( *this );
 			}
 
-			constexpr T const &&get( daw::index_constant<N> ) const &&noexcept {
+			constexpr T const &&get( daw::index_constant<N> ) const && noexcept {
 				return DAW_MOVE( *this );
 			}
 		};
@@ -123,11 +124,11 @@ namespace daw::impl {
 namespace daw {
 	template<typename... Ts>
 	class tuple : private conditional_t<( sizeof...( Ts ) > 0 ),
-	                                         impl::tuple_storage<0, Ts...>,
-	                                         impl::tuple_storage_empty> {
+	                                    impl::tuple_storage<0, Ts...>,
+	                                    impl::tuple_storage_empty> {
 		using base_type =
 		  conditional_t<( sizeof...( Ts ) > 0 ), impl::tuple_storage<0, Ts...>,
-		                     impl::tuple_storage_empty>;
+		                impl::tuple_storage_empty>;
 		using base_type::base_type;
 
 		template<typename T>

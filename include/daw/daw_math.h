@@ -10,10 +10,8 @@
 
 #include "ciso646.h"
 #include "cpp_17.h"
-#include "daw_algorithm.h"
-#include "daw_scope_guard.h"
 #include "daw_traits.h"
-#include "daw_utility.h"
+//#include "daw_utility.h"
 #include "impl/daw_math_impl.h"
 
 #include <cassert>
@@ -23,6 +21,10 @@
 #include <limits>
 #include <memory>
 #include <utility>
+
+namespace daw {
+
+}
 
 namespace daw::math {
 	template<typename Float>
@@ -39,11 +41,11 @@ namespace daw::math {
 	using int_for_float_t = typename int_for_float<Float>::type;
 
 	template<typename T>
-	constexpr T const PI = T(
+	inline constexpr T const PI = T(
 	  3.14159265358979323846264338327950288419716939937510582097494459230781640628620899 );
 
 	template<typename Result = int_for_float_t<float>>
-	constexpr Result round( float d ) noexcept {
+	[[nodiscard]] constexpr Result round( float d ) noexcept {
 		static_assert( std::is_integral_v<Result>, "Result type must be integral" );
 		static_assert( std::is_floating_point_v<float>,
 		               "Argument must be a floating point type" );
@@ -51,7 +53,7 @@ namespace daw::math {
 	}
 
 	template<typename Result = int_for_float_t<double>>
-	constexpr Result round( double d ) noexcept {
+	[[nodiscard]] constexpr Result round( double d ) noexcept {
 		static_assert( std::is_integral_v<Result>, "Result type must be integral" );
 		static_assert( std::is_floating_point_v<double>,
 		               "Argument must be a floating point type" );
@@ -59,7 +61,7 @@ namespace daw::math {
 	}
 
 	template<typename Result = int_for_float_t<float>>
-	constexpr Result floor( float d ) noexcept {
+	[[nodiscard]] constexpr Result floor( float d ) noexcept {
 		static_assert( std::is_integral_v<Result>, "Result type must be integral" );
 		static_assert( std::is_floating_point_v<float>,
 		               "Argument must be a floating point type" );
@@ -67,7 +69,7 @@ namespace daw::math {
 	}
 
 	template<typename Result = int_for_float_t<double>>
-	constexpr Result floor( double d ) noexcept {
+	[[nodiscard]] constexpr Result floor( double d ) noexcept {
 		static_assert( std::is_integral_v<Result>, "Result type must be integral" );
 		static_assert( std::is_floating_point_v<double>,
 		               "Argument must be a doubleing point type" );
@@ -75,7 +77,7 @@ namespace daw::math {
 	}
 
 	template<typename Result = int_for_float_t<float>>
-	constexpr Result ceil( float d ) noexcept {
+	[[nodiscard]] constexpr Result ceil( float d ) noexcept {
 		static_assert( std::is_integral_v<Result>, "Result type must be integral" );
 		static_assert( std::is_floating_point_v<float>,
 		               "Argument must be a floating point type" );
@@ -83,7 +85,7 @@ namespace daw::math {
 	}
 
 	template<typename Result = int_for_float_t<double>>
-	constexpr Result ceil( double d ) noexcept {
+	[[nodiscard]] constexpr Result ceil( double d ) noexcept {
 		static_assert( std::is_integral_v<Result>, "Result type must be integral" );
 		static_assert( std::is_floating_point_v<double>,
 		               "Argument must be a doubleing point type" );
@@ -91,7 +93,8 @@ namespace daw::math {
 	}
 
 	template<typename T>
-	constexpr T round_by( T const value, double const rnd_by ) noexcept {
+	[[nodiscard]] constexpr T round_by( T const value,
+	                                    double const rnd_by ) noexcept {
 		static_assert( std::is_arithmetic_v<T>,
 		               "value must be an arithmetic type" );
 		auto const rnd =
@@ -100,7 +103,8 @@ namespace daw::math {
 	}
 
 	template<typename T>
-	constexpr T floor_by( T const value, double const rnd_by ) noexcept {
+	[[nodiscard]] constexpr T floor_by( T const value,
+	                                    double const rnd_by ) noexcept {
 		static_assert( std::is_arithmetic_v<T>,
 		               "value must be an arithmetic type" );
 		auto const rnd =
@@ -109,7 +113,8 @@ namespace daw::math {
 	}
 
 	template<typename T>
-	constexpr T ceil_by( T const value, double const rnd_by ) noexcept {
+	[[nodiscard]] constexpr T ceil_by( T const value,
+	                                   double const rnd_by ) noexcept {
 		static_assert( std::is_arithmetic_v<T>,
 		               "value must be an arithmetic type" );
 		auto const rnd =
@@ -119,12 +124,12 @@ namespace daw::math {
 
 	template<typename T, std::enable_if_t<not std::is_integral_v<T>,
 	                                      std::nullptr_t> = nullptr>
-	constexpr T abs( T t ) noexcept {
+	[[nodiscard]] constexpr T abs( T t ) noexcept {
 		return t < static_cast<T>( 0 ) ? -t : t;
 	}
 
 	template<typename T = uintmax_t>
-	constexpr T pow2( T n ) noexcept {
+	[[nodiscard]] constexpr T pow2( T n ) noexcept {
 		T result = 1;
 		while( n-- > 0 ) {
 			result *= 2ULL;
@@ -136,7 +141,7 @@ namespace daw::math {
 	         std::enable_if_t<all_true_v<std::is_integral_v<SignedInteger>,
 	                                     std::is_signed_v<SignedInteger>>,
 	                          std::nullptr_t> = nullptr>
-	constexpr Result abs( SignedInteger v ) noexcept {
+	[[nodiscard]] constexpr Result abs( SignedInteger v ) noexcept {
 		// This accounts for when negating the number is out of range
 		if( static_cast<intmax_t>( v ) ==
 		    ( std::numeric_limits<intmax_t>::min )( ) ) {
@@ -152,14 +157,14 @@ namespace daw::math {
 	         std::enable_if_t<all_true_v<std::is_integral_v<UnsignedInteger>,
 	                                     not std::is_signed_v<UnsignedInteger>>,
 	                          std::nullptr_t> = nullptr>
-	constexpr UnsignedInteger abs( UnsignedInteger &&v ) noexcept {
+	[[nodiscard]] constexpr UnsignedInteger abs( UnsignedInteger &&v ) noexcept {
 		return std::forward<UnsignedInteger>( v );
 	}
 
 	template<typename T>
-	constexpr uintmax_t factorial( T t ) noexcept {
-		uintmax_t count = abs( t );
-		uintmax_t result = 1;
+	[[nodiscard]] constexpr uintmax_t factorial( T t ) noexcept {
+		std::uintmax_t count = abs( t );
+		std::uintmax_t result = 1;
 		for( ; count > 0; --count ) {
 			result *= count;
 		}
@@ -168,7 +173,7 @@ namespace daw::math {
 
 	namespace impl {
 		template<typename T>
-		constexpr T pow_impl( T base, size_t exponent ) noexcept {
+		[[nodiscard]] constexpr T pow_impl( T base, size_t exponent ) noexcept {
 			for( size_t k = 0; k < exponent; ++k ) {
 				base *= base;
 			}
@@ -178,23 +183,23 @@ namespace daw::math {
 	} // namespace impl
 
 	template<typename T>
-	constexpr T pow( T base, size_t exponent ) noexcept {
+	[[nodiscard]] constexpr T pow( T base, size_t exponent ) noexcept {
 		return base == 0 ? 0 : exponent > 0 ? impl::pow_impl( base, exponent ) : 1;
 	}
 
 	namespace impl {
 		struct constants {
-			constexpr static double const tol = 0.001;
+			static constexpr double const tol = 0.001;
 		};
 
 		template<typename T>
-		constexpr auto cube( T x ) noexcept {
+		[[nodiscard]] constexpr auto cube( T x ) noexcept {
 			return x * x * x;
 		}
 
 		// Based on the triple-angle formula: sin 3x = 3 sin x - 4 sin ^3 x
 		template<typename R>
-		constexpr R sin_helper( R x ) noexcept {
+		[[nodiscard]] constexpr R sin_helper( R x ) noexcept {
 			return x < constants::tol
 			         ? x
 			         : static_cast<R>( 3.0 ) *
@@ -205,12 +210,12 @@ namespace daw::math {
 	} // namespace impl
 
 	template<typename R>
-	constexpr R sin( R x ) noexcept {
+	[[nodiscard]] constexpr R sin( R x ) noexcept {
 		return impl::sin_helper( x < 0 ? PI<R> - x : x );
 	}
 
 	template<typename R>
-	constexpr R cos( R x ) noexcept {
+	[[nodiscard]] constexpr R cos( R x ) noexcept {
 		if( 0.0 == x ) {
 			return 1.0;
 		}
@@ -218,7 +223,7 @@ namespace daw::math {
 	}
 
 	template<typename T>
-	constexpr auto sqr( T const &value ) noexcept {
+	[[nodiscard]] constexpr auto sqr( T const &value ) noexcept {
 		static_assert( std::is_arithmetic_v<T>,
 		               "Template parameter must be an arithmetic type" );
 		return value * value;
@@ -228,7 +233,8 @@ namespace daw::math {
 	/// <summary>Set the minimum value allowed</summary>
 	///
 	template<typename T, typename U>
-	constexpr auto value_or_min( T const &value, U const &min_value ) noexcept {
+	[[nodiscard]] constexpr auto value_or_min( T const &value,
+	                                           U const &min_value ) noexcept {
 		if( min_value > value ) {
 			return min_value;
 		}
@@ -237,7 +243,7 @@ namespace daw::math {
 
 	template<typename T, std::enable_if_t<not std::is_floating_point_v<T>,
 	                                      std::nullptr_t> = nullptr>
-	constexpr bool nearly_equal( T const &a, T const &b ) noexcept {
+	[[nodiscard]] constexpr bool nearly_equal( T const &a, T const &b ) noexcept {
 		return a == b;
 	}
 
@@ -247,7 +253,7 @@ namespace daw::math {
 #endif
 	template<typename T, std::enable_if_t<std::is_floating_point_v<T>,
 	                                      std::nullptr_t> = nullptr>
-	constexpr bool
+	[[nodiscard]] constexpr bool
 	nearly_equal( T a, T b,
 	              T epsilon = std::numeric_limits<T>::epsilon( ) ) noexcept {
 		if( a != a ) {

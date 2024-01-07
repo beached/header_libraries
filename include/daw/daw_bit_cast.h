@@ -27,8 +27,8 @@
 
 namespace daw {
 	template<typename To, typename From>
-	[[nodiscard, maybe_unused]] To
-	bit_cast( From &&from ) noexcept( std::is_nothrow_constructible_v<To> ) {
+	[[nodiscard]] To bit_cast( From &&from ) noexcept(
+	  std::is_nothrow_default_constructible_v<To> ) {
 
 		static_assert( std::is_trivially_copyable_v<
 		                 std::remove_cv_t<std::remove_reference_t<From>>>,
@@ -39,7 +39,7 @@ namespace daw {
 		static_assert( sizeof( From ) == sizeof( To ),
 		               "Sizes of From and To Tos must be the same" );
 		static_assert( std::is_default_constructible_v<To>,
-		               "To To must be default constructible" );
+		               "To must be default constructible" );
 
 		auto result = std::aligned_storage_t<sizeof( To ), alignof( To )>{ };
 		return *static_cast<To *>( std::memcpy( &result, &from, sizeof( To ) ) );
