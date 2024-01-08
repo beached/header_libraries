@@ -94,10 +94,8 @@
 #define DAW_NO_UNIQUE_ADDRESS [[no_unique_address]]
 #endif
 
-#if defined( __clang__ )
+#if DAW_HAS_CLANG_VER_GTE( 13, 0 )
 #define DAW_PREF_NAME( ... ) clang::preferred_name( __VA_ARGS__ )
-//#elif defined( __GNUC__ )
-//#define DAW_PREF_NAME( ... ) gnu::preferred_name( __VA_ARGS__ )
 #else
 #define DAW_PREF_NAME( ... )
 #endif

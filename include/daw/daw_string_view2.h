@@ -29,7 +29,6 @@
 
 #include <cstddef>
 #include <cstdlib>
-#include <functional>
 #include <iterator>
 #include <stdexcept>
 #include <type_traits>
@@ -112,6 +111,34 @@ namespace daw {
 	  namespace sv2 {
 
 		namespace sv2_details {
+#if defined( __cpp_static_call_operator )
+#if __cpp_static_call_operator >= 202207L
+#define DAW_SV2_HAS_STATIC_CALL_OP
+#endif
+#endif
+			struct less {
+				template<typename T, typename U>
+#if defined( DAW_SV2_HAS_STATIC_CALL_OP )
+#if DAW_HAS_CLANG_VER_GTE( 16, 0 )
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wc++23-extensions"
+#endif
+				DAW_ATTRIB_INLINE static constexpr bool
+				operator( )( T const &lhs, U const &rhs ) noexcept {
+					return lhs < rhs;
+				}
+
+#if DAW_HAS_CLANG_VER_GTE( 16, 0 )
+#pragma clang diagnostic pop
+#endif
+#else
+				DAW_ATTRIB_INLINE constexpr bool
+				operator( )( T const &lhs, U const &rhs ) const noexcept {
+					return lhs < rhs;
+				}
+#endif
+			};
+
 			template<typename InputIt, typename ForwardIt, typename BinaryPredicate>
 			[[nodiscard]] constexpr InputIt
 			find_first_of( InputIt first, InputIt last, ForwardIt s_first,
@@ -1564,7 +1591,7 @@ namespace daw {
 			}
 
 		public:
-			template<typename Compare = std::less<void>, string_view_bounds_type BL,
+			template<typename Compare = sv2_details::less, string_view_bounds_type BL,
 			         string_view_bounds_type BR>
 			[[nodiscard]] static constexpr int
 			compare( basic_string_view<CharT, BL> lhs,
@@ -1600,14 +1627,14 @@ namespace daw {
 				return ret;
 			}
 
-			template<typename Compare = std::less<>, string_view_bounds_type B>
+			template<typename Compare = sv2_details::less, string_view_bounds_type B>
 			[[nodiscard]] constexpr int compare( basic_string_view<CharT, B> rhs,
 			                                     Compare cmp = Compare{ } ) const {
 				return compare(
 				  *this, basic_string_view( std::data( rhs ), std::size( rhs ) ), cmp );
 			}
 
-			template<typename Compare = std::less<>, typename StringView,
+			template<typename Compare = sv2_details::less, typename StringView,
 			         DAW_REQ_CONTIG_CHAR_RANGE( StringView, CharT )>
 			[[nodiscard]] constexpr int compare( StringView &&rhs,
 			                                     Compare cmp = Compare{ } ) const {
@@ -1615,20 +1642,21 @@ namespace daw {
 				  *this, basic_string_view( std::data( rhs ), std::size( rhs ) ), cmp );
 			}
 
-			template<typename Compare = std::less<>, std::size_t N>
+			template<typename Compare = sv2_details::less, std::size_t N>
 			[[nodiscard]] constexpr int compare( CharT const ( &rhs )[N],
 			                                     Compare cmp = Compare{ } ) const {
 				return compare( *this, basic_string_view( rhs, N - 1 ), cmp );
 			}
 
-			template<typename Compare = std::less<>>
+			template<typename Compare = sv2_details::less>
 			constexpr int compare( size_type pos1, size_type count1,
 			                       basic_string_view v,
 			                       Compare cmp = Compare{ } ) const {
 				return compare( substr( pos1, count1 ), v, cmp );
 			}
 
-			template<typename Compare = std::less<>, string_view_bounds_type Bounds>
+			template<typename Compare = sv2_details::less,
+			         string_view_bounds_type Bounds>
 			[[nodiscard]] constexpr int compare( size_type pos1, size_type count1,
 			                                     basic_string_view<CharT, Bounds> v,
 			                                     size_type pos2, size_type count2,
@@ -1636,7 +1664,7 @@ namespace daw {
 				return compare( substr( pos1, count1 ), v.substr( pos2, count2 ), cmp );
 			}
 
-			template<typename Compare = std::less<>>
+			template<typename Compare = sv2_details::less>
 			[[nodiscard]] constexpr int compare( size_type pos1, size_type count1,
 			                                     const_pointer s,
 			                                     Compare cmp = Compare{ } ) const {
@@ -1644,7 +1672,7 @@ namespace daw {
 				                basic_string_view<CharT, BoundsType>( s ), cmp );
 			}
 
-			template<typename Compare = std::less<>>
+			template<typename Compare = sv2_details::less>
 			[[nodiscard]] constexpr int compare( size_type pos1, size_type count1,
 			                                     const_pointer s, size_type count2,
 			                                     Compare cmp = Compare{ } ) const {
