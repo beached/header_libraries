@@ -119,7 +119,7 @@ namespace daw {
 			struct less {
 				template<typename T, typename U>
 #if defined( DAW_SV2_HAS_STATIC_CALL_OP )
-#if DAW_HAS_CLANG_VER_GTE( 16, 0 )
+#if DAW_HAS_CLANG_VER_GTE( 17, 0 )
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wc++23-extensions"
 #endif
@@ -128,7 +128,7 @@ namespace daw {
 					return lhs < rhs;
 				}
 
-#if DAW_HAS_CLANG_VER_GTE( 16, 0 )
+#if DAW_HAS_CLANG_VER_GTE( 17, 0 )
 #pragma clang diagnostic pop
 #endif
 #else
