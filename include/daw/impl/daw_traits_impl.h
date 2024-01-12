@@ -14,6 +14,8 @@
 #include <cstddef>
 #include <daw/stdinc/declval.h>
 #include <daw/stdinc/iterator_traits.h>
+#include <daw/stdinc/data_access.h>
+#include <daw/stdinc/range_access.h>
 #include <type_traits>
 
 namespace daw {
