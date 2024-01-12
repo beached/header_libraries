@@ -10,10 +10,10 @@
 
 #include <daw/daw_cpp_feature_check.h>
 
-#if DAW_HAS_CLANG_VER_LT( 10, 0 )
-#include <iterator>
-#elif defined( DAW_HAS_STD_LIBSTDCPP ) and __has_include( <bits/range_access.h> ) and \
-	__has_include( <bits/stl_iterator_base_funcs.h> )
+#if defined( DAW_HAS_STD_LIBSTDCPP ) and __has_include( <bits/range_access.h> ) and \
+	__has_include( <bits/stl_iterator_base_funcs.h> ) and __has_include( <bits/stl_iterator.h>)
+#include <bits/stl_iterator.h>
+//
 #include <bits/range_access.h>
 #include <bits/stl_iterator_base_funcs.h>
 #elif defined( DAW_HAS_STD_LIBCPP ) and __has_include( <__iterator/next.h> ) and \
