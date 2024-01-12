@@ -12,7 +12,7 @@
 #include "daw/cpp_20.h"
 #include "daw/daw_move.h"
 
-#include <iterator>
+#include <daw/stdinc/iterator_traits.h>
 
 namespace daw {
 	template<typename Iterator>

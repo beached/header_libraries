@@ -1915,32 +1915,6 @@ namespace daw::algorithm {
 		}
 	}
 
-	template<typename InputIterator, typename OutputIterator,
-	         typename BinaryOperator = accum_impl::plus>
-	constexpr OutputIterator
-	partial_sum( InputIterator first, InputIterator last,
-	             OutputIterator first_out,
-	             BinaryOperator op = BinaryOperator{ } ) {
-
-		if( first == last ) {
-			return first_out;
-		}
-
-		using value_type = typename std::iterator_traits<InputIterator>::value_type;
-
-		value_type sum = *first;
-		*first_out = sum;
-		++first_out;
-		++first;
-		while( first != last ) {
-			sum = daw::invoke( op, DAW_MOVE( sum ), *first );
-			++first;
-
-			*first_out = sum;
-			++first_out;
-		}
-		return first_out;
-	}
 
 	template<typename From, typename To, typename Query>
 	constexpr void extract_to( From &from, To &to, Query &&q ) {

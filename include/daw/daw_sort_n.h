@@ -9,17 +9,13 @@
 #pragma once
 
 #include "ciso646.h"
-#include "daw_algorithm.h"
-#include "daw_algorithm_cx.h"
 #include "daw_move.h"
 #include "daw_swap.h"
-#include "daw_traits.h"
-#include "iterator/daw_random_iterator.h"
+#include "impl/daw_algorithm_partial_sum.h"
 #include "iterator/daw_reverse_iterator.h"
 
-#include <algorithm>
-#include <functional>
-#include <iterator>
+#include <daw/stdinc/less.h>
+#include <daw/stdinc/iterator_traits.h>
 
 namespace daw {
 	namespace algorithm_details {
