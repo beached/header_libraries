@@ -15,6 +15,7 @@
 #include "daw_enable_if.h"
 #include "daw_is_detected.h"
 #include "daw_move.h"
+#include "daw_remove_cvref.h"
 #include "impl/daw_conditional.h"
 
 #include <cstddef>
@@ -23,9 +24,6 @@
 #include <utility>
 
 namespace daw {
-	template<typename T>
-	using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
-
 	template<bool B>
 	using bool_constant = std::bool_constant<B>;
 

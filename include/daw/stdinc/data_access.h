@@ -10,6 +10,9 @@
 
 #include <daw/daw_cpp_feature_check.h>
 
+#if DAW_HAS_CLANG_VER_LT( 10, 0 )
+#include <string_view>
+#else
 #if defined( DAW_HAS_STD_LIBSTDCPP ) and __has_include( <bits/range_access.h> )
 #include <bits/range_access.h>
 #elif defined( DAW_HAS_STD_LIBCPP ) and \
@@ -18,4 +21,5 @@
 #include <__iterator/size.h>
 #else
 #include <string_view>
+#endif
 #endif

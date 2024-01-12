@@ -8,6 +8,9 @@
 
 #pragma once
 
-#include "daw_remove_cvref.h"
+#include <daw/stdinc/remove_cvref.h>
 
-#define DAW_TYPEOF( ... ) daw::remove_cvref_t<decltype( __VA_ARGS__ )>
+namespace daw {
+	template<typename T>
+	using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
+}
