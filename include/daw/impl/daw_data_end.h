@@ -8,17 +8,11 @@
 
 #pragma once
 
-#if defined( __GLIBCXX__ ) and __has_include( <bits/range_access.h> )
-#include <bits/range_access.h>
-#elif defined( _LIBCPP_VERSION ) and \
-  __has_include( <__iterator/data.h> ) and __has_include( <__iterator/size.h> )
-#include <__iterator/data.h>
-#include <__iterator/size.h>
-#else
-#include <array>
-#endif
 #include <cstddef>
-#include <type_traits>
+#include <daw/stdinc/data_access.h>
+#include <daw/stdinc/declval.h>
+#include <daw/stdinc/void_t.h>
+#include <daw/stdinc/range_access.h>
 
 namespace daw {
 	namespace utility_details {
