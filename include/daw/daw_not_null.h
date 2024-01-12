@@ -13,9 +13,10 @@
 #include "daw_attributes.h"
 
 #include <cstddef>
+#include <daw/stdinc/compare_fn.h>
+#include <daw/stdinc/hash.h>
+#include <daw/stdinc/iterator_traits.h>
 #include <exception>
-#include <functional>
-#include <iterator>
 #include <type_traits>
 
 namespace daw {

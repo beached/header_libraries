@@ -31,6 +31,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <daw/stdinc/data_access.h>
+#include <daw/stdinc/hash.h>
 #include <daw/stdinc/iterator_traits.h>
 #include <daw/stdinc/min_and_max.h>
 #include <daw/stdinc/reverse_iterator.h>
