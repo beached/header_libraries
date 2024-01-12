@@ -12,6 +12,8 @@
 
 #if defined( DAW_HAS_STD_LIBCPP ) and __has_include( <__functional/operations.h> )
 #include <__functional/operations.h>
+#elif defined( DAW_HAS_STD_LIBSTDCPP ) and __has_include( <bits/stl_function.h> )
+#include <bits/stl_function.h>
 #else
 #include <functional>
 #endif
