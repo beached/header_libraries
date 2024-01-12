@@ -1043,5 +1043,3 @@ namespace daw {
 	inline constexpr std::size_t const bsizeof =
 	  static_cast<size_t>( sizeof( remove_cvref_t<T> ) * 8U );
 } // namespace daw
-
-#define DAW_TYPEOF( ... ) daw::remove_cvref_t<decltype( __VA_ARGS__ )>

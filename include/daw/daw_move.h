@@ -17,7 +17,7 @@ namespace daw {
 	/// \param  value  A thing of arbitrary type.
 	/// \return The parameter cast to an rvalue-reference to allow moving it.
 	template<typename T>
-	[[nodiscard]] inline constexpr typename std::remove_reference<T>::type &&
+	[[nodiscard]] inline constexpr typename std::remove_reference_t<T> &&
 	move( T &&value ) noexcept {
 		static_assert( not std::is_const_v<typename std::remove_reference_t<T>>,
 		               "Attempt to move const value" );

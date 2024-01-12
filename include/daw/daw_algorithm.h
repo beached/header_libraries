@@ -19,6 +19,7 @@
 #include "daw_move.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
+#include "daw_typeof.h"
 #include "daw_view.h"
 #include "impl/daw_algorithm_accumulate.h"
 #include "impl/daw_algorithm_copy.h"

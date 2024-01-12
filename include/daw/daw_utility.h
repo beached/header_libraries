@@ -11,10 +11,12 @@
 #include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_algorithm.h"
+#include "daw_can_constant_evaluate.h"
 #include "daw_construct_a.h"
 #include "daw_exception.h"
 #include "daw_move.h"
 #include "daw_traits.h"
+#include "daw_typeof.h"
 #include "daw_unused.h"
 
 #include <cmath>
@@ -988,8 +990,5 @@ namespace daw {
 
 	struct empty_t {};
 	using Empty = empty_t;
-
-	template<auto Value>
-	using constant = std::integral_constant<DAW_TYPEOF( Value ), Value>;
 
 } // namespace daw

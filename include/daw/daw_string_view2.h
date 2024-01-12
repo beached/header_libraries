@@ -21,6 +21,7 @@
 #include "daw_logic.h"
 #include "daw_move.h"
 #include "daw_traits.h"
+#include "daw_typeof.h"
 #include "impl/daw_algorithm_copy.h"
 #include "impl/daw_algorithm_find.h"
 #include "impl/daw_conditional.h"

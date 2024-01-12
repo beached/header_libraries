@@ -12,6 +12,7 @@
 #include "daw_exception.h"
 #include "daw_math.h"
 #include "daw_traits.h"
+#include "daw_typeof.h"
 
 #include <cstddef>
 #include <iterator>
