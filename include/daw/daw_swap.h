@@ -12,6 +12,8 @@
 #include "daw_exchange.h"
 #include "daw_move.h"
 
+#include <array>
+#include <cstddef>
 #include <daw/stdinc/declval.h>
 #include <daw/stdinc/remove_cvref.h>
 #include <daw/stdinc/void_t.h>
