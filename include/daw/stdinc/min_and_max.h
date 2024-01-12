@@ -14,6 +14,8 @@
 and __has_include( <__algorithm/max.h> )
 #include <__algorithm/max.h>
 #include <__algorithm/min.h>
+#elif defined( DAW_HAS_STD_LIBSTDCPP ) and __has_include( <bits/stl_algobase.h> )
+#include <bits/stl_algobase.h>
 #else
 #include <algorithm>
 #endif
