@@ -10,6 +10,8 @@
 
 #include "daw_string_view2_fwd.h"
 
+#include "algorithms/daw_algorithm_copy.h"
+#include "algorithms/daw_algorithm_find.h"
 #include "ciso646.h"
 #include "daw_assume.h"
 #include "daw_check_exceptions.h"
@@ -22,8 +24,6 @@
 #include "daw_move.h"
 #include "daw_traits.h"
 #include "daw_typeof.h"
-#include "impl/daw_algorithm_copy.h"
-#include "impl/daw_algorithm_find.h"
 #include "impl/daw_conditional.h"
 #include "impl/daw_data_end.h"
 #include "impl/daw_view_tags.h"

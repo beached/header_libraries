@@ -8,10 +8,10 @@
 
 #pragma once
 
+#include "algorithms/daw_algorithm_partial_sum.h"
 #include "ciso646.h"
 #include "daw_move.h"
 #include "daw_swap.h"
-#include "impl/daw_algorithm_partial_sum.h"
 #include "iterator/daw_reverse_iterator.h"
 
 #include <daw/stdinc/less.h>

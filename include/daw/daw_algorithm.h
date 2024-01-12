@@ -8,6 +8,10 @@
 
 #pragma once
 
+#include "algorithms/daw_algorithm_accumulate.h"
+#include "algorithms/daw_algorithm_adjacent_find.h"
+#include "algorithms/daw_algorithm_copy.h"
+#include "algorithms/daw_algorithm_find.h"
 #include "ciso646.h"
 #include "cpp_17.h"
 #include "cpp_17_iterator.h"
@@ -21,9 +25,6 @@
 #include "daw_traits.h"
 #include "daw_typeof.h"
 #include "daw_view.h"
-#include "impl/daw_algorithm_accumulate.h"
-#include "impl/daw_algorithm_copy.h"
-#include "impl/daw_algorithm_find.h"
 #include "impl/daw_math_impl.h"
 
 #include <algorithm>
@@ -1915,7 +1916,6 @@ namespace daw::algorithm {
 		}
 	}
 
-
 	template<typename From, typename To, typename Query>
 	constexpr void extract_to( From &from, To &to, Query &&q ) {
 		while( auto &&item = from.extract( q ) ) {
@@ -2095,25 +2095,6 @@ namespace daw::algorithm {
 			++first;
 		}
 		return false;
-	}
-
-	template<typename ForwardIterator, typename BinaryPredicate>
-	constexpr ForwardIterator adjacent_find( ForwardIterator first,
-	                                         ForwardIterator last,
-	                                         BinaryPredicate p ) {
-		if( first == last ) {
-			return last;
-		}
-		ForwardIterator next = first;
-		++next;
-		while( next != last ) {
-			if( p( *first, *next ) ) {
-				return first;
-			}
-			++next;
-			++first;
-		}
-		return last;
 	}
 
 	/// When a predicate is satisfied, call onEach with the read value.
