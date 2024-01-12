@@ -18,11 +18,12 @@
 #include "impl/daw_conditional.h"
 
 #include <cstddef>
-#include <functional>
+#include <daw/stdinc/integer_sequence.h>
+#include <daw/stdinc/reference_wrapper.h>
 #include <iostream>
-#include <string>
+#include <ostream>
 #include <tuple>
-#include <utility>
+#include <type_traits>
 #include <variant>
 
 namespace daw {
@@ -48,7 +49,7 @@ namespace daw {
 				  std::ref( std::get<Tpos>( DAW_FWD2( Tuple, tp ) ) ) );
 			}
 		} // namespace tuple_details
-	}   // namespace tuple
+	} // namespace tuple
 
 	template<typename... Args>
 	constexpr auto get( std::tuple<Args...> &tp, size_t index ) noexcept {
@@ -132,7 +133,7 @@ namespace daw {
 					m_os << " " << v;
 				}
 			}; // print_t
-		}    // namespace tuple_details
+		} // namespace tuple_details
 
 		template<typename... Ts, typename F>
 		constexpr void for_each( std::tuple<Ts...> const &t1, F &&f ) {
@@ -276,7 +277,7 @@ namespace daw {
 						return result;
 					}
 				}; // div_t
-			}    // namespace tuple_details
+			} // namespace tuple_details
 
 			template<typename... Op1, typename... Op2>
 			constexpr std::tuple<Op1...> operator+( std::tuple<Op1...> const &lhs,
@@ -488,7 +489,7 @@ namespace daw {
 			constexpr std::integral_constant<size_t, sizeof...( Args )>
 			tuple_size_test( std::tuple<Args...> const volatile & ) noexcept;
 		} // namespace tuple_details
-	}   // namespace tuple
+	} // namespace tuple
 
 	template<class T, class Tuple>
 	constexpr T make_from_tuple2( Tuple &&t ) {
@@ -509,9 +510,8 @@ namespace daw {
 
 	template<typename... Ts>
 	constexpr auto forward_nontemp_as_tuple( Ts &&...values ) {
-		using tuple_t =
-		  std::tuple<conditional_t<std::is_rvalue_reference_v<Ts>,
-		                                daw::remove_cvref_t<Ts>, Ts>...>;
+		using tuple_t = std::tuple<conditional_t<std::is_rvalue_reference_v<Ts>,
+		                                         daw::remove_cvref_t<Ts>, Ts>...>;
 		return tuple_t{ DAW_FWD( values )... };
 	}
 } // namespace daw

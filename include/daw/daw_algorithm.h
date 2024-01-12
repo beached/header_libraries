@@ -31,16 +31,23 @@
 #include <algorithm>
 #include <array>
 #include <cstddef>
-#include <functional>
+#include <daw/stdinc/compare_fn.h>
+#include <daw/stdinc/data_access.h>
+#include <daw/stdinc/range_access.h>
 #include <iterator>
 #include <optional>
 #include <type_traits>
-#include <utility>
 #include <vector>
 
 DAW_UNSAFE_BUFFER_FUNC_START
 
 namespace daw {
+	template<typename IteratorFirst, typename IteratorSecond>
+	struct iterator_pair {
+		IteratorFirst first;
+		IteratorSecond second;
+	};
+
 	template<typename Map, typename Key>
 	constexpr auto try_get( Map &container, Key &&k ) {
 		auto pos = container.find( DAW_FWD2( Key, k ) );
@@ -487,7 +494,7 @@ namespace daw::algorithm {
 	}
 
 	template<typename ForwardIterator, typename Predicate>
-	std::pair<ForwardIterator, ForwardIterator>
+	iterator_pair<ForwardIterator, ForwardIterator>
 	gather( ForwardIterator first, ForwardIterator last, ForwardIterator target,
 	        Predicate predicate ) {
 
@@ -1626,19 +1633,19 @@ namespace daw::algorithm {
 	/// @param a item 1
 	/// @param b item 2
 	/// @param comp comparison predicate
-	/// @return a std::pair<T, T> that has the first member holding min(a, b)
+	/// @return a iterator_pair<T, T> that has the first member holding min(a, b)
 	/// and second max(a, b)
 	template<typename T, typename Compare = std::less<>>
-	constexpr std::pair<T, T> minmax_item( T a, T b,
-	                                       Compare comp = Compare{ } ) noexcept {
+	constexpr iterator_pair<T, T>
+	minmax_item( T a, T b, Compare comp = Compare{ } ) noexcept {
 		static_assert( traits::is_compare_v<Compare, T>,
 		               "Compare function does not meet the requirements of the "
 		               "Compare concept. "
 		               "http://en.cppreference.com/w/cpp/concept/Compare" );
 		if( daw::invoke( comp, b, a ) ) {
-			return std::pair<T, T>{ DAW_MOVE( b ), DAW_MOVE( a ) };
+			return iterator_pair<T, T>{ DAW_MOVE( b ), DAW_MOVE( a ) };
 		}
-		return std::pair<T, T>{ DAW_MOVE( a ), DAW_MOVE( b ) };
+		return iterator_pair<T, T>{ DAW_MOVE( a ), DAW_MOVE( b ) };
 	}
 
 	template<typename ForwardIterator, typename LastType,

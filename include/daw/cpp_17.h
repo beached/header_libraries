@@ -21,7 +21,6 @@
 #include <cstddef>
 #include <cstring>
 #include <type_traits>
-#include <utility>
 
 namespace daw {
 	template<bool B>

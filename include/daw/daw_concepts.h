@@ -18,7 +18,6 @@
 #include <functional>
 #include <iterator>
 #include <type_traits>
-#include <utility>
 
 namespace daw {
 	/***
@@ -260,7 +259,7 @@ namespace daw {
 	concept invocable_result = requires( Func && f, Args &&...args ) {
 		{
 			std::invoke( DAW_FWD( f ), DAW_FWD( args )... )
-			} -> convertible_to<Result>;
+		} -> convertible_to<Result>;
 	};
 
 	template<typename I>
@@ -282,8 +281,8 @@ namespace daw {
 	  requires( Out && o, T &&t ) {
 		*o = std::forward<T>( t );
 		*std::forward<Out>( o ) = std::forward<T>( t );
-		const_cast<const iter_reference_t<Out> &&>( *o ) = std::forward<T>( t );
-		const_cast<const iter_reference_t<Out> &&>( *std::forward<Out>( o ) ) =
+		const_cast<const iter_reference_t<Out> &&>( *o ) = DAW_FWD( t );
+		const_cast<const iter_reference_t<Out> &&>( *DAW_FWD( o ) ) =
 		  std::forward<T>( t );
 	};
 #endif

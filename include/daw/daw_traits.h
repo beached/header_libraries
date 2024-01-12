@@ -19,6 +19,7 @@
 #include <cstdlib>
 #include <daw/stdinc/data_access.h>
 #include <daw/stdinc/range_access.h>
+#include <tuple>
 #include <type_traits>
 
 namespace daw {
