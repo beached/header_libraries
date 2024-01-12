@@ -29,7 +29,12 @@
 
 #include <cstddef>
 #include <cstdlib>
+#if defined( _LIBCPP_VERSION ) and __has_include( <__iterator/iterator_traits.h> ) and __has_include( <__iterator/reverse_iterator.h>)
+#include <__iterator/iterator_traits.h>
+#include <__iterator/reverse_iterator.h>
+#else
 #include <iterator>
+#endif
 #include <stdexcept>
 #include <type_traits>
 
