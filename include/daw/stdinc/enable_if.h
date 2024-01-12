@@ -10,9 +10,8 @@
 
 #include "daw/daw_cpp_feature_check.h"
 
-#if defined( DAW_HAS_STD_LIBCPP ) and \
-  __has_include( <__type_traits/integral_constant.h> )
-#include <__type_traits/integral_constant.h>
+#if defined( DAW_HAS_STD_LIBCPP ) and __has_include( <__type_traits/enable_if.h> )
+#include <__type_traits/enable_if.h>
 #else
 #include <type_traits>
 #endif
