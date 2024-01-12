@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include <cstddef>
+#include <daw/daw_cpp_feature_check.h>
 
-#if defined( _LIBCPP_VERSION ) and __has_include( <__utility/declval.h> )
+#if defined( DAW_HAS_STD_LIBCPP ) and __has_include( <__utility/declval.h> )
 #include <__utility/declval.h>
 #else
 #include <utility>

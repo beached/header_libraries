@@ -8,11 +8,11 @@
 
 #pragma once
 
-#include <cstddef>
+#include <daw/daw_cpp_feature_check.h>
 
-#if defined( __GLIBCXX__ ) and __has_include( <bits/range_access.h> )
+#if defined( DAW_HAS_STD_LIBSTDCPP ) and __has_include( <bits/range_access.h> )
 #include <bits/range_access.h>
-#elif defined( _LIBCPP_VERSION ) and \
+#elif defined( DAW_HAS_STD_LIBCPP ) and \
   __has_include( <__iterator/data.h> ) and __has_include( <__iterator/size.h> )
 #include <__iterator/data.h>
 #include <__iterator/size.h>

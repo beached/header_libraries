@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include <cstddef>
+#include <daw/daw_cpp_feature_check.h>
 
-#if defined( _LIBCPP_VERSION ) and __has_include( <__type_traits/void_t.h> )
+#if defined( DAW_HAS_STD_LIBCPP ) and __has_include( <__type_traits/void_t.h> )
 #include <__type_traits/void_t.h>
 #else
 #include <type_traits>

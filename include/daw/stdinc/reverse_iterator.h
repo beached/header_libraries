@@ -8,10 +8,13 @@
 
 #pragma once
 
-#include <cstddef>
+#include <daw/daw_cpp_feature_check.h>
 
-#if defined( _LIBCPP_VERSION ) and __has_include( <__iterator/reverse_iterator.h>)
+#if defined( DAW_HAS_STD_LIBCPP ) and \
+  __has_include( <__iterator/reverse_iterator.h>)
 #include <__iterator/reverse_iterator.h>
+#elif defined( DAW_HAS_STD_LIBSTDCPP ) and __has_include( <bits/stl_iterator.h> )
+#include <bits/stl_iterator.h>
 #else
 #include <iterator>
 #endif

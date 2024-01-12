@@ -8,11 +8,11 @@
 
 #pragma once
 
-#include <cstddef>
+#include <daw/daw_cpp_feature_check.h>
 
-#if defined( __GLIBCXX__ ) and __has_include( <bits/utility.h> )
+#if defined( DAW_HAS_STD_LIBSTDCPP ) and __has_include( <bits/utility.h> )
 #include <bits/utility.h>
-#elif defined( _LIBCPP_VERSION ) and __has_include( <__tuple/tuple_traits.h> )
+#elif defined( DAW_HAS_STD_LIBCPP ) and __has_include( <__tuple/tuple_traits.h> )
 #include <__tuple/tuple_traits.h>
 #else
 #include <tuple>
