@@ -12,9 +12,9 @@
 #include "daw/daw_move.h"
 
 #include <cstddef>
-#include <iterator>
+#include <daw/stdinc/declval.h>
+#include <daw/stdinc/iterator_traits.h>
 #include <type_traits>
-#include <utility>
 
 namespace daw {
 	namespace traits {
@@ -416,7 +416,7 @@ namespace daw {
 			constexpr void operator( )( Args &&...args ) noexcept(
 			  traits::is_nothrow_callable_v<Function, Args...> ) {
 
-				function( DAW_FWD2( Args, args )... );
+				function( DAW_FWD( args )... );
 			}
 		};
 
@@ -446,19 +446,17 @@ namespace daw {
 			                          std::nullptr_t> = nullptr>
 			constexpr void operator( )( Args &&...args ) noexcept(
 			  traits::is_nothrow_callable_v<Function, Args...> ) {
-				function( DAW_FWD2( Args, args )... );
+				function( DAW_FWD( args )... );
 			}
 		};
 
 	} // namespace traits_details
 
 	template<typename Function>
-	[[nodiscard]] constexpr auto
-	make_void_function( Function &&func ) noexcept( noexcept(
-	  traits_details::void_function<Function>( DAW_FWD2( Function, func ) ) ) ) {
+	[[nodiscard]] constexpr auto make_void_function( Function &&func ) noexcept(
+	  noexcept( traits_details::void_function<Function>( DAW_FWD( func ) ) ) ) {
 
-		return traits_details::void_function<Function>(
-		  DAW_FWD2( Function, func ) );
+		return traits_details::void_function<Function>( DAW_FWD( func ) );
 	}
 
 	template<typename... Args>

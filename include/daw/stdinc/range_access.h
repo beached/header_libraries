@@ -10,10 +10,15 @@
 
 #include <daw/daw_cpp_feature_check.h>
 
-#if defined( DAW_HAS_STD_LIBSTDCPP ) and __has_include( <bits/range_access.h> )
+#if defined( DAW_HAS_STD_LIBSTDCPP ) and __has_include( <bits/range_access.h> ) and \
+	__has_include( <bits/stl_iterator_base_funcs.h> )
 #include <bits/range_access.h>
-#elif defined( DAW_HAS_STD_LIBCPP ) and \
-  __has_include( <__iterator/next.h> ) and __has_include( <__iterator/prev.h> ) and __has_include( <__iterator/distance.h> )
+#include <bits/stl_iterator_base_funcs.h>
+#elif defined( DAW_HAS_STD_LIBCPP ) and __has_include( <__iterator/next.h> ) and \
+	__has_include( <__iterator/prev.h> ) and \
+	__has_include( <__iterator/distance.h> ) and \
+	__has_include( <__iterator/access.h> )
+#include <__iterator/access.h>
 #include <__iterator/distance.h>
 #include <__iterator/next.h>
 #include <__iterator/prev.h>

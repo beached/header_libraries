@@ -11,20 +11,19 @@
 #include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_traits.h"
-//#include "daw_utility.h"
+// #include "daw_utility.h"
 #include "impl/daw_math_impl.h"
 
 #include <cassert>
 #include <cfenv>
 #include <cmath>
 #include <cstddef>
+#include <cstdint>
 #include <limits>
 #include <memory>
 #include <utility>
 
-namespace daw {
-
-}
+namespace daw {}
 
 namespace daw::math {
 	template<typename Float>

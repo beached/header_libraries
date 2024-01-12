@@ -16,6 +16,7 @@
 #include "daw_optional.h"
 #include "daw_traits.h"
 
+#include <cstdint>
 #include <memory>
 #include <numeric>
 #include <utility>

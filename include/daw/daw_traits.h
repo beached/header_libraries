@@ -16,11 +16,9 @@
 #include "impl/daw_conditional.h"
 #include "impl/daw_traits_impl.h"
 
-#include <cstddef>
-#include <cstdint>
-#include <tuple>
+#include <cstdlib>
+#include <daw/stdinc/range_access.h>
 #include <type_traits>
-#include <utility>
 
 namespace daw {
 	template<typename T>
@@ -61,8 +59,8 @@ namespace daw::traits {
 	struct max_sizeof<First, Args...> {
 		using next = typename max_sizeof<Args...>::type;
 		using type =
-		  typename std::conditional<( sizeof( First ) >= sizeof( next ) ), First,
-		                            next>::type;
+		  typename daw::conditional_t<( sizeof( First ) >= sizeof( next ) ), First,
+		                              next>;
 		static const size_t value = sizeof( type );
 	};
 
