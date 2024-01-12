@@ -11,6 +11,7 @@
 #include "algorithms/daw_algorithm_accumulate.h"
 #include "algorithms/daw_algorithm_adjacent_find.h"
 #include "algorithms/daw_algorithm_copy.h"
+#include "algorithms/daw_algorithm_copy_n.h"
 #include "algorithms/daw_algorithm_find.h"
 #include "ciso646.h"
 #include "cpp_17.h"
@@ -1151,36 +1152,6 @@ namespace daw::algorithm {
 			++first;
 		}
 		return destination;
-	}
-
-	/// @brief Copy input range [first, last) to output range [first_out,
-	/// first_out + count)
-	/// @tparam InputIterator type of Iterator of input range
-	/// @tparam OutputIterator type of iterator for output range
-	/// @param first start of input range
-	/// @param first_out first item in output range
-	/// @param count number of items to copy
-	/// @return end of output range written to
-	template<typename InputIterator, typename OutputIterator>
-	constexpr auto
-	copy_n( InputIterator first, OutputIterator first_out,
-	        size_t count ) noexcept( noexcept( *first_out = *first ) ) {
-
-		traits::is_input_iterator_test<InputIterator>( );
-		traits::is_output_iterator_test<OutputIterator, decltype( *first )>( );
-
-		while( count-- > 0 ) {
-			DAW_UNSAFE_BUFFER_FUNC_START
-			*first_out = *first;
-			++first;
-			++first_out;
-			DAW_UNSAFE_BUFFER_FUNC_STOP
-		}
-		struct result_t {
-			InputIterator input;
-			OutputIterator output;
-		};
-		return result_t{ first, first_out };
 	}
 
 	/// @brief Move values from input range [first, last) to output range
