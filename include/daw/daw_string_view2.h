@@ -29,10 +29,18 @@
 
 #include <cstddef>
 #include <cstdlib>
-#if defined( _LIBCPP_VERSION ) and __has_include( <__iterator/iterator_traits.h> ) and __has_include( <__iterator/reverse_iterator.h>)
+#if defined( _LIBCPP_VERSION ) and __has_include( <__algorithm/min.h> )  and \
+	__has_include( <__iterator/iterator_traits.h> ) and \
+	__has_include( <__iterator/reverse_iterator.h>)
+#include <__algorithm/min.h>
 #include <__iterator/iterator_traits.h>
 #include <__iterator/reverse_iterator.h>
+#elif defined( __GLIBCXX__ ) and \
+  __has_include( <bits/stl_algobase.h> ) and __has_include( <bits/range_access.h> )
+#include <bits/range_access.h>
+#include <bits/stl_algobase.h>
 #else
+#include <algorithm>
 #include <iterator>
 #endif
 #include <stdexcept>
