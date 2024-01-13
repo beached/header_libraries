@@ -8,22 +8,23 @@
 
 #pragma once
 
-#include "daw_check_exceptions.h"
+#include "ciso646.h"
+#include "daw_construct_a.h"
 #include "daw_move.h"
-#include "daw_traits.h"
-#include "daw_utility.h"
+#include "daw_remove_cvref.h"
+#include "daw_traits_is_same.h"
 
 #include <cstddef>
+#include <daw/stdinc/in_place.h>
 #include <iso646.h>
 #include <type_traits>
-#include <utility>
 
 /// Provide a class to validate a type T after construction
 /// Validator must return true if the value is valid, false otherwise
 namespace daw {
 	template<typename T, typename Validator>
 	struct validated {
-		static_assert( std::is_same_v<T, daw::remove_cvref_t<T>>,
+		static_assert( daw::is_same_v<T, daw::remove_cvref_t<T>>,
 		               "T cannot be cv or ref qualified" );
 		// This is really true for ref qualified T as it allows the value to change
 		// without validation
@@ -41,16 +42,16 @@ namespace daw {
 				DAW_THROW_OR_TERMINATE( std::out_of_range,
 				                        "Argument did not pass validation" );
 			}
-			return std::forward<U>( value );
+			return DAW_FWD( value );
 		}
 
 		template<typename U, typename... Args>
 		constexpr U make_value( Args &&...args ) {
 			if constexpr( std::is_enum_v<U> ) {
-				return static_cast<value_t>( validate(
-				  std::underlying_type_t<value_t>( std::forward<Args>( args )... ) ) );
+				return static_cast<value_t>(
+				  validate( std::underlying_type_t<value_t>( DAW_FWD( args )... ) ) );
 			} else {
-				return validate( daw::construct_a<U>( std::forward<Args>( args )... ) );
+				return validate( daw::construct_a<U>( DAW_FWD( args )... ) );
 			}
 		}
 
@@ -59,15 +60,15 @@ namespace daw {
 
 		template<typename U,
 		         std::enable_if_t<
-		           not std::is_same_v<daw::remove_cvref_t<U>, validated> and
-		             not std::is_same_v<daw::remove_cvref_t<U>, std::in_place_t>,
+		           not daw::is_same_v<daw::remove_cvref_t<U>, validated> and
+		             not daw::is_same_v<daw::remove_cvref_t<U>, std::in_place_t>,
 		           std::nullptr_t> = nullptr>
 		constexpr validated( U &&v )
-		  : m_value( make_value<value_t>( std::forward<U>( v ) ) ) {}
+		  : m_value( make_value<value_t>( DAW_FWD( v ) ) ) {}
 
 		template<typename... Args>
 		constexpr validated( std::in_place_t, Args &&...args )
-		  : m_value( make_value<value_t>( std::forward<Args>( args )... ) ) {}
+		  : m_value( make_value<value_t>( DAW_FWD( args )... ) ) {}
 
 		constexpr validated &operator=( const_reference rhs ) {
 			m_value = validate( rhs );
@@ -79,11 +80,11 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr const_reference get( ) const &noexcept {
+		constexpr const_reference get( ) const & noexcept {
 			return m_value;
 		}
 
-		constexpr value_t get( ) &&noexcept {
+		constexpr value_t get( ) && noexcept {
 			return DAW_MOVE( m_value );
 		}
 
