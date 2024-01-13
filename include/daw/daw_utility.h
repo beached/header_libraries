@@ -13,6 +13,7 @@
 #include "daw_algorithm.h"
 #include "daw_can_constant_evaluate.h"
 #include "daw_construct_a.h"
+#include "daw_empty.h"
 #include "daw_exception.h"
 #include "daw_move.h"
 #include "daw_traits.h"
@@ -987,8 +988,4 @@ namespace daw {
 		::free( ptr );
 #endif
 	}
-
-	struct empty_t {};
-	using Empty = empty_t;
-
 } // namespace daw
