@@ -464,30 +464,6 @@ namespace daw::traits {
 	  are_same_types_v<Args...>,
 	  std::is_constructible_v<T, std::initializer_list<first_type<Args...>>>>;
 
-	template<typename, typename = void>
-	inline constexpr bool is_ostream_like_lite_v = false;
-
-	template<typename T>
-	inline constexpr bool is_ostream_like_lite_v<
-	  T, std::void_t<typename T::char_type, decltype( T::adjustfield ),
-	                 decltype( std::declval<T const &>( ).fill( ) ),
-	                 decltype( std::declval<T const &>( ).good( ) ),
-	                 decltype( std::declval<T const &>( ).width( ) ),
-	                 decltype( std::declval<T const &>( ).flags( ) )>> = true;
-
-	template<typename T, typename CharT, typename = void>
-	inline constexpr bool has_write_member_v = false;
-
-	template<typename T, typename CharT>
-	inline constexpr bool has_write_member_v<
-	  T, CharT,
-	  std::void_t<decltype( std::declval<T &>( ).write(
-	    std::declval<CharT const *>( ), std::declval<int>( ) ) )>> = true;
-
-	template<typename T, typename CharT>
-	inline constexpr bool is_ostream_like_v =
-	  is_ostream_like_lite_v<T> and has_write_member_v<T, CharT>;
-
 	template<typename T>
 	inline constexpr bool is_character_v = is_one_of_v<T, char, wchar_t>;
 
