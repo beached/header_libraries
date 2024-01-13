@@ -10,8 +10,8 @@
 
 #include <daw/daw_cpp_feature_check.h>
 
-#if defined( DAW_HAS_STD_LIBCPP ) and __has_include( <_utility/integer_sequence.h> )
-#include <_utility/integer_sequence.h>
+#if defined( DAW_HAS_STD_LIBCPP ) and __has_include( <__utility/integer_sequence.h> )
+#include <__utility/integer_sequence.h>
 #elif defined( DAW_HAS_STD_LIBSTDCPP ) and __has_include( <bits/utility.h> )
 #include <bits/utility.h>
 #else
