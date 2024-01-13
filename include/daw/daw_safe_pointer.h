@@ -10,15 +10,13 @@
 
 #pragma once
 
-#include "daw_utility.h"
+#include "daw_data_end.h"
 
-#include <cassert>
 #include <cstddef>
-#include <exception>
-#include <functional>
-#include <iterator>
-#include <span>
-#include <utility>
+#include <daw/stdinc/compare_fn.h>
+#include <daw/stdinc/iterator_traits.h>
+#include <daw/stdinc/remove_cvref.h>
+#include <type_traits>
 
 #if not defined( DAW_NO_SAFE_POINTER_CHECKS )
 #define DAW_SAFE_POINTER_ENSURE( ... ) \
@@ -184,7 +182,7 @@ namespace daw::memory {
 			return *this;
 		}
 
-		[[nodiscard]] constexpr safe_pointer operator++( int ) &noexcept {
+		[[nodiscard]] constexpr safe_pointer operator++( int ) & noexcept {
 			auto result = *this;
 			safe_pointer::operator++( );
 			return result;
@@ -197,7 +195,7 @@ namespace daw::memory {
 			return *this;
 		}
 
-		[[nodiscard]] constexpr safe_pointer operator--( int ) &noexcept {
+		[[nodiscard]] constexpr safe_pointer operator--( int ) & noexcept {
 			auto result = *this;
 			safe_pointer::operator--( );
 			return result;

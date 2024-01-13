@@ -18,6 +18,7 @@
 #include "daw_compiler_fixups.h"
 #include "daw_consteval.h"
 #include "daw_cpp_feature_check.h"
+#include "daw_data_end.h"
 #include "daw_fnv1a_hash.h"
 #include "daw_likely.h"
 #include "daw_logic.h"
@@ -25,7 +26,6 @@
 #include "daw_traits.h"
 #include "daw_typeof.h"
 #include "impl/daw_conditional.h"
-#include "impl/daw_data_end.h"
 #include "impl/daw_view_tags.h"
 
 #include <cstddef>
