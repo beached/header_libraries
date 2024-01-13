@@ -16,6 +16,7 @@
 #include "daw_pack_element.h"
 #include "impl/daw_conditional.h"
 #include "impl/daw_traits_impl.h"
+#include "traits/daw_traits_first_type.h"
 
 #include <cstdlib>
 #include <daw/stdinc/data_access.h>
@@ -429,16 +430,6 @@ namespace daw::traits {
 	template<typename Function, typename... Args>
 	using invoke_result_t =
 	  decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
-
-	namespace traits_details {
-		template<typename T, typename... Args>
-		struct first_type_impl {
-			using type = T;
-		};
-	} // namespace traits_details
-
-	template<typename... Args>
-	using first_type = typename traits_details::first_type_impl<Args...>::type;
 
 	namespace traits_details {
 		template<typename... Ts>
