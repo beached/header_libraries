@@ -158,7 +158,7 @@ namespace daw {
 			  !is_found and is_found.position == m_hashes.size( ),
 			  "Fixed hash table does not have enough space to allocate all entries" );
 			m_hashes[is_found.position] = hash;
-			m_values[is_found.position] = DAW_MOVE( value );
+			m_values[is_found.position] = std::move( value );
 			return is_found.position;
 		}
 

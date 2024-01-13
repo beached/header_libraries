@@ -18,6 +18,8 @@
 #include "impl/daw_traits_impl.h"
 #include "traits/daw_traits_conditional.h"
 #include "traits/daw_traits_first_type.h"
+#include "traits/daw_traits_is_const.h"
+#include "traits/daw_traits_is_rvalue_reference.h"
 
 #include <cstdlib>
 #include <daw/stdinc/data_access.h>
@@ -411,7 +413,7 @@ namespace daw::traits {
 		template<typename T, typename... Ts>
 		struct isnt_cv_ref<T, Ts...>
 		  : std::bool_constant<(
-		      not std::disjunction_v<std::is_const<T>, std::is_reference<T>,
+		      not std::disjunction_v<daw::traits::is_const<T>, std::is_reference<T>,
 		                             std::is_volatile<T>> and
 		      std::is_same_v<std::true_type, typename isnt_cv_ref<Ts...>::type> )> {
 		};
@@ -843,7 +845,7 @@ namespace daw::traits {
 	  /*then*/ std::add_lvalue_reference_t<std::remove_reference_t<To>>,
 	  /*else if*/
 	  conditional_t<
-	    /*if*/ std::is_rvalue_reference_v<From>,
+	    /*if*/ daw::traits::is_rvalue_reference_v<From>,
 	    /*then*/ std::add_rvalue_reference_t<std::remove_reference_t<To>>,
 	    /*else*/ std::remove_reference_t<To>
 	    /**/>
@@ -851,7 +853,7 @@ namespace daw::traits {
 
 	template<typename To, typename From>
 	using copy_const_t = conditional_t<
-	  /*if*/ std::is_const_v<std::remove_reference_t<From>>,
+	  /*if*/ daw::traits::is_const_v<std::remove_reference_t<From>>,
 	  /*then*/ copy_ref_t<To, std::add_const_t<std::remove_reference_t<To>>>,
 	  /*else*/ copy_ref_t<To, std::remove_const_t<std::remove_reference_t<To>>>
 	  /**/>;

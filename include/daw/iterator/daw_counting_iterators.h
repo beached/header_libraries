@@ -33,7 +33,7 @@ namespace daw {
 		  : m_iter( fwd ) {}
 
 		explicit constexpr forward_counting_iterator( ForwardIterator &&fwd )
-		  : m_iter( DAW_MOVE( fwd ) ) {}
+		  : m_iter( std::move( fwd ) ) {}
 
 		constexpr decltype( auto ) operator*( ) {
 			return *m_iter;
@@ -126,7 +126,7 @@ namespace daw {
 
 		explicit constexpr bidirectional_counting_iterator(
 		  BiDirectionalIterator &&bidir )
-		  : m_iter( DAW_MOVE( bidir ) ) {}
+		  : m_iter( std::move( bidir ) ) {}
 
 		constexpr decltype( auto ) operator*( ) {
 			return *m_iter;

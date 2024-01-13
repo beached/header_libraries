@@ -50,12 +50,12 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr rvalue_reference operator*( ) &&noexcept {
-			return DAW_MOVE( m_value ).operator*( );
+			return std::move( m_value ).operator*( );
 		}
 
 		[[nodiscard]] constexpr const_rvalue_reference
 		operator*( ) const &&noexcept {
-			return DAW_MOVE( m_value ).operator*( );
+			return std::move( m_value ).operator*( );
 		}
 
 		[[nodiscard]] constexpr pointer operator->( ) noexcept {
@@ -84,7 +84,7 @@ namespace daw {
 		// cannot emplace to a reference
 		template<typename U, typename... Args>
 		reference emplace( std::initializer_list<U> ilist, Args &&...args ) {
-			return m_value.emplace( DAW_MOVE( ilist ),
+			return m_value.emplace( std::move( ilist ),
 			                        std::forward<Args>( args )... );
 		}
 
@@ -97,11 +97,11 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr rvalue_reference value( ) && {
-			return DAW_MOVE( m_value ).value( );
+			return std::move( m_value ).value( );
 		}
 
 		[[nodiscard]] constexpr const_rvalue_reference value( ) const && {
-			return DAW_MOVE( m_value ).value( );
+			return std::move( m_value ).value( );
 		}
 
 		[[nodiscard]] constexpr bool has_value( ) const noexcept {

@@ -80,7 +80,7 @@ namespace daw::nparam {
 			Type value;
 
 			[[nodiscard]] constexpr unique_option_t operator=( Type &&v ) const {
-				return unique_option_t{ DAW_MOVE( v ) };
+				return unique_option_t{ std::move( v ) };
 			}
 			auto operator<=>( unique_option_t const & ) const = default;
 		};
@@ -95,7 +95,7 @@ namespace daw::nparam {
 			}
 
 			[[nodiscard]] constexpr option_t operator=( Type &&v ) const {
-				return option_t{ DAW_MOVE( v ) };
+				return option_t{ std::move( v ) };
 			}
 			auto operator<=>( option_t const & ) const = default;
 		};

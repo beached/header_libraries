@@ -50,8 +50,8 @@ namespace daw {
 			auto tmp = lhs;
 			lhs = daw::exchange( rhs, tmp );
 		} else if constexpr( std::is_scalar_v<std::remove_reference_t<T>> ) {
-			auto tmp = DAW_MOVE( lhs );
-			lhs = daw::exchange( DAW_MOVE( rhs ), DAW_MOVE( tmp ) );
+			auto tmp = std::move( lhs );
+			lhs = daw::exchange( std::move( rhs ), std::move( tmp ) );
 		} else if constexpr( swap_details::has_member_swap_v<
 		                       std::remove_reference_t<T>> ) {
 			lhs.swap( rhs );
@@ -69,9 +69,9 @@ namespace daw {
 	iter_swap( ForwardIterator1 lhs, ForwardIterator2 rhs ) noexcept(
 	  std::conjunction_v<std::is_nothrow_move_assignable<decltype( *lhs )>,
 	                     std::is_nothrow_move_assignable<decltype( *rhs )>> ) {
-		auto tmp = DAW_MOVE( *lhs );
-		*lhs = DAW_MOVE( *rhs );
-		*rhs = DAW_MOVE( tmp );
+		auto tmp = std::move( *lhs );
+		*lhs = std::move( *rhs );
+		*rhs = std::move( tmp );
 	}
 
 	template<typename ForwardIterator1, typename ForwardIterator2>

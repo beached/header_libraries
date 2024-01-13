@@ -509,14 +509,14 @@ namespace daw {
 			uint_fast8_t count = 0;
 			for( auto i = std::next( j ); i != last; ++i ) {
 				if( comp( *i, *j ) ) {
-					auto t = DAW_MOVE( *i );
+					auto t = std::move( *i );
 					auto k = j;
 					j = i;
 					do {
-						*j = DAW_MOVE( *k );
+						*j = std::move( *k );
 						j = k;
 					} while( j != first and comp( t, *--k ) );
-					*j = DAW_MOVE( t );
+					*j = std::move( t );
 					if( ++count == limit ) {
 						return std::next( i ) == last;
 					}
@@ -536,14 +536,14 @@ namespace daw {
 			daw::sort_3( first, comp );
 			for( auto i = std::next( j ); i != last; ++i ) {
 				if( comp( *i, *j ) ) {
-					auto t = DAW_MOVE( *i );
+					auto t = std::move( *i );
 					auto k = j;
 					j = i;
 					do {
-						*j = DAW_MOVE( *k );
+						*j = std::move( *k );
 						j = k;
 					} while( j != first and comp( t, *--k ) );
-					*j = DAW_MOVE( t );
+					*j = std::move( t );
 				}
 				j = i;
 			}

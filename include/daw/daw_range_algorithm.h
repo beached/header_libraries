@@ -165,7 +165,7 @@ namespace daw::algorithm {
 	template<typename Container, typename T>
 	T accumulate( Container const &container, T init ) {
 		return std::accumulate( std::begin( container ), std::end( container ),
-		                        DAW_MOVE( init ) );
+		                        std::move( init ) );
 	}
 
 	template<typename Container, typename T, typename BinaryOperator,
@@ -175,7 +175,7 @@ namespace daw::algorithm {
 	constexpr T accumulate( Container const &container, T init,
 	                        BinaryOperator oper ) {
 		return daw::algorithm::accumulate(
-		  std::begin( container ), std::end( container ), DAW_MOVE( init ), oper );
+		  std::begin( container ), std::end( container ), std::move( init ), oper );
 	}
 
 	template<typename Container, typename UnaryOperator,

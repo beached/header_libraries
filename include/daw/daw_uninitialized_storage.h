@@ -67,7 +67,7 @@ namespace daw {
 		}
 
 		value_type rref( ) noexcept {
-			return value_type( DAW_MOVE( *ptr( ) ) );
+			return value_type( std::move( *ptr( ) ) );
 		}
 
 		reference operator*( ) noexcept {

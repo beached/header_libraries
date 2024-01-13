@@ -113,7 +113,7 @@ namespace daw {
 		reference push_back( value_type &&value ) {
 			assert( not is_full( ) );
 			auto const idx = get_idx( m_tail );
-			m_queue[idx] = DAW_MOVE( value );
+			m_queue[idx] = std::move( value );
 			++m_tail;
 			return m_queue[idx];
 		}
@@ -122,7 +122,7 @@ namespace daw {
 			assert( not is_empty( ) );
 			auto const idx = get_idx( m_head );
 			++m_head;
-			return DAW_MOVE( m_queue[idx] );
+			return std::move( m_queue[idx] );
 		}
 
 		inline constexpr const_iterator begin( ) const {

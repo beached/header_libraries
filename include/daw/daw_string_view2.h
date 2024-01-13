@@ -1003,7 +1003,7 @@ namespace daw {
 			[[nodiscard]] constexpr basic_string_view
 			pop_front_until( UnaryPredicate pred, nodiscard_t ) {
 
-				auto pos = find_first_of_if( DAW_MOVE( pred ) );
+				auto pos = find_first_of_if( std::move( pred ) );
 				return pop_front( pos );
 			}
 
@@ -1022,7 +1022,7 @@ namespace daw {
 			[[nodiscard]] constexpr basic_string_view
 			pop_front_while( UnaryPredicate pred ) {
 
-				auto pos = find_first_not_of_if( DAW_MOVE( pred ) );
+				auto pos = find_first_not_of_if( std::move( pred ) );
 				return pop_front( pos );
 			}
 
@@ -1175,7 +1175,7 @@ namespace daw {
 			[[nodiscard]] constexpr basic_string_view
 			pop_back_until( UnaryPredicate pred ) {
 
-				auto pos = find_last_of_if( DAW_MOVE( pred ) );
+				auto pos = find_last_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					auto result = *this;
 					remove_prefix( npos );
@@ -1199,7 +1199,7 @@ namespace daw {
 			[[nodiscard]] constexpr basic_string_view
 			pop_back_until( UnaryPredicate pred, nodiscard_t ) {
 
-				auto pos = find_last_of_if( DAW_MOVE( pred ) );
+				auto pos = find_last_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					auto result = *this;
 					remove_prefix( npos );
@@ -1290,7 +1290,7 @@ namespace daw {
 			[[nodiscard]] constexpr basic_string_view
 			try_pop_front_until( UnaryPredicate pred, nodiscard_t ) {
 
-				auto pos = find_first_of_if( DAW_MOVE( pred ) );
+				auto pos = find_first_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					return basic_string_view<CharT, BoundsType>( );
 				}
@@ -1396,7 +1396,7 @@ namespace daw {
 			[[nodiscard]] constexpr basic_string_view
 			try_pop_back_until( UnaryPredicate pred ) {
 
-				auto pos = find_last_of_if( DAW_MOVE( pred ) );
+				auto pos = find_last_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					return basic_string_view<CharT, BoundsType>( );
 				}
@@ -1418,7 +1418,7 @@ namespace daw {
 			[[nodiscard]] constexpr basic_string_view
 			try_pop_back_until( UnaryPredicate pred, nodiscard_t ) {
 
-				auto pos = find_last_of_if( DAW_MOVE( pred ) );
+				auto pos = find_last_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					return basic_string_view<CharT, BoundsType>( );
 				}

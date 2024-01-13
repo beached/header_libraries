@@ -30,8 +30,8 @@ namespace daw {
 			return std::tuple<>{ };
 		} else {
 			return std::tuple<
-			  std::decay_t<decltype( std::get<StartN + Is>( DAW_MOVE( args ) ) )>...>(
-			  std::get<StartN + Is>( DAW_MOVE( args ) )... );
+			  std::decay_t<decltype( std::get<StartN + Is>( std::move( args ) ) )>...>(
+			  std::get<StartN + Is>( std::move( args ) )... );
 		}
 	}
 
@@ -40,7 +40,7 @@ namespace daw {
 	  std::enable_if_t<( sizeof...( Args ) >= EndN ), std::nullptr_t> = nullptr>
 	constexpr auto split_args( std::tuple<Args...> args ) {
 		return split_args_impl<StartN>(
-		  DAW_MOVE( args ), std::make_index_sequence<EndN - StartN>{ } );
+		  std::move( args ), std::make_index_sequence<EndN - StartN>{ } );
 	}
 
 	template<typename Func>
@@ -60,8 +60,8 @@ namespace daw {
 		                          std::nullptr_t> = nullptr>
 		constexpr decltype( auto ) operator( )( std::tuple<Args...> &&args ) const
 		  noexcept( noexcept( std::apply( std::declval<Func>( ),
-		                                  DAW_MOVE( args ) ) ) ) {
-			return std::apply( f, DAW_MOVE( args ) );
+		                                  std::move( args ) ) ) ) {
+			return std::apply( f, std::move( args ) );
 		}
 	};
 

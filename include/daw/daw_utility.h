@@ -98,7 +98,7 @@ namespace daw {
 		public:
 			inline constexpr EqualToImpl( T value ) noexcept(
 			  std::is_nothrow_copy_constructible_v<T> )
-			  : m_value( DAW_MOVE( value ) ) {}
+			  : m_value( std::move( value ) ) {}
 
 			[[nodiscard]] inline constexpr bool
 			operator( )( T const &value ) noexcept {
@@ -108,7 +108,7 @@ namespace daw {
 	} // namespace utility_details
 	template<typename T>
 	inline constexpr utility_details::EqualToImpl<T> equal_to( T value ) {
-		return utility_details::EqualToImpl<T>( DAW_MOVE( value ) );
+		return utility_details::EqualToImpl<T>( std::move( value ) );
 	}
 
 	template<typename T>
@@ -136,7 +136,7 @@ namespace daw {
 		public:
 			inline constexpr NotImpl( Function func ) noexcept(
 			  std::is_nothrow_move_constructible_v<Function> )
-			  : m_function( DAW_MOVE( func ) ) {}
+			  : m_function( std::move( func ) ) {}
 
 			template<typename... Args>
 			[[nodiscard]] inline constexpr bool operator( )( Args &&...args ) {
@@ -313,7 +313,7 @@ namespace daw {
 		                     []( CharType c ) noexcept {
 			                     return AsciiUpper( c );
 		                     } );
-		return DAW_MOVE( str );
+		return std::move( str );
 	}
 
 	template<typename CharType, typename Traits, typename Allocator>
@@ -323,7 +323,7 @@ namespace daw {
 		                     []( CharType c ) noexcept {
 			                     return AsciiLower( c );
 		                     } );
-		return DAW_MOVE( str );
+		return std::move( str );
 	}
 
 	namespace utility_details {
@@ -454,7 +454,7 @@ namespace daw {
 	                                    Iterator2 const last_in,
 	                                    OutputIterator first_out ) {
 		while( first_in != last_in ) {
-			*first_out = DAW_MOVE( *first_in );
+			*first_out = std::move( *first_in );
 			++first_out;
 			++first_in;
 		}
@@ -678,9 +678,9 @@ namespace daw {
 	template<typename Destination, typename... Args>
 	[[nodiscard]] constexpr decltype( auto )
 	construct_from( std::tuple<Args...> &&args ) noexcept(
-	  noexcept( daw::apply( construct_a<Destination>, DAW_MOVE( args ) ) ) ) {
+	  noexcept( daw::apply( construct_a<Destination>, std::move( args ) ) ) ) {
 
-		return daw::apply( construct_a<Destination>, DAW_MOVE( args ) );
+		return daw::apply( construct_a<Destination>, std::move( args ) );
 	}
 
 	template<typename Destination, typename... Args>

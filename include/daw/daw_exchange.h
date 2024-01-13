@@ -13,7 +13,7 @@
 namespace daw {
 	template<typename T, typename U = T>
 	inline constexpr T exchange( T &obj, U &&new_value ) {
-		T old_value = DAW_MOVE( obj );
+		T old_value = std::move( obj );
 		obj = DAW_FWD2( U, new_value );
 		return old_value;
 	}

@@ -117,7 +117,7 @@ namespace daw {
 
 			constexpr node_impl_t( node_id_t id, T &&value ) noexcept
 			  : m_id( id )
-			  , m_value( DAW_MOVE( value ) ) {
+			  , m_value( std::move( value ) ) {
 
 				daw::exception::dbg_precondition_check( id );
 			}
@@ -518,7 +518,7 @@ namespace daw {
 			for( auto &node_ref : m_nodes ) {
 				auto node = get_node( node_ref.value.id( ) );
 				if( daw::invoke( pred, node ) ) {
-					daw::invoke( vis, DAW_MOVE( node ) );
+					daw::invoke( vis, std::move( node ) );
 				}
 			}
 		}
@@ -532,7 +532,7 @@ namespace daw {
 			for( auto const &node_ref : m_nodes ) {
 				auto node = get_node( node_ref.value.id( ) );
 				if( daw::invoke( pred, node ) ) {
-					daw::invoke( vis, DAW_MOVE( node ) );
+					daw::invoke( vis, std::move( node ) );
 				}
 			}
 		}

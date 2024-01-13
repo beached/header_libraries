@@ -118,7 +118,7 @@ namespace daw {
 				constexpr print_t( std::ostream &os, char separator = ',' )
 				  : m_os{ os }
 				  , m_is_first{ true }
-				  , m_separator{ DAW_MOVE( separator ) } {}
+				  , m_separator{ std::move( separator ) } {}
 
 				void reset( ) {
 					m_is_first = true;
@@ -422,11 +422,11 @@ namespace daw {
 
 			template<size_t N, typename Func, typename Arg>
 			constexpr bool apply_func( size_t idx, Func func, Arg &&arg ) noexcept(
-			  noexcept( apply_func_impl( DAW_MOVE( func ),
+			  noexcept( apply_func_impl( std::move( func ),
 			                             DAW_FWD2( Arg, arg ) ) ) ) {
 
 				if( N == idx ) {
-					apply_func_impl( DAW_MOVE( func ), DAW_FWD2( Arg, arg ) );
+					apply_func_impl( std::move( func ), DAW_FWD2( Arg, arg ) );
 				}
 				return true;
 			}
@@ -460,7 +460,7 @@ namespace daw {
 		constexpr void apply_at( std::tuple<Args...> &&tp, size_t index,
 		                         Funcs &&...funcs ) {
 			tuple_details::apply_at_impl(
-			  DAW_MOVE( tp ), index, daw::overload( DAW_FWD2( Funcs, funcs )... ) );
+			  std::move( tp ), index, daw::overload( DAW_FWD2( Funcs, funcs )... ) );
 		}
 
 		namespace tuple_details {

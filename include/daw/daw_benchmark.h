@@ -570,7 +570,7 @@ namespace daw {
 			auto result = func( args... );
 			auto const finish = std::chrono::steady_clock::now( );
 			daw::do_not_optimize( result );
-			if( DAW_UNLIKELY( not validator( DAW_MOVE( result ) ) ) ) {
+			if( DAW_UNLIKELY( not validator( std::move( result ) ) ) ) {
 				std::cerr << "Error validating result\n";
 				std::terminate( );
 			}

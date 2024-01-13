@@ -29,7 +29,7 @@ namespace daw {
 			fp_t fp_storage;
 
 			explicit constexpr data_t( ref_buffer_t &&r )
-			  : ref_storage( DAW_MOVE( r ) ) {}
+			  : ref_storage( std::move( r ) ) {}
 			explicit constexpr data_t( fp_t f )
 			  : fp_storage( f ) {}
 		} data;
@@ -41,19 +41,19 @@ namespace daw {
 			using fn_t = std::remove_reference_t<Func>;
 			if constexpr( std::is_pointer_v<fn_t> ) {
 				return { data_t{ f }, []( data_t const &d, Args... args ) -> Result {
-					        return ( d.fp_storage )( DAW_MOVE( args )... );
+					        return ( d.fp_storage )( std::move( args )... );
 				        } };
 			} else if constexpr( std::is_empty_v<fn_t> and
 			                     std::is_default_constructible_v<fn_t> ) {
 				return { data_t{ nullptr },
 				         []( data_t const &, Args... args ) -> Result {
-					         return fn_t{ }( DAW_MOVE( args )... );
+					         return fn_t{ }( std::move( args )... );
 				         } };
 			} else {
 				return { data_t{ DAW_BIT_CAST( ref_buffer_t, std::addressof( f ) ) },
 				         +[]( data_t const &d, Args... args ) -> Result {
 					         return ( *DAW_BIT_CAST( fn_t const *, d.ref_storage ) )(
-					           DAW_MOVE( args )... );
+					           std::move( args )... );
 				         } };
 			}
 		}
@@ -68,7 +68,7 @@ namespace daw {
 			fp_t fp_storage;
 
 			explicit constexpr data_t( ref_buffer_t &&r )
-			  : ref_storage( DAW_MOVE( r ) ) {}
+			  : ref_storage( std::move( r ) ) {}
 			explicit constexpr data_t( fp_t f )
 			  : fp_storage( f ) {}
 		} data;
@@ -80,18 +80,18 @@ namespace daw {
 			using fn_t = std::remove_reference_t<Func>;
 			if constexpr( std::is_pointer_v<fn_t> ) {
 				return { data_t{ f }, []( data_t const &d, Args... args ) -> void {
-					        ( d.fp_storage )( DAW_MOVE( args )... );
+					        ( d.fp_storage )( std::move( args )... );
 				        } };
 			} else if constexpr( std::is_empty_v<fn_t> and
 			                     std::is_default_constructible_v<fn_t> ) {
 				return { data_t{ nullptr }, []( data_t const &, Args... args ) -> void {
-					        fn_t{ }( DAW_MOVE( args )... );
+					        fn_t{ }( std::move( args )... );
 				        } };
 			} else {
 				return { data_t{ DAW_BIT_CAST( ref_buffer_t, std::addressof( f ) ) },
 				         +[]( data_t const &d, Args... args ) -> void {
 					         ( *DAW_BIT_CAST( fn_t const *, d.ref_storage ) )(
-					           DAW_MOVE( args )... );
+					           std::move( args )... );
 				         } };
 			}
 		}
@@ -111,7 +111,7 @@ namespace daw {
 
 		constexpr Result operator( )( Args... args ) const {
 			return function_view_table.call_ptr( function_view_table.data,
-			                                     DAW_MOVE( args )... );
+			                                     std::move( args )... );
 		}
 	};
 	template<typename... Args>
@@ -125,7 +125,7 @@ namespace daw {
 
 		constexpr void operator( )( Args... args ) const {
 			function_view_table.call_ptr( function_view_table.data,
-			                              DAW_MOVE( args )... );
+			                              std::move( args )... );
 		}
 	};
 } // namespace daw

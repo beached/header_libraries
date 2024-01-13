@@ -408,7 +408,7 @@ namespace daw {
 
 			explicit constexpr void_function( Function &&func ) noexcept(
 			  std::is_nothrow_move_constructible_v<Function> )
-			  : function( DAW_MOVE( func ) ) {}
+			  : function( std::move( func ) ) {}
 
 			explicit constexpr operator bool( ) noexcept(
 			  noexcept( static_cast<bool>( std::declval<Function>( ) ) ) ) {
@@ -439,7 +439,7 @@ namespace daw {
 
 			explicit constexpr void_function( Function &&func ) noexcept(
 			  std::is_nothrow_move_constructible_v<Function> )
-			  : function( DAW_MOVE( func ) ) {}
+			  : function( std::move( func ) ) {}
 
 			explicit constexpr operator bool( ) noexcept(
 			  noexcept( static_cast<bool>( std::declval<Function>( ) ) ) ) {

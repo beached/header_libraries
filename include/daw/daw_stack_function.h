@@ -66,7 +66,7 @@ namespace daw {
 					return *this;
 				}
 				clean( );
-				m_data = DAW_MOVE( rhs.m_data );
+				m_data = std::move( rhs.m_data );
 				return *this;
 			}
 
@@ -169,10 +169,10 @@ namespace daw {
 			Result operator( )( FuncArgs... args ) override {
 				daw::exception::precondition_check<std::bad_function_call>( !empty( ) );
 				if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
-					// daw::invoke( m_func, DAW_MOVE( args )... );
+					// daw::invoke( m_func, std::move( args )... );
 					m_func( args... );
 				} else {
-					// return daw::invoke( m_func, DAW_MOVE( args )... );
+					// return daw::invoke( m_func, std::move( args )... );
 					return m_func( args... );
 				}
 			}
@@ -180,10 +180,10 @@ namespace daw {
 			Result operator( )( FuncArgs... args ) const override {
 				daw::exception::precondition_check<std::bad_function_call>( !empty( ) );
 				if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
-					// daw::invoke( m_func, DAW_MOVE( args )... );
+					// daw::invoke( m_func, std::move( args )... );
 					m_func( args... );
 				} else {
-					// return daw::invoke( m_func, DAW_MOVE( args )... );
+					// return daw::invoke( m_func, std::move( args )... );
 					return m_func( args... );
 				}
 			}

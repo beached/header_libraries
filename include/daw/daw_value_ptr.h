@@ -86,10 +86,10 @@ namespace daw {
 		  , m_value( std::make_unique<value_type>( *other.m_value ) ) {}
 
 		constexpr value_ptr( value_ptr &&other ) noexcept
-		  : enable_default_constructor<T>( DAW_MOVE( other ) )
-		  , enable_copy_constructor<T>( DAW_MOVE( other ) )
-		  , enable_copy_assignment<T>( DAW_MOVE( other ) )
-		  , m_value( DAW_MOVE( other.m_value ) ) {}
+		  : enable_default_constructor<T>( std::move( other ) )
+		  , enable_copy_constructor<T>( std::move( other ) )
+		  , enable_copy_assignment<T>( std::move( other ) )
+		  , m_value( std::move( other.m_value ) ) {}
 
 		constexpr value_ptr &operator=( value_ptr const &rhs ) noexcept(
 		  std::is_nothrow_copy_constructible_v<value_type> ) {
@@ -110,7 +110,7 @@ namespace daw {
 
 		constexpr value_ptr &operator=( value_ptr &&rhs ) noexcept {
 			if( this != &rhs ) {
-				m_value = DAW_MOVE( rhs.m_value );
+				m_value = std::move( rhs.m_value );
 			}
 			return *this;
 		}
@@ -127,7 +127,7 @@ namespace daw {
 
 		value_ptr &operator=( value_type &&rhs ) noexcept(
 		  std::is_nothrow_move_assignable_v<value_type> ) {
-			*m_value = DAW_MOVE( rhs );
+			*m_value = std::move( rhs );
 			return *this;
 		}
 

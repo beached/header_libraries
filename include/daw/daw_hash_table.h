@@ -78,8 +78,8 @@ namespace daw {
 			  , value{ other.value } {}
 
 			hash_table_item( hash_table_item &&other ) noexcept
-			  : hash{ DAW_MOVE( other.hash ) }
-			  , value{ DAW_MOVE( other.value ) } {}
+			  : hash{ std::move( other.hash ) }
+			  , value{ std::move( other.value ) } {}
 
 			hash_table_item &operator=( hash_table_item const &rhs ) {
 				if( this != &rhs ) {
@@ -95,7 +95,7 @@ namespace daw {
 			hash_table_item &operator=( hash_table_item &&rhs ) noexcept {
 				if( this != &rhs ) {
 					hash = daw::exchange( rhs.hash, Sentinals::sentinal_empty );
-					value = DAW_MOVE( rhs.value );
+					value = std::move( rhs.value );
 				}
 				return *this;
 			}
@@ -158,9 +158,9 @@ namespace daw {
 		  , m_end{ other.m_end } {}
 
 		hash_table_item_iterator( hash_table_item_iterator &&other ) noexcept
-		  : m_begin{ DAW_MOVE( other.m_begin ) }
-		  , m_position{ DAW_MOVE( other.m_position ) }
-		  , m_end{ DAW_MOVE( other.m_end ) } {}
+		  : m_begin{ std::move( other.m_begin ) }
+		  , m_position{ std::move( other.m_position ) }
+		  , m_end{ std::move( other.m_end ) } {}
 
 		hash_table_item_iterator &
 		operator=( hash_table_item_iterator const &rhs ) noexcept {
@@ -175,9 +175,9 @@ namespace daw {
 		hash_table_item_iterator &
 		operator=( hash_table_item_iterator &&rhs ) noexcept {
 			if( this != &rhs ) {
-				m_begin = DAW_MOVE( rhs.m_begin );
-				m_position = DAW_MOVE( rhs.m_position );
-				m_end = DAW_MOVE( rhs.m_end );
+				m_begin = std::move( rhs.m_begin );
+				m_position = std::move( rhs.m_position );
+				m_end = std::move( rhs.m_end );
 			}
 			return *this;
 		}
@@ -493,12 +493,12 @@ namespace daw {
 		static auto insert_into( impl::hash_table_item<value_type> &&item,
 		                         hash_table &tbl ) {
 			auto pos = find_item_by_hash_or_create( item.hash, tbl );
-			*pos == DAW_MOVE( item );
+			*pos == std::move( item );
 		}
 
 		static auto insert_into( size_t hash, value_type value, hash_table &tbl ) {
 			auto pos = find_item_by_hash_or_create( hash, tbl );
-			pos->value = DAW_MOVE( value );
+			pos->value = std::move( value );
 		}
 
 		void grow_table( ) {
@@ -519,7 +519,7 @@ namespace daw {
 		iterator insert( Key const &key, value_type value ) {
 			auto hash = hash_fn( key );
 			auto pos = find_item_by_hash_or_create( hash, *this );
-			pos->value = DAW_MOVE( value );
+			pos->value = std::move( value );
 			return iterator{ priv_begin( ), pos, priv_end( ) };
 		}
 

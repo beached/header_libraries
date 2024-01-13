@@ -32,7 +32,7 @@ namespace daw::algorithm {
 		++first_out;
 		++first;
 		while( first != last ) {
-			sum = op( DAW_MOVE( sum ), *first );
+			sum = op( std::move( sum ), *first );
 			++first;
 
 			*first_out = sum;

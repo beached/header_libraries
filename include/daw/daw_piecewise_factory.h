@@ -38,7 +38,7 @@ namespace daw {
 				return value;
 			}
 			constexpr T operator( )( T &&value ) const {
-				return DAW_MOVE( value );
+				return std::move( value );
 			}
 
 			template<
@@ -70,7 +70,7 @@ namespace daw {
 		template<typename... Args>
 		constexpr auto get_value( std::variant<Args...> &&value ) {
 			using T = decltype( remove_layer_func( value ) );
-			return daw::visit_nt( DAW_MOVE( value ), process_args_t<T>{ } );
+			return daw::visit_nt( std::move( value ), process_args_t<T>{ } );
 		}
 
 		template<size_t N, typename... Args>
@@ -80,7 +80,7 @@ namespace daw {
 
 		template<size_t N, typename... Args>
 		constexpr auto process_args( std::tuple<Args...> &&tp ) {
-			return get_value( *std::get<N>( DAW_MOVE( tp ) ) );
+			return get_value( *std::get<N>( std::move( tp ) ) );
 		}
 
 		template<typename T, typename... Args, std::size_t... I>
@@ -94,7 +94,7 @@ namespace daw {
 		constexpr T piecewise_applier_impl( std::tuple<Args...> &&tp,
 		                                    std::index_sequence<I...> ) {
 
-			return construct_a<T>( process_args<I>( DAW_MOVE( tp ) )... );
+			return construct_a<T>( process_args<I>( std::move( tp ) )... );
 		}
 
 		template<
@@ -122,13 +122,13 @@ namespace daw {
 				  std::get<N>( tp ) = value_t{ v };
 			  },
 			  [&]( value_t &&v ) {
-				  std::get<N>( tp ) = value_t{ DAW_MOVE( v ) };
+				  std::get<N>( tp ) = value_t{ std::move( v ) };
 			  },
 			  [&]( std::function<value_t( )> const &f ) {
 				  std::get<N>( tp ) = value_t{ f( ) };
 			  },
 			  [&]( std::function<value_t( )> &&f ) {
-				  std::get<N>( tp ) = value_t{ DAW_MOVE( f )( ) };
+				  std::get<N>( tp ) = value_t{ std::move( f )( ) };
 			  },
 			  []( ... ) noexcept {} );
 
@@ -144,7 +144,7 @@ namespace daw {
 		template<typename T, typename... Args>
 		constexpr T piecewise_applier( std::tuple<Args...> &&tp ) {
 			return piecewise_applier_impl<T>(
-			  DAW_MOVE( tp ), std::make_index_sequence<sizeof...( Args )>{ } );
+			  std::move( tp ), std::make_index_sequence<sizeof...( Args )>{ } );
 		}
 
 		template<typename T, bool use_late, typename... Args>
@@ -168,7 +168,7 @@ namespace daw {
 			}
 
 			constexpr T operator( )( ) && {
-				return piecewise_applier<T>( DAW_MOVE( m_args ) );
+				return piecewise_applier<T>( std::move( m_args ) );
 			}
 
 		private:
@@ -185,7 +185,7 @@ namespace daw {
 			template<size_t N>
 			constexpr void set( arg_at_t<N> &&value ) {
 
-				std::get<N>( m_args ) = DAW_MOVE( value );
+				std::get<N>( m_args ) = std::move( value );
 			}
 
 			template<typename Value>
@@ -212,7 +212,7 @@ namespace daw {
 		void set( Callable &&f ) {
 			std::function<traits::nth_type<N, Args...>( )> func =
 			  std::forward<Callable>( f );
-			std::get<N>( this->m_args ) = DAW_MOVE( func );
+			std::get<N>( this->m_args ) = std::move( func );
 		}
 	};
 

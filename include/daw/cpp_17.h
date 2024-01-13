@@ -67,7 +67,7 @@ namespace daw {
 
 			explicit constexpr not_fn_t( Function &&func ) noexcept(
 			  std::is_nothrow_move_constructible_v<Function> )
-			  : m_function{ DAW_MOVE( func ) } {}
+			  : m_function{ std::move( func ) } {}
 
 			explicit constexpr not_fn_t( Function const &func ) noexcept(
 			  std::is_nothrow_copy_constructible_v<Function> )

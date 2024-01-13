@@ -180,7 +180,7 @@ namespace daw {
 			if( n == 0 ) {
 				return;
 			}
-			(void)resize_and_overwrite( n, DAW_MOVE( operation ) );
+			(void)resize_and_overwrite( n, std::move( operation ) );
 		}
 
 		explicit constexpr vector( do_resize_and_overwrite_t, size_type n,
@@ -189,7 +189,7 @@ namespace daw {
 			if( n == 0 ) {
 				return;
 			}
-			(void)resize_and_overwrite( n, DAW_MOVE( operation ) );
+			(void)resize_and_overwrite( n, std::move( operation ) );
 		}
 
 		template<input_iterator InputIterator>
@@ -293,7 +293,7 @@ namespace daw {
 		}
 
 		constexpr vector( vector &&x ) noexcept
-		  : m_endcap_( nullptr, DAW_MOVE( x.alloc( ) ) ) {
+		  : m_endcap_( nullptr, std::move( x.alloc( ) ) ) {
 			m_begin = x.m_begin;
 			m_end = x.m_end;
 			endcap( ) = x.endcap( );
@@ -568,9 +568,9 @@ namespace daw {
 
 		constexpr void push_back( value_type &&x ) {
 			if( m_end < endcap( ) ) {
-				construct_one_at_end( DAW_MOVE( x ) );
+				construct_one_at_end( std::move( x ) );
 			} else
-				push_back_slow_path( DAW_MOVE( x ) );
+				push_back_slow_path( std::move( x ) );
 		}
 
 		template<typename... Args>
@@ -617,16 +617,16 @@ namespace daw {
 
 			if( m_end < endcap( ) ) {
 				if( p == m_end ) {
-					construct_one_at_end( DAW_MOVE( x ) );
+					construct_one_at_end( std::move( x ) );
 				} else {
 					move_range( p, m_end, p + 1 );
-					*p = DAW_MOVE( x );
+					*p = std::move( x );
 				}
 			} else {
 				allocator_type &a = alloc( );
 				auto v = split_buffer<value_type, allocator_type &>(
 				  recommend( size( ) + 1 ), p - m_begin, a );
-				v.push_back( DAW_MOVE( x ) );
+				v.push_back( std::move( x ) );
 				p = swap_out_circular_buffer( v, p );
 			}
 			return make_iter( p );
@@ -642,7 +642,7 @@ namespace daw {
 					auto tmp = temp_value<value_type, Allocator>(
 					  alloc( ), DAW_FWD2( Args, args )... );
 					move_range( p, m_end, p + 1 );
-					*p = DAW_MOVE( tmp.get( ) );
+					*p = std::move( tmp.get( ) );
 				}
 			} else {
 				allocator_type &a = alloc( );
@@ -767,7 +767,7 @@ namespace daw {
 		constexpr iterator erase( const_iterator position ) {
 			difference_type ps = position - cbegin( );
 			pointer p = m_begin + ps;
-			destruct_at_end( DAW_MOVE( p + 1, m_end, p ) );
+			destruct_at_end( std::move( p + 1, m_end, p ) );
 			iterator r = make_iter( p );
 			return r;
 		}
@@ -775,7 +775,7 @@ namespace daw {
 		iterator erase( const_iterator first, const_iterator last ) {
 			pointer p = m_begin + ( first - begin( ) );
 			if( first != last ) {
-				destruct_at_end( DAW_MOVE( p + ( last - first ), m_end, p ) );
+				destruct_at_end( std::move( p + ( last - first ), m_end, p ) );
 			}
 			iterator r = make_iter( p );
 			return r;
@@ -806,7 +806,7 @@ namespace daw {
 				reserve( n );
 			}
 			pointer p = m_begin;
-			auto const result = DAW_MOVE( operation )( p, n );
+			auto const result = std::move( operation )( p, n );
 			auto const new_size = [&] {
 				if constexpr( std::is_signed_v<decltype( result )> ) {
 					if( result < 0 ) {
@@ -833,7 +833,7 @@ namespace daw {
 			}
 			pointer p = m_begin;
 			allocator_type &a = alloc( );
-			auto const result = DAW_MOVE( operation )( p, n, a );
+			auto const result = std::move( operation )( p, n, a );
 			auto const new_size = [&] {
 				if constexpr( std::is_signed_v<decltype( result )> ) {
 					if( result < 0 ) {
@@ -858,7 +858,7 @@ namespace daw {
 				reserve( size( ) + n );
 			}
 			pointer p = m_end;
-			auto result = DAW_MOVE( operation )( p, n );
+			auto result = std::move( operation )( p, n );
 			auto const append_count = [&] {
 				if constexpr( std::is_signed_v<decltype( result )> ) {
 					if( result < 0 ) {
@@ -883,7 +883,7 @@ namespace daw {
 			}
 			pointer p = m_end;
 			allocator_type &a = alloc( );
-			auto result = DAW_MOVE( operation )( p, n, a );
+			auto result = std::move( operation )( p, n, a );
 			auto const append_count = [&] {
 				if constexpr( std::is_signed_v<decltype( result )> ) {
 					if( result < 0 ) {
@@ -1059,7 +1059,7 @@ namespace daw {
 				for( pointer pos = tx.pos; i < from_e;
 				     ++i, (void)++pos, tx.pos = pos ) {
 					alloc_traits::construct( alloc( ), std::to_address( pos ),
-					                         DAW_MOVE( *i ) );
+					                         std::move( *i ) );
 				}
 			}
 			std::move_backward( from_s, from_s + n, old_last );
@@ -1210,7 +1210,7 @@ namespace daw {
 
 		constexpr void move_assign_alloc( vector &c, std::true_type ) //
 		  noexcept( std::is_nothrow_move_assignable_v<allocator_type> ) {
-			alloc( ) = DAW_MOVE( c.alloc( ) );
+			alloc( ) = std::move( c.alloc( ) );
 		}
 
 		constexpr void move_assign_alloc( vector &, std::false_type ) noexcept {}

@@ -46,7 +46,7 @@ namespace daw {
 		DAW_ATTRIB_INLINE explicit constexpr ScopeGuard(
 		  FunctionType
 		    &&f ) noexcept( std::is_nothrow_move_constructible_v<FunctionType> )
-		  : m_function{ DAW_MOVE( f ) } {}
+		  : m_function{ std::move( f ) } {}
 
 		DAW_ATTRIB_INLINE explicit constexpr ScopeGuard(
 		  FunctionType const
@@ -87,7 +87,7 @@ namespace daw {
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr ScopeGuard<FunctionType>
 	on_scope_exit( FunctionType f ) noexcept(
 	  std::is_nothrow_move_constructible_v<FunctionType> ) {
-		return ScopeGuard<FunctionType>( DAW_MOVE( f ) );
+		return ScopeGuard<FunctionType>( std::move( f ) );
 	}
 
 	template<typename Handler>
@@ -97,7 +97,7 @@ namespace daw {
 	public:
 		DAW_ATTRIB_INLINE constexpr on_exit_success( Handler &&h ) noexcept(
 		  std::is_nothrow_move_constructible_v<Handler> )
-		  : on_exit_handler( DAW_MOVE( h ) ) {}
+		  : on_exit_handler( std::move( h ) ) {}
 
 		DAW_ATTRIB_INLINE constexpr on_exit_success( Handler const &h ) noexcept(
 		  std::is_nothrow_copy_constructible_v<Handler> )

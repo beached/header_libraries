@@ -584,7 +584,7 @@ namespace daw::algorithm {
 
 		for( auto it = first; it != last; ++it ) {
 			if( value == *it ) {
-				result.push_back( DAW_MOVE( temp ) );
+				result.push_back( std::move( temp ) );
 				temp.clear( );
 			} else {
 				temp.push_back( *it );
@@ -1175,14 +1175,14 @@ namespace daw::algorithm {
 	constexpr OutputIterator
 	move( InputIterator first, LastType const last,
 	      OutputIterator
-	        first_out ) noexcept( noexcept( *first_out = DAW_MOVE( *first ) ) ) {
+	        first_out ) noexcept( noexcept( *first_out = std::move( *first ) ) ) {
 
 		traits::is_input_iterator_test<InputIterator>( );
 		traits::is_output_iterator_test<OutputIterator,
-		                                decltype( DAW_MOVE( *first ) )>( );
+		                                decltype( std::move( *first ) )>( );
 
 		while( first != last ) {
-			*first_out = DAW_MOVE( *first );
+			*first_out = std::move( *first );
 			++first;
 			++first_out;
 		}
@@ -1200,14 +1200,14 @@ namespace daw::algorithm {
 	template<typename InputIterator, typename OutputIterator>
 	constexpr auto move_n(
 	  InputIterator first, OutputIterator first_out,
-	  size_t count ) noexcept( noexcept( *first_out = DAW_MOVE( *first ) ) ) {
+	  size_t count ) noexcept( noexcept( *first_out = std::move( *first ) ) ) {
 
 		traits::is_input_iterator_test<InputIterator>( );
 		traits::is_output_iterator_test<OutputIterator,
-		                                decltype( DAW_MOVE( *first ) )>( );
+		                                decltype( std::move( *first ) )>( );
 
 		while( count-- > 0 ) {
-			*first_out = DAW_MOVE( *first );
+			*first_out = std::move( *first );
 			++first;
 			++first_out;
 		}
@@ -1517,7 +1517,7 @@ namespace daw::algorithm {
 		  "e.g. *first = binary_op( *first, *(first + 1) ) must be valid." );
 
 		while( first != last ) {
-			init = daw::invoke( binary_op, DAW_MOVE( init ), *first );
+			init = daw::invoke( binary_op, std::move( init ), *first );
 			++first;
 		}
 		return init;
@@ -1559,7 +1559,7 @@ namespace daw::algorithm {
 		  "map_func( *first1, *first2 ) ) must be valid" );
 
 		while( first1 != last1 ) {
-			init = daw::invoke( reduce_func, DAW_MOVE( init ),
+			init = daw::invoke( reduce_func, std::move( init ),
 			                    daw::invoke( map_func, *first1, *first2 ) );
 			++first1;
 			++first2;
@@ -1643,9 +1643,9 @@ namespace daw::algorithm {
 		               "Compare concept. "
 		               "http://en.cppreference.com/w/cpp/concept/Compare" );
 		if( daw::invoke( comp, b, a ) ) {
-			return iterator_pair<T, T>{ DAW_MOVE( b ), DAW_MOVE( a ) };
+			return iterator_pair<T, T>{ std::move( b ), std::move( a ) };
 		}
-		return iterator_pair<T, T>{ DAW_MOVE( a ), DAW_MOVE( b ) };
+		return iterator_pair<T, T>{ std::move( a ), std::move( b ) };
 	}
 
 	template<typename ForwardIterator, typename LastType,
@@ -1760,7 +1760,7 @@ namespace daw::algorithm {
 		if( first != last ) {
 			for( ForwardIterator i = first; ++i != last; ) {
 				if( not( *i == value ) ) {
-					*first = DAW_MOVE( *i );
+					*first = std::move( *i );
 					++first;
 				}
 			}
@@ -1777,7 +1777,7 @@ namespace daw::algorithm {
 		if( first != last ) {
 			for( ForwardIterator i = first; ++i != last; ) {
 				if( not daw::invoke( pred, *i ) ) {
-					*first = DAW_MOVE( *i );
+					*first = std::move( *i );
 					++first;
 				}
 			}
@@ -1794,7 +1794,7 @@ namespace daw::algorithm {
 			for( ForwardIterator i = first; ++i != last; ) {
 				if( not daw::invoke( pred, *i ) ) {
 					(void)daw::invoke( func, *i );
-					*first = DAW_MOVE( *i );
+					*first = std::move( *i );
 					++first;
 				}
 			}
@@ -1841,7 +1841,7 @@ namespace daw::algorithm {
 	transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2,
 	                OutputIt first_out, Func func ) {
 
-		return cartesian_product_map( DAW_MOVE( func ), first1, last1, first_out,
+		return cartesian_product_map( std::move( func ), first1, last1, first_out,
 		                              first2 );
 	}
 
@@ -1851,7 +1851,7 @@ namespace daw::algorithm {
 	transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2,
 	                InputIt3 first3, OutputIt first_out, Func func ) {
 
-		return cartesian_product_map( DAW_MOVE( func ), first1, last1, first_out,
+		return cartesian_product_map( std::move( func ), first1, last1, first_out,
 		                              first2, first3 );
 	}
 
@@ -1862,7 +1862,7 @@ namespace daw::algorithm {
 	                InputIt3 first3, InputIt4 first4, OutputIt first_out,
 	                Func func ) {
 
-		return cartesian_product_map( DAW_MOVE( func ), first1, last1, first_out,
+		return cartesian_product_map( std::move( func ), first1, last1, first_out,
 		                              first2, first3, first4 );
 	}
 
@@ -1874,7 +1874,7 @@ namespace daw::algorithm {
 	                InputIt3 first3, InputIt4 first4, InputIt4 first5,
 	                OutputIt first_out, Func func ) {
 
-		return cartesian_product_map( DAW_MOVE( func ), first1, last1, first_out,
+		return cartesian_product_map( std::move( func ), first1, last1, first_out,
 		                              first2, first3, first4, first5 );
 	}
 
@@ -1897,7 +1897,7 @@ namespace daw::algorithm {
 	template<typename From, typename To, typename Query>
 	constexpr void extract_to( From &from, To &to, Query &&q ) {
 		while( auto &&item = from.extract( q ) ) {
-			to.insert( DAW_MOVE( item ) );
+			to.insert( std::move( item ) );
 		}
 	}
 

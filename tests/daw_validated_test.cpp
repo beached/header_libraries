@@ -8,7 +8,6 @@
 
 #include "daw/daw_algorithm.h"
 #include "daw/daw_benchmark.h"
-#include "daw/daw_move.h"
 #include "daw/daw_utility.h"
 #include "daw/daw_validated.h"
 
@@ -68,7 +67,7 @@ void int_range_test_bad_001( ) {
 	daw::expecting( tmp, 1 );
 	int tmp2 = 101;
 	daw::expecting_exception<std::out_of_range>( [&]( ) {
-		assign( tmp, daw::move( tmp2 ) );
+		assign( tmp, std::move( tmp2 ) );
 	} );
 	daw::expecting( tmp, 1 );
 }

@@ -250,14 +250,14 @@ namespace daw {
 	inline constexpr decltype( auto ) apply( tuple2<Ts...> const &&tp,
 	                                         Func &&fn ) {
 		return tuple2_impl::apply_impl(
-		  DAW_MOVE( tp ), DAW_FWD( fn ),
+		  std::move( tp ), DAW_FWD( fn ),
 		  std::make_index_sequence<tuple2_size_v<tuple2<Ts...>>>{ } );
 	}
 
 	template<typename Func, typename... Ts>
 	inline constexpr decltype( auto ) apply( tuple2<Ts...> &&tp, Func &&fn ) {
 		return tuple2_impl::apply_impl(
-		  tp, DAW_MOVE( fn ),
+		  tp, std::move( fn ),
 		  std::make_index_sequence<tuple2_size_v<tuple2<Ts...>>>{ } );
 	}
 } // namespace daw

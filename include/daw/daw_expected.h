@@ -72,7 +72,7 @@ namespace daw {
 
 		/// Summary: With value
 		explicit expected_t( value_type &&value )
-		  : m_value( DAW_MOVE( value ) ) {}
+		  : m_value( std::move( value ) ) {}
 
 		explicit expected_t( value_type const &value )
 		  : m_value( value ) {}
@@ -82,11 +82,11 @@ namespace daw {
 		}
 		void set_value( value_type &&value ) noexcept(
 		  std::is_nothrow_move_assignable_v<value_type> ) {
-			m_value = DAW_MOVE( value );
+			m_value = std::move( value );
 		}
 
 		expected_t &operator=( value_type &&value ) {
-			set_value( DAW_MOVE( value ) );
+			set_value( std::move( value ) );
 			return *this;
 		}
 
@@ -206,7 +206,7 @@ namespace daw {
 				std::terminate( );
 			}
 			throw_if_exception( );
-			return DAW_MOVE( *std::get_if<value_type>( &m_value ) );
+			return std::move( *std::get_if<value_type>( &m_value ) );
 		}
 
 		[[nodiscard]] const_reference get( ) const && {

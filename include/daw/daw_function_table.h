@@ -35,7 +35,7 @@ namespace daw {
 		  size_t I, typename... TpArgs,
 		  std::enable_if_t<( I < sizeof...( TpArgs ) ), std::nullptr_t> = nullptr>
 		constexpr decltype( auto ) sfinae_get( std::tuple<TpArgs...> &&tp ) {
-			return std::get<I>( DAW_MOVE( tp ) );
+			return std::get<I>( std::move( tp ) );
 		}
 
 		template<

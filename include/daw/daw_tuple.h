@@ -48,11 +48,11 @@ namespace daw::impl {
 			}
 
 			constexpr T &&get( daw::index_constant<N> ) &&noexcept {
-				return DAW_MOVE( m_value );
+				return std::move( m_value );
 			}
 
 			constexpr T const &&get( daw::index_constant<N> ) const &&noexcept {
-				return DAW_MOVE( m_value );
+				return std::move( m_value );
 			}
 		};
 
@@ -68,11 +68,11 @@ namespace daw::impl {
 			}
 
 			constexpr T &&get( daw::index_constant<N> ) &&noexcept {
-				return DAW_MOVE( *this );
+				return std::move( *this );
 			}
 
 			constexpr T const &&get( daw::index_constant<N> ) const &&noexcept {
-				return DAW_MOVE( *this );
+				return std::move( *this );
 			}
 		};
 

@@ -1237,7 +1237,7 @@ namespace daw {
 	auto operator+( std::basic_string<CharT, Allocator> lhs,
 	                daw::basic_bounded_string<CharT, Capacity> const &rhs ) {
 		lhs.append( rhs.cbegin( ), rhs.cend( ) );
-		return DAW_MOVE( lhs );
+		return std::move( lhs );
 	}
 #endif
 
@@ -1263,14 +1263,14 @@ namespace daw {
 	auto operator+( daw::basic_bounded_string<CharT, Capacity> lhs,
 	                std::basic_string<CharT, Allocator> const &rhs ) {
 		lhs.append( rhs );
-		return DAW_MOVE( lhs );
+		return std::move( lhs );
 	}
 
 	template<typename CharT, size_t Capacity, typename Allocator>
 	auto operator+( daw::basic_bounded_string<CharT, Capacity> lhs,
 	                std::basic_string<CharT, Allocator> &&rhs ) {
-		lhs.append( DAW_MOVE( rhs ) );
-		return DAW_MOVE( lhs );
+		lhs.append( std::move( rhs ) );
+		return std::move( lhs );
 	}
 #endif
 
@@ -1279,14 +1279,14 @@ namespace daw {
 	                CharT ( &rhs )[N] ) {
 		static_assert( Capacity < ( N - 1 ), "Not enough space to perform append" );
 		lhs.append( daw::sv1::basic_string_view<CharT>( rhs ) );
-		return DAW_MOVE( lhs );
+		return std::move( lhs );
 	}
 
 	template<typename CharT, size_t Capacity>
 	auto operator+( daw::basic_bounded_string<CharT, Capacity> lhs,
 	                CharT const *rhs ) {
 		lhs.append( daw::sv1::basic_string_view<CharT>( rhs ) );
-		return DAW_MOVE( lhs );
+		return std::move( lhs );
 	}
 
 	template<typename CharT, size_t N, typename UnaryPredicate>
@@ -1298,7 +1298,7 @@ namespace daw {
 		               "http://en.cppreference.com/w/cpp/concept/Predicate" );
 
 		return split( daw::sv1::string_view{ str.data( ), str.size( ) },
-		              DAW_MOVE( pred ) );
+		              std::move( pred ) );
 	}
 
 	template<typename CharT, size_t N, typename UnaryPredicate>

@@ -185,9 +185,9 @@ namespace daw {
 		  , m_splitter{ other.m_splitter } {}
 
 		constexpr split_it( split_it &&other ) noexcept
-		  : m_data{ DAW_MOVE( other.m_data ) }
-		  , m_position{ DAW_MOVE( other.m_position ) }
-		  , m_splitter{ DAW_MOVE( other.m_splitter ) } {}
+		  : m_data{ std::move( other.m_data ) }
+		  , m_position{ std::move( other.m_position ) }
+		  , m_splitter{ std::move( other.m_splitter ) } {}
 
 		constexpr split_it &operator=( split_it const &rhs ) noexcept {
 			if( this != &rhs ) {
@@ -200,9 +200,9 @@ namespace daw {
 
 		constexpr split_it &operator=( split_it &&rhs ) noexcept {
 			if( this != &rhs ) {
-				m_data = DAW_MOVE( rhs.m_data );
-				m_position = DAW_MOVE( rhs.m_position );
-				m_splitter = DAW_MOVE( rhs.m_splitter );
+				m_data = std::move( rhs.m_data );
+				m_position = std::move( rhs.m_position );
+				m_splitter = std::move( rhs.m_splitter );
 			}
 			return *this;
 		}
@@ -416,9 +416,9 @@ namespace daw {
 		  , m_splitter{ other.m_splitter } {}
 
 		constexpr split_it( split_it &&other ) noexcept
-		  : m_data{ DAW_MOVE( other.m_data ) }
-		  , m_position{ DAW_MOVE( other.m_position ) }
-		  , m_splitter{ DAW_MOVE( other.m_splitter ) } {}
+		  : m_data{ std::move( other.m_data ) }
+		  , m_position{ std::move( other.m_position ) }
+		  , m_splitter{ std::move( other.m_splitter ) } {}
 
 		constexpr split_it &operator=( split_it const &rhs ) noexcept {
 			if( this != &rhs ) {
@@ -431,9 +431,9 @@ namespace daw {
 
 		constexpr split_it &operator=( split_it &&rhs ) noexcept {
 			if( this != &rhs ) {
-				m_data = DAW_MOVE( rhs.m_data );
-				m_position = DAW_MOVE( rhs.m_position );
-				m_splitter = DAW_MOVE( rhs.m_splitter );
+				m_data = std::move( rhs.m_data );
+				m_position = std::move( rhs.m_position );
+				m_splitter = std::move( rhs.m_splitter );
 			}
 			return *this;
 		}

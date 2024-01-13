@@ -207,7 +207,7 @@ namespace daw {
 			if( can_move_front( 1 ) ) {
 				do_move_to_front( );
 			}
-			m_stack[m_index] = DAW_MOVE( value );
+			m_stack[m_index] = std::move( value );
 			++m_index;
 		}
 
