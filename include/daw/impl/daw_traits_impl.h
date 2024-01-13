@@ -10,7 +10,9 @@
 
 #include "daw/ciso646.h"
 #include "daw/daw_move.h"
+#include "daw/daw_traits_identity.h"
 #include "daw/daw_traits_nth_element.h"
+#include "daw/daw_traits_pack_list.h"
 
 #include <cstddef>
 #include <daw/stdinc/data_access.h>
@@ -461,17 +463,6 @@ namespace daw {
 
 		return traits_details::void_function<Function>( DAW_FWD( func ) );
 	}
-
-	template<typename... Args>
-	struct pack_list {};
-
-	namespace traits {
-		template<typename T>
-		struct identity {
-			using type = T;
-		};
-
-	} // namespace traits
 
 	template<size_t N, typename... Args>
 	using type_n_t = traits::nth_element<N, Args...>;

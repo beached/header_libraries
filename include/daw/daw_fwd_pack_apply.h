@@ -10,13 +10,15 @@
 
 #include "daw_attributes.h"
 #include "daw_move.h"
-#include "daw_traits.h"
-#include "daw_unreachable.h"
+#include "daw_pack_element.h"
+#include "daw_traits_nth_element.h"
+#include "daw_traits_pack_list.h"
 
 #include <cstddef>
-#include <memory>
+#include <daw/stdinc/integer_sequence.h>
+#include <daw/stdinc/move_fwd_exch.h>
+#include <daw/stdinc/remove_cvref.h>
 #include <type_traits>
-#include <utility>
 
 namespace daw {
 	namespace fwd_pack_impl {
@@ -45,7 +47,7 @@ namespace daw {
 		DAW_ATTRIB_FLATINLINE inline constexpr fwd_pack( ) noexcept = default;
 
 		DAW_ATTRIB_FLATINLINE inline constexpr fwd_pack( Ts... args ) noexcept
-		  : base_type{ { std::addressof( args ) }... } {}
+		  : base_type{ { &args }... } {}
 
 		template<std::size_t Idx>
 		DAW_ATTRIB_FLATINLINE inline constexpr decltype( auto ) get( ) const & {
@@ -91,7 +93,7 @@ namespace daw {
 	template<std::size_t Idx, typename... Ts>
 	DAW_ATTRIB_FLATINLINE inline constexpr decltype( auto )
 	get( fwd_pack<Ts...> &&p ) {
-		return DAW_MOVE( p ).template get<Idx>( );
+		return std::move( p ).template get<Idx>( );
 	}
 
 	template<std::size_t Idx, typename... Ts>
@@ -112,7 +114,7 @@ namespace daw {
 		  Func &&func, fwd_pack<Ts...> &&p,
 		  std::index_sequence<
 		    Is...> ) noexcept( std::is_nothrow_invocable_v<Func, Ts...> ) {
-			return DAW_FWD( func )( get<Is>( DAW_MOVE( p ) )... );
+			return DAW_FWD( func )( get<Is>( std::move( p ) )... );
 		}
 	} // namespace fwd_pack_impl
 
@@ -120,7 +122,7 @@ namespace daw {
 	DAW_ATTRIB_FLATTEN inline constexpr decltype( auto ) apply(
 	  Func &&func,
 	  fwd_pack<Ts...> &&p ) noexcept( std::is_nothrow_invocable_v<Func, Ts...> ) {
-		return fwd_pack_impl::apply_impl( DAW_FWD( func ), DAW_MOVE( p ),
+		return fwd_pack_impl::apply_impl( DAW_FWD( func ), std::move( p ),
 		                                  std::index_sequence_for<Ts...>{ } );
 	}
 

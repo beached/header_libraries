@@ -11,7 +11,9 @@
 #include <daw/daw_cpp_feature_check.h>
 
 #if defined( DAW_HAS_STD_LIBSTDCPP ) and \
-  __has_include( <bits/range_access.h> )  and __has_include( <bits/stl_iterator.h>)
+  __has_include( <bits/range_access.h> )  and __has_include( <bits/stl_iterator.h>) and __has_include( <bits/stl_iterator_base_types.h>  )
+#include <bits/stl_iterator_base_types.h>
+//
 #include <bits/stl_iterator.h>
 //
 #include <bits/range_access.h>

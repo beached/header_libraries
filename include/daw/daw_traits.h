@@ -13,6 +13,7 @@
 #include "daw_cpp_feature_check.h"
 #include "daw_enable_if.h"
 #include "daw_move.h"
+#include "daw_pack_element.h"
 #include "impl/daw_conditional.h"
 #include "impl/daw_traits_impl.h"
 
@@ -21,20 +22,6 @@
 #include <daw/stdinc/range_access.h>
 #include <tuple>
 #include <type_traits>
-
-namespace daw {
-	template<typename T>
-	struct undefined_t;
-
-	template<typename T>
-	inline constexpr auto undefined_v = [] {
-		if constexpr( not std::is_same_v<T, undefined_t<T>> ) {
-			std::abort( );
-		} else {
-			return static_cast<T *>( nullptr );
-		}
-	}( );
-} // namespace daw
 
 namespace daw::traits {
 	template<typename T, typename... Ts>
@@ -272,32 +259,6 @@ namespace daw::traits {
 	template<template<class> class Base, typename Derived>
 	inline constexpr bool is_mixed_from_v =
 	  std::is_base_of_v<Base<Derived>, Derived>;
-
-} // namespace daw::traits
-
-namespace daw {
-	template<std::size_t Idx, typename Pack>
-	struct pack_element;
-
-	template<std::size_t Idx, template<class...> class Pack, typename... Ts>
-	struct pack_element<Idx, Pack<Ts...>> {
-		using type = traits::nth_type<Idx, Ts...>;
-	};
-
-	template<std::size_t Idx, typename Pack>
-	using pack_element_t = typename pack_element<Idx, Pack>::type;
-
-	template<typename Pack>
-	inline constexpr auto pack_size_v = undefined_v<Pack>;
-
-	template<template<typename...> typename Pack, typename... Ts>
-	inline constexpr std::size_t pack_size_v<Pack<Ts...>> = sizeof...( Ts );
-
-	template<typename Pack>
-	using pack_size = std::integral_constant<std::size_t, pack_size_v<Pack>>;
-} // namespace daw
-
-namespace daw::traits {
 
 	namespace traits_details {
 		namespace operators {
