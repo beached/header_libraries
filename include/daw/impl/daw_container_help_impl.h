@@ -8,10 +8,12 @@
 
 #pragma once
 
-#include <cassert>
 #include <vector>
 
 #include <cstddef>
+#include <daw/stdinc/data_access.h>
+#include <daw/stdinc/move_fwd_exch.h>
+#include <daw/stdinc/range_access.h>
 #include <memory>
 #include <type_traits>
 #include <utility>
