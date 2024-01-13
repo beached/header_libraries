@@ -11,12 +11,14 @@
 #include "ciso646.h"
 #include "daw_attributes.h"
 #include "daw_compiler_fixups.h"
+#include "daw_data_end.h"
 #include "impl/daw_is_string_view_like.h"
 #include "traits/daw_traits_conditional.h"
 
 #include <cstddef>
 #include <cstdint>
-#include <type_traits>
+#include <daw/stdinc/data_access.h>
+#include <daw/stdinc/enable_if.h>
 
 namespace daw {
 	namespace fnv1a_impl {
@@ -77,9 +79,8 @@ namespace daw {
 		[[nodiscard]] constexpr fnv1a_uint_t
 		operator( )( StringViewLike &&sv ) const noexcept {
 			using namespace std;
-			auto const *first = data( sv );
-			auto const *const last =
-			  data( sv ) + static_cast<std::ptrdiff_t>( size( sv ) );
+			auto const *first = std::data( sv );
+			auto const *const last = daw::data_end( sv );
 			auto hash = impl::fnv_offset;
 			while( first != last ) {
 				hash = append_hash( hash, *first );
