@@ -15,7 +15,7 @@
 #include "daw_swap.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
-#include "impl/daw_conditional.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <iterator>
 #include <limits>

@@ -13,7 +13,7 @@
 #include "daw_endian.h"
 #include "daw_exception.h"
 #include "daw_move.h"
-#include "impl/daw_conditional.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <cstdint>
 

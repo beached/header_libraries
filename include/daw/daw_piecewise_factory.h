@@ -16,7 +16,7 @@
 #include "daw_traits.h"
 #include "daw_utility.h"
 #include "daw_visit.h"
-#include "impl/daw_conditional.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <functional>
 #include <optional>

@@ -20,7 +20,7 @@
 #include "daw_string_view_version.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
-#include "impl/daw_conditional.h"
+#include "traits/daw_traits_conditional.h"
 #include "impl/daw_string_impl.h"
 #include "iterator/daw_back_inserter.h"
 #include "iterator/daw_iterator.h"

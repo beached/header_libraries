@@ -11,7 +11,7 @@
 #include "daw_apply.h"
 #include "daw_move.h"
 #include "daw_traits.h"
-#include "impl/daw_conditional.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <cstddef>
 #include <type_traits>

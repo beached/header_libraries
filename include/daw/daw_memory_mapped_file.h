@@ -12,7 +12,7 @@
 #include "daw_string_view.h"
 #include "daw_traits.h"
 #include "daw_unique_resource.h"
-#include "impl/daw_conditional.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <cstddef>
 #include <cstdio>

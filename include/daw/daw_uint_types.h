@@ -10,7 +10,7 @@
 
 #include "ciso646.h"
 #include "daw_arith_traits.h"
-#include "impl/daw_conditional.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <cassert>
 #include <climits>

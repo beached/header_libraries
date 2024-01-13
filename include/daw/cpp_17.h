@@ -16,7 +16,7 @@
 #include "daw_is_detected.h"
 #include "daw_move.h"
 #include "daw_remove_cvref.h"
-#include "impl/daw_conditional.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <cstddef>
 #include <cstring>

@@ -12,7 +12,7 @@
 #include "cpp_17.h"
 #include "daw_move.h"
 #include "daw_traits.h"
-#include "impl/daw_conditional.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <array>
 #include <cstddef>

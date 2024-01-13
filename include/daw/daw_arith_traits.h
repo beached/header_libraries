@@ -11,7 +11,7 @@
 
 #include "ciso646.h"
 #include "daw_cpp_feature_check.h"
-#include "impl/daw_conditional.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <climits>
 #include <cstdint>
