@@ -20,10 +20,10 @@
 #include "daw_string_view_version.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
-#include "traits/daw_traits_conditional.h"
 #include "impl/daw_string_impl.h"
 #include "iterator/daw_back_inserter.h"
 #include "iterator/daw_iterator.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -89,7 +89,7 @@ namespace daw {
 			  std::is_same_v<B, StringViewBoundsPointer>;
 
 			using last_type = conditional_t<is_last_a_pointer_v<BoundsType>,
-			                                     const_pointer, size_type>;
+			                                const_pointer, size_type>;
 			static inline constexpr last_type default_last = [] {
 				if constexpr( is_last_a_pointer_v<BoundsType> ) {
 					return nullptr;
@@ -99,7 +99,7 @@ namespace daw {
 			}( );
 			using last_difference_type =
 			  conditional_t<is_last_a_pointer_v<BoundsType>, difference_type,
-			                     size_type>;
+			                size_type>;
 
 			template<typename Bounds>
 			static constexpr last_type make_last( const_pointer f,

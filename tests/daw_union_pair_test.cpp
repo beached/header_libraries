@@ -25,8 +25,9 @@ void daw_union_pair_test_001( ) {
 
 void daw_union_pair_test_002( ) {
 	auto tmp = daw::union_pair_t<int, double>( 5 );
-	daw::expecting( 5,
-	                tmp.visit( []( auto v ) { return static_cast<int>( v ); } ) );
+	daw::expecting( 5, tmp.visit( []( auto v ) {
+		return static_cast<int>( v );
+	} ) );
 }
 
 void daw_union_pair_test_003( ) {
@@ -46,9 +47,10 @@ void daw_union_pair_test_003( ) {
 void daw_union_pair_test_004( ) {
 	auto tmp = daw::union_pair_t<int, double>( 5 );
 	tmp = 6.6;
-	daw::expecting( daw::math::nearly_equal(
-	  6.6, tmp.visit( []( auto v ) { return static_cast<double>( v ); } ),
-	  0.1 ) );
+	daw::expecting( daw::math::nearly_equal( 6.6, tmp.visit( []( auto v ) {
+		return static_cast<double>( v );
+	} ),
+	                                         0.1 ) );
 }
 
 void daw_union_pair_test_005( ) {

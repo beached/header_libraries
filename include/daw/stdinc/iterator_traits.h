@@ -12,7 +12,8 @@
 
 #if defined( DAW_HAS_STD_LIBCPP ) and __has_include( <__iterator/iterator_traits.h> )
 #include <__iterator/iterator_traits.h>
-#elif defined( DAW_HAS_STD_LIBSTDCPP ) and __has_include( <bits/stl_iterator_base_types.h>  )
+#elif defined( DAW_HAS_STD_LIBSTDCPP ) and \
+  __has_include( <bits/stl_iterator_base_types.h>  )
 #include <bits/stl_iterator_base_types.h>
 #else
 #include <iterator>

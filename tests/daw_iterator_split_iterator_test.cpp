@@ -41,8 +41,9 @@ void split_it_003( ) {
 	auto const last = it.make_end( );
 
 	std::vector<std::string> results{ };
-	std::transform( it, last, std::back_inserter( results ),
-	                []( auto sv ) { return sv.to_string( ); } );
+	std::transform( it, last, std::back_inserter( results ), []( auto sv ) {
+		return sv.to_string( );
+	} );
 
 	for( auto const &s : results ) {
 		std::cout << s << '\n';

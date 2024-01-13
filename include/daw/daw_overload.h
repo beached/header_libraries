@@ -53,7 +53,7 @@ namespace daw {
 
 		template<typename Func>
 		using fp_wrapper = conditional_t<std::is_class_v<remove_cvref_t<Func>>,
-		                                      Func, fp_wrapper_t<Func>>;
+		                                 Func, fp_wrapper_t<Func>>;
 
 		template<auto>
 		struct lift_t;
@@ -87,5 +87,5 @@ namespace daw {
 	template<typename... Funcs>
 	overload( Funcs &&... )
 	  -> overload<conditional_t<std::is_class_v<remove_cvref_t<Funcs>>,
-	                                 remove_cvref_t<Funcs>, Funcs>...>;
+	                            remove_cvref_t<Funcs>, Funcs>...>;
 } // namespace daw

@@ -109,8 +109,8 @@ namespace daw {
 		  daw::traits::all_same_v<Function, Functions...>;
 		using value_t =
 		  conditional_t<using_array_v,
-		                     std::array<Function, sizeof...( Functions ) + 1U>,
-		                     std::tuple<Function, Functions...>>;
+		                std::array<Function, sizeof...( Functions ) + 1U>,
+		                std::tuple<Function, Functions...>>;
 
 		value_t fns{ };
 

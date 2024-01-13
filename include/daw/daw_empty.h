@@ -9,8 +9,6 @@
 #pragma once
 
 namespace daw {
-		struct empty_t {};
-		using Empty = empty_t;
-}
-
-
+	struct empty_t {};
+	using Empty = empty_t;
+} // namespace daw

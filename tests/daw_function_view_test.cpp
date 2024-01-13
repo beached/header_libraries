@@ -15,7 +15,9 @@ int func( daw::function_view<int( int, int, int )> f ) {
 }
 
 int test( ) {
-	return func( []( int a, int b, int c ) { return a * b * c; } );
+	return func( []( int a, int b, int c ) {
+		return a * b * c;
+	} );
 }
 
 inline constexpr int add( int a, int b, int c ) {
@@ -32,7 +34,9 @@ int func2( daw::function_view<void( double, double )> f ) {
 }
 
 int test3( ) {
-	return func2( +[]( double, double ) { puts( "Hello\n" ); } );
+	return func2( +[]( double, double ) {
+		puts( "Hello\n" );
+	} );
 }
 
 int main( ) {}

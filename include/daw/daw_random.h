@@ -198,8 +198,8 @@ namespace daw {
 
 	namespace RandomInteger_impl {
 		template<typename Float>
-		using uint_type = conditional_t<std::is_same_v<Float, float>,
-		                                     std::uint32_t, std::uint64_t>;
+		using uint_type =
+		  conditional_t<std::is_same_v<Float, float>, std::uint32_t, std::uint64_t>;
 	}
 
 	template<typename Float, typename Engine = std::default_random_engine>

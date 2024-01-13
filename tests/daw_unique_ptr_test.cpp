@@ -10,8 +10,8 @@
 #endif
 
 #include <cassert>
-#include <memory>
 #include <daw/daw_unique_ptr.h>
+#include <memory>
 
 struct Base {
 	virtual ~Base( ) = default;
@@ -51,6 +51,6 @@ int main( ) {
 	a2.reset( );
 	assert( not a2 );
 
-	std::default_delete<int>{};
-	daw::unique_ptr<Base> my_base = daw::make_unique<Child>();
+	std::default_delete<int>{ };
+	daw::unique_ptr<Base> my_base = daw::make_unique<Child>( );
 }

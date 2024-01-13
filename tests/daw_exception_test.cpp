@@ -21,8 +21,9 @@ void test_01( ) {
 		return true;
 	}( ) );
 
-	daw::expecting_exception(
-	  []( ) { daw::exception::precondition_check<std::exception>( false ); } );
+	daw::expecting_exception( []( ) {
+		daw::exception::precondition_check<std::exception>( false );
+	} );
 }
 
 int main( ) {

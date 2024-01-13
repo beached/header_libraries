@@ -13,8 +13,8 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <daw/stdinc/integral_constant.h>
 #include <daw/stdinc/enable_if.h>
+#include <daw/stdinc/integral_constant.h>
 
 namespace daw {
 	enum class endian {
@@ -31,72 +31,83 @@ namespace daw {
 
 	namespace endian_details {
 		template<typename T>
-		constexpr T
-		swap_bytes( T value,
-		            std::integral_constant<std::size_t, sizeof( std::uint8_t )> ) noexcept {
+		constexpr T swap_bytes(
+		  T value,
+		  std::integral_constant<std::size_t, sizeof( std::uint8_t )> ) noexcept {
 			return value;
 		}
 
 		template<typename T>
-		constexpr T
-		swap_bytes( T value,
-		            std::integral_constant<std::size_t, sizeof( std::uint16_t )> ) noexcept {
+		constexpr T swap_bytes(
+		  T value,
+		  std::integral_constant<std::size_t, sizeof( std::uint16_t )> ) noexcept {
 			return static_cast<T>(
-			  static_cast<std::uint16_t>(
-			    ( static_cast<std::uint16_t>( value ) >> static_cast<std::uint16_t>( 8U ) ) &
-			    static_cast<std::uint16_t>( 0x00FFU ) ) |
-			  static_cast<std::uint16_t>(
-			    ( static_cast<std::uint16_t>( value ) << static_cast<std::uint16_t>( 8U ) ) &
-			    static_cast<std::uint16_t>( 0xFF00U ) ) );
+			  static_cast<std::uint16_t>( ( static_cast<std::uint16_t>( value ) >>
+			                                static_cast<std::uint16_t>( 8U ) ) &
+			                              static_cast<std::uint16_t>( 0x00FFU ) ) |
+			  static_cast<std::uint16_t>( ( static_cast<std::uint16_t>( value )
+			                                << static_cast<std::uint16_t>( 8U ) ) &
+			                              static_cast<std::uint16_t>( 0xFF00U ) ) );
 		}
 
 		template<typename T>
-		constexpr T
-		swap_bytes( T value,
-		            std::integral_constant<std::size_t, sizeof( std::uint32_t )> ) noexcept {
-			return static_cast<T>(
-			  static_cast<std::uint32_t>(
-			    ( static_cast<std::uint32_t>( value ) >> static_cast<std::uint32_t>( 24U ) ) &
-			    static_cast<std::uint32_t>( 0x0000'00FFU ) ) |
-			  static_cast<std::uint32_t>(
-			    ( static_cast<std::uint32_t>( value ) >> static_cast<std::uint32_t>( 8U ) ) &
-			    static_cast<std::uint32_t>( 0x0000'FF00U ) ) |
-			  static_cast<std::uint32_t>(
-			    ( static_cast<std::uint32_t>( value ) << static_cast<std::uint32_t>( 8U ) ) &
-			    static_cast<std::uint32_t>( 0x00FF'0000U ) ) |
-			  static_cast<std::uint32_t>(
-			    ( static_cast<std::uint32_t>( value ) << static_cast<std::uint32_t>( 24U ) ) &
-			    static_cast<std::uint32_t>( 0xFF00'0000U ) ) );
+		constexpr T swap_bytes(
+		  T value,
+		  std::integral_constant<std::size_t, sizeof( std::uint32_t )> ) noexcept {
+			return static_cast<T>( static_cast<std::uint32_t>(
+			                         ( static_cast<std::uint32_t>( value ) >>
+			                           static_cast<std::uint32_t>( 24U ) ) &
+			                         static_cast<std::uint32_t>( 0x0000'00FFU ) ) |
+			                       static_cast<std::uint32_t>(
+			                         ( static_cast<std::uint32_t>( value ) >>
+			                           static_cast<std::uint32_t>( 8U ) ) &
+			                         static_cast<std::uint32_t>( 0x0000'FF00U ) ) |
+			                       static_cast<std::uint32_t>(
+			                         ( static_cast<std::uint32_t>( value )
+			                           << static_cast<std::uint32_t>( 8U ) ) &
+			                         static_cast<std::uint32_t>( 0x00FF'0000U ) ) |
+			                       static_cast<std::uint32_t>(
+			                         ( static_cast<std::uint32_t>( value )
+			                           << static_cast<std::uint32_t>( 24U ) ) &
+			                         static_cast<std::uint32_t>( 0xFF00'0000U ) ) );
 		}
 
 		template<typename T>
-		constexpr T
-		swap_bytes( T value,
-		            std::integral_constant<std::size_t, sizeof( std::uint64_t )> ) noexcept {
+		constexpr T swap_bytes(
+		  T value,
+		  std::integral_constant<std::size_t, sizeof( std::uint64_t )> ) noexcept {
 			return static_cast<T>(
 			  static_cast<std::uint64_t>(
-			    ( static_cast<std::uint64_t>( value ) >> static_cast<std::uint64_t>( 56U ) ) &
+			    ( static_cast<std::uint64_t>( value ) >>
+			      static_cast<std::uint64_t>( 56U ) ) &
 			    static_cast<std::uint64_t>( 0x0000'0000'0000'00FFU ) ) |
 			  static_cast<std::uint64_t>(
-			    ( static_cast<std::uint64_t>( value ) >> static_cast<std::uint64_t>( 40U ) ) &
+			    ( static_cast<std::uint64_t>( value ) >>
+			      static_cast<std::uint64_t>( 40U ) ) &
 			    static_cast<std::uint64_t>( 0x0000'0000'0000'FF00U ) ) |
 			  static_cast<std::uint64_t>(
-			    ( static_cast<std::uint64_t>( value ) >> static_cast<std::uint64_t>( 24U ) ) &
+			    ( static_cast<std::uint64_t>( value ) >>
+			      static_cast<std::uint64_t>( 24U ) ) &
 			    static_cast<std::uint64_t>( 0x0000'0000'00FF'0000U ) ) |
 			  static_cast<std::uint64_t>(
-			    ( static_cast<std::uint64_t>( value ) >> static_cast<std::uint64_t>( 8U ) ) &
+			    ( static_cast<std::uint64_t>( value ) >>
+			      static_cast<std::uint64_t>( 8U ) ) &
 			    static_cast<std::uint64_t>( 0x0000'0000'FF00'0000U ) ) |
 			  static_cast<std::uint64_t>(
-			    ( static_cast<std::uint64_t>( value ) << static_cast<std::uint64_t>( 8U ) ) &
+			    ( static_cast<std::uint64_t>( value )
+			      << static_cast<std::uint64_t>( 8U ) ) &
 			    static_cast<std::uint64_t>( 0x0000'00FF'0000'0000U ) ) |
 			  static_cast<std::uint64_t>(
-			    ( static_cast<std::uint64_t>( value ) << static_cast<std::uint64_t>( 24U ) ) &
+			    ( static_cast<std::uint64_t>( value )
+			      << static_cast<std::uint64_t>( 24U ) ) &
 			    static_cast<std::uint64_t>( 0x0000'FF00'0000'0000U ) ) |
 			  static_cast<std::uint64_t>(
-			    ( static_cast<std::uint64_t>( value ) << static_cast<std::uint64_t>( 40U ) ) &
+			    ( static_cast<std::uint64_t>( value )
+			      << static_cast<std::uint64_t>( 40U ) ) &
 			    static_cast<std::uint64_t>( 0x00FF'0000'0000'0000U ) ) |
 			  static_cast<std::uint64_t>(
-			    ( static_cast<std::uint64_t>( value ) << static_cast<std::uint64_t>( 56U ) ) &
+			    ( static_cast<std::uint64_t>( value )
+			      << static_cast<std::uint64_t>( 56U ) ) &
 			    static_cast<std::uint64_t>( 0xFF00'0000'0000'0000U ) ) );
 		}
 	} // namespace endian_details

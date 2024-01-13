@@ -9,8 +9,6 @@
 #pragma once
 
 namespace daw {
-		template<typename... Args>
-		struct pack_list {};
-}
-
-
+	template<typename... Args>
+	struct pack_list {};
+} // namespace daw

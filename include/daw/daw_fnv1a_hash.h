@@ -11,8 +11,8 @@
 #include "ciso646.h"
 #include "daw_attributes.h"
 #include "daw_compiler_fixups.h"
-#include "traits/daw_traits_conditional.h"
 #include "impl/daw_is_string_view_like.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <cstddef>
 #include <cstdint>

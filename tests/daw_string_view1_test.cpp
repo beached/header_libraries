@@ -131,13 +131,17 @@ namespace daw {
 
 	void daw_string_view_find_first_of_if_001( ) {
 		daw::sv1::string_view const a = "abcdefghijklm";
-		auto pos = a.find_first_of_if( []( auto c ) { return c == 'c'; } );
+		auto pos = a.find_first_of_if( []( auto c ) {
+			return c == 'c';
+		} );
 		daw::expecting( 2U, pos );
 	}
 
 	void daw_string_view_find_first_not_of_if_001( ) {
 		daw::sv1::string_view const a = "abcdefghijklm";
-		auto pos = a.find_first_not_of_if( []( auto c ) { return c < 'c'; } );
+		auto pos = a.find_first_not_of_if( []( auto c ) {
+			return c < 'c';
+		} );
 		daw::expecting( 2U, pos );
 	}
 
@@ -838,13 +842,17 @@ namespace daw {
 #ifndef NOSTRING
 	void daw_string_view_split_003( ) {
 		std::string str = "This is a test of the split";
-		auto const str_splt = sv1::split( str, []( char c ) { return c == ' '; } );
+		auto const str_splt = sv1::split( str, []( char c ) {
+			return c == ' ';
+		} );
 		daw::expecting( 7U, str_splt.size( ) );
 	}
 #endif
 	void daw_string_view_split_004( ) {
 		char const str[] = "This is a test of the split";
-		auto const str_splt = sv1::split( str, []( char c ) { return c == ' '; } );
+		auto const str_splt = sv1::split( str, []( char c ) {
+			return c == ' ';
+		} );
 		daw::expecting( 7U, str_splt.size( ) );
 	}
 
@@ -952,7 +960,9 @@ namespace daw {
 	void daw_pop_front_pred_test_001( ) {
 		std::string str = "This is1a test";
 		daw::sv1::string_view sv{ str.data( ), str.size( ) };
-		auto lhs = sv.pop_front( []( auto c ) { return std::isdigit( c ); } );
+		auto lhs = sv.pop_front( []( auto c ) {
+			return std::isdigit( c );
+		} );
 		daw::expecting( lhs, "This is" );
 		daw::expecting( sv, "a test" );
 	}
@@ -960,7 +970,9 @@ namespace daw {
 	void daw_pop_back_pred_test_001( ) {
 		std::string str = "This is1a test";
 		daw::sv1::string_view sv{ str.data( ), str.size( ) };
-		auto rhs = sv.pop_back( []( auto c ) { return std::isdigit( c ); } );
+		auto rhs = sv.pop_back( []( auto c ) {
+			return std::isdigit( c );
+		} );
 		daw::expecting( sv, "This is" );
 		daw::expecting( rhs, "a test" );
 	}

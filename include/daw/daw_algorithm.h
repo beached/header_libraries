@@ -817,7 +817,7 @@ namespace daw::algorithm {
 				return DAW_FWD2( T, value ) <= m_value;
 			}
 		}; // less_than_or_equal_to
-	} // namespace algorithm_details
+	}    // namespace algorithm_details
 
 	/// @brief Returns a callable that returns true if the value passed is in
 	/// the range [Lower, Upper]
@@ -1338,12 +1338,12 @@ namespace daw::algorithm {
 	/// @param value value to compare to
 	/// @return position of first element greater than value or last
 	template<typename ForwardIterator, typename T, typename Compare = std::less<>>
-	constexpr ForwardIterator upper_bound(
-	  ForwardIterator first, ForwardIterator last, T const &value,
-	  Compare comp =
-	    Compare{ } ) noexcept( noexcept( daw::advance( first, 1 ) ) and
-	                           noexcept( ++first ) and
-	                           noexcept( daw::distance( first, last ) ) ) {
+	constexpr ForwardIterator
+	upper_bound( ForwardIterator first, ForwardIterator last, T const &value,
+	             Compare comp =
+	               Compare{ } ) noexcept( noexcept( daw::advance( first, 1 ) )
+	                                        and noexcept( ++first ) and noexcept(
+	                                          daw::distance( first, last ) ) ) {
 
 		traits::is_forward_access_iterator_test<ForwardIterator>( );
 		traits::is_input_iterator_test<ForwardIterator>( );
@@ -1716,8 +1716,8 @@ namespace daw::algorithm {
 	  InputIterator1 first1, LastType1 last1, InputIterator2 first2,
 	  LastType2 last2, OutputIterator d_first,
 	  Compare &&comp =
-	    Compare{ } ) noexcept( noexcept( comp( *first2, *first1 ) ) and
-	                           noexcept( comp( *first1, *first2 ) ) ) {
+	    Compare{ } ) noexcept( noexcept( comp( *first2, *first1 ) )
+	                             and noexcept( comp( *first1, *first2 ) ) ) {
 
 		while( first1 != last1 and first2 != last2 ) {
 			if( daw::invoke( comp, *first1, *first2 ) ) {

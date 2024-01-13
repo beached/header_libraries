@@ -44,7 +44,9 @@ void string_fmt_test_recursion_001( ) {
 
 void string_fmt_test_out_of_range_001( ) {
 	daw::expecting_exception<daw::string_fmt::v1::invalid_string_fmt_index>(
-	  []( ) { daw::string_fmt::v1::fmt( "{1}", 5 ); } );
+	  []( ) {
+		  daw::string_fmt::v1::fmt( "{1}", 5 );
+	  } );
 }
 
 void string_fmt_perf_001( ) {
@@ -125,7 +127,7 @@ void string_fmt_has_to_string_001( ) {
 	daw::expecting( result, "Testing 1" );
 }
 
-//#########
+// #########
 void string_fmt2_test_001( ) {
 	std::cout << daw::string_fmt::v2::fmt(
 	  "This is a {0} of the {1} and has been used {2} times for {0}ing\n", "test",

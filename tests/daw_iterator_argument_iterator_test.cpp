@@ -52,8 +52,10 @@ void test_accumulate_001( ) {
 	constexpr char const *argv_[] = { "test", "this", "out" };
 	auto const args = daw::arg_iterator_t( 3, argv_ );
 
-	auto result = std::accumulate( args.begin( ), args.end( ), 0,
-	                               []( int i, auto &&sv ) { return i + sv[0]; } );
+	auto result =
+	  std::accumulate( args.begin( ), args.end( ), 0, []( int i, auto &&sv ) {
+		  return i + sv[0];
+	  } );
 	daw::expecting( result, 't' + 't' + 'o' );
 }
 

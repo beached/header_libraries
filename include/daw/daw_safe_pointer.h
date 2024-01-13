@@ -182,7 +182,7 @@ namespace daw::memory {
 			return *this;
 		}
 
-		[[nodiscard]] constexpr safe_pointer operator++( int ) & noexcept {
+		[[nodiscard]] constexpr safe_pointer operator++( int ) &noexcept {
 			auto result = *this;
 			safe_pointer::operator++( );
 			return result;
@@ -195,7 +195,7 @@ namespace daw::memory {
 			return *this;
 		}
 
-		[[nodiscard]] constexpr safe_pointer operator--( int ) & noexcept {
+		[[nodiscard]] constexpr safe_pointer operator--( int ) &noexcept {
 			auto result = *this;
 			safe_pointer::operator--( );
 			return result;

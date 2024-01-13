@@ -27,8 +27,9 @@ constexpr bool daw_natural_test_02( ) {
 static_assert( daw_natural_test_02( ) );
 
 void daw_natural_test_03( ) {
-	daw::expecting_exception<daw::exception::arithmetic_exception>(
-	  []( ) { daw::natural_t<int>( -5 ); } );
+	daw::expecting_exception<daw::exception::arithmetic_exception>( []( ) {
+		daw::natural_t<int>( -5 );
+	} );
 }
 
 constexpr bool daw_natural_op_plus_01( ) {
@@ -62,8 +63,9 @@ static_assert( daw_natural_op_min_01( ) );
 void daw_natural_op_min_02( ) {
 	constexpr daw::natural_t<int> a = 1;
 	constexpr daw::natural_t<int> b = 2;
-	daw::expecting_exception<daw::exception::arithmetic_exception>(
-	  [&]( ) { Unused( a - b ); } );
+	daw::expecting_exception<daw::exception::arithmetic_exception>( [&]( ) {
+		Unused( a - b );
+	} );
 	daw::expecting( 1, a );
 	daw::expecting( 2, b );
 }
@@ -80,8 +82,9 @@ static_assert( daw_natural_op_min_03( ) );
 void daw_natural_op_min_04( ) {
 	daw::natural_t<int> a = 1;
 	constexpr daw::natural_t<int> b = 2;
-	daw::expecting_exception<daw::exception::arithmetic_exception>(
-	  [&]( ) { a -= b; } );
+	daw::expecting_exception<daw::exception::arithmetic_exception>( [&]( ) {
+		a -= b;
+	} );
 	daw::expecting( 1, a );
 	daw::expecting( 2, b );
 }
@@ -187,16 +190,18 @@ static_assert( daw_natural_op_dec_02( ) );
 
 void daw_natural_op_dec_03( ) {
 	daw::natural_t<int> a = 1;
-	daw::expecting_exception<daw::exception::arithmetic_exception>(
-	  [&]( ) { --a; } );
+	daw::expecting_exception<daw::exception::arithmetic_exception>( [&]( ) {
+		--a;
+	} );
 	daw::expecting( 1, a );
 }
 
 void daw_natural_op_dec_04( ) {
 	daw::natural_t<int> a = 1;
 	daw::natural_t<int> b( 2 );
-	daw::expecting_exception<daw::exception::arithmetic_exception>(
-	  [&]( ) { a--; } );
+	daw::expecting_exception<daw::exception::arithmetic_exception>( [&]( ) {
+		a--;
+	} );
 	daw::expecting( 1, a );
 	daw::expecting( 2, b );
 }

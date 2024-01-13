@@ -34,7 +34,9 @@ B test_001( ) noexcept {
 	auto tmp = daw::piecewise_factory_late_t<B, int, int, std::string>( );
 	tmp.set<0>( 5 );
 	tmp.set( 1, 6 );
-	tmp.set<2>( []( ) { return "Hello"; } );
+	tmp.set<2>( []( ) {
+		return "Hello";
+	} );
 	return tmp( );
 }
 

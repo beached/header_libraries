@@ -26,8 +26,8 @@ namespace daw::string_extract_impl {
 	template<typename CharT, typename Traits, typename Alloc>
 	struct basic_string {
 
-		using Char_alloc_type = typename ::std::allocator_traits<
-		  Alloc>::template rebind<CharT>::other;
+		using Char_alloc_type =
+		  typename ::std::allocator_traits<Alloc>::template rebind<CharT>::other;
 
 		using Alloc_traits = std::allocator_traits<Char_alloc_type>;
 
@@ -136,8 +136,7 @@ namespace daw::string_extract_impl {
 			return _pos;
 		}
 
-		void m_check_length( size_type _n1, size_type _n2,
-		                     const char *_s ) const {
+		void m_check_length( size_type _n1, size_type _n2, const char *_s ) const {
 			if( this->max_size( ) - ( this->size( ) - _n1 ) < _n2 ) {
 				__throw_length_error( __N( _s ) );
 			}
@@ -190,13 +189,12 @@ namespace daw::string_extract_impl {
 			}
 		}
 
-		static void S_copy_chars( CharT *_p, iterator _k1,
-		                           iterator _k2 ) noexcept {
+		static void S_copy_chars( CharT *_p, iterator _k1, iterator _k2 ) noexcept {
 			S_copy_chars( _p, _k1.base( ), _k2.base( ) );
 		}
 
 		static void S_copy_chars( CharT *_p, const_iterator _k1,
-		                           const_iterator _k2 ) noexcept {
+		                          const_iterator _k2 ) noexcept {
 			S_copy_chars( _p, _k1.base( ), _k2.base( ) );
 		}
 
@@ -205,7 +203,7 @@ namespace daw::string_extract_impl {
 		}
 
 		static void S_copy_chars( CharT *_p, const CharT *_k1,
-		                           const CharT *_k2 ) noexcept {
+		                          const CharT *_k2 ) noexcept {
 			S_copy( _p, _k1, _k2 - _k1 );
 		}
 
@@ -338,9 +336,9 @@ namespace daw::string_extract_impl {
 		  : m_dataplus( m_local_data( ), _a ) {
 			// NB: Not required, but considered best practice.
 			if( _s == 0 && _n > 0 ) {
-				throw std::logic_error( 
-				   "basic_string: "
-				       "construction from null is not valid" );
+				throw std::logic_error(
+				  "basic_string: "
+				  "construction from null is not valid" );
 			}
 			m_construct( _s, _s + _n, std::forward_iterator_tag( ) );
 		}
@@ -356,7 +354,7 @@ namespace daw::string_extract_impl {
 			if( _s == 0 ) {
 				throw std::logic_error(
 				  "basic_string: "
-				       "construction from null is not valid" );
+				  "construction from null is not valid" );
 			}
 			const CharT *_end = _s + traits_type::length( _s );
 			m_construct( _s, _end, forward_iterator_tag( ) );
@@ -379,8 +377,7 @@ namespace daw::string_extract_impl {
 		basic_string( basic_string &&_str ) noexcept
 		  : m_dataplus( m_local_data( ), std::move( _str.m_get_allocator( ) ) ) {
 			if( _str.m_is_local( ) ) {
-				traits_type::copy( m_local_buf, _str.m_local_buf,
-				                   _str.length( ) + 1 );
+				traits_type::copy( m_local_buf, _str.m_local_buf, _str.length( ) + 1 );
 			} else {
 				m_data( _str.m_data( ) );
 				m_capacity( _str.m_allocated_capacity );
@@ -409,12 +406,11 @@ namespace daw::string_extract_impl {
 			m_construct( _str.begin( ), _str.end( ), std::forward_iterator_tag( ) );
 		}
 
-		basic_string( basic_string &&_str, const Alloc &_a ) noexcept(
-		  Alloc_traits::_S_always_equal( ) )
+		basic_string( basic_string &&_str,
+		              const Alloc &_a ) noexcept( Alloc_traits::_S_always_equal( ) )
 		  : m_dataplus( m_local_data( ), _a ) {
 			if( _str.m_is_local( ) ) {
-				traits_type::copy( m_local_buf, _str.m_local_buf,
-				                   _str.length( ) + 1 );
+				traits_type::copy( m_local_buf, _str.m_local_buf, _str.length( ) + 1 );
 				m_length( _str.length( ) );
 				_str.m_set_length( 0 );
 			} else if( Alloc_traits::_S_always_equal( ) ||
@@ -425,8 +421,7 @@ namespace daw::string_extract_impl {
 				_str.m_data( _str.m_local_buf );
 				_str.m_set_length( 0 );
 			} else {
-				m_construct( _str.begin( ), _str.end( ),
-				             std::forward_iterator_tag( ) );
+				m_construct( _str.begin( ), _str.end( ), std::forward_iterator_tag( ) );
 			}
 		}
 
@@ -883,8 +878,7 @@ namespace daw::string_extract_impl {
 	private:
 		template<class Integer>
 		basic_string &m_replace_dispatch( const_iterator _i1, const_iterator _i2,
-		                                  Integer _n, Integer _val,
-		                                  __true_type ) {
+		                                  Integer _n, Integer _val, __true_type ) {
 			return m_replace_aux( _i1 - begin( ), _i2 - _i1, _n, _val );
 		}
 
@@ -893,11 +887,11 @@ namespace daw::string_extract_impl {
 		                                  InputIterator _k1, InputIterator _k2,
 		                                  __false_type );
 
-		basic_string &m_replace_aux( size_type _pos1, size_type _n1,
-		                             size_type _n2, CharT _c );
+		basic_string &m_replace_aux( size_type _pos1, size_type _n1, size_type _n2,
+		                             CharT _c );
 
-		basic_string &m_replace( size_type _pos, size_type _len1,
-		                         const CharT *_s, const size_type _len2 );
+		basic_string &m_replace( size_type _pos, size_type _len1, const CharT *_s,
+		                         const size_type _len2 );
 
 		basic_string &m_append( const CharT *_s, size_type _n );
 

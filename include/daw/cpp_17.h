@@ -174,7 +174,7 @@ namespace daw {
 				return val;
 			}
 		} // namespace math
-	} // namespace cpp_17_details
+	}   // namespace cpp_17_details
 
 	template<typename...>
 	struct disjunction : std::false_type {};

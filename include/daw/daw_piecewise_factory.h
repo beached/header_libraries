@@ -150,9 +150,9 @@ namespace daw {
 		protected:
 			using ttype_t =
 			  conditional_t<use_late,
-			                     std::tuple<std::optional<
-			                       std::variant<Args, std::function<Args( )>>>...>,
-			                     std::tuple<std::optional<Args>...>>;
+			                std::tuple<std::optional<
+			                  std::variant<Args, std::function<Args( )>>>...>,
+			                std::tuple<std::optional<Args>...>>;
 
 			ttype_t m_args;
 

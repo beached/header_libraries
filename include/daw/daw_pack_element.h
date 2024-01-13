@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "traits/daw_traits_nth_element.h"
 #include "daw_undefined.h"
+#include "traits/daw_traits_nth_element.h"
 
 #include <cstddef>
 
