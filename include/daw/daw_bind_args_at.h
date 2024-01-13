@@ -11,6 +11,7 @@
 #include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_move.h"
+#include "daw_remove_cvref.h"
 
 #include <cstddef>
 #include <iostream>
@@ -132,7 +133,7 @@ namespace daw {
 
 	template<std::size_t N, typename Invokable, typename... Args>
 	constexpr auto bind_args_at( Invokable &&func, Args &&...args ) {
-		return bind_args_at_fn<N, remove_cvref_t<Invokable>,
+		return bind_args_at_fn<N, daw::remove_cvref_t<Invokable>,
 		                       std::tuple<std::decay_t<Args>...>>{
 		  std::forward<Invokable>( func ),
 		  std::tuple<std::decay_t<Args>...>( std::forward<Args>( args )... ) };

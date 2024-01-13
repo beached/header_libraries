@@ -8,7 +8,8 @@
 
 #pragma once
 
-#include "daw/daw_traits.h"
+#include "daw/daw_compiler_fixups.h"
+#include "daw/traits/daw_traits_concepts.h"
 
 namespace daw::algorithm {
 	template<typename InputIterator, typename UnaryPredicate>
@@ -16,9 +17,9 @@ namespace daw::algorithm {
 	                                                     InputIterator last,
 	                                                     UnaryPredicate pred ) {
 
-		(void)traits::is_input_iterator_test<InputIterator>( );
-		(void)
-		  traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
+		(void)daw::traits::is_input_iterator_test<InputIterator>( );
+		(void)daw::traits::is_unary_predicate_test<UnaryPredicate,
+		                                           decltype( *first )>( );
 
 		while( first != last ) {
 			if( pred( *first ) ) {
@@ -34,8 +35,8 @@ namespace daw::algorithm {
 	find_first_of( InputIterator first, InputIterator last,
 	               ForwardIterator sfirst, ForwardIterator slast ) {
 
-		(void)traits::is_input_iterator_test<InputIterator>( );
-		(void)traits::is_forward_access_iterator_test<ForwardIterator>( );
+		(void)daw::traits::is_input_iterator_test<InputIterator>( );
+		(void)daw::traits::is_forward_access_iterator_test<ForwardIterator>( );
 
 		while( first != last ) {
 			for( auto it = sfirst; it != slast; ++it ) {
@@ -52,8 +53,8 @@ namespace daw::algorithm {
 	         typename UnaryPredicate>
 	constexpr InputIterator find_if( InputIterator first, InputIteratorLast last,
 	                                 UnaryPredicate &&unary_predicate ) {
-		traits::is_input_iterator_test<InputIterator>( );
-		traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
+		daw::traits::is_input_iterator_test<InputIterator>( );
+		daw::traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );
 
 		DAW_UNSAFE_BUFFER_FUNC_START
 		while( first != last ) {

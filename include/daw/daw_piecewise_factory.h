@@ -13,6 +13,7 @@
 #include "daw_exception.h"
 #include "daw_move.h"
 #include "daw_overload.h"
+#include "daw_remove_cvref.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
 #include "daw_visit.h"
@@ -26,10 +27,10 @@
 namespace daw {
 	namespace impl {
 		template<typename T, typename U>
-		remove_cvref_t<T> remove_layer_func( std::variant<T, U> );
+		daw::remove_cvref_t<T> remove_layer_func( std::variant<T, U> );
 
 		template<typename T>
-		remove_cvref_t<T> remove_layer_func( T );
+		daw::remove_cvref_t<T> remove_layer_func( T );
 
 		template<typename T>
 		struct process_args_t {
@@ -40,11 +41,12 @@ namespace daw {
 				return DAW_MOVE( value );
 			}
 
-			template<typename Callable,
-			         std::enable_if_t<
-			           std::is_convertible_v<
-			             decltype( std::declval<remove_cvref_t<Callable>>( )( ) ), T>,
-			           std::nullptr_t> = nullptr>
+			template<
+			  typename Callable,
+			  std::enable_if_t<
+			    std::is_convertible_v<
+			      decltype( std::declval<daw::remove_cvref_t<Callable>>( )( ) ), T>,
+			    std::nullptr_t> = nullptr>
 			constexpr T operator( )( Callable &&f ) const {
 				return std::forward<Callable>( f )( );
 			}

@@ -12,6 +12,7 @@
 #include "cpp_17.h"
 #include "daw_check_exceptions.h"
 #include "daw_move.h"
+#include "daw_remove_cvref.h"
 #include "daw_traits.h"
 #include "daw_visit.h"
 
@@ -24,16 +25,17 @@ namespace daw {
 	namespace impl {
 		template<typename T>
 		struct variant_visitor_t {
-			template<typename U,
-			         std::enable_if_t<std::is_convertible_v<remove_cvref_t<U>, T>,
-			                          std::nullptr_t> = nullptr>
+			template<typename U, std::enable_if_t<
+			                       std::is_convertible_v<daw::remove_cvref_t<U>, T>,
+			                       std::nullptr_t> = nullptr>
 			constexpr T operator( )( U &&result ) const {
 				return static_cast<T>( std::forward<U>( result ) );
 			}
 
-			template<typename U,
-			         std::enable_if_t<not std::is_convertible_v<remove_cvref_t<U>, T>,
-			                          std::nullptr_t> = nullptr>
+			template<
+			  typename U,
+			  std::enable_if_t<not std::is_convertible_v<daw::remove_cvref_t<U>, T>,
+			                   std::nullptr_t> = nullptr>
 			T operator( )( U && ) const {
 				DAW_THROW_OR_TERMINATE_NA( std::bad_variant_access );
 			}

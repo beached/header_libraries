@@ -16,6 +16,7 @@
 #include "daw_empty.h"
 #include "daw_exception.h"
 #include "daw_move.h"
+#include "daw_remove_cvref.h"
 #include "daw_traits.h"
 #include "daw_typeof.h"
 #include "daw_unused.h"
@@ -104,7 +105,7 @@ namespace daw {
 				return m_value == value;
 			}
 		}; // class EqualToImpl
-	}    // namespace utility_details
+	} // namespace utility_details
 	template<typename T>
 	inline constexpr utility_details::EqualToImpl<T> equal_to( T value ) {
 		return utility_details::EqualToImpl<T>( DAW_MOVE( value ) );
@@ -142,7 +143,7 @@ namespace daw {
 				return !m_function( DAW_FWD2( Args, args )... );
 			}
 		}; // class NotImpl
-	}    // namespace utility_details
+	} // namespace utility_details
 
 	template<typename Function>
 	[[nodiscard]] inline constexpr utility_details::NotImpl<Function>
@@ -777,7 +778,7 @@ namespace daw {
 
 	template<typename From>
 	[[nodiscard]] auto as_char_array( From &&from ) noexcept {
-		static_assert( std::is_trivially_copyable_v<remove_cvref_t<From>>,
+		static_assert( std::is_trivially_copyable_v<daw::remove_cvref_t<From>>,
 		               "From type must be trivially copiable" );
 		auto result = std::array<unsigned char, sizeof( From )>{ 0 };
 		memcpy( result.data( ), &from, result.size( ) );

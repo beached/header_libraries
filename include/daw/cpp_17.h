@@ -91,7 +91,7 @@ namespace daw {
 
 	template<typename Function>
 	[[nodiscard]] constexpr auto not_fn( Function &&func ) {
-		using func_t = remove_cvref_t<Function>;
+		using func_t = daw::remove_cvref_t<Function>;
 		return cpp_17_details::not_fn_t<func_t>( DAW_FWD( func ) );
 	}
 

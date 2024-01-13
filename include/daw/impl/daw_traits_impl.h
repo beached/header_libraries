@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/ciso646.h"
+#include "daw/daw_is_detected.h"
 #include "daw/daw_move.h"
 #include "daw/traits/daw_traits_identity.h"
 #include "daw/traits/daw_traits_nth_element.h"

@@ -14,6 +14,7 @@
 #include "daw_enable_if.h"
 #include "daw_move.h"
 #include "daw_pack_element.h"
+#include "daw_remove_cvref.h"
 #include "impl/daw_traits_impl.h"
 #include "traits/daw_traits_conditional.h"
 #include "traits/daw_traits_first_type.h"
@@ -311,7 +312,7 @@ namespace daw::traits {
 			[[maybe_unused]] auto has_op_ge_impl( L const &lhs, R const &rhs, int )
 			  -> std::is_convertible<decltype( lhs >= rhs ), bool>;
 		} // namespace operators
-	}   // namespace traits_details
+	} // namespace traits_details
 
 	namespace operators {
 		template<typename L, typename R = L>
@@ -994,5 +995,5 @@ namespace daw {
 
 	template<typename T>
 	inline constexpr std::size_t const bsizeof =
-	  static_cast<size_t>( sizeof( remove_cvref_t<T> ) * 8U );
+	  static_cast<size_t>( sizeof( daw::remove_cvref_t<T> ) * 8U );
 } // namespace daw

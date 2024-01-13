@@ -8,10 +8,11 @@
 
 #pragma once
 
-#include "../ciso646.h"
-#include "../cpp_17.h"
-#include "../daw_exchange.h"
-#include "../daw_traits.h"
+#include "daw/ciso646.h"
+#include "daw/cpp_17.h"
+#include "daw/daw_exchange.h"
+#include "daw/daw_remove_cvref.h"
+#include "daw/daw_traits.h"
 
 #include <array>
 #include <cassert>
@@ -27,9 +28,6 @@
 namespace daw {
 	template<typename T>
 	using fn_t = std::add_pointer_t<T>;
-
-	template<typename T>
-	using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 
 	namespace input_impl {
 
@@ -222,7 +220,7 @@ namespace daw {
 		template<typename Container,
 		         std::enable_if_t<
 		           (not std::is_rvalue_reference_v<Container> and
-		            not std::is_same_v<InputRange, remove_cvref_t<Container>>),
+		            not std::is_same_v<InputRange, daw::remove_cvref_t<Container>>),
 		           std::nullptr_t> = nullptr>
 		InputRange( Container &&c )
 		  : first( std::begin( c ) )
