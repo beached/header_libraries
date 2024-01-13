@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "cpp_17.h"
-#include "daw_attributes.h"
-#include "impl/daw_traits_impl.h"
+#include "daw/ciso646.h"
+#include "daw/cpp_17.h"
+#include "daw/daw_attributes.h"
+#include "daw/impl/daw_traits_impl.h"
 
 #include <type_traits>
 

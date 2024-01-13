@@ -11,8 +11,8 @@
 #include "daw_attributes.h"
 #include "daw_move.h"
 #include "daw_pack_element.h"
-#include "daw_traits_nth_element.h"
-#include "daw_traits_pack_list.h"
+#include "traits/daw_traits_nth_element.h"
+#include "traits/daw_traits_pack_list.h"
 
 #include <cstddef>
 #include <daw/stdinc/integer_sequence.h>

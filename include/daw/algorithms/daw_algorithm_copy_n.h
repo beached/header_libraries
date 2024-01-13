@@ -9,7 +9,7 @@
 #pragma once
 
 #include "daw/daw_compiler_fixups.h"
-#include "daw/daw_traits_concepts.h"
+#include "daw/traits/daw_traits_concepts.h"
 
 namespace daw::algorithm {
 	/// @brief Copy input range [first, last) to output range [first_out,

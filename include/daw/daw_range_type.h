@@ -11,8 +11,8 @@
 #include "ciso646.h"
 #include "daw_algorithm.h"
 #include "daw_traits.h"
-#include "daw_traits_is_a_type.h"
 #include "daw_utility.h"
+#include "traits/daw_traits_is_a_type.h"
 
 #include <algorithm>
 #include <cassert>

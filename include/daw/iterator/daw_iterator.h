@@ -9,7 +9,7 @@
 #pragma once
 
 #include "daw/ciso646.h"
-#include "daw/daw_traits_concepts.h"
+#include "daw/traits/daw_traits_concepts.h"
 
 namespace daw {
 	template<typename Iterator>

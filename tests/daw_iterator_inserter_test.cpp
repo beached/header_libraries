@@ -7,8 +7,8 @@
 //
 
 #include "daw/daw_benchmark.h"
-#include "daw/daw_traits_concepts.h"
 #include "daw/iterator/daw_inserter.h"
+#include "daw/traits/daw_traits_concepts.h"
 
 #include <algorithm>
 #include <array>
