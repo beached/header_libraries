@@ -39,13 +39,14 @@ namespace daw {
 namespace daw {
 	namespace fnv1a_impl {
 		inline constexpr fnv1a_uint_t fnv_prime =
-		  sizeof( fnv1a_uint_t ) == sizeof( std::uint64_t ) ? 1099511628211ULL
-		                                                    : 16777619UL;
+		  sizeof( fnv1a_uint_t ) == sizeof( std::uint64_t )
+		    ? fnv1a_uint_t{ 1099511628211ULL }
+		    : fnv1a_uint_t{ 16777619UL };
 
 		inline constexpr fnv1a_uint_t fnv_offset =
 		  sizeof( fnv1a_uint_t ) == sizeof( std::uint64_t )
-		    ? 14695981039346656037ULL
-		    : 2166136261UL;
+		    ? fnv1a_uint_t{ 14695981039346656037ULL }
+		    : fnv1a_uint_t{ 2166136261UL };
 
 		template<std::size_t N>
 		struct byte_array {
@@ -70,8 +71,8 @@ namespace daw {
 			for( fnv1a_uint_t n = 0; n < sizeof( Value ); ++n ) {
 				current_hash ^= static_cast<fnv1a_uint_t>(
 				  ( static_cast<fnv1a_uint_t>( value ) &
-				    ( static_cast<fnv1a_uint_t>( 0xFF ) << ( n * 8u ) ) ) >>
-				  ( n * 8u ) );
+				    ( fnv1a_uint_t{ 0xFFU } << ( n * 8U ) ) ) >>
+				  ( n * 8U ) );
 				current_hash *= fnv1a_impl::fnv_prime;
 			}
 			return current_hash;
