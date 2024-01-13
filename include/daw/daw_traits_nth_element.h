@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw_traits_identity.h"
 #include "daw_traits_pack_list.h"
 
 #include <cstddef>
@@ -34,7 +35,8 @@ namespace daw::traits {
 		  nth_type_base<std::index_sequence_for<Ts...>, daw::pack_list<Ts...>>;
 
 		template<std::size_t I, typename T>
-		auto find_leaf_type( nth_type_leaf<I, T> const & ) -> identity<T>;
+		auto find_leaf_type( nth_type_leaf<I, T> const & )
+		  -> daw::traits::identity<T>;
 	} // namespace nth_type_impl
 
 	template<std::size_t Idx, typename... Ts>
