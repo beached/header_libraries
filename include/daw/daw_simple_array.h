@@ -55,6 +55,15 @@ namespace daw {
 			return values;
 		}
 
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer date_end( ) noexcept {
+			return values + static_cast<difference_type>( Size );
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_pointer
+		date_end( ) const noexcept {
+			return values + static_cast<difference_type>( Size );
+		}
+
 		[[nodiscard]] DAW_ATTRIB_INLINE DAW_CONSTEVAL static size_type
 		size( ) noexcept {
 			return Size;
@@ -62,12 +71,12 @@ namespace daw {
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference
 		operator[]( size_type index ) noexcept {
-			return *( values + Size );
+			return *( values + static_cast<difference_type>( index ) );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_reference
 		operator[]( size_type index ) const noexcept {
-			return *( values + Size );
+			return *( values + static_cast<difference_type>( index ) );
 		}
 	};
 
@@ -107,6 +116,15 @@ namespace daw {
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_pointer
 		data( ) const noexcept {
+			return nullptr;
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer date_end( ) noexcept {
+			return nullptr;
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_pointer
+		date_end( ) const noexcept {
 			return nullptr;
 		}
 
