@@ -39,14 +39,13 @@ namespace daw {
 namespace daw {
 	namespace fnv1a_impl {
 		inline constexpr fnv1a_uint_t fnv_prime =
-		  sizeof( fnv1a_uint_t ) == sizeof( std::uint64_t )
-		    ? fnv1a_uint_t{ 1099511628211ULL }
-		    : fnv1a_uint_t{ 16777619UL };
+		  sizeof( fnv1a_uint_t ) == sizeof( std::uint64_t ) ? 1099511628211ULL
+		                                                    : 16777619UL;
 
 		inline constexpr fnv1a_uint_t fnv_offset =
 		  sizeof( fnv1a_uint_t ) == sizeof( std::uint64_t )
-		    ? fnv1a_uint_t{ 14695981039346656037ULL }
-		    : fnv1a_uint_t{ 2166136261UL };
+		    ? 14695981039346656037ULL
+		    : 2166136261UL;
 
 		template<std::size_t N>
 		struct byte_array {
