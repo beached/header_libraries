@@ -19,10 +19,11 @@ int main( ) {
 	{
 		auto foo = std::vector{ 1, 2, 3 };
 		auto const foo_cap = foo.capacity( );
-
+		auto const foo_size = foo.size( );
+		daw_ensure( foo_size == 3 );
 		auto foo_data = daw::extract_from_container( foo );
 		daw_ensure( foo.empty( ) );
-		daw_ensure( foo_data.size( ) == foo_data.size( ) );
+		daw_ensure( foo_data.size( ) == foo_size );
 		daw_ensure( foo_cap == foo_data.capacity( ) );
 		daw_ensure( foo_data.data( )[0] == 1 );
 		daw_ensure( foo_data.data( )[1] == 2 );
