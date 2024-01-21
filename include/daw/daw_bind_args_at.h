@@ -29,9 +29,8 @@ namespace daw {
 		if constexpr( sizeof...( Args ) == 0 ) {
 			return std::tuple<>{ };
 		} else {
-			return std::tuple<
-			  std::decay_t<decltype( std::get<StartN + Is>( std::move( args ) ) )>...>(
-			  std::get<StartN + Is>( std::move( args ) )... );
+			return std::tuple<std::decay_t<decltype( std::get<StartN + Is>( std::move(
+			  args ) ) )>...>( std::get<StartN + Is>( std::move( args ) )... );
 		}
 	}
 

@@ -88,12 +88,13 @@ namespace daw {
 
 		constexpr circular_iterator( Container &container, iterator i ) noexcept
 		  : m_container{ &container }
-		  , m_position{ daw::distance( std::begin( container ), std::move( i ) ) } {}
+		  , m_position{ daw::distance( std::begin( container ), std::move( i ) ) } {
+		}
 
 		constexpr circular_iterator( Container *container, iterator i ) noexcept
 		  : m_container{ container }
-		  , m_position{ daw::distance( std::begin( *container ), std::move( i ) ) } {
-		}
+		  , m_position{
+		      daw::distance( std::begin( *container ), std::move( i ) ) } {}
 
 		constexpr circular_iterator( circular_iterator const &other ) noexcept
 		  : m_container{ other.m_container }

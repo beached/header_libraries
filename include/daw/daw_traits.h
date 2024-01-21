@@ -314,7 +314,7 @@ namespace daw::traits {
 			[[maybe_unused]] auto has_op_ge_impl( L const &lhs, R const &rhs, int )
 			  -> std::is_convertible<decltype( lhs >= rhs ), bool>;
 		} // namespace operators
-	} // namespace traits_details
+	}   // namespace traits_details
 
 	namespace operators {
 		template<typename L, typename R = L>

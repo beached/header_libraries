@@ -125,7 +125,8 @@ namespace daw {
 
 			template<typename... Args>
 			std::string fmt( std::string format_str, Args &&...args ) {
-				return fmt_t{ std::move( format_str ) }( std::forward<Args>( args )... );
+				return fmt_t{ std::move( format_str ) }(
+				  std::forward<Args>( args )... );
 			}
 		} // namespace v1
 		namespace v2 {

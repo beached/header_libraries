@@ -105,7 +105,7 @@ namespace daw {
 				return m_value == value;
 			}
 		}; // class EqualToImpl
-	} // namespace utility_details
+	}    // namespace utility_details
 	template<typename T>
 	inline constexpr utility_details::EqualToImpl<T> equal_to( T value ) {
 		return utility_details::EqualToImpl<T>( std::move( value ) );
@@ -143,7 +143,7 @@ namespace daw {
 				return !m_function( DAW_FWD2( Args, args )... );
 			}
 		}; // class NotImpl
-	} // namespace utility_details
+	}    // namespace utility_details
 
 	template<typename Function>
 	[[nodiscard]] inline constexpr utility_details::NotImpl<Function>

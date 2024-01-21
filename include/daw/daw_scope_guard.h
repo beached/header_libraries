@@ -66,8 +66,8 @@ namespace daw {
 		}
 
 		DAW_ATTRIB_INLINE DAW_SG_CXDTOR ~ScopeGuard( ) noexcept(
-		  std::is_nothrow_invocable_v<FunctionType> and
-		  std::is_nothrow_destructible_v<FunctionType> ) {
+		  std::is_nothrow_invocable_v<FunctionType>
+		    and std::is_nothrow_destructible_v<FunctionType> ) {
 			if( m_function ) {
 				(void)( *m_function )( );
 			}
