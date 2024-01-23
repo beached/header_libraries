@@ -22,12 +22,12 @@ namespace daw {
 
 			template<typename T>
 			constexpr decltype( auto ) operator( )( T &&value ) const {
-				return ( *ptr ) << std::forward<T>( value );
+				return ( *ptr ) << DAW_FWD( value );
 			}
 
 			template<typename T>
 			constexpr decltype( auto ) operator( )( T &&value ) {
-				return ( *ptr ) << std::forward<T>( value );
+				return ( *ptr ) << DAW_FWD( value );
 			}
 		};
 	} // namespace osi_impl

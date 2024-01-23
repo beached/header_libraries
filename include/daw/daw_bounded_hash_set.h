@@ -32,12 +32,12 @@ namespace daw {
 		                                      std::nullptr_t> = nullptr>
 		constexpr set_node_t( K &&k ) noexcept(
 		  std::is_nothrow_constructible_v<Key, K> )
-		  : key( std::forward<K>( k ) ) {}
+		  : key( DAW_FWD( k ) ) {}
 
 		template<typename K>
 		constexpr set_node_t( K &&k, bool HasValue ) noexcept(
 		  std::is_nothrow_constructible_v<Key, K> )
-		  : key( std::forward<K>( k ) )
+		  : key( DAW_FWD( k ) )
 		  , has_value( HasValue ) {}
 	};
 

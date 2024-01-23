@@ -89,7 +89,7 @@ namespace daw {
 		template<typename KeyType>
 		static constexpr hash_value_t hash_fn( KeyType &&key ) noexcept {
 			auto const hash =
-			  daw::generic_hash<HashSize>( std::forward<KeyType>( key ) );
+			  daw::generic_hash<HashSize>( DAW_FWD( key ) );
 			auto const divisor =
 			  ( std::numeric_limits<hash_value_t>::max )( ) -
 			  impl::fixed_lookup_sentinals::fixed_lookup_sentinals_size;
@@ -143,7 +143,7 @@ namespace daw {
 
 		template<typename Key>
 		constexpr hash_value_t find_existing( Key &&key ) const {
-			auto const hash = hash_fn( std::forward<Key>( key ) );
+			auto const hash = hash_fn( DAW_FWD( key ) );
 			auto const is_found = lookup( hash );
 			daw::exception::daw_throw_on_false(
 			  is_found, "Attempt to access an undefined key" );
@@ -152,7 +152,7 @@ namespace daw {
 
 		template<typename Key>
 		constexpr hash_value_t insert( Key &&key, Value value ) {
-			auto const hash = hash_fn( std::forward<Key>( key ) );
+			auto const hash = hash_fn( DAW_FWD( key ) );
 			auto const is_found = lookup( hash );
 			daw::exception::daw_throw_on_true(
 			  !is_found and is_found.position == m_hashes.size( ),
@@ -172,12 +172,12 @@ namespace daw {
 
 		template<typename Key>
 		constexpr const_reference operator[]( Key &&key ) const {
-			return m_values[find_existing( std::forward<Key>( key ) )];
+			return m_values[find_existing( DAW_FWD( key ) )];
 		}
 
 		template<typename Key>
 		constexpr reference operator[]( Key &&key ) {
-			auto const hash = hash_fn( std::forward<Key>( key ) );
+			auto const hash = hash_fn( DAW_FWD( key ) );
 			auto const is_found = lookup( hash );
 			daw::exception::daw_throw_on_true(
 			  !is_found and is_found.position == m_hashes.size( ),
@@ -188,7 +188,7 @@ namespace daw {
 
 		template<typename Key>
 		constexpr bool exists( Key &&key ) const noexcept {
-			auto const hash = hash_fn( std::forward<Key>( key ) );
+			auto const hash = hash_fn( DAW_FWD( key ) );
 			return static_cast<bool>( lookup( hash ) );
 		}
 	};

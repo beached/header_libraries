@@ -637,7 +637,7 @@ namespace daw {
 			pointer p = m_begin + ( position - begin( ) );
 			if( m_end < endcap( ) ) {
 				if( p == m_end ) {
-					construct_one_at_end( std::forward<Args>( args )... );
+					construct_one_at_end( DAW_FWD( args )... );
 				} else {
 					auto tmp = temp_value<value_type, Allocator>(
 					  alloc( ), DAW_FWD2( Args, args )... );
@@ -1097,7 +1097,7 @@ namespace daw {
 			allocator_type &a = alloc( );
 			auto v = split_buffer<value_type, allocator_type &>(
 			  recommend( size( ) + 1 ), size( ), a );
-			// v.push_back(std::forward<_Up>(x));
+			// v.push_back(DAW_FWD(x));
 			alloc_traits::construct( a, std::to_address( v.end_ ), DAW_FWD2( U, x ) );
 			DAW_UNSAFE_BUFFER_FUNC_START
 			++v.end_;
@@ -1110,7 +1110,7 @@ namespace daw {
 			allocator_type &a = alloc( );
 			auto v = split_buffer<value_type, allocator_type &>(
 			  recommend( size( ) + 1 ), size( ), a );
-			//    v.emplace_back(std::forward<Args>(args)...);
+			//    v.emplace_back(DAW_FWD(args)...);
 			alloc_traits::construct( a, std::to_address( v.end_ ),
 			                         DAW_FWD2( Args, args )... );
 			DAW_UNSAFE_BUFFER_FUNC_START

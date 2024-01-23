@@ -22,11 +22,11 @@ namespace daw {
 		if constexpr( std::is_aggregate_v<T> ) {
 			return ::new(
 			  const_cast<void *>( static_cast<const volatile void *>( p ) ) )
-			  T{ std::forward<Args>( args )... };
+			  T{ DAW_FWD( args )... };
 		} else {
 			return ::new(
 			  const_cast<void *>( static_cast<const volatile void *>( p ) ) )
-			  T( std::forward<Args>( args )... );
+			  T( DAW_FWD( args )... );
 		}
 	}
 #else

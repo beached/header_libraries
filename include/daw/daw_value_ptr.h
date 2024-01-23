@@ -62,7 +62,7 @@ namespace daw {
 		  , enable_copy_constructor<T>( traits_details::non_constructor{ } )
 		  , enable_copy_assignment<T>( traits_details::non_constructor{ } )
 		  , m_value(
-		      std::make_unique<value_type>( std::forward<Args>( args )... ) ) {}
+		      std::make_unique<value_type>( DAW_FWD( args )... ) ) {}
 
 		template<
 		  typename U, typename... Args,
@@ -74,7 +74,7 @@ namespace daw {
 		  std::is_nothrow_constructible_v<value_type, Args...> ) {
 
 			auto result = value_ptr<value_type>( std::nullopt );
-			result.m_value = std::make_unique<U>( std::forward<Args>( args )... );
+			result.m_value = std::make_unique<U>( DAW_FWD( args )... );
 			return result;
 		}
 
@@ -140,9 +140,9 @@ namespace daw {
 		         std::enable_if_t<traits::is_callable_v<value_type, Args...>,
 		                          std::nullptr_t> = nullptr>
 		decltype( auto ) operator( )( Args &&...args ) noexcept(
-		  noexcept( m_value->operator( )( std::forward<Args>( args )... ) ) ) {
+		  noexcept( m_value->operator( )( DAW_FWD( args )... ) ) ) {
 
-			return m_value->operator( )( std::forward<Args>( args )... );
+			return m_value->operator( )( DAW_FWD( args )... );
 		}
 
 		~value_ptr( ) noexcept( std::is_nothrow_destructible_v<value_type> ) =
@@ -339,7 +339,7 @@ namespace std {
 
 		template<typename Arg>
 		size_t operator( )( Arg &&arg ) const {
-			return std::hash<T>{ }( *std::forward<Arg>( arg ) );
+			return std::hash<T>{ }( *DAW_FWD( arg ) );
 		}
 	};
 } // namespace std

@@ -24,14 +24,14 @@ namespace daw {
 		template<typename T, typename Arg>
 		constexpr void assign_to( T *ptr, Arg &&arg ) noexcept(
 		  noexcept( T( std::declval<Arg &&>( ) ) ) ) {
-			*ptr = std::forward<Arg>( arg );
+			*ptr = DAW_FWD( arg );
 		}
 
 		template<typename T, typename Arg, typename... Args>
 		constexpr void assign_to( T *ptr, Arg &&arg, Args &&...args ) noexcept(
 		  noexcept( T( std::declval<Arg &&>( ) ) ) ) {
-			*ptr = std::forward<Arg>( arg );
-			assign_to( ++ptr, std::forward<Args>( args )... );
+			*ptr = DAW_FWD( arg );
+			assign_to( ++ptr, DAW_FWD( args )... );
 		}
 	} // namespace details
 
@@ -82,7 +82,7 @@ namespace daw {
 		  std::declval<carray>( ).ptr( ), std::declval<Args &&>( )... ) ) )
 		  : m_data{ } {
 
-			details::assign_to( ptr( ), std::forward<Args>( args )... );
+			details::assign_to( ptr( ), DAW_FWD( args )... );
 		}
 
 		~carray( ) noexcept = default;

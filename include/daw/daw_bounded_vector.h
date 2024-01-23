@@ -12,6 +12,7 @@
 #include "cpp_17.h"
 #include "daw_algorithm.h"
 #include "daw_bounded_array.h"
+#include "daw_construct_a.h"
 #include "daw_math.h"
 #include "daw_move.h"
 #include "daw_swap.h"
@@ -260,7 +261,7 @@ namespace daw {
 				do_move_to_front( );
 			}
 			m_stack[m_index] =
-			  daw::construct_a<value_type>( std::forward<Args>( args )... );
+			  daw::construct_a<value_type>( DAW_FWD( args )... );
 			++m_index;
 		}
 

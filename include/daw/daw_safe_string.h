@@ -80,7 +80,7 @@ namespace daw {
 	                       SanitizeFunction &&sanitize_function ) {
 		return basic_safe_string<SanitizeFunction, charT, traits, Alloc>{
 		  std::move( unsafe_string ),
-		  std::forward<SanitizeFunction>( sanitize_function ) };
+		  DAW_FWD( sanitize_function ) };
 	}
 
 	template<typename SanitizeFunction, typename charT,
@@ -89,6 +89,6 @@ namespace daw {
 	auto make_safe_string( charT const *const unsafe_cstring,
 	                       SanitizeFunction &&sanitize_function ) {
 		return basic_safe_string<SanitizeFunction, charT, traits, Alloc>{
-		  unsafe_cstring, std::forward<SanitizeFunction>( sanitize_function ) };
+		  unsafe_cstring, DAW_FWD( sanitize_function ) };
 	}
 } // namespace daw

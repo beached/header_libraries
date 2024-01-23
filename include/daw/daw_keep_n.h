@@ -35,18 +35,18 @@ namespace daw {
 			template<typename... Args>
 			constexpr decltype( auto ) operator( )( Args &&...args ) {
 				if constexpr( Order == keep_n_order::ascending ) {
-					return func( std::forward<Args>( args )... );
+					return func( DAW_FWD( args )... );
 				} else {
-					return not func( std::forward<Args>( args )... );
+					return not func( DAW_FWD( args )... );
 				}
 			}
 
 			template<typename... Args>
 			constexpr decltype( auto ) operator( )( Args &&...args ) const {
 				if constexpr( Order == keep_n_order::ascending ) {
-					return func( std::forward<Args>( args )... );
+					return func( DAW_FWD( args )... );
 				} else {
-					return not func( std::forward<Args>( args )... );
+					return not func( DAW_FWD( args )... );
 				}
 			}
 		};

@@ -157,7 +157,7 @@ namespace daw::math {
 	                                     not std::is_signed_v<UnsignedInteger>>,
 	                          std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr UnsignedInteger abs( UnsignedInteger &&v ) noexcept {
-		return std::forward<UnsignedInteger>( v );
+		return DAW_FWD( v );
 	}
 
 	template<typename T>

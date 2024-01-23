@@ -50,7 +50,7 @@ namespace daw {
 
 		template<typename T>
 		constexpr bit_iterator &operator=( T &&val ) {
-			m_bit( std::forward<T>( val ) );
+			m_bit( DAW_FWD( val ) );
 			return *this;
 		}
 
@@ -72,6 +72,6 @@ namespace daw {
 	///
 	template<typename Iterator>
 	constexpr auto make_bit_iterator( Iterator &&it ) {
-		return bit_iterator<Iterator>( std::forward<Iterator>( it ) );
+		return bit_iterator<Iterator>( DAW_FWD( it ) );
 	}
 } // namespace daw

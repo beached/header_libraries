@@ -20,7 +20,7 @@ template<typename T, typename... Args>
 [[nodiscard]] T *new_throw( Args &&...args ) {
 	std::unique_ptr<T> result;
 	try {
-		result = std::make_unique<T>( std::forward<Args>( args )... );
+		result = std::make_unique<T>( DAW_FWD( args )... );
 	} catch( ... ) { std::rethrow_exception( std::current_exception( ) ); }
 	daw::exception::daw_throw_on_false( result, "Error allocating" );
 	return result.release( );

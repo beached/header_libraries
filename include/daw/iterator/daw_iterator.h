@@ -16,6 +16,6 @@ namespace daw {
 	constexpr std::move_iterator<Iterator> make_move_iterator( Iterator &&i ) {
 		traits::is_iterator_test<Iterator>( );
 
-		return std::move_iterator<Iterator>( std::forward<Iterator>( i ) );
+		return std::move_iterator<Iterator>( DAW_FWD( i ) );
 	}
 } // namespace daw

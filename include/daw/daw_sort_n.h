@@ -738,7 +738,7 @@ namespace daw {
 	         RandomOutputIterator first_out, Compare &&comp = Compare{ } ) {
 
 		auto last_out = daw::algorithm::copy( first_in, last_in, first_out );
-		daw::sort( first_out, last_out, std::forward<Compare>( comp ) );
+		daw::sort( first_out, last_out, DAW_FWD( comp ) );
 		return last_out;
 	}
 
@@ -794,7 +794,7 @@ namespace daw {
 
 		auto last_out =
 		  sort_n_details::counting_sort( first_in, last_in, first_out, comp );
-		daw::sort( first_out, last_out, std::forward<Compare>( comp ) );
+		daw::sort( first_out, last_out, DAW_FWD( comp ) );
 		return last_out;
 	}
 } // namespace daw

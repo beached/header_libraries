@@ -85,7 +85,7 @@ namespace daw {
 				clear( );
 			}
 			type = data_types::type_nothing;
-			value0 = std::forward<T>( value );
+			value0 = DAW_FWD( value );
 			type = data_types::type_0;
 		}
 
@@ -98,7 +98,7 @@ namespace daw {
 				clear( );
 			}
 			type = data_types::type_nothing;
-			value1 = std::forward<T>( value );
+			value1 = DAW_FWD( value );
 			type = data_types::type_1;
 		}
 

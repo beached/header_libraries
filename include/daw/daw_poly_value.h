@@ -54,14 +54,14 @@ namespace daw {
 		                       BaseClass, daw::remove_cvref_t<T>>> = nullptr>
 		poly_value( T &&value )
 		  : m_ptr(
-		      std::make_unique<daw::remove_cvref_t<T>>( std::forward<T>( value ) ) )
+		      std::make_unique<daw::remove_cvref_t<T>>( DAW_FWD( value ) ) )
 		  , m_copier(
 		      poly_value_impl::make_copier<BaseClass, daw::remove_cvref_t<T>>( ) ) {
 		}
 
 		template<typename T, typename... Args>
 		poly_value( construct_emplace_t<T>, Args &&...args )
-		  : m_ptr( std::make_unique<T>( std::forward<Args>( args )... ) )
+		  : m_ptr( std::make_unique<T>( DAW_FWD( args )... ) )
 		  , m_copier( poly_value_impl::make_copier<BaseClass, T>( ) ) {}
 
 		poly_value( )
@@ -108,7 +108,7 @@ namespace daw {
 		                       BaseClass, daw::remove_cvref_t<T>>> = nullptr>
 		poly_value &operator=( T &&rhs ) {
 			m_ptr =
-			  std::make_unique<daw::remove_cvref_t<T>>( std::forward<T>( rhs ) );
+			  std::make_unique<daw::remove_cvref_t<T>>( DAW_FWD( rhs ) );
 			m_copier =
 			  poly_value_impl::make_copier<BaseClass, daw::remove_cvref_t<T>>( );
 			return *this;
@@ -123,7 +123,7 @@ namespace daw {
 		template<typename T, typename D,
 		         daw::enable_when_t<std::is_base_of_v<BaseClass, T>> = nullptr>
 		poly_value( T *other, D &&deleter )
-		  : m_ptr( std::unique_ptr<T>( other ), std::forward<D>( deleter ) )
+		  : m_ptr( std::unique_ptr<T>( other ), DAW_FWD( deleter ) )
 		  , m_copier( poly_value_impl::make_copier<BaseClass, T>( ) ) {}
 
 		template<typename T,
@@ -174,6 +174,6 @@ namespace daw {
 	template<typename BaseClass, typename ChildClass = BaseClass,
 	         typename... Args>
 	poly_value<BaseClass> make_poly_value( Args &&...args ) {
-		return { construct_emplace<ChildClass>, std::forward<Args>( args )... };
+		return { construct_emplace<ChildClass>, DAW_FWD( args )... };
 	}
 } // namespace daw

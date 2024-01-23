@@ -47,7 +47,7 @@ namespace daw {
 				    alloc_traits::propagate_on_container_move_assignment::value,
 				  "Unsupported allocator" );
 				if constexpr( alloc_traits::is_always_equal::value ) {
-					return { };
+					return alloc_type( );
 				} else {
 					return std::move(
 					  *static_cast<alloc_type *>( m_capacity.second( ) ) );
@@ -55,9 +55,9 @@ namespace daw {
 			}
 
 			constexpr pointer take_buffer( ) {
-				auto ret = std::exchange( m_first, pointer{ } );
-				m_last = pointer{ };
-				m_capacity.first( ) = pointer{ };
+				auto ret = std::exchange( m_first, pointer( ) );
+				m_last = pointer( );
+				m_capacity.first( ) = pointer( );
 				return ret;
 			}
 
@@ -93,15 +93,19 @@ namespace daw {
 		template<typename T, typename Alloc>
 		struct std_vector_layout_impl {
 			static_assert( not std::is_same_v<T, bool>, "bad instance" );
+
 			template<typename A>
 			using alloc_traits_t = typename __gnu_cxx::__alloc_traits<A>;
+
 			using allocator_type = Alloc;
 			using allocator_traits = alloc_traits_t<allocator_type>;
 			using rebound_allocator_type =
 			  typename allocator_traits::template rebind<T>::other;
 			using rebound_allocator_traits = alloc_traits_t<rebound_allocator_type>;
 			using pointer = typename rebound_allocator_traits::pointer;
+
 			static_assert( not std::is_same_v<T, bool>, "bad instance" );
+
 			struct impl_type : rebound_allocator_type {
 				pointer m_first;
 				pointer m_last;
@@ -114,6 +118,7 @@ namespace daw {
 			using pointer = typename std_vector_layout_impl<T, Alloc>::pointer;
 			using base = typename std_vector_layout_impl<T, Alloc>::impl_type;
 			using alloc_traits = std::allocator_traits<Alloc>;
+
 			using alloc_type =
 			  typename std_vector_layout_impl<T, Alloc>::rebound_allocator_type;
 
@@ -138,9 +143,9 @@ namespace daw {
 			}
 
 			constexpr pointer take_buffer( ) {
-				auto ret = std::exchange( base::m_first, pointer{ } );
-				base::m_last = pointer{ };
-				base::m_capacity = pointer{ };
+				auto ret = std::exchange( base::m_first, pointer( ) );
+				base::m_last = pointer( );
+				base::m_capacity = pointer( );
 				return ret;
 			}
 

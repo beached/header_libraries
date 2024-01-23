@@ -73,10 +73,10 @@ namespace daw {
 	  applier_t<Invokable>,
 	  decltype( std::tuple_cat(
 	    split_args<0, N::value>( std::forward_as_tuple(
-	      std::forward<Args>( std::declval<Args>( ) )... ) ),
+	      DAW_FWD( std::declval<Args>( ) )... ) ),
 	    std::declval<TpArgs>( ),
 	    split_args<N::value, sizeof...( Args )>( std::forward_as_tuple(
-	      std::forward<Args>( std::declval<Args>( ) )... ) ) ) )>;
+	      DAW_FWD( std::declval<Args>( ) )... ) ) ) )>;
 
 	template<size_t N, typename Invokable, typename TpArgs, typename... Args>
 	inline constexpr bool can_call_v =
@@ -90,10 +90,10 @@ namespace daw {
 	inline constexpr bool is_nothrow_callable_v = noexcept( std::apply(
 	  std::declval<Invokable>( ),
 	  std::tuple_cat( split_args<0, N>( std::forward_as_tuple(
-	                    std::forward<Args>( std::declval<Args>( ) )... ) ),
+	                    DAW_FWD( std::declval<Args>( ) )... ) ),
 	                  std::declval<TpArgs>( ),
 	                  split_args<N, sizeof...( Args )>( std::forward_as_tuple(
-	                    std::forward<Args>( std::declval<Args>( ) )... ) ) ) ) );
+	                    DAW_FWD( std::declval<Args>( ) )... ) ) ) ) );
 
 	template<std::size_t N, typename Invokable, typename TpArgs>
 	struct bind_args_at_fn {
@@ -108,10 +108,10 @@ namespace daw {
 			return std::apply(
 			  func,
 			  std::tuple_cat( split_args<0, N>( std::forward_as_tuple(
-			                    std::forward<decltype( args )>( args )... ) ),
+			                    DAW_FWD( args )... ) ),
 			                  tp_args,
 			                  split_args<N, sizeof...( Args )>( std::forward_as_tuple(
-			                    std::forward<decltype( args )>( args )... ) ) ) );
+			                    DAW_FWD( args )... ) ) ) );
 		}
 
 		template<typename... Args,
@@ -123,10 +123,10 @@ namespace daw {
 			return std::apply(
 			  func,
 			  std::tuple_cat( split_args<0, N>( std::forward_as_tuple(
-			                    std::forward<decltype( args )>( args )... ) ),
+			                    DAW_FWD( args )... ) ),
 			                  tp_args,
 			                  split_args<N, sizeof...( Args )>( std::forward_as_tuple(
-			                    std::forward<decltype( args )>( args )... ) ) ) );
+			                    DAW_FWD( args )... ) ) ) );
 		}
 	};
 
@@ -134,7 +134,7 @@ namespace daw {
 	constexpr auto bind_args_at( Invokable &&func, Args &&...args ) {
 		return bind_args_at_fn<N, daw::remove_cvref_t<Invokable>,
 		                       std::tuple<std::decay_t<Args>...>>{
-		  std::forward<Invokable>( func ),
-		  std::tuple<std::decay_t<Args>...>( std::forward<Args>( args )... ) };
+		  DAW_FWD( func ),
+		  std::tuple<std::decay_t<Args>...>( DAW_FWD( args )... ) };
 	}
 } // namespace daw

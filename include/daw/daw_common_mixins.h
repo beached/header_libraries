@@ -66,7 +66,7 @@ namespace daw::mixins {
 		template<typename... Args>
 		void emplace( iterator where, Args &&...args ) {
 			return derived( ).container( ).emplace( where,
-			                                        std::forward<Args>( args )... );
+			                                        DAW_FWD( args )... );
 		}
 
 		[[nodiscard]] size_type size( ) const {
@@ -94,7 +94,7 @@ namespace daw::mixins {
 
 		template<typename... Args>
 		void emplace_back( Args &&...args ) {
-			this->emplace( this->end( ), std::forward<Args>( args )... );
+			this->emplace( this->end( ), DAW_FWD( args )... );
 		}
 
 		[[nodiscard]] typename base_t::reference

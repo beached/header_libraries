@@ -160,7 +160,7 @@ namespace daw {
 		                    Splitter &&splitter ) noexcept
 		  : m_data{ first, last }
 		  , m_position{ first, last }
-		  , m_splitter{ std::forward<Splitter>( splitter ) } {
+		  , m_splitter{ DAW_FWD( splitter ) } {
 
 			m_position.end( ) = find_next( );
 		}
@@ -170,7 +170,7 @@ namespace daw {
 		  daw::required<daw::traits::is_container_like_v<Container>> = nullptr>
 		constexpr split_it( Container &container, Splitter &&splitter ) noexcept
 		  : split_it( std::begin( container ), std::end( container ),
-		              std::forward<Splitter>( splitter ) ) {}
+		              DAW_FWD( splitter ) ) {}
 
 		constexpr split_it( ) noexcept
 		  : m_data{ { }, {} }
@@ -391,7 +391,7 @@ namespace daw {
 		                    Splitter &&splitter ) noexcept
 		  : m_data{ first, last }
 		  , m_position{ first, last }
-		  , m_splitter{ std::forward<Splitter>( splitter ) } {
+		  , m_splitter{ DAW_FWD( splitter ) } {
 
 			m_position.end( ) = find_next( );
 		}
@@ -401,7 +401,7 @@ namespace daw {
 		  daw::required<daw::traits::is_container_like_v<Container>> = nullptr>
 		constexpr split_it( Container &container, Splitter &&splitter ) noexcept
 		  : split_it( std::begin( container ), std::end( container ),
-		              std::forward<Splitter>( splitter ) ) {}
+		              DAW_FWD( splitter ) ) {}
 
 		constexpr split_it( ) noexcept
 		  : m_data{ { }, {} }
@@ -569,7 +569,7 @@ namespace daw {
 	constexpr auto make_split_it( String &sv, Splitter &&splitter ) noexcept {
 		using IterT = DAW_TYPEOF( std::begin( sv ) );
 		auto result = split_it<IterT, Splitter>{
-		  std::begin( sv ), std::end( sv ), std::forward<Splitter>( splitter ) };
+		  std::begin( sv ), std::end( sv ), DAW_FWD( splitter ) };
 		return result;
 	}
 

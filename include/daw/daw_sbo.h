@@ -8,6 +8,7 @@
 #pragma once
 
 #include "ciso646.h"
+#include "daw_move.h"
 
 #include <cassert>
 #include <cstddef>
@@ -75,11 +76,11 @@ namespace daw {
 			assert( engaged == engaged_types::none );
 			if constexpr( sizeof( base_type ) <= storage_size ) {
 				if constexpr( std::is_aggregate_v<base_type> ) {
-					auto *result = new( &data ) base_type{ std::forward<T>( value ) };
+					auto *result = new( &data ) base_type{ DAW_FWD( value ) };
 					engaged = engaged_types::local;
 					return result;
 				} else {
-					auto *result = new( &data ) base_type( std::forward<T>( value ) );
+					auto *result = new( &data ) base_type( DAW_FWD( value ) );
 					engaged = engaged_types::local;
 					return result;
 				}
@@ -93,7 +94,7 @@ namespace daw {
 				new( &data ) base_type_ptr{ ptr };
 				// Construct new value from passed value at location from allocator
 				std::allocator_traits<Allocator>::construct( allocator, ptr,
-				                                             std::forward<T>( value ) );
+				                                             DAW_FWD( value ) );
 				engaged = engaged_types::allocated;
 				return ptr;
 			}

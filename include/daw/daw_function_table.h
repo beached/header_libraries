@@ -68,17 +68,17 @@ namespace daw {
 		static constexpr R apply_at_impl( size_t idx, T &&t, Args &&...args ) {
 			if( idx == I ) {
 				if constexpr( is_t_callable_v<I, T, Args...> ) {
-					return sfinae_get<I>( std::forward<T>( t ) )(
-					  std::forward<Args>( args )... );
+					return sfinae_get<I>( DAW_FWD( t ) )(
+					  DAW_FWD( args )... );
 				} else if constexpr( allow_empty and is_t_callable_v<I, T> ) {
-					return sfinae_get<I>( std::forward<T>( t ) )( );
+					return sfinae_get<I>( DAW_FWD( t ) )( );
 				} else {
 					std::abort( );
 				}
 			}
 			if constexpr( is_t_in_range_v<I + 1, T> ) {
 				return apply_at_impl<R, allow_empty, I + 1>(
-				  idx, std::forward<T>( t ), std::forward<Args>( args )... );
+				  idx, DAW_FWD( t ), DAW_FWD( args )... );
 			}
 			std::abort( );
 		}
@@ -88,15 +88,15 @@ namespace daw {
 			if( idx == I ) {
 				if constexpr( std::is_assignable_v<decltype( std::get<I>( t ) ),
 				                                   Value> ) {
-					std::get<I>( t ) = std::forward<Value>( v );
+					std::get<I>( t ) = DAW_FWD( v );
 					return;
 				} else {
 					std::abort( );
 				}
 			}
 			if constexpr( is_t_in_range_v<I + 1, T> ) {
-				set_at_impl<I + 1>( idx, std::forward<T>( t ),
-				                    std::forward<Value>( v ) );
+				set_at_impl<I + 1>( idx, DAW_FWD( t ),
+				                    DAW_FWD( v ) );
 				return;
 			}
 			std::abort( );
@@ -121,25 +121,25 @@ namespace daw {
 		template<bool allow_empty = false, typename... Args>
 		constexpr R call( size_t idx, Args &&...args ) const {
 			if constexpr( using_array_v ) {
-				return fns[idx]( std::forward<Args>( args )... );
+				return fns[idx]( DAW_FWD( args )... );
 			} else {
 				return function_table_impl::apply_at_impl<R, allow_empty, 0>(
-				  idx, fns, std::forward<Args>( args )... );
+				  idx, fns, DAW_FWD( args )... );
 			}
 		}
 
 		template<bool allow_empty = false, typename... Args>
 		constexpr R operator( )( size_t idx, Args &&...args ) const {
-			return call( idx, std::forward<Args>( args )... );
+			return call( idx, DAW_FWD( args )... );
 		}
 
 		template<typename Value>
 		constexpr void set( size_t idx, Value &&v ) {
 			if constexpr( using_array_v ) {
-				fns[idx] = std::forward<Value>( v );
+				fns[idx] = DAW_FWD( v );
 			} else {
 				function_table_impl::set_at_impl<0>( idx, fns,
-				                                     std::forward<Value>( v ) );
+				                                     DAW_FWD( v ) );
 			}
 		}
 

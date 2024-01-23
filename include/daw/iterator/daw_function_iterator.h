@@ -39,7 +39,7 @@ namespace daw {
 		           not std::is_same_v<daw::remove_cvref_t<T>, function_iterator>,
 		           std::nullptr_t> = nullptr>
 		constexpr function_iterator &operator=( T &&val ) {
-			(void)m_function( std::forward<T>( val ) );
+			(void)m_function( DAW_FWD( val ) );
 			return *this;
 		}
 
@@ -63,6 +63,6 @@ namespace daw {
 	///
 	template<typename Function>
 	constexpr auto make_function_iterator( Function &&func ) {
-		return function_iterator<Function>( std::forward<Function>( func ) );
+		return function_iterator<Function>( DAW_FWD( func ) );
 	}
 } // namespace daw

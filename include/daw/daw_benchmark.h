@@ -9,22 +9,20 @@
 #pragma once
 
 #include "ciso646.h"
-#include "cpp_17.h"
 #include "daw_check_exceptions.h"
 #include "daw_do_not_optimize.h"
 #include "daw_expected.h"
 #include "daw_move.h"
 #include "daw_string_view.h"
-#include "daw_traits.h"
 
-#include <algorithm>
+#include <array>
 #include <chrono>
-#include <cstdint>
-#include <functional>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <sstream>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 namespace daw {
@@ -583,27 +581,27 @@ namespace daw {
 	}
 
 	namespace benchmark_impl {
-		template<typename T>
-		using detect_streamable =
-		  decltype( std::declval<std::ios &>( ) << std::declval<T const &>( ) );
+		template<typename T, typename = void>
+		inline constexpr bool is_streamable_v = false;
 
 		template<typename T>
-		using is_streamable = daw::is_detected<detect_streamable, T>;
+		inline constexpr bool is_streamable_v<
+		  T, std::void_t<decltype( std::declval<std::ios &>( )
+		                           << std::declval<T const &>( ) )>> = true;
 
-		template<
-		  typename T, typename U,
-		  std::enable_if_t<std::conjunction_v<is_streamable<T>, is_streamable<U>>,
-		                   std::nullptr_t> = nullptr>
+		template<typename T, typename U,
+		         std::enable_if_t<is_streamable_v<T> and is_streamable_v<U>,
+		                          std::nullptr_t> = nullptr>
 		DAW_ATTRIB_NOINLINE void output_expected_error( T &&expected_result,
 		                                                U &&result ) {
 			std::cerr << "Invalid result. Expecting '" << expected_result
 			          << "' but got '" << result << "'\n";
 		}
 
-		template<typename T, typename U,
-		         std::enable_if_t<std::conjunction_v<not_trait<is_streamable<T>>,
-		                                             not_trait<is_streamable<U>>>,
-		                          std::nullptr_t> = nullptr>
+		template<
+		  typename T, typename U,
+		  std::enable_if_t<(not is_streamable_v<T> and not is_streamable_v<U>),
+		                   std::nullptr_t> = nullptr>
 		DAW_ATTRIB_NOINLINE constexpr void output_expected_error( T &&, U && ) {
 			std::cerr << "Invalid or unexpected result\n";
 		}

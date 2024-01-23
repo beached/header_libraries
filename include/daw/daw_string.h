@@ -226,7 +226,7 @@ namespace daw::string {
 
 	template<typename String>
 	constexpr decltype( auto ) fmt( String &&fmt ) noexcept {
-		return std::forward<String>( fmt );
+		return DAW_FWD( fmt );
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -423,7 +423,7 @@ namespace daw::string {
 			  std::enable_if_t<daw::is_detected_v<can_construct_string, Args...>,
 			                   std::nullptr_t> = nullptr>
 			BasicString( Args &&...args )
-			  : m_string( std::forward<Args>( args )... ) {}
+			  : m_string( DAW_FWD( args )... ) {}
 
 			BasicString( BasicString const & ) = default;
 

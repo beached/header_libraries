@@ -9,18 +9,12 @@
 #pragma once
 
 #include "ciso646.h"
-#include "cpp_17.h"
-#include "daw_check_exceptions.h"
-#include "daw_exception.h"
 #include "daw_move.h"
-#include "daw_overload.h"
-#include "daw_traits.h"
-#include "daw_utility.h"
+#include "impl/daw_traits_impl.h"
+#include "traits/daw_traits_concepts.h"
 
-#include <cassert>
-#include <cstddef>
+#include <daw/stdinc/move_fwd_exch.h>
 #include <exception>
-#include <stdexcept>
 #include <string>
 #include <system_error>
 #include <type_traits>
@@ -247,7 +241,7 @@ namespace daw {
 		}
 	};
 
-	static_assert( traits::is_regular<expected_t<int>> );
+	static_assert( daw::traits::is_regular<expected_t<int>> );
 
 	template<>
 	struct expected_t<void> {
@@ -403,7 +397,7 @@ namespace daw {
 	[[nodiscard]] expected_t<Result> expected_from_code( Function &&func,
 	                                                     Args &&...args ) {
 		static_assert(
-		  traits::is_callable_convertible_v<Result, Function, Args...>,
+		  daw::traits::is_callable_convertible_v<Result, Function, Args...>,
 		  "Must be able to convert result of func to expected result type" );
 
 		auto result = expected_t<Result>( );

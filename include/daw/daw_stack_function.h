@@ -76,7 +76,7 @@ namespace daw {
 			                   std::nullptr_t> = nullptr>
 			function_storage( Func &&f ) {
 				static_assert( sizeof( std::decay_t<Func> ) <= StorageSize );
-				store( std::forward<Func>( f ) );
+				store( DAW_FWD( f ) );
 			}
 
 			[[nodiscard]] Base *ptr( ) noexcept {
@@ -101,7 +101,7 @@ namespace daw {
 				static_assert( std::is_base_of_v<Base, Func>,
 				               "Can only store children of func_base" );
 				new( &m_data )
-				  daw::remove_cvref_t<std::decay_t<Func>>( std::forward<Func>( f ) );
+				  daw::remove_cvref_t<std::decay_t<Func>>( DAW_FWD( f ) );
 			}
 
 			[[nodiscard]] Base &operator*( ) noexcept {
@@ -164,7 +164,7 @@ namespace daw {
 			                       std::nullptr_t> = nullptr>
 			function_child( F &&func ) noexcept(
 			  std::is_nothrow_constructible_v<Func, F> )
-			  : m_func( std::forward<F>( func ) ) {}
+			  : m_func( DAW_FWD( func ) ) {}
 
 			Result operator( )( FuncArgs... args ) override {
 				daw::exception::precondition_check<std::bad_function_call>( !empty( ) );
@@ -226,7 +226,7 @@ namespace daw {
 #pragma GCC diagnostic pop
 #endif
 			}
-			return { function_child( std::forward<Func>( f ) ) };
+			return { function_child( DAW_FWD( f ) ) };
 		}
 
 		template<size_t Sz, size_t MaxSz>
@@ -255,7 +255,7 @@ namespace daw {
 			func_impl::validate_size<sizeof( std::decay_t<Func> ), MaxSize>( );
 			return func_impl::store_if_not_empty<MaxSize, function_base,
 			                                     function_child<Func>, empty_child>(
-			  std::forward<Func>( f ) );
+			  DAW_FWD( f ) );
 		}
 
 	public:
@@ -298,7 +298,7 @@ namespace daw {
 		                           !std::is_function_v<Func>>,
 		           std::nullptr_t> = nullptr>
 		function( Func &&f )
-		  : m_storage( store_if_not_empty( std::forward<Func>( f ) ) ) {
+		  : m_storage( store_if_not_empty( DAW_FWD( f ) ) ) {
 
 			func_impl::validate_size<sizeof( std::decay_t<Func> ), MaxSize>( );
 			static_assert( std::is_invocable_r_v<Result, Func, FuncArgs...>,
@@ -314,7 +314,7 @@ namespace daw {
 			func_impl::validate_size<sizeof( std::decay_t<Func> ), MaxSize>( );
 			static_assert( std::is_invocable_r_v<Result, Func, FuncArgs...>,
 			               "Function isn't callable with FuncArgs" );
-			m_storage = store_if_not_empty( std::forward<Func>( f ) );
+			m_storage = store_if_not_empty( DAW_FWD( f ) );
 			return *this;
 		}
 
@@ -323,9 +323,9 @@ namespace daw {
 			daw::exception::precondition_check<std::bad_function_call>( !empty( ) );
 			function_base &f = *m_storage;
 			if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
-				f( std::forward<Args>( args )... );
+				f( DAW_FWD( args )... );
 			} else {
-				return f( std::forward<Args>( args )... );
+				return f( DAW_FWD( args )... );
 			}
 		}
 
@@ -334,9 +334,9 @@ namespace daw {
 			daw::exception::precondition_check<std::bad_function_call>( !empty( ) );
 			function_base const &f = *m_storage;
 			if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
-				f( std::forward<Args>( args )... );
+				f( DAW_FWD( args )... );
 			} else {
-				return f( std::forward<Args>( args )... );
+				return f( DAW_FWD( args )... );
 			}
 		}
 

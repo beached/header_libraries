@@ -31,7 +31,7 @@ namespace daw {
 				auto pos = std::lower_bound( std::begin( *ptr ), std::end( *ptr ),
 				                             value, compare );
 				ptr->emplace( std::move( pos ),
-				              std::forward<decltype( value )>( value ) );
+				              DAW_FWD( value ) );
 			}
 		};
 
@@ -45,7 +45,7 @@ namespace daw {
 				auto pos = std::lower_bound( std::begin( *ptr ), std::end( *ptr ),
 				                             value, compare );
 				ptr->emplace( std::move( pos ),
-				              std::forward<decltype( value )>( value ) );
+				              DAW_FWD( value ) );
 			}
 		};
 
@@ -59,7 +59,7 @@ namespace daw {
 				auto const pos = std::lower_bound( std::begin( *ptr ), std::end( *ptr ),
 				                                   value, compare );
 				ptr->emplace( std::move( pos ),
-				              std::forward<decltype( value )>( value ) );
+				              DAW_FWD( value ) );
 			}
 		};
 

@@ -29,7 +29,7 @@ namespace daw {
 			                       std::is_convertible_v<daw::remove_cvref_t<U>, T>,
 			                       std::nullptr_t> = nullptr>
 			constexpr T operator( )( U &&result ) const {
-				return static_cast<T>( std::forward<U>( result ) );
+				return static_cast<T>( DAW_FWD( result ) );
 			}
 
 			template<
