@@ -8,6 +8,7 @@
 
 #include "daw/daw_algorithm.h"
 #include "daw/daw_algorithm_cx.h"
+#include "daw/algorithms/daw_algorithm_find_transform.h"
 #include "daw/daw_benchmark.h"
 
 #include <algorithm>
@@ -907,7 +908,7 @@ constexpr bool adjacent_find_test( ) {
 static_assert( adjacent_find_test( ) );
 
 constexpr bool find_some_test( ) {
-	std::array ary = { 1, 2, 4, 8, 16, 15, 14, 13, 12, 11, 10, 9, 7, 6, 5, 3 };
+	auto ary = std::array{ 1, 2, 4, 8, 16, 15, 14, 13, 12, 11, 10, 9, 7, 6, 5, 3 };
 	auto is_even = []( int i ) -> bool {
 		return i % 2 == 0;
 	};
@@ -932,6 +933,18 @@ constexpr bool find_some_test( ) {
 }
 static_assert( find_some_test( ) );
 
+constexpr bool find_transform_test( ) {
+	auto ary = std::array{ 1, 2, 4, 8, 16, 15, 14, 13, 12, 11, 10, 9, 7, 6, 5, 3 };
+	auto is_even = []( int i ) -> bool {
+		return i % 2 == 0;
+	};
+	auto result = daw::algorithm::find_transform( ary.begin( ), ary.end( ), []( auto v ) { return v*3; }, is_even );  
+	if( not result ) { return false; }
+	if( result.iterator == ary.end( ) ) { return false; }
+	return result.value == 6; 
+}
+static_assert( find_transform_test( ) );
+	
 int main( ) {
 	daw_extract_to_001( );
 }
