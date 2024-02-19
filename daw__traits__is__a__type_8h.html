@@ -62,7 +62,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_bbe37f38b13c9c6d535338573ad492f6.html">daw</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_bbe37f38b13c9c6d535338573ad492f6.html">daw</a></li><li class="navelem"><a class="el" href="dir_fc4c2377355543711e4d00d03323129f.html">traits</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -76,7 +76,7 @@ $(function() {
 <div class="title">daw_traits_is_a_type.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw/daw_traits.h</a>&quot;</code><br />
 <code>#include &lt;deque&gt;</code><br />
 <code>#include &lt;iterator&gt;</code><br />
 <code>#include &lt;list&gt;</code><br />
@@ -208,10 +208,11 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;                                                     \</div>
-<div class="line">  inline constexpr <span class="keywordtype">bool</span> is_##ContainerName##_v = std::is_same_v&lt;           \</div>
+<div class="line">  inline constexpr <span class="keywordtype">bool</span> is_##ContainerName##_v = <a class="code" href="namespacedaw.html#acb5e8e7aae63bd8ce856c22236d80412">std::is_same_v</a>&lt;           \</div>
 <div class="line">    T, std::ContainerName&lt;typename T::key_type, typename T::mapped_type&gt;&gt;; \</div>
 <div class="line">  template&lt;typename T&gt;                                                     \</div>
 <div class="line">  using is_##ContainerName = std::bool_constant&lt;is_##ContainerName##_v&lt;T&gt;&gt;</div>
+<div class="ttc" id="anamespacedaw_html_acb5e8e7aae63bd8ce856c22236d80412"><div class="ttname"><a href="namespacedaw.html#acb5e8e7aae63bd8ce856c22236d80412">daw::is_same_v</a></div><div class="ttdeci">constexpr bool is_same_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits__is__same_8h_source.html#l00015">daw_traits_is_same.h:15</a></div></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="daw__traits__is__a__type_8h_source.html#l00039">39</a> of file <a class="el" href="daw__traits__is__a__type_8h_source.html">daw_traits_is_a_type.h</a>.</p>
 

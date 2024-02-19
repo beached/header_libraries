@@ -74,16 +74,14 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="ciso646_8h_source.html">ciso646.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__exchange_8h_source.html">daw_exchange.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
 <code>#include &lt;array&gt;</code><br />
-<code>#include &lt;optional&gt;</code><br />
-<code>#include &lt;string_view&gt;</code><br />
-<code>#include &lt;tuple&gt;</code><br />
+<code>#include &lt;cstddef&gt;</code><br />
+<code>#include &lt;<a class="el" href="declval_8h_source.html">daw/stdinc/declval.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="remove__cvref_8h_source.html">daw/stdinc/remove_cvref.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="void__t_8h_source.html">daw/stdinc/void_t.h</a>&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
-<code>#include &lt;utility&gt;</code><br />
-<code>#include &lt;variant&gt;</code><br />
 </div>
 <p><a href="daw__swap_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -98,21 +96,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a0a1eca39f212c6c0070e769f5448bfbf"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t N&gt; </td></tr>
 <tr class="memitem:a0a1eca39f212c6c0070e769f5448bfbf"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0a1eca39f212c6c0070e769f5448bfbf">daw::cswap</a> (std::array&lt; T, N &gt; &amp;lhs, std::array&lt; T, N &gt; &amp;rhs) noexcept(std::conjunction_v&lt; std::is_nothrow_move_assignable&lt; T &gt;, std::is_nothrow_move_constructible&lt; T &gt;&gt;)</td></tr>
 <tr class="separator:a0a1eca39f212c6c0070e769f5448bfbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af97756b33fe04c77596cd622a5a80d46"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
-<tr class="memitem:af97756b33fe04c77596cd622a5a80d46"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af97756b33fe04c77596cd622a5a80d46">daw::cswap</a> (std::basic_string_view&lt; Args... &gt; &amp;lhs, std::basic_string_view&lt; Args... &gt; &amp;rhs) noexcept(std::is_nothrow_move_assignable_v&lt; std::basic_string_view&lt; Args... &gt;&gt;)</td></tr>
-<tr class="separator:af97756b33fe04c77596cd622a5a80d46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2667460573691415256f1fa9856a2ac"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ad2667460573691415256f1fa9856a2ac"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad2667460573691415256f1fa9856a2ac">daw::cswap</a> (std::optional&lt; T &gt; &amp;lhs, std::optional&lt; T &gt; &amp;rhs) noexcept(std::is_nothrow_move_assignable_v&lt; std::optional&lt; T &gt;&gt;)</td></tr>
-<tr class="separator:ad2667460573691415256f1fa9856a2ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5944253ecc3d912e3e470e1c4ab17c42"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U &gt; </td></tr>
-<tr class="memitem:a5944253ecc3d912e3e470e1c4ab17c42"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5944253ecc3d912e3e470e1c4ab17c42">daw::cswap</a> (std::pair&lt; T, U &gt; &amp;lhs, std::pair&lt; T, U &gt; &amp;rhs) noexcept(std::is_nothrow_move_assignable_v&lt; std::pair&lt; T, U &gt;&gt;)</td></tr>
-<tr class="separator:a5944253ecc3d912e3e470e1c4ab17c42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4e1c8da5dcac03ef81f872a555ac16e"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
-<tr class="memitem:af4e1c8da5dcac03ef81f872a555ac16e"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af4e1c8da5dcac03ef81f872a555ac16e">daw::cswap</a> (std::tuple&lt; Args... &gt; &amp;lhs, std::tuple&lt; Args... &gt; &amp;rhs) noexcept(std::is_nothrow_move_assignable_v&lt; std::tuple&lt; Args... &gt;&gt;)</td></tr>
-<tr class="separator:af4e1c8da5dcac03ef81f872a555ac16e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13e799214c605ba13733297614ba7431"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
-<tr class="memitem:a13e799214c605ba13733297614ba7431"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a13e799214c605ba13733297614ba7431">daw::cswap</a> (std::variant&lt; Args... &gt; &amp;lhs, std::variant&lt; Args... &gt; &amp;rhs) noexcept(std::is_nothrow_move_assignable_v&lt; std::variant&lt; Args... &gt;&gt;)</td></tr>
-<tr class="separator:a13e799214c605ba13733297614ba7431"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fb1bf9f6c3656ec72f99722ffb8be60"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a8fb1bf9f6c3656ec72f99722ffb8be60"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a8fb1bf9f6c3656ec72f99722ffb8be60">daw::cswap</a> (T &amp;&amp;lhs, T &amp;&amp;rhs) noexcept(std::conjunction_v&lt; std::is_nothrow_move_assignable&lt; T &gt;, std::is_nothrow_move_constructible&lt; T &gt;&gt;)</td></tr>
 <tr class="separator:a8fb1bf9f6c3656ec72f99722ffb8be60"><td class="memSeparator" colspan="2">&#160;</td></tr>

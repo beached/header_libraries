@@ -75,7 +75,10 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="ciso646_8h_source.html">ciso646.h</a>&quot;</code><br />
-<code>#include &lt;type_traits&gt;</code><br />
+<code>#include &quot;<a class="el" href="daw__traits__is__const_8h_source.html">traits/daw_traits_is_const.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__traits__is__rvalue__reference_8h_source.html">traits/daw_traits_is_rvalue_reference.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__traits__remove__cvref_8h_source.html">traits/daw_traits_remove_cvref.h</a>&quot;</code><br />
+<code>#include &lt;<a class="el" href="move__fwd__exch_8h_source.html">daw/stdinc/move_fwd_exch.h</a>&gt;</code><br />
 </div>
 <p><a href="daw__move_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -91,15 +94,15 @@ Macros</h2></td></tr>
 <tr class="separator:a46327bbb47123f9650c3b0e0ce807ec9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92169421367fae95c111acee1e0ebe60"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>(Type,  Value)&#160;&#160;&#160;static_cast&lt;Type &amp;&amp;&gt;( Value )</td></tr>
 <tr class="separator:a92169421367fae95c111acee1e0ebe60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5707fa464976f991a156ac6a583a135c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>(...)</td></tr>
+<tr class="memitem:a5707fa464976f991a156ac6a583a135c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>(...)&#160;&#160;&#160;<a class="el" href="namespacedaw.html#a1e6e3134048f359181163977a2680f31">daw::move</a>( __VA_ARGS__ )</td></tr>
 <tr class="separator:a5707fa464976f991a156ac6a583a135c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2a4ac473f6d839fc2ae732b48a1ec988"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a2a4ac473f6d839fc2ae732b48a1ec988"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::remove_reference&lt; T &gt;::type &amp;&amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a2a4ac473f6d839fc2ae732b48a1ec988">daw::move</a> (T &amp;&amp;value) noexcept</td></tr>
-<tr class="memdesc:a2a4ac473f6d839fc2ae732b48a1ec988"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a value to an rvalue.  <a href="namespacedaw.html#a2a4ac473f6d839fc2ae732b48a1ec988">More...</a><br /></td></tr>
-<tr class="separator:a2a4ac473f6d839fc2ae732b48a1ec988"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e6e3134048f359181163977a2680f31"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a1e6e3134048f359181163977a2680f31"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacedaw_1_1traits.html#a9890952f29617d727dec426e0d937f7f">daw::traits::remove_reference_t</a>&lt; T &gt; &amp;&amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a1e6e3134048f359181163977a2680f31">daw::move</a> (T &amp;&amp;value) noexcept</td></tr>
+<tr class="memdesc:a1e6e3134048f359181163977a2680f31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a value to an rvalue.  <a href="namespacedaw.html#a1e6e3134048f359181163977a2680f31">More...</a><br /></td></tr>
+<tr class="separator:a1e6e3134048f359181163977a2680f31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a46327bbb47123f9650c3b0e0ce807ec9"></a>
@@ -118,7 +121,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__move_8h_source.html#l00037">37</a> of file <a class="el" href="daw__move_8h_source.html">daw_move.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__move_8h_source.html#l00043">43</a> of file <a class="el" href="daw__move_8h_source.html">daw_move.h</a>.</p>
 
 </div>
 </div>
@@ -148,7 +151,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__move_8h_source.html#l00041">41</a> of file <a class="el" href="daw__move_8h_source.html">daw_move.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__move_8h_source.html#l00047">47</a> of file <a class="el" href="daw__move_8h_source.html">daw_move.h</a>.</p>
 
 </div>
 </div>
@@ -163,14 +166,12 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>...</em></td><td>)</td>
-          <td></td>
+          <td>&#160;&#160;&#160;<a class="el" href="namespacedaw.html#a1e6e3134048f359181163977a2680f31">daw::move</a>( __VA_ARGS__ )</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">static_cast&lt;</span>typename std::remove_reference_t&lt;decltype( __VA_ARGS__ )<span class="keyword">&gt;</span> &amp;&amp;&gt;( \</div>
-<div class="line">    __VA_ARGS__ )</div>
-</div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__move_8h_source.html#l00031">31</a> of file <a class="el" href="daw__move_8h_source.html">daw_move.h</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="daw__move_8h_source.html#l00039">39</a> of file <a class="el" href="daw__move_8h_source.html">daw_move.h</a>.</p>
 
 </div>
 </div>

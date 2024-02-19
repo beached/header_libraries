@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['vector_2eh_2936',['vector.h',['../vector_8h.html',1,'']]],
-  ['vector_5falgorithm_2eh_2937',['vector_algorithm.h',['../vector__algorithm_8h.html',1,'']]],
-  ['visitor_2emd_2938',['visitor.md',['../visitor_8md.html',1,'']]]
+  ['min_5fand_5fmax_2eh_3039',['min_and_max.h',['../min__and__max_8h.html',1,'']]],
+  ['move_5ffwd_5fexch_2eh_3040',['move_fwd_exch.h',['../move__fwd__exch_8h.html',1,'']]]
 ];

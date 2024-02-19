@@ -62,7 +62,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_bbe37f38b13c9c6d535338573ad492f6.html">daw</a></li><li class="navelem"><a class="el" href="dir_951974c2b881a217ac43a6fe5744fd51.html">impl</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_bbe37f38b13c9c6d535338573ad492f6.html">daw</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -80,60 +80,66 @@ $(function() {
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;array&gt;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;cstddef&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;type_traits&gt;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw.html">daw</a> {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <span class="keyword">namespace </span>utility_details {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> = <span class="keywordtype">void</span>&gt;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> has_data_end_v = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> has_data_end_v&lt;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;      T, std::void_t&lt;decltype( std::declval&lt;T &amp;&gt;( ).data_end( ) )&gt;&gt; = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> = <span class="keywordtype">void</span>&gt;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> has_data_v = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;      has_data_v&lt;T, std::void_t&lt;decltype( std::declval&lt;T &amp;&gt;( ).data( ) )&gt;&gt; =</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">struct </span>AlwaysNull {};</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  } <span class="comment">// namespace utility_details</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;} <span class="comment">// namespace daw</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw.html">daw</a> {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container&gt;</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="namespacedaw.html#aee6a75fdde7dea280f69268a5792d743">   38</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] <span class="keyword">inline</span> constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a0f03e31066b6770a284ab03028031f79">data</a>( Container &amp;&amp;c ) {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordflow">if</span> constexpr( utility_details::has_data_v&lt;Container&gt; ) {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      <span class="keywordflow">return</span> c.data( );</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#aee6a75fdde7dea280f69268a5792d743">std::data</a>( c );</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container&gt;</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="namespacedaw.html#a8334085cf8eddae54006d0f2d35f1a20">   47</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] <span class="keyword">inline</span> constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#ad3e2fae5811140f8078b28e78a788507">data_end</a>( Container &amp;&amp;c ) {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordflow">if</span> constexpr( utility_details::has_data_end_v&lt;Container&gt; ) {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      <span class="keywordflow">return</span> c.data_end( );</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr( utility_details::has_data_v&lt;Container&gt; ) {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#a55399937a2ff351c8338d513521b00e1">std::next</a>( c.data( ),</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                        <span class="keyword">static_cast&lt;</span>std::ptrdiff_t<span class="keyword">&gt;</span>( std::size( c ) ) );</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#a55399937a2ff351c8338d513521b00e1">std::next</a>( <a class="code" href="namespacedaw.html#aee6a75fdde7dea280f69268a5792d743">std::data</a>( c ),</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                        <span class="keyword">static_cast&lt;</span>std::ptrdiff_t<span class="keyword">&gt;</span>( std::size( c ) ) );</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;} <span class="comment">// namespace daw</span></div>
-<div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="compressed__pair_8h_source.html#l00018">compressed_pair.h:18</a></div></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;cstddef&gt;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="data__access_8h.html">daw/stdinc/data_access.h</a>&gt;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="declval_8h.html">daw/stdinc/declval.h</a>&gt;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="range__access_8h.html">daw/stdinc/range_access.h</a>&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="void__t_8h.html">daw/stdinc/void_t.h</a>&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw.html">daw</a> {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <span class="keyword">namespace </span>utility_details {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> = <span class="keywordtype">void</span>&gt;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> has_data_end_v = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> has_data_end_v&lt;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;      T, std::void_t&lt;decltype( std::declval&lt;T &amp;&gt;( ).data_end( ) )&gt;&gt; = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> = <span class="keywordtype">void</span>&gt;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> has_data_v = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;      has_data_v&lt;T, std::void_t&lt;decltype( std::declval&lt;T &amp;&gt;( ).data( ) )&gt;&gt; =</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">struct </span>AlwaysNull {};</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  } <span class="comment">// namespace utility_details</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;} <span class="comment">// namespace daw</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw.html">daw</a> {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container&gt;</div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="namespacedaw.html#aee6a75fdde7dea280f69268a5792d743">   40</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] <span class="keyword">inline</span> constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a0f03e31066b6770a284ab03028031f79">data</a>( Container &amp;&amp;c ) {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordflow">if</span> constexpr( utility_details::has_data_v&lt;Container&gt; ) {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      <span class="keywordflow">return</span> c.data( );</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#aee6a75fdde7dea280f69268a5792d743">std::data</a>( c );</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    }</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container&gt;</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="namespacedaw.html#a8334085cf8eddae54006d0f2d35f1a20">   49</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] <span class="keyword">inline</span> constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#ad3e2fae5811140f8078b28e78a788507">data_end</a>( Container &amp;&amp;c ) {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordflow">if</span> constexpr( utility_details::has_data_end_v&lt;Container&gt; ) {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      <span class="keywordflow">return</span> c.data_end( );</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr( utility_details::has_data_v&lt;Container&gt; ) {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#a55399937a2ff351c8338d513521b00e1">std::next</a>( c.data( ),</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                        <span class="keyword">static_cast&lt;</span>std::ptrdiff_t<span class="keyword">&gt;</span>( std::size( c ) ) );</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#a55399937a2ff351c8338d513521b00e1">std::next</a>( <a class="code" href="namespacedaw.html#aee6a75fdde7dea280f69268a5792d743">std::data</a>( c ),</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                        <span class="keyword">static_cast&lt;</span>std::ptrdiff_t<span class="keyword">&gt;</span>( std::size( c ) ) );</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    }</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;} <span class="comment">// namespace daw</span></div>
+<div class="ttc" id="adata__access_8h_html"><div class="ttname"><a href="data__access_8h.html">data_access.h</a></div></div>
+<div class="ttc" id="adeclval_8h_html"><div class="ttname"><a href="declval_8h.html">declval.h</a></div></div>
+<div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm__accumulate_8h_source.html#l00017">daw_algorithm_accumulate.h:17</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a0f03e31066b6770a284ab03028031f79"><div class="ttname"><a href="namespacedaw.html#a0f03e31066b6770a284ab03028031f79">daw::data</a></div><div class="ttdeci">constexpr pointer data() noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__contiguous__view_8h_source.html#l00104">daw_contiguous_view.h:104</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a55399937a2ff351c8338d513521b00e1"><div class="ttname"><a href="namespacedaw.html#a55399937a2ff351c8338d513521b00e1">daw::next</a></div><div class="ttdeci">constexpr Iterator next(Iterator it, ptrdiff_t n=1) noexcept</div><div class="ttdoc">Move iterator forward n steps, if n &lt; 0 it is only defined for types that are Bidirectional.</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17__iterator_8h_source.html#l00124">cpp_17_iterator.h:124</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ad3e2fae5811140f8078b28e78a788507"><div class="ttname"><a href="namespacedaw.html#ad3e2fae5811140f8078b28e78a788507">daw::data_end</a></div><div class="ttdeci">constexpr pointer data_end() noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__contiguous__view_8h_source.html#l00112">daw_contiguous_view.h:112</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ad8a64a646f74d139a882242dceee804e"><div class="ttname"><a href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">daw::nodiscard</a></div><div class="ttdeci">constexpr auto nodiscard</div><div class="ttdef"><b>Definition:</b> <a href="daw__view__tags_8h_source.html#l00015">daw_view_tags.h:15</a></div></div>
-<div class="ttc" id="anamespacedaw_html_aee6a75fdde7dea280f69268a5792d743"><div class="ttname"><a href="namespacedaw.html#aee6a75fdde7dea280f69268a5792d743">daw::data</a></div><div class="ttdeci">constexpr auto data(Container &amp;&amp;c)</div><div class="ttdef"><b>Definition:</b> <a href="daw__data__end_8h_source.html#l00038">daw_data_end.h:38</a></div></div>
+<div class="ttc" id="anamespacedaw_html_aee6a75fdde7dea280f69268a5792d743"><div class="ttname"><a href="namespacedaw.html#aee6a75fdde7dea280f69268a5792d743">daw::data</a></div><div class="ttdeci">constexpr auto data(Container &amp;&amp;c)</div><div class="ttdef"><b>Definition:</b> <a href="daw__data__end_8h_source.html#l00040">daw_data_end.h:40</a></div></div>
+<div class="ttc" id="arange__access_8h_html"><div class="ttname"><a href="range__access_8h.html">range_access.h</a></div></div>
+<div class="ttc" id="avoid__t_8h_html"><div class="ttname"><a href="void__t_8h.html">void_t.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -138,7 +138,7 @@ $(function() {
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;          <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        clean( );</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        m_data = <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( rhs.m_data );</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        m_data = <a class="code" href="namespacedaw_1_1algorithm.html#a259123089595aa22d6cfc3b903354a31">std::move</a>( rhs.m_data );</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      }</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
@@ -148,7 +148,7 @@ $(function() {
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                         std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      function_storage( Func &amp;&amp;f ) {</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        static_assert( <span class="keyword">sizeof</span>( std::decay_t&lt;Func&gt; ) &lt;= StorageSize );</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        store( std::forward&lt;Func&gt;( f ) );</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        store( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ) );</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      }</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] Base *ptr( ) noexcept {</div>
@@ -173,7 +173,7 @@ $(function() {
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        static_assert( std::is_base_of_v&lt;Base, Func&gt;,</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                       <span class="stringliteral">&quot;Can only store children of func_base&quot;</span> );</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keyword">new</span>( &amp;m_data )</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;          <a class="code" href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">daw::remove_cvref_t</a>&lt;std::decay_t&lt;Func&gt;&gt;( std::forward&lt;Func&gt;( f ) );</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;          <a class="code" href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">daw::remove_cvref_t</a>&lt;std::decay_t&lt;Func&gt;&gt;( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ) );</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      }</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] Base &amp;<a class="code" href="namespacedaw.html#a78259f271da12df4cf4f23f49e89bdf8">operator*</a>( ) noexcept {</div>
@@ -236,26 +236,26 @@ $(function() {
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                             std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;      function_child( F &amp;&amp;func ) noexcept(</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        std::is_nothrow_constructible_v&lt;Func, F&gt; )</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        : m_func( <a class="code" href="namespacestd.html">std</a>::forward&lt;F&gt;( func ) ) {}</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        : m_func( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( func ) ) {}</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;      Result operator( )( FuncArgs... args ) <span class="keyword">override</span> {</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        daw::exception::precondition_check&lt;std::bad_function_call&gt;( !<a class="code" href="namespacedaw.html#a24bbfb3c6debd133e51134e57c4f3ef0">empty</a>( ) );</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        <span class="keywordflow">if</span> constexpr( std::is_same_v&lt;std::decay_t&lt;Result&gt;, <span class="keywordtype">void</span>&gt; ) {</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;          <span class="comment">// daw::invoke( m_func, DAW_MOVE( args )... );</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        <span class="keywordflow">if</span> constexpr( <a class="code" href="namespacedaw.html#acb5e8e7aae63bd8ce856c22236d80412">std::is_same_v</a>&lt;std::decay_t&lt;Result&gt;, <span class="keywordtype">void</span>&gt; ) {</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;          <span class="comment">// daw::invoke( m_func, std::move( args )... );</span></div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;          m_func( args... );</div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;          <span class="comment">// return daw::invoke( m_func, DAW_MOVE( args )... );</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;          <span class="comment">// return daw::invoke( m_func, std::move( args )... );</span></div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;          <span class="keywordflow">return</span> m_func( args... );</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        }</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;      }</div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;      Result operator( )( FuncArgs... args ) <span class="keyword">const</span> <span class="keyword">override</span> {</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        daw::exception::precondition_check&lt;std::bad_function_call&gt;( !<a class="code" href="namespacedaw.html#a24bbfb3c6debd133e51134e57c4f3ef0">empty</a>( ) );</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        <span class="keywordflow">if</span> constexpr( std::is_same_v&lt;std::decay_t&lt;Result&gt;, <span class="keywordtype">void</span>&gt; ) {</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;          <span class="comment">// daw::invoke( m_func, DAW_MOVE( args )... );</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        <span class="keywordflow">if</span> constexpr( <a class="code" href="namespacedaw.html#acb5e8e7aae63bd8ce856c22236d80412">std::is_same_v</a>&lt;std::decay_t&lt;Result&gt;, <span class="keywordtype">void</span>&gt; ) {</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;          <span class="comment">// daw::invoke( m_func, std::move( args )... );</span></div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;          m_func( args... );</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;          <span class="comment">// return daw::invoke( m_func, DAW_MOVE( args )... );</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;          <span class="comment">// return daw::invoke( m_func, std::move( args )... );</span></div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;          <span class="keywordflow">return</span> m_func( args... );</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        }</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;      }</div>
@@ -298,7 +298,7 @@ $(function() {
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<span class="preprocessor">#pragma GCC diagnostic pop</span></div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;      }</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;      <span class="keywordflow">return</span> { function_child( std::forward&lt;Func&gt;( f ) ) };</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;      <span class="keywordflow">return</span> { function_child( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ) ) };</div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    }</div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="keyword">template</span>&lt;<span class="keywordtype">size_t</span> Sz, <span class="keywordtype">size_t</span> MaxSz&gt;</div>
@@ -327,7 +327,7 @@ $(function() {
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;      func_impl::validate_size&lt;<span class="keyword">sizeof</span>( std::decay_t&lt;Func&gt; ), MaxSize&gt;( );</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;      <span class="keywordflow">return</span> func_impl::store_if_not_empty&lt;MaxSize, function_base,</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                                           function_child&lt;Func&gt;, empty_child&gt;(</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        std::forward&lt;Func&gt;( f ) );</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ) );</div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    }</div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160; </div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;  <span class="keyword">public</span>:</div>
@@ -370,7 +370,7 @@ $(function() {
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;                               !std::is_function_v&lt;Func&gt;&gt;,</div>
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;               std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
 <div class="line"><a name="l00300"></a><span class="lineno"><a class="line" href="classdaw_1_1function_3_01_max_size_00_01_result_07_func_args_8_8_8_08_4.html#aa3931a1c7e27994e0bcc851b82e0bfb5">  300</a></span>&#160;    <span class="keyword">function</span>( Func &amp;&amp;f )</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;      : m_storage( store_if_not_empty( std::forward&lt;Func&gt;( f ) ) ) {</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;      : m_storage( store_if_not_empty( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ) ) ) {</div>
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160; </div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;      func_impl::validate_size&lt;<span class="keyword">sizeof</span>( std::decay_t&lt;Func&gt; ), MaxSize&gt;( );</div>
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;      static_assert( std::is_invocable_r_v&lt;Result, Func, FuncArgs...&gt;,</div>
@@ -386,7 +386,7 @@ $(function() {
 <div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;      func_impl::validate_size&lt;<span class="keyword">sizeof</span>( std::decay_t&lt;Func&gt; ), MaxSize&gt;( );</div>
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;      static_assert( std::is_invocable_r_v&lt;Result, Func, FuncArgs...&gt;,</div>
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                     <span class="stringliteral">&quot;Function isn&#39;t callable with FuncArgs&quot;</span> );</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;      m_storage = store_if_not_empty( std::forward&lt;Func&gt;( f ) );</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;      m_storage = store_if_not_empty( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ) );</div>
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;      <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    }</div>
 <div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160; </div>
@@ -394,10 +394,10 @@ $(function() {
 <div class="line"><a name="l00322"></a><span class="lineno"><a class="line" href="classdaw_1_1function_3_01_max_size_00_01_result_07_func_args_8_8_8_08_4.html#a891a6734d31e40e51f190d5aca64eb70">  322</a></span>&#160;    Result operator( )( Args &amp;&amp;...args ) {</div>
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;      daw::exception::precondition_check&lt;std::bad_function_call&gt;( !<a class="code" href="namespacedaw.html#a24bbfb3c6debd133e51134e57c4f3ef0">empty</a>( ) );</div>
 <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;      function_base &amp;f = *m_storage;</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;      <span class="keywordflow">if</span> constexpr( std::is_same_v&lt;std::decay_t&lt;Result&gt;, <span class="keywordtype">void</span>&gt; ) {</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        f( std::forward&lt;Args&gt;( args )... );</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;      <span class="keywordflow">if</span> constexpr( <a class="code" href="namespacedaw.html#acb5e8e7aae63bd8ce856c22236d80412">std::is_same_v</a>&lt;std::decay_t&lt;Result&gt;, <span class="keywordtype">void</span>&gt; ) {</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        f( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( args )... );</div>
 <div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        <span class="keywordflow">return</span> f( std::forward&lt;Args&gt;( args )... );</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        <span class="keywordflow">return</span> f( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( args )... );</div>
 <div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;      }</div>
 <div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    }</div>
 <div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160; </div>
@@ -405,10 +405,10 @@ $(function() {
 <div class="line"><a name="l00333"></a><span class="lineno"><a class="line" href="classdaw_1_1function_3_01_max_size_00_01_result_07_func_args_8_8_8_08_4.html#a7e31a9199535a306d5f4f0f1701e0380">  333</a></span>&#160;    Result operator( )( Args &amp;&amp;...args ) <span class="keyword">const</span> {</div>
 <div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;      daw::exception::precondition_check&lt;std::bad_function_call&gt;( !<a class="code" href="namespacedaw.html#a24bbfb3c6debd133e51134e57c4f3ef0">empty</a>( ) );</div>
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;      function_base <span class="keyword">const</span> &amp;f = *m_storage;</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;      <span class="keywordflow">if</span> constexpr( std::is_same_v&lt;std::decay_t&lt;Result&gt;, <span class="keywordtype">void</span>&gt; ) {</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        f( std::forward&lt;Args&gt;( args )... );</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;      <span class="keywordflow">if</span> constexpr( <a class="code" href="namespacedaw.html#acb5e8e7aae63bd8ce856c22236d80412">std::is_same_v</a>&lt;std::decay_t&lt;Result&gt;, <span class="keywordtype">void</span>&gt; ) {</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        f( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( args )... );</div>
 <div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        <span class="keywordflow">return</span> f( std::forward&lt;Args&gt;( args )... );</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        <span class="keywordflow">return</span> f( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( args )... );</div>
 <div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;      }</div>
 <div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    }</div>
 <div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160; </div>
@@ -435,19 +435,21 @@ $(function() {
 <div class="ttc" id="adaw__compiler__fixups_8h_html"><div class="ttname"><a href="daw__compiler__fixups_8h.html">daw_compiler_fixups.h</a></div></div>
 <div class="ttc" id="adaw__exception_8h_html"><div class="ttname"><a href="daw__exception_8h.html">daw_exception.h</a></div></div>
 <div class="ttc" id="adaw__move_8h_html"><div class="ttname"><a href="daw__move_8h.html">daw_move.h</a></div></div>
-<div class="ttc" id="adaw__move_8h_html_a5707fa464976f991a156ac6a583a135c"><div class="ttname"><a href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a></div><div class="ttdeci">#define DAW_MOVE(...)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00031">daw_move.h:31</a></div></div>
+<div class="ttc" id="adaw__move_8h_html_a46327bbb47123f9650c3b0e0ce807ec9"><div class="ttname"><a href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a></div><div class="ttdeci">#define DAW_FWD(...)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00043">daw_move.h:43</a></div></div>
 <div class="ttc" id="adaw__traits_8h_html"><div class="ttname"><a href="daw__traits_8h.html">daw_traits.h</a></div></div>
 <div class="ttc" id="adaw__utility_8h_html"><div class="ttname"><a href="daw__utility_8h.html">daw_utility.h</a></div></div>
 <div class="ttc" id="adaw__virtual__base_8h_html"><div class="ttname"><a href="daw__virtual__base_8h.html">daw_virtual_base.h</a></div></div>
-<div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="compressed__pair_8h_source.html#l00018">compressed_pair.h:18</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1algorithm_html_a259123089595aa22d6cfc3b903354a31"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a259123089595aa22d6cfc3b903354a31">daw::algorithm::move</a></div><div class="ttdeci">constexpr OutputIterator move(InputIterator first, LastType const last, OutputIterator first_out) noexcept(noexcept(*first_out=std::move(*first)))</div><div class="ttdoc">Move values from input range [first, last) to output range [first_out, std::distance( first,...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l01176">daw_algorithm.h:1176</a></div></div>
+<div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm__accumulate_8h_source.html#l00017">daw_algorithm_accumulate.h:17</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a24bbfb3c6debd133e51134e57c4f3ef0"><div class="ttname"><a href="namespacedaw.html#a24bbfb3c6debd133e51134e57c4f3ef0">daw::empty</a></div><div class="ttdeci">constexpr bool empty() const noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__contiguous__view_8h_source.html#l00172">daw_contiguous_view.h:172</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a4e45e7a23c667700500d9571f3f99acd"><div class="ttname"><a href="namespacedaw.html#a4e45e7a23c667700500d9571f3f99acd">daw::operator=</a></div><div class="ttdeci">constexpr contiguous_view &amp; operator=(contiguous_view &amp;rhs) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__contiguous__view_8h_source.html#l00053">daw_contiguous_view.h:53</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a5112992f222a66d2d37f7dc33576e913"><div class="ttname"><a href="namespacedaw.html#a5112992f222a66d2d37f7dc33576e913">daw::enable_copy_assignment</a></div><div class="ttdeci">traits_details::delete_copy_assignment_if&lt; not std::is_copy_assignable_v&lt; T &gt; and B &gt; enable_copy_assignment</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits__impl_8h_source.html#l00691">daw_traits_impl.h:692</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a706583b230f3048e069247e646285179"><div class="ttname"><a href="namespacedaw.html#a706583b230f3048e069247e646285179">daw::enable_copy_constructor</a></div><div class="ttdeci">traits_details::delete_copy_constructor_if&lt; not std::is_copy_constructible_v&lt; T &gt; and B &gt; enable_copy_constructor</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits__impl_8h_source.html#l00687">daw_traits_impl.h:688</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a78259f271da12df4cf4f23f49e89bdf8"><div class="ttname"><a href="namespacedaw.html#a78259f271da12df4cf4f23f49e89bdf8">daw::operator*</a></div><div class="ttdeci">constexpr UInt64 operator*(UInt64 lhs, UInt64 rhs) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__uint__types_8h_source.html#l01573">daw_uint_types.h:1573</a></div></div>
-<div class="ttc" id="anamespacedaw_html_aa729fbd4bbf61bf7c5e00caf36b93cd3"><div class="ttname"><a href="namespacedaw.html#aa729fbd4bbf61bf7c5e00caf36b93cd3">daw::enable_move_assignment</a></div><div class="ttdeci">traits_details::delete_move_assignment_if&lt; not std::is_move_assignable_v&lt; T &gt; and B &gt; enable_move_assignment</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits__impl_8h_source.html#l00699">daw_traits_impl.h:700</a></div></div>
-<div class="ttc" id="anamespacedaw_html_ac1fed2bfc329128fd5d8b3b9bb677928"><div class="ttname"><a href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">daw::remove_cvref_t</a></div><div class="ttdeci">std::remove_cv_t&lt; std::remove_reference_t&lt; T &gt; &gt; remove_cvref_t</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00027">cpp_17.h:27</a></div></div>
-<div class="ttc" id="anamespacedaw_html_ac81bd40a2358fd6b4fd3ff6871f7652e"><div class="ttname"><a href="namespacedaw.html#ac81bd40a2358fd6b4fd3ff6871f7652e">daw::enable_move_constructor</a></div><div class="ttdeci">traits_details::delete_move_constructor_if&lt; not std::is_move_constructible_v&lt; T &gt; and B &gt; enable_move_constructor</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits__impl_8h_source.html#l00695">daw_traits_impl.h:696</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a5112992f222a66d2d37f7dc33576e913"><div class="ttname"><a href="namespacedaw.html#a5112992f222a66d2d37f7dc33576e913">daw::enable_copy_assignment</a></div><div class="ttdeci">traits_details::delete_copy_assignment_if&lt; not std::is_copy_assignable_v&lt; T &gt; and B &gt; enable_copy_assignment</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits__impl_8h_source.html#l00655">daw_traits_impl.h:656</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a706583b230f3048e069247e646285179"><div class="ttname"><a href="namespacedaw.html#a706583b230f3048e069247e646285179">daw::enable_copy_constructor</a></div><div class="ttdeci">traits_details::delete_copy_constructor_if&lt; not std::is_copy_constructible_v&lt; T &gt; and B &gt; enable_copy_constructor</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits__impl_8h_source.html#l00651">daw_traits_impl.h:652</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a78259f271da12df4cf4f23f49e89bdf8"><div class="ttname"><a href="namespacedaw.html#a78259f271da12df4cf4f23f49e89bdf8">daw::operator*</a></div><div class="ttdeci">constexpr UInt64 operator*(UInt64 lhs, UInt64 rhs) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__uint__types_8h_source.html#l01572">daw_uint_types.h:1572</a></div></div>
+<div class="ttc" id="anamespacedaw_html_aa729fbd4bbf61bf7c5e00caf36b93cd3"><div class="ttname"><a href="namespacedaw.html#aa729fbd4bbf61bf7c5e00caf36b93cd3">daw::enable_move_assignment</a></div><div class="ttdeci">traits_details::delete_move_assignment_if&lt; not std::is_move_assignable_v&lt; T &gt; and B &gt; enable_move_assignment</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits__impl_8h_source.html#l00663">daw_traits_impl.h:664</a></div></div>
+<div class="ttc" id="anamespacedaw_html_ac1fed2bfc329128fd5d8b3b9bb677928"><div class="ttname"><a href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">daw::remove_cvref_t</a></div><div class="ttdeci">std::remove_cv_t&lt; std::remove_reference_t&lt; T &gt; &gt; remove_cvref_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__remove__cvref_8h_source.html#l00015">daw_remove_cvref.h:15</a></div></div>
+<div class="ttc" id="anamespacedaw_html_ac81bd40a2358fd6b4fd3ff6871f7652e"><div class="ttname"><a href="namespacedaw.html#ac81bd40a2358fd6b4fd3ff6871f7652e">daw::enable_move_constructor</a></div><div class="ttdeci">traits_details::delete_move_constructor_if&lt; not std::is_move_constructible_v&lt; T &gt; and B &gt; enable_move_constructor</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits__impl_8h_source.html#l00659">daw_traits_impl.h:660</a></div></div>
+<div class="ttc" id="anamespacedaw_html_acb5e8e7aae63bd8ce856c22236d80412"><div class="ttname"><a href="namespacedaw.html#acb5e8e7aae63bd8ce856c22236d80412">daw::is_same_v</a></div><div class="ttdeci">constexpr bool is_same_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits__is__same_8h_source.html#l00015">daw_traits_is_same.h:15</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ad8a64a646f74d139a882242dceee804e"><div class="ttname"><a href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">daw::nodiscard</a></div><div class="ttdeci">constexpr auto nodiscard</div><div class="ttdef"><b>Definition:</b> <a href="daw__view__tags_8h_source.html#l00015">daw_view_tags.h:15</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ad8b37b6c283ce451b25949269438de82"><div class="ttname"><a href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">daw::enable_if_t</a></div><div class="ttdeci">std::enable_if_t&lt; B, T &gt; enable_if_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__enable__if_8h_source.html#l00022">daw_enable_if.h:22</a></div></div>
 <div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__bounded__graph_8h_source.html#l00088">daw_bounded_graph.h:88</a></div></div>

@@ -157,7 +157,7 @@ $(function() {
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        clear( );</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      }</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      type = data_types::type_nothing;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      <a class="code" href="classdaw_1_1union__pair__t.html#ad05b94cc5d01ec8d68dc4f2a6137fcd0">value0</a> = std::forward&lt;T&gt;( value );</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      <a class="code" href="classdaw_1_1union__pair__t.html#ad05b94cc5d01ec8d68dc4f2a6137fcd0">value0</a> = <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( value );</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      type = data_types::type_0;</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    }</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
@@ -170,7 +170,7 @@ $(function() {
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        clear( );</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      }</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      type = data_types::type_nothing;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      <a class="code" href="classdaw_1_1union__pair__t.html#a3c845e7912d9dcb8145bc51741966494">value1</a> = std::forward&lt;T&gt;( value );</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      <a class="code" href="classdaw_1_1union__pair__t.html#a3c845e7912d9dcb8145bc51741966494">value1</a> = <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( value );</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      type = data_types::type_1;</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    }</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
@@ -189,7 +189,7 @@ $(function() {
 <div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="classdaw_1_1union__pair__t.html#adf88ba2ec1dc923c4a76c07f5d87238e">  117</a></span>&#160;    constexpr <a class="code" href="classdaw_1_1union__pair__t.html#adf88ba2ec1dc923c4a76c07f5d87238e">union_pair_t</a>( Type0 &amp;&amp;ptr ) noexcept</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;      : type( data_types::type_nothing ) {</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;      store_type0( <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( ptr ) );</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;      store_type0( <a class="code" href="namespacedaw_1_1algorithm.html#a259123089595aa22d6cfc3b903354a31">std::move</a>( ptr ) );</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    }</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
 <div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="classdaw_1_1union__pair__t.html#a59ba32240858ea9dbd94fc5425aa34b5">  123</a></span>&#160;    constexpr <a class="code" href="classdaw_1_1union__pair__t.html#a59ba32240858ea9dbd94fc5425aa34b5">union_pair_t</a>( Type0 <span class="keyword">const</span> &amp;ptr )</div>
@@ -204,7 +204,7 @@ $(function() {
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    }</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
 <div class="line"><a name="l00134"></a><span class="lineno"><a class="line" href="classdaw_1_1union__pair__t.html#a6c89f97c92ff08d030229b659f7f3328">  134</a></span>&#160;    constexpr <a class="code" href="classdaw_1_1union__pair__t.html">union_pair_t</a> &amp;<a class="code" href="classdaw_1_1union__pair__t.html#a6c89f97c92ff08d030229b659f7f3328">operator=</a>( Type0 &amp;&amp;val ) noexcept {</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;      store_type0( <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( val ) );</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;      store_type0( <a class="code" href="namespacedaw_1_1algorithm.html#a259123089595aa22d6cfc3b903354a31">std::move</a>( val ) );</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;      <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    }</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; </div>
@@ -214,14 +214,14 @@ $(function() {
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    }</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
 <div class="line"><a name="l00144"></a><span class="lineno"><a class="line" href="classdaw_1_1union__pair__t.html#a4cbce261e153e9965c50391ed7e267a9">  144</a></span>&#160;    constexpr <a class="code" href="classdaw_1_1union__pair__t.html">union_pair_t</a> &amp;<a class="code" href="classdaw_1_1union__pair__t.html#a4cbce261e153e9965c50391ed7e267a9">operator=</a>( Type1 &amp;&amp;val ) noexcept {</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;      store_type1( <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( val ) );</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;      store_type1( <a class="code" href="namespacedaw_1_1algorithm.html#a259123089595aa22d6cfc3b903354a31">std::move</a>( val ) );</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;      <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    }</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
 <div class="line"><a name="l00149"></a><span class="lineno"><a class="line" href="classdaw_1_1union__pair__t.html#a815b5fced4aa70b608facd9e138eeef8">  149</a></span>&#160;    constexpr <a class="code" href="classdaw_1_1union__pair__t.html#a815b5fced4aa70b608facd9e138eeef8">union_pair_t</a>( Type1 &amp;&amp;ptr ) noexcept</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;      : type( data_types::type_nothing ) {</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;      store_type1( <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( ptr ) );</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;      store_type1( <a class="code" href="namespacedaw_1_1algorithm.html#a259123089595aa22d6cfc3b903354a31">std::move</a>( ptr ) );</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    }</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
 <div class="line"><a name="l00155"></a><span class="lineno"><a class="line" href="classdaw_1_1union__pair__t.html#ac69d51fe4254fe87b027a98285cbb59d">  155</a></span>&#160;    constexpr <a class="code" href="classdaw_1_1union__pair__t.html#ac69d51fe4254fe87b027a98285cbb59d">union_pair_t</a>( Type1 <span class="keyword">const</span> &amp;ptr )</div>
@@ -253,10 +253,10 @@ $(function() {
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;      <span class="keywordflow">switch</span>( other.type ) {</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;      <span class="keywordflow">case</span> data_types::type_0:</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        store_type0( <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( *other.get_type0_ptr( ) ) );</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        store_type0( <a class="code" href="namespacedaw_1_1algorithm.html#a259123089595aa22d6cfc3b903354a31">std::move</a>( *other.get_type0_ptr( ) ) );</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;      <span class="keywordflow">case</span> data_types::type_1:</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        store_type1( <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( *other.get_type1_ptr( ) ) );</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        store_type1( <a class="code" href="namespacedaw_1_1algorithm.html#a259123089595aa22d6cfc3b903354a31">std::move</a>( *other.get_type1_ptr( ) ) );</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;      <span class="keywordflow">case</span> data_types::type_nothing:</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        <a class="code" href="structdaw_1_1nothing.html">nothing</a> = <span class="keyword">nullptr</span>;</div>
@@ -289,10 +289,10 @@ $(function() {
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;      <span class="keywordflow">if</span>( <span class="keyword">this</span> != &amp;rhs ) {</div>
 <div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <span class="keywordflow">switch</span>( rhs.type ) {</div>
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        <span class="keywordflow">case</span> data_types::type_0:</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;          store_type0( <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( *rhs.get_type0_ptr( ) ) );</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;          store_type0( <a class="code" href="namespacedaw_1_1algorithm.html#a259123089595aa22d6cfc3b903354a31">std::move</a>( *rhs.get_type0_ptr( ) ) );</div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;          <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        <span class="keywordflow">case</span> data_types::type_1:</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;          store_type1( <a class="code" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>( *rhs.get_type1_ptr( ) ) );</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;          store_type1( <a class="code" href="namespacedaw_1_1algorithm.html#a259123089595aa22d6cfc3b903354a31">std::move</a>( *rhs.get_type1_ptr( ) ) );</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;          <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        <span class="keywordflow">case</span> data_types::type_nothing:</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;          clear( );</div>
@@ -358,12 +358,13 @@ $(function() {
 <div class="ttc" id="acpp__17_8h_html"><div class="ttname"><a href="cpp__17_8h.html">cpp_17.h</a></div></div>
 <div class="ttc" id="adaw__exception_8h_html"><div class="ttname"><a href="daw__exception_8h.html">daw_exception.h</a></div></div>
 <div class="ttc" id="adaw__move_8h_html"><div class="ttname"><a href="daw__move_8h.html">daw_move.h</a></div></div>
-<div class="ttc" id="adaw__move_8h_html_a5707fa464976f991a156ac6a583a135c"><div class="ttname"><a href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a></div><div class="ttdeci">#define DAW_MOVE(...)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00031">daw_move.h:31</a></div></div>
+<div class="ttc" id="adaw__move_8h_html_a46327bbb47123f9650c3b0e0ce807ec9"><div class="ttname"><a href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a></div><div class="ttdeci">#define DAW_FWD(...)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00043">daw_move.h:43</a></div></div>
 <div class="ttc" id="adaw__unreachable_8h_html"><div class="ttname"><a href="daw__unreachable_8h.html">daw_unreachable.h</a></div></div>
 <div class="ttc" id="adaw__unreachable_8h_html_ac620d8cdac282ebb93827ae13a7b6ee6"><div class="ttname"><a href="daw__unreachable_8h.html#ac620d8cdac282ebb93827ae13a7b6ee6">DAW_UNREACHABLE</a></div><div class="ttdeci">#define DAW_UNREACHABLE()</div><div class="ttdef"><b>Definition:</b> <a href="daw__unreachable_8h_source.html#l00028">daw_unreachable.h:28</a></div></div>
-<div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="compressed__pair_8h_source.html#l00018">compressed_pair.h:18</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a7c1dc6fd4e984f9c98a1208722d03f63"><div class="ttname"><a href="namespacedaw.html#a7c1dc6fd4e984f9c98a1208722d03f63">daw::visit</a></div><div class="ttdeci">constexpr decltype(auto) visit(Variant &amp;&amp;var, Visitors &amp;&amp;...visitors)</div><div class="ttdef"><b>Definition:</b> <a href="daw__visit_8h_source.html#l00359">daw_visit.h:359</a></div></div>
-<div class="ttc" id="astructdaw_1_1nothing_html"><div class="ttname"><a href="structdaw_1_1nothing.html">daw::nothing</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__traits__impl_8h_source.html#l00702">daw_traits_impl.h:702</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1algorithm_html_a259123089595aa22d6cfc3b903354a31"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a259123089595aa22d6cfc3b903354a31">daw::algorithm::move</a></div><div class="ttdeci">constexpr OutputIterator move(InputIterator first, LastType const last, OutputIterator first_out) noexcept(noexcept(*first_out=std::move(*first)))</div><div class="ttdoc">Move values from input range [first, last) to output range [first_out, std::distance( first,...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l01176">daw_algorithm.h:1176</a></div></div>
+<div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm__accumulate_8h_source.html#l00017">daw_algorithm_accumulate.h:17</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a7c1dc6fd4e984f9c98a1208722d03f63"><div class="ttname"><a href="namespacedaw.html#a7c1dc6fd4e984f9c98a1208722d03f63">daw::visit</a></div><div class="ttdeci">constexpr decltype(auto) visit(Variant &amp;&amp;var, Visitors &amp;&amp;...visitors)</div><div class="ttdef"><b>Definition:</b> <a href="daw__visit_8h_source.html#l00360">daw_visit.h:360</a></div></div>
+<div class="ttc" id="astructdaw_1_1nothing_html"><div class="ttname"><a href="structdaw_1_1nothing.html">daw::nothing</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__traits__impl_8h_source.html#l00666">daw_traits_impl.h:666</a></div></div>
 <div class="ttc" id="astructdaw_1_1visit__null__union__pair__exception_html"><div class="ttname"><a href="structdaw_1_1visit__null__union__pair__exception.html">daw::visit_null_union_pair_exception</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__union__pair_8h_source.html#l00023">daw_union_pair.h:23</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

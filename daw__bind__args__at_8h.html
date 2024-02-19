@@ -79,6 +79,7 @@ $(function() {
 <div class="textblock"><code>#include &quot;<a class="el" href="ciso646_8h_source.html">ciso646.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__remove__cvref_8h_source.html">daw_remove_cvref.h</a>&quot;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
 <code>#include &lt;tuple&gt;</code><br />
@@ -102,9 +103,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a4a073230508a838295825171fb1ee2b2"><td class="memTemplParams" colspan="2">template&lt;typename N , typename Invokable , typename TpArgs , typename... Args&gt; </td></tr>
-<tr class="memitem:a4a073230508a838295825171fb1ee2b2"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a4a073230508a838295825171fb1ee2b2">daw::can_call_test</a> = std::is_invocable&lt; applier_t&lt; Invokable &gt;, decltype(std::tuple_cat(split_args&lt; 0, N::value &gt;(std::forward_as_tuple(std::forward&lt; Args &gt;(std::declval&lt; Args &gt;())...)), std::declval&lt; TpArgs &gt;(), split_args&lt; N::value, sizeof...(Args)&gt;(std::forward_as_tuple(std::forward&lt; Args &gt;(std::declval&lt; Args &gt;())...))))&gt;</td></tr>
-<tr class="separator:a4a073230508a838295825171fb1ee2b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab43715bbe2eb8fce4764e8497d347186"><td class="memTemplParams" colspan="2">template&lt;typename N , typename Invokable , typename TpArgs , typename... Args&gt; </td></tr>
+<tr class="memitem:ab43715bbe2eb8fce4764e8497d347186"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ab43715bbe2eb8fce4764e8497d347186">daw::can_call_test</a> = std::is_invocable&lt; applier_t&lt; Invokable &gt;, decltype(std::tuple_cat(split_args&lt; 0, N::value &gt;(std::forward_as_tuple(<a class="el" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>(std::declval&lt; Args &gt;())...)), std::declval&lt; TpArgs &gt;(), split_args&lt; N::value, sizeof...(Args)&gt;(std::forward_as_tuple(<a class="el" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>(std::declval&lt; Args &gt;())...))))&gt;</td></tr>
+<tr class="separator:ab43715bbe2eb8fce4764e8497d347186"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c91012ab0611fd7c2282716018a57e1"><td class="memTemplParams" colspan="2">template&lt;size_t N, typename TpArgs , typename... Args&gt; </td></tr>
 <tr class="memitem:a5c91012ab0611fd7c2282716018a57e1"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5c91012ab0611fd7c2282716018a57e1">daw::enough_args_t</a> = std::bool_constant&lt;((sizeof...(Args)+std::tuple_size_v&lt; TpArgs &gt;) &gt;=N)&gt;</td></tr>
 <tr class="separator:a5c91012ab0611fd7c2282716018a57e1"><td class="memSeparator" colspan="2">&#160;</td></tr>

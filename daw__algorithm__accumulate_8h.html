@@ -62,7 +62,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_bbe37f38b13c9c6d535338573ad492f6.html">daw</a></li><li class="navelem"><a class="el" href="dir_951974c2b881a217ac43a6fe5744fd51.html">impl</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_bbe37f38b13c9c6d535338573ad492f6.html">daw</a></li><li class="navelem"><a class="el" href="dir_c4a3c55cd338b35a1dbd8118f45fc18f.html">algorithms</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -93,9 +93,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a4a2f99ef2a0c36731f352b3f5c0c860a"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator , typename T &gt; </td></tr>
 <tr class="memitem:a4a2f99ef2a0c36731f352b3f5c0c860a"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a4a2f99ef2a0c36731f352b3f5c0c860a">daw::algorithm::accumulate</a> (InputIterator first, InputIterator last, T init) noexcept</td></tr>
 <tr class="separator:a4a2f99ef2a0c36731f352b3f5c0c860a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a944826cf0164d4f289c579cd6668cda5"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator , typename LastType , typename T , typename BinaryOperation  = accum_impl::plus, std::enable_if_t&lt; not accum_impl::is_container_like_v&lt; InputIterator &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
-<tr class="memitem:a944826cf0164d4f289c579cd6668cda5"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a944826cf0164d4f289c579cd6668cda5">daw::algorithm::accumulate</a> (InputIterator first, LastType last, T init, BinaryOperation binary_op=BinaryOperation{ }) noexcept(noexcept(binary_op(<a class="el" href="daw__move_8h.html#a5707fa464976f991a156ac6a583a135c">DAW_MOVE</a>(init), *first)))</td></tr>
-<tr class="separator:a944826cf0164d4f289c579cd6668cda5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3130ecbfae69c607492122e1179773c4"><td class="memTemplParams" colspan="2">template&lt;typename InputIterator , typename LastType , typename T , typename BinaryOperation  = accum_impl::plus, std::enable_if_t&lt; not accum_impl::is_container_like_v&lt; InputIterator &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a3130ecbfae69c607492122e1179773c4"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1algorithm.html#a3130ecbfae69c607492122e1179773c4">daw::algorithm::accumulate</a> (InputIterator first, LastType last, T init, BinaryOperation binary_op=BinaryOperation{ }) noexcept(noexcept(binary_op(std::move(init), *first)))</td></tr>
+<tr class="separator:a3130ecbfae69c607492122e1179773c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -83,11 +83,11 @@ $(function() {
 <code>#include &quot;<a class="el" href="daw__enable__if_8h_source.html">daw_enable_if.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__is__detected_8h_source.html">daw_is_detected.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__conditional_8h_source.html">impl/daw_conditional.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__remove__cvref_8h_source.html">daw_remove_cvref.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__traits__conditional_8h_source.html">traits/daw_traits_conditional.h</a>&quot;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cstring&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
-<code>#include &lt;utility&gt;</code><br />
 </div>
 <p><a href="cpp__17_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -148,9 +148,6 @@ Typedefs</h2></td></tr>
 <tr class="memitem:aa25ae0868ddfa68556dd5c862393a31b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aa25ae0868ddfa68556dd5c862393a31b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa25ae0868ddfa68556dd5c862393a31b">daw::not_trait</a> = std::integral_constant&lt; bool, not T::value &gt;</td></tr>
 <tr class="separator:aa25ae0868ddfa68556dd5c862393a31b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1fed2bfc329128fd5d8b3b9bb677928"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ac1fed2bfc329128fd5d8b3b9bb677928"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">daw::remove_cvref_t</a> = std::remove_cv_t&lt; std::remove_reference_t&lt; T &gt; &gt;</td></tr>
-<tr class="separator:ac1fed2bfc329128fd5d8b3b9bb677928"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>

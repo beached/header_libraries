@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>DAW Header Libraries: daw_conditional.h Source File</title>
+<title>DAW Header Libraries: daw_traits_conditional.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,15 +62,15 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_bbe37f38b13c9c6d535338573ad492f6.html">daw</a></li><li class="navelem"><a class="el" href="dir_951974c2b881a217ac43a6fe5744fd51.html">impl</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_bbe37f38b13c9c6d535338573ad492f6.html">daw</a></li><li class="navelem"><a class="el" href="dir_fc4c2377355543711e4d00d03323129f.html">traits</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">daw_conditional.h</div>  </div>
+<div class="title">daw_traits_conditional.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="daw__conditional_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (c) Darrell Wright</span></div>
+<a href="daw__traits__conditional_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (c) Darrell Wright</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// Distributed under the Boost Software License, Version 1.0. (See accompanying</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)</span></div>
@@ -99,11 +99,11 @@ $(function() {
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  } <span class="comment">// namespace traits_details</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> B, <span class="keyword">typename</span> TrueType, <span class="keyword">typename</span> FalseType&gt;</div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">   30</a></span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a> = <span class="keyword">typename</span> traits_details::select&lt;B&gt;::template type&lt;TrueType, FalseType&gt;;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;}</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="compressed__pair_8h_source.html#l00018">compressed_pair.h:18</a></div></div>
-<div class="ttc" id="anamespacedaw_html_ad0ba831f2a45892800d8f98fe6105f35"><div class="ttname"><a href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">daw::conditional_t</a></div><div class="ttdeci">typename traits_details::select&lt; B &gt;::template type&lt; TrueType, FalseType &gt; conditional_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__conditional_8h_source.html#l00030">daw_conditional.h:30</a></div></div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">   30</a></span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a> =</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">typename</span> traits_details::select&lt;B&gt;::template type&lt;TrueType, FalseType&gt;;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;} <span class="comment">// namespace daw</span></div>
+<div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm__accumulate_8h_source.html#l00017">daw_algorithm_accumulate.h:17</a></div></div>
+<div class="ttc" id="anamespacedaw_html_ad0ba831f2a45892800d8f98fe6105f35"><div class="ttname"><a href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">daw::conditional_t</a></div><div class="ttdeci">typename traits_details::select&lt; B &gt;::template type&lt; TrueType, FalseType &gt; conditional_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits__conditional_8h_source.html#l00030">daw_traits_conditional.h:31</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
