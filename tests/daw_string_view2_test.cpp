@@ -30,13 +30,12 @@ static_assert( std::is_trivially_copyable_v<daw::sv2::string_view> );
 #define daw_expecting( Lhs, Rhs )                                        \
 	do                                                                     \
 		if( ( Lhs ) != ( Rhs ) ) {                                           \
-			throw[] {                                                          \
+			throw [] {                                                         \
 				std::stringstream ss{ };                                         \
 				ss << "Invalid result. Expecting '" #Lhs << " == " #Rhs << "'\n" \
 				   << "File: " << __FILE__ << "\nLine: " << __LINE__;            \
 				return std::logic_error( ss.str( ) );                            \
-			}                                                                  \
-			( );                                                               \
+			}( );                                                              \
 		}                                                                    \
 	while( false )
 #else

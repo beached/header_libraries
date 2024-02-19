@@ -11,7 +11,7 @@
 #include "daw_apply.h"
 #include "daw_move.h"
 #include "daw_traits.h"
-#include "impl/daw_conditional.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <cstddef>
 #include <type_traits>
@@ -39,40 +39,40 @@ namespace daw::impl {
 		struct tuple_value {
 			T m_value;
 
-			constexpr T &get( daw::index_constant<N> ) & noexcept {
+			constexpr T &get( daw::index_constant<N> ) &noexcept {
 				return m_value;
 			}
 
-			constexpr T const &get( daw::index_constant<N> ) const & noexcept {
+			constexpr T const &get( daw::index_constant<N> ) const &noexcept {
 				return m_value;
 			}
 
-			constexpr T &&get( daw::index_constant<N> ) && noexcept {
-				return DAW_MOVE( m_value );
+			constexpr T &&get( daw::index_constant<N> ) &&noexcept {
+				return std::move( m_value );
 			}
 
-			constexpr T const &&get( daw::index_constant<N> ) const && noexcept {
-				return DAW_MOVE( m_value );
+			constexpr T const &&get( daw::index_constant<N> ) const &&noexcept {
+				return std::move( m_value );
 			}
 		};
 
 		template<std::size_t N, typename T>
 		struct tuple_value<N, T, true> : T {
 
-			constexpr T &get( daw::index_constant<N> ) & noexcept {
+			constexpr T &get( daw::index_constant<N> ) &noexcept {
 				return *this;
 			}
 
-			constexpr T const &get( daw::index_constant<N> ) const & noexcept {
+			constexpr T const &get( daw::index_constant<N> ) const &noexcept {
 				return *this;
 			}
 
-			constexpr T &&get( daw::index_constant<N> ) && noexcept {
-				return DAW_MOVE( *this );
+			constexpr T &&get( daw::index_constant<N> ) &&noexcept {
+				return std::move( *this );
 			}
 
-			constexpr T const &&get( daw::index_constant<N> ) const && noexcept {
-				return DAW_MOVE( *this );
+			constexpr T const &&get( daw::index_constant<N> ) const &&noexcept {
+				return std::move( *this );
 			}
 		};
 

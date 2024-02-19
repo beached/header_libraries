@@ -50,12 +50,12 @@ namespace daw {
 		template<typename Arg, typename = std::enable_if_t<
 		                         daw::traits::not_self<Arg, value_t>( )>>
 		heap_value( Arg &&arg )
-		  : m_value{ std::make_unique<value_t>( std::forward<Arg>( arg ) ) } {}
+		  : m_value{ std::make_unique<value_t>( DAW_FWD( arg ) ) } {}
 
 		template<typename Arg, typename... Args>
 		heap_value( Arg &&arg, Args &&...args )
-		  : m_value{ std::make_unique<value_t>( std::forward<Arg>( arg ),
-		                                        std::forward<Args>( args )... ) } {}
+		  : m_value{ std::make_unique<value_t>( DAW_FWD( arg ),
+		                                        DAW_FWD( args )... ) } {}
 
 		void swap( heap_value &rhs ) noexcept {
 			daw::cswap( m_value, rhs.m_value );
@@ -95,22 +95,22 @@ namespace daw {
 
 		template<typename... Args>
 		auto operator[]( Args &&...args ) {
-			return m_value->operator[]( std::forward<Args>( args )... );
+			return m_value->operator[]( DAW_FWD( args )... );
 		}
 
 		template<typename... Args>
 		auto operator[]( Args &&...args ) const {
-			return m_value->operator[]( std::forward<Args>( args )... );
+			return m_value->operator[]( DAW_FWD( args )... );
 		}
 
 		template<typename... Args>
 		auto operator( )( Args &&...args ) {
-			return m_value->operator[]( std::forward<Args>( args )... );
+			return m_value->operator[]( DAW_FWD( args )... );
 		}
 
 		template<typename... Args>
 		auto operator( )( Args &&...args ) const {
-			return m_value->operator[]( std::forward<Args>( args )... );
+			return m_value->operator[]( DAW_FWD( args )... );
 		}
 	};
 

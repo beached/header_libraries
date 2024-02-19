@@ -15,6 +15,7 @@
 #include "daw_exchange.h"
 #include "daw_swap.h"
 
+#include <algorithm>
 #include <memory>
 #include <stdexcept>
 

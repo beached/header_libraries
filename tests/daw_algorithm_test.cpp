@@ -8,6 +8,7 @@
 
 #include "daw/daw_algorithm.h"
 #include "daw/daw_algorithm_cx.h"
+#include "daw/algorithms/daw_algorithm_find_transform.h"
 #include "daw/daw_benchmark.h"
 
 #include <algorithm>
@@ -249,7 +250,9 @@ static_assert( daw_transform_many( ) );
 constexpr bool daw_map_test_001( ) {
 	std::array<int, 6> blah = { 23, 5, 2, -1, 100, -1000 };
 	daw::algorithm::map( blah.cbegin( ), blah.cend( ), blah.begin( ),
-	                     []( auto val ) { return val % 2 == 0 ? 0 : 1; } );
+	                     []( auto val ) {
+		                     return val % 2 == 0 ? 0 : 1;
+	                     } );
 
 	int sum = 0;
 	for( auto v : blah ) {
@@ -279,9 +282,10 @@ static_assert( daw_map_test_002( ) );
 
 constexpr bool daw_reduce_test_001( ) {
 	int blah[6] = { 1, 0, 1, 0, 1, 0 };
-	auto const tst = daw::algorithm::reduce(
-	  blah, daw::next( blah, 6 ), 0,
-	  []( auto lhs, auto rhs ) noexcept { return lhs + rhs; } );
+	auto const tst = daw::algorithm::reduce( blah, daw::next( blah, 6 ), 0,
+	                                         []( auto lhs, auto rhs ) noexcept {
+		                                         return lhs + rhs;
+	                                         } );
 	daw::expecting( 3, tst );
 	return true;
 }
@@ -355,9 +359,22 @@ constexpr bool daw_satisfies_one_test_003( ) {
 	std::array<int, 11> const tst = { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10 };
 
 	auto const ans = daw::algorithm::satisfies_one(
-	  tst.begin( ), tst.end( ), []( auto v ) { return v == 11; },
-	  []( auto v ) { return v == 12; }, []( auto v ) { return v == 13; },
-	  []( auto v ) { return v == 14; }, []( auto v ) { return v == 15; } );
+	  tst.begin( ), tst.end( ),
+	  []( auto v ) {
+		  return v == 11;
+	  },
+	  []( auto v ) {
+		  return v == 12;
+	  },
+	  []( auto v ) {
+		  return v == 13;
+	  },
+	  []( auto v ) {
+		  return v == 14;
+	  },
+	  []( auto v ) {
+		  return v == 15;
+	  } );
 
 	static_assert( ::std::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
 	daw::expecting( !ans );
@@ -369,9 +386,22 @@ constexpr bool daw_satisfies_one_test_004( ) {
 	std::array<int, 11> const tst = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
 	auto const ans = daw::algorithm::satisfies_one(
-	  tst.begin( ), tst.end( ), []( auto v ) { return v == 11; },
-	  []( auto v ) { return v == 12; }, []( auto v ) { return v == 13; },
-	  []( auto v ) { return v == 5; }, []( auto v ) { return v == 15; } );
+	  tst.begin( ), tst.end( ),
+	  []( auto v ) {
+		  return v == 11;
+	  },
+	  []( auto v ) {
+		  return v == 12;
+	  },
+	  []( auto v ) {
+		  return v == 13;
+	  },
+	  []( auto v ) {
+		  return v == 5;
+	  },
+	  []( auto v ) {
+		  return v == 15;
+	  } );
 
 	static_assert( ::std::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
 	daw::expecting( ans );
@@ -383,9 +413,16 @@ constexpr bool daw_satisfies_all_test_001( ) {
 	std::array<int, 11> const tst = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
 	auto const ans = daw::algorithm::satisfies_all(
-	  tst, []( auto const &v ) { return v.size( ) == 11; },
-	  []( auto const &v ) { return v.front( ) == 0; },
-	  []( auto const &v ) { return v.back( ) == 10; } );
+	  tst,
+	  []( auto const &v ) {
+		  return v.size( ) == 11;
+	  },
+	  []( auto const &v ) {
+		  return v.front( ) == 0;
+	  },
+	  []( auto const &v ) {
+		  return v.back( ) == 10;
+	  } );
 
 	static_assert( ::std::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
 	daw::expecting( ans );
@@ -397,9 +434,16 @@ constexpr bool daw_satisfies_all_test_002( ) {
 	std::array<int, 11> const tst = { 0, 1, 2, 3, 4, 6, 7, 8, 9, 10 };
 
 	auto const ans = daw::algorithm::satisfies_all(
-	  tst, []( auto const &v ) { return v.size( ) == 11; },
-	  []( auto const &v ) { return v.front( ) == 0; },
-	  []( auto const &v ) { return v.back( ) == 11; } );
+	  tst,
+	  []( auto const &v ) {
+		  return v.size( ) == 11;
+	  },
+	  []( auto const &v ) {
+		  return v.front( ) == 0;
+	  },
+	  []( auto const &v ) {
+		  return v.back( ) == 11;
+	  } );
 
 	static_assert( ::std::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
 	daw::expecting( !ans );
@@ -411,8 +455,16 @@ constexpr bool daw_satisfies_all_test_003( ) {
 	std::array<int, 6> const tst = { 0, 2, 4, 6, 8, 10 };
 
 	auto const ans = daw::algorithm::satisfies_all(
-	  tst.begin( ), tst.end( ), []( auto v ) { return v < 11; },
-	  []( auto v ) { return v >= 0; }, []( auto v ) { return v % 2 == 0; } );
+	  tst.begin( ), tst.end( ),
+	  []( auto v ) {
+		  return v < 11;
+	  },
+	  []( auto v ) {
+		  return v >= 0;
+	  },
+	  []( auto v ) {
+		  return v % 2 == 0;
+	  } );
 
 	static_assert( ::std::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
 	daw::expecting( ans );
@@ -424,8 +476,16 @@ constexpr bool daw_satisfies_all_test_004( ) {
 	std::array<int, 11> const tst = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
 	auto const ans = daw::algorithm::satisfies_all(
-	  tst.begin( ), tst.end( ), []( auto v ) { return v < 11; },
-	  []( auto v ) { return v >= 0; }, []( auto v ) { return v % 2 == 0; } );
+	  tst.begin( ), tst.end( ),
+	  []( auto v ) {
+		  return v < 11;
+	  },
+	  []( auto v ) {
+		  return v >= 0;
+	  },
+	  []( auto v ) {
+		  return v % 2 == 0;
+	  } );
 
 	static_assert( ::std::is_same_v<bool, daw::remove_cvref_t<decltype( ans )>> );
 	daw::expecting( !ans );
@@ -524,8 +584,12 @@ constexpr bool daw_transform_if_test_001( ) {
 
 	daw::algorithm::transform_if(
 	  a.cbegin( ), a.cend( ), b.data( ),
-	  []( auto const &v ) { return v % 2 == 0; },
-	  []( auto const &v ) { return v - 1; } );
+	  []( auto const &v ) {
+		  return v % 2 == 0;
+	  },
+	  []( auto const &v ) {
+		  return v - 1;
+	  } );
 
 	daw::expecting( daw::algorithm::equal(
 	  b.cbegin( ), b.cend( ), expected_b.cbegin( ), expected_b.cend( ) ) );
@@ -538,8 +602,9 @@ constexpr bool daw_transform_n_test_001( ) {
 	std::array<int, 4> b{ -1, -1, -1, -1 };
 	std::array<int, 4> const expected_b = { 0, 2, 4, 6 };
 
-	daw::algorithm::transform_n( a.cbegin( ), b.data( ), 4,
-	                             []( auto const &v ) { return v * 2; } );
+	daw::algorithm::transform_n( a.cbegin( ), b.data( ), 4, []( auto const &v ) {
+		return v * 2;
+	} );
 
 	daw::expecting( daw::algorithm::equal(
 	  b.cbegin( ), b.cend( ), expected_b.cbegin( ), expected_b.cend( ) ) );
@@ -554,7 +619,9 @@ constexpr bool daw_transform_test_001( ) {
 	                                         12, 14, 16, 18, 20 };
 
 	daw::algorithm::transform( a.cbegin( ), a.cend( ), b.data( ),
-	                           []( auto const &v ) { return v * 2; } );
+	                           []( auto const &v ) {
+		                           return v * 2;
+	                           } );
 
 	daw::expecting( daw::algorithm::equal(
 	  b.cbegin( ), b.cend( ), expected_b.cbegin( ), expected_b.cend( ) ) );
@@ -675,9 +742,10 @@ static_assert( daw_equal_test_005( ) );
 constexpr bool daw_equal_test_006( ) {
 	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	std::array<int, 11> const b = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-	daw::expecting(
-	  daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ), b.cend( ),
-	                         []( auto lhs, auto rhs ) { return lhs == rhs; } ) );
+	daw::expecting( daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ),
+	                                       b.cend( ), []( auto lhs, auto rhs ) {
+		                                       return lhs == rhs;
+	                                       } ) );
 	return true;
 }
 static_assert( daw_equal_test_006( ) );
@@ -685,9 +753,10 @@ static_assert( daw_equal_test_006( ) );
 constexpr bool daw_equal_test_007( ) {
 	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	std::array<int, 11> const b = { 0, 1, 2, 5, 4, 5, 6, 7, 8, 9, 10 };
-	daw::expecting(
-	  !daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ), b.cend( ),
-	                          []( auto lhs, auto rhs ) { return lhs == rhs; } ) );
+	daw::expecting( !daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ),
+	                                        b.cend( ), []( auto lhs, auto rhs ) {
+		                                        return lhs == rhs;
+	                                        } ) );
 	return true;
 }
 static_assert( daw_equal_test_007( ) );
@@ -695,9 +764,10 @@ static_assert( daw_equal_test_007( ) );
 constexpr bool daw_equal_test_008( ) {
 	std::array<int, 11> const a = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	std::array<int, 10> const b = { 0, 1, 3, 4, 5, 6, 7, 8, 9, 10 };
-	daw::expecting(
-	  !daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ), b.cend( ),
-	                          []( auto lhs, auto rhs ) { return lhs == rhs; } ) );
+	daw::expecting( !daw::algorithm::equal( a.cbegin( ), a.cend( ), b.cbegin( ),
+	                                        b.cend( ), []( auto lhs, auto rhs ) {
+		                                        return lhs == rhs;
+	                                        } ) );
 	return true;
 }
 static_assert( daw_equal_test_008( ) );
@@ -744,8 +814,10 @@ constexpr bool daw_minmax_item_test_002( ) {
 	};
 	A a{ 5 };
 	A b{ -100 };
-	auto ans = daw::algorithm::minmax_item(
-	  a, b, []( auto const &lhs, auto const &rhs ) { return lhs.v < rhs.v; } );
+	auto ans =
+	  daw::algorithm::minmax_item( a, b, []( auto const &lhs, auto const &rhs ) {
+		  return lhs.v < rhs.v;
+	  } );
 	daw::expecting( -100, ans.first.v );
 	daw::expecting( 5, ans.second.v );
 	return true;
@@ -759,8 +831,10 @@ constexpr bool cartesian_product_test_001( ) {
 	// Sum of all is 200
 	int sum = 0;
 	daw::algorithm::cartesian_product(
-	  [&sum]( auto... vals ) { sum += ( vals + ... ); }, begin( a ), end( a ),
-	  begin( b ), begin( c ) );
+	  [&sum]( auto... vals ) {
+		  sum += ( vals + ... );
+	  },
+	  begin( a ), end( a ), begin( b ), begin( c ) );
 
 	daw::expecting( 200, sum );
 	return true;
@@ -794,7 +868,9 @@ void daw_extract_to_001( ) {
 
 constexpr bool do_n_1_test( ) {
 	int n = 0;
-	daw::algorithm::do_n<20>( [&n] { ++n; } );
+	daw::algorithm::do_n<20>( [&n] {
+		++n;
+	} );
 	daw::expecting( 20, n );
 	return true;
 }
@@ -802,7 +878,9 @@ static_assert( do_n_1_test( ) );
 
 constexpr bool do_n_2_test( ) {
 	int n = 0;
-	daw::algorithm::do_n( 100, [&n] { ++n; } );
+	daw::algorithm::do_n( 100, [&n] {
+		++n;
+	} );
 	daw::expecting( 100, n );
 	return true;
 }
@@ -821,16 +899,22 @@ static_assert( find_index_test( ) );
 
 constexpr bool adjacent_find_test( ) {
 	std::array ary = { 1, 2, 3, 4 };
-	auto const item = daw::algorithm::adjacent_find(
-	  ary.begin( ), ary.end( ), []( auto lhs, auto rhs ) { return lhs == rhs; } );
+	auto const item = daw::algorithm::adjacent_find( ary.begin( ), ary.end( ),
+	                                                 []( auto lhs, auto rhs ) {
+		                                                 return lhs == rhs;
+	                                                 } );
 	return item == ary.end( );
 }
 static_assert( adjacent_find_test( ) );
 
 constexpr bool find_some_test( ) {
-	std::array ary = { 1, 2, 4, 8, 16, 15, 14, 13, 12, 11, 10, 9, 7, 6, 5, 3 };
-	auto is_even = []( int i ) -> bool { return i % 2 == 0; };
-	auto is_div3 = []( int i ) { return i % 3 == 0; };
+	auto ary = std::array{ 1, 2, 4, 8, 16, 15, 14, 13, 12, 11, 10, 9, 7, 6, 5, 3 };
+	auto is_even = []( int i ) -> bool {
+		return i % 2 == 0;
+	};
+	auto is_div3 = []( int i ) {
+		return i % 3 == 0;
+	};
 	auto result =
 	  daw::algorithm::find_some( ary.begin( ), ary.end( ), is_even, is_div3 );
 	if( result.position != std::next( ary.begin( ), 1 ) ) {
@@ -849,6 +933,18 @@ constexpr bool find_some_test( ) {
 }
 static_assert( find_some_test( ) );
 
+constexpr bool find_transform_test( ) {
+	auto ary = std::array{ 1, 2, 4, 8, 16, 15, 14, 13, 12, 11, 10, 9, 7, 6, 5, 3 };
+	auto is_even = []( int i ) -> bool {
+		return i % 2 == 0;
+	};
+	auto result = daw::algorithm::find_transform( ary.begin( ), ary.end( ), []( auto v ) { return v*3; }, is_even );  
+	if( not result ) { return false; }
+	if( result.iterator == ary.end( ) ) { return false; }
+	return result.value == 6; 
+}
+static_assert( find_transform_test( ) );
+	
 int main( ) {
 	daw_extract_to_001( );
 }

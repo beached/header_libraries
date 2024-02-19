@@ -131,7 +131,7 @@ namespace daw {
 
 			template<typename... Args>
 			void push_back( Args &&...args ) {
-				m_values.push_back( std::forward<Args>( args )... );
+				m_values.push_back( DAW_FWD( args )... );
 			}
 
 			template<typename Value>
@@ -146,12 +146,12 @@ namespace daw {
 
 			template<typename U>
 			decltype( auto ) accumulate( U &&init ) const {
-				return std::accumulate( begin( ), end( ), std::forward<U>( init ) );
+				return std::accumulate( begin( ), end( ), DAW_FWD( init ) );
 			}
 
 			template<typename U, typename BinaryOperator>
 			decltype( auto ) accumulate( U &&init, BinaryOperator oper ) const {
-				return std::accumulate( begin( ), end( ), std::forward<U>( init ),
+				return std::accumulate( begin( ), end( ), DAW_FWD( init ),
 				                        oper );
 			}
 
@@ -344,14 +344,14 @@ namespace daw {
 			template<typename UniformRandomNumberGenerator>
 			CollectionRange &shuffle( UniformRandomNumberGenerator &&urng ) {
 				std::shuffle( begin( ), end( ),
-				              std::forward<UniformRandomNumberGenerator>( urng ) );
+				              DAW_FWD( urng ) );
 				return *this;
 			}
 
 			template<typename UniformRandomNumberGenerator>
 			decltype( auto ) shuffle( UniformRandomNumberGenerator &&urng ) const {
 				return make_range_reference( *this ).shuffle(
-				  std::forward<UniformRandomNumberGenerator>( urng ) );
+				  DAW_FWD( urng ) );
 			}
 
 			CollectionRange &shuffle( ) {
@@ -402,7 +402,7 @@ namespace daw {
 		template<typename Arg, typename... Args>
 		decltype( auto ) make_range_collection( Arg &&arg, Args &&...args ) {
 			return daw::range::impl::make_range_collection(
-			  std::forward<Arg>( arg ), std::forward<Args>( args )... );
+			  DAW_FWD( arg ), DAW_FWD( args )... );
 		}
 
 		namespace details {
@@ -427,14 +427,14 @@ namespace daw {
 		namespace impl {
 			template<typename Arg, typename... Args>
 			decltype( auto ) from( std::true_type, Arg &&arg, Args &&...args ) {
-				return make_range_reference( std::forward<Arg>( arg ),
-				                             std::forward<Args>( args )... );
+				return make_range_reference( DAW_FWD( arg ),
+				                             DAW_FWD( args )... );
 			}
 
 			template<typename Arg, typename... Args>
 			decltype( auto ) from( std::false_type, Arg &&arg, Args &&...args ) {
-				return make_range_collection( std::forward<Arg>( arg ),
-				                              std::forward<Args>( args )... );
+				return make_range_collection( DAW_FWD( arg ),
+				                              DAW_FWD( args )... );
 			}
 
 		} // namespace impl
@@ -442,14 +442,14 @@ namespace daw {
 		template<typename Arg, typename... Args>
 		decltype( auto ) from( Arg &&arg, Args &&...args ) {
 			return impl::from( typename std::is_const<Arg>::type{ },
-			                   std::forward<Arg>( arg ),
-			                   std::forward<Args>( args )... );
+			                   DAW_FWD( arg ),
+			                   DAW_FWD( args )... );
 		}
 
 		template<typename Arg, typename... Args>
 		auto from_mutable( Arg &&arg, Args &&...args ) {
-			return impl::from( std::false_type( ), std::forward<Arg>( arg ),
-			                   std::forward<Args>( args )... );
+			return impl::from( std::false_type( ), DAW_FWD( arg ),
+			                   DAW_FWD( args )... );
 		}
 
 		template<typename OStream, typename T,

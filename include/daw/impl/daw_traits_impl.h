@@ -9,12 +9,18 @@
 #pragma once
 
 #include "daw/ciso646.h"
+#include "daw/daw_is_detected.h"
 #include "daw/daw_move.h"
+#include "daw/traits/daw_traits_identity.h"
+#include "daw/traits/daw_traits_nth_element.h"
+#include "daw/traits/daw_traits_pack_list.h"
 
 #include <cstddef>
-#include <iterator>
+#include <daw/stdinc/data_access.h>
+#include <daw/stdinc/declval.h>
+#include <daw/stdinc/iterator_traits.h>
+#include <daw/stdinc/range_access.h>
 #include <type_traits>
-#include <utility>
 
 namespace daw {
 	namespace traits {
@@ -402,7 +408,7 @@ namespace daw {
 
 			explicit constexpr void_function( Function &&func ) noexcept(
 			  std::is_nothrow_move_constructible_v<Function> )
-			  : function( DAW_MOVE( func ) ) {}
+			  : function( std::move( func ) ) {}
 
 			explicit constexpr operator bool( ) noexcept(
 			  noexcept( static_cast<bool>( std::declval<Function>( ) ) ) ) {
@@ -416,7 +422,7 @@ namespace daw {
 			constexpr void operator( )( Args &&...args ) noexcept(
 			  traits::is_nothrow_callable_v<Function, Args...> ) {
 
-				function( DAW_FWD2( Args, args )... );
+				function( DAW_FWD( args )... );
 			}
 		};
 
@@ -433,7 +439,7 @@ namespace daw {
 
 			explicit constexpr void_function( Function &&func ) noexcept(
 			  std::is_nothrow_move_constructible_v<Function> )
-			  : function( DAW_MOVE( func ) ) {}
+			  : function( std::move( func ) ) {}
 
 			explicit constexpr operator bool( ) noexcept(
 			  noexcept( static_cast<bool>( std::declval<Function>( ) ) ) ) {
@@ -446,60 +452,18 @@ namespace daw {
 			                          std::nullptr_t> = nullptr>
 			constexpr void operator( )( Args &&...args ) noexcept(
 			  traits::is_nothrow_callable_v<Function, Args...> ) {
-				function( DAW_FWD2( Args, args )... );
+				function( DAW_FWD( args )... );
 			}
 		};
 
 	} // namespace traits_details
 
 	template<typename Function>
-	[[nodiscard]] constexpr auto
-	make_void_function( Function &&func ) noexcept( noexcept(
-	  traits_details::void_function<Function>( DAW_FWD2( Function, func ) ) ) ) {
+	[[nodiscard]] constexpr auto make_void_function( Function &&func ) noexcept(
+	  noexcept( traits_details::void_function<Function>( DAW_FWD( func ) ) ) ) {
 
-		return traits_details::void_function<Function>(
-		  DAW_FWD2( Function, func ) );
+		return traits_details::void_function<Function>( DAW_FWD( func ) );
 	}
-
-	template<typename... Args>
-	struct pack_list {};
-
-	namespace traits {
-		template<typename T>
-		struct identity {
-			using type = T;
-		};
-
-#if DAW_HAS_BUILTIN( __type_pack_element )
-		template<std::size_t I, typename... Ts>
-		using nth_type = __type_pack_element<I, Ts...>;
-#else
-		namespace nth_type_impl {
-			template<std::size_t I, typename T>
-			struct nth_type_leaf {};
-
-			template<typename TPack, typename IPack>
-			struct nth_type_base;
-
-			template<typename... Ts, std::size_t... Is>
-			struct nth_type_base<std::index_sequence<Is...>, pack_list<Ts...>>
-			  : nth_type_leaf<Is, Ts>... {};
-
-			template<typename... Ts>
-			using nth_type_impl =
-			  nth_type_base<std::index_sequence_for<Ts...>, pack_list<Ts...>>;
-
-			template<std::size_t I, typename T>
-			auto find_leaf_type( nth_type_leaf<I, T> const & ) -> identity<T>;
-		} // namespace nth_type_impl
-
-		template<std::size_t Idx, typename... Ts>
-		using nth_type = typename decltype( nth_type_impl::find_leaf_type<Idx>(
-		  std::declval<nth_type_impl::nth_type_impl<Ts...>>( ) ) )::type;
-#endif
-		template<std::size_t I, typename... Ts>
-		using nth_element = nth_type<I, Ts...>;
-	} // namespace traits
 
 	template<size_t N, typename... Args>
 	using type_n_t = traits::nth_element<N, Args...>;

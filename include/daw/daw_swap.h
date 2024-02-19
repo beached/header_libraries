@@ -9,85 +9,55 @@
 #pragma once
 
 #include "ciso646.h"
-#include "cpp_17.h"
 #include "daw_exchange.h"
 #include "daw_move.h"
 
 #include <array>
-#include <optional>
-#include <string_view>
-#include <tuple>
+#include <cstddef>
+#include <daw/stdinc/declval.h>
+#include <daw/stdinc/remove_cvref.h>
+#include <daw/stdinc/void_t.h>
 #include <type_traits>
-#include <utility>
-#include <variant>
 
 namespace daw {
 	namespace swap_details {
+		template<typename T, typename U = T, typename = void>
+		inline constexpr bool has_member_swap_v = false;
+
 		template<typename T, typename U>
-		using has_swap_test =
-		  decltype( std::declval<T &>( ).swap( std::declval<U &>( ) ) );
+		inline constexpr bool
+		  has_member_swap_v<T, U,
+		                    std::void_t<decltype( std::declval<T &>( ).swap(
+		                      std::declval<U &>( ) ) )>> = true;
 
-		template<typename T, typename U = T>
-		inline constexpr bool has_member_swap_v =
-		  daw::is_detected_v<has_swap_test, T, U>;
+		template<typename T, typename U = T, typename = void>
+		inline constexpr bool has_adl_swap_v = false;
+
+		template<typename T, typename U>
+		inline constexpr bool
+		  has_adl_swap_v<T, U,
+		                 std::void_t<decltype( swap(
+		                   std::declval<T &>( ), std::declval<U &>( ) ) )>> = true;
 	} // namespace swap_details
-
-	template<typename T, typename U>
-	constexpr void cswap( std::pair<T, U> &lhs, std::pair<T, U> &rhs ) noexcept(
-	  std::is_nothrow_move_assignable_v<std::pair<T, U>> ) {
-		auto tmp = DAW_MOVE( lhs );
-		lhs = daw::exchange( rhs, DAW_MOVE( tmp ) );
-	}
-
-	template<typename... Args>
-	constexpr void
-	cswap( std::tuple<Args...> &lhs, std::tuple<Args...> &rhs ) noexcept(
-	  std::is_nothrow_move_assignable_v<std::tuple<Args...>> ) {
-		auto tmp = DAW_MOVE( lhs );
-		lhs = daw::exchange( rhs, DAW_MOVE( tmp ) );
-	}
-
-	template<typename... Args>
-	constexpr void
-	cswap( std::variant<Args...> &lhs, std::variant<Args...> &rhs ) noexcept(
-	  std::is_nothrow_move_assignable_v<std::variant<Args...>> ) {
-		auto tmp = DAW_MOVE( lhs );
-		lhs = daw::exchange( rhs, DAW_MOVE( tmp ) );
-	}
-
-	template<typename... Args>
-	constexpr void
-	cswap( std::basic_string_view<Args...> &lhs,
-	       std::basic_string_view<Args...>
-	         &rhs ) noexcept( std::
-	                            is_nothrow_move_assignable_v<
-	                              std::basic_string_view<Args...>> ) {
-		auto tmp = DAW_MOVE( lhs );
-		lhs = daw::exchange( rhs, DAW_MOVE( tmp ) );
-	}
-
-	template<typename T>
-	constexpr void cswap( std::optional<T> &lhs, std::optional<T> &rhs ) noexcept(
-	  std::is_nothrow_move_assignable_v<std::optional<T>> ) {
-		auto tmp = DAW_MOVE( lhs );
-		lhs = daw::exchange( rhs, DAW_MOVE( tmp ) );
-	}
 
 	template<typename T>
 	constexpr void cswap( T &&lhs, T &&rhs ) noexcept(
 	  std::conjunction_v<std::is_nothrow_move_assignable<T>,
 	                     std::is_nothrow_move_constructible<T>> ) {
-		static_assert( !std::is_const_v<std::remove_reference_t<T>>,
+		static_assert( not std::is_const_v<std::remove_reference_t<T>>,
 		               "Cannot swap const values" );
 		if constexpr( std::is_trivial_v<std::remove_reference_t<T>> ) {
 			auto tmp = lhs;
 			lhs = daw::exchange( rhs, tmp );
 		} else if constexpr( std::is_scalar_v<std::remove_reference_t<T>> ) {
-			auto tmp = DAW_MOVE( lhs );
-			lhs = daw::exchange( DAW_MOVE( rhs ), DAW_MOVE( tmp ) );
+			auto tmp = std::move( lhs );
+			lhs = daw::exchange( std::move( rhs ), std::move( tmp ) );
 		} else if constexpr( swap_details::has_member_swap_v<
 		                       std::remove_reference_t<T>> ) {
 			lhs.swap( rhs );
+		} else if constexpr( swap_details::has_adl_swap_v<
+		                       std::remove_reference_t<T>> ) {
+			swap( lhs, rhs );
 		} else {
 			using std::swap;
 			swap( lhs, rhs );
@@ -99,9 +69,9 @@ namespace daw {
 	iter_swap( ForwardIterator1 lhs, ForwardIterator2 rhs ) noexcept(
 	  std::conjunction_v<std::is_nothrow_move_assignable<decltype( *lhs )>,
 	                     std::is_nothrow_move_assignable<decltype( *rhs )>> ) {
-		auto tmp = DAW_MOVE( *lhs );
-		*lhs = DAW_MOVE( *rhs );
-		*rhs = DAW_MOVE( tmp );
+		auto tmp = std::move( *lhs );
+		*lhs = std::move( *rhs );
+		*rhs = std::move( tmp );
 	}
 
 	template<typename ForwardIterator1, typename ForwardIterator2>

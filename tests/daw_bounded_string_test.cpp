@@ -122,13 +122,17 @@ namespace daw {
 
 	void daw_bounded_string_find_first_of_if_001( ) {
 		daw::bounded_string const a = "abcdefghijklm";
-		auto pos = a.find_first_of_if( []( auto c ) { return c == 'c'; } );
+		auto pos = a.find_first_of_if( []( auto c ) {
+			return c == 'c';
+		} );
 		daw::expecting( 2U, pos );
 	}
 
 	void daw_bounded_string_find_first_not_of_if_001( ) {
 		daw::bounded_string const a = "abcdefghijklm";
-		auto pos = a.find_first_not_of_if( []( auto c ) { return c < 'c'; } );
+		auto pos = a.find_first_not_of_if( []( auto c ) {
+			return c < 'c';
+		} );
 		daw::expecting( 2U, pos );
 	}
 
@@ -368,8 +372,9 @@ namespace daw {
 		{
 			char result[11];
 
-			daw::expecting_exception<std::out_of_range>(
-			  [&]( ) { view.copy( result, 11, 11 ); } );
+			daw::expecting_exception<std::out_of_range>( [&]( ) {
+				view.copy( result, 11, 11 );
+			} );
 		}
 
 		puts( "Copies entire string" );
@@ -443,8 +448,9 @@ namespace daw {
 		}
 
 		puts( "Throws std::out_of_range if pos > size" );
-		daw::expecting_exception<std::out_of_range>(
-		  [&view]( ) { view.substr( 15 ); } );
+		daw::expecting_exception<std::out_of_range>( [&view]( ) {
+			view.substr( 15 );
+		} );
 	}
 
 	//----------------------------------------------------------------------------

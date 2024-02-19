@@ -24,11 +24,11 @@ namespace daw {
 		explicit constexpr mutable_capture( T &value )
 		  : m_value( value ) {}
 		explicit constexpr mutable_capture( T &&value )
-		  : m_value( DAW_MOVE( value ) ) {}
+		  : m_value( std::move( value ) ) {}
 
 		[[nodiscard]] constexpr T move_out( ) const
 		  noexcept( std::is_nothrow_move_constructible_v<T> ) {
-			return DAW_MOVE( m_value );
+			return std::move( m_value );
 		}
 
 		[[nodiscard]] constexpr T &get( ) const noexcept {
@@ -45,7 +45,7 @@ namespace daw {
 
 		[[nodiscard]] constexpr
 		operator T( ) const &&noexcept( std::is_nothrow_move_constructible_v<T> ) {
-			return DAW_MOVE( m_value );
+			return std::move( m_value );
 		}
 
 		[[nodiscard]] constexpr T &operator*( ) const &noexcept {
@@ -54,7 +54,7 @@ namespace daw {
 
 		[[nodiscard]] constexpr T
 		operator*( ) const &&noexcept( std::is_nothrow_move_constructible_v<T> ) {
-			return DAW_MOVE( m_value );
+			return std::move( m_value );
 		}
 
 		[[nodiscard]] constexpr T *operator->( ) const noexcept {

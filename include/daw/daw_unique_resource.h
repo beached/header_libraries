@@ -39,7 +39,7 @@ namespace daw {
 
 		explicit unique_resource( T v ) noexcept(
 		  std::is_nothrow_move_constructible_v<T> )
-		  : value( DAW_MOVE( v ) ) {}
+		  : value( std::move( v ) ) {}
 
 		template<typename... Args>
 		constexpr T &emplace( Args &&...args ) noexcept(
@@ -60,12 +60,12 @@ namespace daw {
 			if( value ) {
 				Deleter{ }( *value );
 			}
-			value = DAW_MOVE( new_value );
+			value = std::move( new_value );
 		}
 
 		constexpr T release( ) noexcept( std::is_nothrow_move_constructible_v<T> ) {
 			auto result = std::exchange( value, std::nullopt );
-			return DAW_MOVE( *result );
+			return std::move( *result );
 		}
 
 		constexpr T &get( ) noexcept {

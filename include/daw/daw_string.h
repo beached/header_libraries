@@ -51,7 +51,7 @@ namespace daw::string {
 		std::vector<string_details::string_t> unknowns_to_string( Arg arg ) {
 			std::vector<string_details::string_t> result;
 			if constexpr( std::is_same_v<Arg, std::string> ) {
-				result.emplace_back( DAW_MOVE( arg ) );
+				result.emplace_back( std::move( arg ) );
 			} else if constexpr( std::is_pointer_v<Arg> ) {
 				result.emplace_back( arg );
 			} else {
@@ -68,7 +68,7 @@ namespace daw::string {
 			result.reserve( sizeof...( args ) + 1 );
 			using std::to_string;
 			if constexpr( std::is_same_v<Arg, std::string> ) {
-				result.emplace_back( DAW_MOVE( arg ) );
+				result.emplace_back( std::move( arg ) );
 			} else if constexpr( std::is_pointer_v<Arg> ) {
 				result.emplace_back( arg );
 			} else {
@@ -226,7 +226,7 @@ namespace daw::string {
 
 	template<typename String>
 	constexpr decltype( auto ) fmt( String &&fmt ) noexcept {
-		return std::forward<String>( fmt );
+		return DAW_FWD( fmt );
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -423,14 +423,14 @@ namespace daw::string {
 			  std::enable_if_t<daw::is_detected_v<can_construct_string, Args...>,
 			                   std::nullptr_t> = nullptr>
 			BasicString( Args &&...args )
-			  : m_string( std::forward<Args>( args )... ) {}
+			  : m_string( DAW_FWD( args )... ) {}
 
 			BasicString( BasicString const & ) = default;
 
 			BasicString( BasicString && ) noexcept = default;
 
 			BasicString( value_type other )
-			  : m_string{ DAW_MOVE( other ) } {}
+			  : m_string{ std::move( other ) } {}
 
 			~BasicString( ) = default;
 
@@ -439,7 +439,7 @@ namespace daw::string {
 			BasicString &operator=( BasicString && ) noexcept = default;
 
 			BasicString &operator=( value_type rhs ) {
-				m_string = DAW_MOVE( rhs );
+				m_string = std::move( rhs );
 				return *this;
 			}
 

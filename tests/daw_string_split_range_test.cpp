@@ -41,8 +41,9 @@ void string_split_range_001( ) {
 	daw::string_split_range<char> rng = daw::split_string( str, delem );
 
 	daw::algorithm::transform( rng.begin( ), rng.end( ),
-	                           std::back_inserter( tst ),
-	                           []( auto sv ) { return sv.to_string( ); } );
+	                           std::back_inserter( tst ), []( auto sv ) {
+		                           return sv.to_string( );
+	                           } );
 
 	bool const ans = daw::algorithm::equal(
 	  tst.cbegin( ), tst.cend( ), expected_tst.cbegin( ), expected_tst.cend( ) );

@@ -11,8 +11,9 @@
 #include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_move.h"
+#include "daw_remove_cvref.h"
 #include "daw_traits.h"
-#include "impl/daw_conditional.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <type_traits>
 
@@ -48,12 +49,9 @@ namespace daw {
 			}
 		};
 
-		template<typename T>
-		using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
-
 		template<typename Func>
-		using fp_wrapper = conditional_t<std::is_class_v<remove_cvref_t<Func>>,
-		                                      Func, fp_wrapper_t<Func>>;
+		using fp_wrapper = conditional_t<std::is_class_v<daw::remove_cvref_t<Func>>,
+		                                 Func, fp_wrapper_t<Func>>;
 
 		template<auto>
 		struct lift_t;
@@ -86,6 +84,6 @@ namespace daw {
 
 	template<typename... Funcs>
 	overload( Funcs &&... )
-	  -> overload<conditional_t<std::is_class_v<remove_cvref_t<Funcs>>,
-	                                 remove_cvref_t<Funcs>, Funcs>...>;
+	  -> overload<conditional_t<std::is_class_v<daw::remove_cvref_t<Funcs>>,
+	                            daw::remove_cvref_t<Funcs>, Funcs>...>;
 } // namespace daw

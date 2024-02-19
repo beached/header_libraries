@@ -29,7 +29,7 @@ namespace daw {
 		static constexpr decltype( auto ) validate( Value &&val ) {
 			daw::exception::precondition_check<invalid_natural_number>( val >= 1 );
 
-			return std::forward<Value>( val );
+			return DAW_FWD( val );
 		}
 
 	public:
@@ -45,12 +45,12 @@ namespace daw {
 		template<typename Value,
 		         required<not std::is_same_v<natural_t, Value>> = nullptr>
 		constexpr natural_t( Value &&v )
-		  : m_value( validate( std::forward<Value>( v ) ) ) {}
+		  : m_value( validate( DAW_FWD( v ) ) ) {}
 
 		template<typename Value,
 		         required<not std::is_same_v<natural_t, Value>> = nullptr>
 		constexpr natural_t &operator=( Value &&v ) {
-			m_value = validate( std::forward<Value>( v ) );
+			m_value = validate( DAW_FWD( v ) );
 			return *this;
 		}
 

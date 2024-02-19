@@ -6,12 +6,12 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include "daw/daw_move.h"
 #include "daw/daw_piecewise_factory.h"
 
 #include <exception>
 #include <functional>
 #include <string>
+#include <utility>
 
 struct A {
 	int a = 0;
@@ -34,7 +34,9 @@ B test_001( ) noexcept {
 	auto tmp = daw::piecewise_factory_late_t<B, int, int, std::string>( );
 	tmp.set<0>( 5 );
 	tmp.set( 1, 6 );
-	tmp.set<2>( []( ) { return "Hello"; } );
+	tmp.set<2>( []( ) {
+		return "Hello";
+	} );
 	return tmp( );
 }
 
@@ -63,7 +65,7 @@ constexpr A test_004( ) noexcept {
 	auto tmp = daw::piecewise_factory_t<A, int, int>( );
 	tmp.set<0>( 5 );
 	tmp.set( 1, 6 );
-	return daw::move( tmp )( );
+	return std::move( tmp )( );
 }
 
 constexpr bool test_004_test( ) noexcept {

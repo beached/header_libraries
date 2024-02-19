@@ -93,6 +93,7 @@ set( TEST_SOURCES
      daw_ring_adaptor_test.cpp
      daw_safe_string_test.cpp
      daw_scope_guard_test.cpp
+		 daw_simple_array_test.cpp
      daw_sip_hash_test.cpp
      daw_size_literals_test.cpp
      daw_span_test.cpp

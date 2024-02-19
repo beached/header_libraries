@@ -11,8 +11,8 @@
 #include "daw_concepts.h"
 #include "daw_consteval.h"
 #include "daw_utility.h"
-#include "impl/daw_conditional.h"
 #include "impl/daw_view_tags.h"
+#include "traits/daw_traits_conditional.h"
 #include "wrap_iter.h"
 
 #include <algorithm>
@@ -29,12 +29,12 @@ namespace daw {
 		using const_iterator = iterator;
 		using value_type = typename std::iterator_traits<iterator>::value_type;
 		using reference = typename std::iterator_traits<iterator>::reference;
-		using const_reference = conditional_t<
-		  std::is_rvalue_reference_v<reference>,
-		  std::add_rvalue_reference_t<
-		    std::add_const_t<std::remove_reference_t<reference>>>,
-		  std::add_lvalue_reference_t<
-		    std::add_const_t<std::remove_reference_t<reference>>>>;
+		using const_reference =
+		  conditional_t<std::is_rvalue_reference_v<reference>,
+		                std::add_rvalue_reference_t<
+		                  std::add_const_t<std::remove_reference_t<reference>>>,
+		                std::add_lvalue_reference_t<
+		                  std::add_const_t<std::remove_reference_t<reference>>>>;
 		using size_type = std::size_t;
 		using difference_type = std::ptrdiff_t;
 		using last_iterator = Last;

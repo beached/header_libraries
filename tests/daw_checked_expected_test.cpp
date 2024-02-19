@@ -66,8 +66,13 @@ void daw_expected_test_01( ) {
 	static_assert( daw::traits::is_callable_v<decltype( X ), int>,
 	               "is_callable_v broke" );
 
-	daw::checked_expected_t<void> f{ []( ) { std::cout << "Hello\n"; } };
-	daw::checked_expected_t<void> g{ []( int ) { std::cout << "Hello\n"; }, 5 };
+	daw::checked_expected_t<void> f{ []( ) {
+		std::cout << "Hello\n";
+	} };
+	daw::checked_expected_t<void> g{ []( int ) {
+		                                std::cout << "Hello\n";
+	                                },
+	                                 5 };
 	// daw::checked_expected_t<int> h{ []( int x ) { std::cout << "Hello\n";
 	// return x*x; }, 5 };
 
@@ -108,7 +113,9 @@ void daw_expected_test_01( ) {
 		int a;
 	};
 
-	daw::checked_expected_t<L> l{ []( ) { return L{ 5 }; } };
+	daw::checked_expected_t<L> l{ []( ) {
+		return L{ 5 };
+	} };
 	daw::expecting( l->a == 5 );
 
 	auto m = daw::make_checked_function<int, std::runtime_error>( []( int ii ) {

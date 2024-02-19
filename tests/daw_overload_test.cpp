@@ -47,10 +47,16 @@ void daw_overload_001( ) {
 }
 
 void daw_overload_002( ) {
-	auto ov = daw::overload( []( int i ) { return i * 2; },
-	                         []( std::string const &s ) { return s.size( ); } );
-	auto const ov2 =
-	  daw::overload( ov, []( std::error_code ec ) { return ec.value( ); } );
+	auto ov = daw::overload(
+	  []( int i ) {
+		  return i * 2;
+	  },
+	  []( std::string const &s ) {
+		  return s.size( );
+	  } );
+	auto const ov2 = daw::overload( ov, []( std::error_code ec ) {
+		return ec.value( );
+	} );
 
 	daw::expecting( ov2( 1 ) == 2 );
 	daw::expecting( ov2( "hi" ) == 2 );
@@ -58,10 +64,16 @@ void daw_overload_002( ) {
 }
 
 void daw_empty_overload_001( ) {
-	auto ov = daw::overload( []( int i ) { return i * 2; },
-	                         []( std::string const &s ) { return s.size( ); } );
-	auto ov2 =
-	  daw::overload( ov, []( std::error_code ec ) { return ec.value( ); } );
+	auto ov = daw::overload(
+	  []( int i ) {
+		  return i * 2;
+	  },
+	  []( std::string const &s ) {
+		  return s.size( );
+	  } );
+	auto ov2 = daw::overload( ov, []( std::error_code ec ) {
+		return ec.value( );
+	} );
 
 	daw::expecting( ov2( 1 ) == 2 );
 	daw::expecting( ov2( "hi" ) == 2 );

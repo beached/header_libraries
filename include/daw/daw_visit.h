@@ -13,15 +13,16 @@
 #include "daw_assume.h"
 #include "daw_attributes.h"
 #include "daw_check_exceptions.h"
+#include "daw_is_detected.h"
 #include "daw_likely.h"
 #include "daw_move.h"
 #include "daw_traits.h"
 #include "daw_unreachable.h"
 
 #include <cstddef>
+#include <daw/stdinc/move_fwd_exch.h>
 #include <exception>
 #include <type_traits>
-#include <utility>
 #include <variant>
 
 namespace daw {
@@ -55,7 +56,7 @@ namespace daw {
 			auto *ptr = get_if<Idx>( &var );
 			DAW_ASSUME( ptr != nullptr );
 			if constexpr( std::is_rvalue_reference_v<Variant> ) {
-				return DAW_MOVE( *ptr );
+				return std::move( *ptr );
 			} else {
 				return *ptr;
 			}

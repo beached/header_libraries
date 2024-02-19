@@ -25,7 +25,9 @@ namespace daw {
 		                        "A vector of 1's size should equal it's sum" );
 
 		auto product = daw::algorithm::accumulate(
-		  test, 1, []( int const &lhs, int const &rhs ) { return lhs * rhs; } );
+		  test, 1, []( int const &lhs, int const &rhs ) {
+			  return lhs * rhs;
+		  } );
 
 		daw::expecting_message( 1 == product,
 		                        "The product of a vector of 1's should be 1" );
@@ -35,8 +37,9 @@ namespace daw {
 		auto test_vec = std::vector<int>( 100 );
 		std::iota( test_vec.begin( ), test_vec.end( ), 1 );
 
-		auto result =
-		  daw::algorithm::map( test_vec, []( int const &val ) { return 2 * val; } );
+		auto result = daw::algorithm::map( test_vec, []( int const &val ) {
+			return 2 * val;
+		} );
 
 		daw::expecting_message(
 		  test_vec.size( ) == result.size( ),
@@ -53,40 +56,47 @@ namespace daw {
 	void daw_range_algorithm_test_where1( ) {
 		std::vector<int64_t> t1{ 1000 };
 		std::iota( std::begin( t1 ), std::end( t1 ), 1 );
-		auto result =
-		  daw::algorithm::where( t1, []( auto v ) { return v % 2 == 0; } );
+		auto result = daw::algorithm::where( t1, []( auto v ) {
+			return v % 2 == 0;
+		} );
 	}
 
 	void daw_range_algorithm_test_sort( ) {
 		std::vector<int64_t> v1{ 1000 };
 		std::iota( std::begin( v1 ), std::end( v1 ), 1 );
-		daw::algorithm::sort( v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
+		daw::algorithm::sort( v1, []( auto lhs, auto rhs ) {
+			return lhs < rhs;
+		} );
 		daw::expecting( std::is_sorted( v1.cbegin( ), v1.cend( ) ) );
 	}
 
 	void daw_range_algorithm_test_stable_sort( ) {
 		std::vector<int64_t> v1{ 1000 };
 		std::iota( std::begin( v1 ), std::end( v1 ), 1 );
-		daw::algorithm::stable_sort(
-		  v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
+		daw::algorithm::stable_sort( v1, []( auto lhs, auto rhs ) {
+			return lhs < rhs;
+		} );
 		daw::expecting( std::is_sorted( v1.cbegin( ), v1.cend( ) ) );
 	}
 
 	void daw_range_algorithm_test_max_element( ) {
 		std::vector<int64_t> v1{ 1000 };
 		std::iota( std::begin( v1 ), std::end( v1 ), 1 );
-		daw::algorithm::max_element(
-		  v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
+		daw::algorithm::max_element( v1, []( auto lhs, auto rhs ) {
+			return lhs < rhs;
+		} );
 	}
 
 	void daw_range_contains_001( ) {
-		auto v = std::vector{1,2,3,4,5};
+		auto v = std::vector{ 1, 2, 3, 4, 5 };
 		assert( daw::algorithm::contains( v, 4 ) );
 	}
 
 	void daw_range_find_if_001( ) {
-		auto v = std::vector{1,2,3,4,5};
-		auto p = daw::algorithm::find_if( v, []( int i ) { return i % 2 == 0; } );
+		auto v = std::vector{ 1, 2, 3, 4, 5 };
+		auto p = daw::algorithm::find_if( v, []( int i ) {
+			return i % 2 == 0;
+		} );
 		assert( p != std::next( std::begin( v ), 1 ) );
 	}
 } // namespace daw

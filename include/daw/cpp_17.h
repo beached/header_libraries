@@ -15,17 +15,14 @@
 #include "daw_enable_if.h"
 #include "daw_is_detected.h"
 #include "daw_move.h"
-#include "impl/daw_conditional.h"
+#include "daw_remove_cvref.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <cstddef>
 #include <cstring>
 #include <type_traits>
-#include <utility>
 
 namespace daw {
-	template<typename T>
-	using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
-
 	template<bool B>
 	using bool_constant = std::bool_constant<B>;
 
@@ -70,7 +67,7 @@ namespace daw {
 
 			explicit constexpr not_fn_t( Function &&func ) noexcept(
 			  std::is_nothrow_move_constructible_v<Function> )
-			  : m_function{ DAW_MOVE( func ) } {}
+			  : m_function{ std::move( func ) } {}
 
 			explicit constexpr not_fn_t( Function const &func ) noexcept(
 			  std::is_nothrow_copy_constructible_v<Function> )
@@ -94,7 +91,7 @@ namespace daw {
 
 	template<typename Function>
 	[[nodiscard]] constexpr auto not_fn( Function &&func ) {
-		using func_t = remove_cvref_t<Function>;
+		using func_t = daw::remove_cvref_t<Function>;
 		return cpp_17_details::not_fn_t<func_t>( DAW_FWD( func ) );
 	}
 
@@ -177,7 +174,7 @@ namespace daw {
 				return val;
 			}
 		} // namespace math
-	} // namespace cpp_17_details
+	}   // namespace cpp_17_details
 
 	template<typename...>
 	struct disjunction : std::false_type {};

@@ -71,7 +71,9 @@ namespace {
 	} // namespace daw_values_from_stream_004_ns
 
 	constexpr bool parse_to_003( ) {
-		auto const f = []( int a, int b, int c ) { return a + b + c; };
+		auto const f = []( int a, int b, int c ) {
+			return a + b + c;
+		};
 		auto result = daw::apply_string2( f, "1,2,3", "," );
 		daw::expecting( result, 6 );
 		return true;
@@ -80,7 +82,9 @@ namespace {
 
 #ifndef WIN32
 	constexpr bool parse_to_004( ) {
-		auto const f = []( int a, int b, int c ) noexcept { return a + b + c; };
+		auto const f = []( int a, int b, int c ) noexcept {
+			return a + b + c;
+		};
 		auto result = daw::apply_string2( f, "1,2,3", "," );
 		daw::expecting( result, 6 );
 		return true;
@@ -90,7 +94,9 @@ namespace {
 #endif
 
 	constexpr bool parse_to_005( ) {
-		auto const f = []( int a, int b, int c ) { return a + b + c; };
+		auto const f = []( int a, int b, int c ) {
+			return a + b + c;
+		};
 		auto const result = daw::apply_string<int, int, int>( f, "1,2,3", "," );
 		daw::expecting( result, 6 );
 		return true;
@@ -100,7 +106,9 @@ namespace {
 // Workaround
 #ifndef WIN32
 	constexpr bool parse_to_006( ) {
-		auto const f = []( int a, int b, int c ) { return a + b + c; };
+		auto const f = []( int a, int b, int c ) {
+			return a + b + c;
+		};
 		auto const result =
 		  daw::apply_string2( f, "1	2  3", daw::parser::whitespace_splitter{ } );
 		daw::expecting( result, 6 );
@@ -109,7 +117,9 @@ namespace {
 	static_assert( parse_to_006( ) );
 
 	constexpr bool parse_to_007( ) {
-		auto const f = []( int a, int b, int c ) { return a + b + c; };
+		auto const f = []( int a, int b, int c ) {
+			return a + b + c;
+		};
 		auto const result = daw::apply_string<int, int, int>(
 		  f, "1  2     3", daw::parser::whitespace_splitter{ } );
 		daw::expecting( result, 6 );
@@ -169,7 +179,9 @@ namespace {
 #ifndef WIN32
 		constexpr bool parse_to_enum_001( ) {
 			auto result = daw::apply_string<e_colours, e_colours>(
-			  []( e_colours a, e_colours b ) { return sum_colours( a, b ); },
+			  []( e_colours a, e_colours b ) {
+				  return sum_colours( a, b );
+			  },
 			  "green blue", daw::parser::whitespace_splitter{ } );
 			daw::expecting( result, 12 );
 			return true;

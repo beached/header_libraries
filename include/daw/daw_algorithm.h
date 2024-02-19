@@ -8,6 +8,11 @@
 
 #pragma once
 
+#include "algorithms/daw_algorithm_accumulate.h"
+#include "algorithms/daw_algorithm_adjacent_find.h"
+#include "algorithms/daw_algorithm_copy.h"
+#include "algorithms/daw_algorithm_copy_n.h"
+#include "algorithms/daw_algorithm_find.h"
 #include "ciso646.h"
 #include "cpp_17.h"
 #include "cpp_17_iterator.h"
@@ -19,25 +24,30 @@
 #include "daw_move.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
+#include "daw_typeof.h"
 #include "daw_view.h"
-#include "impl/daw_algorithm_accumulate.h"
-#include "impl/daw_algorithm_copy.h"
-#include "impl/daw_algorithm_find.h"
 #include "impl/daw_math_impl.h"
 
 #include <algorithm>
 #include <array>
 #include <cstddef>
-#include <functional>
+#include <daw/stdinc/compare_fn.h>
+#include <daw/stdinc/data_access.h>
+#include <daw/stdinc/range_access.h>
 #include <iterator>
 #include <optional>
 #include <type_traits>
-#include <utility>
 #include <vector>
 
 DAW_UNSAFE_BUFFER_FUNC_START
 
 namespace daw {
+	template<typename IteratorFirst, typename IteratorSecond>
+	struct iterator_pair {
+		IteratorFirst first;
+		IteratorSecond second;
+	};
+
 	template<typename Map, typename Key>
 	constexpr auto try_get( Map &container, Key &&k ) {
 		auto pos = container.find( DAW_FWD2( Key, k ) );
@@ -484,7 +494,7 @@ namespace daw::algorithm {
 	}
 
 	template<typename ForwardIterator, typename Predicate>
-	std::pair<ForwardIterator, ForwardIterator>
+	iterator_pair<ForwardIterator, ForwardIterator>
 	gather( ForwardIterator first, ForwardIterator last, ForwardIterator target,
 	        Predicate predicate ) {
 
@@ -574,7 +584,7 @@ namespace daw::algorithm {
 
 		for( auto it = first; it != last; ++it ) {
 			if( value == *it ) {
-				result.push_back( DAW_MOVE( temp ) );
+				result.push_back( std::move( temp ) );
 				temp.clear( );
 			} else {
 				temp.push_back( *it );
@@ -807,7 +817,7 @@ namespace daw::algorithm {
 				return DAW_FWD2( T, value ) <= m_value;
 			}
 		}; // less_than_or_equal_to
-	} // namespace algorithm_details
+	}    // namespace algorithm_details
 
 	/// @brief Returns a callable that returns true if the value passed is in
 	/// the range [Lower, Upper]
@@ -1151,36 +1161,6 @@ namespace daw::algorithm {
 		return destination;
 	}
 
-	/// @brief Copy input range [first, last) to output range [first_out,
-	/// first_out + count)
-	/// @tparam InputIterator type of Iterator of input range
-	/// @tparam OutputIterator type of iterator for output range
-	/// @param first start of input range
-	/// @param first_out first item in output range
-	/// @param count number of items to copy
-	/// @return end of output range written to
-	template<typename InputIterator, typename OutputIterator>
-	constexpr auto
-	copy_n( InputIterator first, OutputIterator first_out,
-	        size_t count ) noexcept( noexcept( *first_out = *first ) ) {
-
-		traits::is_input_iterator_test<InputIterator>( );
-		traits::is_output_iterator_test<OutputIterator, decltype( *first )>( );
-
-		while( count-- > 0 ) {
-			DAW_UNSAFE_BUFFER_FUNC_START
-			*first_out = *first;
-			++first;
-			++first_out;
-			DAW_UNSAFE_BUFFER_FUNC_STOP
-		}
-		struct result_t {
-			InputIterator input;
-			OutputIterator output;
-		};
-		return result_t{ first, first_out };
-	}
-
 	/// @brief Move values from input range [first, last) to output range
 	/// [first_out, std::distance( first, last))
 	///
@@ -1195,14 +1175,14 @@ namespace daw::algorithm {
 	constexpr OutputIterator
 	move( InputIterator first, LastType const last,
 	      OutputIterator
-	        first_out ) noexcept( noexcept( *first_out = DAW_MOVE( *first ) ) ) {
+	        first_out ) noexcept( noexcept( *first_out = std::move( *first ) ) ) {
 
 		traits::is_input_iterator_test<InputIterator>( );
 		traits::is_output_iterator_test<OutputIterator,
-		                                decltype( DAW_MOVE( *first ) )>( );
+		                                decltype( std::move( *first ) )>( );
 
 		while( first != last ) {
-			*first_out = DAW_MOVE( *first );
+			*first_out = std::move( *first );
 			++first;
 			++first_out;
 		}
@@ -1220,14 +1200,14 @@ namespace daw::algorithm {
 	template<typename InputIterator, typename OutputIterator>
 	constexpr auto move_n(
 	  InputIterator first, OutputIterator first_out,
-	  size_t count ) noexcept( noexcept( *first_out = DAW_MOVE( *first ) ) ) {
+	  size_t count ) noexcept( noexcept( *first_out = std::move( *first ) ) ) {
 
 		traits::is_input_iterator_test<InputIterator>( );
 		traits::is_output_iterator_test<OutputIterator,
-		                                decltype( DAW_MOVE( *first ) )>( );
+		                                decltype( std::move( *first ) )>( );
 
 		while( count-- > 0 ) {
-			*first_out = DAW_MOVE( *first );
+			*first_out = std::move( *first );
 			++first;
 			++first_out;
 		}
@@ -1358,12 +1338,12 @@ namespace daw::algorithm {
 	/// @param value value to compare to
 	/// @return position of first element greater than value or last
 	template<typename ForwardIterator, typename T, typename Compare = std::less<>>
-	constexpr ForwardIterator upper_bound(
-	  ForwardIterator first, ForwardIterator last, T const &value,
-	  Compare comp =
-	    Compare{ } ) noexcept( noexcept( daw::advance( first, 1 ) ) and
-	                           noexcept( ++first ) and
-	                           noexcept( daw::distance( first, last ) ) ) {
+	constexpr ForwardIterator
+	upper_bound( ForwardIterator first, ForwardIterator last, T const &value,
+	             Compare comp =
+	               Compare{ } ) noexcept( noexcept( daw::advance( first, 1 ) )
+	                                        and noexcept( ++first ) and noexcept(
+	                                          daw::distance( first, last ) ) ) {
 
 		traits::is_forward_access_iterator_test<ForwardIterator>( );
 		traits::is_input_iterator_test<ForwardIterator>( );
@@ -1537,7 +1517,7 @@ namespace daw::algorithm {
 		  "e.g. *first = binary_op( *first, *(first + 1) ) must be valid." );
 
 		while( first != last ) {
-			init = daw::invoke( binary_op, DAW_MOVE( init ), *first );
+			init = daw::invoke( binary_op, std::move( init ), *first );
 			++first;
 		}
 		return init;
@@ -1579,7 +1559,7 @@ namespace daw::algorithm {
 		  "map_func( *first1, *first2 ) ) must be valid" );
 
 		while( first1 != last1 ) {
-			init = daw::invoke( reduce_func, DAW_MOVE( init ),
+			init = daw::invoke( reduce_func, std::move( init ),
 			                    daw::invoke( map_func, *first1, *first2 ) );
 			++first1;
 			++first2;
@@ -1653,19 +1633,19 @@ namespace daw::algorithm {
 	/// @param a item 1
 	/// @param b item 2
 	/// @param comp comparison predicate
-	/// @return a std::pair<T, T> that has the first member holding min(a, b)
+	/// @return a iterator_pair<T, T> that has the first member holding min(a, b)
 	/// and second max(a, b)
 	template<typename T, typename Compare = std::less<>>
-	constexpr std::pair<T, T> minmax_item( T a, T b,
-	                                       Compare comp = Compare{ } ) noexcept {
+	constexpr iterator_pair<T, T>
+	minmax_item( T a, T b, Compare comp = Compare{ } ) noexcept {
 		static_assert( traits::is_compare_v<Compare, T>,
 		               "Compare function does not meet the requirements of the "
 		               "Compare concept. "
 		               "http://en.cppreference.com/w/cpp/concept/Compare" );
 		if( daw::invoke( comp, b, a ) ) {
-			return std::pair<T, T>{ DAW_MOVE( b ), DAW_MOVE( a ) };
+			return iterator_pair<T, T>{ std::move( b ), std::move( a ) };
 		}
-		return std::pair<T, T>{ DAW_MOVE( a ), DAW_MOVE( b ) };
+		return iterator_pair<T, T>{ std::move( a ), std::move( b ) };
 	}
 
 	template<typename ForwardIterator, typename LastType,
@@ -1736,8 +1716,8 @@ namespace daw::algorithm {
 	  InputIterator1 first1, LastType1 last1, InputIterator2 first2,
 	  LastType2 last2, OutputIterator d_first,
 	  Compare &&comp =
-	    Compare{ } ) noexcept( noexcept( comp( *first2, *first1 ) ) and
-	                           noexcept( comp( *first1, *first2 ) ) ) {
+	    Compare{ } ) noexcept( noexcept( comp( *first2, *first1 ) )
+	                             and noexcept( comp( *first1, *first2 ) ) ) {
 
 		while( first1 != last1 and first2 != last2 ) {
 			if( daw::invoke( comp, *first1, *first2 ) ) {
@@ -1780,7 +1760,7 @@ namespace daw::algorithm {
 		if( first != last ) {
 			for( ForwardIterator i = first; ++i != last; ) {
 				if( not( *i == value ) ) {
-					*first = DAW_MOVE( *i );
+					*first = std::move( *i );
 					++first;
 				}
 			}
@@ -1797,7 +1777,7 @@ namespace daw::algorithm {
 		if( first != last ) {
 			for( ForwardIterator i = first; ++i != last; ) {
 				if( not daw::invoke( pred, *i ) ) {
-					*first = DAW_MOVE( *i );
+					*first = std::move( *i );
 					++first;
 				}
 			}
@@ -1814,7 +1794,7 @@ namespace daw::algorithm {
 			for( ForwardIterator i = first; ++i != last; ) {
 				if( not daw::invoke( pred, *i ) ) {
 					(void)daw::invoke( func, *i );
-					*first = DAW_MOVE( *i );
+					*first = std::move( *i );
 					++first;
 				}
 			}
@@ -1861,7 +1841,7 @@ namespace daw::algorithm {
 	transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2,
 	                OutputIt first_out, Func func ) {
 
-		return cartesian_product_map( DAW_MOVE( func ), first1, last1, first_out,
+		return cartesian_product_map( std::move( func ), first1, last1, first_out,
 		                              first2 );
 	}
 
@@ -1871,7 +1851,7 @@ namespace daw::algorithm {
 	transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2,
 	                InputIt3 first3, OutputIt first_out, Func func ) {
 
-		return cartesian_product_map( DAW_MOVE( func ), first1, last1, first_out,
+		return cartesian_product_map( std::move( func ), first1, last1, first_out,
 		                              first2, first3 );
 	}
 
@@ -1882,7 +1862,7 @@ namespace daw::algorithm {
 	                InputIt3 first3, InputIt4 first4, OutputIt first_out,
 	                Func func ) {
 
-		return cartesian_product_map( DAW_MOVE( func ), first1, last1, first_out,
+		return cartesian_product_map( std::move( func ), first1, last1, first_out,
 		                              first2, first3, first4 );
 	}
 
@@ -1894,7 +1874,7 @@ namespace daw::algorithm {
 	                InputIt3 first3, InputIt4 first4, InputIt4 first5,
 	                OutputIt first_out, Func func ) {
 
-		return cartesian_product_map( DAW_MOVE( func ), first1, last1, first_out,
+		return cartesian_product_map( std::move( func ), first1, last1, first_out,
 		                              first2, first3, first4, first5 );
 	}
 
@@ -1914,37 +1894,10 @@ namespace daw::algorithm {
 		}
 	}
 
-	template<typename InputIterator, typename OutputIterator,
-	         typename BinaryOperator = accum_impl::plus>
-	constexpr OutputIterator
-	partial_sum( InputIterator first, InputIterator last,
-	             OutputIterator first_out,
-	             BinaryOperator op = BinaryOperator{ } ) {
-
-		if( first == last ) {
-			return first_out;
-		}
-
-		using value_type = typename std::iterator_traits<InputIterator>::value_type;
-
-		value_type sum = *first;
-		*first_out = sum;
-		++first_out;
-		++first;
-		while( first != last ) {
-			sum = daw::invoke( op, DAW_MOVE( sum ), *first );
-			++first;
-
-			*first_out = sum;
-			++first_out;
-		}
-		return first_out;
-	}
-
 	template<typename From, typename To, typename Query>
 	constexpr void extract_to( From &from, To &to, Query &&q ) {
 		while( auto &&item = from.extract( q ) ) {
-			to.insert( DAW_MOVE( item ) );
+			to.insert( std::move( item ) );
 		}
 	}
 
@@ -2120,25 +2073,6 @@ namespace daw::algorithm {
 			++first;
 		}
 		return false;
-	}
-
-	template<typename ForwardIterator, typename BinaryPredicate>
-	constexpr ForwardIterator adjacent_find( ForwardIterator first,
-	                                         ForwardIterator last,
-	                                         BinaryPredicate p ) {
-		if( first == last ) {
-			return last;
-		}
-		ForwardIterator next = first;
-		++next;
-		while( next != last ) {
-			if( p( *first, *next ) ) {
-				return first;
-			}
-			++next;
-			++first;
-		}
-		return last;
 	}
 
 	/// When a predicate is satisfied, call onEach with the read value.

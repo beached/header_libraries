@@ -74,8 +74,8 @@ int main( ) {
 		  case daw::integers::SignedIntegerErrorType::Overflow:
 			  has_overflow = true;
 			  break;
-			default:
-				break;
+		  default:
+			  break;
 		  }
 	  };
 	daw::integers::register_signed_overflow_handler( error_handler );
@@ -291,5 +291,10 @@ int main( ) {
 		auto i1 = 0x10000b3_i32;
 		auto rot0 = i0.rotate_right( 8 );
 		daw_ensure( rot0 == i1 );
+		daw_ensure( i0 and i1 );
+		daw_ensure( i0 or i1 );
+		auto zero = 0_i32;
+		daw_ensure( not( i0 and zero ) );
+		daw_ensure( i0 or zero );
 	}
 }

@@ -40,7 +40,7 @@ namespace daw {
 		  std::is_nothrow_constructible_v<T, Args...> ) {
 
 			if constexpr( std::is_aggregate_v<T> ) {
-				new( m_data ) T{ std::forward<Args>( args )... };
+				new( m_data ) T{ DAW_FWD( args )... };
 			} else {
 				new( m_data ) T( std ::forward<Args>( args )... );
 			}
@@ -67,7 +67,7 @@ namespace daw {
 		}
 
 		value_type rref( ) noexcept {
-			return value_type( DAW_MOVE( *ptr( ) ) );
+			return value_type( std::move( *ptr( ) ) );
 		}
 
 		reference operator*( ) noexcept {

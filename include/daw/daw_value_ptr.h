@@ -62,7 +62,7 @@ namespace daw {
 		  , enable_copy_constructor<T>( traits_details::non_constructor{ } )
 		  , enable_copy_assignment<T>( traits_details::non_constructor{ } )
 		  , m_value(
-		      std::make_unique<value_type>( std::forward<Args>( args )... ) ) {}
+		      std::make_unique<value_type>( DAW_FWD( args )... ) ) {}
 
 		template<
 		  typename U, typename... Args,
@@ -74,7 +74,7 @@ namespace daw {
 		  std::is_nothrow_constructible_v<value_type, Args...> ) {
 
 			auto result = value_ptr<value_type>( std::nullopt );
-			result.m_value = std::make_unique<U>( std::forward<Args>( args )... );
+			result.m_value = std::make_unique<U>( DAW_FWD( args )... );
 			return result;
 		}
 
@@ -86,10 +86,10 @@ namespace daw {
 		  , m_value( std::make_unique<value_type>( *other.m_value ) ) {}
 
 		constexpr value_ptr( value_ptr &&other ) noexcept
-		  : enable_default_constructor<T>( DAW_MOVE( other ) )
-		  , enable_copy_constructor<T>( DAW_MOVE( other ) )
-		  , enable_copy_assignment<T>( DAW_MOVE( other ) )
-		  , m_value( DAW_MOVE( other.m_value ) ) {}
+		  : enable_default_constructor<T>( std::move( other ) )
+		  , enable_copy_constructor<T>( std::move( other ) )
+		  , enable_copy_assignment<T>( std::move( other ) )
+		  , m_value( std::move( other.m_value ) ) {}
 
 		constexpr value_ptr &operator=( value_ptr const &rhs ) noexcept(
 		  std::is_nothrow_copy_constructible_v<value_type> ) {
@@ -110,7 +110,7 @@ namespace daw {
 
 		constexpr value_ptr &operator=( value_ptr &&rhs ) noexcept {
 			if( this != &rhs ) {
-				m_value = DAW_MOVE( rhs.m_value );
+				m_value = std::move( rhs.m_value );
 			}
 			return *this;
 		}
@@ -127,7 +127,7 @@ namespace daw {
 
 		value_ptr &operator=( value_type &&rhs ) noexcept(
 		  std::is_nothrow_move_assignable_v<value_type> ) {
-			*m_value = DAW_MOVE( rhs );
+			*m_value = std::move( rhs );
 			return *this;
 		}
 
@@ -140,9 +140,9 @@ namespace daw {
 		         std::enable_if_t<traits::is_callable_v<value_type, Args...>,
 		                          std::nullptr_t> = nullptr>
 		decltype( auto ) operator( )( Args &&...args ) noexcept(
-		  noexcept( m_value->operator( )( std::forward<Args>( args )... ) ) ) {
+		  noexcept( m_value->operator( )( DAW_FWD( args )... ) ) ) {
 
-			return m_value->operator( )( std::forward<Args>( args )... );
+			return m_value->operator( )( DAW_FWD( args )... );
 		}
 
 		~value_ptr( ) noexcept( std::is_nothrow_destructible_v<value_type> ) =
@@ -339,7 +339,7 @@ namespace std {
 
 		template<typename Arg>
 		size_t operator( )( Arg &&arg ) const {
-			return std::hash<T>{ }( *std::forward<Arg>( arg ) );
+			return std::hash<T>{ }( *DAW_FWD( arg ) );
 		}
 	};
 } // namespace std

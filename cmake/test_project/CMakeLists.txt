@@ -24,6 +24,7 @@ find_package( daw-header-libraries REQUIRED )
 enable_testing()
 
 add_executable( ${PROJECT_NAME} test.cpp )
+target_compile_features( ${PROJECT_NAME} INTERFACE cxx_std_17 )
 target_compile_options( ${PROJECT_NAME} INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/permissive->)
 target_link_libraries( ${PROJECT_NAME} PRIVATE daw::daw-header-libraries )
 add_test( ${PROJECT_NAME}_test ${PROJECT_NAME} )

@@ -11,20 +11,19 @@
 #include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_traits.h"
-//#include "daw_utility.h"
+// #include "daw_utility.h"
 #include "impl/daw_math_impl.h"
 
 #include <cassert>
 #include <cfenv>
 #include <cmath>
 #include <cstddef>
+#include <cstdint>
 #include <limits>
 #include <memory>
 #include <utility>
 
-namespace daw {
-
-}
+namespace daw {}
 
 namespace daw::math {
 	template<typename Float>
@@ -158,7 +157,7 @@ namespace daw::math {
 	                                     not std::is_signed_v<UnsignedInteger>>,
 	                          std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr UnsignedInteger abs( UnsignedInteger &&v ) noexcept {
-		return std::forward<UnsignedInteger>( v );
+		return DAW_FWD( v );
 	}
 
 	template<typename T>

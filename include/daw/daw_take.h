@@ -30,7 +30,7 @@ namespace daw {
 	constexpr T
 	take( T &value ) noexcept( std::is_nothrow_move_constructible_v<T> and
 	                             std::is_nothrow_default_constructible_v<T> ) {
-		auto result = DAW_MOVE( value );
+		auto result = std::move( value );
 		if constexpr( reset_on_take<T> ) {
 			value = T{ };
 		}

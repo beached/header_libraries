@@ -30,23 +30,23 @@ namespace daw {
 			  : func( f ) {}
 			constexpr keep_n_pred( Function &&f ) noexcept(
 			  std::is_nothrow_move_constructible_v<Function> )
-			  : func( DAW_MOVE( f ) ) {}
+			  : func( std::move( f ) ) {}
 
 			template<typename... Args>
 			constexpr decltype( auto ) operator( )( Args &&...args ) {
 				if constexpr( Order == keep_n_order::ascending ) {
-					return func( std::forward<Args>( args )... );
+					return func( DAW_FWD( args )... );
 				} else {
-					return not func( std::forward<Args>( args )... );
+					return not func( DAW_FWD( args )... );
 				}
 			}
 
 			template<typename... Args>
 			constexpr decltype( auto ) operator( )( Args &&...args ) const {
 				if constexpr( Order == keep_n_order::ascending ) {
-					return func( std::forward<Args>( args )... );
+					return func( DAW_FWD( args )... );
 				} else {
-					return not func( std::forward<Args>( args )... );
+					return not func( DAW_FWD( args )... );
 				}
 			}
 		};
@@ -84,7 +84,7 @@ namespace daw {
 			for( size_t n = 0; n < MaxItems; ++n ) {
 				if( m_pred( v, m_values[n] ) ) {
 					for( size_t m = ( MaxItems - 1U ); m > n; --m ) {
-						m_values[m] = DAW_MOVE( m_values[m - 1] );
+						m_values[m] = std::move( m_values[m - 1] );
 					}
 					m_values[n] = v;
 					break;
@@ -96,9 +96,9 @@ namespace daw {
 			for( size_t n = 0; n < MaxItems; ++n ) {
 				if( m_pred( v, m_values[n] ) ) {
 					for( size_t m = MaxItems - 1; m > n; --m ) {
-						m_values[m] = DAW_MOVE( m_values[m - 1] );
+						m_values[m] = std::move( m_values[m - 1] );
 					}
-					m_values[n] = DAW_MOVE( v );
+					m_values[n] = std::move( v );
 					break;
 				}
 			}

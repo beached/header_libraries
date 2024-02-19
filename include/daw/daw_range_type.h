@@ -11,8 +11,8 @@
 #include "ciso646.h"
 #include "daw_algorithm.h"
 #include "daw_traits.h"
-#include "daw_traits_is_a_type.h"
 #include "daw_utility.h"
+#include "traits/daw_traits_is_a_type.h"
 
 #include <algorithm>
 #include <cassert>
@@ -235,12 +235,12 @@ namespace daw {
 
 			template<typename T>
 			T accumulate( T &&init ) {
-				return std::accumulate( m_begin, m_end, std::forward<T>( init ) );
+				return std::accumulate( m_begin, m_end, DAW_FWD( init ) );
 			}
 
 			template<typename T, typename BinaryOperator>
 			T accumulate( T &&init, BinaryOperator oper ) {
-				return std::accumulate( m_begin, m_end, std::forward<T>( init ), oper );
+				return std::accumulate( m_begin, m_end, DAW_FWD( init ), oper );
 			}
 
 			template<typename UnaryOperator>
@@ -273,7 +273,7 @@ namespace daw {
 			template<typename UniformRandomNumberGenerator>
 			auto shuffle( UniformRandomNumberGenerator &&urng ) {
 				return make_range_reference( *this ).shuffle(
-				  std::forward<UniformRandomNumberGenerator>( urng ) );
+				  DAW_FWD( urng ) );
 			}
 
 			auto slice( size_t first_pos ) {

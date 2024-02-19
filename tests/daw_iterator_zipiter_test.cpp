@@ -25,13 +25,17 @@ constexpr bool test( ) {
 	using ptr = typename it_t::pointer;
 	static_assert( std::is_same_v<ptr, ptr> );
 	// return *daw::get<0>( zi ) == 8 and std::get<1>( *zi ) == 2;
-	auto const b0 =
-	  std::apply( []( auto const &lhs, auto const &rhs ) { return lhs + rhs; },
-	              *zi ) == 10;
+	auto const b0 = std::apply(
+	                  []( auto const &lhs, auto const &rhs ) {
+		                  return lhs + rhs;
+	                  },
+	                  *zi ) == 10;
 	std::advance( zi, 2 );
-	auto const b1 =
-	  std::apply( []( auto const &lhs, auto const &rhs ) { return lhs + rhs; },
-	              *zi ) == 10;
+	auto const b1 = std::apply(
+	                  []( auto const &lhs, auto const &rhs ) {
+		                  return lhs + rhs;
+	                  },
+	                  *zi ) == 10;
 	return b0 and b1;
 }
 static_assert( test( ) );

@@ -66,7 +66,7 @@ namespace daw {
 							  clause_name##_helper( Container const &container,             \
 							                        ClauseArgs &&...clause_args ) {         \
 								return from( container )                                      \
-								  .clause_name( std::forward<ClauseArgs>( clause_args )... ); \
+								  .clause_name( DAW_FWD( clause_args )... ); \
 							}                                                               \
                                                                               \
 							template<                                                       \
@@ -77,7 +77,7 @@ namespace daw {
 							  clause_name##_helper( Container container,                    \
 							                        ClauseArgs &&...clause_args ) {         \
 								return container.clause_name(                                 \
-								  std::forward<ClauseArgs>( clause_args )... );               \
+								  DAW_FWD( clause_args )... );               \
 							}                                                               \
                                                                               \
 							template<                                                       \
@@ -88,13 +88,13 @@ namespace daw {
 							  clause_name##_helper( Container const &container,             \
 							                        ClauseArgs &&...clause_args ) {         \
 								return container.clause_name(                                 \
-								  std::forward<ClauseArgs>( clause_args )... );               \
+								  DAW_FWD( clause_args )... );               \
 							}                                                               \
                                                                               \
 							template<typename Container>                                    \
 							auto delayed_dispatch( Container &&container ) const {          \
 								return call_##clause_name(                                    \
-								  std::forward<Container>( container ),                       \
+								  DAW_FWD( container ),                       \
 								  typename gens<sizeof...( Args )>::type( ) );                \
 							}                                                               \
                                                                               \
@@ -102,7 +102,7 @@ namespace daw {
 							auto call_##clause_name( Container &&container,                 \
 							                         seq<S...> ) const {                    \
 								return clause_name##_helper(                                  \
-								  std::forward<Container>( container ),                       \
+								  DAW_FWD( container ),                       \
 								  std::get<S>( clause_name##_args )... );                     \
 							}                                                               \
                                                                               \
@@ -117,12 +117,12 @@ namespace daw {
 						public:                                                           \
 							clause_name##_t( std::tuple<Args...> &&args )                   \
 							  : clause_name                                                 \
-							  ##_args( std::forward<std::tuple<Args>>( args )... ) {}       \
+							  ##_args( DAW_FWD( args )... ) {}       \
                                                                               \
 							template<typename Container>                                    \
 							auto operator( )( Container &&container ) const {               \
 								return delayed_dispatch(                                      \
-								  std::forward<Container>( container ) );                     \
+								  DAW_FWD( container ) );                     \
 							}                                                               \
 						};                                                                \
 					}                                                                   \
@@ -132,7 +132,7 @@ namespace daw {
 						std::tuple<Args...> param = std::make_tuple(                      \
 						  std::forward<Args...>( clause_name##_args )... );               \
 						return daw::range::parallel::operators::details::clause_name##_t< \
-						  Args...>( DAW_MOVE( param ) );                                  \
+						  Args...>( std::move( param ) );                                 \
 					}                                                                   \
 				}                                                                     \
 			}                                                                       \
@@ -147,7 +147,7 @@ namespace daw {
 	  Container &&container,                                                    \
 	  daw::range::parallel::operators::details::clause_name##_t<Args...> const  \
 	    &predicate ) {                                                          \
-		return predicate( std::forward<Container>( container ) );                 \
+		return predicate( DAW_FWD( container ) );                 \
 	}                                                                           \
 	template<typename Container, typename... Args,                              \
 	         typename std::enable_if_t<                                         \
@@ -156,7 +156,7 @@ namespace daw {
 	  Container &&container,                                                    \
 	  daw::range::parallel::operators::details::clause_name##_t<Args...> const  \
 	    &predicate ) {                                                          \
-		return predicate( std::forward<Container>( container ) );                 \
+		return predicate( DAW_FWD( container ) );                 \
 	}                                                                           \
 	template<typename Container, typename... Args,                              \
 	         typename std::enable_if_t<                                         \
@@ -165,7 +165,7 @@ namespace daw {
 	  Container &&container,                                                    \
 	  daw::range::parallel::operators::details::clause_name##_t<Args...> const  \
 	    &predicate ) {                                                          \
-		return predicate( std::forward<Container>( container ) );                 \
+		return predicate( DAW_FWD( container ) );                 \
 	}
 
 DAW_PARALLEL_RANGE_GENERATE_VCLAUSE( accumulate );

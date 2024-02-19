@@ -13,10 +13,11 @@
 #include "daw_exception.h"
 #include "daw_move.h"
 #include "daw_overload.h"
+#include "daw_remove_cvref.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
 #include "daw_visit.h"
-#include "impl/daw_conditional.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <functional>
 #include <optional>
@@ -26,10 +27,10 @@
 namespace daw {
 	namespace impl {
 		template<typename T, typename U>
-		remove_cvref_t<T> remove_layer_func( std::variant<T, U> );
+		daw::remove_cvref_t<T> remove_layer_func( std::variant<T, U> );
 
 		template<typename T>
-		remove_cvref_t<T> remove_layer_func( T );
+		daw::remove_cvref_t<T> remove_layer_func( T );
 
 		template<typename T>
 		struct process_args_t {
@@ -37,16 +38,17 @@ namespace daw {
 				return value;
 			}
 			constexpr T operator( )( T &&value ) const {
-				return DAW_MOVE( value );
+				return std::move( value );
 			}
 
-			template<typename Callable,
-			         std::enable_if_t<
-			           std::is_convertible_v<
-			             decltype( std::declval<remove_cvref_t<Callable>>( )( ) ), T>,
-			           std::nullptr_t> = nullptr>
+			template<
+			  typename Callable,
+			  std::enable_if_t<
+			    std::is_convertible_v<
+			      decltype( std::declval<daw::remove_cvref_t<Callable>>( )( ) ), T>,
+			    std::nullptr_t> = nullptr>
 			constexpr T operator( )( Callable &&f ) const {
-				return std::forward<Callable>( f )( );
+				return DAW_FWD( f )( );
 			}
 			T operator( )( std::monostate ) const {
 				daw::exception::daw_throw<std::invalid_argument>(
@@ -56,7 +58,7 @@ namespace daw {
 
 		template<typename T>
 		constexpr T &&get_value( T &&value ) {
-			return std::forward<T>( value );
+			return DAW_FWD( value );
 		}
 
 		template<typename... Args>
@@ -68,7 +70,7 @@ namespace daw {
 		template<typename... Args>
 		constexpr auto get_value( std::variant<Args...> &&value ) {
 			using T = decltype( remove_layer_func( value ) );
-			return daw::visit_nt( DAW_MOVE( value ), process_args_t<T>{ } );
+			return daw::visit_nt( std::move( value ), process_args_t<T>{ } );
 		}
 
 		template<size_t N, typename... Args>
@@ -78,7 +80,7 @@ namespace daw {
 
 		template<size_t N, typename... Args>
 		constexpr auto process_args( std::tuple<Args...> &&tp ) {
-			return get_value( *std::get<N>( DAW_MOVE( tp ) ) );
+			return get_value( *std::get<N>( std::move( tp ) ) );
 		}
 
 		template<typename T, typename... Args, std::size_t... I>
@@ -92,7 +94,7 @@ namespace daw {
 		constexpr T piecewise_applier_impl( std::tuple<Args...> &&tp,
 		                                    std::index_sequence<I...> ) {
 
-			return construct_a<T>( process_args<I>( DAW_MOVE( tp ) )... );
+			return construct_a<T>( process_args<I>( std::move( tp ) )... );
 		}
 
 		template<
@@ -108,7 +110,7 @@ namespace daw {
 		constexpr void set_tuple( size_t index, std::tuple<Args...> &tp,
 		                          Value &&value ) {
 			if( N != index ) {
-				set_tuple<N + 1, use_late>( index, tp, std::forward<Value>( value ) );
+				set_tuple<N + 1, use_late>( index, tp, DAW_FWD( value ) );
 				return;
 			}
 			using tp_val_t = decltype( std::get<N>( tp ) );
@@ -120,17 +122,17 @@ namespace daw {
 				  std::get<N>( tp ) = value_t{ v };
 			  },
 			  [&]( value_t &&v ) {
-				  std::get<N>( tp ) = value_t{ DAW_MOVE( v ) };
+				  std::get<N>( tp ) = value_t{ std::move( v ) };
 			  },
 			  [&]( std::function<value_t( )> const &f ) {
 				  std::get<N>( tp ) = value_t{ f( ) };
 			  },
 			  [&]( std::function<value_t( )> &&f ) {
-				  std::get<N>( tp ) = value_t{ DAW_MOVE( f )( ) };
+				  std::get<N>( tp ) = value_t{ std::move( f )( ) };
 			  },
 			  []( ... ) noexcept {} );
 
-			setter( std::forward<Value>( value ) );
+			setter( DAW_FWD( value ) );
 		}
 
 		template<typename T, typename... Args>
@@ -142,7 +144,7 @@ namespace daw {
 		template<typename T, typename... Args>
 		constexpr T piecewise_applier( std::tuple<Args...> &&tp ) {
 			return piecewise_applier_impl<T>(
-			  DAW_MOVE( tp ), std::make_index_sequence<sizeof...( Args )>{ } );
+			  std::move( tp ), std::make_index_sequence<sizeof...( Args )>{ } );
 		}
 
 		template<typename T, bool use_late, typename... Args>
@@ -150,9 +152,9 @@ namespace daw {
 		protected:
 			using ttype_t =
 			  conditional_t<use_late,
-			                     std::tuple<std::optional<
-			                       std::variant<Args, std::function<Args( )>>>...>,
-			                     std::tuple<std::optional<Args>...>>;
+			                std::tuple<std::optional<
+			                  std::variant<Args, std::function<Args( )>>>...>,
+			                std::tuple<std::optional<Args>...>>;
 
 			ttype_t m_args;
 
@@ -166,7 +168,7 @@ namespace daw {
 			}
 
 			constexpr T operator( )( ) && {
-				return piecewise_applier<T>( DAW_MOVE( m_args ) );
+				return piecewise_applier<T>( std::move( m_args ) );
 			}
 
 		private:
@@ -183,12 +185,12 @@ namespace daw {
 			template<size_t N>
 			constexpr void set( arg_at_t<N> &&value ) {
 
-				std::get<N>( m_args ) = DAW_MOVE( value );
+				std::get<N>( m_args ) = std::move( value );
 			}
 
 			template<typename Value>
 			constexpr void set( size_t index, Value &&value ) {
-				set_tuple<0, use_late>( index, m_args, std::forward<Value>( value ) );
+				set_tuple<0, use_late>( index, m_args, DAW_FWD( value ) );
 			}
 		};
 	} // namespace impl
@@ -209,8 +211,8 @@ namespace daw {
 		           std::nullptr_t> = nullptr>
 		void set( Callable &&f ) {
 			std::function<traits::nth_type<N, Args...>( )> func =
-			  std::forward<Callable>( f );
-			std::get<N>( this->m_args ) = DAW_MOVE( func );
+			  DAW_FWD( f );
+			std::get<N>( this->m_args ) = std::move( func );
 		}
 	};
 

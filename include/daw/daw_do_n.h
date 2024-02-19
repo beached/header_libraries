@@ -12,6 +12,10 @@
 #include "daw_attributes.h"
 #include "daw_move.h"
 
+#include <cstddef>
+#include <daw/stdinc/integer_sequence.h>
+#include <type_traits>
+
 namespace daw::algorithm {
 	namespace do_n_details DAW_ATTRIB_HIDDEN {
 		template<typename Function, typename... Args, std::size_t... Is>

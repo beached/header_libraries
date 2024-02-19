@@ -8,13 +8,13 @@
 
 #pragma once
 
-#include "../ciso646.h"
-#include "../daw_check_exceptions.h"
-#include "../daw_exception.h"
-#include "../daw_move.h"
+#include "daw/ciso646.h"
+#include "daw/daw_check_exceptions.h"
+#include "daw/daw_exception.h"
 
 #include <stdexcept>
 #include <type_traits>
+#include <utility>
 
 namespace daw {
 	template<typename IteratorFirst, typename IteratorLast>
@@ -51,8 +51,8 @@ namespace daw {
 		                          bool CheckDecrement = true,
 		                          bool CheckDereference = true )
 		  : current{ it_first }
-		  , first{ DAW_MOVE( it_first ) }
-		  , last{ DAW_MOVE( it_last ) }
+		  , first{ std::move( it_first ) }
+		  , last{ std::move( it_last ) }
 		  , flags{ get_flag_value( CheckIncrement, CheckDecrement,
 		                           CheckDereference ) } {}
 

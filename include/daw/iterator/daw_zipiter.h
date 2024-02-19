@@ -86,7 +86,7 @@ namespace daw {
 
 	public:
 		constexpr zip_iterator( Iterators const &...its )
-		  : m_values( DAW_MOVE( its )... ) {}
+		  : m_values( std::move( its )... ) {}
 
 		constexpr types_t &as_tuple( ) noexcept {
 			return m_values;

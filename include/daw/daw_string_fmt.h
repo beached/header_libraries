@@ -77,16 +77,16 @@ namespace daw {
 					if( Cnt == idx ) {
 						using daw::string_fmt::v1::string_fmt_details::to_string;
 						using std::to_string;
-						return to_string( std::forward<Arg>( arg ) );
+						return to_string( DAW_FWD( arg ) );
 					}
 					return get_arg_impl<Cnt + 1, Sz>( idx,
-					                                  std::forward<Args>( args )... );
+					                                  DAW_FWD( args )... );
 				}
 
 				template<typename... Args>
 				std::string get_arg( uint8_t const idx, Args &&...args ) {
 					return get_arg_impl<0, sizeof...( Args )>(
-					  idx, std::forward<Args>( args )... );
+					  idx, DAW_FWD( args )... );
 				}
 			} // namespace string_fmt_details
 
@@ -98,7 +98,7 @@ namespace daw {
 				         std::enable_if_t<std::is_convertible_v<String, std::string>,
 				                          std::nullptr_t> = nullptr>
 				fmt_t( String &&format_str )
-				  : m_format_str{ std::forward<String>( format_str ) } {}
+				  : m_format_str{ DAW_FWD( format_str ) } {}
 
 				template<size_t N>
 				fmt_t( char const ( &format_str )[N] )
@@ -116,7 +116,7 @@ namespace daw {
 						auto const idx =
 						  daw::parser::parse_unsigned_int<uint8_t>( idx_str );
 						result +=
-						  string_fmt_details::get_arg( idx, std::forward<Args>( args )... );
+						  string_fmt_details::get_arg( idx, DAW_FWD( args )... );
 						result += sv.pop_front_until( '{' ).to_string( );
 					}
 					return result;
@@ -125,7 +125,8 @@ namespace daw {
 
 			template<typename... Args>
 			std::string fmt( std::string format_str, Args &&...args ) {
-				return fmt_t{ DAW_MOVE( format_str ) }( std::forward<Args>( args )... );
+				return fmt_t{ std::move( format_str ) }(
+				  DAW_FWD( args )... );
 			}
 		} // namespace v1
 		namespace v2 {
@@ -197,7 +198,7 @@ namespace daw {
 								    } else if constexpr( has_to_string_v<val_t> ) {
 									    using daw::string_fmt::v1::string_fmt_details::to_string;
 									    using std::to_string;
-									    auto const str = to_string( std::forward<val_t>( val ) );
+									    auto const str = to_string( DAW_FWD( val ) );
 									    out =
 									      daw::algorithm::copy( str.begin( ), str.end( ), out );
 								    } else if constexpr( traits::is_streamable_v<std::istream &,
@@ -209,7 +210,7 @@ namespace daw {
 									      daw::algorithm::copy( str.begin( ), str.end( ), out );
 								    }
 							    },
-							    std::forward<Args>( args )... );
+							    DAW_FWD( args )... );
 							  return out;
 						  } );
 					}
@@ -305,7 +306,7 @@ namespace daw {
 					}
 					auto it = std::back_inserter( result );
 					for( auto const &token : m_tokens ) {
-						it = (token)( it, std::forward<Args>( args )... );
+						it = (token)( it, DAW_FWD( args )... );
 					}
 					return result;
 				}
@@ -316,7 +317,7 @@ namespace daw {
 			template<typename CharT, size_t N, typename... Args>
 			constexpr auto fmt( CharT const ( &format_str )[N], Args &&...args ) {
 				auto const formatter = fmt_t( format_str );
-				return formatter( std::forward<Args>( args )... );
+				return formatter( DAW_FWD( args )... );
 			}
 
 			template<
@@ -326,7 +327,7 @@ namespace daw {
 				constexpr auto const formatter =
 				  fmt_t<char, N>( string_fmt_details::private_ctor{ }, fmt_string );
 				return formatter.template operator( )<Result>(
-				  std::forward<Args>( args )... );
+				  DAW_FWD( args )... );
 			}
 		} // namespace v2
 	}   // namespace string_fmt

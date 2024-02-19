@@ -14,6 +14,9 @@
 #define DAW_HAS_INCLUDE( ... ) (__has_include( __VA_ARGS__ ))
 #if __has_include( <version> )
 #include <version>
+#else
+// Ensure we can get the _LIBCPP_VERSION/__GLIBCXX__ defines
+#include <cstddef>
 #endif
 #else
 #define DAW_HAS_INCLUDE( ... ) ( false )
@@ -108,4 +111,10 @@
 #define DAW_CPP_VERSION _MSVC_LANG
 #else
 #define DAW_CPP_VERSION __cplusplus
+#endif
+
+#if defined( _LIBCPP_VERSION )
+#define DAW_HAS_STD_LIBCPP
+#elif defined( __GLIBCXX__ )
+#define DAW_HAS_STD_LIBSTDCPP
 #endif

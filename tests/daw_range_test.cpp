@@ -23,7 +23,9 @@ void daw_range_test01( ) {
 	                                 3,    4, 5,  6,    7, 8, 9, 10 };
 	auto result = from( t ) << shuffle( ) << sort( ) << where( []( auto v ) {
 		              return v > 0;
-	              } ) << stable_partition( []( auto v ) { return v % 2 == 0; } );
+	              } ) << stable_partition( []( auto v ) {
+		              return v % 2 == 0;
+	              } );
 	std::cout << "Test 001\n";
 	std::cout << result << std::endl;
 
@@ -43,8 +45,12 @@ void daw_range_test02( ) {
 	auto result = from( t )
 	                .shuffle( )
 	                .sort( )
-	                .where( []( auto v ) { return v > 0; } )
-	                .stable_partition( []( auto v ) { return v % 2 == 0; } );
+	                .where( []( auto v ) {
+		                return v > 0;
+	                } )
+	                .stable_partition( []( auto v ) {
+		                return v % 2 == 0;
+	                } );
 
 	std::cout << "Test 002\n";
 	std::cout << result << std::endl;

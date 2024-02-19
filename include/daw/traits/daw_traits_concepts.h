@@ -8,11 +8,13 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "cpp_17.h"
-#include "daw_attributes.h"
-#include "impl/daw_traits_impl.h"
+#include "daw/ciso646.h"
+#include "daw/daw_attributes.h"
+#include "daw/daw_remove_cvref.h"
+#include "daw/impl/daw_traits_impl.h"
 
+#include <daw/stdinc/iterator_traits.h>
+#include <daw/stdinc/range_access.h>
 #include <type_traits>
 
 namespace daw::traits {
@@ -80,7 +82,7 @@ namespace daw::traits {
 	  traits_details::has_reference_v<Iterator> and
 	  traits_details::has_pointer_v<Iterator> and
 	  traits_details::has_iterator_category_v<Iterator> and
-	  is_swappable_v<Iterator>;
+	  std::is_swappable_v<Iterator>;
 
 	template<typename Iterator>
 	DAW_ATTRIB_INLINE static constexpr bool is_iterator_test( ) {
@@ -108,7 +110,7 @@ namespace daw::traits {
 		               "Iterator does not expose pointer type alias" );
 		static_assert( traits_details::has_iterator_category_v<Iterator>,
 		               "Iterator does not expose iterator category type alias" );
-		static_assert( is_swappable_v<Iterator>, "Iterator is not swappable" );
+		static_assert( std::is_swappable_v<Iterator>, "Iterator is not swappable" );
 		return true;
 	}
 
@@ -160,7 +162,7 @@ namespace daw::traits {
 		is_iterator_test<InputIterator>( );
 
 		using T = decltype( *std::declval<InputIterator>( ) );
-		using U = remove_cvref_t<T>;
+		using U = daw::remove_cvref_t<T>;
 
 		static_assert( is_equality_comparable_v<InputIterator>,
 		               "InputIterator is not equality_comparable" );

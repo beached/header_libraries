@@ -8,9 +8,11 @@
 
 #pragma once
 
-#include <array>
 #include <cstddef>
-#include <type_traits>
+#include <daw/stdinc/data_access.h>
+#include <daw/stdinc/declval.h>
+#include <daw/stdinc/range_access.h>
+#include <daw/stdinc/void_t.h>
 
 namespace daw {
 	namespace utility_details {

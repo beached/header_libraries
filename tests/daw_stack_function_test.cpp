@@ -73,13 +73,19 @@ void stack_function_test_002( ) {
 	std::cout << "f2 empty(std::function that is empty) state:"
 	          << ( f2.empty( ) ? "empty" : "not empty" ) << '\n';
 
-	daw::function<100, void( )> vf1 = []( ) { std::cout << "void( )\n"; };
+	daw::function<100, void( )> vf1 = []( ) {
+		std::cout << "void( )\n";
+	};
 	vf1( );
-	daw::function<150, void( )> const cvf1 = []( ) { std::cout << "void( )\n"; };
+	daw::function<150, void( )> const cvf1 = []( ) {
+		std::cout << "void( )\n";
+	};
 	cvf1( );
 
-	daw::function<2000, void( )> fcvf1 =
-	  [_cvf1 = daw::mutable_capture( cvf1 )]( ) { ( *_cvf1 )( ); };
+	daw::function<2000, void( )> fcvf1 = [_cvf1 =
+	                                        daw::mutable_capture( cvf1 )]( ) {
+		( *_cvf1 )( );
+	};
 	fcvf1( );
 }
 

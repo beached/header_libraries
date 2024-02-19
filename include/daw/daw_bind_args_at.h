@@ -11,6 +11,7 @@
 #include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_move.h"
+#include "daw_remove_cvref.h"
 
 #include <cstddef>
 #include <iostream>
@@ -28,9 +29,8 @@ namespace daw {
 		if constexpr( sizeof...( Args ) == 0 ) {
 			return std::tuple<>{ };
 		} else {
-			return std::tuple<
-			  std::decay_t<decltype( std::get<StartN + Is>( DAW_MOVE( args ) ) )>...>(
-			  std::get<StartN + Is>( DAW_MOVE( args ) )... );
+			return std::tuple<std::decay_t<decltype( std::get<StartN + Is>( std::move(
+			  args ) ) )>...>( std::get<StartN + Is>( std::move( args ) )... );
 		}
 	}
 
@@ -39,7 +39,7 @@ namespace daw {
 	  std::enable_if_t<( sizeof...( Args ) >= EndN ), std::nullptr_t> = nullptr>
 	constexpr auto split_args( std::tuple<Args...> args ) {
 		return split_args_impl<StartN>(
-		  DAW_MOVE( args ), std::make_index_sequence<EndN - StartN>{ } );
+		  std::move( args ), std::make_index_sequence<EndN - StartN>{ } );
 	}
 
 	template<typename Func>
@@ -59,8 +59,8 @@ namespace daw {
 		                          std::nullptr_t> = nullptr>
 		constexpr decltype( auto ) operator( )( std::tuple<Args...> &&args ) const
 		  noexcept( noexcept( std::apply( std::declval<Func>( ),
-		                                  DAW_MOVE( args ) ) ) ) {
-			return std::apply( f, DAW_MOVE( args ) );
+		                                  std::move( args ) ) ) ) {
+			return std::apply( f, std::move( args ) );
 		}
 	};
 
@@ -73,10 +73,10 @@ namespace daw {
 	  applier_t<Invokable>,
 	  decltype( std::tuple_cat(
 	    split_args<0, N::value>( std::forward_as_tuple(
-	      std::forward<Args>( std::declval<Args>( ) )... ) ),
+	      DAW_FWD( std::declval<Args>( ) )... ) ),
 	    std::declval<TpArgs>( ),
 	    split_args<N::value, sizeof...( Args )>( std::forward_as_tuple(
-	      std::forward<Args>( std::declval<Args>( ) )... ) ) ) )>;
+	      DAW_FWD( std::declval<Args>( ) )... ) ) ) )>;
 
 	template<size_t N, typename Invokable, typename TpArgs, typename... Args>
 	inline constexpr bool can_call_v =
@@ -90,10 +90,10 @@ namespace daw {
 	inline constexpr bool is_nothrow_callable_v = noexcept( std::apply(
 	  std::declval<Invokable>( ),
 	  std::tuple_cat( split_args<0, N>( std::forward_as_tuple(
-	                    std::forward<Args>( std::declval<Args>( ) )... ) ),
+	                    DAW_FWD( std::declval<Args>( ) )... ) ),
 	                  std::declval<TpArgs>( ),
 	                  split_args<N, sizeof...( Args )>( std::forward_as_tuple(
-	                    std::forward<Args>( std::declval<Args>( ) )... ) ) ) ) );
+	                    DAW_FWD( std::declval<Args>( ) )... ) ) ) ) );
 
 	template<std::size_t N, typename Invokable, typename TpArgs>
 	struct bind_args_at_fn {
@@ -108,10 +108,10 @@ namespace daw {
 			return std::apply(
 			  func,
 			  std::tuple_cat( split_args<0, N>( std::forward_as_tuple(
-			                    std::forward<decltype( args )>( args )... ) ),
+			                    DAW_FWD( args )... ) ),
 			                  tp_args,
 			                  split_args<N, sizeof...( Args )>( std::forward_as_tuple(
-			                    std::forward<decltype( args )>( args )... ) ) ) );
+			                    DAW_FWD( args )... ) ) ) );
 		}
 
 		template<typename... Args,
@@ -123,18 +123,18 @@ namespace daw {
 			return std::apply(
 			  func,
 			  std::tuple_cat( split_args<0, N>( std::forward_as_tuple(
-			                    std::forward<decltype( args )>( args )... ) ),
+			                    DAW_FWD( args )... ) ),
 			                  tp_args,
 			                  split_args<N, sizeof...( Args )>( std::forward_as_tuple(
-			                    std::forward<decltype( args )>( args )... ) ) ) );
+			                    DAW_FWD( args )... ) ) ) );
 		}
 	};
 
 	template<std::size_t N, typename Invokable, typename... Args>
 	constexpr auto bind_args_at( Invokable &&func, Args &&...args ) {
-		return bind_args_at_fn<N, remove_cvref_t<Invokable>,
+		return bind_args_at_fn<N, daw::remove_cvref_t<Invokable>,
 		                       std::tuple<std::decay_t<Args>...>>{
-		  std::forward<Invokable>( func ),
-		  std::tuple<std::decay_t<Args>...>( std::forward<Args>( args )... ) };
+		  DAW_FWD( func ),
+		  std::tuple<std::decay_t<Args>...>( DAW_FWD( args )... ) };
 	}
 } // namespace daw

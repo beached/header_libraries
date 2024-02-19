@@ -22,7 +22,7 @@ namespace daw {
 
 			template<typename... Args>
 			constexpr void push_back( Args &&...args ) {
-				values[idx] = T{ std::forward<Args>( args )... };
+				values[idx] = T{ DAW_FWD( args )... };
 				++idx;
 			}
 

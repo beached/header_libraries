@@ -8,18 +8,14 @@
 
 #pragma once
 
+#include "algorithms/daw_algorithm_partial_sum.h"
 #include "ciso646.h"
-#include "daw_algorithm.h"
-#include "daw_algorithm_cx.h"
 #include "daw_move.h"
 #include "daw_swap.h"
-#include "daw_traits.h"
-#include "iterator/daw_random_iterator.h"
 #include "iterator/daw_reverse_iterator.h"
 
-#include <algorithm>
-#include <functional>
-#include <iterator>
+#include <daw/stdinc/compare_fn.h>
+#include <daw/stdinc/iterator_traits.h>
 
 namespace daw {
 	namespace algorithm_details {
@@ -513,14 +509,14 @@ namespace daw {
 			uint_fast8_t count = 0;
 			for( auto i = std::next( j ); i != last; ++i ) {
 				if( comp( *i, *j ) ) {
-					auto t = DAW_MOVE( *i );
+					auto t = std::move( *i );
 					auto k = j;
 					j = i;
 					do {
-						*j = DAW_MOVE( *k );
+						*j = std::move( *k );
 						j = k;
 					} while( j != first and comp( t, *--k ) );
-					*j = DAW_MOVE( t );
+					*j = std::move( t );
 					if( ++count == limit ) {
 						return std::next( i ) == last;
 					}
@@ -540,14 +536,14 @@ namespace daw {
 			daw::sort_3( first, comp );
 			for( auto i = std::next( j ); i != last; ++i ) {
 				if( comp( *i, *j ) ) {
-					auto t = DAW_MOVE( *i );
+					auto t = std::move( *i );
 					auto k = j;
 					j = i;
 					do {
-						*j = DAW_MOVE( *k );
+						*j = std::move( *k );
 						j = k;
 					} while( j != first and comp( t, *--k ) );
-					*j = DAW_MOVE( t );
+					*j = std::move( t );
 				}
 				j = i;
 			}
@@ -742,7 +738,7 @@ namespace daw {
 	         RandomOutputIterator first_out, Compare &&comp = Compare{ } ) {
 
 		auto last_out = daw::algorithm::copy( first_in, last_in, first_out );
-		daw::sort( first_out, last_out, std::forward<Compare>( comp ) );
+		daw::sort( first_out, last_out, DAW_FWD( comp ) );
 		return last_out;
 	}
 
@@ -798,7 +794,7 @@ namespace daw {
 
 		auto last_out =
 		  sort_n_details::counting_sort( first_in, last_in, first_out, comp );
-		daw::sort( first_out, last_out, std::forward<Compare>( comp ) );
+		daw::sort( first_out, last_out, DAW_FWD( comp ) );
 		return last_out;
 	}
 } // namespace daw

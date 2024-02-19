@@ -10,7 +10,7 @@
 
 #include "ciso646.h"
 #include "daw_arith_traits.h"
-#include "impl/daw_conditional.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <cassert>
 #include <climits>
@@ -55,9 +55,8 @@ namespace daw {
 	  ( Bits == 8 ), UInt8,
 	  conditional_t<
 	    ( Bits == 16 ), UInt16,
-	    conditional_t<
-	      ( Bits == 32 ), UInt32,
-	      conditional_t<( Bits == 64 ), UInt64, InvalidUIntSize>>>>;
+	    conditional_t<( Bits == 32 ), UInt32,
+	                  conditional_t<( Bits == 64 ), UInt64, InvalidUIntSize>>>>;
 
 	constexpr UInt64 &operator<<=( UInt64 &b, std::uint64_t shift ) noexcept {
 		auto tmp = static_cast<std::uint64_t>( b );

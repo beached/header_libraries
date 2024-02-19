@@ -37,7 +37,7 @@ namespace daw::algorithm {
 	                           T init ) noexcept {
 		DAW_UNSAFE_BUFFER_FUNC_START
 		for( ; first != last; ++first ) {
-			init = DAW_MOVE( init ) + *first;
+			init = std::move( init ) + *first;
 		}
 		DAW_UNSAFE_BUFFER_FUNC_STOP
 		return init;
@@ -63,11 +63,11 @@ namespace daw::algorithm {
 	constexpr auto accumulate(
 	  InputIterator first, LastType last, T init,
 	  BinaryOperation binary_op =
-	    BinaryOperation{ } ) noexcept( noexcept( binary_op( DAW_MOVE( init ),
+	    BinaryOperation{ } ) noexcept( noexcept( binary_op( std::move( init ),
 	                                                        *first ) ) ) {
 
 		while( first != last ) {
-			init = daw::invoke( binary_op, DAW_MOVE( init ), *first );
+			init = daw::invoke( binary_op, std::move( init ), *first );
 			++first;
 		}
 		return init;

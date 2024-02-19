@@ -40,9 +40,10 @@ void test_perf_comp( ) {
 	auto const values = copy_n_values( get_random_data( ), N );
 	daw::do_not_optimize( values );
 	auto const validator = []( auto const &v ) {
-		auto unsorted_pos = std::adjacent_find(
-		  v.begin( ), v.end( ),
-		  []( auto const &l, auto const &r ) { return r < l; } );
+		auto unsorted_pos = std::adjacent_find( v.begin( ), v.end( ),
+		                                        []( auto const &l, auto const &r ) {
+			                                        return r < l;
+		                                        } );
 		if( unsorted_pos == v.end( ) ) {
 			return true;
 		}

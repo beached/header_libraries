@@ -33,7 +33,7 @@ namespace daw {
 		constexpr chunk_iterator( ) = default;
 
 		constexpr chunk_iterator( Iterator iterator, size_type chunk_size )
-		  : m_iterator( DAW_MOVE( iterator ) )
+		  : m_iterator( std::move( iterator ) )
 		  , m_chunk_size( static_cast<difference_type>( chunk_size ) ) {}
 
 		[[nodiscard]] constexpr decltype( auto ) operator*( ) {

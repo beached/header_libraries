@@ -9,6 +9,7 @@
 #include <daw/daw_take.h>
 
 #include <cassert>
+#include <utility>
 
 int main( ) {
 	int a = 5;
@@ -20,7 +21,7 @@ int main( ) {
 	auto x = daw::take_t<int>( 5 );
 	auto y = x;
 	assert( *x == 5 );
-	auto z = DAW_MOVE( y );
+	auto z = std::move( y );
 	assert( *y == 0 );
 	assert( *z == 5 );
 }

@@ -27,6 +27,6 @@ namespace daw {
 	} // namespace traits_details
 
 	template<bool B, typename TrueType, typename FalseType>
-	using conditional_t = typename traits_details::select<B>::template type<TrueType, FalseType>;
-}
-
+	using conditional_t =
+	  typename traits_details::select<B>::template type<TrueType, FalseType>;
+} // namespace daw

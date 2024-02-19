@@ -85,18 +85,18 @@ namespace daw {
 		/// Summary: With value
 		//////////////////////////////////////////////////////////////////////////
 		checked_expected_t( value_type value ) noexcept
-		  : m_value{ DAW_MOVE( value ) }
+		  : m_value{ std::move( value ) }
 		  , m_exception{ } {}
 
 		checked_expected_t &operator=( value_type value ) noexcept {
-			m_value = DAW_MOVE( value );
+			m_value = std::move( value );
 			m_exception = nullptr;
 			return *this;
 		}
 
 		checked_expected_t( std::exception_ptr ptr )
 		  : m_value{ }
-		  , m_exception{ DAW_MOVE( ptr ) } {
+		  , m_exception{ std::move( ptr ) } {
 
 			impl::is_expected_exception<ExpectedExceptions...>( m_exception );
 		}
@@ -132,8 +132,8 @@ namespace daw {
 		                          std::nullptr_t> = nullptr>
 		static checked_expected_t from_code( Function func, Args &&...args ) {
 			try {
-				auto tmp = func( std::forward<Args>( args )... );
-				return checked_expected_t{ DAW_MOVE( tmp ) };
+				auto tmp = func( DAW_FWD( args )... );
+				return checked_expected_t{ std::move( tmp ) };
 			} catch( ... ) { return checked_expected_t{ exception_tag{} }; }
 		}
 
@@ -142,7 +142,7 @@ namespace daw {
 		template<class Function, typename... Args>
 		checked_expected_t( Function func, Args &&...args )
 		  : checked_expected_t{ checked_expected_t::from_code(
-		      func, std::forward<Args>( args )... ) } {}
+		      func, DAW_FWD( args )... ) } {}
 
 		[[nodiscard]] bool has_value( ) const noexcept {
 			return static_cast<bool>( m_value );
@@ -313,7 +313,7 @@ namespace daw {
 		static checked_expected_t from_code( Function func, Arg &&arg,
 		                                     Args &&...args ) {
 			try {
-				func( std::forward<Arg>( arg ), std::forward<Args>( args )... );
+				func( DAW_FWD( arg ), DAW_FWD( args )... );
 				return checked_expected_t{ true };
 			} catch( ... ) { return checked_expected_t{ exception_tag{} }; }
 		}
@@ -334,7 +334,7 @@ namespace daw {
 		           std::declval<Args>( )... ) )>
 		checked_expected_t( Function func, Args &&...args )
 		  : checked_expected_t{ checked_expected_t::from_code(
-		      func, std::forward<Args>( args )... ) } {}
+		      func, DAW_FWD( args )... ) } {}
 
 		[[nodiscard]] bool has_value( ) const noexcept {
 			return m_value;
@@ -387,9 +387,9 @@ namespace daw {
 	template<typename... ExpectedExceptions, typename Function, typename... Args>
 	auto checked_from_code( Function func, Args &&...args ) {
 		using result_t =
-		  std::decay_t<decltype( func( std::forward<Args>( args )... ) )>;
+		  std::decay_t<decltype( func( DAW_FWD( args )... ) )>;
 		return checked_expected_t<result_t, ExpectedExceptions...>::from_code(
-		  func, std::forward<Args>( args )... );
+		  func, DAW_FWD( args )... );
 	}
 
 	template<typename Function, typename Result, typename... Exceptions>
@@ -398,12 +398,12 @@ namespace daw {
 
 	public:
 		constexpr checked_function_t( Function f )
-		  : func{ DAW_MOVE( f ) } {}
+		  : func{ std::move( f ) } {}
 
 		template<typename... Args>
 		constexpr decltype( auto ) operator( )( Args &&...args ) const {
 			return checked_expected_t<Result, Exceptions...>::from_code(
-			  func, std::forward<Args>( args )... );
+			  func, DAW_FWD( args )... );
 		}
 	};
 
@@ -411,6 +411,6 @@ namespace daw {
 	[[nodiscard]] constexpr checked_function_t<Function, Result, Exceptions...>
 	make_checked_function( Function &&func ) noexcept {
 		return checked_function_t<Function, Result, Exceptions...>{
-		  std::forward<Function>( func ) };
+		  DAW_FWD( func ) };
 	}
 } // namespace daw

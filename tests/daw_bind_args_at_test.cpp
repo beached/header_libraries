@@ -21,7 +21,9 @@ constexpr auto less5_100 = daw::bind_args_at<0>( less100, 5 );
 struct Display {
 	template<typename Arg, typename... Args>
 	inline void operator( )( Arg const &arg, Args const &...args ) const {
-		auto const show_item = []( auto const &item ) { std::cout << ' ' << item; };
+		auto const show_item = []( auto const &item ) {
+			std::cout << ' ' << item;
+		};
 		std::cout << arg;
 		(void)( ( show_item( args ), 0 ) | ... );
 	}

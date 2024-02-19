@@ -13,7 +13,7 @@
 #include "daw_endian.h"
 #include "daw_exception.h"
 #include "daw_move.h"
-#include "impl/daw_conditional.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <cstdint>
 
@@ -23,8 +23,8 @@ namespace daw {
 
 	using bit_queue_source_native_endian =
 	  typename conditional_t<daw::endian::native == daw::endian::little,
-	                              bit_queue_source_little_endian,
-	                              bit_queue_source_big_endian>;
+	                         bit_queue_source_little_endian,
+	                         bit_queue_source_big_endian>;
 
 	template<typename queue_type, typename value_type = uint8_t,
 	         typename BitQueueLSB = bit_queue_source_native_endian>
@@ -40,7 +40,7 @@ namespace daw {
 
 		constexpr explicit basic_bit_queue( queue_type v ) noexcept
 		  : m_size( sizeof( m_queue ) * 8 )
-		  , m_queue( DAW_MOVE( v ) ) {}
+		  , m_queue( std::move( v ) ) {}
 
 		[[nodiscard]] constexpr size_t size( ) const noexcept {
 			return m_size;
@@ -135,7 +135,7 @@ namespace daw {
 		  : m_queue{ } {}
 
 		constexpr explicit basic_nibble_queue( queue_type v ) noexcept
-		  : m_queue{ DAW_MOVE( v ) } {}
+		  : m_queue{ std::move( v ) } {}
 
 		[[nodiscard]] constexpr size_t capacity( ) const noexcept {
 			return m_queue.capacity( ) / 4;

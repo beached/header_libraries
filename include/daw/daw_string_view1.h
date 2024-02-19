@@ -20,10 +20,10 @@
 #include "daw_string_view_version.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
-#include "impl/daw_conditional.h"
 #include "impl/daw_string_impl.h"
 #include "iterator/daw_back_inserter.h"
 #include "iterator/daw_iterator.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -89,7 +89,7 @@ namespace daw {
 			  std::is_same_v<B, StringViewBoundsPointer>;
 
 			using last_type = conditional_t<is_last_a_pointer_v<BoundsType>,
-			                                     const_pointer, size_type>;
+			                                const_pointer, size_type>;
 			static inline constexpr last_type default_last = [] {
 				if constexpr( is_last_a_pointer_v<BoundsType> ) {
 					return nullptr;
@@ -99,7 +99,7 @@ namespace daw {
 			}( );
 			using last_difference_type =
 			  conditional_t<is_last_a_pointer_v<BoundsType>, difference_type,
-			                     size_type>;
+			                size_type>;
 
 			template<typename Bounds>
 			static constexpr last_type make_last( const_pointer f,
@@ -451,7 +451,7 @@ namespace daw {
 			[[nodiscard]] constexpr basic_string_view
 			pop_front( UnaryPredicate pred ) {
 
-				auto pos = find_first_of_if( DAW_MOVE( pred ) );
+				auto pos = find_first_of_if( std::move( pred ) );
 				auto result = pop_front( pos );
 				remove_prefix( find_predicate_result_size( pred ) );
 				return result;
@@ -505,7 +505,7 @@ namespace daw {
 			[[nodiscard]] constexpr basic_string_view
 			pop_back( UnaryPredicate pred ) {
 
-				auto pos = find_last_of_if( DAW_MOVE( pred ) );
+				auto pos = find_last_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					auto result = *this;
 					remove_prefix( npos );
@@ -1533,7 +1533,7 @@ namespace daw {
 
 			public:
 				sv_arry_t( std::vector<daw::sv1::basic_string_view<CharT, Bounds>> v )
-				  : data( DAW_MOVE( v ) ) {}
+				  : data( std::move( v ) ) {}
 
 				decltype( auto ) operator[]( std::size_t p ) const {
 					return data[p];
@@ -1607,7 +1607,7 @@ namespace daw {
 				last_pos = str.cbegin( );
 			}
 			v.shrink_to_fit( );
-			return sv_arry_t( DAW_MOVE( v ) );
+			return sv_arry_t( std::move( v ) );
 		}
 
 		template<typename CharT, typename Bounds, ptrdiff_t Ex>

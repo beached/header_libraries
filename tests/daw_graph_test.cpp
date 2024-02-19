@@ -44,8 +44,9 @@ int main( ) {
 		graph.add_undirected_edge( n2_id, n3_id );
 		graph.add_node( 1000 );
 
-		auto roots = graph.find(
-		  []( auto const &node ) { return node.incoming_edges( ).empty( ); } );
+		auto roots = graph.find( []( auto const &node ) {
+			return node.incoming_edges( ).empty( );
+		} );
 		daw::expecting( roots.size( ), 2ULL );
 
 		auto nodes = graph.find_by_value( 1000 );

@@ -16,6 +16,7 @@
 #include "daw_optional.h"
 #include "daw_traits.h"
 
+#include <cstdint>
 #include <memory>
 #include <numeric>
 #include <utility>
@@ -42,7 +43,7 @@ namespace daw {
 		constexpr bounded_hash_map_item_t( ) = default;
 
 		constexpr bounded_hash_map_item_t( key_value_t<Key, Value> &&Kv )
-		  : kv( DAW_MOVE( Kv ) )
+		  : kv( std::move( Kv ) )
 		  , has_value( true ) {}
 
 		constexpr bounded_hash_map_item_t( key_value_t<Key, Value> const &Kv )
@@ -347,7 +348,7 @@ namespace daw {
 		constexpr void insert( value_type &&item ) {
 			auto const index = find_index( item.key );
 			m_data[*index] =
-			  daw::bounded_hash_map_item_t<Key, Value>( DAW_MOVE( item ) );
+			  daw::bounded_hash_map_item_t<Key, Value>( std::move( item ) );
 		}
 
 	public:
@@ -412,7 +413,7 @@ namespace daw {
 			auto &item = m_data[*find_index( key )];
 			if( not item ) {
 				item.has_value = true;
-				item.kv.key = DAW_MOVE( key );
+				item.kv.key = std::move( key );
 				item.kv.value = Value{ };
 			}
 			return item.kv.value;

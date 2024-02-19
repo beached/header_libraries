@@ -13,28 +13,19 @@
 #include "daw_cpp_feature_check.h"
 #include "daw_enable_if.h"
 #include "daw_move.h"
-#include "impl/daw_conditional.h"
+#include "daw_pack_element.h"
+#include "daw_remove_cvref.h"
 #include "impl/daw_traits_impl.h"
+#include "traits/daw_traits_conditional.h"
+#include "traits/daw_traits_first_type.h"
+#include "traits/daw_traits_is_const.h"
+#include "traits/daw_traits_is_rvalue_reference.h"
 
-#include <cstddef>
-#include <cstdint>
+#include <cstdlib>
+#include <daw/stdinc/data_access.h>
+#include <daw/stdinc/range_access.h>
 #include <tuple>
 #include <type_traits>
-#include <utility>
-
-namespace daw {
-	template<typename T>
-	struct undefined_t;
-
-	template<typename T>
-	inline constexpr auto undefined_v = [] {
-		if constexpr( not std::is_same_v<T, undefined_t<T>> ) {
-			std::abort( );
-		} else {
-			return static_cast<T *>( nullptr );
-		}
-	}( );
-} // namespace daw
 
 namespace daw::traits {
 	template<typename T, typename... Ts>
@@ -61,8 +52,8 @@ namespace daw::traits {
 	struct max_sizeof<First, Args...> {
 		using next = typename max_sizeof<Args...>::type;
 		using type =
-		  typename std::conditional<( sizeof( First ) >= sizeof( next ) ), First,
-		                            next>::type;
+		  typename daw::conditional_t<( sizeof( First ) >= sizeof( next ) ), First,
+		                              next>;
 		static const size_t value = sizeof( type );
 	};
 
@@ -273,32 +264,6 @@ namespace daw::traits {
 	inline constexpr bool is_mixed_from_v =
 	  std::is_base_of_v<Base<Derived>, Derived>;
 
-} // namespace daw::traits
-
-namespace daw {
-	template<std::size_t Idx, typename Pack>
-	struct pack_element;
-
-	template<std::size_t Idx, template<class...> class Pack, typename... Ts>
-	struct pack_element<Idx, Pack<Ts...>> {
-		using type = traits::nth_type<Idx, Ts...>;
-	};
-
-	template<std::size_t Idx, typename Pack>
-	using pack_element_t = typename pack_element<Idx, Pack>::type;
-
-	template<typename Pack>
-	inline constexpr auto pack_size_v = undefined_v<Pack>;
-
-	template<template<typename...> typename Pack, typename... Ts>
-	inline constexpr std::size_t pack_size_v<Pack<Ts...>> = sizeof...( Ts );
-
-	template<typename Pack>
-	using pack_size = std::integral_constant<std::size_t, pack_size_v<Pack>>;
-} // namespace daw
-
-namespace daw::traits {
-
 	namespace traits_details {
 		namespace operators {
 			template<typename L, typename R>
@@ -349,7 +314,7 @@ namespace daw::traits {
 			[[maybe_unused]] auto has_op_ge_impl( L const &lhs, R const &rhs, int )
 			  -> std::is_convertible<decltype( lhs >= rhs ), bool>;
 		} // namespace operators
-	} // namespace traits_details
+	}   // namespace traits_details
 
 	namespace operators {
 		template<typename L, typename R = L>
@@ -448,7 +413,7 @@ namespace daw::traits {
 		template<typename T, typename... Ts>
 		struct isnt_cv_ref<T, Ts...>
 		  : std::bool_constant<(
-		      not std::disjunction_v<std::is_const<T>, std::is_reference<T>,
+		      not std::disjunction_v<daw::traits::is_const<T>, std::is_reference<T>,
 		                             std::is_volatile<T>> and
 		      std::is_same_v<std::true_type, typename isnt_cv_ref<Ts...>::type> )> {
 		};
@@ -468,16 +433,6 @@ namespace daw::traits {
 	template<typename Function, typename... Args>
 	using invoke_result_t =
 	  decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
-
-	namespace traits_details {
-		template<typename T, typename... Args>
-		struct first_type_impl {
-			using type = T;
-		};
-	} // namespace traits_details
-
-	template<typename... Args>
-	using first_type = typename traits_details::first_type_impl<Args...>::type;
 
 	namespace traits_details {
 		template<typename... Ts>
@@ -510,30 +465,6 @@ namespace daw::traits {
 	inline constexpr bool is_init_list_constructible_v = all_true_v<
 	  are_same_types_v<Args...>,
 	  std::is_constructible_v<T, std::initializer_list<first_type<Args...>>>>;
-
-	template<typename, typename = void>
-	inline constexpr bool is_ostream_like_lite_v = false;
-
-	template<typename T>
-	inline constexpr bool is_ostream_like_lite_v<
-	  T, std::void_t<typename T::char_type, decltype( T::adjustfield ),
-	                 decltype( std::declval<T const &>( ).fill( ) ),
-	                 decltype( std::declval<T const &>( ).good( ) ),
-	                 decltype( std::declval<T const &>( ).width( ) ),
-	                 decltype( std::declval<T const &>( ).flags( ) )>> = true;
-
-	template<typename T, typename CharT, typename = void>
-	inline constexpr bool has_write_member_v = false;
-
-	template<typename T, typename CharT>
-	inline constexpr bool has_write_member_v<
-	  T, CharT,
-	  std::void_t<decltype( std::declval<T &>( ).write(
-	    std::declval<CharT const *>( ), std::declval<int>( ) ) )>> = true;
-
-	template<typename T, typename CharT>
-	inline constexpr bool is_ostream_like_v =
-	  is_ostream_like_lite_v<T> and has_write_member_v<T, CharT>;
 
 	template<typename T>
 	inline constexpr bool is_character_v = is_one_of_v<T, char, wchar_t>;
@@ -914,7 +845,7 @@ namespace daw::traits {
 	  /*then*/ std::add_lvalue_reference_t<std::remove_reference_t<To>>,
 	  /*else if*/
 	  conditional_t<
-	    /*if*/ std::is_rvalue_reference_v<From>,
+	    /*if*/ daw::traits::is_rvalue_reference_v<From>,
 	    /*then*/ std::add_rvalue_reference_t<std::remove_reference_t<To>>,
 	    /*else*/ std::remove_reference_t<To>
 	    /**/>
@@ -922,7 +853,7 @@ namespace daw::traits {
 
 	template<typename To, typename From>
 	using copy_const_t = conditional_t<
-	  /*if*/ std::is_const_v<std::remove_reference_t<From>>,
+	  /*if*/ daw::traits::is_const_v<std::remove_reference_t<From>>,
 	  /*then*/ copy_ref_t<To, std::add_const_t<std::remove_reference_t<To>>>,
 	  /*else*/ copy_ref_t<To, std::remove_const_t<std::remove_reference_t<To>>>
 	  /**/>;
@@ -1042,7 +973,5 @@ namespace daw {
 
 	template<typename T>
 	inline constexpr std::size_t const bsizeof =
-	  static_cast<size_t>( sizeof( remove_cvref_t<T> ) * 8U );
+	  static_cast<size_t>( sizeof( daw::remove_cvref_t<T> ) * 8U );
 } // namespace daw
-
-#define DAW_TYPEOF( ... ) daw::remove_cvref_t<decltype( __VA_ARGS__ )>

@@ -56,10 +56,10 @@ namespace daw {
 		}
 
 		template<typename Iterator, typename Distance>
-		constexpr void
-		advance( Iterator &first, Distance n,
-		         std::bidirectional_iterator_tag ) noexcept( noexcept( ++first ) and
-		                                                     noexcept( --first ) ) {
+		constexpr void advance(
+		  Iterator &first, Distance n,
+		  std::bidirectional_iterator_tag ) noexcept( noexcept( ++first )
+		                                                and noexcept( --first ) ) {
 
 			if( n >= 0 ) {
 				while( n-- > 0 ) {
@@ -126,7 +126,7 @@ namespace daw {
 
 		cpp_17_details::advance(
 		  it, n, typename std::iterator_traits<Iterator>::iterator_category{ } );
-		return DAW_MOVE( it );
+		return std::move( it );
 	}
 
 	/// @brief Move iterator backward n steps, if n > 0, only defined for types
@@ -141,6 +141,6 @@ namespace daw {
 
 		cpp_17_details::advance(
 		  it, -n, typename std::iterator_traits<Iterator>::iterator_category{ } );
-		return DAW_MOVE( it );
+		return std::move( it );
 	}
 } // namespace daw

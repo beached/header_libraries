@@ -331,7 +331,7 @@ namespace daw {
 
 			while( sfirst >= slast ) {
 				if constexpr( std::is_nothrow_move_constructible_v<value_type> ) {
-					construct_at( source + dfirst, DAW_MOVE( source[sfirst] ) );
+					construct_at( source + dfirst, std::move( source[sfirst] ) );
 				} else {
 					construct_at( source + dfirst, source[sfirst] );
 				}
@@ -389,7 +389,7 @@ namespace daw {
 		  : allocator_type{ alloc } {}
 
 		constexpr Vector( Vector &&other ) noexcept
-		  : allocator_type( DAW_MOVE( other ) )
+		  : allocator_type( std::move( other ) )
 		  , m_first( std::exchange( other.m_first, nullptr ) )
 		  , m_size( std::exchange( other.m_size, nullptr ) )
 		  , m_capacity( std::exchange( other.m_capacity, nullptr ) ) {}
@@ -397,7 +397,7 @@ namespace daw {
 		constexpr Vector &operator=( Vector &&rhs ) noexcept {
 			if( this != &rhs ) {
 				clear( );
-				allocator_type::operator=( DAW_MOVE( rhs ) );
+				allocator_type::operator=( std::move( rhs ) );
 				m_first = std::exchange( rhs.m_first, nullptr );
 				m_size = std::exchange( rhs.m_size, nullptr );
 				m_capacity = std::exchange( rhs.m_capacity, nullptr );
@@ -587,7 +587,7 @@ namespace daw {
 			if( m_size >= m_capacity ) {
 				resize_impl( size( ) + 1 );
 			}
-			return *construct_at( m_size++, DAW_MOVE( v ) );
+			return *construct_at( m_size++, std::move( v ) );
 		}
 
 		template<typename... Args>

@@ -75,24 +75,42 @@ int main( ) {
 		std::cout << "Data size: " << sz << '\n';
 		daw::bench_n_test<100>(
 		  "vector<size_t> Insert sorted iterator",
-		  []( std::vector<size_t> const &data ) { test_001( data ); }, test_data );
+		  []( std::vector<size_t> const &data ) {
+			  test_001( data );
+		  },
+		  test_data );
 		daw::bench_n_test<100>(
 		  "vector<size_t> Insert/Sort",
-		  []( std::vector<size_t> const &data ) { test_002( data ); }, test_data );
+		  []( std::vector<size_t> const &data ) {
+			  test_002( data );
+		  },
+		  test_data );
 
 		daw::bench_n_test<100>(
 		  "deque<size_t> Insert sorted iterator",
-		  []( std::vector<size_t> const &data ) { test_003( data ); }, test_data );
+		  []( std::vector<size_t> const &data ) {
+			  test_003( data );
+		  },
+		  test_data );
 		daw::bench_n_test<100>(
 		  "deque<size_t> Insert/Sort",
-		  []( std::vector<size_t> const &data ) { test_004( data ); }, test_data );
+		  []( std::vector<size_t> const &data ) {
+			  test_004( data );
+		  },
+		  test_data );
 
 		daw::bench_n_test<100>(
 		  "list<size_t> Insert sorted iterator",
-		  []( std::vector<size_t> const &data ) { test_005( data ); }, test_data );
+		  []( std::vector<size_t> const &data ) {
+			  test_005( data );
+		  },
+		  test_data );
 		daw::bench_n_test<100>(
 		  "list<size_t> Insert/Sort",
-		  []( std::vector<size_t> const &data ) { test_006( data ); }, test_data );
+		  []( std::vector<size_t> const &data ) {
+			  test_006( data );
+		  },
+		  test_data );
 		std::cout << "####################\n";
 	}
 }

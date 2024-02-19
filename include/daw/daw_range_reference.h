@@ -257,12 +257,12 @@ namespace daw {
 
 			template<typename T>
 			auto accumulate( T &&init ) const {
-				return std::accumulate( begin( ), end( ), std::forward<T>( init ) );
+				return std::accumulate( begin( ), end( ), DAW_FWD( init ) );
 			}
 
 			template<typename T, typename BinaryOperator>
 			auto accumulate( T &&init, BinaryOperator oper ) const {
-				return std::accumulate( begin( ), end( ), std::forward<T>( init ),
+				return std::accumulate( begin( ), end( ), DAW_FWD( init ),
 				                        [&oper]( auto const &a, auto const &b ) {
 					                        return oper( a.get( ), b.get( ) );
 				                        } );
@@ -389,14 +389,14 @@ namespace daw {
 			template<typename UniformRandomNumberGenerator>
 			ReferenceRange &shuffle( UniformRandomNumberGenerator &&urng ) {
 				std::shuffle( begin( ), end( ),
-				              std::forward<UniformRandomNumberGenerator>( urng ) );
+				              DAW_FWD( urng ) );
 				return *this;
 			}
 
 			template<typename UniformRandomNumberGenerator>
 			ReferenceRange shuffle( UniformRandomNumberGenerator &&urng ) const {
 				return copy( ).shuffle(
-				  std::forward<UniformRandomNumberGenerator>( urng ) );
+				  DAW_FWD( urng ) );
 			}
 		}; // class ReferenceRange
 
@@ -425,7 +425,7 @@ namespace daw {
 		template<typename Arg, typename... Args>
 		auto make_range_reference( Arg &&arg, Args &&...args ) {
 			return daw::range::impl::make_range_reference(
-			  std::forward<Arg>( arg ), std::forward<Args>( args )... );
+			  DAW_FWD( arg ), DAW_FWD( args )... );
 		}
 
 		namespace details {

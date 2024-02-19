@@ -15,14 +15,15 @@
 #include "daw_move.h"
 #include "daw_overload.h"
 #include "daw_utility.h"
-#include "impl/daw_conditional.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <cstddef>
-#include <functional>
+#include <daw/stdinc/integer_sequence.h>
+#include <daw/stdinc/reference_wrapper.h>
 #include <iostream>
-#include <string>
+#include <ostream>
 #include <tuple>
-#include <utility>
+#include <type_traits>
 #include <variant>
 
 namespace daw {
@@ -117,7 +118,7 @@ namespace daw {
 				constexpr print_t( std::ostream &os, char separator = ',' )
 				  : m_os{ os }
 				  , m_is_first{ true }
-				  , m_separator{ DAW_MOVE( separator ) } {}
+				  , m_separator{ std::move( separator ) } {}
 
 				void reset( ) {
 					m_is_first = true;
@@ -421,11 +422,11 @@ namespace daw {
 
 			template<size_t N, typename Func, typename Arg>
 			constexpr bool apply_func( size_t idx, Func func, Arg &&arg ) noexcept(
-			  noexcept( apply_func_impl( DAW_MOVE( func ),
+			  noexcept( apply_func_impl( std::move( func ),
 			                             DAW_FWD2( Arg, arg ) ) ) ) {
 
 				if( N == idx ) {
-					apply_func_impl( DAW_MOVE( func ), DAW_FWD2( Arg, arg ) );
+					apply_func_impl( std::move( func ), DAW_FWD2( Arg, arg ) );
 				}
 				return true;
 			}
@@ -459,7 +460,7 @@ namespace daw {
 		constexpr void apply_at( std::tuple<Args...> &&tp, size_t index,
 		                         Funcs &&...funcs ) {
 			tuple_details::apply_at_impl(
-			  DAW_MOVE( tp ), index, daw::overload( DAW_FWD2( Funcs, funcs )... ) );
+			  std::move( tp ), index, daw::overload( DAW_FWD2( Funcs, funcs )... ) );
 		}
 
 		namespace tuple_details {
@@ -509,9 +510,8 @@ namespace daw {
 
 	template<typename... Ts>
 	constexpr auto forward_nontemp_as_tuple( Ts &&...values ) {
-		using tuple_t =
-		  std::tuple<conditional_t<std::is_rvalue_reference_v<Ts>,
-		                                daw::remove_cvref_t<Ts>, Ts>...>;
+		using tuple_t = std::tuple<conditional_t<std::is_rvalue_reference_v<Ts>,
+		                                         daw::remove_cvref_t<Ts>, Ts>...>;
 		return tuple_t{ DAW_FWD( values )... };
 	}
 } // namespace daw

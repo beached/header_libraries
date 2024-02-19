@@ -8,7 +8,6 @@
 
 #include "daw/daw_algorithm.h"
 #include "daw/daw_benchmark.h"
-#include "daw/daw_move.h"
 #include "daw/daw_utility.h"
 #include "daw/daw_validated.h"
 
@@ -54,15 +53,22 @@ constexpr void assign( T &lhs, U &&rhs ) {
 
 void int_range_test_bad_001( ) {
 	using value_t = daw::validated<int, int_validator_t<int, 0, 100>>;
-	daw::expecting_exception<std::out_of_range>( []( ) { value_t( -1 ); } );
-	daw::expecting_exception<std::out_of_range>( []( ) { value_t( 101 ); } );
+	daw::expecting_exception<std::out_of_range>( []( ) {
+		value_t( -1 );
+	} );
+	daw::expecting_exception<std::out_of_range>( []( ) {
+		value_t( 101 );
+	} );
 	value_t tmp = 1;
 	daw::expecting( tmp, 1 );
-	daw::expecting_exception<std::out_of_range>( [&]( ) { assign( tmp, 101 ); } );
+	daw::expecting_exception<std::out_of_range>( [&]( ) {
+		assign( tmp, 101 );
+	} );
 	daw::expecting( tmp, 1 );
 	int tmp2 = 101;
-	daw::expecting_exception<std::out_of_range>(
-	  [&]( ) { assign( tmp, daw::move( tmp2 ) ); } );
+	daw::expecting_exception<std::out_of_range>( [&]( ) {
+		assign( tmp, std::move( tmp2 ) );
+	} );
 	daw::expecting( tmp, 1 );
 }
 
@@ -95,8 +101,12 @@ static_assert( enum_test_good_001( ) );
 
 void enum_test_bad_001( ) {
 	using value_t = daw::validated<enum_t, enum_validator_t>;
-	daw::expecting_exception<std::out_of_range>( []( ) { value_t( 5 ); } );
-	daw::expecting_exception<std::out_of_range>( []( ) { value_t( -1 ); } );
+	daw::expecting_exception<std::out_of_range>( []( ) {
+		value_t( 5 );
+	} );
+	daw::expecting_exception<std::out_of_range>( []( ) {
+		value_t( -1 );
+	} );
 }
 
 struct no_repeat_container {
@@ -131,8 +141,9 @@ static_assert( array_good_001( ) );
 
 void array_bad_001( ) {
 	using value_t = daw::validated<std::array<int, 5>, no_repeat_container>;
-	daw::expecting_exception<std::out_of_range>(
-	  []( ) { value_t( std::in_place, 1, 1, 2, 3, 4 ); } );
+	daw::expecting_exception<std::out_of_range>( []( ) {
+		value_t( std::in_place, 1, 1, 2, 3, 4 );
+	} );
 }
 
 struct test_class_t {
@@ -161,7 +172,9 @@ namespace struct_good_001 {
 
 void struct_bad_001( ) {
 	using value_t = daw::validated<test_class_t, test_class_validator_t>;
-	daw::expecting_exception<std::out_of_range>( []( ) { value_t( 1 ); } );
+	daw::expecting_exception<std::out_of_range>( []( ) {
+		value_t( 1 );
+	} );
 }
 
 struct test_class2_validator_t {
@@ -221,8 +234,9 @@ function_argument_test( daw::validated<int, int_validator_t<int, 5, 10>> arg ) {
 
 void function_argument_001( ) {
 	static_assert( function_argument_test( 6 ) == 12 );
-	daw::expecting_exception<std::out_of_range>(
-	  []( ) { function_argument_test( { 15 } ); } );
+	daw::expecting_exception<std::out_of_range>( []( ) {
+		function_argument_test( { 15 } );
+	} );
 }
 
 struct throwing_validator {
@@ -238,7 +252,9 @@ void throwing_validator_001( ) {
 	using value_t = daw::validated<int, throwing_validator>;
 	static_assert( value_t( 1 ) == 1 );
 
-	daw::expecting_exception<std::runtime_error>( []( ) { value_t( 2 ); } );
+	daw::expecting_exception<std::runtime_error>( []( ) {
+		value_t( 2 );
+	} );
 }
 
 int main( ) {

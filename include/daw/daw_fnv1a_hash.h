@@ -10,17 +10,22 @@
 
 #include "ciso646.h"
 #include "daw_attributes.h"
+#include "daw_bit_cast.h"
 #include "daw_compiler_fixups.h"
-#include "impl/daw_conditional.h"
+#include "daw_data_end.h"
 #include "impl/daw_is_string_view_like.h"
+#include "traits/daw_traits_conditional.h"
 
+#include <cassert>
 #include <cstddef>
 #include <cstdint>
-#include <type_traits>
+#include <daw/stdinc/data_access.h>
+#include <daw/stdinc/enable_if.h>
 
 namespace daw {
 	namespace fnv1a_impl {
-		inline constexpr bool is_64bit_v = sizeof( size_t ) == sizeof( uint64_t );
+		inline constexpr bool is_64bit_v =
+		  sizeof( size_t ) == sizeof( std::uint64_t );
 
 	} // namespace fnv1a_impl
 #if defined( DAW_FORCE_FNV1A_TYPE )
@@ -32,7 +37,7 @@ namespace daw {
 } // namespace daw
 
 namespace daw {
-	namespace impl {
+	namespace fnv1a_impl {
 		inline constexpr fnv1a_uint_t fnv_prime =
 		  sizeof( fnv1a_uint_t ) == sizeof( std::uint64_t ) ? 1099511628211ULL
 		                                                    : 16777619UL;
@@ -41,7 +46,20 @@ namespace daw {
 		  sizeof( fnv1a_uint_t ) == sizeof( std::uint64_t )
 		    ? 14695981039346656037ULL
 		    : 2166136261UL;
-	} // namespace impl
+
+		template<std::size_t N>
+		struct byte_array {
+			unsigned char values[N];
+
+			constexpr unsigned char const *begin( ) const {
+				return values;
+			}
+
+			constexpr unsigned char const *end( ) const {
+				return values + N;
+			}
+		};
+	} // namespace fnv1a_impl
 
 	struct fnv1a_hash_t {
 		// TODO: check for UB if values are signed
@@ -52,9 +70,9 @@ namespace daw {
 			for( fnv1a_uint_t n = 0; n < sizeof( Value ); ++n ) {
 				current_hash ^= static_cast<fnv1a_uint_t>(
 				  ( static_cast<fnv1a_uint_t>( value ) &
-				    ( static_cast<fnv1a_uint_t>( 0xFF ) << ( n * 8u ) ) ) >>
-				  ( n * 8u ) );
-				current_hash *= impl::fnv_prime;
+				    ( fnv1a_uint_t{ 0xFFU } << ( n * 8U ) ) ) >>
+				  ( n * 8U ) );
+				current_hash *= fnv1a_impl::fnv_prime;
 			}
 			return current_hash;
 		}
@@ -62,7 +80,7 @@ namespace daw {
 		template<typename Iterator1, typename Iterator2>
 		[[nodiscard]] constexpr fnv1a_uint_t
 		operator( )( Iterator1 first, Iterator2 const last ) const noexcept {
-			auto hash = impl::fnv_offset;
+			auto hash = fnv1a_impl::fnv_offset;
 			while( first != last ) {
 				hash = append_hash( hash, *first );
 				++first;
@@ -76,11 +94,9 @@ namespace daw {
 		                   std::nullptr_t> = nullptr>
 		[[nodiscard]] constexpr fnv1a_uint_t
 		operator( )( StringViewLike &&sv ) const noexcept {
-			using namespace std;
-			auto const *first = data( sv );
-			auto const *const last =
-			  data( sv ) + static_cast<std::ptrdiff_t>( size( sv ) );
-			auto hash = impl::fnv_offset;
+			auto const *first = std::data( sv );
+			auto const *const last = daw::data_end( sv );
+			auto hash = fnv1a_impl::fnv_offset;
 			while( first != last ) {
 				hash = append_hash( hash, *first );
 				++first;
@@ -94,7 +110,7 @@ namespace daw {
 		[[nodiscard]] constexpr fnv1a_uint_t
 		operator( )( Member const ( &member )[N] ) const noexcept {
 			DAW_UNSAFE_BUFFER_FUNC_START
-			return operator( )( member, member + static_cast<intmax_t>( N ) );
+			return operator( )( member, member + static_cast<std::ptrdiff_t>( N ) );
 			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 
@@ -102,15 +118,15 @@ namespace daw {
 		                                             std::nullptr_t> = nullptr>
 		[[nodiscard]] constexpr fnv1a_uint_t
 		operator( )( Integral const value ) const noexcept {
-			return append_hash( impl::fnv_offset, value );
+			return append_hash( fnv1a_impl::fnv_offset, value );
 		}
 
 		[[nodiscard]] constexpr fnv1a_uint_t
 		operator( )( char const *ptr ) const noexcept {
-			auto hash = impl::fnv_offset;
+			auto hash = fnv1a_impl::fnv_offset;
 			while( *ptr != '\0' ) {
 				hash = hash ^ static_cast<fnv1a_uint_t>( *ptr );
-				hash *= impl::fnv_prime;
+				hash *= fnv1a_impl::fnv_prime;
 				DAW_UNSAFE_BUFFER_FUNC_START
 				++ptr;
 				DAW_UNSAFE_BUFFER_FUNC_STOP
@@ -121,11 +137,12 @@ namespace daw {
 		template<typename T>
 		[[nodiscard]] constexpr fnv1a_uint_t
 		operator( )( T const *const ptr ) const noexcept {
-			auto hash = impl::fnv_offset;
-			auto bptr = static_cast<uint8_t const *const>( ptr );
-			for( fnv1a_uint_t n = 0; n < sizeof( T ); ++n ) {
-				hash = hash ^ static_cast<fnv1a_uint_t>( bptr[n] );
-				hash *= impl::fnv_prime;
+			auto hash = fnv1a_impl::fnv_offset;
+			assert( ptr );
+			auto bytes = daw::bit_cast<fnv1a_impl::byte_array<sizeof( T )>>( *ptr );
+			for( auto c : bytes ) {
+				hash = hash ^ static_cast<fnv1a_uint_t>( c );
+				hash *= fnv1a_impl::fnv_prime;
 			}
 			return hash;
 		}
@@ -138,7 +155,7 @@ namespace daw {
 	}
 
 	[[nodiscard]] constexpr fnv1a_uint_t fnv1a_hash( char const *ptr ) noexcept {
-		auto hash = impl::fnv_offset;
+		auto hash = fnv1a_impl::fnv_offset;
 		while( *ptr != 0 ) {
 			hash = fnv1a_hash_t::append_hash( hash, *ptr );
 			DAW_UNSAFE_BUFFER_FUNC_START
@@ -151,7 +168,7 @@ namespace daw {
 	template<typename CharT>
 	[[nodiscard]] constexpr fnv1a_uint_t fnv1a_hash( CharT const *ptr,
 	                                                 std::size_t len ) noexcept {
-		auto hash = impl::fnv_offset;
+		auto hash = fnv1a_impl::fnv_offset;
 		DAW_UNSAFE_BUFFER_FUNC_START
 		auto const last = ptr + static_cast<std::ptrdiff_t>( len );
 		while( ptr != last ) {

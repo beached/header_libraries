@@ -12,7 +12,7 @@
 
 #include "daw_attributes.h"
 #include "daw_safe_pointer.h"
-#include "impl/daw_conditional.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <cassert>
 #include <cstddef>

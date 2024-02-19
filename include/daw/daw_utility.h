@@ -11,14 +11,19 @@
 #include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_algorithm.h"
+#include "daw_can_constant_evaluate.h"
 #include "daw_construct_a.h"
+#include "daw_empty.h"
 #include "daw_exception.h"
 #include "daw_move.h"
+#include "daw_remove_cvref.h"
 #include "daw_traits.h"
+#include "daw_typeof.h"
 #include "daw_unused.h"
 
 #include <cmath>
 #include <cstddef>
+#include <cstdint>
 #include <cstdlib>
 #include <functional>
 #include <initializer_list>
@@ -93,17 +98,17 @@ namespace daw {
 		public:
 			inline constexpr EqualToImpl( T value ) noexcept(
 			  std::is_nothrow_copy_constructible_v<T> )
-			  : m_value( DAW_MOVE( value ) ) {}
+			  : m_value( std::move( value ) ) {}
 
 			[[nodiscard]] inline constexpr bool
 			operator( )( T const &value ) noexcept {
 				return m_value == value;
 			}
 		}; // class EqualToImpl
-	} // namespace utility_details
+	}    // namespace utility_details
 	template<typename T>
 	inline constexpr utility_details::EqualToImpl<T> equal_to( T value ) {
-		return utility_details::EqualToImpl<T>( DAW_MOVE( value ) );
+		return utility_details::EqualToImpl<T>( std::move( value ) );
 	}
 
 	template<typename T>
@@ -131,14 +136,14 @@ namespace daw {
 		public:
 			inline constexpr NotImpl( Function func ) noexcept(
 			  std::is_nothrow_move_constructible_v<Function> )
-			  : m_function( DAW_MOVE( func ) ) {}
+			  : m_function( std::move( func ) ) {}
 
 			template<typename... Args>
 			[[nodiscard]] inline constexpr bool operator( )( Args &&...args ) {
 				return !m_function( DAW_FWD2( Args, args )... );
 			}
 		}; // class NotImpl
-	} // namespace utility_details
+	}    // namespace utility_details
 
 	template<typename Function>
 	[[nodiscard]] inline constexpr utility_details::NotImpl<Function>
@@ -308,7 +313,7 @@ namespace daw {
 		                     []( CharType c ) noexcept {
 			                     return AsciiUpper( c );
 		                     } );
-		return DAW_MOVE( str );
+		return std::move( str );
 	}
 
 	template<typename CharType, typename Traits, typename Allocator>
@@ -318,7 +323,7 @@ namespace daw {
 		                     []( CharType c ) noexcept {
 			                     return AsciiLower( c );
 		                     } );
-		return DAW_MOVE( str );
+		return std::move( str );
 	}
 
 	namespace utility_details {
@@ -449,7 +454,7 @@ namespace daw {
 	                                    Iterator2 const last_in,
 	                                    OutputIterator first_out ) {
 		while( first_in != last_in ) {
-			*first_out = DAW_MOVE( *first_in );
+			*first_out = std::move( *first_in );
 			++first_out;
 			++first_in;
 		}
@@ -673,9 +678,9 @@ namespace daw {
 	template<typename Destination, typename... Args>
 	[[nodiscard]] constexpr decltype( auto )
 	construct_from( std::tuple<Args...> &&args ) noexcept(
-	  noexcept( daw::apply( construct_a<Destination>, DAW_MOVE( args ) ) ) ) {
+	  noexcept( daw::apply( construct_a<Destination>, std::move( args ) ) ) ) {
 
-		return daw::apply( construct_a<Destination>, DAW_MOVE( args ) );
+		return daw::apply( construct_a<Destination>, std::move( args ) );
 	}
 
 	template<typename Destination, typename... Args>
@@ -773,7 +778,7 @@ namespace daw {
 
 	template<typename From>
 	[[nodiscard]] auto as_char_array( From &&from ) noexcept {
-		static_assert( std::is_trivially_copyable_v<remove_cvref_t<From>>,
+		static_assert( std::is_trivially_copyable_v<daw::remove_cvref_t<From>>,
 		               "From type must be trivially copiable" );
 		auto result = std::array<unsigned char, sizeof( From )>{ 0 };
 		memcpy( result.data( ), &from, result.size( ) );
@@ -984,11 +989,4 @@ namespace daw {
 		::free( ptr );
 #endif
 	}
-
-	struct empty_t {};
-	using Empty = empty_t;
-
-	template<auto Value>
-	using constant = std::integral_constant<DAW_TYPEOF( Value ), Value>;
-
 } // namespace daw

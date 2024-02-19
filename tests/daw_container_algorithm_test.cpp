@@ -26,8 +26,10 @@ void container_algorithm_accumulate( ) {
 	daw::expecting( sum >= 0 );
 	daw::expecting( test.size( ), static_cast<size_t>( sum ) );
 
-	auto const product = daw::container::accumulate(
-	  test, 1, []( auto lhs, auto rhs ) { return lhs * rhs; } );
+	auto const product =
+	  daw::container::accumulate( test, 1, []( auto lhs, auto rhs ) {
+		  return lhs * rhs;
+	  } );
 	daw::expecting( product, 1 );
 }
 
@@ -37,8 +39,9 @@ void container_algorithm_transform( ) {
 
 	auto result = std::vector<int>( test_vec.size( ) );
 
-	daw::container::transform( test_vec, result.data( ),
-	                           []( int const &val ) { return 2 * val; } );
+	daw::container::transform( test_vec, result.data( ), []( int const &val ) {
+		return 2 * val;
+	} );
 
 	auto const sum1 = daw::container::accumulate( test_vec, 0 );
 	auto const sum2 = daw::container::accumulate( result, 0 );
@@ -49,23 +52,27 @@ void container_algorithm_transform( ) {
 void daw_container_algorithm_test_sort( ) {
 	std::array<int64_t, 1000> v1{ };
 	daw::algorithm::iota( std::begin( v1 ), std::end( v1 ), 1 );
-	daw::container::sort( v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
+	daw::container::sort( v1, []( auto lhs, auto rhs ) {
+		return lhs < rhs;
+	} );
 	daw::expecting( std::is_sorted( v1.cbegin( ), v1.cend( ) ) );
 }
 
 void daw_container_algorithm_test_stable_sort( ) {
 	std::array<int64_t, 1000> v1{ };
 	daw::algorithm::iota( std::begin( v1 ), std::end( v1 ), 1 );
-	daw::container::stable_sort( v1,
-	                             []( auto lhs, auto rhs ) { return lhs < rhs; } );
+	daw::container::stable_sort( v1, []( auto lhs, auto rhs ) {
+		return lhs < rhs;
+	} );
 	daw::expecting( std::is_sorted( v1.cbegin( ), v1.cend( ) ) );
 }
 
 constexpr bool daw_container_algorithm_test_max_element( ) {
 	std::array<int64_t, 10> v1{ };
 	daw::algorithm::iota( std::begin( v1 ), std::end( v1 ), 1 );
-	auto ans = daw::container::max_element(
-	  v1, []( auto lhs, auto rhs ) { return lhs < rhs; } );
+	auto ans = daw::container::max_element( v1, []( auto lhs, auto rhs ) {
+		return lhs < rhs;
+	} );
 	daw::expecting( 10, *ans );
 	return true;
 }

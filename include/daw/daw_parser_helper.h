@@ -216,7 +216,7 @@ namespace daw::parser {
 
 	public:
 		constexpr in_t( daw::string_view values ) noexcept
-		  : container{ DAW_MOVE( values ) } {}
+		  : container{ std::move( values ) } {}
 
 		template<typename U>
 		[[nodiscard]] constexpr bool operator( )( U const &value ) const noexcept {
@@ -225,7 +225,7 @@ namespace daw::parser {
 	}; // in_t
 
 	[[nodiscard]] constexpr auto in( daw::string_view container ) noexcept {
-		return in_t{ DAW_MOVE( container ) };
+		return in_t{ std::move( container ) };
 	}
 
 	template<typename ForwardIterator, typename Container>
@@ -566,7 +566,7 @@ namespace daw::parser {
 		  , m_count{ count } {}
 
 		[[nodiscard]] inline bool operator( )( value_type const &v ) {
-			m_last_values.push_back( DAW_MOVE( v ) );
+			m_last_values.push_back( std::move( v ) );
 			while( m_last_values.size( ) > 4 ) {
 				m_last_values.pop_front( );
 			}
@@ -581,7 +581,7 @@ namespace daw::parser {
 
 		public:
 			constexpr negate_t( Predicate pred )
-			  : predicate{ DAW_MOVE( pred ) } {}
+			  : predicate{ std::move( pred ) } {}
 
 			template<typename... Args>
 			[[nodiscard]] constexpr bool operator( )( Args &&...args ) const {
@@ -597,7 +597,7 @@ namespace daw::parser {
 
 	template<typename Predicate>
 	[[nodiscard]] constexpr auto negate( Predicate predicate ) {
-		return impl::negate_t<Predicate>{ DAW_MOVE( predicate ) };
+		return impl::negate_t<Predicate>{ std::move( predicate ) };
 	}
 
 	template<typename T>
@@ -609,7 +609,7 @@ namespace daw::parser {
 
 	public:
 		matcher_t( std::vector<value_t> to_match )
-		  : m_to_match{ DAW_MOVE( to_match ) } {}
+		  : m_to_match{ std::move( to_match ) } {}
 
 		template<typename ForwardIterator>
 		[[nodiscard]] find_result_t<ForwardIterator>
@@ -636,7 +636,7 @@ namespace daw::parser {
 		std::vector<value_t> values;
 		std::copy( container.begin( ), container.end( ),
 		           std::back_inserter( values ) );
-		return matcher_t<value_t>{ DAW_MOVE( values ) };
+		return matcher_t<value_t>{ std::move( values ) };
 	}
 
 	template<typename T, size_t N>
@@ -644,7 +644,7 @@ namespace daw::parser {
 		using value_t = daw::traits::root_type_t<T>;
 		std::vector<value_t> values;
 		std::copy_n( container, N, std::back_inserter( values ) );
-		return matcher_t<value_t>{ DAW_MOVE( values ) };
+		return matcher_t<value_t>{ std::move( values ) };
 	}
 
 	///

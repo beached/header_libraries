@@ -8,7 +8,11 @@
 
 #pragma once
 
-#include <type_traits>
+#include "traits/daw_traits_is_same.h"
+
+#include <daw/stdinc/integral_constant.h>
+#include <daw/stdinc/is_convertible.h>
+#include <daw/stdinc/void_t.h>
 
 namespace daw {
 
@@ -93,7 +97,7 @@ namespace daw {
 
 	template<class Expected, template<class...> class Op, class... Args>
 	inline constexpr bool is_detected_exact_v =
-	  std::is_same_v<Expected, detected_t<Op, Args...>>;
+	  daw::is_same_v<Expected, detected_t<Op, Args...>>;
 
 	template<class Expected, template<class...> class Op, class... Args>
 	using is_detected_exact =

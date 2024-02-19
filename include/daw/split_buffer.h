@@ -115,10 +115,10 @@ namespace daw {
 
 		explicit constexpr split_buffer( split_buffer &&c ) //
 		  noexcept( std::is_nothrow_move_constructible_v<allocator_type> )
-		  : first_( DAW_MOVE( c.first_ ) )
-		  , begin_( DAW_MOVE( c.begin_ ) )
-		  , end_( DAW_MOVE( c.end_ ) )
-		  , end_cap_( DAW_MOVE( c.end_cap_ ) ) {
+		  : first_( std::move( c.first_ ) )
+		  , begin_( std::move( c.begin_ ) )
+		  , end_( std::move( c.end_ ) )
+		  , end_cap_( std::move( c.end_cap_ ) ) {
 			c.first_ = nullptr;
 			c.begin_ = nullptr;
 			c.end_ = nullptr;
@@ -279,7 +279,7 @@ namespace daw {
 				if( begin_ > first_ ) {
 					difference_type d = begin_ - first_;
 					d = ( d + 1 ) / 2;
-					end_ = DAW_MOVE( begin_, end_, begin_ - d );
+					end_ = std::move( begin_, end_, begin_ - d );
 					begin_ -= d;
 				} else {
 					size_type c =
@@ -318,7 +318,7 @@ namespace daw {
 				}
 			}
 			alloc_traits::construct( alloc( ), std::to_address( begin_ - 1 ),
-			                         DAW_MOVE( x ) );
+			                         std::move( x ) );
 			--begin_;
 		}
 
@@ -327,7 +327,7 @@ namespace daw {
 				if( begin_ > first_ ) {
 					difference_type d = begin_ - first_;
 					d = ( d + 1 ) / 2;
-					end_ = DAW_MOVE( begin_, end_, begin_ - d );
+					end_ = std::move( begin_, end_, begin_ - d );
 					begin_ -= d;
 				} else {
 					size_type c =
@@ -342,7 +342,7 @@ namespace daw {
 				}
 			}
 			alloc_traits::construct( alloc( ), std::to_address( end_ ),
-			                         DAW_MOVE( x ) );
+			                         std::move( x ) );
 			++end_;
 		}
 
@@ -352,7 +352,7 @@ namespace daw {
 				if( begin_ > first_ ) {
 					difference_type d = begin_ - first_;
 					d = ( d + 1 ) / 2;
-					end_ = DAW_MOVE( begin_, end_, begin_ - d );
+					end_ = std::move( begin_, end_, begin_ - d );
 					begin_ -= d;
 				} else {
 					size_type c = std::max<size_type>(
@@ -415,7 +415,7 @@ namespace daw {
 					split_buffer buf( new_cap, 0, a );
 					for( pointer p = begin_; p != end_; ++p, ++buf.end_ ) {
 						alloc_traits::construct( buf.alloc( ), std::to_address( buf.end_ ),
-						                         DAW_MOVE( *p ) );
+						                         std::move( *p ) );
 					}
 					swap( buf );
 				}
@@ -500,7 +500,7 @@ namespace daw {
 		constexpr void
 		move_assign_alloc( split_buffer &c, std::true_type ) noexcept(
 		  std::is_nothrow_move_assignable_v<allocator_type> ) {
-			alloc( ) = DAW_MOVE( c.alloc( ) );
+			alloc( ) = std::move( c.alloc( ) );
 		}
 
 		constexpr void move_assign_alloc( split_buffer &,

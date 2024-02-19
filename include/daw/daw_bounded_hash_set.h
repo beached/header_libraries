@@ -32,12 +32,12 @@ namespace daw {
 		                                      std::nullptr_t> = nullptr>
 		constexpr set_node_t( K &&k ) noexcept(
 		  std::is_nothrow_constructible_v<Key, K> )
-		  : key( std::forward<K>( k ) ) {}
+		  : key( DAW_FWD( k ) ) {}
 
 		template<typename K>
 		constexpr set_node_t( K &&k, bool HasValue ) noexcept(
 		  std::is_nothrow_constructible_v<Key, K> )
-		  : key( std::forward<K>( k ) )
+		  : key( DAW_FWD( k ) )
 		  , has_value( HasValue ) {}
 	};
 
@@ -350,7 +350,7 @@ namespace daw {
 				std::abort( );
 			}
 			if( !m_data[*index].has_value ) {
-				m_data[*index].key = DAW_MOVE( key );
+				m_data[*index].key = std::move( key );
 				m_data[*index].has_value = true;
 			}
 			return { m_data.data( ), m_data.data( ) + m_data.size( ),

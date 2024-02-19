@@ -102,7 +102,7 @@ namespace daw {
 			  traits::is_binary_predicate_v<Compare, value_type, value_type>, "" );
 
 			std::sort( begin( container ), end( container ),
-			           std::forward<Compare>( compare ) );
+			           DAW_FWD( compare ) );
 		}
 
 		template<typename Container,
@@ -248,10 +248,10 @@ namespace daw {
 		decltype( auto )
 		accumulate( Container const &container, T &&init ) noexcept( noexcept(
 		  std::accumulate( std::cbegin( container ), std::end( container ),
-		                   std::forward<T>( init ) ) ) ) {
+		                   DAW_FWD( init ) ) ) ) {
 
 			return std::accumulate( std::cbegin( container ), std::cend( container ),
-			                        std::forward<T>( init ) );
+			                        DAW_FWD( init ) );
 		}
 
 		template<typename Container, typename T, typename BinaryOperation,
@@ -262,7 +262,7 @@ namespace daw {
 		  BinaryOperation
 		    oper ) noexcept( noexcept( std::accumulate( std::cbegin( container ),
 		                                                std::cend( container ),
-		                                                std::forward<T>( init ),
+		                                                DAW_FWD( init ),
 		                                                oper ) ) ) {
 
 			static_assert(
@@ -271,7 +271,7 @@ namespace daw {
 			  "Invalid BinaryOperation" );
 
 			return std::accumulate( std::cbegin( container ), std::cend( container ),
-			                        std::forward<T>( init ), oper );
+			                        DAW_FWD( init ), oper );
 		}
 
 		template<typename Container, typename UnaryOperator,
@@ -419,7 +419,7 @@ namespace daw {
 
 			return daw::algorithm::find(
 			         std::cbegin( container ), std::cend( container ),
-			         std::forward<Value>( value ) ) != std::cend( container );
+			         DAW_FWD( value ) ) != std::cend( container );
 		}
 
 		template<

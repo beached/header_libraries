@@ -60,13 +60,13 @@ namespace daw::mixins {
 		}
 
 		iterator insert( iterator where, value_type item ) {
-			return derived( ).container( ).insert( where, DAW_MOVE( item ) );
+			return derived( ).container( ).insert( where, std::move( item ) );
 		}
 
 		template<typename... Args>
 		void emplace( iterator where, Args &&...args ) {
 			return derived( ).container( ).emplace( where,
-			                                        std::forward<Args>( args )... );
+			                                        DAW_FWD( args )... );
 		}
 
 		[[nodiscard]] size_type size( ) const {
@@ -85,7 +85,7 @@ namespace daw::mixins {
 
 	public:
 		void push_back( typename base_t::value_type &&value ) {
-			this->insert( this->end( ), DAW_MOVE( value ) );
+			this->insert( this->end( ), std::move( value ) );
 		}
 
 		void push_back( typename base_t::const_reference value ) {
@@ -94,7 +94,7 @@ namespace daw::mixins {
 
 		template<typename... Args>
 		void emplace_back( Args &&...args ) {
-			this->emplace( this->end( ), std::forward<Args>( args )... );
+			this->emplace( this->end( ), DAW_FWD( args )... );
 		}
 
 		[[nodiscard]] typename base_t::reference

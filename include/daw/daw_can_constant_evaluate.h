@@ -10,7 +10,8 @@
 
 #include "daw_cpp_feature_check.h"
 #include "daw_traits.h"
-#include "impl/daw_conditional.h"
+#include "daw_typeof.h"
+#include "traits/daw_traits_conditional.h"
 
 #include <type_traits>
 

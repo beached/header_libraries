@@ -50,12 +50,12 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr rvalue_reference operator*( ) &&noexcept {
-			return DAW_MOVE( m_value ).operator*( );
+			return std::move( m_value ).operator*( );
 		}
 
 		[[nodiscard]] constexpr const_rvalue_reference
 		operator*( ) const &&noexcept {
-			return DAW_MOVE( m_value ).operator*( );
+			return std::move( m_value ).operator*( );
 		}
 
 		[[nodiscard]] constexpr pointer operator->( ) noexcept {
@@ -78,14 +78,14 @@ namespace daw {
 
 		template<typename... Args>
 		reference emplace( Args &&...args ) {
-			return m_value.emplace( std::forward<Args>( args )... );
+			return m_value.emplace( DAW_FWD( args )... );
 		}
 
 		// cannot emplace to a reference
 		template<typename U, typename... Args>
 		reference emplace( std::initializer_list<U> ilist, Args &&...args ) {
-			return m_value.emplace( DAW_MOVE( ilist ),
-			                        std::forward<Args>( args )... );
+			return m_value.emplace( std::move( ilist ),
+			                        DAW_FWD( args )... );
 		}
 
 		[[nodiscard]] constexpr reference value( ) & {
@@ -97,11 +97,11 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr rvalue_reference value( ) && {
-			return DAW_MOVE( m_value ).value( );
+			return std::move( m_value ).value( );
 		}
 
 		[[nodiscard]] constexpr const_rvalue_reference value( ) const && {
-			return DAW_MOVE( m_value ).value( );
+			return std::move( m_value ).value( );
 		}
 
 		[[nodiscard]] constexpr bool has_value( ) const noexcept {
@@ -120,7 +120,7 @@ namespace daw {
 		             not std::is_same_v<daw::remove_cvref_t<U>, optional<T>>>,
 		           std::nullptr_t> = nullptr>
 		constexpr optional( U &&value )
-		  : m_value( std::forward<U>( value ) ) {}
+		  : m_value( DAW_FWD( value ) ) {}
 
 		template<typename U = value_type,
 		         std::enable_if_t<
@@ -130,7 +130,7 @@ namespace daw {
 		             not std::is_same_v<daw::remove_cvref_t<U>, optional<T>>>,
 		           std::nullptr_t> = nullptr>
 		constexpr explicit optional( U &&value )
-		  : m_value( std::forward<U>( value ) ) {}
+		  : m_value( DAW_FWD( value ) ) {}
 
 		optional &operator=( std::nullopt_t ) noexcept {
 			m_value = nullopt;
@@ -142,7 +142,7 @@ namespace daw {
 		  std::enable_if_t<not std::is_same_v<daw::remove_cvref_t<U>, optional<T>>,
 		                   std::nullptr_t> = nullptr>
 		optional &operator=( U &&value ) {
-			m_value = std::forward<U>( value );
+			m_value = DAW_FWD( value );
 			return *this;
 		}
 	};
@@ -240,7 +240,7 @@ namespace daw {
 		    m_value = &value;
 		  } else {
 		    if constexpr( not std::is_const_v<value_type> ) {
-		      **m_value = std::forward<U>( value );
+		      **m_value = DAW_FWD( value );
 		    } else {
 		      std::abort( );
 		    }

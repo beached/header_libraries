@@ -9,13 +9,13 @@
 #pragma once
 
 #include "daw/ciso646.h"
-#include "daw/daw_traits_concepts.h"
+#include "daw/traits/daw_traits_concepts.h"
 
 namespace daw {
 	template<typename Iterator>
 	constexpr std::move_iterator<Iterator> make_move_iterator( Iterator &&i ) {
 		traits::is_iterator_test<Iterator>( );
 
-		return std::move_iterator<Iterator>( std::forward<Iterator>( i ) );
+		return std::move_iterator<Iterator>( DAW_FWD( i ) );
 	}
 } // namespace daw

@@ -18,7 +18,6 @@
 #include <functional>
 #include <iterator>
 #include <type_traits>
-#include <utility>
 
 namespace daw {
 	/***
@@ -280,11 +279,11 @@ namespace daw {
 	  std::indirectly_writable<Out, T>;
 #else
 	  requires( Out && o, T &&t ) {
-		*o = std::forward<T>( t );
-		*std::forward<Out>( o ) = std::forward<T>( t );
-		const_cast<const iter_reference_t<Out> &&>( *o ) = std::forward<T>( t );
-		const_cast<const iter_reference_t<Out> &&>( *std::forward<Out>( o ) ) =
-		  std::forward<T>( t );
+		*o = DAW_FWD( t );
+		*DAW_FWD( o ) = DAW_FWD( t );
+		const_cast<const iter_reference_t<Out> &&>( *o ) = DAW_FWD( t );
+		const_cast<const iter_reference_t<Out> &&>( *DAW_FWD( o ) ) =
+		  DAW_FWD( t );
 	};
 #endif
 
@@ -364,7 +363,7 @@ namespace daw {
 	template<typename B>
 	concept boolean_testable =
 	  concept_details::boolean_testable_impl<B> and requires( B && b ) {
-		{ not std::forward<B>( b ) } -> concept_details::boolean_testable_impl;
+		{ not DAW_FWD( b ) } -> concept_details::boolean_testable_impl;
 	};
 
 	namespace concept_details {

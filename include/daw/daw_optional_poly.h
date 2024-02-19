@@ -60,14 +60,14 @@ namespace daw {
 
 		template<typename... Args>
 		void emplace( Args &&...args ) {
-			m_value.reset( new value_type{ std::forward<Args>( args )... } );
+			m_value.reset( new value_type{ DAW_FWD( args )... } );
 		}
 
 		template<typename T, typename = std::enable_if_t<
 		                       std::is_base_of<value_type, T>::value or
 		                       std::is_same<value_type, T>::value>>
 		optional_poly( T &&value )
-		  : m_value{ new std::decay_t<T>{ std::forward<T>( value ) } } {}
+		  : m_value{ new std::decay_t<T>{ DAW_FWD( value ) } } {}
 
 		template<typename T, typename = std::enable_if_t<
 		                       std::is_base_of<value_type, T>::value or
@@ -168,7 +168,7 @@ namespace daw {
 	template<typename T, typename... Args>
 	auto make_optional_poly( Args &&...args ) {
 		optional_poly<T> result{ };
-		result.emplace( std::forward<Args>( args )... );
+		result.emplace( DAW_FWD( args )... );
 		return result;
 	}
 

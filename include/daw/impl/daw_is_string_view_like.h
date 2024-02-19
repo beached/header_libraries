@@ -30,4 +30,4 @@ namespace daw::traits_is_sv {
 	                 ( (void)std::declval<S const &>( ).size( ) )   /* has size( )
 	                                                                   member */
 	                 )>> = true;
-} // namespace daw::traits
+} // namespace daw::traits_is_sv

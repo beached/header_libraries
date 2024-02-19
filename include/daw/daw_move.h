@@ -10,27 +10,33 @@
 
 #include "ciso646.h"
 
-#include <type_traits>
+#include "traits/daw_traits_is_const.h"
+#include "traits/daw_traits_is_rvalue_reference.h"
+#include "traits/daw_traits_remove_cvref.h"
+
+#include <daw/stdinc/move_fwd_exch.h>
 
 namespace daw {
 	/// Convert a value to an rvalue.
 	/// \param  value  A thing of arbitrary type.
 	/// \return The parameter cast to an rvalue-reference to allow moving it.
 	template<typename T>
-	[[nodiscard]] inline constexpr typename std::remove_reference<T>::type &&
+	[[nodiscard,
+	  deprecated(
+	    "Use std move, it will generally be special to the "
+	    "compiler" )]] inline constexpr daw::traits::remove_reference_t<T> &&
 	move( T &&value ) noexcept {
-		static_assert( not std::is_const_v<typename std::remove_reference_t<T>>,
-		               "Attempt to move const value" );
-		static_assert( not std::is_rvalue_reference_v<decltype( value )>,
+		static_assert(
+		  not daw::traits::is_const_v<daw::traits::remove_reference_t<T>>,
+		  "Attempt to move const value" );
+		static_assert( not daw::traits::is_rvalue_reference_v<decltype( value )>,
 		               "Value is already an rvalue" );
-		return static_cast<typename std::remove_reference_t<T> &&>( value );
+		return static_cast<daw::traits::remove_reference_t<T> &&>( value );
 	}
 } // namespace daw
 
 #ifndef DAW_MOVE
-#define DAW_MOVE( ... )                                                      \
-	static_cast<typename std::remove_reference_t<decltype( __VA_ARGS__ )> &&>( \
-	  __VA_ARGS__ )
+#define DAW_MOVE( ... ) daw::move( __VA_ARGS__ )
 #endif
 
 #ifndef DAW_FWD

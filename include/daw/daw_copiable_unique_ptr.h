@@ -35,7 +35,7 @@ namespace daw {
 		static pointer make_ptr( Args &&...args ) noexcept(
 		  std::is_nothrow_constructible_v<value_type, Args...> ) {
 
-			return new U( std::forward<Args>( args )... );
+			return new U( DAW_FWD( args )... );
 		}
 		struct private_constructor {};
 
@@ -134,7 +134,7 @@ namespace daw {
 	copiable_unique_ptr<T> make_copiable_unique_ptr( Args &&...args ) noexcept(
 	  std::is_nothrow_constructible_v<T, Args...> ) {
 
-		auto ptr = new T( std::forward<Args>( args )... );
+		auto ptr = new T( DAW_FWD( args )... );
 		return { ptr };
 	}
 

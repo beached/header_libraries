@@ -50,7 +50,9 @@ int main( ) {
 	(void)val;
 	assert( x == 5 );
 
-	auto const add = []( int a, int b ) { return a + b; };
+	auto const add = []( int a, int b ) {
+		return a + b;
+	};
 
 	static_assert( daw::apply( add, daw::make_tuple( 5, 6 ) ) == 11 );
 }

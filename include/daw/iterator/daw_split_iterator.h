@@ -160,7 +160,7 @@ namespace daw {
 		                    Splitter &&splitter ) noexcept
 		  : m_data{ first, last }
 		  , m_position{ first, last }
-		  , m_splitter{ std::forward<Splitter>( splitter ) } {
+		  , m_splitter{ DAW_FWD( splitter ) } {
 
 			m_position.end( ) = find_next( );
 		}
@@ -170,7 +170,7 @@ namespace daw {
 		  daw::required<daw::traits::is_container_like_v<Container>> = nullptr>
 		constexpr split_it( Container &container, Splitter &&splitter ) noexcept
 		  : split_it( std::begin( container ), std::end( container ),
-		              std::forward<Splitter>( splitter ) ) {}
+		              DAW_FWD( splitter ) ) {}
 
 		constexpr split_it( ) noexcept
 		  : m_data{ { }, {} }
@@ -185,9 +185,9 @@ namespace daw {
 		  , m_splitter{ other.m_splitter } {}
 
 		constexpr split_it( split_it &&other ) noexcept
-		  : m_data{ DAW_MOVE( other.m_data ) }
-		  , m_position{ DAW_MOVE( other.m_position ) }
-		  , m_splitter{ DAW_MOVE( other.m_splitter ) } {}
+		  : m_data{ std::move( other.m_data ) }
+		  , m_position{ std::move( other.m_position ) }
+		  , m_splitter{ std::move( other.m_splitter ) } {}
 
 		constexpr split_it &operator=( split_it const &rhs ) noexcept {
 			if( this != &rhs ) {
@@ -200,9 +200,9 @@ namespace daw {
 
 		constexpr split_it &operator=( split_it &&rhs ) noexcept {
 			if( this != &rhs ) {
-				m_data = DAW_MOVE( rhs.m_data );
-				m_position = DAW_MOVE( rhs.m_position );
-				m_splitter = DAW_MOVE( rhs.m_splitter );
+				m_data = std::move( rhs.m_data );
+				m_position = std::move( rhs.m_position );
+				m_splitter = std::move( rhs.m_splitter );
 			}
 			return *this;
 		}
@@ -391,7 +391,7 @@ namespace daw {
 		                    Splitter &&splitter ) noexcept
 		  : m_data{ first, last }
 		  , m_position{ first, last }
-		  , m_splitter{ std::forward<Splitter>( splitter ) } {
+		  , m_splitter{ DAW_FWD( splitter ) } {
 
 			m_position.end( ) = find_next( );
 		}
@@ -401,7 +401,7 @@ namespace daw {
 		  daw::required<daw::traits::is_container_like_v<Container>> = nullptr>
 		constexpr split_it( Container &container, Splitter &&splitter ) noexcept
 		  : split_it( std::begin( container ), std::end( container ),
-		              std::forward<Splitter>( splitter ) ) {}
+		              DAW_FWD( splitter ) ) {}
 
 		constexpr split_it( ) noexcept
 		  : m_data{ { }, {} }
@@ -416,9 +416,9 @@ namespace daw {
 		  , m_splitter{ other.m_splitter } {}
 
 		constexpr split_it( split_it &&other ) noexcept
-		  : m_data{ DAW_MOVE( other.m_data ) }
-		  , m_position{ DAW_MOVE( other.m_position ) }
-		  , m_splitter{ DAW_MOVE( other.m_splitter ) } {}
+		  : m_data{ std::move( other.m_data ) }
+		  , m_position{ std::move( other.m_position ) }
+		  , m_splitter{ std::move( other.m_splitter ) } {}
 
 		constexpr split_it &operator=( split_it const &rhs ) noexcept {
 			if( this != &rhs ) {
@@ -431,9 +431,9 @@ namespace daw {
 
 		constexpr split_it &operator=( split_it &&rhs ) noexcept {
 			if( this != &rhs ) {
-				m_data = DAW_MOVE( rhs.m_data );
-				m_position = DAW_MOVE( rhs.m_position );
-				m_splitter = DAW_MOVE( rhs.m_splitter );
+				m_data = std::move( rhs.m_data );
+				m_position = std::move( rhs.m_position );
+				m_splitter = std::move( rhs.m_splitter );
 			}
 			return *this;
 		}
@@ -569,7 +569,7 @@ namespace daw {
 	constexpr auto make_split_it( String &sv, Splitter &&splitter ) noexcept {
 		using IterT = DAW_TYPEOF( std::begin( sv ) );
 		auto result = split_it<IterT, Splitter>{
-		  std::begin( sv ), std::end( sv ), std::forward<Splitter>( splitter ) };
+		  std::begin( sv ), std::end( sv ), DAW_FWD( splitter ) };
 		return result;
 	}
 

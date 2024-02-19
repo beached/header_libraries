@@ -10,7 +10,7 @@
 #include "daw/daw_benchmark.h"
 #include "daw/daw_string_view.h"
 #include "daw/daw_traits.h"
-#include "daw/daw_traits_is_a_type.h"
+#include "daw/traits/daw_traits_is_a_type.h"
 
 #include <array>
 #include <cstddef>

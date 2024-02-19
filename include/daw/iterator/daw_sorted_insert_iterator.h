@@ -30,8 +30,8 @@ namespace daw {
 			constexpr void operator( )( T &&value ) const {
 				auto pos = std::lower_bound( std::begin( *ptr ), std::end( *ptr ),
 				                             value, compare );
-				ptr->emplace( DAW_MOVE( pos ),
-				              std::forward<decltype( value )>( value ) );
+				ptr->emplace( std::move( pos ),
+				              DAW_FWD( value ) );
 			}
 		};
 
@@ -44,8 +44,8 @@ namespace daw {
 			constexpr void operator( )( T &&value ) const {
 				auto pos = std::lower_bound( std::begin( *ptr ), std::end( *ptr ),
 				                             value, compare );
-				ptr->emplace( DAW_MOVE( pos ),
-				              std::forward<decltype( value )>( value ) );
+				ptr->emplace( std::move( pos ),
+				              DAW_FWD( value ) );
 			}
 		};
 
@@ -58,8 +58,8 @@ namespace daw {
 			constexpr void operator( )( T &&value ) const {
 				auto const pos = std::lower_bound( std::begin( *ptr ), std::end( *ptr ),
 				                                   value, compare );
-				ptr->emplace( DAW_MOVE( pos ),
-				              std::forward<decltype( value )>( value ) );
+				ptr->emplace( std::move( pos ),
+				              DAW_FWD( value ) );
 			}
 		};
 
@@ -70,7 +70,7 @@ namespace daw {
 	                                  Compare compare = Compare{ } ) {
 		return daw::make_function_iterator(
 		  si_impl::sorted_iterator_vector_callable<Compare, Args...>{
-		    &c, DAW_MOVE( compare ) } );
+		    &c, std::move( compare ) } );
 	}
 
 	template<typename... Args, typename Compare = std::less<>>
@@ -78,7 +78,7 @@ namespace daw {
 	                                  Compare compare = Compare{ } ) {
 		return daw::make_function_iterator(
 		  si_impl::sorted_iterator_deque_callable<Compare, Args...>{
-		    &c, DAW_MOVE( compare ) } );
+		    &c, std::move( compare ) } );
 	}
 
 	template<typename... Args, typename Compare = std::less<>>
@@ -86,6 +86,6 @@ namespace daw {
 	                                              Compare compare = Compare{ } ) {
 		return daw::make_function_iterator(
 		  si_impl::sorted_iterator_list_callable<Compare, Args...>{
-		    &c, DAW_MOVE( compare ) } );
+		    &c, std::move( compare ) } );
 	}
 } // namespace daw
