@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "daw/daw_exchange.h"
+
 #include <cassert>
 #include <cstddef>
 #include <memory>
@@ -55,7 +57,7 @@ namespace daw {
 			}
 
 			constexpr pointer take_buffer( ) {
-				auto ret = std::exchange( m_first, pointer( ) );
+				auto ret = daw::exchange( m_first, pointer( ) );
 				m_last = pointer( );
 				m_capacity.first( ) = pointer( );
 				return ret;
@@ -143,7 +145,7 @@ namespace daw {
 			}
 
 			constexpr pointer take_buffer( ) {
-				auto ret = std::exchange( base::m_first, pointer( ) );
+				auto ret = daw::exchange( base::m_first, pointer( ) );
 				base::m_last = pointer( );
 				base::m_capacity = pointer( );
 				return ret;

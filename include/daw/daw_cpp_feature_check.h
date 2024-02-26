@@ -118,3 +118,17 @@
 #elif defined( __GLIBCXX__ )
 #define DAW_HAS_STD_LIBSTDCPP
 #endif
+
+#if defined( __cpp_static_call_operator )
+#if __cpp_static_call_operator >= 202207L
+#define DAW_HAS_CPP23_STATIC_CALL_OP
+#endif
+#endif
+
+#if defined( DAW_HAS_CPP23_STATIC_CALL_OP )
+#define DAW_CPP23_STATIC_CALL_OP static
+#define DAW_CPP23_STATIC_CALL_OP_CONST
+#else
+#define DAW_CPP23_STATIC_CALL_OP
+#define DAW_CPP23_STATIC_CALL_OP_CONST const
+#endif

@@ -12,6 +12,7 @@
 #include "daw_algorithm.h"
 #include "daw_check_exceptions.h"
 #include "daw_cxmath.h"
+#include "daw_exchange.h"
 #include "daw_likely.h"
 #include "daw_move.h"
 
@@ -390,17 +391,17 @@ namespace daw {
 
 		constexpr Vector( Vector &&other ) noexcept
 		  : allocator_type( std::move( other ) )
-		  , m_first( std::exchange( other.m_first, nullptr ) )
-		  , m_size( std::exchange( other.m_size, nullptr ) )
-		  , m_capacity( std::exchange( other.m_capacity, nullptr ) ) {}
+		  , m_first( daw::exchange( other.m_first, nullptr ) )
+		  , m_size( daw::exchange( other.m_size, nullptr ) )
+		  , m_capacity( daw::exchange( other.m_capacity, nullptr ) ) {}
 
 		constexpr Vector &operator=( Vector &&rhs ) noexcept {
 			if( this != &rhs ) {
 				clear( );
 				allocator_type::operator=( std::move( rhs ) );
-				m_first = std::exchange( rhs.m_first, nullptr );
-				m_size = std::exchange( rhs.m_size, nullptr );
-				m_capacity = std::exchange( rhs.m_capacity, nullptr );
+				m_first = daw::exchange( rhs.m_first, nullptr );
+				m_size = daw::exchange( rhs.m_size, nullptr );
+				m_capacity = daw::exchange( rhs.m_capacity, nullptr );
 			}
 			return *this;
 		}

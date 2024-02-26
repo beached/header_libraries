@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw/daw_cpp_feature_check.h"
 #include "daw_signed_clanggcc.h"
 #include "daw_signed_msvc.h"
 
@@ -43,14 +44,132 @@ namespace daw::integers::sint_impl {
 	inline constexpr bool convertible_signed_int =
 	  std::is_integral_v<Integer> and std::is_signed_v<Integer> and
 	  ( sizeof( Integer ) <= sizeof( SignedInteger ) );
+#if defined( DAW_HAS_CPP23_STATIC_CALL_OP ) and DAW_HAS_CLANG_VER_GTE( 17, 0 )
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wc++23-extensions"
+#endif
 
-	inline constexpr struct debug_checked_add_t {
-		explicit debug_checked_add_t( ) = default;
+	inline constexpr struct {
+		template<typename T,
+		         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
+		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			T result;
+			if( DAW_UNLIKELY( wrapping_add( lhs, rhs, result ) ) ) {
+				on_signed_integer_overflow( );
+			}
+			return result;
+		}
+	} checked_add{ };
 
+	inline constexpr struct {
+		template<typename T,
+		         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
+		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			T result;
+			(void)wrapping_add( lhs, rhs, result );
+			return result;
+		}
+	} wrapped_add{ };
+
+	inline constexpr struct {
+		template<typename T,
+		         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
+		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			T result;
+			if( DAW_UNLIKELY( wrapping_sub( lhs, rhs, result ) ) ) {
+				on_signed_integer_overflow( );
+			}
+			return result;
+		}
+	} checked_sub{ };
+
+	inline constexpr struct {
+		template<typename T,
+		         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
+		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			T result;
+			(void)wrapping_sub( lhs, rhs, result );
+			return result;
+		}
+	} wrapped_sub{ };
+
+	inline constexpr struct {
+		template<typename T,
+		         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
+		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			T result;
+			if( DAW_UNLIKELY( wrapping_mul( lhs, rhs, result ) ) ) {
+				on_signed_integer_overflow( );
+			}
+			return result;
+		}
+	} checked_mul{ };
+
+	inline constexpr struct {
+		template<typename T,
+		         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
+		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			T result;
+			if( DAW_LIKELY( wrapping_add( lhs, rhs, result ) ) ) {
+				return result;
+			}
+			if( lhs > 0 ) {
+				return std::numeric_limits<T>::max( );
+			}
+			return std::numeric_limits<T>::min( );
+		}
+	} sat_add{ };
+
+	inline constexpr struct {
+		template<typename T,
+		         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
+		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			if( T result; DAW_LIKELY( not wrapping_sub( lhs, rhs, result ) ) ) {
+				return result;
+			}
+			if( lhs > 0 ) {
+				return std::numeric_limits<T>::max( );
+			}
+			return std::numeric_limits<T>::min( );
+		}
+	} sat_sub{ };
+
+	inline constexpr struct {
+		template<typename T,
+		         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
+		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			if( T result; DAW_LIKELY( not wrapping_mul( lhs, rhs, result ) ) ) {
+				return result;
+			}
+			return std::numeric_limits<T>::max( );
+		}
+	} sat_mul{ };
+
+	inline constexpr struct {
+		template<typename T,
+		         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
+		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			T result;
+			(void)wrapping_mul( lhs, rhs, result );
+			return result;
+		}
+	} wrapped_mul{ };
+
+	inline constexpr struct {
 		template<typename T,
 		         std::enable_if_t<sint_impl::size_fits_v<T, std::int64_t>,
 		                          std::nullptr_t> = nullptr>
-		DAW_ATTRIB_INLINE constexpr T operator( )( T lhs, T rhs ) const {
+		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
+		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
 #if DAW_DEFAULT_SIGNED_CHECKING == 0
 			return checked_add( lhs, rhs );
 #elif DAW_DEFAULT_SIGNED_CHECKING == 2
@@ -61,11 +180,12 @@ namespace daw::integers::sint_impl {
 		}
 	} debug_checked_add{ };
 
-	inline constexpr struct debug_checked_sub_t {
+	inline constexpr struct {
 		template<typename T,
 		         std::enable_if_t<sint_impl::size_fits_v<T, std::int64_t>,
 		                          std::nullptr_t> = nullptr>
-		DAW_ATTRIB_INLINE constexpr T operator( )( T lhs, T rhs ) const {
+		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
+		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
 #if DAW_DEFAULT_SIGNED_CHECKING == 0
 			return checked_sub( lhs, rhs );
 #elif DAW_DEFAULT_SIGNED_CHECKING == 2
@@ -76,13 +196,12 @@ namespace daw::integers::sint_impl {
 		}
 	} debug_checked_sub{ };
 
-	inline constexpr struct debug_checked_mul_t {
-		explicit debug_checked_mul_t( ) = default;
-
+	inline constexpr struct {
 		template<typename T,
 		         std::enable_if_t<sint_impl::size_fits_v<T, std::int64_t>,
 		                          std::nullptr_t> = nullptr>
-		DAW_ATTRIB_INLINE constexpr T operator( )( T lhs, T rhs ) const {
+		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
+		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
 #if DAW_DEFAULT_SIGNED_CHECKING == 0
 			return checked_mul( lhs, rhs );
 #elif DAW_DEFAULT_SIGNED_CHECKING == 2
@@ -93,13 +212,12 @@ namespace daw::integers::sint_impl {
 		}
 	} debug_checked_mul{ };
 
-	inline constexpr struct debug_checked_div_t {
-		explicit debug_checked_div_t( ) = default;
-
+	inline constexpr struct {
 		template<typename T,
 		         std::enable_if_t<sint_impl::size_fits_v<T, std::int64_t>,
 		                          std::nullptr_t> = nullptr>
-		DAW_ATTRIB_INLINE constexpr T operator( )( T lhs, T rhs ) const {
+		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
+		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
 #if DAW_DEFAULT_SIGNED_CHECKING == 0
 			return checked_div( lhs, rhs );
 #else
@@ -108,13 +226,12 @@ namespace daw::integers::sint_impl {
 		}
 	} debug_checked_div{ };
 
-	inline constexpr struct debug_checked_rem_t {
-		explicit debug_checked_rem_t( ) = default;
-
+	inline constexpr struct {
 		template<typename T,
 		         std::enable_if_t<sint_impl::size_fits_v<T, std::int64_t>,
 		                          std::nullptr_t> = nullptr>
-		DAW_ATTRIB_INLINE constexpr T operator( )( T lhs, T rhs ) const {
+		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
+		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
 #if DAW_DEFAULT_SIGNED_CHECKING == 0
 			return checked_rem( lhs, rhs );
 #else
@@ -123,13 +240,12 @@ namespace daw::integers::sint_impl {
 		}
 	} debug_checked_rem{ };
 
-	inline constexpr struct checked_neg_t {
-		explicit checked_neg_t( ) = default;
-
+	inline constexpr struct {
 		template<typename T,
 		         std::enable_if_t<sint_impl::size_fits_v<T, std::int64_t>,
 		                          std::nullptr_t> = nullptr>
-		DAW_ATTRIB_INLINE constexpr T operator( )( T lhs ) const {
+		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
+		operator( )( T lhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
 			if constexpr( sizeof( T ) < 4 ) {
 				return static_cast<T>( -static_cast<std::int32_t>( lhs ) );
 			} else if constexpr( sizeof( T ) < 8 ) {
@@ -140,13 +256,12 @@ namespace daw::integers::sint_impl {
 		}
 	} checked_neg{ };
 
-	inline constexpr struct debug_checked_neg_t {
-		explicit debug_checked_neg_t( ) = default;
-
+	inline constexpr struct {
 		template<typename T,
 		         std::enable_if_t<sint_impl::size_fits_v<T, std::int64_t>,
 		                          std::nullptr_t> = nullptr>
-		DAW_ATTRIB_INLINE constexpr T operator( )( T lhs ) const {
+		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
+		operator( )( T lhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
 
 #if DAW_DEFAULT_SIGNED_CHECKING == 0
 			return checked_neg( lhs );
@@ -156,13 +271,12 @@ namespace daw::integers::sint_impl {
 		}
 	} debug_checked_neg{ };
 
-	inline constexpr struct debug_checked_shl_t {
-		explicit debug_checked_shl_t( ) = default;
-
+	inline constexpr struct {
 		template<typename T,
 		         std::enable_if_t<sint_impl::size_fits_v<T, std::int64_t>,
 		                          std::nullptr_t> = nullptr>
-		DAW_ATTRIB_INLINE constexpr T operator( )( T lhs, T rhs ) const {
+		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
+		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
 #if DAW_DEFAULT_SIGNED_CHECKING == 0
 			return checked_shl( lhs, rhs );
 #else
@@ -170,13 +284,13 @@ namespace daw::integers::sint_impl {
 #endif
 		}
 	} debug_checked_shl{ };
-	inline constexpr struct debug_checked_shr_t {
-		explicit debug_checked_shr_t( ) = default;
 
+	inline constexpr struct {
 		template<typename T,
 		         std::enable_if_t<sint_impl::size_fits_v<T, std::int64_t>,
 		                          std::nullptr_t> = nullptr>
-		DAW_ATTRIB_INLINE constexpr T operator( )( T lhs, T rhs ) const {
+		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
+		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
 #if DAW_DEFAULT_SIGNED_CHECKING == 0
 			return checked_shr( lhs, rhs );
 #else
@@ -184,4 +298,8 @@ namespace daw::integers::sint_impl {
 #endif
 		}
 	} debug_checked_shr{ };
+
+#if defined( DAW_HAS_CPP23_STATIC_CALL_OP ) and DAW_HAS_CLANG_VER_GTE( 17, 0 )
+#pragma clang diagnostic pop
+#endif
 } // namespace daw::integers::sint_impl

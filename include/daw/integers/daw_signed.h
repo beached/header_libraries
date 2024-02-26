@@ -83,23 +83,23 @@ namespace daw::integers {
 		DAW_ATTRIB_INLINE constexpr explicit signed_integer( I v ) noexcept
 		  : m_private{ static_cast<value_type>( v ) } {}
 
-		[[nodiscard]] static constexpr signed_integer from_bytes_le(
-		  unsigned char const *ptr ) noexcept {
+		[[nodiscard]] static constexpr signed_integer
+		from_bytes_le( unsigned char const *ptr ) noexcept {
 			return signed_integer(
 			  daw::integers::sint_impl::from_bytes_le<value_type>(
 			    ptr, std::make_index_sequence<sizeof( value_type )>{ } ) );
 		}
 
-		[[nodiscard]] static constexpr signed_integer from_bytes_be(
-		  unsigned char const *ptr ) noexcept {
+		[[nodiscard]] static constexpr signed_integer
+		from_bytes_be( unsigned char const *ptr ) noexcept {
 			return signed_integer(
 			  daw::integers::sint_impl::from_bytes_be<value_type>(
 			    ptr, std::make_index_sequence<sizeof( value_type )>{ } ) );
 		}
 
 		template<typename I>
-		[[nodiscard]] static constexpr signed_integer checked_conversion(
-		  signed_integer<I> other ) {
+		[[nodiscard]] static constexpr signed_integer
+		checked_conversion( signed_integer<I> other ) {
 			if constexpr( sizeof( I ) <= sizeof( value_type ) ) {
 				return signed_integer( static_cast<value_type>( other.value( ) ) );
 			} else {
@@ -114,8 +114,8 @@ namespace daw::integers {
 		template<typename I,
 		         std::enable_if_t<std::is_integral_v<I> and std::is_signed_v<I>,
 		                          std::nullptr_t> = nullptr>
-		[[nodiscard]] static constexpr signed_integer checked_conversion(
-		  I other ) {
+		[[nodiscard]] static constexpr signed_integer
+		checked_conversion( I other ) {
 			if constexpr( sizeof( I ) <= sizeof( value_type ) ) {
 				return signed_integer( static_cast<value_type>( other ) );
 			} else {
@@ -128,8 +128,8 @@ namespace daw::integers {
 		}
 
 		template<typename I>
-		[[nodiscard]] static constexpr signed_integer unchecked_conversion(
-		  signed_integer<I> other ) {
+		[[nodiscard]] static constexpr signed_integer
+		unchecked_conversion( signed_integer<I> other ) {
 			return signed_integer( static_cast<value_type>( other.value( ) ) );
 		}
 
@@ -179,8 +179,8 @@ namespace daw::integers {
 		template<typename Arithmetic,
 		         std::enable_if_t<std::is_arithmetic_v<Arithmetic>,
 		                          std::nullptr_t> = nullptr>
-		[[nodiscard]] DAW_ATTRIB_INLINE explicit constexpr operator Arithmetic( )
-		  const noexcept {
+		[[nodiscard]] DAW_ATTRIB_INLINE explicit constexpr
+		operator Arithmetic( ) const noexcept {
 			return static_cast<Arithmetic>( value( ) );
 		}
 
@@ -196,8 +196,8 @@ namespace daw::integers {
 			return m_private.value;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_reference value( )
-		  const noexcept {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_reference
+		value( ) const noexcept {
 			return m_private.value;
 		}
 
@@ -205,28 +205,28 @@ namespace daw::integers {
 			return not value( );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer operator-( )
-		  const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		operator-( ) const {
 			return signed_integer( sint_impl::debug_checked_neg( value( ) ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer checked_neg( )
-		  const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		checked_neg( ) const {
 			return signed_integer( sint_impl::checked_neg( value( ) ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer unchecked_neg( )
-		  const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		unchecked_neg( ) const {
 			return signed_integer( -value( ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer operator~( )
-		  const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		operator~( ) const {
 			return signed_integer( static_cast<value_type>( ~value( ) ) );
 		}
 
-		DAW_ATTRIB_INLINE constexpr signed_integer &operator+=(
-		  signed_integer const &rhs ) {
+		DAW_ATTRIB_INLINE constexpr signed_integer &
+		operator+=( signed_integer const &rhs ) {
 			value( ) = sint_impl::debug_checked_add( value( ), rhs.value( ) );
 			return *this;
 		}
@@ -236,19 +236,34 @@ namespace daw::integers {
 			return *this;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer checked_add(
-		  signed_integer const &rhs ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		checked_add( signed_integer const &rhs ) const {
 			return signed_integer( sint_impl::checked_add( value( ), rhs.value( ) ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer wrapped_add(
-		  signed_integer const &rhs ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		wrapped_add( signed_integer const &rhs ) const {
 			return signed_integer( sint_impl::wrapped_add( value( ), rhs.value( ) ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer unchecked_add(
-		  signed_integer const &rhs ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		unchecked_add( signed_integer const &rhs ) const {
 			return value( ) + rhs.value( );
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		saturated_add( signed_integer const &rhs ) const {
+			return signed_integer( sint_impl::sat_add( value( ), rhs.value( ) ) );
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		saturated_sub( signed_integer const &rhs ) const {
+			return signed_integer( sint_impl::sat_sub( value( ), rhs.value( ) ) );
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		saturated_mul( signed_integer const &rhs ) const {
+			return signed_integer( sint_impl::sat_mul( value( ), rhs.value( ) ) );
 		}
 
 		DAW_ATTRIB_INLINE constexpr signed_integer operator++( int ) {
@@ -264,8 +279,8 @@ namespace daw::integers {
 			return *this += signed_integer( rhs );
 		}
 
-		DAW_ATTRIB_INLINE constexpr signed_integer &operator-=(
-		  signed_integer const &rhs ) {
+		DAW_ATTRIB_INLINE constexpr signed_integer &
+		operator-=( signed_integer const &rhs ) {
 			value( ) = sint_impl::debug_checked_sub( value( ), rhs.value( ) );
 			return *this;
 		}
@@ -277,18 +292,18 @@ namespace daw::integers {
 			return *this -= signed_integer( rhs );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer checked_sub(
-		  signed_integer const &rhs ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		checked_sub( signed_integer const &rhs ) const {
 			return signed_integer( sint_impl::checked_sub( value( ), rhs.value( ) ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer wrapped_sub(
-		  signed_integer const &rhs ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		wrapped_sub( signed_integer const &rhs ) const {
 			return signed_integer( sint_impl::wrapped_sub( value( ), rhs.value( ) ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer unchecked_sub(
-		  signed_integer const &rhs ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		unchecked_sub( signed_integer const &rhs ) const {
 			return value( ) - rhs.value( );
 		}
 
@@ -303,8 +318,8 @@ namespace daw::integers {
 			return result;
 		}
 
-		DAW_ATTRIB_INLINE constexpr signed_integer &operator*=(
-		  signed_integer const &rhs ) {
+		DAW_ATTRIB_INLINE constexpr signed_integer &
+		operator*=( signed_integer const &rhs ) {
 			value( ) = sint_impl::debug_checked_mul( value( ), rhs.value( ) );
 			return *this;
 		}
@@ -316,23 +331,23 @@ namespace daw::integers {
 			return *this *= signed_integer( rhs );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer checked_mul(
-		  signed_integer const &rhs ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		checked_mul( signed_integer const &rhs ) const {
 			return signed_integer( sint_impl::checked_mul( value( ), rhs.value( ) ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer wrapped_mul(
-		  signed_integer const &rhs ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		wrapped_mul( signed_integer const &rhs ) const {
 			return signed_integer( sint_impl::wrapped_mul( value( ), rhs.value( ) ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer uncheck_mul(
-		  signed_integer const &rhs ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		uncheck_mul( signed_integer const &rhs ) const {
 			return value( ) * rhs.value( );
 		}
 
-		DAW_ATTRIB_INLINE constexpr signed_integer &operator/=(
-		  signed_integer const &rhs ) {
+		DAW_ATTRIB_INLINE constexpr signed_integer &
+		operator/=( signed_integer const &rhs ) {
 			value( ) = sint_impl::debug_checked_div( value( ), rhs.value( ) );
 			return *this;
 		}
@@ -344,18 +359,18 @@ namespace daw::integers {
 			return *this /= signed_integer( rhs );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer checked_div(
-		  signed_integer const &rhs ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		checked_div( signed_integer const &rhs ) const {
 			return signed_integer( sint_impl::checked_div( value( ), rhs.value( ) ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer unchecked_div(
-		  signed_integer const &rhs ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		unchecked_div( signed_integer const &rhs ) const {
 			return value( ) / rhs.value( );
 		}
 
-		DAW_ATTRIB_INLINE constexpr signed_integer &operator%=(
-		  signed_integer const &rhs ) {
+		DAW_ATTRIB_INLINE constexpr signed_integer &
+		operator%=( signed_integer const &rhs ) {
 			value( ) = sint_impl::debug_checked_rem( value( ), rhs.value( ) );
 			return *this;
 		}
@@ -367,18 +382,18 @@ namespace daw::integers {
 			return *this %= signed_integer( rhs );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer checked_rem(
-		  signed_integer const &rhs ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		checked_rem( signed_integer const &rhs ) const {
 			return signed_integer( sint_impl::checked_rem( value( ), rhs.value( ) ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer unchecked_rem(
-		  signed_integer const &rhs ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		unchecked_rem( signed_integer const &rhs ) const {
 			return value( ) % rhs.value( );
 		}
 
-		DAW_ATTRIB_INLINE constexpr signed_integer &operator<<=(
-		  signed_integer const &rhs ) {
+		DAW_ATTRIB_INLINE constexpr signed_integer &
+		operator<<=( signed_integer const &rhs ) {
 			value( ) = sint_impl::debug_checked_shl( value( ), rhs.value( ) );
 			return *this;
 		}
@@ -390,18 +405,18 @@ namespace daw::integers {
 			return *this <<= signed_integer( rhs );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer checked_shl(
-		  signed_integer const &rhs ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		checked_shl( signed_integer const &rhs ) const {
 			return signed_integer( sint_impl::checked_shl( value( ), rhs.value( ) ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer unchecked_shl(
-		  signed_integer const &rhs ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		unchecked_shl( signed_integer const &rhs ) const {
 			return value( ) << rhs.value( );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer overflowing_shl(
-		  signed_integer n ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		overflowing_shl( signed_integer n ) const {
 			if( n < 0 ) {
 				on_signed_integer_overflow( );
 				return *this;
@@ -414,8 +429,8 @@ namespace daw::integers {
 
 		template<typename I,
 		         std::enable_if_t<std::is_integral_v<I>, std::nullptr_t> = nullptr>
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer overflowing_shl(
-		  I n ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		overflowing_shl( I n ) const {
 			if( n < 0 ) {
 				on_signed_integer_overflow( );
 				return *this;
@@ -426,8 +441,8 @@ namespace daw::integers {
 			return signed_integer( value( ) << n );
 		}
 
-		DAW_ATTRIB_INLINE constexpr signed_integer &operator>>=(
-		  signed_integer const &rhs ) {
+		DAW_ATTRIB_INLINE constexpr signed_integer &
+		operator>>=( signed_integer const &rhs ) {
 			value( ) = sint_impl::debug_checked_shr( value( ), rhs.value( ) );
 			return *this;
 		}
@@ -439,18 +454,18 @@ namespace daw::integers {
 			return *this >>= signed_integer( rhs );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer checked_shr(
-		  signed_integer const &rhs ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		checked_shr( signed_integer const &rhs ) const {
 			return signed_integer( sint_impl::checked_shr( value( ), rhs.value( ) ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer unchecked_shr(
-		  signed_integer const &rhs ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		unchecked_shr( signed_integer const &rhs ) const {
 			return value( ) >> rhs.value( );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer overflowing_shr(
-		  signed_integer n ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		overflowing_shr( signed_integer n ) const {
 			if( n < 0 ) {
 				on_signed_integer_overflow( );
 				return *this;
@@ -463,8 +478,8 @@ namespace daw::integers {
 
 		template<typename I,
 		         std::enable_if_t<std::is_integral_v<I>, std::nullptr_t> = nullptr>
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer overflowing_shr(
-		  I n ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		overflowing_shr( I n ) const {
 			if( n < 0 ) {
 				on_signed_integer_overflow( );
 				return *this;
@@ -475,20 +490,20 @@ namespace daw::integers {
 			return signed_integer( value( ) >> n );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer rotate_left(
-		  std::size_t n ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		rotate_left( std::size_t n ) const {
 			return overflowing_shl( n ) |
 			       overflowing_shr( sizeof( value_type ) * CHAR_BIT - n );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer rotate_right(
-		  std::size_t n ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
+		rotate_right( std::size_t n ) const {
 			return overflowing_shr( n ) |
 			       overflowing_shl( sizeof( value_type ) * CHAR_BIT - n );
 		}
 
-		DAW_ATTRIB_INLINE constexpr signed_integer &operator|=(
-		  signed_integer const &rhs ) noexcept {
+		DAW_ATTRIB_INLINE constexpr signed_integer &
+		operator|=( signed_integer const &rhs ) noexcept {
 			value( ) |= rhs.value( );
 			return *this;
 		}
@@ -501,8 +516,8 @@ namespace daw::integers {
 			return *this;
 		}
 
-		DAW_ATTRIB_INLINE constexpr signed_integer &operator&=(
-		  signed_integer const &rhs ) const noexcept {
+		DAW_ATTRIB_INLINE constexpr signed_integer &
+		operator&=( signed_integer const &rhs ) const noexcept {
 			value( ) &= rhs.value( );
 			return *this;
 		}
@@ -515,8 +530,8 @@ namespace daw::integers {
 			return *this;
 		}
 
-		DAW_ATTRIB_INLINE constexpr signed_integer &operator^=(
-		  signed_integer const &rhs ) const noexcept {
+		DAW_ATTRIB_INLINE constexpr signed_integer &
+		operator^=( signed_integer const &rhs ) const noexcept {
 			value( ) ^= rhs.value( );
 			return *this;
 		}

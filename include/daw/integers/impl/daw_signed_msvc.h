@@ -126,32 +126,6 @@ namespace daw::integers::sint_impl {
 			return res > l;
 		}
 
-		inline constexpr struct checked_add_t {
-			explicit checked_add_t( ) = default;
-
-			template<typename T,
-			         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
-			DAW_ATTRIB_INLINE constexpr T operator( )( T lhs, T rhs ) const {
-				T result;
-				if( DAW_UNLIKELY( wrapping_add( lhs, rhs, result ) ) ) {
-					on_signed_integer_overflow( );
-				}
-				return result;
-			}
-		} checked_add{ };
-
-		inline constexpr struct wrapped_add_t {
-			explicit wrapped_add_t( ) = default;
-
-			template<typename T,
-			         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
-			DAW_ATTRIB_INLINE constexpr T operator( )( T lhs, T rhs ) const {
-				T result;
-				(void)wrapping_add( lhs, rhs, result );
-				return result;
-			}
-		} wrapped_add{ };
-
 		DAW_ATTRIB_INLINE constexpr bool wrapping_mul( std::int8_t l, std::int8_t r,
 		                                               std::int8_t &res ) noexcept {
 			std::uint32_t l32 = static_cast<unsigned char>( l );
@@ -187,57 +161,6 @@ namespace daw::integers::sint_impl {
 			res = static_cast<std::int64_t>( res64 );
 			return l64 != 0 and res64 / l64 != r64;
 		}
-
-		inline constexpr struct checked_sub_t {
-			explicit checked_sub_t( ) = default;
-
-			template<typename T,
-			         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
-			DAW_ATTRIB_INLINE constexpr T operator( )( T lhs, T rhs ) const {
-				T result;
-				if( DAW_UNLIKELY( wrapping_sub( lhs, rhs, result ) ) ) {
-					on_signed_integer_overflow( );
-				}
-				return result;
-			}
-		} checked_sub{ };
-
-		inline constexpr struct wrapped_sub_t {
-			explicit wrapped_sub_t( ) = default;
-			template<typename T,
-			         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
-			DAW_ATTRIB_INLINE constexpr T operator( )( T lhs, T rhs ) const {
-				T result;
-				(void)__builtin_sub_overflow( lhs, rhs, &result );
-				return result;
-			}
-		} wrapped_sub{ };
-
-		inline constexpr struct checked_mul_t {
-			explicit checked_mul_t( ) = default;
-
-			template<typename T,
-			         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
-			DAW_ATTRIB_INLINE constexpr T operator( )( T lhs, T rhs ) const {
-				T result;
-				if( DAW_UNLIKELY( wrapping_mul( lhs, rhs, result ) ) ) {
-					on_signed_integer_overflow( );
-				}
-				return result;
-			}
-		} checked_mul{ };
-
-		inline constexpr struct wrapped_mul_t {
-			explicit wrapped_mul_t( ) = default;
-
-			template<typename T,
-			         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
-			DAW_ATTRIB_INLINE constexpr T operator( )( T lhs, T rhs ) const {
-				T result;
-				(void)wrapping_mul( lhs, rhs, result );
-				return result;
-			}
-		} wrapped_mul{ };
 
 		inline constexpr struct checked_div_t {
 			explicit checked_div_t( ) = default;

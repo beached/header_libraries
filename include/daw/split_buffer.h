@@ -10,6 +10,7 @@
 #include "daw_check_exceptions.h"
 #include "daw_concepts.h"
 #include "daw_exception.h"
+#include "daw_exchange.h"
 #include "daw_move.h"
 
 #include <algorithm>
@@ -128,10 +129,10 @@ namespace daw {
 		explicit constexpr split_buffer( split_buffer &&c, alloc_rr const &a )
 		  : end_cap_( nullptr, a ) {
 			if( a == c.alloc( ) ) {
-				first_ = std::exchange( c.first_, nullptr );
-				begin_ = std::exchange( c.begin_, nullptr );
-				end_ = std::exchange( c.end_, nullptr );
-				end_cap( ) = std::exchange( c.end_cap( ), nullptr );
+				first_ = daw::exchange( c.first_, nullptr );
+				begin_ = daw::exchange( c.begin_, nullptr );
+				end_ = daw::exchange( c.end_, nullptr );
+				end_cap( ) = daw::exchange( c.end_cap( ), nullptr );
 			} else {
 				auto cap = c.size( );
 				first_ = alloc_traits::allocate( alloc( ), cap );

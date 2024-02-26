@@ -10,6 +10,7 @@
 
 #include "cpp_20.h"
 #include "daw_consteval.h"
+#include "daw_exchange.h"
 #include "daw_move.h"
 
 #include <cassert>
@@ -98,22 +99,22 @@ namespace daw {
 		}
 
 		constexpr rc_ptr( rc_ptr &&other ) noexcept
-		  : m_pointer( std::exchange( other.m_pointer, nullptr ) )
-		  , m_ref_count( std::exchange( other.m_ref_count, nullptr ) ) {}
+		  : m_pointer( daw::exchange( other.m_pointer, nullptr ) )
+		  , m_ref_count( daw::exchange( other.m_ref_count, nullptr ) ) {}
 
 		constexpr rc_ptr &
 		operator=( rc_ptr &&rhs ) noexcept( is_t_nothrow_destructible ) {
 			if( this != &rhs ) {
 				reset( );
-				m_pointer = std::exchange( rhs.m_pointer, nullptr );
-				m_ref_count = std::exchange( rhs.m_ref_count, nullptr );
+				m_pointer = daw::exchange( rhs.m_pointer, nullptr );
+				m_ref_count = daw::exchange( rhs.m_ref_count, nullptr );
 			}
 			return *this;
 		}
 
 		constexpr void swap( rc_ptr &other ) {
-			m_pointer = std::exchange( other.m_pointer, std::move( m_pointer ) );
-			m_ref_count = std::exchange( other.m_ref_count, m_ref_count );
+			m_pointer = daw::exchange( other.m_pointer, std::move( m_pointer ) );
+			m_ref_count = daw::exchange( other.m_ref_count, m_ref_count );
 		}
 
 		DAW_CX_DTOR ~rc_ptr( ) noexcept( is_t_nothrow_destructible ) {
@@ -136,8 +137,8 @@ namespace daw {
 			}
 			assert( m_ref_count );
 			if( --ref_count( ) == 0 ) {
-				auto old_ptr = std::exchange( m_pointer, nullptr );
-				auto old_ref = std::exchange( m_ref_count, nullptr );
+				auto old_ptr = daw::exchange( m_pointer, nullptr );
+				auto old_ref = daw::exchange( m_ref_count, nullptr );
 				delete old_ref;
 				Deleter{ }( old_ptr );
 			}
@@ -270,22 +271,22 @@ namespace daw {
 		}
 
 		constexpr rc_ptr( rc_ptr &&other ) noexcept
-		  : m_pointer( std::exchange( other.m_pointer, nullptr ) )
-		  , m_ref_count( std::exchange( other.m_ref_count, nullptr ) ) {}
+		  : m_pointer( daw::exchange( other.m_pointer, nullptr ) )
+		  , m_ref_count( daw::exchange( other.m_ref_count, nullptr ) ) {}
 
 		constexpr rc_ptr &
 		operator=( rc_ptr &&rhs ) noexcept( is_t_nothrow_destructible ) {
 			if( this != &rhs ) {
 				reset( );
-				m_pointer = std::exchange( rhs.m_pointer, nullptr );
-				m_ref_count = std::exchange( rhs.m_ref_count, nullptr );
+				m_pointer = daw::exchange( rhs.m_pointer, nullptr );
+				m_ref_count = daw::exchange( rhs.m_ref_count, nullptr );
 			}
 			return *this;
 		}
 
 		constexpr void swap( rc_ptr &other ) {
-			m_pointer = std::exchange( other.m_pointer, std::move( m_pointer ) );
-			m_ref_count = std::exchange( other.m_ref_count, m_ref_count );
+			m_pointer = daw::exchange( other.m_pointer, std::move( m_pointer ) );
+			m_ref_count = daw::exchange( other.m_ref_count, m_ref_count );
 		}
 
 		DAW_CX_DTOR ~rc_ptr( ) noexcept( is_t_nothrow_destructible ) {
@@ -309,8 +310,8 @@ namespace daw {
 			}
 			assert( m_ref_count );
 			if( --ref_count( ) == 0 ) {
-				auto *old_ptr = std::exchange( m_pointer, nullptr );
-				auto *old_ref = std::exchange( m_ref_count, nullptr );
+				auto *old_ptr = daw::exchange( m_pointer, nullptr );
+				auto *old_ref = daw::exchange( m_ref_count, nullptr );
 				delete old_ref;
 				Deleter{ }( old_ptr );
 			}

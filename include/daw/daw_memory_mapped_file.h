@@ -9,6 +9,7 @@
 #pragma once
 
 #include "ciso646.h"
+#include "daw_exchange.h"
 #include "daw_string_view.h"
 #include "daw_traits.h"
 #include "daw_unique_resource.h"
@@ -55,11 +56,11 @@ namespace daw::filesystem {
 
 		struct cleanup_t {
 			constexpr void operator( )( fdata_t &d ) noexcept {
-				if( auto *p = std::exchange( d.ptr, nullptr ); p ) {
+				if( auto *p = daw::exchange( d.ptr, nullptr ); p ) {
 					munmap( p, d.size );
 				}
 				d.size = 0;
-				if( auto fid = std::exchange( d.file, -1 ); fid >= 0 ) {
+				if( auto fid = daw::exchange( d.file, -1 ); fid >= 0 ) {
 					close( fid );
 				}
 			}
@@ -212,10 +213,10 @@ namespace daw::filesystem {
 		struct cleanup_t {
 			constexpr void operator( )( fdata_t &d ) noexcept {
 				d.size = 0;
-				if( auto tmp = std::exchange( d.ptr, nullptr ); tmp ) {
+				if( auto tmp = daw::exchange( d.ptr, nullptr ); tmp ) {
 					::UnmapViewOfFile( static_cast<LPVOID>( tmp ) );
 				}
-				if( auto tmp = std::exchange( d.handle, nullptr ); tmp ) {
+				if( auto tmp = daw::exchange( d.handle, nullptr ); tmp ) {
 					::CloseHandle( d.handle );
 				}
 			}
