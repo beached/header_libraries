@@ -91,8 +91,8 @@ namespace daw {
 		  , m_data( daw::exchange( other.m_data, nullptr ) ) {}
 
 		constexpr fixed_array &operator=( fixed_array &&rhs ) noexcept {
-			auto tmp_size = std::exchange( rhs.m_size, 0 );
-			auto tmp = std::exchange( rhs.m_data, nullptr );
+			auto tmp_size = daw::exchange( rhs.m_size, 0 );
+			auto tmp = daw::exchange( rhs.m_data, nullptr );
 			clear( );
 			m_size = tmp_size;
 			m_data = tmp;
@@ -207,7 +207,7 @@ namespace daw {
 
 		std::unique_ptr<value_type[]> release( ) {
 			m_size = 0;
-			return std::unique_ptr<value_type[]>( std::exchange( m_data, nullptr ) );
+			return std::unique_ptr<value_type[]>( daw::exchange( m_data, nullptr ) );
 		}
 	}; // struct fixed_array
 

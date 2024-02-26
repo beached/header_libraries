@@ -76,6 +76,7 @@ set( TEST_SOURCES
      daw_metro_hash_test.cpp
      daw_natural_test.cpp
      daw_not_null_test.cpp
+		 daw_nth_pack_element_test.cpp
      daw_optional_poly_test.cpp
      daw_optional_test.cpp
      daw_ordered_map_test.cpp

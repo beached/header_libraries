@@ -8,41 +8,24 @@
 
 #pragma once
 
-#include "daw_traits_identity.h"
-#include "daw_traits_pack_list.h"
+#include "daw/ciso646.h"
 
 #include <cstddef>
-#include <daw/stdinc/integer_sequence.h>
+
+#if not DAW_HAS_BUILTIN( __type_pack_element )
+#include "daw/daw_nth_pack_element.h"
+#include "daw_traits_identity.h"
+#endif
 
 namespace daw::traits {
 #if DAW_HAS_BUILTIN( __type_pack_element )
 	template<std::size_t I, typename... Ts>
-	using nth_type = __type_pack_element<I, Ts...>;
+	using nth_element = __type_pack_element<I, Ts...>;
 #else
-	namespace nth_type_impl {
-		template<std::size_t I, typename T>
-		struct nth_type_leaf {};
-
-		template<typename TPack, typename IPack>
-		struct nth_type_base;
-
-		template<typename... Ts, std::size_t... Is>
-		struct nth_type_base<std::index_sequence<Is...>, daw::pack_list<Ts...>>
-		  : nth_type_leaf<Is, Ts>... {};
-
-		template<typename... Ts>
-		using nth_type_impl =
-		  nth_type_base<std::index_sequence_for<Ts...>, daw::pack_list<Ts...>>;
-
-		template<std::size_t I, typename T>
-		auto find_leaf_type( nth_type_leaf<I, T> const & )
-		  -> daw::traits::identity<T>;
-	} // namespace nth_type_impl
-
 	template<std::size_t Idx, typename... Ts>
-	using nth_type = typename decltype( nth_type_impl::find_leaf_type<Idx>(
-	  std::declval<nth_type_impl::nth_type_impl<Ts...>>( ) ) )::type;
+	using nth_element = typename decltype( nth_pack_element<Idx>(
+	  daw::traits::identity<Ts>{ }... ) )::type;
 #endif
-	template<std::size_t I, typename... Ts>
-	using nth_element = nth_type<I, Ts...>;
+	template<std::size_t Idx, typename... Ts>
+	using nth_type = nth_element<Idx, Ts...>;
 } // namespace daw::traits

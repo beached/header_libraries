@@ -8,9 +8,10 @@
 
 #define DAW_DEFAULT_SIGNED_CHECKING 0
 
-#include "daw/daw_cpp_feature_check.h"
-#include "daw/daw_ensure.h"
-#include "daw/integers/daw_signed.h"
+#include <daw/daw_benchmark.h>
+#include <daw/daw_cpp_feature_check.h>
+#include <daw/daw_ensure.h>
+#include <daw/integers/daw_signed.h>
 
 #include <initializer_list>
 
@@ -143,6 +144,8 @@ int main( ) {
 		has_overflow = false;
 		auto i0 = daw::i8::min( );
 		auto i1 = daw::i8::max( );
+		daw::do_not_optimize( i0 );
+		daw::do_not_optimize( i1 );
 		i0 -= i1;
 		daw_ensure( has_overflow );
 	}

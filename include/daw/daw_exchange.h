@@ -8,13 +8,16 @@
 
 #pragma once
 
+#include "daw_attributes.h"
 #include "daw_move.h"
+
+#include <daw/stdinc/move_fwd_exch.h>
 
 namespace daw {
 	template<typename T, typename U = T>
-	inline constexpr T exchange( T &obj, U &&new_value ) {
+	DAW_ATTRIB_INLINE constexpr T exchange( T &obj, U &&new_value ) {
 		T old_value = std::move( obj );
-		obj = DAW_FWD2( U, new_value );
+		obj = DAW_FWD( new_value );
 		return old_value;
 	}
 } // namespace daw

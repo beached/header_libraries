@@ -17,9 +17,8 @@
 #include <utility>
 
 /// \brief DAW_DEFAULT_SIGNED_CHECKING can be defined to the following
-/// 0 - Checked with wrapping(for add/sub/mul)
-/// 1 - Unchecked
-/// 2 - Wrapped for add/sub/mul, uncheckd for others
+/// 0 - Checked with wrapping defaults if not a named op(e.g. wrapped_add)(for
+/// add/sub/mul) 1 - Unchecked 2 - Wrapped for add/sub/mul, uncheckd for others
 #if not defined( DAW_DEFAULT_SIGNED_CHECKING )
 #if defined( DEBUG ) or not defined( NDEBUG )
 #define DAW_DEFAULT_SIGNED_CHECKING 0

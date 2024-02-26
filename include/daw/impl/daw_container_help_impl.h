@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <vector>
+#include "daw/daw_exchange.h"
 
 #include <cstddef>
 #include <daw/stdinc/data_access.h>
@@ -17,6 +17,7 @@
 #include <memory>
 #include <type_traits>
 #include <utility>
+#include <vector>
 
 namespace daw {
 	template<typename T, typename Allocator>
@@ -36,7 +37,7 @@ namespace daw {
 		constexpr std::pair<Allocator, std::size_t> extract_allocator( ) {
 			return std::pair<Allocator, std::size_t>{
 			  std::move( *static_cast<Allocator *>( this ) ),
-			  std::exchange( capacity, 0 ) };
+			  daw::exchange( capacity, 0U ) };
 		}
 
 		constexpr void operator( )( pointer p ) {

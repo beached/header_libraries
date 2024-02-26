@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw_exchange.h"
 #include "daw_move.h"
 
 #include <optional>
@@ -22,7 +23,7 @@ namespace daw {
 		explicit unique_resource( ) = default;
 		constexpr unique_resource( unique_resource &&other ) noexcept(
 		  std::is_nothrow_move_constructible_v<T> )
-		  : value( std::exchange( other.value, std::nullopt ) ) {}
+		  : value( daw::exchange( other.value, std::nullopt ) ) {}
 
 		unique_resource &operator=( unique_resource &&rhs ) noexcept(
 		  std::is_nothrow_move_assignable_v<T> ) {
@@ -56,7 +57,7 @@ namespace daw {
 
 		constexpr void
 		reset( T new_value ) noexcept( std::is_nothrow_destructible_v<T> and
-		                                 std::is_nothrow_move_constructible_v<T> ) {
+		                               std::is_nothrow_move_constructible_v<T> ) {
 			if( value ) {
 				Deleter{ }( *value );
 			}
@@ -64,7 +65,7 @@ namespace daw {
 		}
 
 		constexpr T release( ) noexcept( std::is_nothrow_move_constructible_v<T> ) {
-			auto result = std::exchange( value, std::nullopt );
+			auto result = daw::exchange( value, std::nullopt );
 			return std::move( *result );
 		}
 

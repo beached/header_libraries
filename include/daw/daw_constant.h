@@ -15,5 +15,4 @@
 namespace daw {
 	template<auto Value>
 	using constant = std::integral_constant<DAW_TYPEOF( Value ), Value>;
-
 }
