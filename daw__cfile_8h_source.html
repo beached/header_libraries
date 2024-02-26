@@ -99,7 +99,7 @@ $(function() {
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;      : ptr( f ) {}</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
 <div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classdaw_1_1_c_file.html#aee2fe87ca04e3ef3cab710cbdcfc80b2">   29</a></span>&#160;    constexpr <a class="code" href="classdaw_1_1_c_file.html#aee2fe87ca04e3ef3cab710cbdcfc80b2">CFile</a>( <a class="code" href="classdaw_1_1_c_file.html">CFile</a> &amp;&amp;other ) noexcept</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;      : ptr( <a class="code" href="namespacedaw.html#a7eca0d7b65c1434205ff68e50445fd6e">exchange</a>( other.ptr, <span class="keyword">nullptr</span> ) ) {}</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;      : ptr( <a class="code" href="namespacedaw.html#a5585663484a000a0bbcac884b40021e5">exchange</a>( other.ptr, <span class="keyword">nullptr</span> ) ) {}</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
 <div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classdaw_1_1_c_file.html#aebe8cc2e7a74d93ec213c69e1ef9c314">   32</a></span>&#160;    constexpr <a class="code" href="classdaw_1_1_c_file.html">CFile</a> &amp;<a class="code" href="classdaw_1_1_c_file.html#aebe8cc2e7a74d93ec213c69e1ef9c314">operator=</a>( <a class="code" href="classdaw_1_1_c_file.html">CFile</a> &amp;&amp;rhs ) noexcept {</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;      <a class="code" href="classdaw_1_1_c_file.html#a01e8eda6294a214ab121e924b93afca6">reset</a>( <a class="code" href="classdaw_1_1_c_file.html#ae4b7ae5759161697c34b5e6837da0ac5">release</a>( ) );</div>
@@ -111,7 +111,7 @@ $(function() {
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    }</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
 <div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classdaw_1_1_c_file.html#ae4b7ae5759161697c34b5e6837da0ac5">   41</a></span>&#160;    constexpr FILE *<a class="code" href="classdaw_1_1_c_file.html#ae4b7ae5759161697c34b5e6837da0ac5">release</a>( ) noexcept {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#a7eca0d7b65c1434205ff68e50445fd6e">exchange</a>( ptr, <span class="keyword">nullptr</span> );</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#a5585663484a000a0bbcac884b40021e5">exchange</a>( ptr, <span class="keyword">nullptr</span> );</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    }</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
 <div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="classdaw_1_1_c_file.html#a9037fd3cc919cbe2d98e66a689306bdb">   45</a></span>&#160;    constexpr <span class="keywordtype">void</span> <a class="code" href="classdaw_1_1_c_file.html#a9037fd3cc919cbe2d98e66a689306bdb">reset</a>( FILE *f ) noexcept {</div>
@@ -122,7 +122,7 @@ $(function() {
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    }</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
 <div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classdaw_1_1_c_file.html#a3a744d4246603a256b1aed90354b94da">   52</a></span>&#160;    constexpr <span class="keywordtype">void</span> <a class="code" href="classdaw_1_1_c_file.html#a3a744d4246603a256b1aed90354b94da">close</a>( ) noexcept {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="keywordflow">if</span>( <span class="keyword">auto</span> tmp = <a class="code" href="namespacedaw.html#a7eca0d7b65c1434205ff68e50445fd6e">exchange</a>( ptr, <span class="keyword">nullptr</span> ); tmp ) {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="keywordflow">if</span>( <span class="keyword">auto</span> tmp = <a class="code" href="namespacedaw.html#a5585663484a000a0bbcac884b40021e5">exchange</a>( ptr, <span class="keyword">nullptr</span> ); tmp ) {</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        fclose( tmp );</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      }</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
@@ -149,7 +149,7 @@ $(function() {
 <div class="ttc" id="aclassdaw_1_1_c_file_html_aee2fe87ca04e3ef3cab710cbdcfc80b2"><div class="ttname"><a href="classdaw_1_1_c_file.html#aee2fe87ca04e3ef3cab710cbdcfc80b2">daw::CFile::CFile</a></div><div class="ttdeci">constexpr CFile(CFile &amp;&amp;other) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__cfile_8h_source.html#l00029">daw_cfile.h:29</a></div></div>
 <div class="ttc" id="adaw__exchange_8h_html"><div class="ttname"><a href="daw__exchange_8h.html">daw_exchange.h</a></div></div>
 <div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm__accumulate_8h_source.html#l00017">daw_algorithm_accumulate.h:17</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a7eca0d7b65c1434205ff68e50445fd6e"><div class="ttname"><a href="namespacedaw.html#a7eca0d7b65c1434205ff68e50445fd6e">daw::exchange</a></div><div class="ttdeci">constexpr T exchange(T &amp;obj, U &amp;&amp;new_value)</div><div class="ttdef"><b>Definition:</b> <a href="daw__exchange_8h_source.html#l00015">daw_exchange.h:15</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a5585663484a000a0bbcac884b40021e5"><div class="ttname"><a href="namespacedaw.html#a5585663484a000a0bbcac884b40021e5">daw::exchange</a></div><div class="ttdeci">constexpr DAW_ATTRIB_INLINE T exchange(T &amp;obj, U &amp;&amp;new_value)</div><div class="ttdef"><b>Definition:</b> <a href="daw__exchange_8h_source.html#l00018">daw_exchange.h:18</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

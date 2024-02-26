@@ -190,6 +190,20 @@ $(function() {
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="preprocessor">#elif defined( __GLIBCXX__ )</span></div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="preprocessor">#define DAW_HAS_STD_LIBSTDCPP</span></div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">#if defined( __cpp_static_call_operator )</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="preprocessor">#if __cpp_static_call_operator &gt;= 202207L</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="preprocessor">#define DAW_HAS_CPP23_STATIC_CALL_OP</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">#if defined( DAW_HAS_CPP23_STATIC_CALL_OP )</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="preprocessor">#define DAW_CPP23_STATIC_CALL_OP static</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="preprocessor">#define DAW_CPP23_STATIC_CALL_OP_CONST</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#afc4642143a3c09e14caf89b1996f9b57">  132</a></span>&#160;<span class="preprocessor">#define DAW_CPP23_STATIC_CALL_OP</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#aa899c38c96b0233101723af77dd4f7dd">  133</a></span>&#160;<span class="preprocessor">#define DAW_CPP23_STATIC_CALL_OP_CONST const</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aciso646_8h_html"><div class="ttname"><a href="ciso646_8h.html">ciso646.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
