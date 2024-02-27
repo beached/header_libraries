@@ -28,6 +28,7 @@ set( TEST_SOURCES
      daw_carray_test.cpp
      daw_checked_expected_test.cpp
      daw_clumpy_sparsy_test.cpp
+     daw_constant_test.cpp
      daw_container_algorithm_test.cpp
      daw_copiable_unique_ptr_test.cpp
      daw_cx_offset_of_test.cpp
@@ -39,7 +40,7 @@ set( TEST_SOURCES
      daw_fixed_lookup_test.cpp
      daw_fnv1a_hash_test.cpp
      daw_function_table_test.cpp
-		 daw_function_ref_test.cpp
+     daw_function_ref_test.cpp
      daw_function_test.cpp
      daw_function_view_test.cpp
      daw_fwd_pack_apply_test.cpp
@@ -76,7 +77,7 @@ set( TEST_SOURCES
      daw_metro_hash_test.cpp
      daw_natural_test.cpp
      daw_not_null_test.cpp
-		 daw_nth_pack_element_test.cpp
+     daw_nth_pack_element_test.cpp
      daw_optional_poly_test.cpp
      daw_optional_test.cpp
      daw_ordered_map_test.cpp
@@ -94,7 +95,7 @@ set( TEST_SOURCES
      daw_ring_adaptor_test.cpp
      daw_safe_string_test.cpp
      daw_scope_guard_test.cpp
-		 daw_simple_array_test.cpp
+     daw_simple_array_test.cpp
      daw_sip_hash_test.cpp
      daw_size_literals_test.cpp
      daw_span_test.cpp
@@ -123,7 +124,7 @@ set( TEST_SOURCES
      daw_zipcontainer_test.cpp
      sbo_test.cpp
      static_hash_table_test.cpp
-     )
+)
 
 set( CPP20_TEST_SOURCES
      daw_concepts_test.cpp
@@ -131,7 +132,7 @@ set( CPP20_TEST_SOURCES
      daw_iter_view_test.cpp
      daw_named_params_test.cpp
      vector_test.cpp
-     )
+)
 #NOT COMPLETED daw_iterator_split_iterator_test.cpp
 #NOT COMPLETED daw_static_bitset_test.cpp
 #NOT COMPLETED daw_string_fmt_test.cpp
@@ -145,7 +146,7 @@ set( NOT_MSVC_TEST_SOURCES
      daw_parser_helper_test.cpp
      daw_piecewise_factory_test.cpp
      daw_tuple2_test.cpp
-     )
+)
 
 #not included in CI as they are not ready
 set( DEV_TEST_SOURCES
@@ -162,7 +163,7 @@ set( DEV_TEST_SOURCES
      daw_stack_quick_sort_test.cpp
      daw_tracked_allocator_test.cpp
      daw_vector_test.cpp
-     )
+)
 
 include( cmake/test_compiler_options.cmake )
 
