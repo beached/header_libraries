@@ -152,16 +152,13 @@ namespace daw::integers {
 		  signed_integer<I> other ) noexcept
 		  : m_private{ static_cast<value_type>( other.value( ) ) } {}
 
-		/// Construct from a literal
-		template<
-		  typename I,
-		  std::enable_if_t<not sint_impl::convertible_signed_int<value_type, I> and
-		                     sint_impl::is_signed_integral_v<I>,
-		                   std::nullptr_t> = nullptr>
-		DAW_ATTRIB_INLINE DAW_CONSTEVAL explicit signed_integer( I v )
+		template<typename I, std::enable_if_t<
+		                       not sint_impl::convertible_signed_int<value_type, I>,
+		                       std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE constexpr explicit signed_integer( I v )
 		  : m_private{ static_cast<value_type>( v ) } {
-			// We know I can be larger than max( )
-			if( v > static_cast<I>( std::numeric_limits<value_type>::max( ) ) ) {
+			if( DAW_UNLIKELY( not daw::in_range<value_type>( v ) ) ) {
+				DAW_UNLIKELY_BRANCH
 				on_signed_integer_overflow( );
 			}
 		}
