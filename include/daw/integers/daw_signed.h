@@ -78,11 +78,18 @@ namespace daw::integers {
 	public:
 		explicit signed_integer( ) = default;
 
+		// Construct from an integer type and ensure value_type is large enough
 		template<typename I,
-		         std::enable_if_t<sint_impl::convertible_signed_int<value_type, I>,
-		                          std::nullptr_t> = nullptr>
+		         std::enable_if_t<daw::is_integral_v<I>, std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE constexpr explicit signed_integer( I v ) noexcept
-		  : m_private{ static_cast<value_type>( v ) } {}
+		  : m_private{ static_cast<value_type>( v ) } {
+			if constexpr( not sint_impl::convertible_signed_int<value_type, I> ) {
+				if( DAW_UNLIKELY( not daw::in_range<value_type>( v ) ) ) {
+					DAW_UNLIKELY_BRANCH
+					on_signed_integer_overflow( );
+				}
+			}
+		}
 
 		[[nodiscard]] static constexpr signed_integer
 		from_bytes_le( unsigned char const *ptr ) noexcept {
@@ -151,17 +158,6 @@ namespace daw::integers {
 		DAW_ATTRIB_INLINE constexpr signed_integer(
 		  signed_integer<I> other ) noexcept
 		  : m_private{ static_cast<value_type>( other.value( ) ) } {}
-
-		template<typename I, std::enable_if_t<
-		                       not sint_impl::convertible_signed_int<value_type, I>,
-		                       std::nullptr_t> = nullptr>
-		DAW_ATTRIB_INLINE constexpr explicit signed_integer( I v )
-		  : m_private{ static_cast<value_type>( v ) } {
-			if( DAW_UNLIKELY( not daw::in_range<value_type>( v ) ) ) {
-				DAW_UNLIKELY_BRANCH
-				on_signed_integer_overflow( );
-			}
-		}
 
 		template<typename Arithmetic,
 		         std::enable_if_t<std::is_arithmetic_v<Arithmetic>,
