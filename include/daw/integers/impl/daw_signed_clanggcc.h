@@ -29,7 +29,7 @@
 namespace daw::integers::sint_impl {
 	template<typename T>
 	inline constexpr bool is_valid_int_type =
-	  std::is_integral_v<T> and std::is_signed_v<T> and
+	  daw::is_integral_v<T> and daw::is_signed_v<T> and
 	  sizeof( T ) <= sizeof( std::int64_t );
 
 	template<typename SignedInteger,
@@ -120,9 +120,9 @@ namespace daw::integers::sint_impl {
 				return res;
 #else
 				if( DAW_UNLIKELY( rhs == -1 and
-				                  lhs == std::numeric_limits<T>::min( ) ) ) {
+				                  lhs == daw::numeric_limits<T>::min( ) ) ) {
 					on_signed_integer_overflow( );
-					return std::numeric_limits<T>::max( );
+					return daw::numeric_limits<T>::max( );
 				}
 				return lhs / rhs;
 #endif
@@ -149,7 +149,7 @@ namespace daw::integers::sint_impl {
 			if( DAW_UNLIKELY( rhs == 0 ) ) {
 				on_signed_integer_div_by_zero( );
 			}
-			if( lhs == std::numeric_limits<T>::min( ) and rhs.value( ) == T{ -1 } ) {
+			if( lhs == daw::numeric_limits<T>::min( ) and rhs.value( ) == T{ -1 } ) {
 				on_signed_integer_overflow( );
 			}
 			return lhs % rhs;

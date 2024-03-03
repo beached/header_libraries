@@ -36,7 +36,7 @@ namespace daw::integers {
 
 		template<typename T>
 		inline constexpr bool is_signed_integral_v<
-		  T, std::enable_if_t<std::is_integral_v<T> and std::is_signed_v<T>>> =
+		  T, std::enable_if_t<daw::is_integral_v<T> and daw::is_signed_v<T>>> =
 		  true;
 
 		template<
@@ -56,8 +56,8 @@ namespace daw::integers {
 	template<typename SignedInteger>
 	struct [[DAW_PREF_NAME( i8 ), DAW_PREF_NAME( i16 ), DAW_PREF_NAME( i32 ),
 	         DAW_PREF_NAME( i64 )]] signed_integer {
-		static_assert( std::is_integral_v<SignedInteger> and
-		                 std::is_signed_v<SignedInteger>,
+		static_assert( daw::is_integral_v<SignedInteger> and
+		                 daw::is_signed_v<SignedInteger>,
 		               "Only signed integer types are supported" );
 		using value_type = SignedInteger;
 		using reference = value_type &;
@@ -106,7 +106,7 @@ namespace daw::integers {
 		}
 
 		template<typename I,
-		         std::enable_if_t<std::is_integral_v<I> and std::is_signed_v<I>,
+		         std::enable_if_t<daw::is_integral_v<I> and daw::is_signed_v<I>,
 		                          std::nullptr_t> = nullptr>
 		[[nodiscard]] static constexpr signed_integer
 		conversion_checked( I other ) {
@@ -131,7 +131,7 @@ namespace daw::integers {
 		}
 
 		template<typename I,
-		         std::enable_if_t<std::is_integral_v<I>, std::nullptr_t> = nullptr>
+		         std::enable_if_t<daw::is_integral_v<I>, std::nullptr_t> = nullptr>
 		static constexpr signed_integer conversion_unchecked( I other ) {
 			return signed_integer( static_cast<value_type>( other ) );
 		}
@@ -160,7 +160,7 @@ namespace daw::integers {
 		  : m_private{ static_cast<value_type>( other.value( ) ) } {}
 
 		template<typename Arithmetic,
-		         std::enable_if_t<std::is_arithmetic_v<Arithmetic>,
+		         std::enable_if_t<daw::is_arithmetic_v<Arithmetic>,
 		                          std::nullptr_t> = nullptr>
 		[[nodiscard]] DAW_ATTRIB_INLINE explicit constexpr
 		operator Arithmetic( ) const noexcept {
@@ -443,7 +443,7 @@ namespace daw::integers {
 		}
 
 		template<typename I,
-		         std::enable_if_t<std::is_integral_v<I>, std::nullptr_t> = nullptr>
+		         std::enable_if_t<daw::is_integral_v<I>, std::nullptr_t> = nullptr>
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
 		shl_overflowing( I n ) const {
 			if( n < 0 ) {
@@ -492,7 +492,7 @@ namespace daw::integers {
 		}
 
 		template<typename I,
-		         std::enable_if_t<std::is_integral_v<I>, std::nullptr_t> = nullptr>
+		         std::enable_if_t<daw::is_integral_v<I>, std::nullptr_t> = nullptr>
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
 		shr_overflowing( I n ) const {
 			if( n < 0 ) {
@@ -582,7 +582,7 @@ namespace daw::integers {
 	};
 
 	template<typename I,
-	         std::enable_if_t<std::is_signed_v<I> and std::is_integral_v<I>,
+	         std::enable_if_t<daw::is_signed_v<I> and daw::is_integral_v<I>,
 	                          std::nullptr_t> = nullptr>
 	signed_integer( I ) -> signed_integer<I>;
 

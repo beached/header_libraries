@@ -46,7 +46,7 @@ namespace daw::integers::sint_impl {
 
 	template<typename SignedInteger, typename Integer>
 	inline constexpr bool convertible_signed_int =
-	  std::is_integral_v<Integer> and std::is_signed_v<Integer> and
+	  daw::is_integral_v<Integer> and daw::is_signed_v<Integer> and
 	  ( sizeof( Integer ) <= sizeof( SignedInteger ) );
 #if defined( DAW_HAS_CPP23_STATIC_CALL_OP ) and DAW_HAS_CLANG_VER_GTE( 17, 0 )
 #pragma clang diagnostic push
@@ -128,9 +128,9 @@ namespace daw::integers::sint_impl {
 				return result;
 			}
 			if( rhs < 0 ) {
-				return std::numeric_limits<T>::min( );
+				return daw::numeric_limits<T>::min( );
 			}
-			return std::numeric_limits<T>::max( );
+			return daw::numeric_limits<T>::max( );
 		}
 	} sat_add{ };
 
@@ -145,9 +145,9 @@ namespace daw::integers::sint_impl {
 				return result;
 			}
 			if( rhs < 0 ) {
-				return std::numeric_limits<T>::max( );
+				return daw::numeric_limits<T>::max( );
 			}
-			return std::numeric_limits<T>::min( );
+			return daw::numeric_limits<T>::min( );
 		}
 	} sat_sub{ };
 
@@ -162,9 +162,9 @@ namespace daw::integers::sint_impl {
 				return result;
 			}
 			if( daw::signbit( lhs ) == daw::signbit( rhs ) ) {
-				return std::numeric_limits<T>::max( );
+				return daw::numeric_limits<T>::max( );
 			}
-			return std::numeric_limits<T>::min( );
+			return daw::numeric_limits<T>::min( );
 		}
 	} sat_mul{ };
 
@@ -247,10 +247,10 @@ namespace daw::integers::sint_impl {
 		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
 		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
 			assert( rhs != 0 );
-			if( DAW_UNLIKELY( lhs == std::numeric_limits<T>::min( ) and
+			if( DAW_UNLIKELY( lhs == daw::numeric_limits<T>::min( ) and
 			                  rhs == T{ -1 } ) ) {
 				DAW_UNLIKELY_BRANCH
-				return std::numeric_limits<T>::max( );
+				return daw::numeric_limits<T>::max( );
 			}
 			return sint_impl::debug_checked_div( lhs, rhs );
 		}
