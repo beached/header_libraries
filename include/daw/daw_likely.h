@@ -21,3 +21,14 @@
 #define DAW_UNLIKELY( ... ) !!( __VA_ARGS__ )
 
 #endif
+#if __has_cpp_attribute( likely )
+#define DAW_LIKELY_BRANCH [[likely]]
+#else
+#define DAW_LIKELY_BRANCH [[]]
+#endif
+
+#if __has_cpp_attribute( unlikely )
+#define DAW_UNLIKELY_BRANCH [[unlikely]]
+#else
+#define DAW_UNLIKELY_BRANCH [[]]
+#endif
