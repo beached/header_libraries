@@ -1035,6 +1035,26 @@ namespace daw {
 	struct make_unsigned<daw::integers::i64> {
 		using type = std::uint64_t;
 	};
+
+	template<>
+	struct make_signed<daw::integers::i8> {
+		using type = std::uint8_t;
+	};
+
+	template<>
+	struct make_signed<daw::integers::i16> {
+		using type = std::uint16_t;
+	};
+
+	template<>
+	struct make_signed<daw::integers::i32> {
+		using type = std::uint32_t;
+	};
+
+	template<>
+	struct make_signed<daw::integers::i64> {
+		using type = std::uint64_t;
+	};
 } // namespace daw
 
 namespace std {
