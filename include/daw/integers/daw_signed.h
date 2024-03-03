@@ -584,7 +584,7 @@ namespace daw::integers {
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr signed_integer
 		reverse_bits( ) const noexcept {
 			return signed_integer( daw::cxmath::to_signed(
-			  sint_impl::reverse_bits( daw::cxmath::to_unsigned( value( ) ) ) ) );
+			  daw::integers::reverse_bits( daw::cxmath::to_unsigned( value( ) ) ) ) );
 		}
 	};
 
