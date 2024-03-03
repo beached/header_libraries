@@ -1331,13 +1331,13 @@ namespace daw::cxmath {
 	  typename..., typename Integer,
 	  std::enable_if_t<std::is_integral_v<Integer>, std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE constexpr auto to_unsigned( Integer value ) {
-		return static_cast<std::make_unsigned_t<Integer>>( value );
+		return static_cast<daw::make_unsigned_t<Integer>>( value );
 	}
 
 	template<
 	  typename..., typename Integer,
 	  std::enable_if_t<std::is_integral_v<Integer>, std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE constexpr auto to_signed( Integer value ) {
-		return static_cast<std::make_signed_t<Integer>>( value );
+		return static_cast<daw::make_signed_t<Integer>>( value );
 	}
 } // namespace daw::cxmath

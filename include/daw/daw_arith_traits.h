@@ -273,6 +273,9 @@ namespace daw {
 	template<typename T>
 	struct make_unsigned : std::make_unsigned<T> {};
 
+	template<typename T>
+	struct make_signed : std::make_signed<T> {};
+
 #if defined( DAW_HAS_INT128 )
 	template<>
 	struct make_unsigned<__uint128_t> {
@@ -313,10 +316,53 @@ namespace daw {
 	struct make_unsigned<__int128_t const volatile> {
 		using type = __uint128_t const volatile;
 	};
+
+	template<>
+	struct make_signed<__uint128_t> {
+		using type = __int128_t;
+	};
+
+	template<>
+	struct make_signed<__uint128_t const> {
+		using type = __int128_t const;
+	};
+
+	template<>
+	struct make_signed<__uint128_t volatile> {
+		using type = __int128_t volatile;
+	};
+
+	template<>
+	struct make_signed<__uint128_t const volatile> {
+		using type = __int128_t const volatile;
+	};
+
+	template<>
+	struct make_signed<__int128_t> {
+		using type = __int128_t;
+	};
+
+	template<>
+	struct make_signed<__int128_t const> {
+		using type = __int128_t const;
+	};
+
+	template<>
+	struct make_signed<__int128_t volatile> {
+		using type = __int128_t volatile;
+	};
+
+	template<>
+	struct make_signed<__int128_t const volatile> {
+		using type = __int128_t const volatile;
+	};
 #endif
 
 	template<typename T>
 	using make_unsigned_t = typename make_unsigned<T>::type;
+
+	template<typename T>
+	using make_signed_t = typename make_signed<T>::type;
 
 	template<typename T>
 	struct is_system_integral : std::is_integral<T> {};

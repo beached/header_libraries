@@ -100,5 +100,4 @@ namespace daw {
 		}
 		return t < 0;
 	}
-
 } // namespace daw
