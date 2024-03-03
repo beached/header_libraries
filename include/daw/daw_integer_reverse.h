@@ -11,13 +11,14 @@
 #include "daw/ciso646.h"
 #include "daw/daw_attributes.h"
 #include "daw/daw_cpp_feature_check.h"
-#include "daw/daw_traits.h"
+#include "daw/traits/daw_traits_is_one_of.h"
 
 #include <cstdint>
 #include <type_traits>
 
 namespace daw::integers {
-	DAW_ATTRIB_INLINE constexpr std::uint8_t reverse_bits( std::uint8_t value ) {
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint8_t
+	reverse_bits( std::uint8_t value ) {
 #if not DAW_HAS_CLANG_VER_LT( 10, 0 ) and __has_builtin( __builtin_bitreverse8 )
 		return __builtin_bitreverse8( value );
 #else
@@ -29,7 +30,7 @@ namespace daw::integers {
 #endif
 	}
 
-	DAW_ATTRIB_INLINE constexpr std::uint16_t
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint16_t
 	reverse_bits( std::uint16_t value ) {
 #if not DAW_HAS_CLANG_VER_LT( 10, 0 ) and \
   __has_builtin( __builtin_bitreverse16 )
@@ -44,7 +45,7 @@ namespace daw::integers {
 #endif
 	}
 
-	DAW_ATTRIB_INLINE constexpr std::uint32_t
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint32_t
 	reverse_bits( std::uint32_t value ) {
 #if not DAW_HAS_CLANG_VER_LT( 10, 0 ) and \
   __has_builtin( __builtin_bitreverse32 )
@@ -59,7 +60,7 @@ namespace daw::integers {
 #endif
 	}
 
-	DAW_ATTRIB_INLINE constexpr std::uint64_t
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint64_t
 	reverse_bits( std::uint64_t value ) {
 #if not DAW_HAS_CLANG_VER_LT( 10, 0 ) and \
   __has_builtin( __builtin_bitreverse64 )
@@ -85,7 +86,7 @@ namespace daw::integers {
 	           not daw::traits::is_one_of_v<T, std::uint8_t, std::uint16_t,
 	                                        std::uint32_t, std::uint64_t>,
 	           std::nullptr_t> = nullptr>
-	DAW_ATTRIB_NOINLINE constexpr T reverse_bits( T ) {
+	[[nodiscard]] DAW_ATTRIB_NOINLINE constexpr T reverse_bits( T ) {
 		static_assert( daw::traits::is_one_of_v<T, std::uint8_t, std::uint16_t,
 		                                        std::uint32_t, std::uint64_t>,
 		               "Unsupported integer type for bit reversal" );

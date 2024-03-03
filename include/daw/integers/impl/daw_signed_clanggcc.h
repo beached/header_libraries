@@ -15,7 +15,7 @@
 #include "daw/daw_consteval.h"
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_likely.h"
-#include "daw/daw_traits.h"
+#include "daw/traits/daw_traits_is_one_of.h"
 #include "daw_signed_error_handling.h"
 
 #include <algorithm>

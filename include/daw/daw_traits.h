@@ -19,6 +19,7 @@
 #include "traits/daw_traits_conditional.h"
 #include "traits/daw_traits_first_type.h"
 #include "traits/daw_traits_is_const.h"
+#include "traits/daw_traits_is_one_of.h"
 #include "traits/daw_traits_is_rvalue_reference.h"
 
 #include <cstdlib>
@@ -136,15 +137,6 @@ namespace daw::traits {
 	///
 	template<typename R, bool... Bs>
 	using enable_if_all = std::enable_if<bool_and_v<Bs...>, R>;
-
-	//////////////////////////////////////////////////////////////////////////
-	/// Summary:	Is type T on of the other types
-	///
-	template<typename T, typename... Types>
-	inline constexpr bool is_one_of_v = ( std::is_same_v<T, Types> or ... );
-
-	template<typename T, typename... Types>
-	using is_one_of_t = std::bool_constant<is_one_of_v<T, Types...>>;
 
 	template<typename...>
 	struct can_convert_from : std::false_type {};
