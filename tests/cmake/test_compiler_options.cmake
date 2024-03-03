@@ -25,7 +25,7 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
                 -ftemplate-backtrace-limit=0
                 -Wno-c++98-compat
                 -Wno-covered-switch-default
-								-Wno-double-promotion
+                -Wno-double-promotion
                 -Wno-padded
                 -Wno-exit-time-destructors
                 -Wno-c++98-compat-pedantic
@@ -41,6 +41,7 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
                 -Wno-missing-braces
                 -Wno-date-time
                 -Wno-unneeded-member-function
+                -Wno-c++20-attribute-extensions
         )
         if( DAW_HEADERLIBS_USE_STDEXCEPT )
             # When std::exception is the parent, this warning is emitted because the destructor is defined inline
@@ -112,7 +113,7 @@ elseif( ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" )
                          -Wold-style-cast
                          -Wshadow
                          -Wzero-as-null-pointer-constant
-                         )
+    )
     #-Wno-deprecated-declarations
     if( DAW_WERROR )
         add_compile_options( -Werror -pedantic-errors -ftrapv )
