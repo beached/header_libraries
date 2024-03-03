@@ -141,20 +141,10 @@ namespace daw::traits {
 	/// Summary:	Is type T on of the other types
 	///
 	template<typename T, typename... Types>
-	struct is_one_of : std::false_type {};
-
-	template<typename T, typename Type>
-	struct is_one_of<T, Type> : std::is_same<T, Type> {};
-
-	template<typename T, typename Type, typename... Types>
-	struct is_one_of<T, Type, Types...>
-	  : daw::disjunction<std::is_same<T, Type>, is_one_of<T, Types...>> {};
+	inline constexpr bool is_one_of_v = ( std::is_same_v<T, Types> or ... );
 
 	template<typename T, typename... Types>
-	using is_one_of_t = typename is_one_of<T, Types...>::type;
-
-	template<typename T, typename... Types>
-	inline constexpr bool is_one_of_v = is_one_of<T, Types...>::value;
+	using is_one_of_t = std::bool_constant<is_one_of_v<T, Types...>>;
 
 	template<typename...>
 	struct can_convert_from : std::false_type {};
@@ -314,7 +304,7 @@ namespace daw::traits {
 			[[maybe_unused]] auto has_op_ge_impl( L const &lhs, R const &rhs, int )
 			  -> std::is_convertible<decltype( lhs >= rhs ), bool>;
 		} // namespace operators
-	}   // namespace traits_details
+	} // namespace traits_details
 
 	namespace operators {
 		template<typename L, typename R = L>
