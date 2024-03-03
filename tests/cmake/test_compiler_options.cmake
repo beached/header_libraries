@@ -41,7 +41,6 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
                 -Wno-missing-braces
                 -Wno-date-time
                 -Wno-unneeded-member-function
-                -Wno-c++20-attribute-extensions
         )
         if( DAW_HEADERLIBS_USE_STDEXCEPT )
             # When std::exception is the parent, this warning is emitted because the destructor is defined inline
@@ -50,6 +49,26 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
         if(( ${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang" AND CMAKE_CXX_COMPILER_VERSION LESS "13.1.6" ) OR CMAKE_CXX_COMPILER_VERSION LESS 13.0.0 )
             # This was removed in clang-13
             add_compile_options( -Wno-return-std-move-in-c++11 )
+        endif()
+        if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 10.0.0 )
+            add_compile_options(
+                    -Wno-c++20-extensions
+            )
+        endif()
+        if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang" AND CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL "12.0.0" )
+            add_compile_options(
+                    -Wno-c++20-extensions
+            )
+        endif()
+        if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 14.0.0 )
+            add_compile_options(
+                    -Wno-c++20-attribute-extensions
+            )
+        endif()
+        if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang" AND CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL "14.0.0" )
+            add_compile_options(
+                    -Wno-c++20-attribute-extensions
+            )
         endif()
         if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 16.0.0 )
             add_compile_options( -Wno-unsafe-buffer-usage )
