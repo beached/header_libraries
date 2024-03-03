@@ -9,13 +9,87 @@
 #pragma once
 
 #include "daw/daw_cpp_feature_check.h"
+#include "daw/daw_int_cmp.h"
+#include "daw/daw_traits.h"
 #include "daw_signed_clanggcc.h"
 #include "daw_signed_msvc.h"
 
+#include <cassert>
 #include <cstdint>
 #include <type_traits>
 
 namespace daw::integers::sint_impl {
+	DAW_ATTRIB_INLINE constexpr std::uint8_t reverse_bits( std::uint8_t value ) {
+#if __has_builtin( __builtin_bitreverse8 )
+		return __builtin_bitreverse8( value );
+#else
+		auto x = static_cast<unsigned>( value );
+		x = ( ( x & 0x1 ) << 7 ) | ( ( x & 0x2 ) << 5 ) | ( ( x & 0x4 ) << 3 ) |
+		    ( ( x & 0x8 ) << 1 ) | ( ( x & 0x10 ) >> 1 ) | ( ( x & 0x20 ) >> 3 ) |
+		    ( ( x & 0x40 ) >> 5 ) | ( ( x & 0x80 ) >> 7 );
+		return static_cast<std::uint8_t>( x );
+#endif
+	}
+
+	DAW_ATTRIB_INLINE constexpr std::uint16_t
+	reverse_bits( std::uint16_t value ) {
+#if __has_builtin( __builtin_bitreverse16 )
+		return __builtin_bitreverse16( value );
+#else
+		auto a = static_cast<unsigned>( value );
+		a = ( ( a & 0xFF00 ) >> 8 ) | ( ( a & 0x00FF ) << 8 );
+		a = ( ( a & 0xF0F0 ) >> 4 ) | ( ( a & 0x0F0F ) << 4 );
+		a = ( ( a & 0xCCCC ) >> 2 ) | ( ( a & 0x3333 ) << 2 );
+		a = ( ( a & 0xAAAA ) >> 1 ) | ( ( a & 0x5555 ) << 1 );
+		return static_cast<std::uint16_t>( a );
+#endif
+	}
+
+	DAW_ATTRIB_INLINE constexpr std::uint32_t
+	reverse_bits( std::uint32_t value ) {
+#if __has_builtin( __builtin_bitreverse32 )
+		return __builtin_bitreverse32( value );
+#else
+		value = ( ( value & 0x55555555 ) << 1 ) | ( ( value >> 1 ) & 0x55555555 );
+		value = ( ( value & 0x33333333 ) << 2 ) | ( ( value >> 2 ) & 0x33333333 );
+		value = ( ( value & 0x0F0F0F0F ) << 4 ) | ( ( value >> 4 ) & 0x0F0F0F0F );
+		value = ( value << 24 ) | ( ( value & 0xFF00 ) << 8 ) |
+		        ( ( value >> 8 ) & 0xFF00 ) | ( value >> 24 );
+		return value;
+#endif
+	}
+
+	DAW_ATTRIB_INLINE constexpr std::uint64_t
+	reverse_bits( std::uint64_t value ) {
+#if __has_builtin( __builtin_bitreverse64 )
+		return __builtin_bitreverse64( value );
+#else
+		value = ( ( value >> 1 ) & 0x5555555555555555 ) |
+		        ( ( value & 0x5555555555555555 ) << 1 );
+		value = ( ( value >> 2 ) & 0x3333333333333333 ) |
+		        ( ( value & 0x3333333333333333 ) << 2 );
+		value = ( ( value >> 4 ) & 0x0f0f0f0f0f0f0f0f ) |
+		        ( ( value & 0x0f0f0f0f0f0f0f0f ) << 4 );
+		value = ( ( value >> 8 ) & 0x00ff00ff00ff00ff ) |
+		        ( ( value & 0x00ff00ff00ff00ff ) << 8 );
+		value = ( ( value >> 16 ) & 0x0000ffff0000ffff ) |
+		        ( ( value & 0x0000ffff0000ffff ) << 16 );
+		value = ( value >> 32 ) | ( value << 32 );
+		return value;
+#endif
+	}
+
+	template<typename..., typename T,
+	         std::enable_if_t<
+	           not daw::traits::is_one_of_v<T, std::uint8_t, std::uint16_t,
+	                                        std::uint32_t, std::uint64_t>,
+	           std::nullptr_t> = nullptr>
+	DAW_ATTRIB_NOINLINE constexpr T reverse_bits( T ) {
+		static_assert( daw::traits::is_one_of_v<T, std::uint8_t, std::uint16_t,
+		                                        std::uint32_t, std::uint64_t>,
+		               "Unsupported integer type for bit reversal" );
+	}
+
 	template<typename Unsigned, std::size_t... Is>
 	DAW_ATTRIB_INLINE constexpr Unsigned
 	from_bytes_le( unsigned char const *ptr, std::index_sequence<Is...> ) {
@@ -54,8 +128,9 @@ namespace daw::integers::sint_impl {
 		         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
 		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
-			T result;
+			auto result = T{ };
 			if( DAW_UNLIKELY( wrapping_add( lhs, rhs, result ) ) ) {
+				DAW_UNLIKELY_BRANCH
 				on_signed_integer_overflow( );
 			}
 			return result;
@@ -67,7 +142,7 @@ namespace daw::integers::sint_impl {
 		         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
 		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
-			T result;
+			auto result = T{ };
 			(void)wrapping_add( lhs, rhs, result );
 			return result;
 		}
@@ -78,8 +153,9 @@ namespace daw::integers::sint_impl {
 		         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
 		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
-			T result;
+			auto result = T{ };
 			if( DAW_UNLIKELY( wrapping_sub( lhs, rhs, result ) ) ) {
+				DAW_UNLIKELY_BRANCH
 				on_signed_integer_overflow( );
 			}
 			return result;
@@ -91,7 +167,7 @@ namespace daw::integers::sint_impl {
 		         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
 		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
-			T result;
+			auto result = T{ };
 			(void)wrapping_sub( lhs, rhs, result );
 			return result;
 		}
@@ -102,8 +178,9 @@ namespace daw::integers::sint_impl {
 		         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
 		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
-			T result;
+			auto result = T{ };
 			if( DAW_UNLIKELY( wrapping_mul( lhs, rhs, result ) ) ) {
+				DAW_UNLIKELY_BRANCH
 				on_signed_integer_overflow( );
 			}
 			return result;
@@ -115,14 +192,15 @@ namespace daw::integers::sint_impl {
 		         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
 		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
-			T result;
-			if( DAW_LIKELY( wrapping_add( lhs, rhs, result ) ) ) {
+			if( auto result = T{ };
+			    DAW_LIKELY( not wrapping_add( lhs, rhs, result ) ) ) {
+				DAW_LIKELY_BRANCH
 				return result;
 			}
-			if( lhs > 0 ) {
-				return std::numeric_limits<T>::max( );
+			if( rhs < 0 ) {
+				return std::numeric_limits<T>::min( );
 			}
-			return std::numeric_limits<T>::min( );
+			return std::numeric_limits<T>::max( );
 		}
 	} sat_add{ };
 
@@ -131,10 +209,12 @@ namespace daw::integers::sint_impl {
 		         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
 		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
-			if( T result; DAW_LIKELY( not wrapping_sub( lhs, rhs, result ) ) ) {
+			if( auto result = T{ };
+			    DAW_LIKELY( not wrapping_sub( lhs, rhs, result ) ) ) {
+				DAW_LIKELY_BRANCH
 				return result;
 			}
-			if( lhs > 0 ) {
+			if( rhs < 0 ) {
 				return std::numeric_limits<T>::max( );
 			}
 			return std::numeric_limits<T>::min( );
@@ -146,10 +226,15 @@ namespace daw::integers::sint_impl {
 		         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
 		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
-			if( T result; DAW_LIKELY( not wrapping_mul( lhs, rhs, result ) ) ) {
+			if( auto result = T{ };
+			    DAW_LIKELY( not wrapping_mul( lhs, rhs, result ) ) ) {
+				DAW_LIKELY_BRANCH
 				return result;
 			}
-			return std::numeric_limits<T>::max( );
+			if( daw::signbit( lhs ) == daw::signbit( rhs ) ) {
+				return std::numeric_limits<T>::max( );
+			}
+			return std::numeric_limits<T>::min( );
 		}
 	} sat_mul{ };
 
@@ -158,7 +243,7 @@ namespace daw::integers::sint_impl {
 		         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
 		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
-			T result;
+			auto result = T{ };
 			(void)wrapping_mul( lhs, rhs, result );
 			return result;
 		}
@@ -225,6 +310,21 @@ namespace daw::integers::sint_impl {
 #endif
 		}
 	} debug_checked_div{ };
+
+	inline constexpr struct {
+		template<typename T,
+		         std::enable_if_t<is_valid_int_type<T>, std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr T
+		operator( )( T lhs, T rhs ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			assert( rhs != 0 );
+			if( DAW_UNLIKELY( lhs == std::numeric_limits<T>::min( ) and
+			                  rhs == T{ -1 } ) ) {
+				DAW_UNLIKELY_BRANCH
+				return std::numeric_limits<T>::max( );
+			}
+			return sint_impl::debug_checked_div( lhs, rhs );
+		}
+	} sat_div{ };
 
 	inline constexpr struct {
 		template<typename T,

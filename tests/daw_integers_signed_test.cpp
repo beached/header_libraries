@@ -63,6 +63,15 @@ DAW_ATTRIB_NOINLINE daw::i64 test_div( daw::i64 first, daw::i64 inc,
 	return first;
 }
 
+template<auto L, auto R>
+struct check_eql_t;
+
+template<auto V>
+struct check_eql_t<V, V> : std::true_type {};
+
+template<auto L, auto R>
+inline constexpr auto check_equal = check_eql_t<L, R>::value;
+
 int main( ) {
 	bool has_overflow = false;
 	bool has_div_by_zero = false;
@@ -261,17 +270,17 @@ int main( ) {
 	}
 	{
 		has_overflow = false;
-		auto i0 = daw::i8::checked_conversion( 12 );
+		auto i0 = daw::i8::conversion_checked( 12 );
 		daw_ensure( not has_overflow );
-		i0 = daw::i8::checked_conversion( 255 );
+		i0 = daw::i8::conversion_checked( 255 );
 		daw_ensure( has_overflow );
 		has_overflow = false;
-		auto i1 = daw::i32::checked_conversion( 5000 );
-		daw::i8 i2 = daw::i8::checked_conversion( i1 );
+		auto i1 = daw::i32::conversion_checked( 5000 );
+		daw::i8 i2 = daw::i8::conversion_checked( i1 );
 		daw_ensure( has_overflow );
 		has_overflow = false;
 		i1 = daw::i8( 55 );
-		i2 = daw::i8::checked_conversion( i1 );
+		i2 = daw::i8::conversion_checked( i1 );
 		daw_ensure( not has_overflow );
 	}
 	{
@@ -300,4 +309,80 @@ int main( ) {
 		daw_ensure( not( i0 and zero ) );
 		daw_ensure( i0 or zero );
 	}
+	{
+		constexpr auto i0 = -1_i8;
+		using u8_t = unsigned char;
+		constexpr auto u1 = u8_t{ 255 };
+		static_assert( i0 < u1 );
+		static_assert( i0 <= u1 );
+		static_assert( not( u1 < i0 ) );
+		static_assert( not( u1 <= i0 ) );
+		static_assert( u1 > i0 );
+		static_assert( u1 >= i0 );
+		static_assert( not( i0 > u1 ) );
+		static_assert( not( i0 >= u1 ) );
+		static_assert( i0 != u1 );
+		static_assert( u1 != i0 );
+		static_assert( not( i0 == u1 ) );
+		static_assert( not( u1 == i0 ) );
+		constexpr unsigned u2 = 55555U;
+		static_assert( i0 < u2 );
+		static_assert( i0 <= u2 );
+		static_assert( not( u2 < i0 ) );
+		static_assert( not( u2 <= i0 ) );
+		static_assert( u2 > i0 );
+		static_assert( u2 >= i0 );
+		static_assert( not( i0 > u2 ) );
+		static_assert( not( i0 >= u2 ) );
+		static_assert( i0 != u2 );
+		static_assert( u2 != i0 );
+		static_assert( not( i0 == u2 ) );
+		static_assert( not( u2 == i0 ) );
+	}
+	static_assert( daw::i32::max( ).add_saturated( 300_i32 ) ==
+	               daw::i32::max( ) );
+	static_assert( daw::i32( 300 ).add_saturated( daw::i32::max( ) ) ==
+	               daw::i32::max( ) );
+	static_assert( daw::i32::min( ).add_saturated( -300_i32 ) ==
+	               daw::i32::min( ) );
+	static_assert( daw::i32( -300 ).add_saturated( daw::i32::min( ) ) ==
+	               daw::i32::min( ) );
+
+	static_assert( daw::i32::min( ).sub_saturated( 300_i32 ) ==
+	               daw::i32::min( ) );
+	static_assert( daw::i32( 300 ).sub_saturated( daw::i32::min( ) ) ==
+	               daw::i32::max( ) );
+	static_assert( daw::i32::max( ).sub_saturated( -300_i32 ) ==
+	               daw::i32::max( ) );
+	static_assert( daw::i32( -300 ).sub_saturated( daw::i32::max( ) ) ==
+	               daw::i32::min( ) );
+
+	static_assert( daw::i32::min( ).mul_saturated( -1_i32 ) == daw::i32::max( ) );
+	static_assert( daw::i32::max( ).mul_saturated( 2_i32 ) == daw::i32::max( ) );
+	static_assert( daw::i32::max( ).mul_saturated( -2_i32 ) == daw::i32::min( ) );
+
+	static_assert( daw::i32::min( ).div_saturated( -1_i32 ) == daw::i32::max( ) );
+
+	static_assert( daw::i8::conversion_unchecked( 0xAAU ).reverse_bits( ) ==
+	               daw::i8::conversion_unchecked( 0x55U ) );
+	static_assert( daw::i8::conversion_unchecked( 0x80U ).reverse_bits( ) ==
+	               daw::i8::conversion_unchecked( 1U ) );
+
+	static_assert( daw::i16::conversion_unchecked( 0xAAAAU ).reverse_bits( ) ==
+	               daw::i16::conversion_unchecked( 0x5555U ) );
+	static_assert( daw::i16::conversion_unchecked( 0x8000U ).reverse_bits( ) ==
+	               daw::i16::conversion_unchecked( 1U ) );
+
+	static_assert(
+	  daw::i32::conversion_unchecked( 0xAAAA'AAAAUL ).reverse_bits( ) ==
+	  daw::i32::conversion_unchecked( 0x5555'5555UL ) );
+	static_assert(
+	  daw::i32::conversion_unchecked( 0x8000'0000UL ).reverse_bits( ) ==
+	  daw::i32::conversion_unchecked( 1UL ) );
+
+	static_assert( daw::i64::conversion_unchecked( 0xAAAA'AAAA'AAAA'AAAAULL )
+	                 .reverse_bits( ) ==
+	               daw::i64::conversion_unchecked( 0x5555'5555'5555'5555ULL ) );
+	static_assert( daw::i64::conversion_unchecked( 0x8000'0000'0000'0000ULL )
+	                 .reverse_bits( ) == daw::i64::conversion_unchecked( 1ULL ) );
 }
