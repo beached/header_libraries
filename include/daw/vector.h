@@ -11,6 +11,7 @@
 #include "daw_concepts.h"
 #include "daw_likely.h"
 #include "daw_move.h"
+#include "daw_scope_guard.h"
 #include "split_buffer.h"
 #include "wrap_iter.h"
 
@@ -585,6 +586,31 @@ namespace daw {
 
 		constexpr void pop_back( ) {
 			destruct_at_end( m_end - 1 );
+		}
+
+		constexpr value_type pop_back_value( ) {
+			assert( not empty( ) );
+			if constexpr( std::is_nothrow_move_constructible_v<value_type> or
+			              std::is_nothrow_copy_constructible_v<value_type> ) {
+				struct on_exit_t {
+					vector &self;
+					~on_exit_t( ) {
+						self.pop_back( ); // cannot throw
+					}
+				} on_exit{ *this };
+				if constexpr( std::is_nothrow_move_constructible_v<value_type> ) {
+					return std::move( back( ) );
+				} else {
+					return back( );
+				}
+			} else {
+				// We cannot guarantee move or copy are nothrow.  Ensure pop_back is
+				// only called if no exception and we copy
+				auto const se = daw::on_exit_success( [&] {
+					pop_back( );
+				} );
+				return back( );
+			}
 		}
 
 		constexpr iterator insert( const_iterator position, const_reference x ) {
