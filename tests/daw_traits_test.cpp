@@ -728,15 +728,11 @@ namespace is_first_type_test_003 {
 }
 
 namespace is_tuple_test_001 {
-	static_assert( not daw::traits::is_tuple_v<float, int> );
+	static_assert( not daw::traits::is_tuple_v<float> );
 }
 
 namespace is_tuple_test_002 {
 	static_assert( daw::traits::is_tuple_v<std::tuple<float, int>> );
-}
-
-namespace is_tuple_test_003 {
-	static_assert( not daw::traits::is_tuple_v<> );
 }
 
 namespace is_tuple_test_004 {

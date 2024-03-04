@@ -15,6 +15,7 @@
 #include "daw/daw_cxmath.h"
 #include "daw/daw_int_cmp.h"
 #include "daw/daw_likely.h"
+#include "daw/traits/daw_traits_is_one_of.h"
 #include "impl/daw_signed_error_handling.h"
 #include "impl/daw_signed_impl.h"
 
@@ -579,12 +580,26 @@ namespace daw::integers {
 			return signed_integer( daw::cxmath::to_signed(
 			  daw::integers::reverse_bits( daw::cxmath::to_unsigned( value( ) ) ) ) );
 		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
+		count_leading_zeros( ) const noexcept {
+			return daw::cxmath::count_leading_zeroes(
+			  daw::cxmath::to_unsigned( value( ) ) );
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
+		count_trailing_zeros( ) const noexcept {
+			return daw::cxmath::count_trailing_zeros(
+			  daw::cxmath::to_unsigned( value( ) ) );
+		}
 	};
 
 	template<typename I,
-	         std::enable_if_t<daw::is_signed_v<I> and daw::is_integral_v<I>,
-	                          std::nullptr_t> = nullptr>
-	signed_integer( I ) -> signed_integer<I>;
+	         typename U = std::enable_if_t<
+	           daw::traits::is_one_of_v<daw::make_signed_t<I>, std::int8_t,
+	                                    std::int16_t, std::int32_t, std::int64_t>,
+	           daw::make_signed_t<I>>>
+	signed_integer( I ) -> signed_integer<U>;
 
 	// Addition
 	template<typename Lhs, typename Rhs>

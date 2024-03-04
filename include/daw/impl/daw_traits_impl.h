@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/ciso646.h"
+#include "daw/daw_empty.h"
 #include "daw/daw_is_detected.h"
 #include "daw/daw_move.h"
 #include "daw/traits/daw_traits_identity.h"
@@ -662,6 +663,4 @@ namespace daw {
 	template<typename T, bool B = true>
 	using enable_move_assignment = traits_details::delete_move_assignment_if<
 	  not std::is_move_assignable_v<T> and B>;
-
-	struct nothing {};
 } // namespace daw

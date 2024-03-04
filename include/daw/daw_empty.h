@@ -11,4 +11,5 @@
 namespace daw {
 	struct empty_t {};
 	using Empty = empty_t;
+	using nothing = empty_t;
 } // namespace daw

@@ -89,8 +89,12 @@ namespace daw {
 	         std::enable_if_t<daw::is_integral_v<R> and daw::is_integral_v<T>,
 	                          std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE constexpr bool in_range( T t ) noexcept {
-		return cmp_greater_equal( t, daw::numeric_limits<R>::min( ) ) and
-		       cmp_less_equal( t, daw::numeric_limits<R>::max( ) );
+		if constexpr( std::is_same_v<R, T> ) {
+			return true;
+		} else {
+			return cmp_greater_equal( t, daw::numeric_limits<R>::min( ) ) and
+			       cmp_less_equal( t, daw::numeric_limits<R>::max( ) );
+		}
 	}
 
 	template<typename T,
@@ -98,7 +102,8 @@ namespace daw {
 	DAW_ATTRIB_INLINE constexpr bool signbit( T t ) {
 		if constexpr( daw::is_unsigned_v<T> ) {
 			return false;
+		} else {
+			return t < 0;
 		}
-		return t < 0;
 	}
 } // namespace daw

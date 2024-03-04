@@ -233,14 +233,14 @@ namespace daw::traits {
 	inline constexpr bool is_numeric_v
 	  [[deprecated( "use std::is_arithmetic_v" )]] = is_numeric<T>::value;
 
-	namespace traits_details::detectors {
-		template<typename OutStream, typename T>
-		using streamable =
-		  decltype( std::declval<OutStream>( ) << std::declval<T>( ) );
-	}
+	template<typename OutStream, typename T, typename = void>
+	inline constexpr bool is_streamable_v = false;
+
 	template<typename OutStream, typename T>
-	inline constexpr bool is_streamable_v =
-	  daw::is_detected_v<traits_details::detectors::streamable, OutStream &, T>;
+	inline constexpr bool
+	  is_streamable_v<OutStream, T,
+	                  std::void_t<decltype( std::declval<OutStream &>( )
+	                                        << std::declval<T>( ) )>> = true;
 
 	template<template<class> class Base, typename Derived>
 	inline constexpr bool is_mixed_from_v =
@@ -417,13 +417,16 @@ namespace daw::traits {
 	  decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
 
 	namespace traits_details {
-		template<typename... Ts>
-		[[maybe_unused]] constexpr void
-		tuple_test( std::tuple<Ts...> const & ) noexcept {}
+		template<typename>
+		inline constexpr bool is_tuple_impl_v = false;
 
 		template<typename... Ts>
-		using detect_is_tuple = decltype( tuple_test( std::declval<Ts>( )... ) );
+		inline constexpr bool is_tuple_impl_v<std::tuple<Ts...>> = true;
+
 	} // namespace traits_details
+	template<typename T>
+	inline constexpr bool is_tuple_v =
+	  traits_details::is_tuple_impl_v<daw::remove_cvref_t<T>>;
 
 	template<typename...>
 	struct is_first_type;
@@ -438,10 +441,6 @@ namespace daw::traits {
 	// empty it is false
 	template<typename T, typename... Args>
 	inline constexpr bool is_first_type_v = is_first_type<T, Args...>::value;
-
-	template<typename... Ts>
-	inline constexpr bool is_tuple_v =
-	  is_detected_v<traits_details::detect_is_tuple, Ts...>;
 
 	template<typename T, typename... Args>
 	inline constexpr bool is_init_list_constructible_v = all_true_v<
@@ -623,14 +622,18 @@ namespace daw::traits {
 	}
 
 	namespace traits_details {
+		template<typename T, typename = void>
+		inline constexpr bool is_list_constructible_impl_v = false;
+
 		template<typename T, typename... Args>
-		using is_list_constructible_test =
-		  decltype( T{ std::declval<Args>( )... } );
-	}
+		inline constexpr bool is_list_constructible_impl_v<
+		  daw::pack_list<T, Args...>,
+		  std::void_t<decltype( T{ std::declval<Args>( )... } )>> = true;
+	} // namespace traits_details
 
 	template<typename T, typename... Args>
 	inline constexpr bool is_list_constructible_v =
-	  daw::is_detected_v<traits_details::is_list_constructible_test, T, Args...>;
+	  traits_details::is_list_constructible_impl_v<daw::pack_list<T, Args...>>;
 
 	template<typename T, typename... Args>
 	using is_list_constructible =
