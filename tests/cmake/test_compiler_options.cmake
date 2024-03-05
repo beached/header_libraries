@@ -71,7 +71,10 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
             )
         endif()
         if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 16.0.0 )
-            add_compile_options( -Wno-unsafe-buffer-usage )
+            add_compile_options(
+                    -Wno-unsafe-buffer-usage
+                    -Wno-c++23-extensions
+            )
         endif()
         if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 14.0.0 )
             add_compile_options( -Wno-bitwise-instead-of-logical -Wno-c++20-compat )

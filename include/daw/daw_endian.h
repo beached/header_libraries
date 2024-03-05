@@ -9,12 +9,13 @@
 #pragma once
 
 #include "ciso646.h"
+#include "daw_arith_traits.h"
+#include "daw_constant.h"
 #include "daw_cpp_feature_check.h"
 
 #include <cstddef>
 #include <cstdint>
 #include <daw/stdinc/enable_if.h>
-#include <daw/stdinc/integral_constant.h>
 
 namespace daw {
 	enum class endian {
@@ -31,16 +32,14 @@ namespace daw {
 
 	namespace endian_details {
 		template<typename T>
-		constexpr T swap_bytes(
-		  T value,
-		  std::integral_constant<std::size_t, sizeof( std::uint8_t )> ) noexcept {
+		constexpr T swap_bytes( T value,
+		                        daw::constant<sizeof( std::uint8_t )> ) noexcept {
 			return value;
 		}
 
 		template<typename T>
-		constexpr T swap_bytes(
-		  T value,
-		  std::integral_constant<std::size_t, sizeof( std::uint16_t )> ) noexcept {
+		constexpr T swap_bytes( T value,
+		                        daw::constant<sizeof( std::uint16_t )> ) noexcept {
 			return static_cast<T>(
 			  static_cast<std::uint16_t>( ( static_cast<std::uint16_t>( value ) >>
 			                                static_cast<std::uint16_t>( 8U ) ) &
@@ -51,9 +50,8 @@ namespace daw {
 		}
 
 		template<typename T>
-		constexpr T swap_bytes(
-		  T value,
-		  std::integral_constant<std::size_t, sizeof( std::uint32_t )> ) noexcept {
+		constexpr T swap_bytes( T value,
+		                        daw::constant<sizeof( std::uint32_t )> ) noexcept {
 			return static_cast<T>( static_cast<std::uint32_t>(
 			                         ( static_cast<std::uint32_t>( value ) >>
 			                           static_cast<std::uint32_t>( 24U ) ) &
@@ -73,9 +71,8 @@ namespace daw {
 		}
 
 		template<typename T>
-		constexpr T swap_bytes(
-		  T value,
-		  std::integral_constant<std::size_t, sizeof( std::uint64_t )> ) noexcept {
+		constexpr T swap_bytes( T value,
+		                        daw::constant<sizeof( std::uint64_t )> ) noexcept {
 			return static_cast<T>(
 			  static_cast<std::uint64_t>(
 			    ( static_cast<std::uint64_t>( value ) >>
@@ -113,29 +110,27 @@ namespace daw {
 	} // namespace endian_details
 
 	template<typename T,
-	         std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
+	         std::enable_if_t<daw::is_integral_v<T>, std::nullptr_t> = nullptr>
 	constexpr T to_little_endian( T value ) noexcept {
 		if constexpr( endian::native == endian::little ) {
 			return value;
 		} else {
-			return endian_details::swap_bytes(
-			  value, std::integral_constant<std::size_t, sizeof( T )>{ } );
+			return endian_details::swap_bytes( value, daw::constant<sizeof( T )>{ } );
 		}
 	}
 
 	template<typename T,
-	         std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
+	         std::enable_if_t<daw::is_integral_v<T>, std::nullptr_t> = nullptr>
 	constexpr T to_big_endian( T value ) noexcept {
 		if constexpr( endian::native == endian::big ) {
 			return value;
 		} else {
-			return endian_details::swap_bytes(
-			  value, std::integral_constant<std::size_t, sizeof( T )>{ } );
+			return endian_details::swap_bytes( value, daw::constant<sizeof( T )>{ } );
 		}
 	}
 
 	template<typename T,
-	         std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
+	         std::enable_if_t<daw::is_integral_v<T>, std::nullptr_t> = nullptr>
 	constexpr T network_to_host_endian( T value ) noexcept {
 		if constexpr( endian::native == endian::big ) {
 			return value;
@@ -145,7 +140,7 @@ namespace daw {
 	}
 
 	template<endian SourceEndian, typename T,
-	         std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
+	         std::enable_if_t<daw::is_integral_v<T>, std::nullptr_t> = nullptr>
 	constexpr T to_native_endian( T value ) noexcept {
 		if constexpr( SourceEndian == endian::native ) {
 			return value;

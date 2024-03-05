@@ -22,9 +22,9 @@ namespace daw {
 	struct bit_queue_source_big_endian {};
 
 	using bit_queue_source_native_endian =
-	  typename conditional_t<daw::endian::native == daw::endian::little,
-	                         bit_queue_source_little_endian,
-	                         bit_queue_source_big_endian>;
+	  daw::conditional_t<daw::endian::native == daw::endian::little,
+	                     bit_queue_source_little_endian,
+	                     bit_queue_source_big_endian>;
 
 	template<typename queue_type, typename value_type = uint8_t,
 	         typename BitQueueLSB = bit_queue_source_native_endian>
@@ -36,7 +36,7 @@ namespace daw {
 		queue_type m_queue = 0;
 
 	public:
-		constexpr basic_bit_queue( ) = default;
+		explicit basic_bit_queue( ) = default;
 
 		constexpr explicit basic_bit_queue( queue_type v ) noexcept
 		  : m_size( sizeof( m_queue ) * 8 )
@@ -64,46 +64,52 @@ namespace daw {
 
 	private:
 		template<typename T>
-		auto source_to_native_endian( T value,
-		                              bit_queue_source_little_endian ) noexcept {
+		constexpr auto
+		source_to_native_endian( T value,
+		                         bit_queue_source_little_endian ) noexcept {
 			return daw::to_native_endian<daw::endian::little>( value );
 		}
 
 		template<typename T>
-		auto source_to_native_endian( T value,
-		                              bit_queue_source_big_endian ) noexcept {
+		constexpr auto
+		source_to_native_endian( T value, bit_queue_source_big_endian ) noexcept {
 			return daw::to_native_endian<daw::endian::big>( value );
 		}
 
 	public:
-		void push_back( value_type value,
-		                size_t const bits = sizeof( value_type ) * 8 ) {
+		constexpr void push_back( value_type value,
+		                          size_t const bits = sizeof( value_type ) * 8 ) {
 			daw::exception::dbg_throw_on_false(
 			  ( capacity( ) - m_size ) >= bits,
 			  "Not enough bits to hold value pushed" );
 
-			value &= get_left_mask<value_type>( sizeof( value_type ) * 8 - bits );
+			value &= mask_msb<value_type>(
+			  sizeof( value_type ) * 8 -
+			  bits ); // get_left_mask<value_type>( sizeof( value_type ) * 8 - bits );
 			m_queue <<= bits;
 			m_queue |= source_to_native_endian( value, BitQueueLSB{ } );
 			m_size += bits;
 		}
 
-		[[nodiscard]] value_type pop_front( size_t const bits ) noexcept {
-			queue_type const mask = static_cast<queue_type>( ~( ( 2 << bits ) - 1 ) );
-			auto result = static_cast<value_type>(
-			  static_cast<value_type>( m_queue & mask ) >> ( capacity( ) - bits ) );
-			m_queue <<= bits;
+		[[nodiscard]] constexpr value_type pop_front( size_t const bits ) noexcept {
+			daw::exception::dbg_throw_on_false( m_size >= bits,
+			                                    "Not enough bits to pop request" );
+			auto const mask = mask_msb<queue_type>( capacity( ) - bits );
+			auto result =
+			  static_cast<value_type>( static_cast<value_type>( m_queue & mask ) );
+			m_queue >>= bits;
 			m_size -= bits;
 			return result;
 		}
 
-		[[nodiscard]] value_type pop_back( size_t const bits ) {
+		[[nodiscard]] constexpr value_type pop_back( size_t const bits ) {
 			daw::exception::dbg_throw_on_false( m_size >= bits,
 			                                    "Not enough bits to pop request" );
-
-			auto const mask = get_left_mask<queue_type>( capacity( ) - bits );
+			auto mask = queue_type( ( 1 << bits ) - 1 );
+			mask <<= size( ) - bits;
 			auto result = static_cast<value_type>( m_queue & mask );
-			m_queue >>= bits;
+			result >>= size( ) - bits;
+			m_queue = m_queue & ~mask;
 			m_size -= bits;
 			return result;
 		}
@@ -149,11 +155,12 @@ namespace daw {
 			return 0 == size( );
 		}
 
-		void push_back( value_type const &value ) {
+		constexpr void push_back( value_type const &value ) {
 			m_queue.push_back( value, 4 );
 		}
 
-		void push_back( value_type const &value, size_t const &num_nibbles ) {
+		constexpr void push_back( value_type const &value,
+		                          size_t const &num_nibbles ) {
 			m_queue.push_back( value, num_nibbles * 4 );
 		}
 
@@ -175,7 +182,7 @@ namespace daw {
 			m_queue.clear( );
 		}
 
-		value_type pop_all( ) noexcept {
+		constexpr value_type pop_all( ) noexcept {
 			return m_queue.pop_all( );
 		}
 

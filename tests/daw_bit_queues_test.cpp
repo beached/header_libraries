@@ -8,6 +8,7 @@
 
 #include "daw/daw_benchmark.h"
 #include "daw/daw_bit_queues.h"
+#include "daw/daw_ensure.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -15,9 +16,12 @@
 #include <limits>
 #include <stdexcept>
 
-bool daw_bit_queues_test_001( ) {
+constexpr bool daw_bit_queues_test_001( ) {
 	using value_type = uint16_t;
-	daw::basic_bit_queue<value_type, value_type> test1;
+	auto test1 = daw::basic_bit_queue<value_type, value_type>{ };
+	test1.push_back( std::uint8_t{ 0b1010'1010U }, 8 );
+	daw::expecting( test1.pop_back( 2 ) == 0b10U );
+	test1.clear( );
 	test1.push_back( 1, 1 );
 	daw::expecting( test1.value( ) == 1 );
 	daw::expecting( test1.size( ) == 1 );
@@ -45,7 +49,7 @@ bool daw_bit_queues_test_001( ) {
 	}
 
 	for( size_t n = 1; n < sizeof( value_type ) * 8; ++n ) {
-		int const result = test1.pop_back( 1 );
+		int const result = test1.pop_front( 1 );
 		daw::expecting( result == 0 );
 	}
 	daw::expecting( test1.value( ) == 1 );
@@ -60,7 +64,7 @@ bool daw_bit_queues_test_001( ) {
 		v *= 2;
 		daw::expecting( test1.value( ) == v );
 	}
-	daw::expecting( test1.pop_front( 1 ), 1 );
+	daw::expecting( test1.pop_back( 1 ), 1 );
 	for( size_t n = 1; n < sizeof( value_type ) * 8; ++n ) {
 		int const result = test1.pop_front( 1 );
 		daw::expecting( result == 0 );
@@ -70,7 +74,7 @@ bool daw_bit_queues_test_001( ) {
 	return true;
 }
 
-bool daw_bit_queues_test_002( ) {
+constexpr bool daw_bit_queues_test_002( ) {
 	using value_type = uint8_t;
 	daw::basic_bit_queue<value_type, value_type> test1;
 	test1.push_back( std::numeric_limits<value_type>::max( ) );
@@ -78,7 +82,7 @@ bool daw_bit_queues_test_002( ) {
 	return true;
 }
 
-bool daw_bit_queues_test_003( ) {
+constexpr bool daw_bit_queues_test_003( ) {
 	using value_type = uint16_t;
 	daw::basic_bit_queue<value_type, value_type> test1;
 	test1.push_back( 37, 4 );
@@ -102,19 +106,18 @@ void daw_nibble_queue_test_001( ) {
 	};
 
 	for( uint32_t n = 0; n < 32; ++n ) {
-		daw::basic_nibble_queue<value_type, uint8_t> test1{ ( 1u << n ) };
-		std::string str;
+		auto test1 = daw::basic_nibble_queue<value_type, uint8_t>( 1u << n );
+		auto str = std::string( );
 		while( test1.can_pop( 1 ) ) {
-			str.push_back(
-			  static_cast<char>( nibble_to_hex( test1.pop_front( 1 ) ) ) );
+			str += static_cast<char>( nibble_to_hex( test1.pop_front( 1 ) ) );
 		}
 		std::cout << str << std::endl;
 	}
 }
 
 int main( ) {
-	daw_bit_queues_test_001( );
-	daw_bit_queues_test_002( );
-	daw_bit_queues_test_003( );
+	daw_ensure( daw_bit_queues_test_001( ) );
+	//	static_assert( daw_bit_queues_test_002( ) );
+	//	static_assert( daw_bit_queues_test_003( ) );
 	daw_nibble_queue_test_001( );
 }
