@@ -51,6 +51,7 @@ set( TEST_SOURCES
      daw_heap_array_test.cpp
      daw_heap_value_test.cpp
      daw_integers_signed_test.cpp
+		 daw_is_any_of_test.cpp
      daw_iterator_argument_iterator_test.cpp
      daw_iterator_back_inserter_test.cpp
      daw_iterator_checked_iterator_proxy_test.cpp
