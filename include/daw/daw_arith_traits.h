@@ -409,4 +409,12 @@ namespace daw {
 	        conditional_t<is_same_size_v<unsigned long long, BitSize>, long long,
 	                      unsupported_int_size<BitSize>>>>>>;
 
+	template<typename T>
+	inline constexpr auto max_value = numeric_limits<T>::max( );
+
+	template<typename T>
+	inline constexpr auto min_value = numeric_limits<T>::min( );
+
+	template<typename T>
+	inline constexpr auto lowest_value = numeric_limits<T>::lowest( );
 } // namespace daw
