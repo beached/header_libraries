@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "traits/daw_traits_remove_cvref.h"
+
 #include <cstddef>
 #include <daw/stdinc/integer_sequence.h>
 #include <tuple>
@@ -23,6 +25,8 @@ namespace daw::func {
 		template<template<std::size_t> class Arguments, std::size_t... Is>
 		struct make_arg_pack<Arguments, std::index_sequence<Is...>> {
 			using type = std::tuple<type_t<Arguments<Is>>...>;
+			using plain_type =
+			  std::tuple<daw::traits::remove_cvref_t<type_t<Arguments<Is>>>...>;
 		};
 	} // namespace func_traits_impl
 
@@ -36,7 +40,10 @@ namespace daw::func {
 	template<class R, class... Args>
 	struct function_traits<R( Args... )> {
 		using result_t = R;
+		using plain_result_t = daw::traits::remove_cvref_t<R>;
+
 		using params_t = std::tuple<Args...>;
+		using plain_params_t = std::tuple<daw::traits::remove_cvref_t<Args>...>;
 
 		static constexpr std::size_t arity = sizeof...( Args );
 
@@ -44,6 +51,7 @@ namespace daw::func {
 		struct argument {
 			static_assert( N < arity, "error: invalid parameter index." );
 			using type = std::tuple_element_t<N, std::tuple<Args...>>;
+			using plain_type = daw::traits::remove_cvref_t<type>;
 		};
 	};
 
@@ -65,19 +73,25 @@ namespace daw::func {
 	template<class F>
 	struct function_traits {
 	private:
-		using call_type = function_traits<decltype( &F::operator( ) )>;
+		using call_type =
+		  function_traits<decltype( &std::remove_reference_t<F>::operator( ) )>;
 
 	public:
 		using result_t = typename call_type::result_t;
+		using plain_result_t = daw::traits::remove_cvref_t<result_t>;
 
 		static constexpr std::size_t arity = call_type::arity - 1;
+
 		template<std::size_t N>
 		struct argument {
 			static_assert( N < arity, "error: invalid parameter index." );
 			using type = typename call_type::template argument<N + 1>::type;
+			using plain_type = daw::traits::remove_cvref_t<type>;
 		};
 
 		using params_t = typename func_traits_impl::make_arg_pack<
 		  argument, std::make_index_sequence<arity>>::type;
+		using plain_params_t = typename func_traits_impl::make_arg_pack<
+		  argument, std::make_index_sequence<arity>>::plain_type;
 	};
 } // namespace daw::func
