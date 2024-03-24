@@ -62,7 +62,7 @@ namespace daw {
 
 		// Constructors
 
-		constexpr basic_bounded_string( ) noexcept = default;
+		basic_bounded_string( ) = default;
 
 		constexpr basic_bounded_string( std::nullptr_t ) noexcept = delete;
 		constexpr basic_bounded_string( std::nullptr_t,

@@ -19,7 +19,7 @@ namespace daw {
 		FILE *ptr = nullptr;
 
 	public:
-		CFile( ) noexcept = default;
+		CFile( ) = default;
 		CFile( CFile const & ) = delete;
 		CFile &operator=( CFile const & ) = delete;
 
@@ -32,6 +32,10 @@ namespace daw {
 		constexpr CFile &operator=( CFile &&rhs ) noexcept {
 			reset( release( ) );
 			return *this;
+		}
+
+		~CFile( ) {
+			close( );
 		}
 
 		constexpr FILE *get( ) const noexcept {
@@ -56,10 +60,6 @@ namespace daw {
 		}
 
 		constexpr void reset( ) noexcept {
-			close( );
-		}
-
-		~CFile( ) {
 			close( );
 		}
 	};

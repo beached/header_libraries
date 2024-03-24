@@ -23,9 +23,9 @@
 namespace daw {
 	template<typename CharT = char>
 	class [[deprecated]] CString {
-		CharT const *m_data;
-		size_t m_size;
-		bool m_local_string;
+		CharT const *m_data = nullptr;
+		size_t m_size = 0;
+		bool m_local_string = true;
 
 		[[deprecated]] static constexpr size_t
 		string_length( CharT const *ptr ) noexcept {
@@ -65,10 +65,7 @@ namespace daw {
 		[[deprecated]] constexpr CString( CharT const *ptr )
 		  : CString{ ptr, no_copy_t{ }, 0 } {}
 
-		[[deprecated]] constexpr CString( ) noexcept
-		  : m_data{ nullptr }
-		  , m_size{ 0 }
-		  , m_local_string{ true } {}
+		[[deprecated]] CString( ) = default;
 
 		[[deprecated]] CString( CString const &value )
 		  : CString{ value.m_data, true, value.m_size } {}
@@ -87,9 +84,8 @@ namespace daw {
 			return *this;
 		}
 
-		[[deprecated]] constexpr CString( CString && ) noexcept = default;
-		[[deprecated]] constexpr CString &
-		operator=( CString && ) noexcept = default;
+		[[deprecated]] CString( CString && ) = default;
+		[[deprecated]] CString &operator=( CString && ) = default;
 
 		[[deprecated]] void swap( CString &rhs ) noexcept {
 			daw::cswap( m_data, rhs.m_data );

@@ -39,10 +39,10 @@ namespace daw {
 		}
 		struct private_constructor {};
 
-		constexpr explicit copiable_unique_ptr( private_constructor ) noexcept {}
+		explicit constexpr copiable_unique_ptr( private_constructor ) noexcept {}
 
 	public:
-		constexpr copiable_unique_ptr( ) noexcept = default;
+		copiable_unique_ptr( ) = default;
 		constexpr copiable_unique_ptr( copiable_unique_ptr &&other ) noexcept
 		  : m_value( daw::exchange( other.m_value, nullptr ) ) {}
 

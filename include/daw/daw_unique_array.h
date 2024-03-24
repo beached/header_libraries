@@ -54,7 +54,10 @@ namespace daw {
 		}
 
 	public:
-		constexpr unique_array_t( ) noexcept = default;
+		unique_array_t( ) = default;
+		unique_array_t( unique_array_t const & ) = delete;
+		unique_array_t &operator=( unique_array_t const & ) = delete;
+
 		constexpr unique_array_t( unique_array_t &&other ) noexcept
 		  : m_data( daw::exchange( other.m_data, nullptr ) )
 		  , m_size( daw::exchange( other.m_size, 0 ) ) {}
@@ -88,9 +91,6 @@ namespace daw {
 		~unique_array_t( ) noexcept( noexcept( delete[] m_data ) ) {
 			clear( );
 		}
-
-		unique_array_t( unique_array_t const & ) = delete;
-		unique_array_t &operator=( unique_array_t const & ) = delete;
 
 		constexpr bool empty( ) const noexcept {
 			return m_data == nullptr;

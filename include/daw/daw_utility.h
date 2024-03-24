@@ -118,7 +118,7 @@ namespace daw {
 		T *m_value = nullptr;
 
 	public:
-		inline constexpr equal_to_last( ) noexcept = default;
+		equal_to_last( ) = default;
 
 		inline bool operator( )( T const &value ) noexcept {
 			bool result = false;
@@ -189,6 +189,7 @@ namespace daw {
 		using arg_pack = daw::pack_list<Args...>;
 		using result_type = ReturnType;
 	};
+
 	template<typename F>
 	using function_traits_t = typename function_traits<F>::type;
 

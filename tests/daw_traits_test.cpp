@@ -10,6 +10,7 @@
 #include "daw/daw_benchmark.h"
 #include "daw/daw_string_view.h"
 #include "daw/daw_traits.h"
+#include "daw/impl/daw_traits_impl.h"
 #include "daw/traits/daw_traits_is_a_type.h"
 
 #include <array>
@@ -856,3 +857,135 @@ int main( ) {
 	(void)daw::expander{ 1, 2, 3 };
 	daw_traits_enable_if_any( );
 }
+
+// delete_default_constructor_if<false>
+static_assert( std::is_trivially_default_constructible_v<
+               daw::traits_details::delete_default_constructor_if<false>> );
+static_assert( std::is_trivially_move_constructible_v<
+               daw::traits_details::delete_default_constructor_if<false>> );
+static_assert( std::is_trivially_move_assignable_v<
+               daw::traits_details::delete_default_constructor_if<false>> );
+static_assert( std::is_trivially_copy_constructible_v<
+               daw::traits_details::delete_default_constructor_if<false>> );
+static_assert( std::is_trivially_copy_assignable_v<
+               daw::traits_details::delete_default_constructor_if<false>> );
+static_assert( std::is_trivially_destructible_v<
+               daw::traits_details::delete_default_constructor_if<false>> );
+// delete_default_constructor_if<true>
+static_assert( not std::is_default_constructible_v<
+               daw::traits_details::delete_default_constructor_if<true>> );
+static_assert( std::is_trivially_move_constructible_v<
+               daw::traits_details::delete_default_constructor_if<true>> );
+static_assert( std::is_trivially_move_assignable_v<
+               daw::traits_details::delete_default_constructor_if<true>> );
+static_assert( std::is_trivially_copy_constructible_v<
+               daw::traits_details::delete_default_constructor_if<true>> );
+static_assert( std::is_trivially_copy_assignable_v<
+               daw::traits_details::delete_default_constructor_if<true>> );
+static_assert( std::is_trivially_destructible_v<
+               daw::traits_details::delete_default_constructor_if<true>> );
+
+// delete_move_constructor_if<false>
+static_assert( std::is_trivially_default_constructible_v<
+               daw::traits_details::delete_move_constructor_if<false>> );
+static_assert( std::is_trivially_move_constructible_v<
+               daw::traits_details::delete_move_constructor_if<false>> );
+static_assert( std::is_trivially_move_assignable_v<
+               daw::traits_details::delete_move_constructor_if<false>> );
+static_assert( std::is_trivially_copy_constructible_v<
+               daw::traits_details::delete_move_constructor_if<false>> );
+static_assert( std::is_trivially_copy_assignable_v<
+               daw::traits_details::delete_move_constructor_if<false>> );
+static_assert( std::is_trivially_destructible_v<
+               daw::traits_details::delete_move_constructor_if<false>> );
+// delete_move_constructor_if<true>
+static_assert( std::is_trivially_default_constructible_v<
+               daw::traits_details::delete_move_constructor_if<true>> );
+static_assert( not std::is_move_constructible_v<
+               daw::traits_details::delete_move_constructor_if<true>> );
+static_assert( std::is_trivially_move_assignable_v<
+               daw::traits_details::delete_move_constructor_if<true>> );
+static_assert( std::is_trivially_copy_constructible_v<
+               daw::traits_details::delete_move_constructor_if<true>> );
+static_assert( std::is_trivially_copy_assignable_v<
+               daw::traits_details::delete_move_constructor_if<true>> );
+static_assert( std::is_trivially_destructible_v<
+               daw::traits_details::delete_move_constructor_if<true>> );
+// delete_move_assignment_if<false>
+static_assert( std::is_trivially_default_constructible_v<
+               daw::traits_details::delete_move_assignment_if<false>> );
+static_assert( std::is_trivially_move_constructible_v<
+               daw::traits_details::delete_move_assignment_if<false>> );
+static_assert( std::is_trivially_move_assignable_v<
+               daw::traits_details::delete_move_assignment_if<false>> );
+static_assert( std::is_trivially_copy_constructible_v<
+               daw::traits_details::delete_move_assignment_if<false>> );
+static_assert( std::is_trivially_copy_assignable_v<
+               daw::traits_details::delete_move_assignment_if<false>> );
+static_assert( std::is_trivially_destructible_v<
+               daw::traits_details::delete_move_assignment_if<false>> );
+// delete_move_assignment_if<true>
+static_assert( std::is_trivially_default_constructible_v<
+               daw::traits_details::delete_move_assignment_if<true>> );
+static_assert( std::is_trivially_move_constructible_v<
+               daw::traits_details::delete_move_assignment_if<true>> );
+static_assert( not std::is_move_assignable_v<
+               daw::traits_details::delete_move_assignment_if<true>> );
+static_assert( std::is_trivially_copy_constructible_v<
+               daw::traits_details::delete_move_assignment_if<true>> );
+static_assert( std::is_trivially_copy_assignable_v<
+               daw::traits_details::delete_move_assignment_if<true>> );
+static_assert( std::is_trivially_destructible_v<
+               daw::traits_details::delete_move_assignment_if<true>> );
+// delete_copy_constructor_if<false>
+static_assert( std::is_trivially_default_constructible_v<
+               daw::traits_details::delete_copy_constructor_if<false>> );
+static_assert( std::is_trivially_move_constructible_v<
+               daw::traits_details::delete_copy_constructor_if<false>> );
+static_assert( std::is_trivially_move_assignable_v<
+               daw::traits_details::delete_copy_constructor_if<false>> );
+static_assert( std::is_trivially_copy_constructible_v<
+               daw::traits_details::delete_copy_constructor_if<false>> );
+static_assert( std::is_trivially_copy_assignable_v<
+               daw::traits_details::delete_copy_constructor_if<false>> );
+static_assert( std::is_trivially_destructible_v<
+               daw::traits_details::delete_copy_constructor_if<false>> );
+// delete_copy_constructor_if<true>
+static_assert( std::is_trivially_default_constructible_v<
+               daw::traits_details::delete_copy_constructor_if<true>> );
+static_assert( std::is_trivially_move_constructible_v<
+               daw::traits_details::delete_copy_constructor_if<true>> );
+static_assert( std::is_trivially_move_assignable_v<
+               daw::traits_details::delete_copy_constructor_if<true>> );
+static_assert( not std::is_copy_constructible_v<
+               daw::traits_details::delete_copy_constructor_if<true>> );
+static_assert( std::is_trivially_copy_assignable_v<
+               daw::traits_details::delete_copy_constructor_if<true>> );
+static_assert( std::is_trivially_destructible_v<
+               daw::traits_details::delete_copy_constructor_if<true>> );
+// delete_copy_assignment_if<false>
+static_assert( std::is_trivially_default_constructible_v<
+               daw::traits_details::delete_copy_assignment_if<false>> );
+static_assert( std::is_trivially_move_constructible_v<
+               daw::traits_details::delete_copy_assignment_if<false>> );
+static_assert( std::is_trivially_move_assignable_v<
+               daw::traits_details::delete_copy_assignment_if<false>> );
+static_assert( std::is_trivially_copy_constructible_v<
+               daw::traits_details::delete_copy_assignment_if<false>> );
+static_assert( std::is_trivially_copy_assignable_v<
+               daw::traits_details::delete_copy_assignment_if<false>> );
+static_assert( std::is_trivially_destructible_v<
+               daw::traits_details::delete_copy_assignment_if<false>> );
+// delete_copy_assignment_if<true>
+static_assert( std::is_trivially_default_constructible_v<
+               daw::traits_details::delete_copy_assignment_if<true>> );
+static_assert( std::is_trivially_move_constructible_v<
+               daw::traits_details::delete_copy_assignment_if<true>> );
+static_assert( std::is_trivially_move_assignable_v<
+               daw::traits_details::delete_copy_assignment_if<true>> );
+static_assert( std::is_trivially_copy_constructible_v<
+               daw::traits_details::delete_copy_assignment_if<true>> );
+static_assert( not std::is_copy_assignable_v<
+               daw::traits_details::delete_copy_assignment_if<true>> );
+static_assert( std::is_trivially_destructible_v<
+               daw::traits_details::delete_copy_assignment_if<true>> );

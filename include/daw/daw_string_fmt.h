@@ -79,14 +79,12 @@ namespace daw {
 						using std::to_string;
 						return to_string( DAW_FWD( arg ) );
 					}
-					return get_arg_impl<Cnt + 1, Sz>( idx,
-					                                  DAW_FWD( args )... );
+					return get_arg_impl<Cnt + 1, Sz>( idx, DAW_FWD( args )... );
 				}
 
 				template<typename... Args>
 				std::string get_arg( uint8_t const idx, Args &&...args ) {
-					return get_arg_impl<0, sizeof...( Args )>(
-					  idx, DAW_FWD( args )... );
+					return get_arg_impl<0, sizeof...( Args )>( idx, DAW_FWD( args )... );
 				}
 			} // namespace string_fmt_details
 
@@ -115,8 +113,7 @@ namespace daw {
 						auto const idx_str = sv.pop_front_until( '}' );
 						auto const idx =
 						  daw::parser::parse_unsigned_int<uint8_t>( idx_str );
-						result +=
-						  string_fmt_details::get_arg( idx, DAW_FWD( args )... );
+						result += string_fmt_details::get_arg( idx, DAW_FWD( args )... );
 						result += sv.pop_front_until( '{' ).to_string( );
 					}
 					return result;
@@ -125,8 +122,7 @@ namespace daw {
 
 			template<typename... Args>
 			std::string fmt( std::string format_str, Args &&...args ) {
-				return fmt_t{ std::move( format_str ) }(
-				  DAW_FWD( args )... );
+				return fmt_t{ std::move( format_str ) }( DAW_FWD( args )... );
 			}
 		} // namespace v1
 		namespace v2 {
@@ -148,7 +144,7 @@ namespace daw {
 				struct parse_token {
 					std::variant<size_t, CharT, daw::basic_string_view<CharT>> m_data;
 
-					constexpr parse_token( ) noexcept = default;
+					parse_token( ) = default;
 
 					explicit constexpr parse_token(
 					  daw::basic_string_view<CharT> sv ) noexcept
@@ -326,11 +322,10 @@ namespace daw {
 			constexpr Result fmt( Args &&...args ) {
 				constexpr auto const formatter =
 				  fmt_t<char, N>( string_fmt_details::private_ctor{ }, fmt_string );
-				return formatter.template operator( )<Result>(
-				  DAW_FWD( args )... );
+				return formatter.template operator( )<Result>( DAW_FWD( args )... );
 			}
 		} // namespace v2
-	}   // namespace string_fmt
+	} // namespace string_fmt
 	using string_fmt::v1::invalid_string_fmt_index;
 	using string_fmt::v2::fmt;
 	using string_fmt::v2::fmt_t;

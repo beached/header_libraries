@@ -497,149 +497,113 @@ namespace daw {
 
 		template<bool>
 		struct delete_default_constructor_if {
-			constexpr delete_default_constructor_if( ) noexcept = default;
-			constexpr explicit delete_default_constructor_if(
+			delete_default_constructor_if( ) = default;
+
+			explicit constexpr delete_default_constructor_if(
 			  non_constructor ) noexcept {}
 		};
 
 		template<>
 		struct delete_default_constructor_if<true> {
-			delete_default_constructor_if( ) = delete;
-
-			[[maybe_unused]] ~delete_default_constructor_if( ) noexcept = default;
-
-			[[maybe_unused]] constexpr delete_default_constructor_if(
+			explicit constexpr delete_default_constructor_if(
 			  non_constructor ) noexcept {}
-
-			[[maybe_unused]] constexpr delete_default_constructor_if(
-			  delete_default_constructor_if const & ) = default;
-
-			[[maybe_unused]] constexpr delete_default_constructor_if &
-			operator=( delete_default_constructor_if const & ) noexcept = default;
-
-			[[maybe_unused]] constexpr delete_default_constructor_if(
-			  delete_default_constructor_if && ) noexcept = default;
-
-			[[maybe_unused]] constexpr delete_default_constructor_if &
-			operator=( delete_default_constructor_if && ) noexcept = default;
 		};
 
 		template<bool>
 		struct delete_copy_constructor_if {
-			constexpr delete_copy_constructor_if( ) noexcept = default;
+			delete_copy_constructor_if( ) = default;
 			constexpr delete_copy_constructor_if( non_constructor ) noexcept {}
 		};
 
 		template<>
 		struct delete_copy_constructor_if<true> {
-			delete_copy_constructor_if( delete_copy_constructor_if const & ) = delete;
 
-			[[maybe_unused]] constexpr delete_copy_constructor_if(
+			explicit constexpr delete_copy_constructor_if(
 			  non_constructor ) noexcept {}
 
-			[[maybe_unused]] constexpr delete_copy_constructor_if( ) noexcept =
-			  default;
+			delete_copy_constructor_if( ) = default;
+			~delete_copy_constructor_if( ) = default;
+			delete_copy_constructor_if( delete_copy_constructor_if const & ) = delete;
+			delete_copy_constructor_if( delete_copy_constructor_if && ) = default;
 
-			[[maybe_unused]] ~delete_copy_constructor_if( ) noexcept = default;
+			delete_copy_constructor_if &
+			operator=( delete_copy_constructor_if const & ) = default;
 
-			[[maybe_unused]] constexpr delete_copy_constructor_if &
-			operator=( delete_copy_constructor_if const & ) noexcept = default;
-
-			[[maybe_unused]] constexpr delete_copy_constructor_if(
-			  delete_copy_constructor_if && ) noexcept {}
-
-			[[maybe_unused]] constexpr delete_copy_constructor_if &
-			operator=( delete_copy_constructor_if && ) noexcept {
-				return *this;
-			}
+			delete_copy_constructor_if &
+			operator=( delete_copy_constructor_if && ) = default;
 		};
 
 		template<bool>
 		struct delete_copy_assignment_if {
-			constexpr delete_copy_assignment_if( ) noexcept = default;
-			constexpr delete_copy_assignment_if( non_constructor ) noexcept {}
+			delete_copy_assignment_if( ) = default;
+			explicit constexpr delete_copy_assignment_if( non_constructor ) noexcept {
+			}
 		};
 
 		template<>
 		struct delete_copy_assignment_if<true> {
+			explicit constexpr delete_copy_assignment_if( non_constructor ) noexcept {
+			}
+
+			delete_copy_assignment_if( ) = default;
+			~delete_copy_assignment_if( ) = default;
+			delete_copy_assignment_if( delete_copy_assignment_if const & ) = default;
+			delete_copy_assignment_if( delete_copy_assignment_if && ) = default;
+
 			delete_copy_assignment_if &
 			operator=( delete_copy_assignment_if const & ) = delete;
 
-			[[maybe_unused]] constexpr delete_copy_assignment_if(
-			  non_constructor ) noexcept {}
-
-			[[maybe_unused]] constexpr delete_copy_assignment_if( ) noexcept =
-			  default;
-
-			[[maybe_unused]] ~delete_copy_assignment_if( ) noexcept = default;
-
-			[[maybe_unused]] constexpr delete_copy_assignment_if(
-			  delete_copy_assignment_if const & ) noexcept = default;
-
-			[[maybe_unused]] constexpr delete_copy_assignment_if(
-			  delete_copy_assignment_if && ) noexcept {}
-
-			[[maybe_unused]] constexpr delete_copy_assignment_if &
-			operator=( delete_copy_assignment_if && ) noexcept {
-				return *this;
-			}
+			delete_copy_assignment_if &
+			operator=( delete_copy_assignment_if && ) = default;
 		};
 
 		template<bool>
 		struct delete_move_constructor_if {
-			constexpr delete_move_constructor_if( ) noexcept = default;
-			constexpr delete_move_constructor_if( non_constructor ) noexcept {}
+			delete_move_constructor_if( ) = default;
+			explicit constexpr delete_move_constructor_if(
+			  non_constructor ) noexcept {}
 		};
 
 		template<>
 		struct delete_move_constructor_if<true> {
+			explicit constexpr delete_move_constructor_if(
+			  non_constructor ) noexcept {}
+
+			delete_move_constructor_if( ) = default;
+			~delete_move_constructor_if( ) = default;
+			delete_move_constructor_if( delete_move_constructor_if && ) = delete;
 			delete_move_constructor_if( delete_move_constructor_if const & ) =
 			  default;
 
-			[[maybe_unused]] constexpr delete_move_constructor_if(
-			  non_constructor ) noexcept {}
+			delete_move_constructor_if &
+			operator=( delete_move_constructor_if const & ) = default;
 
-			[[maybe_unused]] constexpr delete_move_constructor_if( ) noexcept =
-			  default;
-
-			[[maybe_unused]] ~delete_move_constructor_if( ) noexcept = default;
-
-			[[maybe_unused]] constexpr delete_move_constructor_if &
-			operator=( delete_move_constructor_if const & ) noexcept = default;
-			[[maybe_unused]] constexpr delete_move_constructor_if(
-			  delete_move_constructor_if && ) noexcept {}
-
-			constexpr delete_move_constructor_if &
-			operator=( delete_move_constructor_if && ) noexcept = delete;
+			delete_move_constructor_if &
+			operator=( delete_move_constructor_if && ) = default;
 		};
 
 		template<bool>
 		struct delete_move_assignment_if {
-			constexpr delete_move_assignment_if( ) noexcept = default;
-			constexpr delete_move_assignment_if( non_constructor ) noexcept {}
+			delete_move_assignment_if( ) = default;
+			explicit constexpr delete_move_assignment_if( non_constructor ) noexcept {
+			}
 		};
 
 		template<>
 		struct delete_move_assignment_if<true> {
-			[[maybe_unused]] delete_move_assignment_if &
+			explicit constexpr delete_move_assignment_if( non_constructor ) noexcept {
+			}
+
+			delete_move_assignment_if( ) = default;
+			~delete_move_assignment_if( ) = default;
+			delete_move_assignment_if( delete_move_assignment_if const & ) = default;
+			delete_move_assignment_if( delete_move_assignment_if && ) = default;
+
+			delete_move_assignment_if &
 			operator=( delete_move_assignment_if const & ) = default;
 
-			[[maybe_unused]] constexpr delete_move_assignment_if(
-			  non_constructor ) noexcept {}
-
-			[[maybe_unused]] constexpr delete_move_assignment_if( ) noexcept =
-			  default;
-
-			[[maybe_unused]] ~delete_move_assignment_if( ) noexcept = default;
-
-			[[maybe_unused]] constexpr delete_move_assignment_if(
-			  delete_move_assignment_if const & ) noexcept = default;
-
-			[[maybe_unused]] constexpr delete_move_assignment_if(
-			  delete_move_assignment_if && ) noexcept {}
-
-			constexpr delete_move_assignment_if &
-			operator=( delete_move_assignment_if && ) noexcept = delete;
+			delete_move_assignment_if &
+			operator=( delete_move_assignment_if && ) = delete;
 		};
 	} // namespace traits_details
 

@@ -3,8 +3,7 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// Official repository: https://github.com/beached/daw_json_link
-//
+// Official repository: https://github.com/beached/header_libraries
 
 #pragma once
 
@@ -44,13 +43,13 @@ namespace daw {
 		  fwd_pack_impl::fwd_pack_base<pack_list<Ts...>,
 		                               std::index_sequence_for<Ts...>>;
 
-		DAW_ATTRIB_FLATINLINE inline constexpr fwd_pack( ) noexcept = default;
+		fwd_pack( ) = default;
 
-		DAW_ATTRIB_FLATINLINE inline constexpr fwd_pack( Ts... args ) noexcept
+		DAW_ATTRIB_INLINE constexpr fwd_pack( Ts... args )
 		  : base_type{ { &args }... } {}
 
 		template<std::size_t Idx>
-		DAW_ATTRIB_FLATINLINE inline constexpr decltype( auto ) get( ) const & {
+		DAW_ATTRIB_FLATINLINE constexpr decltype( auto ) get( ) const & {
 			static_assert( sizeof...( Ts ) > 0, "Error to call get on empty pack" );
 			using result_t = daw::traits::nth_type<Idx, Ts...>;
 			using leaf_t = fwd_pack_impl::pack_leaf<Idx, result_t>;
@@ -59,7 +58,7 @@ namespace daw {
 		}
 
 		template<std::size_t Idx>
-		DAW_ATTRIB_FLATINLINE inline constexpr decltype( auto ) get( ) & {
+		DAW_ATTRIB_FLATINLINE constexpr decltype( auto ) get( ) & {
 			static_assert( sizeof...( Ts ) > 0, "Error to call get on empty pack" );
 			using result_t = daw::traits::nth_type<Idx, Ts...>;
 			using leaf_t = fwd_pack_impl::pack_leaf<Idx, result_t>;
@@ -67,7 +66,7 @@ namespace daw {
 		}
 
 		template<std::size_t Idx>
-		DAW_ATTRIB_FLATINLINE inline constexpr decltype( auto ) get( ) && {
+		DAW_ATTRIB_FLATINLINE constexpr decltype( auto ) get( ) && {
 			static_assert( sizeof...( Ts ) > 0, "Error to call get on empty pack" );
 			using result_t = daw::traits::nth_type<Idx, Ts...>;
 			using leaf_t = fwd_pack_impl::pack_leaf<Idx, result_t>;
@@ -75,7 +74,7 @@ namespace daw {
 		}
 
 		template<std::size_t Idx>
-		DAW_ATTRIB_FLATINLINE inline constexpr decltype( auto ) get( ) const && {
+		DAW_ATTRIB_FLATINLINE constexpr decltype( auto ) get( ) const && {
 			static_assert( sizeof...( Ts ) > 0, "Error to call get on empty pack" );
 			using result_t = daw::traits::nth_type<Idx, Ts...>;
 			using leaf_t = fwd_pack_impl::pack_leaf<Idx, result_t>;
@@ -91,26 +90,24 @@ namespace daw {
 	fwd_pack( Ts &&... ) -> fwd_pack<Ts &&...>;
 
 	template<std::size_t Idx, typename... Ts>
-	DAW_ATTRIB_FLATINLINE inline constexpr decltype( auto )
-	get( fwd_pack<Ts...> &&p ) {
+	DAW_ATTRIB_FLATINLINE constexpr decltype( auto ) get( fwd_pack<Ts...> &&p ) {
 		return std::move( p ).template get<Idx>( );
 	}
 
 	template<std::size_t Idx, typename... Ts>
-	DAW_ATTRIB_FLATINLINE inline constexpr decltype( auto )
-	get( fwd_pack<Ts...> &p ) {
+	DAW_ATTRIB_FLATINLINE constexpr decltype( auto ) get( fwd_pack<Ts...> &p ) {
 		return p.template get<Idx>( );
 	}
 
 	template<std::size_t Idx, typename... Ts>
-	DAW_ATTRIB_FLATINLINE inline constexpr decltype( auto )
+	DAW_ATTRIB_FLATINLINE constexpr decltype( auto )
 	get( fwd_pack<Ts...> const &p ) {
 		return p.template get<Idx>( );
 	}
 
 	namespace fwd_pack_impl {
 		template<typename Func, typename... Ts, std::size_t... Is>
-		DAW_ATTRIB_FLATINLINE inline constexpr decltype( auto ) apply_impl(
+		DAW_ATTRIB_FLATINLINE constexpr decltype( auto ) apply_impl(
 		  Func &&func, fwd_pack<Ts...> &&p,
 		  std::index_sequence<
 		    Is...> ) noexcept( std::is_nothrow_invocable_v<Func, Ts...> ) {
@@ -119,7 +116,7 @@ namespace daw {
 	} // namespace fwd_pack_impl
 
 	template<typename Func, typename... Ts>
-	DAW_ATTRIB_FLATTEN inline constexpr decltype( auto ) apply(
+	DAW_ATTRIB_FLATTEN constexpr decltype( auto ) apply(
 	  Func &&func,
 	  fwd_pack<Ts...> &&p ) noexcept( std::is_nothrow_invocable_v<Func, Ts...> ) {
 		return fwd_pack_impl::apply_impl( DAW_FWD( func ), std::move( p ),

@@ -155,7 +155,7 @@ namespace daw {
 
 	public:
 #ifdef USE_CXSEED
-		constexpr static_random( ) noexcept = default;
+		static_random( ) = default;
 #endif
 		constexpr static_random( size_t seed ) noexcept
 		  : m_state( cxrand_impl::rand_lcg<sizeof( size_t )>( seed ) ) {}

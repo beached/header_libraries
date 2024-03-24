@@ -69,7 +69,7 @@ namespace daw {
 			daw::array<values_type, m_bins> m_values{ };
 
 		public:
-			constexpr static_bitset( ) noexcept = default;
+			static_bitset( ) = default;
 
 			constexpr void set_bit( size_t idx ) noexcept {
 				auto const bin = idx / m_bits_per_bin;

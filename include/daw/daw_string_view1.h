@@ -187,7 +187,7 @@ namespace daw {
 			  ( std::numeric_limits<size_type>::max )( );
 
 			// constructors
-			constexpr basic_string_view( ) noexcept = default;
+			basic_string_view( ) = default;
 
 			constexpr basic_string_view( std::nullptr_t ) noexcept
 			  : m_first( nullptr )

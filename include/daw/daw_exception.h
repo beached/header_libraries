@@ -32,10 +32,7 @@
 
 namespace daw::exception {
 	struct basic_exception {
-		template<typename Arg>
-		constexpr basic_exception( Arg ) noexcept {}
-
-		constexpr basic_exception( ) noexcept = default;
+		basic_exception( ) = default;
 	};
 	struct arithmetic_exception : public basic_exception {};
 	struct not_implemented_exception : public basic_exception {};

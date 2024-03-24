@@ -22,6 +22,13 @@
 #include <stdexcept>
 
 namespace daw {
+	namespace iter_view_details {
+		template<typename Iterator>
+		struct find_raw_result {
+			Iterator iterator;
+			std::size_t count_from_start;
+		};
+	} // namespace iter_view_details
 	template<typename ForwardIterator, typename Last = ForwardIterator,
 	         bool ExplicitConv = false>
 	struct iter_view {
@@ -72,7 +79,7 @@ namespace daw {
 		}
 
 	public:
-		iter_view( ) = default;
+		explicit iter_view( ) = default;
 
 		constexpr iter_view( iterator first, last_iterator last ) noexcept
 		  : m_first( first )
@@ -168,52 +175,41 @@ namespace daw {
 			return m_size == 0;
 		}
 
-		[[nodiscard]] constexpr reference front( ) noexcept {
+		[[nodiscard]] constexpr reference front( ) {
 			assert( not empty( ) );
 			return *m_first;
 		}
 
-		[[nodiscard]] constexpr const_reference front( ) const noexcept {
+		[[nodiscard]] constexpr const_reference front( ) const {
 			assert( not empty( ) );
 			return *m_first;
 		}
 
-		constexpr reference operator[]( size_type idx ) noexcept {
+		constexpr reference operator[]( size_type idx ) {
 			assert( idx < size( ) );
 			return *std::next( m_first, static_cast<difference_type>( idx ) );
 		}
 
-		constexpr const_reference operator[]( size_type idx ) const noexcept {
+		constexpr const_reference operator[]( size_type idx ) const {
 			assert( idx < size( ) );
 			return *std::next( m_first, static_cast<difference_type>( idx ) );
 		}
 
-		constexpr void remove_prefix( size_type count ) noexcept {
-			if constexpr( std::is_base_of_v<std::random_access_iterator_tag,
-			                                typename std::iterator_traits<
-			                                  iterator>::iterator_category> ) {
-				count = ( std::min )( count, size( ) );
-				std::advance( m_first, count );
-				m_size -= count;
-			} else {
-				auto c = count;
-				while( m_first != m_last and c-- > 0 ) {
-					std::advance( m_first, 1 );
-				}
-				m_size -= count - c;
-			}
+		constexpr void remove_prefix( size_type count ) {
+			count = ( std::min )( count, size( ) );
+			std::advance( m_first, count );
+			m_size -= count;
 		}
 
-		constexpr void remove_prefix( size_type count,
-		                              dont_clip_to_bounds_t ) noexcept {
+		constexpr void remove_prefix( size_type count, dont_clip_to_bounds_t ) {
+			assert( count < size( ) );
 			std::advance( m_first, static_cast<difference_type>( count ) );
 			m_size -= count;
 		}
 
-		constexpr void remove_prefix( ) noexcept {
-			assert( m_first != m_last );
-			std::advance( m_first, 1 );
-			--m_size;
+		constexpr void remove_prefix( ) {
+			assert( not empty( ) );
+			remove_prefix( 1 );
 		}
 
 		[[nodiscard]] constexpr value_type pop_front( ) {
@@ -225,104 +221,115 @@ namespace daw {
 		}
 
 	private:
-		[[nodiscard]] constexpr iterator
-		find_raw( const_reference needle ) noexcept {
-			auto pos = m_first;
-			while( pos != m_last and *pos != needle ) {
-				std::advance( pos, 1 );
+		[[nodiscard]] constexpr iter_view_details::find_raw_result<iterator>
+		find_raw( const_reference needle ) {
+			auto result = iter_view_details::find_raw_result<iterator>{ m_first, 0 };
+			while( result.iterator != m_last and *result.iterator != needle ) {
+				std::advance( result.iterator, 1 );
+				++result.count_from_start;
 			}
-			return pos;
+			return result;
 		}
 
-		[[nodiscard]] constexpr const_iterator
-		find_raw( const_reference needle ) const noexcept {
-			auto pos = m_first;
-			while( pos != m_last and *pos != needle ) {
-				std::advance( pos, 1 );
+		[[nodiscard]] constexpr iter_view_details::find_raw_result<const_iterator>
+		find_raw( const_reference needle ) const {
+			auto result =
+			  iter_view_details::find_raw_result<const_iterator>{ m_first, 0 };
+			while( result.iterator != m_last and *result.iterator != needle ) {
+				std::advance( result.iterator, 1 );
+				++result.count_from_start;
 			}
-			return pos;
+			return result;
 		}
 
-		[[nodiscard]] constexpr iterator
-		find_first_not_of_raw( const_reference needle ) noexcept {
-			auto pos = m_first;
-			while( pos != m_last and *pos == needle ) {
-				std::advance( pos, 1 );
+		[[nodiscard]] constexpr iter_view_details::find_raw_result<iterator>
+		find_first_not_of_raw( const_reference needle ) {
+			auto result = iter_view_details::find_raw_result<iterator>{ m_first, 0 };
+			while( result.iterator != m_last and *result.iterator == needle ) {
+				std::advance( result.iterator, 1 );
+				++result.count_from_start;
 			}
-			return pos;
+			return result;
 		}
 
-		[[nodiscard]] constexpr const_iterator
-		find_first_not_of_raw( const_reference needle ) const noexcept {
-			auto pos = m_first;
-			while( pos != m_last and *pos == needle ) {
-				std::advance( pos, 1 );
+		[[nodiscard]] constexpr iter_view_details::find_raw_result<const_iterator>
+		find_first_not_of_raw( const_reference needle ) const {
+			auto result =
+			  iter_view_details::find_raw_result<const_iterator>{ m_first, 0 };
+			while( result.iterator != m_last and *result.iterator == needle ) {
+				std::advance( result.iterator, 1 );
+				++result.count_from_start;
 			}
-			return pos;
+			return result;
 		}
 
 	public:
-		[[nodiscard]] constexpr iterator find( const_reference needle ) noexcept {
-			return iterator{ find_raw( needle ) };
+		[[nodiscard]] constexpr iterator find( const_reference needle ) {
+			return iterator{ find_raw( needle ).iterator };
 		}
 
 		[[nodiscard]] constexpr const_iterator
-		find( const_reference needle ) const noexcept {
-			return const_iterator{ find_raw( needle ) };
+		find( const_reference needle ) const {
+			return const_iterator{ find_raw( needle ).iterator };
 		}
 
 		[[nodiscard]] constexpr iterator
-		find_first_not_of( const_reference needle ) noexcept {
-			return iterator{ find_first_not_of_raw( needle ) };
+		find_first_not_of( const_reference needle ) {
+			return iterator{ find_first_not_of_raw( needle ).iterator };
 		}
 
 		[[nodiscard]] constexpr const_iterator
-		find_first_not_of( const_reference needle ) const noexcept {
-			return const_iterator{ find_first_not_of_raw( needle ) };
+		find_first_not_of( const_reference needle ) const {
+			return const_iterator{ find_first_not_of_raw( needle ).iterator };
 		}
 
 		constexpr iter_view &remove_prefix_until( const_reference needle,
-		                                          discard_t ) noexcept {
-			auto const pos = find_raw( needle );
-			auto const dist = distance( m_first, pos );
-			remove_prefix( dist + 1 );
+		                                          discard_t ) {
+			auto const raw_result = find_raw( needle );
+			m_first = raw_result.iterator;
+			m_size -= raw_result.count_from_start;
+			if( not empty( ) ) {
+				std::advance( m_first, 1 );
+				--m_size;
+			}
 			return *this;
 		}
 
-		constexpr iter_view &
-		remove_prefix_until( const_reference needle ) noexcept {
-
-			auto const pos = find_raw( needle );
-			auto const dist = distance( m_first, pos );
-			remove_prefix( dist, dont_clip_to_bounds );
+		constexpr iter_view &remove_prefix_until( const_reference needle ) {
+			auto const raw_result = find_raw( needle );
+			m_first = raw_result.iterator;
+			m_size -= raw_result.count_from_start;
 			return *this;
 		}
 
 		constexpr iter_view &remove_prefix_while( const_reference needle,
-		                                          discard_t ) noexcept {
-			auto const pos = find_first_not_of_raw( needle );
-			auto const dist = distance( m_first, pos );
-			remove_prefix( dist + 1 );
+		                                          discard_t ) {
+			auto const raw_result = find_first_not_of_raw( needle );
+			m_first = raw_result.iterator;
+			m_size -= raw_result.count_from_start;
+			if( not empty( ) ) {
+				std::advance( m_first, 1 );
+				--m_size;
+			}
 			return *this;
 		}
 
-		constexpr iter_view &
-		remove_prefix_while( const_reference needle ) noexcept {
-			auto const pos = find_first_not_of_raw( needle );
-			auto const dist = distance( m_first, pos );
-			remove_prefix( dist, dont_clip_to_bounds );
+		constexpr iter_view &remove_prefix_while( const_reference needle ) {
+			auto const raw_result = find_first_not_of_raw( needle );
+			m_first = raw_result.iterator;
+			m_size -= raw_result.count_from_start;
 			return *this;
 		}
 
 		[[nodiscard]] constexpr iter_view
-		pop_front_until( const_reference needle ) noexcept {
+		pop_front_until( const_reference needle ) {
 			auto const f = m_first;
 			remove_prefix_until( needle );
 			return iter_view( f, m_first );
 		}
 
 		[[nodiscard]] constexpr iter_view pop_front_until( const_reference needle,
-		                                                   discard_t ) noexcept {
+		                                                   discard_t ) {
 			auto const f = m_first;
 			remove_prefix_until( needle );
 			auto result = iter_view( f, m_first );
@@ -331,14 +338,14 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr iter_view
-		pop_front_while( const_reference needle ) noexcept {
+		pop_front_while( const_reference needle ) {
 			auto const f = m_first;
 			remove_prefix_while( needle );
 			return iter_view( f, m_first );
 		}
 
 		[[nodiscard]] constexpr iter_view pop_front_while( const_reference needle,
-		                                                   discard_t ) noexcept {
+		                                                   discard_t ) {
 			auto const f = m_first;
 			remove_prefix_while( needle );
 			auto result = iter_view( f, m_first );
@@ -402,6 +409,6 @@ namespace daw {
 	iter_view( T ( & )[N] ) -> iter_view<T *>;
 
 	template<typename T, std::size_t N>
-	iter_view( T ( &&)[N] ) -> iter_view<T *>;
+	iter_view( T ( && )[N] ) -> iter_view<T *>;
 
 } // namespace daw
