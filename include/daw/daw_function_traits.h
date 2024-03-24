@@ -8,10 +8,9 @@
 
 #pragma once
 
-#include "daw_fwd_pack_apply.h"
-
 #include <cstddef>
 #include <daw/stdinc/integer_sequence.h>
+#include <tuple>
 
 namespace daw::func {
 	namespace func_traits_impl {
@@ -23,7 +22,7 @@ namespace daw::func {
 
 		template<template<std::size_t> class Arguments, std::size_t... Is>
 		struct make_arg_pack<Arguments, std::index_sequence<Is...>> {
-			using type = fwd_pack<type_t<Arguments<Is>>...>;
+			using type = std::tuple<type_t<Arguments<Is>>...>;
 		};
 	} // namespace func_traits_impl
 
@@ -37,14 +36,14 @@ namespace daw::func {
 	template<class R, class... Args>
 	struct function_traits<R( Args... )> {
 		using result_t = R;
-		using params_t = daw::fwd_pack<Args...>;
+		using params_t = std::tuple<Args...>;
 
 		static constexpr std::size_t arity = sizeof...( Args );
 
 		template<std::size_t N>
 		struct argument {
 			static_assert( N < arity, "error: invalid parameter index." );
-			using type = typename daw::pack_element<N, daw::fwd_pack<Args...>>::type;
+			using type = std::tuple_element_t<N, std::tuple<Args...>>;
 		};
 	};
 
