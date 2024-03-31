@@ -7,48 +7,41 @@
 //
 
 #include <cstdio>
+#include <daw/daw_consteval.h>
 #include <daw/daw_ensure.h>
 #include <daw/daw_function_ref.h>
 
+#include <iostream>
 #include <string>
 
-int func( daw::function_ref<int( int, int, int )> f ) {
+constexpr int func( daw::function_ref<int( int, int, int )> f ) {
 	return f( 1, 2, 3 ) * f( 4, 5, 7 );
 }
 
-void test( ) {
-	auto const r = func( []( int a, int b, int c ) {
+DAW_CPP26_CONSTEVAL void test1( ) {
+	constexpr auto l = []( int a, int b, int c ) {
 		return a * b * c;
-	} );
+	};
+	auto const r = func( l );
 	daw_ensure( r == 840 );
+	auto const r2 = func( +l );
+	daw_ensure( r2 == 840 );
 }
 
 inline constexpr int add( int a, int b, int c ) {
 	return a + b + c;
 }
 
-void test2( ) {
+DAW_CONSTEVAL void test2( ) {
 	auto const r = func( add );
 	daw_ensure( r == 96 );
 }
 
-void func2( daw::function_ref<void( double, double )> f ) {
+constexpr void func2( daw::function_ref<void( double, double )> f ) {
 	f( 1.2, 3.4 );
 }
 
-void test6( ) {
-	int foo = 5;
-	daw::function_ref<int( )> x = foo;
-	daw_ensure( x( ) == 5 );
-}
-
-void test7( ) {
-	int foo = 5;
-	daw::function_ref<int( int )> x = foo;
-	daw_ensure( x( 66 ) == 5 );
-}
-
-void test8( ) {
+DAW_CPP26_CONSTEVAL void test3( ) {
 	auto fn = []( int a, std::string, double ) -> int {
 		return a;
 	};
@@ -56,10 +49,20 @@ void test8( ) {
 	fnr( 3, "Hello", 2.2f );
 }
 
+void test4( ) {
+	auto fn = []( int a ) {
+		std::cout << a << '\n';
+	};
+
+	auto fnr = daw::function_ref<void( int )>( fn );
+	fnr( 1 );
+	fnr = +fn;
+	fnr( 2 );
+}
+
 int main( ) {
-	test( );
+	test1( );
 	test2( );
-	test6( );
-	test7( );
-	test8( );
+	test3( );
+	test4( );
 }
