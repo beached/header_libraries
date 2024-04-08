@@ -15,6 +15,7 @@
 #include "daw_traits.h"
 #include "daw_utility.h"
 #include "daw_virtual_base.h"
+#include "impl/daw_make_trait.h"
 
 #include <cstddef>
 #include <functional>
@@ -30,25 +31,14 @@
 
 namespace daw {
 	namespace func_impl {
-		template<typename T>
-		using is_boolable_detect =
-		  decltype( static_cast<bool>( std::declval<T>( ) ) );
+		DAW_MAKE_REQ_TRAIT( is_boolable_v,
+		                    static_cast<bool>( std::declval<T>( ) ) );
 
-		template<typename T>
-		inline constexpr bool is_boolable_v =
-		  daw::is_detected_v<is_boolable_detect, T>;
-
-		template<typename T>
-		using has_empty_member_detect = decltype( std::declval<T>( ).empty( ) );
-
-		template<typename T>
-		inline constexpr bool has_empty_member_v =
-		  daw::is_detected_v<has_empty_member_detect, T>;
+		DAW_MAKE_REQ_TRAIT( has_empty_member_v, std::declval<T>( ).empty( ) );
 
 		template<size_t StorageSize, typename Base>
 		struct function_storage {
 			std::aligned_storage_t<StorageSize> m_data;
-
 
 			~function_storage( ) {
 				clean( );

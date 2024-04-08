@@ -15,6 +15,7 @@
 #include "daw/traits/daw_traits_identity.h"
 #include "daw/traits/daw_traits_nth_element.h"
 #include "daw/traits/daw_traits_pack_list.h"
+#include "daw_make_trait.h"
 
 #include <cstddef>
 #include <daw/stdinc/data_access.h>
@@ -25,6 +26,16 @@
 
 namespace daw {
 	namespace traits {
+		namespace traits_details {
+			template<typename, typename = void>
+			inline constexpr bool is_callable_with_v = false;
+
+			template<typename Func, typename... Args>
+			inline constexpr bool is_callable_with_v<
+			  Func( Args... ), std::void_t<decltype( std::declval<Func &>( )(
+			                     std::declval<Args>( )... ) )>> = true;
+		} // namespace traits_details
+
 		namespace detectors {
 			template<typename Function, typename... Args>
 			using callable_with =
@@ -36,139 +47,20 @@ namespace daw {
 			template<typename UnaryPredicate, typename T>
 			using unary_predicate = callable_with<UnaryPredicate, T>;
 
-			template<typename T, typename U>
-			using less_than_comparable =
-			  decltype( std::declval<T>( ) < std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using equal_less_than_comparable =
-			  decltype( std::declval<T>( ) <= std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using greater_than_comparable =
-			  decltype( std::declval<T>( ) > std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using equal_greater_than_comparable =
-			  decltype( std::declval<T>( ) >= std::declval<U>( ) );
-
-			namespace details {
-				template<typename T, typename U>
-				[[maybe_unused]] void swap( T &lhs, U &rhs ) {
-					using std::swap;
-					swap( lhs, rhs );
-				}
-			} // namespace details
-
-			template<typename T>
-			using swappable =
-			  decltype( details::swap( std::declval<T>( ), std::declval<T>( ) ) );
-
-			template<typename Iterator, typename T>
-			using assignable =
-			  decltype( *std::declval<Iterator>( ) = std::declval<T>( ) );
-
-			template<typename T, typename U>
-			using equality_comparable =
-			  decltype( std::declval<T>( ) == std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using inequality_comparable =
-			  decltype( std::declval<T>( ) != std::declval<U>( ) );
-
-			template<typename T>
-			using std_begin_detector = decltype( std::begin( std::declval<T>( ) ) );
-
-			template<typename T>
-			using adl_begin_detector = decltype( begin( std::declval<T>( ) ) );
-
-			template<typename T>
-			using std_end_detector = decltype( std::end( std::declval<T>( ) ) );
-
-			template<typename T>
-			using adl_end_detector = decltype( end( std::declval<T>( ) ) );
-
 			template<typename T>
 			using dereferenceable = decltype( *std::declval<T>( ) );
 
 			template<typename T>
-			using has_integer_subscript = decltype( std::declval<T>( )[0] );
-
-			template<typename T>
-			using has_size =
-			  decltype( std::declval<size_t &>( ) = std::declval<T>( ).size( ) );
-
-			template<typename T>
 			using is_array_array = decltype( std::declval<T>( )[0][0] );
-
-			template<typename T>
-			using has_empty =
-			  decltype( std::declval<bool &>( ) = std::declval<T>( ).empty( ) );
-
-			template<typename T>
-			using has_append_operator =
-			  decltype( std::declval<T &>( ) +=
-			            std::declval<has_integer_subscript<T>>( ) );
-
-			template<typename T>
-			using has_append =
-			  decltype( std::declval<T>( ).append( std::declval<T>( ) ) );
-
-			template<typename T, typename U>
-			using has_addition_operator =
-			  decltype( std::declval<T>( ) + std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using has_subtraction_operator =
-			  decltype( std::declval<T>( ) - std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using has_multiplication_operator =
-			  decltype( std::declval<T>( ) * std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using has_division_operator =
-			  decltype( std::declval<T>( ) / std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using has_compound_assignment_add_operator =
-			  decltype( std::declval<T &>( ) += std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using has_compound_assignment_sub_operator =
-			  decltype( std::declval<T &>( ) -= std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using has_compound_assignment_mul_operator =
-			  decltype( std::declval<T &>( ) *= std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using has_compound_assignment_div_operator =
-			  decltype( std::declval<T &>( ) /= std::declval<U>( ) );
-
-			template<typename T, typename U>
-			using has_modulus_operator =
-			  decltype( std::declval<T>( ) % std::declval<U>( ) );
-
-			template<typename T>
-			using has_increment_operator = decltype( ++std::declval<T &>( ) );
-
-			template<typename T>
-			using has_decrement_operator = decltype( --std::declval<T &>( ) );
 		} // namespace detectors
 
-		namespace traits_details {
-			template<typename...>
-			struct is_single_void_arg_t : std::false_type {};
+		template<typename...>
+		inline constexpr bool is_single_void_arg_v = false;
+		template<>
+		inline constexpr bool is_single_void_arg_v<void> = true;
 
-			template<>
-			struct is_single_void_arg_t<void> : std::true_type {};
-		} // namespace traits_details
-
-		template<typename... Args>
-		inline constexpr bool is_single_void_arg_v =
-		  traits_details::is_single_void_arg_t<Args...>::value;
-
+		// the single void test is used in places like expected.   Comes up with
+		// is_callable_v<DAW_TYPEOF( foo( args... ) )>
 		template<typename Function, typename... Args>
 		inline constexpr bool is_callable_v =
 		  is_detected_v<traits::detectors::callable_with, Function, Args...> or
@@ -208,118 +100,104 @@ namespace daw {
 		template<typename T>
 		using make_fp = std::add_pointer_t<T>;
 
-		template<typename T, typename U = T>
-		inline constexpr bool has_addition_operator_v =
-		  daw::is_detected_v<detectors::has_addition_operator, T, U>;
+		DAW_MAKE_REQ_TRAIT2D( has_addition_operator_v,
+		                      std::declval<T>( ) + std::declval<U>( ) );
 
-		template<typename T, typename U = T>
-		inline constexpr bool has_subtraction_operator_v =
-		  daw::is_detected_v<detectors::has_subtraction_operator, T, U>;
+		DAW_MAKE_REQ_TRAIT2D( has_subtraction_operator_v,
+		                      std::declval<T>( ) - std::declval<U>( ) );
 
-		template<typename T, typename U = T>
-		inline constexpr bool has_multiplication_operator_v =
-		  daw::is_detected_v<detectors::has_multiplication_operator, T, U>;
+		DAW_MAKE_REQ_TRAIT2D( has_multiplication_operator_v,
+		                      std::declval<T>( ) * std::declval<U>( ) );
 
-		template<typename T, typename U = T>
-		inline constexpr bool has_division_operator_v =
-		  daw::is_detected_v<detectors::has_division_operator, T, U>;
+		DAW_MAKE_REQ_TRAIT2D( has_division_operator_v,
+		                      std::declval<T>( ) / std::declval<U>( ) );
 
-		template<typename T, typename U>
-		inline constexpr bool has_compound_assignment_add_operator_v =
-		  daw::is_detected_v<detectors::has_compound_assignment_add_operator, T, U>;
+		DAW_MAKE_REQ_TRAIT2D( has_compound_assignment_add_operator_v,
+		                      std::declval<T &>( ) += std::declval<U>( ) );
 
-		template<typename T, typename U>
-		inline constexpr bool has_compound_assignment_sub_operator_v =
-		  daw::is_detected_v<detectors::has_compound_assignment_sub_operator, T, U>;
+		DAW_MAKE_REQ_TRAIT2D( has_compound_assignment_sub_operator_v,
+		                      std::declval<T &>( ) -= std::declval<U>( ) );
 
-		template<typename T, typename U>
-		inline constexpr bool has_compound_assignment_mul_operator_v =
-		  daw::is_detected_v<detectors::has_compound_assignment_mul_operator, T, U>;
+		DAW_MAKE_REQ_TRAIT2D( has_compound_assignment_mul_operator_v,
+		                      std::declval<T &>( ) *= std::declval<U>( ) );
 
-		template<typename T, typename U>
-		inline constexpr bool has_compound_assignment_div_operator_v =
-		  daw::is_detected_v<detectors::has_compound_assignment_div_operator, T, U>;
+		DAW_MAKE_REQ_TRAIT2D( has_compound_assignment_div_operator_v,
+		                      std::declval<T &>( ) /= std::declval<U>( ) );
 
-		template<typename T, typename U = T>
-		inline constexpr bool has_modulus_operator_v =
-		  daw::is_detected_v<detectors::has_modulus_operator, T, U>;
+		DAW_MAKE_REQ_TRAIT2D( has_modulus_operator_v,
+		                      std::declval<T>( ) % std::declval<U>( ) );
 
-		template<typename T>
-		inline constexpr bool has_increment_operator_v =
-		  daw::is_detected_v<detectors::has_increment_operator, T>;
+		DAW_MAKE_REQ_TRAIT( has_increment_operator_v, ++std::declval<T &>( ) );
 
-		template<typename T>
-		inline constexpr bool has_decrement_operator_v =
-		  daw::is_detected_v<detectors::has_decrement_operator, T>;
+		DAW_MAKE_REQ_TRAIT( has_decrement_operator_v, --std::declval<T &>( ) );
 
-		template<typename String>
-		inline constexpr bool has_integer_subscript_v =
-		  daw::is_detected_v<detectors::has_integer_subscript, String>;
+		DAW_MAKE_REQ_TRAIT( has_integer_subscript_v, std::declval<T>( )[0U] );
 
-		template<typename String>
-		inline constexpr bool has_size_memberfn_v =
-		  daw::is_detected_v<detectors::has_size, String>;
+		DAW_MAKE_REQ_TRAIT( has_size_memberfn_v, std::declval<size_t &>( ) =
+		                                           std::declval<T>( ).size( ) );
 
-		template<typename String>
-		inline constexpr bool has_empty_memberfn_v =
-		  daw::is_detected_v<detectors::has_empty, String>;
+		DAW_MAKE_REQ_TRAIT(
+		  has_empty_memberfn_v,
+		  std::declval<bool &>( ) = std::declval<T const &>( ).empty( ) );
 
-		template<typename String>
-		inline constexpr bool has_append_memberfn_v =
-		  daw::is_detected_v<detectors::has_append, String>;
+		DAW_MAKE_REQ_TRAIT2D( has_append_memberfn_v,
+		                      std::declval<T>( ).append( std::declval<U>( ) ) );
 
-		template<typename String>
-		inline constexpr bool has_append_operator_v =
-		  daw::is_detected_v<detectors::has_append_operator, String>;
+		DAW_MAKE_REQ_TRAIT( has_append_operator_v,
+		                    std::declval<T &>( ) += std::declval<T>( )[0U] );
 
+		DAW_MAKE_REQ_TRAIT2D( is_equality_comparable_v,
+		                      std::declval<bool &>( ) = std::declval<T>( ) ==
+		                                                std::declval<U>( ) );
 		template<typename T, typename U = T>
 		using is_equality_comparable =
-		  is_detected_convertible<bool, detectors::equality_comparable, T, U>;
+		  std::bool_constant<is_equality_comparable_v<T, U>>;
 
-		template<typename T, typename U = T>
-		inline constexpr bool is_equality_comparable_v =
-		  is_detected_convertible_v<bool, detectors::equality_comparable, T, U>;
+		DAW_MAKE_REQ_TRAIT2D( is_inequality_comparable_v,
+		                      std::declval<T>( ) != std::declval<U>( ) );
 
-		template<typename T, typename U = T>
-		inline constexpr bool is_inequality_comparable_v =
-		  is_detected_convertible_v<bool, detectors::inequality_comparable, T, U>;
+		DAW_MAKE_REQ_TRAIT2D( is_less_than_comparable_v,
+		                      std::declval<T>( ) < std::declval<U>( ) );
 
-		template<typename T, typename U = T>
-		inline constexpr bool is_less_than_comparable_v =
-		  is_detected_convertible_v<bool, detectors::less_than_comparable, T, U>;
+		DAW_MAKE_REQ_TRAIT2D( is_equal_less_than_comparable_v,
+		                      std::declval<T>( ) <= std::declval<U>( ) );
 
-		template<typename T, typename U = T>
-		inline constexpr bool is_equal_less_than_comparable_v =
-		  is_detected_convertible_v<bool, detectors::equal_less_than_comparable, T,
-		                            U>;
+		DAW_MAKE_REQ_TRAIT2D( is_greater_than_comparable_v,
+		                      std::declval<T>( ) > std::declval<U>( ) );
 
-		template<typename T, typename U = T>
-		inline constexpr bool is_greater_than_comparable_v =
-		  is_detected_convertible_v<bool, detectors::greater_than_comparable, T, U>;
-
-		template<typename T, typename U = T>
-		inline constexpr bool is_equal_greater_than_comparable_v =
-		  is_detected_convertible_v<bool, detectors::equal_greater_than_comparable,
-		                            T, U>;
+		DAW_MAKE_REQ_TRAIT2D( is_equal_greater_than_comparable_v,
+		                      std::declval<T>( ) >= std::declval<U>( ) );
 
 		template<typename Iterator,
-		         typename T = typename std::iterator_traits<Iterator>::value_type>
-		inline constexpr bool is_assignable_iterator_v =
-		  is_detected_v<detectors::assignable, Iterator, T>;
+		         typename T = typename std::iterator_traits<Iterator>::value_type,
+		         typename = void>
+		inline constexpr bool is_assignable_iterator_v = false;
+
+		template<typename Iterator, typename T>
+		inline constexpr bool is_assignable_iterator_v<
+		  Iterator, T,
+		  std::void_t<decltype( *std::declval<Iterator>( ) =
+		                          std::declval<T>( ) )>> = true;
 
 		template<typename L, typename R>
 		inline constexpr bool is_comparable_v =
 		  is_equality_comparable_v<L, R> and is_equality_comparable_v<R, L>;
 
+		DAW_MAKE_REQ_TRAIT( has_std_begin_v, std::begin( std::declval<T>( ) ) );
+
+		DAW_MAKE_REQ_TRAIT( has_adl_begin_v, begin( std::declval<T>( ) ) );
+
+		DAW_MAKE_REQ_TRAIT( has_std_end_v, std::end( std::declval<T>( ) ) );
+
+		DAW_MAKE_REQ_TRAIT( has_adl_end_v, end( std::declval<T>( ) ) );
+
 		template<typename Container>
 		inline constexpr bool has_begin =
-		  is_detected_v<detectors::std_begin_detector, Container> or
-		  is_detected_v<detectors::adl_begin_detector, Container>;
+		  has_std_begin_v<Container> or has_adl_begin_v<Container>;
 
 		template<typename Container>
 		inline constexpr bool has_end =
-		  is_detected_v<detectors::std_end_detector, Container> or
-		  is_detected_v<detectors::adl_end_detector, Container>;
+		  has_std_end_v<Container> or has_adl_end_v<Container>;
 
 		template<typename Container>
 		inline constexpr bool is_container_like_v =
@@ -352,41 +230,32 @@ namespace daw {
 			inline constexpr bool is_incrementable_v =
 			  std::is_same_v<T &, daw::detected_t<is_iter::is_incrementable, T>>;
 
-			template<typename T>
-			inline constexpr bool has_value_type_v =
-			  daw::is_detected_v<is_iter::has_value_type, T>;
+			DAW_MAKE_REQ_TRAIT_TYPE( has_value_type_v, is_iter::has_value_type<T> );
 
-			template<typename T>
-			inline constexpr bool has_difference_type_v =
-			  daw::is_detected_v<is_iter::has_difference_type, T>;
+			DAW_MAKE_REQ_TRAIT_TYPE( has_difference_type_v,
+			                         is_iter::has_difference_type<T> );
 
-			template<typename T>
-			inline constexpr bool has_reference_v =
-			  daw::is_detected_v<is_iter::has_reference, T>;
+			DAW_MAKE_REQ_TRAIT_TYPE( has_reference_v, is_iter::has_reference<T> );
 
-			template<typename T>
-			inline constexpr bool has_pointer_v =
-			  daw::is_detected_v<is_iter::has_pointer, T>;
+			DAW_MAKE_REQ_TRAIT_TYPE( has_pointer_v, is_iter::has_pointer<T> );
 
-			template<typename T>
-			inline constexpr bool has_iterator_category_v =
-			  daw::is_detected_v<is_iter::has_iterator_category, T>;
+			DAW_MAKE_REQ_TRAIT_TYPE( has_iterator_category_v,
+			                         is_iter::has_iterator_category<T> );
 
 			template<typename T>
 			inline constexpr bool has_iterator_trait_types_v =
 			  has_value_type_v<T> and has_difference_type_v<T> and
 			  has_reference_v<T> and has_pointer_v<T> and has_iterator_category_v<T>;
 		} // namespace traits_details
+
 		template<typename T>
 		using is_dereferenceable_t =
 		  typename is_detected<detectors::dereferenceable, T>::type;
 
-		template<typename T>
-		using is_dereferenceable = is_detected<detectors::dereferenceable, T>;
+		DAW_MAKE_REQ_TRAIT( is_dereferenceable_v, *std::declval<T>( ) );
 
 		template<typename T>
-		inline constexpr bool is_dereferenceable_v =
-		  is_detected_v<detectors::dereferenceable, T>;
+		using is_dereferenceable = std::bool_constant<is_dereferenceable_v<T>>;
 	} // namespace traits
 
 	namespace traits_details {

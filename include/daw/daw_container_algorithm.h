@@ -22,8 +22,8 @@
 namespace daw {
 	namespace container {
 		namespace impl {
-			template<typename Container>
-			using has_size_method = decltype( std::declval<Container>( ).size( ) );
+			DAW_MAKE_REQ_TRAIT( has_size_method_v,
+			                    std::declval<T const &>( ).size( ) );
 
 			namespace adl_test {}
 			template<typename Container>
@@ -72,10 +72,9 @@ namespace daw {
 			return N;
 		}
 
-		template<
-		  typename Container,
-		  std::enable_if_t<daw::is_detected_v<impl::has_size_method, Container>,
-		                   std::nullptr_t> = nullptr>
+		template<typename Container,
+		         std::enable_if_t<impl::has_size_method_v<Container>,
+		                          std::nullptr_t> = nullptr>
 		constexpr size_t container_size( Container const &c ) noexcept {
 			return static_cast<size_t>( c.size( ) );
 		}
@@ -101,8 +100,7 @@ namespace daw {
 			static_assert(
 			  traits::is_binary_predicate_v<Compare, value_type, value_type>, "" );
 
-			std::sort( begin( container ), end( container ),
-			           DAW_FWD( compare ) );
+			std::sort( begin( container ), end( container ), DAW_FWD( compare ) );
 		}
 
 		template<typename Container,
@@ -246,9 +244,9 @@ namespace daw {
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 		                          std::nullptr_t> = nullptr>
 		decltype( auto )
-		accumulate( Container const &container, T &&init ) noexcept( noexcept(
-		  std::accumulate( std::cbegin( container ), std::end( container ),
-		                   DAW_FWD( init ) ) ) ) {
+		accumulate( Container const &container, T &&init ) noexcept(
+		  noexcept( std::accumulate( std::cbegin( container ),
+		                             std::end( container ), DAW_FWD( init ) ) ) ) {
 
 			return std::accumulate( std::cbegin( container ), std::cend( container ),
 			                        DAW_FWD( init ) );
@@ -417,9 +415,9 @@ namespace daw {
 		  noexcept( std::find( std::cbegin( container ), std::cend( container ),
 		                       value ) != std::cend( container ) ) ) {
 
-			return daw::algorithm::find(
-			         std::cbegin( container ), std::cend( container ),
-			         DAW_FWD( value ) ) != std::cend( container );
+			return daw::algorithm::find( std::cbegin( container ),
+			                             std::cend( container ),
+			                             DAW_FWD( value ) ) != std::cend( container );
 		}
 
 		template<

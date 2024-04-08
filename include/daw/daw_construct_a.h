@@ -23,16 +23,12 @@ namespace daw {
 
 	namespace construct_details {
 		template<typename T>
-		constexpr int should_use_aggregate_construction_test(
-		  use_aggregate_construction<T> const & ) noexcept;
+		int should_use_aggregate_construction_test(
+		  use_aggregate_construction<T> const & );
 
-		template<typename T>
-		using should_use_aggregate_construction_detect =
-		  decltype( should_use_aggregate_construction_test( std::declval<T>( ) ) );
-
-		template<typename T>
-		constexpr bool should_use_aggregate_construction_v =
-		  daw::is_detected_v<should_use_aggregate_construction_detect, T>;
+		DAW_MAKE_REQ_TRAIT(
+		  should_use_aggregate_construction_v,
+		  should_use_aggregate_construction_test( std::declval<T>( ) ) );
 	} // namespace construct_details
 
 	///
@@ -80,9 +76,6 @@ namespace daw {
 	inline constexpr construct_a_t<T> construct_a = construct_a_t<T>{ };
 
 	namespace construct_details {
-		template<typename T>
-		inline constexpr construct_a_t<T> construct_a = construct_a_t<T>{ };
-
 		template<typename T, typename... Args>
 		using can_construct_a_detect =
 		  decltype( std::declval<daw::construct_a_t<T>>( )(
@@ -92,5 +85,4 @@ namespace daw {
 	template<typename T, typename... Args>
 	inline constexpr bool can_construct_a_v =
 	  is_detected_v<construct_details::can_construct_a_detect, T, Args...>;
-
 } // namespace daw

@@ -13,11 +13,11 @@
 #include "daw_assume.h"
 #include "daw_attributes.h"
 #include "daw_check_exceptions.h"
-#include "daw_is_detected.h"
 #include "daw_likely.h"
 #include "daw_move.h"
 #include "daw_traits.h"
 #include "daw_unreachable.h"
+#include "impl/daw_make_trait.h"
 
 #include <cstddef>
 #include <daw/stdinc/move_fwd_exch.h>
@@ -31,39 +31,53 @@ namespace daw {
 	// struct bad_variant_access : std::exception {};
 
 	namespace get_nt_details {
-		namespace gi_test {
-			using namespace std;
-			template<typename T>
-			using get_if_test = decltype( get_if<0>( std::declval<T *>( ) ) );
+		// These ensure there exists something to test against when it isn't
+		// available prior to c++20
+		template<std::size_t>
+		void get_if( );
 
-			template<typename T>
-			using index_test = decltype( std::declval<T>( ).index( ) );
-		} // namespace gi_test
-		template<typename T>
-		inline constexpr bool has_get_if_v =
-		  daw::is_detected_v<gi_test::get_if_test, T>;
+		template<std::size_t>
+		void get( );
 
-		template<typename T>
-		inline constexpr bool has_index_v =
-		  daw::is_detected_v<gi_test::index_test, T>;
+		DAW_MAKE_REQ_TRAIT( has_adl_get_if_v, get_if<0>( std::declval<T *>( ) ) );
+
+		DAW_MAKE_REQ_TRAIT( has_std_get_if_v,
+		                    std::get_if<0>( std::declval<T *>( ) ) );
+
+		DAW_MAKE_REQ_TRAIT( has_adl_get_v, get<0>( std::declval<T>( ) ) );
+
+		DAW_MAKE_REQ_TRAIT( has_std_get_v, std::get<0>( std::declval<T>( ) ) );
 	} // namespace get_nt_details
 
 	template<std::size_t Idx, typename Variant>
 	DAW_ATTRIB_FLATINLINE constexpr decltype( auto ) get_nt( Variant &&var ) {
-		using namespace std;
-		if constexpr( get_nt_details::has_get_if_v<
-		                std::remove_reference_t<Variant>> ) {
-			auto *ptr = get_if<Idx>( &var );
+		using variant_t = std::remove_reference_t<Variant>;
+		if constexpr( get_nt_details::has_adl_get_if_v<variant_t> ) {
+			using get_nt_details::get_if;
+			auto *ptr = get_if<Idx>( std::addressof( var ) );
 			DAW_ASSUME( ptr != nullptr );
 			if constexpr( std::is_rvalue_reference_v<Variant> ) {
 				return std::move( *ptr );
 			} else {
 				return *ptr;
 			}
-		} else {
+		} else if constexpr( get_nt_details::has_std_get_if_v<variant_t> ) {
+			auto *ptr = std::get_if<Idx>( std::addressof( var ) );
+			DAW_ASSUME( ptr != nullptr );
+			if constexpr( std::is_rvalue_reference_v<Variant> ) {
+				return std::move( *ptr );
+			} else {
+				return *ptr;
+			}
+		} else if( get_nt_details::has_adl_get_v<variant_t> ) {
+			using get_nt_details::get;
 			return get<Idx>( DAW_FWD( var ) );
+		} else {
+			static_assert( get_nt_details::has_std_get_v<variant_t> );
+			return std::get<Idx>( DAW_FWD( var ) );
 		}
 	}
+
 	namespace visit_details {
 		template<typename Variant>
 		DAW_ATTRIB_FLATINLINE constexpr auto get_index( Variant const &v ) {
