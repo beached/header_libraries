@@ -9,7 +9,7 @@
 #pragma once
 
 #include "impl/daw_string_impl.h"
-
+//
 #include "ciso646.h"
 #include "daw_algorithm.h"
 #include "daw_bounded_vector.h"
@@ -20,6 +20,7 @@
 #include "daw_move.h"
 #include "daw_string_view1.h"
 #include "daw_traits.h"
+#include "impl/daw_make_trait.h"
 #include "iterator/daw_back_inserter.h"
 #include "iterator/daw_iterator.h"
 
@@ -1344,15 +1345,8 @@ namespace daw {
 		return generic_hash<HashSize>( str.data( ), str.size( ) );
 	}
 
-	namespace detectors {
-		template<typename String>
-		using can_be_bounded_string =
-		  decltype( daw::bounded_string{ std::declval<String>( ) } );
-	}
-
-	template<typename String>
-	constexpr bool can_be_bounded_string =
-	  daw::is_detected_v<detectors::can_be_bounded_string, String>;
+	DAW_MAKE_REQ_TRAIT( can_be_bounded_string,
+	                    daw::bounded_string{ std::declval<T>( ) } );
 
 	template<typename OStream, typename CharT, size_t Capacity,
 	         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,

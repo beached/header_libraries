@@ -132,7 +132,7 @@ namespace daw {
 		}
 
 		template<typename... Args,
-		         std::enable_if_t<traits::is_callable_v<value_type, Args...>,
+		         std::enable_if_t<std::is_invocable_v<value_type, Args...>,
 		                          std::nullptr_t> = nullptr>
 		decltype( auto ) operator( )( Args &&...args ) noexcept(
 		  noexcept( m_value->operator( )( DAW_FWD( args )... ) ) ) {
@@ -300,7 +300,7 @@ namespace daw {
 namespace std {
 	template<typename T>
 	struct hash<daw::value_ptr<T>>
-	  : std::enable_if_t<daw::traits::is_callable_v<std::hash<T>, T>,
+	  : std::enable_if_t<std::is_invocable_v<std::hash<T>, T>,
 	                     daw::value_ptr_details::empty_t> {
 
 		template<typename Arg>

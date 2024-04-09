@@ -8,10 +8,11 @@
 
 #pragma once
 
-#include "../ciso646.h"
-#include "../daw_algorithm.h"
-#include "../daw_move.h"
-#include "../daw_traits.h"
+#include "daw/ciso646.h"
+#include "daw/daw_algorithm.h"
+#include "daw/daw_move.h"
+#include "daw/daw_traits.h"
+#include "daw/impl/daw_make_trait.h"
 #include "daw_reverse_iterator.h"
 
 #include <cstddef>
@@ -34,9 +35,7 @@ namespace daw {
 			}
 		};
 
-		template<typename Iterator>
-		constexpr bool can_decrement =
-		  daw::is_detected_v<decltype( --std::declval<Iterator>( ) )>;
+		DAW_MAKE_REQ_TRAIT( can_decrement, --std::declval<T &>( ) );
 	} // namespace impl
 
 	template<typename CharT>
@@ -568,8 +567,8 @@ namespace daw {
 	         daw::required<impl::is_splitter_v<Splitter, String>> = nullptr>
 	constexpr auto make_split_it( String &sv, Splitter &&splitter ) noexcept {
 		using IterT = DAW_TYPEOF( std::begin( sv ) );
-		auto result = split_it<IterT, Splitter>{
-		  std::begin( sv ), std::end( sv ), DAW_FWD( splitter ) };
+		auto result = split_it<IterT, Splitter>{ std::begin( sv ), std::end( sv ),
+		                                         DAW_FWD( splitter ) };
 		return result;
 	}
 

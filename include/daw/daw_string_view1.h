@@ -53,7 +53,7 @@ namespace daw {
 
 		namespace string_view_details {
 			template<typename T>
-			constexpr bool is_dynamic_sv_v = T::extent == dynamic_string_size;
+			inline constexpr bool is_dynamic_sv_v = T::extent == dynamic_string_size;
 		} // namespace string_view_details
 
 		template<typename CharT, typename BoundsType, ptrdiff_t Extent>
@@ -1193,18 +1193,16 @@ namespace daw {
 		}
 		// basic_string_view / something else
 		//
-		namespace string_view_details::detectors {
-			template<typename T, typename CharT = char,
-			         typename Bounds = default_string_view_bounds_type>
-			using can_be_string_view =
-			  decltype( daw::sv1::basic_string_view<CharT, Bounds>( T{ } ) );
-		}
 
 		template<typename T, typename CharT = char,
-		         typename Bounds = default_string_view_bounds_type>
-		constexpr bool can_be_string_view =
-		  daw::is_detected_v<string_view_details::detectors::can_be_string_view, T,
-		                     CharT, Bounds>;
+		         typename Bounds = default_string_view_bounds_type, typename = void>
+		inline constexpr bool can_be_string_view = false;
+
+		template<typename T, typename CharT, typename Bounds>
+		inline constexpr bool can_be_string_view<
+		  T, CharT, Bounds,
+		  std::void_t<decltype( daw::sv1::basic_string_view<CharT, Bounds>(
+		    T{ } ) )>> = true;
 
 		template<typename CharT, typename BL, std::ptrdiff_t ExL, typename BR,
 		         std::ptrdiff_t ExR>

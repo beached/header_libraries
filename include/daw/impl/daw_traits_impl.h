@@ -10,8 +10,8 @@
 
 #include "daw/ciso646.h"
 #include "daw/daw_empty.h"
-#include "daw/daw_is_detected.h"
 #include "daw/daw_move.h"
+#include "daw/daw_remove_cvref.h"
 #include "daw/traits/daw_traits_identity.h"
 #include "daw/traits/daw_traits_nth_element.h"
 #include "daw/traits/daw_traits_pack_list.h"
@@ -26,76 +26,36 @@
 
 namespace daw {
 	namespace traits {
-		namespace traits_details {
-			template<typename, typename = void>
-			inline constexpr bool is_callable_with_v = false;
-
-			template<typename Func, typename... Args>
-			inline constexpr bool is_callable_with_v<
-			  Func( Args... ), std::void_t<decltype( std::declval<Func &>( )(
-			                     std::declval<Args>( )... ) )>> = true;
-		} // namespace traits_details
-
-		namespace detectors {
-			template<typename Function, typename... Args>
-			using callable_with =
-			  decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
-
-			template<typename BinaryPredicate, typename T, typename U = T>
-			using binary_predicate = callable_with<BinaryPredicate, T, U>;
-
-			template<typename UnaryPredicate, typename T>
-			using unary_predicate = callable_with<UnaryPredicate, T>;
-
-			template<typename T>
-			using dereferenceable = decltype( *std::declval<T>( ) );
-
-			template<typename T>
-			using is_array_array = decltype( std::declval<T>( )[0][0] );
-		} // namespace detectors
-
-		template<typename...>
-		inline constexpr bool is_single_void_arg_v = false;
-		template<>
-		inline constexpr bool is_single_void_arg_v<void> = true;
+		template<typename Function, typename... Args>
+		inline constexpr bool is_callable_v =
+		  std::is_invocable_v<Function, Args...>;
 
 		// the single void test is used in places like expected.   Comes up with
 		// is_callable_v<DAW_TYPEOF( foo( args... ) )>
-		template<typename Function, typename... Args>
-		inline constexpr bool is_callable_v =
-		  is_detected_v<traits::detectors::callable_with, Function, Args...> or
-		  ( is_single_void_arg_v<Args...> and
-		    is_detected_v<traits::detectors::callable_with, Function> );
+		template<typename Function>
+		inline constexpr bool is_callable_v<Function, void> =
+		  is_callable_v<Function>;
 
 		template<typename Result, typename Function, typename... Args>
 		inline constexpr bool is_callable_convertible_v =
-		  is_detected_convertible_v<Result, traits::detectors::callable_with,
-		                            Function, Args...>;
-		namespace traits_details {
-			template<typename Function, typename... Args,
-			         std::enable_if_t<is_callable_v<Function, Args...>,
-			                          std::nullptr_t> = nullptr>
-			constexpr bool is_nothrow_callable_test( ) noexcept {
-				return noexcept(
-				  std::declval<Function>( )( std::declval<Args>( )... ) );
-			}
+		  std::is_invocable_r_v<Result, Function, Args...>;
 
-			template<
-			  typename Function, typename... Args,
-			  std::enable_if_t<not daw::traits::is_callable_v<Function, Args...>,
-			                   std::nullptr_t> = nullptr>
-			constexpr bool is_nothrow_callable_test( ) noexcept {
-				return false;
-			}
-		} // namespace traits_details
+		template<typename Result, typename Function, typename... Args>
+		inline constexpr bool
+		  is_callable_convertible_v<Result, Function( Args... )> =
+		    is_callable_convertible_v<Result, Function, Args...>;
+
+		template<typename UnaryPredicate, typename T>
+		inline constexpr bool is_unary_prdicate_v =
+		  std::is_invocable_r_v<bool, UnaryPredicate, T>;
+
+		template<typename BinaryPredicate, typename T, typename U>
+		inline constexpr bool is_binary_prdicate_v =
+		  std::is_invocable_r_v<bool, BinaryPredicate, T, U>;
 
 		template<typename Function, typename... Args>
 		inline constexpr bool is_nothrow_callable_v =
-		  traits_details::is_nothrow_callable_test<Function, Args...>( );
-
-		template<typename Function, typename... Args>
-		using is_callable_t = typename is_detected<traits::detectors::callable_with,
-		                                           Function, Args...>::type;
+		  std::is_nothrow_invocable_v<Function, Args...>;
 
 		template<typename T>
 		using make_fp = std::add_pointer_t<T>;
@@ -221,14 +181,10 @@ namespace daw {
 				template<typename T>
 				using has_iterator_category =
 				  typename std::iterator_traits<T>::iterator_category;
-
-				template<typename T>
-				using is_incrementable = decltype( ++std::declval<T &>( ) );
 			} // namespace is_iter
 
-			template<typename T>
-			inline constexpr bool is_incrementable_v =
-			  std::is_same_v<T &, daw::detected_t<is_iter::is_incrementable, T>>;
+			DAW_MAKE_REQ_TRAIT( is_incrementable_v,
+			                    std::declval<T &>( ) = ++std::declval<T &>( ) );
 
 			DAW_MAKE_REQ_TRAIT_TYPE( has_value_type_v, is_iter::has_value_type<T> );
 
@@ -247,10 +203,6 @@ namespace daw {
 			  has_value_type_v<T> and has_difference_type_v<T> and
 			  has_reference_v<T> and has_pointer_v<T> and has_iterator_category_v<T>;
 		} // namespace traits_details
-
-		template<typename T>
-		using is_dereferenceable_t =
-		  typename is_detected<detectors::dereferenceable, T>::type;
 
 		DAW_MAKE_REQ_TRAIT( is_dereferenceable_v, *std::declval<T>( ) );
 
@@ -287,7 +239,7 @@ namespace daw {
 			}
 
 			template<typename... Args,
-			         std::enable_if_t<traits::is_callable_v<Function, Args...>,
+			         std::enable_if_t<std::is_invocable_v<Function, Args...>,
 			                          std::nullptr_t> = nullptr>
 			constexpr void operator( )( Args &&...args ) noexcept(
 			  traits::is_nothrow_callable_v<Function, Args...> ) {
@@ -318,7 +270,7 @@ namespace daw {
 			}
 
 			template<typename... Args,
-			         std::enable_if_t<traits::is_callable_v<Function, Args...>,
+			         std::enable_if_t<std::is_invocable_v<Function, Args...>,
 			                          std::nullptr_t> = nullptr>
 			constexpr void operator( )( Args &&...args ) noexcept(
 			  traits::is_nothrow_callable_v<Function, Args...> ) {

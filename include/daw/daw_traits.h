@@ -15,6 +15,7 @@
 #include "daw_move.h"
 #include "daw_pack_element.h"
 #include "daw_remove_cvref.h"
+#include "impl/daw_make_trait.h"
 #include "impl/daw_traits_impl.h"
 #include "traits/daw_traits_conditional.h"
 #include "traits/daw_traits_first_type.h"
@@ -165,49 +166,21 @@ namespace daw::traits {
 		using type_sink_t = typename type_sink<T>::type;
 	} // namespace traits_details
 
-// Build a check for the presence of a member
-// Can be used like METHOD_CHECKER_ANY( has_begin_method, begin, ( ) ) and the
-// check will look for begin( ) If you want to check args you could do the
-// following METHOD_CHECKER_ANY( has_index_operation, operator[], (
-// std::declval<size_t>( ) ) )
-#define METHOD_CHECKER_ANY( name, fn )                                    \
-	namespace traits_details_##name {                                       \
-		template<typename T, typename... Args>                                \
-		using name =                                                          \
-		  decltype( std::declval<T>( ).fn( std::declval<Args>( )... ) );      \
-	}                                                                       \
-	template<typename T, typename... Args>                                  \
-	constexpr bool name##_v = is_detected_v<traits_details_##name::name, T, \
-	                                        Args...> // END METHOD_CHECKER_ANY
+	DAW_MAKE_REQ_TRAIT_TYPE( has_type_member_v, T::type );
 
-	// decltype( std::declval<typename T::MemberName>( ) );
-#define HAS_STATIC_TYPE_MEMBER( MemberName )                                   \
-	namespace traits_details::detectors_##MemberName {                           \
-		template<typename T>                                                       \
-		using MemberName##_member = typename T::MemberName;                        \
-	}                                                                            \
-	template<typename T>                                                         \
-	constexpr bool has_##MemberName##_member_v =                                 \
-	  is_detected_v<traits_details::detectors_##MemberName::MemberName##_member, \
-	                T>
+	DAW_MAKE_REQ_TRAIT_TYPE( has_value_type_member_v, T::value_type );
 
-	HAS_STATIC_TYPE_MEMBER( type );
-	HAS_STATIC_TYPE_MEMBER( value_type );
-	HAS_STATIC_TYPE_MEMBER( mapped_type );
-	HAS_STATIC_TYPE_MEMBER( iterator );
+	DAW_MAKE_REQ_TRAIT_TYPE( has_mapped_type_member_v, T::mapped_type );
 
-	METHOD_CHECKER_ANY( has_begin_member, begin );
-	METHOD_CHECKER_ANY( has_end_member, end );
+	DAW_MAKE_REQ_TRAIT_TYPE( has_iterator_member_v, T::iterator );
 
-	namespace traits_details::detectors {
-		template<typename T>
-		using has_substr_member = decltype( std::declval<T>( ).substr(
-		  std::declval<size_t>( ), std::declval<size_t>( ) ) );
-	}
+	DAW_MAKE_REQ_TRAIT( has_begin_member_v, std::declval<T &>( ).begin( ) );
 
-	template<typename T>
-	inline constexpr bool has_substr_member_v =
-	  is_detected_v<traits_details::detectors::has_substr_member, T>;
+	DAW_MAKE_REQ_TRAIT( has_end_member_v, std::declval<T &>( ).end( ) );
+
+	DAW_MAKE_REQ_TRAIT( has_substr_member_v,
+	                    std::declval<T>( ).substr( std::declval<size_t>( ),
+	                                               std::declval<size_t>( ) ) );
 
 	template<typename T>
 	inline constexpr bool is_map_like_v =
@@ -341,9 +314,16 @@ namespace daw::traits {
 	inline constexpr bool are_convertible_to_v =
 	  all_true_v<std::is_convertible_v<From, To>...>;
 
-	template<typename String>
-	inline constexpr bool is_not_array_array_v =
-	  not daw::is_detected_v<detectors::is_array_array, String>;
+	namespace traits_impl {
+		template<typename T, std::size_t N, std::size_t M>
+		void is_array_of_array_test( T ( & )[N][M] );
+	} // namespace traits_impl
+
+	DAW_MAKE_REQ_TRAIT( is_array_array_v, traits_impl::is_array_of_array_test(
+	                                        std::declval<T>( ) ) );
+
+	template<typename T>
+	inline constexpr bool is_not_array_array_v = not is_array_array_v<T>;
 
 	template<typename String>
 	inline constexpr bool is_string_view_like_v =

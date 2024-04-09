@@ -184,8 +184,7 @@ namespace daw::algorithm {
 	auto map( Container const &container, UnaryOperator unary_operator ) {
 
 		static_assert(
-		  traits::is_callable_v<UnaryOperator,
-		                        decltype( *std::cbegin( container ) )>,
+		  std::is_invocable_v<UnaryOperator, decltype( *std::cbegin( container ) )>,
 		  "UnaryOperator is not callable with the values stored in Container" );
 
 		using result_t = std::vector<decltype( unary_operator(
@@ -210,8 +209,7 @@ namespace daw::algorithm {
 	                                                     unary_operator ) ) ) {
 
 		static_assert(
-		  traits::is_callable_v<UnaryOperator,
-		                        decltype( *std::cbegin( container ) )>,
+		  std::is_invocable_v<UnaryOperator, decltype( *std::cbegin( container ) )>,
 		  "UnaryOperator is not callable with the values stored in Container" );
 
 		static_assert( std::is_convertible_v<decltype( unary_operator(
@@ -236,8 +234,7 @@ namespace daw::algorithm {
 	                                                     unary_operator ) ) ) {
 
 		static_assert(
-		  traits::is_callable_v<UnaryOperator,
-		                        decltype( *std::cbegin( container ) )>,
+		  std::is_invocable_v<UnaryOperator, decltype( *std::cbegin( container ) )>,
 		  "UnaryOperator is not callable with the values stored in Container" );
 
 		std::transform( std::cbegin( container ), std::cend( container ), first_out,

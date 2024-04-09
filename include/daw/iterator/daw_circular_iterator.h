@@ -8,28 +8,30 @@
 
 #pragma once
 
-#include "../daw_algorithm.h"
-#include "../daw_move.h"
-#include "../daw_traits.h"
+#include "daw/daw_algorithm.h"
+#include "daw/daw_move.h"
+#include "daw/daw_traits.h"
+#include "daw/impl/daw_make_trait.h"
 
+#include <cstddef>
 #include <iterator>
+#include <type_traits>
+#include <utility>
 
 namespace daw {
 	namespace impl {
-		template<typename C>
-		using has_size_member = decltype( std::declval<C>( ).size( ) );
+		DAW_MAKE_REQ_TRAIT( has_size_member_v, std::declval<T>( ).size( ) );
 
-		template<typename Container,
-		         std::enable_if_t<is_detected_v<has_size_member, Container>,
-		                          std::nullptr_t> = nullptr>
-		constexpr size_t container_size( Container &c ) {
+		template<typename Container, std::enable_if_t<has_size_member_v<Container>,
+		                                              std::nullptr_t> = nullptr>
+		constexpr std::size_t container_size( Container &c ) {
 			return c.size( );
 		}
 
 		template<typename Container,
-		         std::enable_if_t<!is_detected_v<has_size_member, Container>,
+		         std::enable_if_t<not has_size_member_v<Container>,
 		                          std::nullptr_t> = nullptr>
-		constexpr size_t container_size( Container &c ) {
+		constexpr std::size_t container_size( Container &c ) {
 			return static_cast<size_t>(
 			  daw::distance( std::cbegin( c ), std::cend( c ) ) );
 		}

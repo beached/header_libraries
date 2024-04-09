@@ -10,6 +10,7 @@
 
 #include "ciso646.h"
 #include "daw_exception.h"
+#include "daw_is_detected.h"
 #include "daw_move.h"
 #include "daw_traits.h"
 

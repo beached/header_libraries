@@ -19,6 +19,7 @@
 #include <exception>
 #include <stdexcept>
 #include <string>
+#include <type_traits>
 #include <utility>
 
 namespace daw {
@@ -123,7 +124,7 @@ namespace daw {
 		// std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename... Args,
-		         std::enable_if_t<traits::is_callable_v<Function, Args...>,
+		         std::enable_if_t<std::is_invocable_v<Function, Args...>,
 		                          std::nullptr_t> = nullptr>
 		static checked_expected_t from_code( Function func, Args &&...args ) {
 			try {

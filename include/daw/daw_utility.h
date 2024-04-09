@@ -22,6 +22,7 @@
 #include "daw_traits.h"
 #include "daw_typeof.h"
 #include "daw_unused.h"
+#include "impl/daw_make_trait.h"
 
 #include <cmath>
 #include <cstddef>
@@ -671,11 +672,7 @@ namespace daw {
 		template<typename... Args>
 		constexpr void is_tuple_test( std::tuple<Args...> const & ) noexcept;
 
-		template<typename T>
-		using is_tuple_detect = decltype( is_tuple_test( std::declval<T>( ) ) );
-
-		template<typename T>
-		constexpr bool is_tuple_v = daw::is_detected_v<is_tuple_detect, T>;
+		DAW_MAKE_REQ_TRAIT( is_tuple_v, is_tuple_test( std::declval<T>( ) ) );
 	} // namespace utility_details
 
 	template<typename Destination, typename... Args>

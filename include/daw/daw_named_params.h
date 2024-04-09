@@ -8,9 +8,10 @@
 
 #pragma once
 
-#include <daw/daw_concepts.h>
-#include <daw/daw_move.h>
-#include <daw/daw_traits.h>
+#include "daw_concepts.h"
+#include "daw_move.h"
+#include "daw_traits.h"
+#include "impl/daw_make_trait.h"
 
 #include <compare>
 #include <type_traits>
@@ -82,7 +83,9 @@ namespace daw::nparam {
 			[[nodiscard]] constexpr unique_option_t operator=( Type &&v ) const {
 				return unique_option_t{ std::move( v ) };
 			}
+			// clang-format off
 			auto operator<=>( unique_option_t const & ) const = default;
+			// clang-format on
 		};
 
 		template<typename Type, typename...>
@@ -97,7 +100,9 @@ namespace daw::nparam {
 			[[nodiscard]] constexpr option_t operator=( Type &&v ) const {
 				return option_t{ std::move( v ) };
 			}
+			// clang-format off
 			auto operator<=>( option_t const & ) const = default;
+			// clang-format on
 		};
 	} // namespace details
 } // namespace daw::nparam

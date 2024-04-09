@@ -8,8 +8,10 @@
 
 #pragma once
 
+#include "daw_is_detected.h"
 #include "daw_move.h"
 #include "daw_traits.h"
+#include "impl/daw_make_trait.h"
 
 #include <type_traits>
 

@@ -336,8 +336,7 @@ namespace daw::traits {
 
 	template<typename Predicate, typename... Args>
 	inline constexpr bool is_predicate_v =
-	  is_detected_convertible_v<bool, traits::detectors::callable_with, Predicate,
-	                            Args...>;
+	  is_callable_convertible_v<bool, Predicate( Args... )>;
 
 	template<typename Predicate, typename... Args>
 	DAW_ATTRIB_INLINE static constexpr bool is_predicate_test( ) {

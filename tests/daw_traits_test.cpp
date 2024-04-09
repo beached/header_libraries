@@ -346,65 +346,6 @@ constexpr int f( int ) noexcept {
 	return 1;
 }
 
-namespace daw_traits_is_callable {
-#ifdef __clang__
-#ifndef __ICC // icpc defines the __clang__ macro
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
-#endif
-#endif
-	auto const blah = []( auto t ) noexcept {
-		return t;
-	};
-#ifdef __clang__
-#ifndef __ICC // icpc defines the __clang__ macro
-#pragma clang diagnostic pop
-#endif
-#endif
-
-	static_assert( daw::traits::is_callable_v<decltype( blah ), int>,
-	               "blah should be callable" );
-
-	constexpr auto val2 = daw::traits::is_callable_v<decltype( &f ), int>;
-	static_assert( val2, "f should be callable with an int" );
-
-	constexpr auto val3 =
-	  not daw::traits::is_callable_v<decltype( &f ), TestYesOS>;
-	static_assert( val3, "f should be callable with an non-int" );
-
-	constexpr auto val4 = not daw::traits::is_callable_v<TestYesOS, int>;
-	static_assert( val4, "TestYesOS should not be callable" );
-
-#ifdef __clang__
-#ifndef __ICC // icpc defines the __clang__ macro
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
-#endif
-#endif
-	auto const blah2 = []( ) noexcept {
-		return true;
-	};
-#ifdef __clang__
-#ifndef __ICC // icpc defines the __clang__ macro
-#pragma clang diagnostic pop
-#endif
-#endif
-
-	using T = decltype( blah2 );
-
-	constexpr bool const b1 = daw::traits::is_callable_v<T, void>;
-	static_assert(
-	  b1,
-	  "is_callable_v<decltype( blah2 ) should be callable with a single void" );
-
-	constexpr bool const b2 = daw::traits::is_callable_v<T>;
-	static_assert(
-	  b2, "is_callable_v<decltype( blah2 ) should be callable with zero args" );
-
-	constexpr bool const b3 = daw::traits::is_callable_v<T, int>;
-	static_assert( not b3, "blah2 should not be callable with an int arg" );
-} // namespace daw_traits_is_callable
-
 namespace daw_traits_has_operator {
 	struct blah {
 		std::string a;
@@ -447,18 +388,11 @@ struct test_binary_pred_t {
 };
 
 namespace binary_predicate_002 {
-	using a_t = daw::is_detected<daw::traits::detectors::callable_with,
-	                             test_binary_pred_t, int, int>;
-	constexpr auto const a = std::is_convertible_v<a_t, bool>;
-	static_assert( a, "a: Not callable with (int, int )" );
-
-	constexpr auto const b =
-	  daw::traits::is_callable_v<test_binary_pred_t, int, int>;
-	static_assert( b, "b: Not callable with (int, int )" );
+	static_assert(
+	  daw::traits::is_binary_predicate_v<test_binary_pred_t, int, int> );
 
 	constexpr auto const c =
-	  daw::is_detected_convertible_v<bool, daw::traits::detectors::callable_with,
-	                                 test_binary_pred_t, int, int>;
+	  daw::traits::is_binary_predicate_v<test_binary_pred_t, int, int>;
 	static_assert( c, "c: Not callable with (int, int )" );
 
 	static_assert( daw::traits::is_predicate_v<test_binary_pred_t, int, int>,
@@ -739,25 +673,6 @@ namespace is_tuple_test_002 {
 namespace is_tuple_test_004 {
 	static_assert( daw::traits::is_tuple_v<std::tuple<>> );
 }
-
-namespace is_callable_convertible_001 {
-#ifdef __clang__
-#ifndef __ICC // icpc defines the __clang__ macro
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
-#endif
-#endif
-	auto const func = []( auto d ) noexcept {
-		return 2.0 * d;
-	};
-#ifdef __clang__
-#ifndef __ICC // icpc defines the __clang__ macro
-#pragma clang diagnostic pop
-#endif
-#endif
-	static_assert(
-	  daw::traits::is_callable_convertible_v<double, decltype( func ), double> );
-} // namespace is_callable_convertible_001
 
 namespace all_true_001 {
 	static_assert(

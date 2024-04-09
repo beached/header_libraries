@@ -13,7 +13,6 @@
 #include "daw_cpp_feature_check.h"
 #include "daw_deduced_type.h"
 #include "daw_enable_if.h"
-#include "daw_is_detected.h"
 #include "daw_move.h"
 #include "daw_remove_cvref.h"
 #include "traits/daw_traits_conditional.h"
@@ -120,25 +119,8 @@ namespace daw {
 		return c.size( );
 	}
 
-#ifdef __cpp_lib_is_swappable
 	template<typename T>
 	inline constexpr bool is_swappable_v = std::is_swappable_v<T>;
-#else
-	namespace detectors {
-		template<typename T>
-		using detect_std_swap =
-		  decltype( std::swap( std::declval<T &>( ), std::declval<T &>( ) ) );
-
-		template<typename T>
-		using detect_adl_swap =
-		  decltype( swap( std::declval<T &>( ), std::declval<T &>( ) ) );
-	} // namespace detectors
-
-	template<typename T>
-	inline constexpr bool is_swappable_v =
-	  is_detected_v<detectors::detect_std_swap, T> or
-	  is_detected_v<detectors::detect_adl_swap, T>;
-#endif
 
 	// Iterator movement, until I can use c++ 17 and the std ones are constexpr
 	namespace cpp_17_details {
