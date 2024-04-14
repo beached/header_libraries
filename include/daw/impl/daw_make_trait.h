@@ -12,31 +12,31 @@
 
 #if defined( __cpp_lib_concepts )
 #define DAW_MAKE_REQ_TRAIT( Name, /*ReqExpression*/... ) \
-	template<typename T, typename = void>                  \
+	template<typename T>                                   \
 	inline constexpr bool Name = requires {                \
 		__VA_ARGS__;                                         \
 	};
 
 #define DAW_MAKE_REQ_TRAIT2( Name, /*ReqExpression*/... ) \
-	template<typename T, typename U, typename = void>       \
+	template<typename T, typename U>                        \
 	inline constexpr bool Name = requires {                 \
 		__VA_ARGS__;                                          \
 	};
 
-#define DAW_MAKE_REQ_TRAIT3( Name, /*ReqExpression*/... )       \
-	template<typename T, typename U, typename V, typename = void> \
-	inline constexpr bool Name = requires {                       \
-		__VA_ARGS__;                                                \
+#define DAW_MAKE_REQ_TRAIT3( Name, /*ReqExpression*/... ) \
+	template<typename T, typename U, typename V>            \
+	inline constexpr bool Name = requires {                 \
+		__VA_ARGS__;                                          \
 	};
 
 #define DAW_MAKE_REQ_TRAIT_TYPE( Name, /*ReqExpression*/... ) \
-	template<typename T, typename = void>                       \
+	template<typename T>                                        \
 	inline constexpr bool Name = requires {                     \
 		typename __VA_ARGS__;                                     \
 	};
 
 #define DAW_MAKE_REQ_TRAIT2D( Name, /*ReqExpression*/... ) \
-	template<typename T, typename U = T, typename = void>    \
+	template<typename T, typename U = T>                     \
 	inline constexpr bool Name = requires {                  \
 		__VA_ARGS__;                                           \
 	};
