@@ -10,6 +10,6 @@ cmake --install .
 cd ../cmake/test_project/
 mkdir build
 cd build
-cmake .. -CMAKE_MODULE_PATH=/tmp/header_libraries/lib/cmake
+cmake .. -DCMAKE_MODULE_PATH=/tmp/header_libraries/lib/cmake
 cmake --build .
 ctest -C Debug -VV
