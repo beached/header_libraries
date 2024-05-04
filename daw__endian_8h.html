@@ -75,11 +75,12 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="ciso646_8h_source.html">ciso646.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__constant_8h_source.html">daw_constant.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>&quot;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;<a class="el" href="enable__if_8h_source.html">daw/stdinc/enable_if.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="integral__constant_8h_source.html">daw/stdinc/integral_constant.h</a>&gt;</code><br />
 </div>
 <p><a href="daw__endian_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -99,16 +100,16 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a9709890570ed737d34937294ad53d35b"><td class="memTemplParams" colspan="2">template&lt;typename T , std::enable_if_t&lt; std::is_integral_v&lt; T &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a9709890570ed737d34937294ad53d35b"><td class="memTemplParams" colspan="2">template&lt;typename T , std::enable_if_t&lt; daw::is_integral_v&lt; T &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a9709890570ed737d34937294ad53d35b"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9709890570ed737d34937294ad53d35b">daw::network_to_host_endian</a> (T value) noexcept</td></tr>
 <tr class="separator:a9709890570ed737d34937294ad53d35b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c6ed78f7389a0a43a729b71f90de2f0"><td class="memTemplParams" colspan="2">template&lt;typename T , std::enable_if_t&lt; std::is_integral_v&lt; T &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a3c6ed78f7389a0a43a729b71f90de2f0"><td class="memTemplParams" colspan="2">template&lt;typename T , std::enable_if_t&lt; daw::is_integral_v&lt; T &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a3c6ed78f7389a0a43a729b71f90de2f0"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3c6ed78f7389a0a43a729b71f90de2f0">daw::to_big_endian</a> (T value) noexcept</td></tr>
 <tr class="separator:a3c6ed78f7389a0a43a729b71f90de2f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab552e32c2d0e33df0451a5d2c8f6fecd"><td class="memTemplParams" colspan="2">template&lt;typename T , std::enable_if_t&lt; std::is_integral_v&lt; T &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:ab552e32c2d0e33df0451a5d2c8f6fecd"><td class="memTemplParams" colspan="2">template&lt;typename T , std::enable_if_t&lt; daw::is_integral_v&lt; T &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:ab552e32c2d0e33df0451a5d2c8f6fecd"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ab552e32c2d0e33df0451a5d2c8f6fecd">daw::to_little_endian</a> (T value) noexcept</td></tr>
 <tr class="separator:ab552e32c2d0e33df0451a5d2c8f6fecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56818c87f5c8432dd81213e932a29ddb"><td class="memTemplParams" colspan="2">template&lt;endian SourceEndian, typename T , std::enable_if_t&lt; std::is_integral_v&lt; T &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a56818c87f5c8432dd81213e932a29ddb"><td class="memTemplParams" colspan="2">template&lt;endian SourceEndian, typename T , std::enable_if_t&lt; daw::is_integral_v&lt; T &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a56818c87f5c8432dd81213e932a29ddb"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a56818c87f5c8432dd81213e932a29ddb">daw::to_native_endian</a> (T value) noexcept</td></tr>
 <tr class="separator:a56818c87f5c8432dd81213e932a29ddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>

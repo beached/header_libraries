@@ -93,6 +93,17 @@ $(function() {
 <div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="daw__likely_8h.html#aac203d49128f887e315aa23304912cd8">   21</a></span>&#160;<span class="preprocessor">#define DAW_UNLIKELY( ... ) !!( __VA_ARGS__ )</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#if __has_cpp_attribute( likely )</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#define DAW_LIKELY_BRANCH [[likely]]</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="daw__likely_8h.html#a8bedb829ae8f156b8b1054e75a9ec6d8">   27</a></span>&#160;<span class="preprocessor">#define DAW_LIKELY_BRANCH [[]]</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#if __has_cpp_attribute( unlikely )</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#define DAW_UNLIKELY_BRANCH [[unlikely]]</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="daw__likely_8h.html#a37afcfab5e8b51ba46daf2b1e71c61a1">   33</a></span>&#160;<span class="preprocessor">#define DAW_UNLIKELY_BRANCH [[]]</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="adaw__cpp__feature__check_8h_html"><div class="ttname"><a href="daw__cpp__feature__check_8h.html">daw_cpp_feature_check.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

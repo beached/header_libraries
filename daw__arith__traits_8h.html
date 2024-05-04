@@ -89,6 +89,8 @@ $(function() {
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1is__system__integral.html">daw::is_system_integral&lt; T &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1make__signed.html">daw::make_signed&lt; T &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1make__unsigned.html">daw::make_unsigned&lt; T &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1numeric__limits.html">daw::numeric_limits&lt; T &gt;</a></td></tr>
@@ -126,6 +128,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a214d465f63cd9ada4a5c7c473cb814cb"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a214d465f63cd9ada4a5c7c473cb814cb"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a214d465f63cd9ada4a5c7c473cb814cb">daw::is_unsigned</a> = std::conjunction&lt; is_integral&lt; T &gt;, std::negation&lt; arith_traits_details::limits_is_signed&lt; T &gt; &gt;&gt;</td></tr>
 <tr class="separator:a214d465f63cd9ada4a5c7c473cb814cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a678783b7a17e1d9db2bcb1d2c92a1dbc"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a678783b7a17e1d9db2bcb1d2c92a1dbc"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a678783b7a17e1d9db2bcb1d2c92a1dbc">daw::make_signed_t</a> = typename make_signed&lt; T &gt;::type</td></tr>
+<tr class="separator:a678783b7a17e1d9db2bcb1d2c92a1dbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa88d1d77939be042bb671074e68331cd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aa88d1d77939be042bb671074e68331cd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa88d1d77939be042bb671074e68331cd">daw::make_unsigned_t</a> = typename make_unsigned&lt; T &gt;::type</td></tr>
 <tr class="separator:aa88d1d77939be042bb671074e68331cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -159,6 +164,15 @@ Variables</h2></td></tr>
 <tr class="memitem:a8bf218c78227ebd73155aeb469aa0812"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a8bf218c78227ebd73155aeb469aa0812"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a8bf218c78227ebd73155aeb469aa0812">daw::is_unsigned_v</a> = is_unsigned&lt;T&gt;::value</td></tr>
 <tr class="separator:a8bf218c78227ebd73155aeb469aa0812"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e8a26fd7498284e3fec7149c129c8e6"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a9e8a26fd7498284e3fec7149c129c8e6"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9e8a26fd7498284e3fec7149c129c8e6">daw::lowest_value</a> = numeric_limits&lt;T&gt;::lowest( )</td></tr>
+<tr class="separator:a9e8a26fd7498284e3fec7149c129c8e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbdc0efaba18dd51de4f4b01c1c764e3"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:afbdc0efaba18dd51de4f4b01c1c764e3"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#afbdc0efaba18dd51de4f4b01c1c764e3">daw::max_value</a> = numeric_limits&lt;T&gt;::max( )</td></tr>
+<tr class="separator:afbdc0efaba18dd51de4f4b01c1c764e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba0394ba8444b7c5f408d214c7344652"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aba0394ba8444b7c5f408d214c7344652"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aba0394ba8444b7c5f408d214c7344652">daw::min_value</a> = numeric_limits&lt;T&gt;::min( )</td></tr>
+<tr class="separator:aba0394ba8444b7c5f408d214c7344652"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

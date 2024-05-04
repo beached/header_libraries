@@ -70,8 +70,7 @@ $(function() {
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">daw_bounded_string.h File Reference</div>  </div>
 </div><!--header-->
@@ -87,6 +86,7 @@ $(function() {
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__string__view1_8h_source.html">daw_string_view1.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__make__trait_8h_source.html">impl/daw_make_trait.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__back__inserter_8h_source.html">iterator/daw_back_inserter.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__iterator_8h_source.html">iterator/daw_iterator.h</a>&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
@@ -115,8 +115,6 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
 <tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacedaw_1_1detectors"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1detectors.html">daw::detectors</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacestd"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestd.html">std</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -124,9 +122,6 @@ Namespaces</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:af56b938e60bf95ac4bb28a10180cdd40"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af56b938e60bf95ac4bb28a10180cdd40">daw::bounded_string</a> = basic_bounded_string&lt; char, 100 &gt;</td></tr>
 <tr class="separator:af56b938e60bf95ac4bb28a10180cdd40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42f7a508be15cf7c7d8fc6a4b2ac3f76"><td class="memTemplParams" colspan="2">template&lt;typename String &gt; </td></tr>
-<tr class="memitem:a42f7a508be15cf7c7d8fc6a4b2ac3f76"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1detectors.html#a42f7a508be15cf7c7d8fc6a4b2ac3f76">daw::detectors::can_be_bounded_string</a> = decltype(<a class="el" href="namespacedaw.html#af56b938e60bf95ac4bb28a10180cdd40">daw::bounded_string</a>{ std::declval&lt; String &gt;() })</td></tr>
-<tr class="separator:a42f7a508be15cf7c7d8fc6a4b2ac3f76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e17fe7331ea0b5354f59729172bdde4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0e17fe7331ea0b5354f59729172bdde4">daw::u16bounded_string</a> = basic_bounded_string&lt; char16_t, 100 &gt;</td></tr>
 <tr class="separator:a0e17fe7331ea0b5354f59729172bdde4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63f0b37c56a38407ca3436181ad69a80"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a63f0b37c56a38407ca3436181ad69a80">daw::u32bounded_string</a> = basic_bounded_string&lt; char32_t, 100 &gt;</td></tr>
@@ -142,6 +137,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a214c6df51da18ed6c40889a3530bee35"><td class="memTemplParams" colspan="2">template&lt;typename CharT , size_t N&gt; </td></tr>
 <tr class="memitem:a214c6df51da18ed6c40889a3530bee35"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a214c6df51da18ed6c40889a3530bee35">daw::basic_bounded_string</a> (CharT const (&amp;)[N]) -&gt; basic_bounded_string&lt; CharT, N &gt;</td></tr>
 <tr class="separator:a214c6df51da18ed6c40889a3530bee35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07ee05d3805dae18d0e0c279b7e0fb13"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a07ee05d3805dae18d0e0c279b7e0fb13">daw::DAW_MAKE_REQ_TRAIT</a> (can_be_bounded_string, <a class="el" href="namespacedaw.html#af56b938e60bf95ac4bb28a10180cdd40">daw::bounded_string</a>{ std::declval&lt; T &gt;() })</td></tr>
+<tr class="separator:a07ee05d3805dae18d0e0c279b7e0fb13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d3e7ada0e2ec66a6e8d7ede7f9fd893"><td class="memTemplParams" colspan="2">template&lt;typename CharT , size_t Capacity&gt; </td></tr>
 <tr class="memitem:a0d3e7ada0e2ec66a6e8d7ede7f9fd893"><td class="memTemplItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0d3e7ada0e2ec66a6e8d7ede7f9fd893">daw::fnv1a_hash</a> (<a class="el" href="structdaw_1_1basic__bounded__string.html">daw::basic_bounded_string</a>&lt; CharT, Capacity &gt; const &amp;str) noexcept</td></tr>
 <tr class="separator:a0d3e7ada0e2ec66a6e8d7ede7f9fd893"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -371,12 +368,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a67dfeecc0aded7ae0eec103bcba71f50"><td class="memTemplParams" colspan="2">template&lt;typename CharT , size_t N&gt; </td></tr>
 <tr class="memitem:a67dfeecc0aded7ae0eec103bcba71f50"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a67dfeecc0aded7ae0eec103bcba71f50">daw::swap</a> (basic_bounded_string&lt; CharT, N &gt; &amp;lhs, basic_bounded_string&lt; CharT, N &gt; &amp;rhs) noexcept</td></tr>
 <tr class="separator:a67dfeecc0aded7ae0eec103bcba71f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:a5c687b45f367a493f19b02eded7b596a"><td class="memTemplParams" colspan="2">template&lt;typename String &gt; </td></tr>
-<tr class="memitem:a5c687b45f367a493f19b02eded7b596a"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5c687b45f367a493f19b02eded7b596a">daw::can_be_bounded_string</a></td></tr>
-<tr class="separator:a5c687b45f367a493f19b02eded7b596a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

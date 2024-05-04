@@ -79,6 +79,7 @@ $(function() {
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__swap_8h_source.html">daw_swap.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__make__trait_8h_source.html">impl/daw_make_trait.h</a>&quot;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;optional&gt;</code><br />
@@ -104,22 +105,22 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae7aba301bb40c3efc9cf75f85d75a015"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , value_ptr_details::has_compare_inequality&lt; T, U, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:ae7aba301bb40c3efc9cf75f85d75a015"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , std::enable_if_t&lt; value_ptr_details::has_compare_inequality&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:ae7aba301bb40c3efc9cf75f85d75a015"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ae7aba301bb40c3efc9cf75f85d75a015">daw::operator!=</a> (value_ptr&lt; T &gt; const &amp;lhs, value_ptr&lt; U &gt; const &amp;rhs) noexcept(noexcept(*lhs != *rhs))</td></tr>
 <tr class="separator:ae7aba301bb40c3efc9cf75f85d75a015"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b753bccdcbf0e11c1243361dbaab73a"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , value_ptr_details::has_compare_less&lt; T, U, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a7b753bccdcbf0e11c1243361dbaab73a"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , std::enable_if_t&lt; value_ptr_details::has_compare_less&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a7b753bccdcbf0e11c1243361dbaab73a"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a7b753bccdcbf0e11c1243361dbaab73a">daw::operator&lt;</a> (value_ptr&lt; T &gt; const &amp;lhs, value_ptr&lt; U &gt; const &amp;rhs) noexcept(noexcept(*lhs&lt; *rhs))</td></tr>
 <tr class="separator:a7b753bccdcbf0e11c1243361dbaab73a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade5da5470013039d3121e70ed5bb125a"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , value_ptr_details::has_compare_less_equal&lt; T, U, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:ade5da5470013039d3121e70ed5bb125a"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , std::enable_if_t&lt; value_ptr_details::has_compare_less_equal&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:ade5da5470013039d3121e70ed5bb125a"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ade5da5470013039d3121e70ed5bb125a">daw::operator&lt;=</a> (value_ptr&lt; T &gt; const &amp;lhs, value_ptr&lt; U &gt; const &amp;rhs) noexcept(noexcept(*lhs&lt;= *rhs))</td></tr>
 <tr class="separator:ade5da5470013039d3121e70ed5bb125a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0431b3f19d94dced85b31e5574efce4"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , value_ptr_details::has_compare_equality&lt; T, U, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:ab0431b3f19d94dced85b31e5574efce4"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , std::enable_if_t&lt; value_ptr_details::has_compare_equality&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:ab0431b3f19d94dced85b31e5574efce4"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ab0431b3f19d94dced85b31e5574efce4">daw::operator==</a> (value_ptr&lt; T &gt; const &amp;lhs, value_ptr&lt; U &gt; const &amp;rhs) noexcept(noexcept(*lhs== *rhs))</td></tr>
 <tr class="separator:ab0431b3f19d94dced85b31e5574efce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25d1cc8839ea17102b68a22ea4ea4438"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , value_ptr_details::has_compare_greater&lt; T, U, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a25d1cc8839ea17102b68a22ea4ea4438"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , std::enable_if_t&lt; value_ptr_details::has_compare_greater&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a25d1cc8839ea17102b68a22ea4ea4438"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a25d1cc8839ea17102b68a22ea4ea4438">daw::operator&gt;</a> (value_ptr&lt; T &gt; const &amp;lhs, value_ptr&lt; U &gt; const &amp;rhs) noexcept(noexcept(*lhs &gt; *rhs))</td></tr>
 <tr class="separator:a25d1cc8839ea17102b68a22ea4ea4438"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57b1a273822af86e5d342ede56038b3d"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , value_ptr_details::has_compare_greater_equal&lt; T, U, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a57b1a273822af86e5d342ede56038b3d"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , std::enable_if_t&lt; value_ptr_details::has_compare_greater_equal&lt; T, U &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a57b1a273822af86e5d342ede56038b3d"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a57b1a273822af86e5d342ede56038b3d">daw::operator&gt;=</a> (value_ptr&lt; T &gt; const &amp;lhs, value_ptr&lt; U &gt; const &amp;rhs) noexcept(noexcept(*lhs &gt;= *rhs))</td></tr>
 <tr class="separator:a57b1a273822af86e5d342ede56038b3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2916f05c68092f6fbf4356d8c7ceafbb"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>

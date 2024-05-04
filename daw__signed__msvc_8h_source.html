@@ -102,15 +102,15 @@ $(function() {
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>daw::integers::sint_impl {</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> is_valid_int_type =</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    std::is_integral_v&lt;T&gt; and std::is_signed_v&lt;T&gt; and</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    daw::is_integral_v&lt;T&gt; and daw::is_signed_v&lt;T&gt; and</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">sizeof</span>( T ) &lt;= <span class="keyword">sizeof</span>( std::int64_t );</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">namespace </span>{</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> SignedInteger&gt;</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    constexpr <span class="keywordtype">bool</span> wrapping_add( SignedInteger a, SignedInteger b,</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                                 SignedInteger &amp;result ) {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      static_assert( std::is_integral_v&lt;SignedInteger&gt; and</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                       std::is_signed_v&lt;SignedInteger&gt; and</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      static_assert( daw::is_integral_v&lt;SignedInteger&gt; and</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                       daw::is_signed_v&lt;SignedInteger&gt; and</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                       <span class="keyword">sizeof</span>( SignedInteger ) &lt;= 8U,</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                     <span class="stringliteral">&quot;Invalid signed integer&quot;</span> );</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      <span class="keyword">auto</span> <span class="keyword">const</span> res64 =</div>
@@ -121,17 +121,17 @@ $(function() {
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordflow">return</span> result != res64;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordflow">return</span> ( b &gt; 0 and</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                 a &gt; ( <a class="code" href="namespacedaw_1_1tuple.html#a543ce1a1cb4ea6b89b50c454a74631bd">std::numeric_limits&lt;SignedInteger&gt;::max</a>( ) - b ) ) or</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                 a &gt; ( <a class="code" href="structdaw_1_1numeric__limits.html">daw::numeric_limits&lt;SignedInteger&gt;::max</a>( ) - b ) ) or</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;               ( b &lt; 0 and</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                 a &lt; ( <a class="code" href="namespacedaw_1_1tuple.html#a85aad7e3b54bb9b033b0b4b628f06846">std::numeric_limits&lt;SignedInteger&gt;::min</a>( ) - b ) );</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                 a &lt; ( <a class="code" href="structdaw_1_1numeric__limits.html">daw::numeric_limits&lt;SignedInteger&gt;::min</a>( ) - b ) );</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      }</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> SignedInteger&gt;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    constexpr <span class="keywordtype">bool</span> wrapping_sub( SignedInteger a, SignedInteger b,</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                                 SignedInteger &amp;result ) {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      static_assert( std::is_integral_v&lt;SignedInteger&gt; and</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                       std::is_signed_v&lt;SignedInteger&gt; and</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      static_assert( daw::is_integral_v&lt;SignedInteger&gt; and</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                       daw::is_signed_v&lt;SignedInteger&gt; and</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                       <span class="keyword">sizeof</span>( SignedInteger ) &lt;= 8U,</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                     <span class="stringliteral">&quot;Invalid signed integer&quot;</span> );</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      <span class="keyword">auto</span> <span class="keyword">const</span> res64 =</div>
@@ -243,9 +243,9 @@ $(function() {
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="daw__likely_8h.html#aac203d49128f887e315aa23304912cd8">DAW_UNLIKELY</a>( rhs == 0 ) ) {</div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;          <a class="code" href="namespacedaw_1_1integers.html#acbfabcf5a0a65f70c16839f779000c80">on_signed_integer_div_by_zero</a>( );</div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;          <span class="keywordflow">return</span> lhs;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span>( rhs == T{ -1 } and lhs == <a class="code" href="namespacedaw_1_1tuple.html#a85aad7e3b54bb9b033b0b4b628f06846">std::numeric_limits&lt;T&gt;::min</a>( ) ) {</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span>( rhs == T{ -1 } and lhs == <a class="code" href="namespacedaw_1_1tuple.html#a85aad7e3b54bb9b033b0b4b628f06846">daw::numeric_limits&lt;T&gt;::min</a>( ) ) {</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;          <a class="code" href="namespacedaw_1_1integers.html#a0300773fd95e6d381d423d7a10c0dbe8">on_signed_integer_overflow</a>( );</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;          <span class="keywordflow">return</span> <a class="code" href="namespacedaw_1_1tuple.html#a543ce1a1cb4ea6b89b50c454a74631bd">std::numeric_limits&lt;T&gt;::max</a>( );</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;          <span class="keywordflow">return</span> <a class="code" href="namespacedaw_1_1tuple.html#a543ce1a1cb4ea6b89b50c454a74631bd">daw::numeric_limits&lt;T&gt;::max</a>( );</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        }</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        <span class="keywordflow">return</span> lhs / rhs;</div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;      }</div>
@@ -313,6 +313,7 @@ $(function() {
 <div class="ttc" id="anamespacedaw_1_1integers_html_acbfabcf5a0a65f70c16839f779000c80"><div class="ttname"><a href="namespacedaw_1_1integers.html#acbfabcf5a0a65f70c16839f779000c80">daw::integers::on_signed_integer_div_by_zero</a></div><div class="ttdeci">DAW_ATTRIB_NOINLINE void on_signed_integer_div_by_zero()</div><div class="ttdef"><b>Definition:</b> <a href="daw__signed__error__handling_8h_source.html#l00123">daw_signed_error_handling.h:123</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1tuple_html_a543ce1a1cb4ea6b89b50c454a74631bd"><div class="ttname"><a href="namespacedaw_1_1tuple.html#a543ce1a1cb4ea6b89b50c454a74631bd">daw::tuple::max</a></div><div class="ttdeci">constexpr auto() max(std::tuple&lt; Ts... &gt; const &amp;a, std::tuple&lt; Ts... &gt; const &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple__helper_8h_source.html#l00384">daw_tuple_helper.h:384</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1tuple_html_a85aad7e3b54bb9b033b0b4b628f06846"><div class="ttname"><a href="namespacedaw_1_1tuple.html#a85aad7e3b54bb9b033b0b4b628f06846">daw::tuple::min</a></div><div class="ttdeci">constexpr auto() min(std::tuple&lt; Ts... &gt; const &amp;a, std::tuple&lt; Ts... &gt; const &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple__helper_8h_source.html#l00377">daw_tuple_helper.h:377</a></div></div>
+<div class="ttc" id="astructdaw_1_1numeric__limits_html"><div class="ttname"><a href="structdaw_1_1numeric__limits.html">daw::numeric_limits</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00045">daw_arith_traits.h:45</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

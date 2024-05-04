@@ -67,28 +67,35 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">daw_constant.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="daw__typeof_8h_source.html">daw_typeof.h</a>&quot;</code><br />
-<code>#include &lt;<a class="el" href="integral__constant_8h_source.html">daw/stdinc/integral_constant.h</a>&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="daw__consteval_8h_source.html">daw_consteval.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>&quot;</code><br />
+<code>#include &lt;cstdlib&gt;</code><br />
 </div>
 <p><a href="daw__constant_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1constant.html">daw::constant&lt; Value &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
 <tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a71ad4a3136d8de3dfae98a9ee82e2072"><td class="memTemplParams" colspan="2">template&lt;auto Value&gt; </td></tr>
-<tr class="memitem:a71ad4a3136d8de3dfae98a9ee82e2072"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a71ad4a3136d8de3dfae98a9ee82e2072">daw::constant</a> = std::integral_constant&lt; <a class="el" href="daw__typeof_8h.html#acddf9b5f979a91ce8deb198be4008f94">DAW_TYPEOF</a>(Value), Value &gt;</td></tr>
-<tr class="separator:a71ad4a3136d8de3dfae98a9ee82e2072"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a869c82c3e835590b2a97213b44fa1f75"><td class="memTemplParams" colspan="2">template&lt;auto Value&gt; </td></tr>
+<tr class="memitem:a869c82c3e835590b2a97213b44fa1f75"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a869c82c3e835590b2a97213b44fa1f75">daw::constant_v</a> = constant&lt;Value&gt;{ }</td></tr>
+<tr class="separator:a869c82c3e835590b2a97213b44fa1f75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

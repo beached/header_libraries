@@ -164,6 +164,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a5220a8a53b7129635629fdba366f19e2"><td class="memTemplParams" colspan="2">template&lt;typename Real , std::enable_if_t&lt; std::is_floating_point_v&lt; Real &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a5220a8a53b7129635629fdba366f19e2"><td class="memTemplItemLeft" align="right" valign="top">constexpr Real&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1cxmath.html#a5220a8a53b7129635629fdba366f19e2">sqrt_fast</a> (Real r)</td></tr>
 <tr class="separator:a5220a8a53b7129635629fdba366f19e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34b13ac21c1f0a765978e555898b0235"><td class="memTemplParams" colspan="2">template&lt;typename... , typename Integer , std::enable_if_t&lt; std::is_integral_v&lt; Integer &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a34b13ac21c1f0a765978e555898b0235"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1cxmath.html#a34b13ac21c1f0a765978e555898b0235">to_signed</a> (<a class="el" href="namespacedaw.html#aa15143615eafa17e2f67743ec70cfca3">Integer</a> value)</td></tr>
+<tr class="separator:a34b13ac21c1f0a765978e555898b0235"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac3ff21e9e694a56c9396533b45848d8"><td class="memTemplParams" colspan="2">template&lt;typename... , typename Integer , std::enable_if_t&lt; std::is_integral_v&lt; Integer &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:aac3ff21e9e694a56c9396533b45848d8"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1cxmath.html#aac3ff21e9e694a56c9396533b45848d8">to_unsigned</a> (<a class="el" href="namespacedaw.html#aa15143615eafa17e2f67743ec70cfca3">Integer</a> value)</td></tr>
+<tr class="separator:aac3ff21e9e694a56c9396533b45848d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -1071,6 +1077,66 @@ template&lt;typename Real , std::enable_if_t&lt; std::is_floating_point_v&lt; Re
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__cxmath_8h_source.html#l01049">1049</a> of file <a class="el" href="daw__cxmath_8h_source.html">daw_cxmath.h</a>.</p>
+
+</div>
+</div>
+<a id="a34b13ac21c1f0a765978e555898b0235"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34b13ac21c1f0a765978e555898b0235">&#9670;&nbsp;</a></span>to_signed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... , typename Integer , std::enable_if_t&lt; std::is_integral_v&lt; Integer &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> auto daw::cxmath::to_signed </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacedaw.html#aa15143615eafa17e2f67743ec70cfca3">Integer</a>&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__cxmath_8h_source.html#l01340">1340</a> of file <a class="el" href="daw__cxmath_8h_source.html">daw_cxmath.h</a>.</p>
+
+</div>
+</div>
+<a id="aac3ff21e9e694a56c9396533b45848d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac3ff21e9e694a56c9396533b45848d8">&#9670;&nbsp;</a></span>to_unsigned()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... , typename Integer , std::enable_if_t&lt; std::is_integral_v&lt; Integer &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> auto daw::cxmath::to_unsigned </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacedaw.html#aa15143615eafa17e2f67743ec70cfca3">Integer</a>&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__cxmath_8h_source.html#l01333">1333</a> of file <a class="el" href="daw__cxmath_8h_source.html">daw_cxmath.h</a>.</p>
 
 </div>
 </div>

@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['only_5fcheck_5fto_5ftype_4391',['only_check_to_type',['../structdaw_1_1fixed__cast.html#a2a3bb8bcdbbc32e24395938be00497fe',1,'daw::fixed_cast']]],
-  ['options_4392',['Options',['../namespacedaw_1_1nparam.html#abb44c6c53d9f470479a3a924769ad663',1,'daw::nparam']]],
-  ['output_5fiterator_4393',['output_iterator',['../namespacedaw.html#a1ef42595d6bd7942785e5bf7627999d5',1,'daw']]]
+  ['obj_5fptr_4396',['obj_ptr',['../uniondaw_1_1function__ref_3_01_result_07_params_8_8_8_08_4_1_1data__t.html#aa8afe5a770d6ff150e9dceb04d891e22',1,'daw::function_ref&lt; Result(Params...)&gt;::data_t::obj_ptr()'],['../uniondaw_1_1function__ref_3_01void_07_params_8_8_8_08_4_1_1data__t.html#aceae2a942e1d9cc725a80b9e05cd4542',1,'daw::function_ref&lt; void(Params...)&gt;::data_t::obj_ptr()']]],
+  ['only_5fcheck_5fto_5ftype_4397',['only_check_to_type',['../structdaw_1_1fixed__cast.html#a2a3bb8bcdbbc32e24395938be00497fe',1,'daw::fixed_cast']]],
+  ['options_4398',['Options',['../namespacedaw_1_1nparam.html#abb44c6c53d9f470479a3a924769ad663',1,'daw::nparam']]],
+  ['output_5fiterator_4399',['output_iterator',['../namespacedaw.html#a1ef42595d6bd7942785e5bf7627999d5',1,'daw']]]
 ];

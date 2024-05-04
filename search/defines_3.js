@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['has_5fstatic_5ftype_5fmember_4863',['HAS_STATIC_TYPE_MEMBER',['../daw__traits_8h.html#a2f6125cb023d84c7ddd52987e157fc6b',1,'daw_traits.h']]]
+  ['malloc_5fsize_4848',['MALLOC_SIZE',['../daw__vector_8h.html#a139560faf3cb860debae080142fa9662',1,'daw_vector.h']]],
+  ['may_5fthrow_5fexceptions_4849',['MAY_THROW_EXCEPTIONS',['../daw__exception_8h.html#a060e13be26b60cf7a33a397fec75d85a',1,'daw_exception.h']]]
 ];

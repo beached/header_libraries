@@ -80,108 +80,114 @@ $(function() {
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="daw__concepts_8h.html">daw/daw_concepts.h</a>&gt;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="daw__move_8h.html">daw/daw_move.h</a>&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="daw__traits_8h.html">daw/daw_traits.h</a>&gt;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;compare&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;type_traits&gt;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="namespacedaw_1_1nparam.html">   18</a></span>&#160;<span class="keyword">namespace </span>daw::nparam::nparam_details {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  concept OptionHelper = <a class="code" href="namespacedaw_1_1nparam.html#a0ee22706b850ea5988325cadfae562e6">requires</a> {</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">typename</span> std::remove_cvref_t&lt;T&gt;::i_am_an_option;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    std::declval&lt;T&gt;( ).value;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  };</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> less_than_one_match_v =</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    ( ( std::is_same_v&lt;T, Ts&gt; ? 1 : 0 ) + ... ) &lt;= 1;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Opts&gt;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> is_unique_v =</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    ( less_than_one_match_v&lt;Opts, Opts...&gt; and ... );</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;} <span class="comment">// namespace daw::nparam::nparam_details</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw_1_1nparam.html">daw::nparam</a> {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="namespacedaw_1_1nparam.html#abb44c6c53d9f470479a3a924769ad663">   43</a></span>&#160;  concept <a class="code" href="namespacedaw_1_1nparam.html#abb44c6c53d9f470479a3a924769ad663">Options</a> = ( nparam_details::OptionHelper&lt;Ts&gt; and ... ) and</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                    nparam_details::is_unique_v&lt;Ts...&gt;;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keyword">template</span>&lt;<a class="code" href="namespacedaw_1_1nparam.html#abb44c6c53d9f470479a3a924769ad663">Options</a> Option, <span class="keyword">typename</span>... Opts&gt;</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="namespacedaw_1_1nparam.html#a0ee22706b850ea5988325cadfae562e6">   54</a></span>&#160;  <a class="code" href="namespacedaw_1_1nparam.html#a0ee22706b850ea5988325cadfae562e6">requires</a>( Options&lt;Opts...&gt; ) constexpr <span class="keyword">auto</span> get_opt( Option &amp;&amp;def_value,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                                                       Opts &amp;&amp;...vals ) {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordflow">if</span> constexpr( <span class="keyword">sizeof</span>...( Opts ) == 0 ) {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      <span class="comment">// No replacements found</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Option, def_value ).value;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr( <a class="code" href="namespacedaw.html#acb5e8e7aae63bd8ce856c22236d80412">std::is_same_v</a>&lt;std::remove_cvref_t&lt;Option&gt;,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                                        <a class="code" href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">std::remove_cvref_t</a>&lt;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                                          <a class="code" href="namespacedaw_1_1traits.html#a834978f0c82968e5d43de87787584c9a">daw::traits::first_type&lt;Opts...&gt;</a>&gt;&gt; ) {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      <span class="comment">// Found a type match, use it for return value</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      constexpr <span class="keyword">auto</span> first_val = []( <span class="keyword">auto</span> &amp;&amp;v, <span class="keyword">auto</span> &amp;&amp;... ) {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( v );</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      };</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      <span class="keywordflow">return</span> first_val( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Opts, vals )... ).value;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <span class="comment">// Pop off first option and try next</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#aa24257bf4502d277931c2899cadbc742">pop_front</a> = []( <span class="keyword">auto</span> &amp;&amp;def, <span class="keyword">auto</span> &amp;&amp;, <span class="keyword">auto</span> &amp;&amp;...vs ) {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">return</span> get_opt&lt;Option&gt;( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( def ), <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( vs )... );</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      };</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#aa24257bf4502d277931c2899cadbc742">pop_front</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Option, def_value ),</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                        <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Opts, vals )... );</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keyword">namespace </span>details {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Type, <span class="keyword">typename</span>...&gt;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">struct </span>unique_option_t {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      <span class="keyword">using</span> i_am_an_option = void;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      Type value;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr unique_option_t <a class="code" href="namespacedaw.html#a4e45e7a23c667700500d9571f3f99acd">operator=</a>( Type &amp;&amp;v )<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordflow">return</span> unique_option_t{ <a class="code" href="namespacedaw_1_1algorithm.html#a259123089595aa22d6cfc3b903354a31">std::move</a>( v ) };</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      }</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      <span class="keyword">auto</span> operator&lt;=&gt;( unique_option_t <span class="keyword">const</span> &amp; ) <span class="keyword">const</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    };</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Type, <span class="keyword">typename</span>...&gt;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keyword">struct </span>option_t {</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      <span class="keyword">using</span> i_am_an_option = void;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      Type value;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr option_t <a class="code" href="namespacedaw.html#a4e45e7a23c667700500d9571f3f99acd">operator=</a>( Type <span class="keyword">const</span> &amp;v )<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordflow">return</span> option_t{ v };</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;      }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr option_t <a class="code" href="namespacedaw.html#a4e45e7a23c667700500d9571f3f99acd">operator=</a>( Type &amp;&amp;v )<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keywordflow">return</span> option_t{ <a class="code" href="namespacedaw_1_1algorithm.html#a259123089595aa22d6cfc3b903354a31">std::move</a>( v ) };</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      }</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      <span class="keyword">auto</span> operator&lt;=&gt;( option_t <span class="keyword">const</span> &amp; ) <span class="keyword">const</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    };</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  } <span class="comment">// namespace details</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;} <span class="comment">// namespace daw::nparam</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="daw__named__params_8h.html#ab0b2678dc1f1ea1abcce63ad4c4276b6">  107</a></span>&#160;<span class="preprocessor">#define DAW_MAKE_NAMED_OPTION( Type, Name, DefaultValue )          \</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor">  [] {                                                             \</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">    struct opt_##Name##_t;                                         \</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="preprocessor">    return ::daw::nparam::details::option_t&lt;Type, opt_##Name##_t&gt;{ \</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor">      DefaultValue };                                              \</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor">  }( )</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="daw__named__params_8h.html#a913cdc2d9883c42d432c2d107f3ef793">  116</a></span>&#160;<span class="preprocessor">#define DAW_MAKE_NAMED_UNIQUE_OPTION( Type, Name, DefaultValue )          \</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor">  [] {                                                                    \</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="preprocessor">    struct opt_##Name##_t;                                                \</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="preprocessor">    return ::daw::nparam::details::unique_option_t&lt;Type, opt_##Name##_t&gt;{ \</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="preprocessor">      DefaultValue };                                                     \</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="preprocessor">  }( )</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__concepts_8h.html">daw_concepts.h</a>&quot;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__move_8h.html">daw_move.h</a>&quot;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__traits_8h.html">daw_traits.h</a>&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__make__trait_8h.html">impl/daw_make_trait.h</a>&quot;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;compare&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;type_traits&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="namespacedaw_1_1nparam.html">   19</a></span>&#160;<span class="keyword">namespace </span>daw::nparam::nparam_details {</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  concept OptionHelper = <a class="code" href="namespacedaw_1_1nparam.html#a0ee22706b850ea5988325cadfae562e6">requires</a> {</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">typename</span> std::remove_cvref_t&lt;T&gt;::i_am_an_option;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    std::declval&lt;T&gt;( ).value;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  };</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> less_than_one_match_v =</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    ( ( std::is_same_v&lt;T, Ts&gt; ? 1 : 0 ) + ... ) &lt;= 1;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Opts&gt;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> is_unique_v =</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    ( less_than_one_match_v&lt;Opts, Opts...&gt; and ... );</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;} <span class="comment">// namespace daw::nparam::nparam_details</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedaw_1_1nparam.html">daw::nparam</a> {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="namespacedaw_1_1nparam.html#abb44c6c53d9f470479a3a924769ad663">   44</a></span>&#160;  concept <a class="code" href="namespacedaw_1_1nparam.html#abb44c6c53d9f470479a3a924769ad663">Options</a> = ( nparam_details::OptionHelper&lt;Ts&gt; and ... ) and</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                    nparam_details::is_unique_v&lt;Ts...&gt;;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keyword">template</span>&lt;<a class="code" href="namespacedaw_1_1nparam.html#abb44c6c53d9f470479a3a924769ad663">Options</a> Option, <span class="keyword">typename</span>... Opts&gt;</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="namespacedaw_1_1nparam.html#a0ee22706b850ea5988325cadfae562e6">   55</a></span>&#160;  <a class="code" href="namespacedaw_1_1nparam.html#a0ee22706b850ea5988325cadfae562e6">requires</a>( Options&lt;Opts...&gt; ) constexpr <span class="keyword">auto</span> get_opt( Option &amp;&amp;def_value,</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                                                       Opts &amp;&amp;...vals ) {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">if</span> constexpr( <span class="keyword">sizeof</span>...( Opts ) == 0 ) {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      <span class="comment">// No replacements found</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Option, def_value ).value;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr( <a class="code" href="namespacedaw.html#acb5e8e7aae63bd8ce856c22236d80412">std::is_same_v</a>&lt;std::remove_cvref_t&lt;Option&gt;,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                                        <a class="code" href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">std::remove_cvref_t</a>&lt;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                                          <a class="code" href="namespacedaw_1_1traits.html#a834978f0c82968e5d43de87787584c9a">daw::traits::first_type&lt;Opts...&gt;</a>&gt;&gt; ) {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      <span class="comment">// Found a type match, use it for return value</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      constexpr <span class="keyword">auto</span> first_val = []( <span class="keyword">auto</span> &amp;&amp;v, <span class="keyword">auto</span> &amp;&amp;... ) {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( v );</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      };</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      <span class="keywordflow">return</span> first_val( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Opts, vals )... ).value;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      <span class="comment">// Pop off first option and try next</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#aa24257bf4502d277931c2899cadbc742">pop_front</a> = []( <span class="keyword">auto</span> &amp;&amp;def, <span class="keyword">auto</span> &amp;&amp;, <span class="keyword">auto</span> &amp;&amp;...vs ) {</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordflow">return</span> get_opt&lt;Option&gt;( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( def ), <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( vs )... );</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      };</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#aa24257bf4502d277931c2899cadbc742">pop_front</a>( <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Option, def_value ),</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                        <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( Opts, vals )... );</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">namespace </span>details {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Type, <span class="keyword">typename</span>...&gt;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">struct </span>unique_option_t {</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      <span class="keyword">using</span> i_am_an_option = void;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      Type value;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr unique_option_t <a class="code" href="namespacedaw.html#a4e45e7a23c667700500d9571f3f99acd">operator=</a>( Type &amp;&amp;v )<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordflow">return</span> unique_option_t{ <a class="code" href="namespacedaw_1_1algorithm.html#a259123089595aa22d6cfc3b903354a31">std::move</a>( v ) };</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      <span class="comment">// clang-format off</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      <span class="keyword">auto</span> operator&lt;=&gt;( unique_option_t <span class="keyword">const</span> &amp; ) <span class="keyword">const</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      <span class="comment">// clang-format on</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    };</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Type, <span class="keyword">typename</span>...&gt;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keyword">struct </span>option_t {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      <span class="keyword">using</span> i_am_an_option = void;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      Type value;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr option_t <a class="code" href="namespacedaw.html#a4e45e7a23c667700500d9571f3f99acd">operator=</a>( Type <span class="keyword">const</span> &amp;v )<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordflow">return</span> option_t{ v };</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      }</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] constexpr option_t <a class="code" href="namespacedaw.html#a4e45e7a23c667700500d9571f3f99acd">operator=</a>( Type &amp;&amp;v )<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keywordflow">return</span> option_t{ <a class="code" href="namespacedaw_1_1algorithm.html#a259123089595aa22d6cfc3b903354a31">std::move</a>( v ) };</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      }</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      <span class="comment">// clang-format off</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      <span class="keyword">auto</span> operator&lt;=&gt;( option_t <span class="keyword">const</span> &amp; ) <span class="keyword">const</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      <span class="comment">// clang-format on</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    };</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  } <span class="comment">// namespace details</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;} <span class="comment">// namespace daw::nparam</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="daw__named__params_8h.html#ab0b2678dc1f1ea1abcce63ad4c4276b6">  112</a></span>&#160;<span class="preprocessor">#define DAW_MAKE_NAMED_OPTION( Type, Name, DefaultValue )          \</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="preprocessor">  [] {                                                             \</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor">    struct opt_##Name##_t;                                         \</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor">    return ::daw::nparam::details::option_t&lt;Type, opt_##Name##_t&gt;{ \</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor">      DefaultValue };                                              \</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor">  }( )</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="daw__named__params_8h.html#a913cdc2d9883c42d432c2d107f3ef793">  121</a></span>&#160;<span class="preprocessor">#define DAW_MAKE_NAMED_UNIQUE_OPTION( Type, Name, DefaultValue )          \</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">  [] {                                                                    \</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="preprocessor">    struct opt_##Name##_t;                                                \</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="preprocessor">    return ::daw::nparam::details::unique_option_t&lt;Type, opt_##Name##_t&gt;{ \</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor">      DefaultValue };                                                     \</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">  }( )</span></div>
 <div class="ttc" id="adaw__concepts_8h_html"><div class="ttname"><a href="daw__concepts_8h.html">daw_concepts.h</a></div></div>
+<div class="ttc" id="adaw__make__trait_8h_html"><div class="ttname"><a href="daw__make__trait_8h.html">daw_make_trait.h</a></div></div>
 <div class="ttc" id="adaw__move_8h_html"><div class="ttname"><a href="daw__move_8h.html">daw_move.h</a></div></div>
 <div class="ttc" id="adaw__move_8h_html_a46327bbb47123f9650c3b0e0ce807ec9"><div class="ttname"><a href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a></div><div class="ttdeci">#define DAW_FWD(...)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00041">daw_move.h:41</a></div></div>
 <div class="ttc" id="adaw__move_8h_html_a92169421367fae95c111acee1e0ebe60"><div class="ttname"><a href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a></div><div class="ttdeci">#define DAW_FWD2(Type, Value)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00045">daw_move.h:45</a></div></div>
 <div class="ttc" id="adaw__traits_8h_html"><div class="ttname"><a href="daw__traits_8h.html">daw_traits.h</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a259123089595aa22d6cfc3b903354a31"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a259123089595aa22d6cfc3b903354a31">daw::algorithm::move</a></div><div class="ttdeci">constexpr OutputIterator move(InputIterator first, LastType const last, OutputIterator first_out) noexcept(noexcept(*first_out=std::move(*first)))</div><div class="ttdoc">Move values from input range [first, last) to output range [first_out, std::distance( first,...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l01176">daw_algorithm.h:1176</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1nparam_html"><div class="ttname"><a href="namespacedaw_1_1nparam.html">daw::nparam</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__named__params_8h_source.html#l00018">daw_named_params.h:18</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1nparam_html"><div class="ttname"><a href="namespacedaw_1_1nparam.html">daw::nparam</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__named__params_8h_source.html#l00019">daw_named_params.h:19</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1nparam_html_a0ee22706b850ea5988325cadfae562e6"><div class="ttname"><a href="namespacedaw_1_1nparam.html#a0ee22706b850ea5988325cadfae562e6">daw::nparam::requires</a></div><div class="ttdeci">requires(Options&lt; Opts... &gt;) const expr auto get_opt(Option &amp;&amp;def_value</div><div class="ttdoc">Helper method to extract option from pack or use default value.</div></div>
-<div class="ttc" id="anamespacedaw_1_1nparam_html_abb44c6c53d9f470479a3a924769ad663"><div class="ttname"><a href="namespacedaw_1_1nparam.html#abb44c6c53d9f470479a3a924769ad663">daw::nparam::Options</a></div><div class="ttdeci">concept Options</div><div class="ttdoc">Satisfied when all Opts satisfy the Option concept. a) Has i_am_an_option type alias b) has value mem...</div><div class="ttdef"><b>Definition:</b> <a href="daw__named__params_8h_source.html#l00043">daw_named_params.h:43</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1nparam_html_abb44c6c53d9f470479a3a924769ad663"><div class="ttname"><a href="namespacedaw_1_1nparam.html#abb44c6c53d9f470479a3a924769ad663">daw::nparam::Options</a></div><div class="ttdeci">concept Options</div><div class="ttdoc">Satisfied when all Opts satisfy the Option concept. a) Has i_am_an_option type alias b) has value mem...</div><div class="ttdef"><b>Definition:</b> <a href="daw__named__params_8h_source.html#l00044">daw_named_params.h:44</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1traits_html_a834978f0c82968e5d43de87787584c9a"><div class="ttname"><a href="namespacedaw_1_1traits.html#a834978f0c82968e5d43de87787584c9a">daw::traits::first_type</a></div><div class="ttdeci">typename traits_details::first_type_impl&lt; Args... &gt;::type first_type</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits__first__type_8h_source.html#l00020">daw_traits_first_type.h:20</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a4e45e7a23c667700500d9571f3f99acd"><div class="ttname"><a href="namespacedaw.html#a4e45e7a23c667700500d9571f3f99acd">daw::operator=</a></div><div class="ttdeci">constexpr contiguous_view &amp; operator=(contiguous_view &amp;rhs) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__contiguous__view_8h_source.html#l00053">daw_contiguous_view.h:53</a></div></div>
 <div class="ttc" id="anamespacedaw_html_aa24257bf4502d277931c2899cadbc742"><div class="ttname"><a href="namespacedaw.html#aa24257bf4502d277931c2899cadbc742">daw::pop_front</a></div><div class="ttdeci">constexpr value_type pop_front()</div><div class="ttdef"><b>Definition:</b> <a href="daw__contiguous__view_8h_source.html#l00257">daw_contiguous_view.h:257</a></div></div>

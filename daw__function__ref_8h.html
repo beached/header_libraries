@@ -68,24 +68,26 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
 <div class="title">daw_function_ref.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="daw__consteval_8h_source.html">daw_consteval.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__likely_8h_source.html">daw_likely.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>&quot;</code><br />
-<code>#include &lt;cassert&gt;</code><br />
+<div class="textblock"><code>#include &lt;cassert&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
 </div>
 <p><a href="daw__function__ref_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1function__ref_3_01_result_07_args_8_8_8_08_4.html">daw::function_ref&lt; Result(Args...)&gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uniondaw_1_1function__ref_3_01_result_07_params_8_8_8_08_4_1_1data__t.html">daw::function_ref&lt; Result(Params...)&gt;::data_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1function__ref_3_01void_07_args_8_8_8_08_4.html">daw::function_ref&lt; void(Args...)&gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uniondaw_1_1function__ref_3_01void_07_params_8_8_8_08_4_1_1data__t.html">daw::function_ref&lt; void(Params...)&gt;::data_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1function__ref_3_01_result_07_params_8_8_8_08_4.html">daw::function_ref&lt; Result(Params...)&gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1function__ref_3_01void_07_params_8_8_8_08_4.html">daw::function_ref&lt; void(Params...)&gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -93,7 +95,47 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
 <tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:af5e3dc2d8d261092174953e6f49a673f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__function__ref_8h.html#af5e3dc2d8d261092174953e6f49a673f">DAW_CPP26_CONSTEVAL</a></td></tr>
+<tr class="separator:af5e3dc2d8d261092174953e6f49a673f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abca88d440ba0dfefcb057931d2d9896d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__function__ref_8h.html#abca88d440ba0dfefcb057931d2d9896d">DAW_CPP26_CONSTEXPR</a></td></tr>
+<tr class="separator:abca88d440ba0dfefcb057931d2d9896d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="af5e3dc2d8d261092174953e6f49a673f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5e3dc2d8d261092174953e6f49a673f">&#9670;&nbsp;</a></span>DAW_CPP26_CONSTEVAL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_CPP26_CONSTEVAL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__function__ref_8h_source.html#l00025">25</a> of file <a class="el" href="daw__function__ref_8h_source.html">daw_function_ref.h</a>.</p>
+
+</div>
+</div>
+<a id="abca88d440ba0dfefcb057931d2d9896d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abca88d440ba0dfefcb057931d2d9896d">&#9670;&nbsp;</a></span>DAW_CPP26_CONSTEXPR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_CPP26_CONSTEXPR</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__function__ref_8h_source.html#l00024">24</a> of file <a class="el" href="daw__function__ref_8h_source.html">daw_function_ref.h</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

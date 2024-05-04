@@ -81,7 +81,6 @@ $(function() {
 <code>#include &quot;<a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__deduced__type_8h_source.html">daw_deduced_type.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__enable__if_8h_source.html">daw_enable_if.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__is__detected_8h_source.html">daw_is_detected.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__remove__cvref_8h_source.html">daw_remove_cvref.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits__conditional_8h_source.html">traits/daw_traits_conditional.h</a>&quot;</code><br />
@@ -94,18 +93,6 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1conjunction.html">daw::conjunction&lt;... &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1conjunction_3_01_b1_01_4.html">daw::conjunction&lt; B1 &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1conjunction_3_01_b1_00_01_bn_8_8_8_01_4.html">daw::conjunction&lt; B1, Bn... &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1disjunction.html">daw::disjunction&lt;... &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1disjunction_3_01_b1_01_4.html">daw::disjunction&lt; B1 &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1disjunction_3_01_b1_00_01_bn_8_8_8_01_4.html">daw::disjunction&lt; B1, Bn... &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1is__nothrow__convertible.html">daw::is_nothrow_convertible&lt; From, To &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -113,8 +100,6 @@ Classes</h2></td></tr>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
 <tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacedaw_1_1detectors"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1detectors.html">daw::detectors</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
@@ -128,33 +113,33 @@ Typedefs</h2></td></tr>
 <tr class="memitem:aba8740674058543901e83038876e89e2"><td class="memTemplParams" colspan="2">template&lt;bool B&gt; </td></tr>
 <tr class="memitem:aba8740674058543901e83038876e89e2"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aba8740674058543901e83038876e89e2">daw::bool_constant</a> = std::bool_constant&lt; B &gt;</td></tr>
 <tr class="separator:aba8740674058543901e83038876e89e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a518bb6c8d1562a1853a89f702f61b0a6"><td class="memTemplParams" colspan="2">template&lt;typename... T&gt; </td></tr>
-<tr class="memitem:a518bb6c8d1562a1853a89f702f61b0a6"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a518bb6c8d1562a1853a89f702f61b0a6">daw::conjunction_t</a> = typename conjunction&lt; T... &gt;::type</td></tr>
-<tr class="separator:a518bb6c8d1562a1853a89f702f61b0a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a431ddb1d44f877e91b40b2e624bd9976"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a431ddb1d44f877e91b40b2e624bd9976"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1detectors.html#a431ddb1d44f877e91b40b2e624bd9976">daw::detectors::detect_adl_swap</a> = decltype(swap(std::declval&lt; T &amp; &gt;(), std::declval&lt; T &amp; &gt;()))</td></tr>
-<tr class="separator:a431ddb1d44f877e91b40b2e624bd9976"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9d8c7769e14c7b97c8b39c66e064ce4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:af9d8c7769e14c7b97c8b39c66e064ce4"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1detectors.html#af9d8c7769e14c7b97c8b39c66e064ce4">daw::detectors::detect_std_swap</a> = decltype(std::swap(std::declval&lt; T &amp; &gt;(), std::declval&lt; T &amp; &gt;()))</td></tr>
-<tr class="separator:af9d8c7769e14c7b97c8b39c66e064ce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae21848ea05a81cc66d7f93b32f46678a"><td class="memTemplParams" colspan="2">template&lt;typename... B&gt; </td></tr>
-<tr class="memitem:ae21848ea05a81cc66d7f93b32f46678a"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ae21848ea05a81cc66d7f93b32f46678a">daw::disjunction_t</a> = typename disjunction&lt; B... &gt;::type</td></tr>
-<tr class="separator:ae21848ea05a81cc66d7f93b32f46678a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48e94753064799a392fe6067f857be71"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
+<tr class="memitem:a48e94753064799a392fe6067f857be71"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a48e94753064799a392fe6067f857be71">daw::conjunction</a> = conjunction_t&lt; Ts... &gt;</td></tr>
+<tr class="separator:a48e94753064799a392fe6067f857be71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1777c07797fee008950562151c5073e3"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
+<tr class="memitem:a1777c07797fee008950562151c5073e3"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a1777c07797fee008950562151c5073e3">daw::conjunction_t</a> = std::bool_constant&lt; conjunction_v&lt; Ts... &gt; &gt;</td></tr>
+<tr class="separator:a1777c07797fee008950562151c5073e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fd8e9dee5f529d7e91db85c67ec2a50"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
+<tr class="memitem:a0fd8e9dee5f529d7e91db85c67ec2a50"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0fd8e9dee5f529d7e91db85c67ec2a50">daw::disjunction</a> = disjunction_t&lt; Ts... &gt;</td></tr>
+<tr class="separator:a0fd8e9dee5f529d7e91db85c67ec2a50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7d6fe6bbb8c475b87e518a64e44b451"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
+<tr class="memitem:aa7d6fe6bbb8c475b87e518a64e44b451"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa7d6fe6bbb8c475b87e518a64e44b451">daw::disjunction_t</a> = std::bool_constant&lt; disjunction_v&lt; Ts... &gt; &gt;</td></tr>
+<tr class="separator:aa7d6fe6bbb8c475b87e518a64e44b451"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50a1ea621891b5e00a024787161c769c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a50a1ea621891b5e00a024787161c769c"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a50a1ea621891b5e00a024787161c769c">daw::is_reference_wrapper</a> = std::bool_constant&lt; is_reference_wrapper_v&lt; T &gt; &gt;</td></tr>
 <tr class="separator:a50a1ea621891b5e00a024787161c769c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2feaa76806ae41d5aba12d40e8c76e3"><td class="memTemplParams" colspan="2">template&lt;typename B &gt; </td></tr>
 <tr class="memitem:ae2feaa76806ae41d5aba12d40e8c76e3"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ae2feaa76806ae41d5aba12d40e8c76e3">daw::negation</a> = std::bool_constant&lt; not bool(B::value)&gt;</td></tr>
 <tr class="separator:ae2feaa76806ae41d5aba12d40e8c76e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa25ae0868ddfa68556dd5c862393a31b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aa25ae0868ddfa68556dd5c862393a31b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa25ae0868ddfa68556dd5c862393a31b">daw::not_trait</a> = std::integral_constant&lt; bool, not T::value &gt;</td></tr>
-<tr class="separator:aa25ae0868ddfa68556dd5c862393a31b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3aac2fbedc5d4a0deccf6fb75b3c6c19"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a3aac2fbedc5d4a0deccf6fb75b3c6c19"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3aac2fbedc5d4a0deccf6fb75b3c6c19">daw::not_trait</a> = std::bool_constant&lt; not T::value &gt;</td></tr>
+<tr class="separator:a3aac2fbedc5d4a0deccf6fb75b3c6c19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a758bea5e001d18a44a29396bf469f096"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a758bea5e001d18a44a29396bf469f096"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::add_const_t&lt; T &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a758bea5e001d18a44a29396bf469f096">daw::as_const</a> (T &amp;t) noexcept</td></tr>
-<tr class="separator:a758bea5e001d18a44a29396bf469f096"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0501026cc8e93c678bde272edc3fd33"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:af0501026cc8e93c678bde272edc3fd33"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::add_const_t&lt; T &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af0501026cc8e93c678bde272edc3fd33">daw::as_const</a> (T const &amp;t) noexcept</td></tr>
+<tr class="separator:af0501026cc8e93c678bde272edc3fd33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac543c718f73ae0b3058e060031a1dd4f"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:ac543c718f73ae0b3058e060031a1dd4f"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ac543c718f73ae0b3058e060031a1dd4f">daw::decay_copy</a> (T &amp;&amp;v) noexcept(is_nothrow_convertible_v&lt; T, std::decay_t&lt; T &gt;&gt;) -&gt; std::enable_if_t&lt; std::is_convertible_v&lt; T, std::decay_t&lt; T &gt;&gt;, std::decay_t&lt; T &gt;&gt;</td></tr>
 <tr class="separator:ac543c718f73ae0b3058e060031a1dd4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -176,11 +161,11 @@ Variables</h2></td></tr>
 <tr class="memitem:a3d67c7a3c43a79be49e881c277c904cb"><td class="memTemplParams" colspan="2">template&lt;bool... values&gt; </td></tr>
 <tr class="memitem:a3d67c7a3c43a79be49e881c277c904cb"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3d67c7a3c43a79be49e881c277c904cb">daw::any_true_v</a> = ( values or ... )</td></tr>
 <tr class="separator:a3d67c7a3c43a79be49e881c277c904cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa34df83ef466d1e5f89de292bd761bfb"><td class="memTemplParams" colspan="2">template&lt;typename... T&gt; </td></tr>
-<tr class="memitem:aa34df83ef466d1e5f89de292bd761bfb"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool const&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa34df83ef466d1e5f89de292bd761bfb">daw::conjunction_v</a> = conjunction&lt;T...&gt;::value</td></tr>
-<tr class="separator:aa34df83ef466d1e5f89de292bd761bfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a601a752b7a1a60c5b438e2534c50734c"><td class="memTemplParams" colspan="2">template&lt;typename... B&gt; </td></tr>
-<tr class="memitem:a601a752b7a1a60c5b438e2534c50734c"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a601a752b7a1a60c5b438e2534c50734c">daw::disjunction_v</a> = disjunction&lt;B...&gt;::value</td></tr>
+<tr class="memitem:afdd716380bbe9de78f2a480fadbc670f"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
+<tr class="memitem:afdd716380bbe9de78f2a480fadbc670f"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#afdd716380bbe9de78f2a480fadbc670f">daw::conjunction_v</a></td></tr>
+<tr class="separator:afdd716380bbe9de78f2a480fadbc670f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a601a752b7a1a60c5b438e2534c50734c"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
+<tr class="memitem:a601a752b7a1a60c5b438e2534c50734c"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a601a752b7a1a60c5b438e2534c50734c">daw::disjunction_v</a></td></tr>
 <tr class="separator:a601a752b7a1a60c5b438e2534c50734c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcbcb3bf1260cedde99c6a856bbd31f0"><td class="memTemplParams" colspan="2">template&lt;typename From , typename To &gt; </td></tr>
 <tr class="memitem:adcbcb3bf1260cedde99c6a856bbd31f0"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#adcbcb3bf1260cedde99c6a856bbd31f0">daw::is_nothrow_convertible_v</a></td></tr>
@@ -189,7 +174,7 @@ Variables</h2></td></tr>
 <tr class="memitem:abd66a67dc21af2b8b1a817bbbdaa594a"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#abd66a67dc21af2b8b1a817bbbdaa594a">daw::is_reference_wrapper_v</a> = false</td></tr>
 <tr class="separator:abd66a67dc21af2b8b1a817bbbdaa594a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7b1c1e87855eb72a00118007d169b75"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aa7b1c1e87855eb72a00118007d169b75"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa7b1c1e87855eb72a00118007d169b75">daw::is_swappable_v</a></td></tr>
+<tr class="memitem:aa7b1c1e87855eb72a00118007d169b75"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa7b1c1e87855eb72a00118007d169b75">daw::is_swappable_v</a> = std::is_swappable_v&lt;T&gt;</td></tr>
 <tr class="separator:aa7b1c1e87855eb72a00118007d169b75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->

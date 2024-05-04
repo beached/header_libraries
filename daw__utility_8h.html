@@ -83,11 +83,14 @@ $(function() {
 <code>#include &quot;<a class="el" href="daw__construct__a_8h_source.html">daw_construct_a.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__empty_8h_source.html">daw_empty.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__exception_8h_source.html">daw_exception.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__int__cmp_8h_source.html">daw_int_cmp.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__likely_8h_source.html">daw_likely.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__remove__cvref_8h_source.html">daw_remove_cvref.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__typeof_8h_source.html">daw_typeof.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__unused_8h_source.html">daw_unused.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__make__trait_8h_source.html">impl/daw_make_trait.h</a>&quot;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
@@ -300,9 +303,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ad5a33c68d480c441c151100f9fff4787"><td class="memTemplParams" colspan="2">template&lt;typename ReturnType , typename... Args, typename ClassType &gt; </td></tr>
 <tr class="memitem:ad5a33c68d480c441c151100f9fff4787"><td class="memTemplItemLeft" align="right" valign="top">std::function&lt; ReturnType(Args...)&gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad5a33c68d480c441c151100f9fff4787">daw::make_std_function</a> (ReturnType(ClassType::*p)(Args...))</td></tr>
 <tr class="separator:ad5a33c68d480c441c151100f9fff4787"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ea64e218eb035611cbc8d9c020ec9be"><td class="memTemplParams" colspan="2">template&lt;typename Integer , typename T &gt; </td></tr>
-<tr class="memitem:a9ea64e218eb035611cbc8d9c020ec9be"><td class="memTemplItemLeft" align="right" valign="top">constexpr Integer&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9ea64e218eb035611cbc8d9c020ec9be">daw::narrow_cast</a> (T value)</td></tr>
-<tr class="separator:a9ea64e218eb035611cbc8d9c020ec9be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93c7dacad4245b829b3b7d2433853c14"><td class="memTemplParams" colspan="2">template&lt;typename Integer , typename... Ts, typename T &gt; </td></tr>
+<tr class="memitem:a93c7dacad4245b829b3b7d2433853c14"><td class="memTemplItemLeft" align="right" valign="top">constexpr Integer&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a93c7dacad4245b829b3b7d2433853c14">daw::narrow_cast</a> (T value)</td></tr>
+<tr class="separator:a93c7dacad4245b829b3b7d2433853c14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06356a743a21233e23ef059795f20ebf"><td class="memTemplParams" colspan="2">template&lt;typename Function &gt; </td></tr>
 <tr class="memitem:a06356a743a21233e23ef059795f20ebf"><td class="memTemplItemLeft" align="right" valign="top">constexpr utility_details::NotImpl&lt; Function &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a06356a743a21233e23ef059795f20ebf">daw::Not</a> (Function func)</td></tr>
 <tr class="separator:a06356a743a21233e23ef059795f20ebf"><td class="memSeparator" colspan="2">&#160;</td></tr>

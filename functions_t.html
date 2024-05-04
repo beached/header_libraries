@@ -84,7 +84,7 @@ $(function() {
 : <a class="el" href="structdaw_1_1vector.html#a7c855b9c978e949fb908f965f0f21e9c">daw::vector&lt; T, Allocator &gt;</a>
 </li>
 <li>tinyness_before
-: <a class="el" href="structstd_1_1numeric__limits_3_01daw_1_1integers_1_1signed__integer_3_01_t_01_4_01_4.html#aa9cbaffc7cf6f508c0bb60cf82024eee">std::numeric_limits&lt; daw::integers::signed_integer&lt; T &gt; &gt;</a>
+: <a class="el" href="structstd_1_1numeric__limits_3_01daw_1_1integers_1_1signed__integer_3_01_bits_01_4_01_4.html#a7ac57b7897dfe35a6b13e7e40ec59144">std::numeric_limits&lt; daw::integers::signed_integer&lt; Bits &gt; &gt;</a>
 , <a class="el" href="structstd_1_1numeric__limits_3_01daw_1_1_u_int16_01_4.html#a2bcefda484aaddb0f8208d0562f5e161">std::numeric_limits&lt; daw::UInt16 &gt;</a>
 , <a class="el" href="structstd_1_1numeric__limits_3_01daw_1_1_u_int32_01_4.html#a1da714d9af8f570beff8c458e13e757f">std::numeric_limits&lt; daw::UInt32 &gt;</a>
 , <a class="el" href="structstd_1_1numeric__limits_3_01daw_1_1_u_int64_01_4.html#a4be827eda18e9d74c8a063c56f07b8f8">std::numeric_limits&lt; daw::UInt64 &gt;</a>
@@ -145,25 +145,36 @@ $(function() {
 : <a class="el" href="structdaw_1_1sv1_1_1basic__string__view.html#a0e9270a093c1717dbecd5351c5e71861">daw::sv1::basic_string_view&lt; CharT, BoundsType, Extent &gt;</a>
 </li>
 <li>try_pop_back_until()
-: <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#adbb5208ab8ed68fc806d14b345d83d96">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
+: <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a74d14f3aba4c375cfa1a8c4055c6340a">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 </li>
 <li>try_pop_front()
 : <a class="el" href="structdaw_1_1sv1_1_1basic__string__view.html#a22a9d141e62c5df5d1781812810f4d86">daw::sv1::basic_string_view&lt; CharT, BoundsType, Extent &gt;</a>
 </li>
 <li>try_pop_front_until()
-: <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a83ef1952ba5cf4b88fcf9d410be90b3d">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
+: <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#aa54c45abac8234df2dbba81aef893fa6">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 </li>
 <li>tuple_size
 : <a class="el" href="classdaw_1_1tuple.html#aa53752ad763fb7353bc2c6d8049b104d">daw::tuple&lt; Ts &gt;</a>
 </li>
 <li>type
-: <a class="el" href="structdaw_1_1function__info_3_01_return_type_07_class_type_1_1_5_08_07_args_8_8_8_08_01const_01_4_1_1arg.html#a1707e193e8d03a66e995564a2d842bb3">daw::function_info&lt; ReturnType(ClassType::*)(Args...) const &gt;::arg&lt; i &gt;</a>
+: <a class="el" href="structdaw_1_1constant.html#ae746ded4e223904bbac29bda86c3053c">daw::constant&lt; Value &gt;</a>
+, <a class="el" href="structdaw_1_1func_1_1function__traits_1_1argument.html#a6bac55eee9dd515a182fb68f8a79babd">daw::func::function_traits&lt; F &gt;::argument&lt; N &gt;</a>
+, <a class="el" href="structdaw_1_1func_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1_1argument.html#aef15169163dddfa3077c77ccbae9ae0f">daw::func::function_traits&lt; R(Args...)&gt;::argument&lt; N &gt;</a>
+, <a class="el" href="structdaw_1_1function__info_3_01_return_type_07_class_type_1_1_5_08_07_args_8_8_8_08_01const_01_4_1_1arg.html#a1707e193e8d03a66e995564a2d842bb3">daw::function_info&lt; ReturnType(ClassType::*)(Args...) const &gt;::arg&lt; i &gt;</a>
 , <a class="el" href="structdaw_1_1function__info_3_01_return_type_07_class_type_1_1_5_08_07_args_8_8_8_08_01volatile_01_4_1_1arg.html#a7f54617d567b8548f135744080cc423e">daw::function_info&lt; ReturnType(ClassType::*)(Args...) volatile &gt;::arg&lt; i &gt;</a>
 , <a class="el" href="structdaw_1_1function__info_3_01_return_type_07_class_type_1_1_5_08_07_args_8_8_8_08_01volatile_01const_01_4_1_1arg.html#a1d7be1466f147be80c079b78eb5efb08">daw::function_info&lt; ReturnType(ClassType::*)(Args...) volatile const &gt;::arg&lt; i &gt;</a>
 , <a class="el" href="structdaw_1_1function__info_3_01_return_type_07_class_type_1_1_5_08_07_args_8_8_8_08_4_1_1arg.html#aed148a82bb4facd613df4da3ee4012a0">daw::function_info&lt; ReturnType(ClassType::*)(Args...)&gt;::arg&lt; i &gt;</a>
 , <a class="el" href="structdaw_1_1function__traits_3_01_return_type_07_5_08_07_args_8_8_8_08_4.html#a7d9685d4a96c22c0c19b186328e34721">daw::function_traits&lt; ReturnType(*)(Args...)&gt;</a>
 , <a class="el" href="structdaw_1_1function__traits_3_01_return_type_07_class_type_1_1_5_08_07_args_8_8_8_08_01const_01_4.html#aae0e85308ef54c63374291306bfb2f9b">daw::function_traits&lt; ReturnType(ClassType::*)(Args...) const &gt;</a>
 , <a class="el" href="structdaw_1_1function__traits_3_01_return_type_07_class_type_1_1_5_08_07_args_8_8_8_08_4.html#a381b2c08a11830309377823bd8996135">daw::function_traits&lt; ReturnType(ClassType::*)(Args...)&gt;</a>
+, <a class="el" href="structdaw_1_1make__signed_3_01daw_1_1integers_1_1i16_01_4.html#aade007f3376e9a589cfee36312b2e1b8">daw::make_signed&lt; daw::integers::i16 &gt;</a>
+, <a class="el" href="structdaw_1_1make__signed_3_01daw_1_1integers_1_1i32_01_4.html#a849014d19b1ffb3cdaa8f3f84dba8cc1">daw::make_signed&lt; daw::integers::i32 &gt;</a>
+, <a class="el" href="structdaw_1_1make__signed_3_01daw_1_1integers_1_1i64_01_4.html#aacf1e94b4b3480e68714ac6d4c2ed144">daw::make_signed&lt; daw::integers::i64 &gt;</a>
+, <a class="el" href="structdaw_1_1make__signed_3_01daw_1_1integers_1_1i8_01_4.html#a3abb2b5422aa6bd0a7ead0856faf550c">daw::make_signed&lt; daw::integers::i8 &gt;</a>
+, <a class="el" href="structdaw_1_1make__unsigned_3_01daw_1_1integers_1_1i16_01_4.html#a3c49d2a0b7cc289c905dfc195acacd11">daw::make_unsigned&lt; daw::integers::i16 &gt;</a>
+, <a class="el" href="structdaw_1_1make__unsigned_3_01daw_1_1integers_1_1i32_01_4.html#a82fcf63f339dcb5f0afb5ded3b78adf2">daw::make_unsigned&lt; daw::integers::i32 &gt;</a>
+, <a class="el" href="structdaw_1_1make__unsigned_3_01daw_1_1integers_1_1i64_01_4.html#aace77e01f678902ff35793e627853eeb">daw::make_unsigned&lt; daw::integers::i64 &gt;</a>
+, <a class="el" href="structdaw_1_1make__unsigned_3_01daw_1_1integers_1_1i8_01_4.html#ae2398b4df4c99d0e503393590f1bf848">daw::make_unsigned&lt; daw::integers::i8 &gt;</a>
 , <a class="el" href="structdaw_1_1math_1_1int__for__float.html#a174437b9b474555c1d06fee9ac5e3877">daw::math::int_for_float&lt; Float &gt;</a>
 , <a class="el" href="structdaw_1_1math_1_1int__for__float_3_01float_01_4.html#acd8289821421c5fde0966da1d79aa90c">daw::math::int_for_float&lt; float &gt;</a>
 , <a class="el" href="structdaw_1_1md__stdarray.html#ace8d0c771ef3a9393a74a74399ca5495">daw::md_stdarray&lt; T, Extents &gt;</a>

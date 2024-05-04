@@ -141,7 +141,7 @@ $(function() {
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      <a class="code" href="structdaw_1_1array.html">daw::array&lt;values_type, m_bins&gt;</a> m_values{ };</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      constexpr static_bitset( ) noexcept = default;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      static_bitset( ) = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      constexpr <span class="keywordtype">void</span> <a class="code" href="namespacedaw.html#ab94eb832ba930cb76522ead6cca990e3">set_bit</a>( <span class="keywordtype">size_t</span> idx ) noexcept {</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keyword">auto</span> <span class="keyword">const</span> bin = idx / m_bits_per_bin;</div>
