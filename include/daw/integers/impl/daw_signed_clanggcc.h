@@ -15,6 +15,7 @@
 #include "daw/daw_consteval.h"
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_likely.h"
+#include "daw/traits/daw_traits_is_one_of.h"
 #include "daw_signed_error_handling.h"
 
 #include <algorithm>
@@ -28,36 +29,72 @@
 namespace daw::integers::sint_impl {
 	template<typename T>
 	inline constexpr bool is_valid_int_type =
-	  std::is_integral_v<T> and std::is_signed_v<T> and
+	  daw::is_integral_v<T> and daw::is_signed_v<T> and
 	  sizeof( T ) <= sizeof( std::int64_t );
 
-	template<typename SignedInteger>
+	template<typename SignedInteger,
+	         std::enable_if_t<
+	           daw::traits::is_one_of_v<SignedInteger, signed char, short>,
+	           std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE constexpr bool
 	wrapping_add( SignedInteger a, SignedInteger b, SignedInteger &result ) {
-		static_assert( std::is_integral_v<SignedInteger> and
-		                 std::is_signed_v<SignedInteger> and
-		                 sizeof( SignedInteger ) <= 8U,
-		               "Invalid signed integer" );
+		static_assert( sizeof( int ) >= sizeof( SignedInteger ) );
+		int const r2 = a + b;
+		bool const r = not daw::in_range<SignedInteger>( r2 );
+		result = static_cast<SignedInteger>( r2 );
+		return r;
+	}
+
+	template<typename SignedInteger,
+	         std::enable_if_t<
+	           daw::traits::is_one_of_v<SignedInteger, int, long, long long>,
+	           std::nullptr_t> = nullptr>
+	DAW_ATTRIB_INLINE constexpr bool
+	wrapping_add( SignedInteger a, SignedInteger b, SignedInteger &result ) {
 		return __builtin_add_overflow( a, b, &result );
 	}
 
-	template<typename SignedInteger>
+	template<typename SignedInteger,
+	         std::enable_if_t<
+	           daw::traits::is_one_of_v<SignedInteger, signed char, short>,
+	           std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE constexpr bool
 	wrapping_sub( SignedInteger a, SignedInteger b, SignedInteger &result ) {
-		static_assert( std::is_integral_v<SignedInteger> and
-		                 std::is_signed_v<SignedInteger> and
-		                 sizeof( SignedInteger ) <= 8U,
-		               "Invalid signed integer" );
+		static_assert( sizeof( int ) >= sizeof( SignedInteger ) );
+		int const r2 = a - b;
+		bool const r = not daw::in_range<SignedInteger>( r2 );
+		result = static_cast<SignedInteger>( r2 );
+		return r;
+	}
+
+	template<typename SignedInteger,
+	         std::enable_if_t<
+	           daw::traits::is_one_of_v<SignedInteger, int, long, long long>,
+	           std::nullptr_t> = nullptr>
+	DAW_ATTRIB_INLINE constexpr bool
+	wrapping_sub( SignedInteger a, SignedInteger b, SignedInteger &result ) {
 		return __builtin_sub_overflow( a, b, &result );
 	}
 
-	template<typename SignedInteger>
+	template<typename SignedInteger,
+	         std::enable_if_t<
+	           daw::traits::is_one_of_v<SignedInteger, signed char, short>,
+	           std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE constexpr bool
 	wrapping_mul( SignedInteger a, SignedInteger b, SignedInteger &result ) {
-		static_assert( std::is_integral_v<SignedInteger> and
-		                 std::is_signed_v<SignedInteger> and
-		                 sizeof( SignedInteger ) <= 8U,
-		               "Invalid signed integer" );
+		static_assert( sizeof( int ) >= sizeof( SignedInteger ) );
+		int const r2 = a * b;
+		bool const r = not daw::in_range<SignedInteger>( r2 );
+		result = static_cast<SignedInteger>( r2 );
+		return r;
+	}
+
+	template<typename SignedInteger,
+	         std::enable_if_t<
+	           daw::traits::is_one_of_v<SignedInteger, int, long, long long>,
+	           std::nullptr_t> = nullptr>
+	DAW_ATTRIB_INLINE constexpr bool
+	wrapping_mul( SignedInteger a, SignedInteger b, SignedInteger &result ) {
 		return __builtin_mul_overflow( a, b, &result );
 	}
 
@@ -83,9 +120,9 @@ namespace daw::integers::sint_impl {
 				return res;
 #else
 				if( DAW_UNLIKELY( rhs == -1 and
-				                  lhs == std::numeric_limits<T>::min( ) ) ) {
+				                  lhs == daw::numeric_limits<T>::min( ) ) ) {
 					on_signed_integer_overflow( );
-					return std::numeric_limits<T>::max( );
+					return daw::numeric_limits<T>::max( );
 				}
 				return lhs / rhs;
 #endif
@@ -111,6 +148,9 @@ namespace daw::integers::sint_impl {
 		DAW_ATTRIB_INLINE constexpr T operator( )( T lhs, T rhs ) const {
 			if( DAW_UNLIKELY( rhs == 0 ) ) {
 				on_signed_integer_div_by_zero( );
+			}
+			if( lhs == daw::numeric_limits<T>::min( ) and rhs.value( ) == T{ -1 } ) {
+				on_signed_integer_overflow( );
 			}
 			return lhs % rhs;
 		}

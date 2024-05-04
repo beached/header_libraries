@@ -88,10 +88,6 @@ namespace daw {
 			return ( *DAW_FWD( ptr ) ).*pmd;
 		}
 
-		template<typename T, typename... Args>
-		using detect_call_operator =
-		  decltype( std::declval<T>( ).operator( )( std::declval<Args>( )... ) );
-
 		template<typename F, typename... Args>
 		[[nodiscard, maybe_unused]] constexpr decltype( auto ) INVOKE(
 		  F &&f,

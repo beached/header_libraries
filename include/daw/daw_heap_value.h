@@ -32,9 +32,9 @@ namespace daw {
 
 	public:
 		heap_value( ) = default;
-		heap_value( heap_value && ) noexcept = default;
-		heap_value &operator=( heap_value && ) noexcept = default;
 		~heap_value( ) = default;
+		heap_value( heap_value && ) = default;
+		heap_value &operator=( heap_value && ) = default;
 
 		heap_value( heap_value const &other )
 		  : m_value{ std::make_unique<value_t>( *other.m_value ) } {}
@@ -54,8 +54,8 @@ namespace daw {
 
 		template<typename Arg, typename... Args>
 		heap_value( Arg &&arg, Args &&...args )
-		  : m_value{ std::make_unique<value_t>( DAW_FWD( arg ),
-		                                        DAW_FWD( args )... ) } {}
+		  : m_value{
+		      std::make_unique<value_t>( DAW_FWD( arg ), DAW_FWD( args )... ) } {}
 
 		void swap( heap_value &rhs ) noexcept {
 			daw::cswap( m_value, rhs.m_value );

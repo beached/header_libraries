@@ -10,6 +10,7 @@
 
 #include "ciso646.h"
 #include "cpp_17.h"
+#include "daw_is_detected.h"
 #include "daw_move.h"
 #include "daw_remove_cvref.h"
 
@@ -72,11 +73,11 @@ namespace daw {
 	using can_call_test = std::is_invocable<
 	  applier_t<Invokable>,
 	  decltype( std::tuple_cat(
-	    split_args<0, N::value>( std::forward_as_tuple(
-	      DAW_FWD( std::declval<Args>( ) )... ) ),
+	    split_args<0, N::value>(
+	      std::forward_as_tuple( DAW_FWD( std::declval<Args>( ) )... ) ),
 	    std::declval<TpArgs>( ),
-	    split_args<N::value, sizeof...( Args )>( std::forward_as_tuple(
-	      DAW_FWD( std::declval<Args>( ) )... ) ) ) )>;
+	    split_args<N::value, sizeof...( Args )>(
+	      std::forward_as_tuple( DAW_FWD( std::declval<Args>( ) )... ) ) ) )>;
 
 	template<size_t N, typename Invokable, typename TpArgs, typename... Args>
 	inline constexpr bool can_call_v =
@@ -106,12 +107,11 @@ namespace daw {
 		constexpr decltype( auto ) operator( )( Args &&...args ) const
 		  noexcept( is_nothrow_callable_v<N, Invokable, TpArgs, Args...> ) {
 			return std::apply(
-			  func,
-			  std::tuple_cat( split_args<0, N>( std::forward_as_tuple(
-			                    DAW_FWD( args )... ) ),
-			                  tp_args,
-			                  split_args<N, sizeof...( Args )>( std::forward_as_tuple(
-			                    DAW_FWD( args )... ) ) ) );
+			  func, std::tuple_cat(
+			          split_args<0, N>( std::forward_as_tuple( DAW_FWD( args )... ) ),
+			          tp_args,
+			          split_args<N, sizeof...( Args )>(
+			            std::forward_as_tuple( DAW_FWD( args )... ) ) ) );
 		}
 
 		template<typename... Args,
@@ -121,12 +121,11 @@ namespace daw {
 		  is_nothrow_callable_v<N, Invokable, TpArgs, Args...> ) {
 			static_assert( N <= sizeof...( Args ) );
 			return std::apply(
-			  func,
-			  std::tuple_cat( split_args<0, N>( std::forward_as_tuple(
-			                    DAW_FWD( args )... ) ),
-			                  tp_args,
-			                  split_args<N, sizeof...( Args )>( std::forward_as_tuple(
-			                    DAW_FWD( args )... ) ) ) );
+			  func, std::tuple_cat(
+			          split_args<0, N>( std::forward_as_tuple( DAW_FWD( args )... ) ),
+			          tp_args,
+			          split_args<N, sizeof...( Args )>(
+			            std::forward_as_tuple( DAW_FWD( args )... ) ) ) );
 		}
 	};
 

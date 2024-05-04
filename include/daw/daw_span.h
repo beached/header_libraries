@@ -51,7 +51,7 @@ namespace daw {
 		size_type m_size = 0;
 
 	public:
-		constexpr span( ) noexcept = default;
+		span( ) = default;
 		explicit constexpr span( std::nullptr_t ) noexcept {}
 		constexpr span( std::nullptr_t, size_type ) noexcept {}
 
@@ -235,9 +235,9 @@ namespace daw {
 		size_type m_size = 0;
 
 	public:
-		constexpr span( ) noexcept = default;
-		constexpr span( span && ) noexcept = default;
-		constexpr span &operator=( span && ) noexcept = default;
+		span( ) = default;
+		constexpr span( span && ) = default;
+		constexpr span &operator=( span && ) = default;
 		~span( ) = default;
 
 		// Workaround for std::is_constructible check.  Have not found out

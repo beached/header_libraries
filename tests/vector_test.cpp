@@ -8,10 +8,10 @@
 
 #include <daw/daw_algorithm.h>
 #include <daw/daw_consteval.h>
+#include <daw/daw_ensure.h>
 #include <daw/vector.h>
 #include <daw/vector_algorithm.h>
 
-#include <cassert>
 #include <cstddef>
 #include <iostream>
 
@@ -51,7 +51,7 @@ DAW_CONSTEVAL bool test( ) {
 }
 
 int main( ) {
-	daw::vector<int> x;
+	auto x = daw::vector<int>( );
 	x.reserve( 3 );
 	x = { 1, 2, 3 };
 	x[0] = 2;
@@ -72,7 +72,9 @@ int main( ) {
 
 	auto v = daw::vector<int>( daw::do_resize_and_overwrite, 100,
 	                           daw::algorithm::iota_op<int>( ) );
-	assert( v.size( ) == 100 );
-	assert( v.back( ) == 99 );
-	assert( v.front( ) == 0 );
+	daw_ensure( v.size( ) == 100 );
+	daw_ensure( v.back( ) == 99 );
+	daw_ensure( v.front( ) == 0 );
+	daw_ensure( v.pop_back_value( ) == 99 );
+	daw_ensure( v.size( ) == 99 );
 }

@@ -15,6 +15,7 @@
 #include <exception>
 #include <iostream>
 #include <stdexcept>
+#include <type_traits>
 
 daw::checked_expected_t<int, std::runtime_error> divide( int v ) noexcept {
 	try {
@@ -63,7 +64,7 @@ void daw_expected_test_01( ) {
 		std::cout << "Hello\n";
 		return x * x;
 	};
-	static_assert( daw::traits::is_callable_v<decltype( X ), int>,
+	static_assert( std::is_invocable_v<decltype( X ), int>,
 	               "is_callable_v broke" );
 
 	daw::checked_expected_t<void> f{ []( ) {

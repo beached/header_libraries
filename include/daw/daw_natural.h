@@ -36,12 +36,6 @@ namespace daw {
 		constexpr natural_t( ) noexcept
 		  : m_value{ 1 } {}
 
-		constexpr natural_t( natural_t const & ) noexcept = default;
-		constexpr natural_t( natural_t && ) noexcept = default;
-		constexpr natural_t &operator=( natural_t const & ) noexcept = default;
-		constexpr natural_t &operator=( natural_t && ) noexcept = default;
-		~natural_t( ) noexcept = default;
-
 		template<typename Value,
 		         required<not std::is_same_v<natural_t, Value>> = nullptr>
 		constexpr natural_t( Value &&v )

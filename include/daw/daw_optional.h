@@ -38,23 +38,23 @@ namespace daw {
 		std::optional<value_type> m_value = std::optional<value_type>( );
 
 	public:
-		constexpr optional( ) noexcept = default;
+		optional( ) = default;
 		constexpr optional( std::nullopt_t ) noexcept {}
 
-		[[nodiscard]] constexpr reference operator*( ) &noexcept {
+		[[nodiscard]] constexpr reference operator*( ) & noexcept {
 			return m_value.operator*( );
 		}
 
-		[[nodiscard]] constexpr const_reference operator*( ) const &noexcept {
+		[[nodiscard]] constexpr const_reference operator*( ) const & noexcept {
 			return m_value.operator*( );
 		}
 
-		[[nodiscard]] constexpr rvalue_reference operator*( ) &&noexcept {
+		[[nodiscard]] constexpr rvalue_reference operator*( ) && noexcept {
 			return std::move( m_value ).operator*( );
 		}
 
 		[[nodiscard]] constexpr const_rvalue_reference
-		operator*( ) const &&noexcept {
+		operator*( ) const && noexcept {
 			return std::move( m_value ).operator*( );
 		}
 
@@ -84,8 +84,7 @@ namespace daw {
 		// cannot emplace to a reference
 		template<typename U, typename... Args>
 		reference emplace( std::initializer_list<U> ilist, Args &&...args ) {
-			return m_value.emplace( std::move( ilist ),
-			                        DAW_FWD( args )... );
+			return m_value.emplace( std::move( ilist ), DAW_FWD( args )... );
 		}
 
 		[[nodiscard]] constexpr reference value( ) & {
@@ -163,7 +162,7 @@ namespace daw {
 		std::optional<value_type *> m_value = std::optional<value_type *>( );
 
 	public:
-		constexpr optional( ) noexcept = default;
+		optional( ) = default;
 		constexpr optional( std::nullopt_t ) noexcept {}
 
 		[[nodiscard]] constexpr reference operator*( ) noexcept {

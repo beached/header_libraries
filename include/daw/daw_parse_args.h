@@ -3,7 +3,7 @@
 // distributed under the boost software license, version 1.0. (see accompanying
 // file license or copy at http://www.boost.org/license_1_0.txt)
 //
-// official repository: https://github.com/beached/daw_json_link
+// official repository: https://github.com/beached/header_libraries
 //
 
 #pragma once

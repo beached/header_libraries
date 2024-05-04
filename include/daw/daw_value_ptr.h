@@ -13,6 +13,7 @@
 #include "daw_move.h"
 #include "daw_swap.h"
 #include "daw_traits.h"
+#include "impl/daw_make_trait.h"
 
 #include <cstddef>
 #include <memory>
@@ -22,16 +23,11 @@
 
 namespace daw {
 	namespace value_ptr_details {
-		template<typename T, typename U, typename Compare>
-		using is_comparable_detect =
-		  decltype( std::declval<Compare>( )( std::declval<T>( ),
-		                                      std::declval<U>( ) ) and
-		            std::declval<Compare>( )( std::declval<U>( ),
-		                                      std::declval<T>( ) ) );
-
-		template<typename T, typename U, typename Compare>
-		inline constexpr bool is_comparable_v =
-		  daw::is_detected_v<is_comparable_detect, T, U, Compare>;
+		DAW_MAKE_REQ_TRAIT3(
+		  is_comparable_v, std::declval<V /*Compare*/>( )( std::declval<T>( ),
+		                                                   std::declval<U>( ) ) and
+		                     std::declval<V /*Compare*/>( )( std::declval<U>( ),
+		                                                     std::declval<T>( ) ) );
 	} // namespace value_ptr_details
 
 	template<typename T, typename Compare = std::less<>>
@@ -61,8 +57,7 @@ namespace daw {
 		  : enable_default_constructor<T>( traits_details::non_constructor{ } )
 		  , enable_copy_constructor<T>( traits_details::non_constructor{ } )
 		  , enable_copy_assignment<T>( traits_details::non_constructor{ } )
-		  , m_value(
-		      std::make_unique<value_type>( DAW_FWD( args )... ) ) {}
+		  , m_value( std::make_unique<value_type>( DAW_FWD( args )... ) ) {}
 
 		template<
 		  typename U, typename... Args,
@@ -137,7 +132,7 @@ namespace daw {
 		}
 
 		template<typename... Args,
-		         std::enable_if_t<traits::is_callable_v<value_type, Args...>,
+		         std::enable_if_t<std::is_invocable_v<value_type, Args...>,
 		                          std::nullptr_t> = nullptr>
 		decltype( auto ) operator( )( Args &&...args ) noexcept(
 		  noexcept( m_value->operator( )( DAW_FWD( args )... ) ) ) {
@@ -224,58 +219,28 @@ namespace daw {
 	}
 
 	namespace value_ptr_details {
-		template<typename T, typename U>
-		using has_compare_equality_test =
-		  decltype( std::declval<T>( ) == std::declval<U>( ) );
+		DAW_MAKE_REQ_TRAIT2( has_compare_equality,
+		                     std::declval<T>( ) == std::declval<U>( ) );
 
-		template<typename T, typename U, typename V = void>
-		using has_compare_equality =
-		  std::enable_if_t<is_detected_v<has_compare_equality_test, T, U>, V>;
+		DAW_MAKE_REQ_TRAIT2( has_compare_inequality,
+		                     std::declval<T>( ) != std::declval<U>( ) );
 
-		template<typename T, typename U>
-		using has_compare_inequality_test =
-		  decltype( std::declval<T>( ) != std::declval<U>( ) );
+		DAW_MAKE_REQ_TRAIT2( has_compare_greater,
+		                     std::declval<T>( ) > std::declval<U>( ) );
 
-		template<typename T, typename U, typename V = void>
-		using has_compare_inequality =
-		  std::enable_if_t<is_detected_v<has_compare_inequality_test, T, U>, V>;
+		DAW_MAKE_REQ_TRAIT2( has_compare_greater_equal,
+		                     std::declval<T>( ) >= std::declval<U>( ) );
 
-		template<typename T, typename U>
-		using has_compare_greater_test =
-		  decltype( std::declval<T>( ) > std::declval<U>( ) );
+		DAW_MAKE_REQ_TRAIT2( has_compare_less,
+		                     std::declval<T>( ) < std::declval<U>( ) );
 
-		template<typename T, typename U, typename V = void>
-		using has_compare_greater =
-		  std::enable_if_t<is_detected_v<has_compare_greater_test, T, U>, V>;
-
-		template<typename T, typename U>
-		using has_compare_greater_equal_test =
-		  decltype( std::declval<T>( ) >= std::declval<U>( ) );
-
-		template<typename T, typename U, typename V = void>
-		using has_compare_greater_equal =
-		  std::enable_if_t<is_detected_v<has_compare_greater_equal_test, T, U>, V>;
-
-		template<typename T, typename U>
-		using has_compare_less_test =
-		  decltype( std::declval<T>( ) < std::declval<U>( ) );
-
-		template<typename T, typename U, typename V = void>
-		using has_compare_less =
-		  std::enable_if_t<is_detected_v<has_compare_less_test, T, U>, V>;
-
-		template<typename T, typename U>
-		using has_compare_less_equal_test =
-		  decltype( std::declval<T>( ) <= std::declval<U>( ) );
-
-		template<typename T, typename U, typename V = void>
-		using has_compare_less_equal =
-		  std::enable_if_t<is_detected_v<has_compare_less_equal_test, T, U>, V>;
+		DAW_MAKE_REQ_TRAIT2( has_compare_less_equal,
+		                     std::declval<T>( ) <= std::declval<U>( ) );
 	} // namespace value_ptr_details
 
-	template<
-	  typename T, typename U,
-	  value_ptr_details::has_compare_equality<T, U, std::nullptr_t> = nullptr>
+	template<typename T, typename U,
+	         std::enable_if_t<value_ptr_details::has_compare_equality<T, U>,
+	                          std::nullptr_t> = nullptr>
 	constexpr bool
 	operator==( value_ptr<T> const &lhs,
 	            value_ptr<U> const &rhs ) noexcept( noexcept( *lhs == *rhs ) ) {
@@ -283,18 +248,18 @@ namespace daw {
 		return lhs.compare( rhs ) == 0;
 	}
 
-	template<
-	  typename T, typename U,
-	  value_ptr_details::has_compare_inequality<T, U, std::nullptr_t> = nullptr>
+	template<typename T, typename U,
+	         std::enable_if_t<value_ptr_details::has_compare_inequality<T, U>,
+	                          std::nullptr_t> = nullptr>
 	constexpr bool
 	operator!=( value_ptr<T> const &lhs,
 	            value_ptr<U> const &rhs ) noexcept( noexcept( *lhs != *rhs ) ) {
 		return lhs.compare( rhs ) != 0;
 	}
 
-	template<
-	  typename T, typename U,
-	  value_ptr_details::has_compare_greater<T, U, std::nullptr_t> = nullptr>
+	template<typename T, typename U,
+	         std::enable_if_t<value_ptr_details::has_compare_greater<T, U>,
+	                          std::nullptr_t> = nullptr>
 	constexpr bool
 	operator>( value_ptr<T> const &lhs,
 	           value_ptr<U> const &rhs ) noexcept( noexcept( *lhs > *rhs ) ) {
@@ -302,8 +267,8 @@ namespace daw {
 	}
 
 	template<typename T, typename U,
-	         value_ptr_details::has_compare_greater_equal<T, U, std::nullptr_t> =
-	           nullptr>
+	         std::enable_if_t<value_ptr_details::has_compare_greater_equal<T, U>,
+	                          std::nullptr_t> = nullptr>
 	constexpr bool
 	operator>=( value_ptr<T> const &lhs,
 	            value_ptr<U> const &rhs ) noexcept( noexcept( *lhs >= *rhs ) ) {
@@ -311,16 +276,17 @@ namespace daw {
 	}
 
 	template<typename T, typename U,
-	         value_ptr_details::has_compare_less<T, U, std::nullptr_t> = nullptr>
+	         std::enable_if_t<value_ptr_details::has_compare_less<T, U>,
+	                          std::nullptr_t> = nullptr>
 	constexpr bool
 	operator<( value_ptr<T> const &lhs,
 	           value_ptr<U> const &rhs ) noexcept( noexcept( *lhs < *rhs ) ) {
 		return lhs.compare( rhs ) < 0;
 	}
 
-	template<
-	  typename T, typename U,
-	  value_ptr_details::has_compare_less_equal<T, U, std::nullptr_t> = nullptr>
+	template<typename T, typename U,
+	         std::enable_if_t<value_ptr_details::has_compare_less_equal<T, U>,
+	                          std::nullptr_t> = nullptr>
 	constexpr bool
 	operator<=( value_ptr<T> const &lhs,
 	            value_ptr<U> const &rhs ) noexcept( noexcept( *lhs <= *rhs ) ) {
@@ -334,7 +300,7 @@ namespace daw {
 namespace std {
 	template<typename T>
 	struct hash<daw::value_ptr<T>>
-	  : std::enable_if_t<daw::traits::is_callable_v<std::hash<T>, T>,
+	  : std::enable_if_t<std::is_invocable_v<std::hash<T>, T>,
 	                     daw::value_ptr_details::empty_t> {
 
 		template<typename Arg>

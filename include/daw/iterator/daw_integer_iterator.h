@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "../ciso646.h"
+#include "daw/ciso646.h"
 
 #include <iterator>
 #include <limits>
@@ -25,7 +25,7 @@ namespace daw {
 
 		value_type current_value = 0;
 
-		constexpr integer_range_iterator( ) noexcept = default;
+		integer_range_iterator( ) = default;
 
 		constexpr integer_range_iterator( value_type start_value ) noexcept
 		  : current_value{ start_value } {}

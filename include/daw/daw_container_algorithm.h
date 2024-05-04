@@ -13,17 +13,19 @@
 #include "daw_algorithm.h"
 #include "daw_math.h"
 #include "daw_traits.h"
+#include "impl/daw_make_trait.h"
 
 #include <algorithm>
 #include <cstddef>
 #include <iterator>
 #include <numeric>
+#include <type_traits>
 
 namespace daw {
 	namespace container {
 		namespace impl {
-			template<typename Container>
-			using has_size_method = decltype( std::declval<Container>( ).size( ) );
+			DAW_MAKE_REQ_TRAIT( has_size_method_v,
+			                    std::declval<T const &>( ).size( ) );
 
 			namespace adl_test {}
 			template<typename Container>
@@ -72,10 +74,9 @@ namespace daw {
 			return N;
 		}
 
-		template<
-		  typename Container,
-		  std::enable_if_t<daw::is_detected_v<impl::has_size_method, Container>,
-		                   std::nullptr_t> = nullptr>
+		template<typename Container,
+		         std::enable_if_t<impl::has_size_method_v<Container>,
+		                          std::nullptr_t> = nullptr>
 		constexpr size_t container_size( Container const &c ) noexcept {
 			return static_cast<size_t>( c.size( ) );
 		}
@@ -101,8 +102,7 @@ namespace daw {
 			static_assert(
 			  traits::is_binary_predicate_v<Compare, value_type, value_type>, "" );
 
-			std::sort( begin( container ), end( container ),
-			           DAW_FWD( compare ) );
+			std::sort( begin( container ), end( container ), DAW_FWD( compare ) );
 		}
 
 		template<typename Container,
@@ -246,9 +246,9 @@ namespace daw {
 		         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 		                          std::nullptr_t> = nullptr>
 		decltype( auto )
-		accumulate( Container const &container, T &&init ) noexcept( noexcept(
-		  std::accumulate( std::cbegin( container ), std::end( container ),
-		                   DAW_FWD( init ) ) ) ) {
+		accumulate( Container const &container, T &&init ) noexcept(
+		  noexcept( std::accumulate( std::cbegin( container ),
+		                             std::end( container ), DAW_FWD( init ) ) ) ) {
 
 			return std::accumulate( std::cbegin( container ), std::cend( container ),
 			                        DAW_FWD( init ) );
@@ -265,10 +265,9 @@ namespace daw {
 		                                                DAW_FWD( init ),
 		                                                oper ) ) ) {
 
-			static_assert(
-			  traits::is_callable_v<BinaryOperation, T,
-			                        decltype( *std::cbegin( container ) )>,
-			  "Invalid BinaryOperation" );
+			static_assert( std::is_invocable_v<BinaryOperation, T,
+			                                   decltype( *std::cbegin( container ) )>,
+			               "Invalid BinaryOperation" );
 
 			return std::accumulate( std::cbegin( container ), std::cend( container ),
 			                        DAW_FWD( init ), oper );
@@ -284,8 +283,8 @@ namespace daw {
 		                            unary_operator ) ) ) {
 
 			static_assert(
-			  traits::is_callable_v<UnaryOperator,
-			                        decltype( *std::cbegin( container ) )>,
+			  std::is_invocable_v<UnaryOperator,
+			                      decltype( *std::cbegin( container ) )>,
 			  "UnaryOperator is not callable with the values stored in Container" );
 
 			return std::transform( std::cbegin( container ), std::cend( container ),
@@ -307,8 +306,8 @@ namespace daw {
 		                                             unary_operator ) ) ) {
 
 			static_assert(
-			  traits::is_callable_v<UnaryOperator,
-			                        decltype( *std::cbegin( container ) )>,
+			  std::is_invocable_v<UnaryOperator,
+			                      decltype( *std::cbegin( container ) )>,
 			  "UnaryOperator is not callable with the values stored in Container" );
 
 			static_assert(
@@ -336,8 +335,8 @@ namespace daw {
 		                                             unary_operator ) ) ) {
 
 			static_assert(
-			  traits::is_callable_v<UnaryOperator,
-			                        decltype( *std::cbegin( container ) )>,
+			  std::is_invocable_v<UnaryOperator,
+			                      decltype( *std::cbegin( container ) )>,
 			  "UnaryOperator is not callable with the values stored in Container" );
 
 			std::transform( std::cbegin( container ), std::cend( container ),
@@ -417,9 +416,9 @@ namespace daw {
 		  noexcept( std::find( std::cbegin( container ), std::cend( container ),
 		                       value ) != std::cend( container ) ) ) {
 
-			return daw::algorithm::find(
-			         std::cbegin( container ), std::cend( container ),
-			         DAW_FWD( value ) ) != std::cend( container );
+			return daw::algorithm::find( std::cbegin( container ),
+			                             std::cend( container ),
+			                             DAW_FWD( value ) ) != std::cend( container );
 		}
 
 		template<
@@ -531,7 +530,7 @@ namespace daw {
 			using value_t =
 			  std::decay_t<typename std::iterator_traits<decltype( std::begin(
 			    container ) )>::value_type>;
-			static_assert( traits::is_callable_v<Function, value_t, size_t>,
+			static_assert( std::is_invocable_v<Function, value_t, size_t>,
 			               "Supplied function does not satisfy requirements of "
 			               "taking arguments of type (value_t, size_t)" );
 
@@ -549,7 +548,7 @@ namespace daw {
 			using value_t =
 			  std::decay_t<typename std::iterator_traits<decltype( std::begin(
 			    container ) )>::value_type>;
-			static_assert( traits::is_callable_v<Function, value_t, size_t>,
+			static_assert( std::is_invocable_v<Function, value_t, size_t>,
 			               "Supplied function does not satisfy requirements of "
 			               "taking arguments of type (value_t, size_t)" );
 			for_each_with_pos( container, 0, container_size( container ), func );
@@ -574,7 +573,7 @@ namespace daw {
 			static_assert( traits::has_integer_subscript_v<Container>,
 			               "Container is required to have a subscript operator that "
 			               "takes integral types" );
-			static_assert( traits::is_callable_v<Function, Container, size_t>,
+			static_assert( std::is_invocable_v<Function, Container, size_t>,
 			               "Supplied function does not satisfy requirements of "
 			               "taking arguments of type (Container, size_t)" );
 

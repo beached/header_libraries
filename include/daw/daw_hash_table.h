@@ -100,7 +100,7 @@ namespace daw {
 				return *this;
 			}
 		}; // hash_table_item
-	}    // namespace impl
+	} // namespace impl
 
 	template<typename ValueType>
 	struct hash_table_item_iterator
@@ -342,16 +342,6 @@ namespace daw {
 
 		hash_table( )
 		  : hash_table( 7, 2.6, 50 ) {}
-
-		~hash_table( ) = default;
-
-		hash_table( hash_table && ) noexcept = default;
-
-		hash_table( hash_table const & ) = default;
-
-		hash_table &operator=( hash_table && ) noexcept = default;
-
-		hash_table &operator=( hash_table const & ) = default;
 
 		iterator begin( ) {
 			auto result = iterator{ priv_begin( ), priv_begin( ), priv_end( ) };

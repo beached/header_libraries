@@ -6,10 +6,15 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#pragma once
+#include <daw/daw_constant.h>
 
-namespace daw {
-	struct empty_t {};
-	using Empty = empty_t;
-	using nothing = empty_t;
-} // namespace daw
+#include <type_traits>
+
+int main( ) {
+	using t = daw::constant<55>;
+	static_assert( std::is_same_v<typename t::type, int> );
+
+	auto c = daw::constant_v<55>;
+
+	static_assert( std::is_same_v<t, decltype( c )> );
+}

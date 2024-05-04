@@ -45,7 +45,7 @@ namespace daw {
 		bounded_array_t<T, N> m_stack{ };
 
 	public:
-		constexpr bounded_vector_t( ) noexcept = default;
+		bounded_vector_t( )= default;
 
 		constexpr bounded_vector_t( const_pointer ptr, size_type count ) noexcept
 		  : m_index{ ( daw::min )( count, N ) } {
@@ -368,7 +368,7 @@ namespace daw {
 		using size_type = std::size_t;
 		using difference_type = std::ptrdiff_t;
 
-		constexpr bounded_vector_t( ) noexcept = default;
+		bounded_vector_t( ) = default;
 		constexpr bounded_vector_t( const_pointer, size_type ) noexcept {}
 
 		template<typename Iterator>

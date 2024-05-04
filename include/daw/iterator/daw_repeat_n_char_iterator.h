@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "../ciso646.h"
+#include "daw/ciso646.h"
 
 #include <iterator>
 #include <limits>
@@ -27,7 +27,7 @@ namespace daw {
 		value_type m_value = 0;
 		ptrdiff_t m_position = 0;
 
-		constexpr repeat_n_char_iterator( ) noexcept = default;
+		repeat_n_char_iterator( ) = default;
 
 		constexpr repeat_n_char_iterator( size_t count, value_type value ) noexcept
 		  : m_value( value )

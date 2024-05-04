@@ -45,10 +45,10 @@ namespace daw {
 		template<typename T>
 		friend struct optional_poly;
 
-		optional_poly( ) noexcept = default;
+		optional_poly( ) = default;
 		~optional_poly( ) = default;
-		optional_poly( optional_poly && ) noexcept = default;
-		optional_poly &operator=( optional_poly && ) noexcept = default;
+		optional_poly( optional_poly && ) = default;
+		optional_poly &operator=( optional_poly && ) = default;
 
 		optional_poly( optional_poly const &other )
 		  : m_value{ make_copy( other.m_value.get( ) ) } {}

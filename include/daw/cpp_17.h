@@ -13,7 +13,6 @@
 #include "daw_cpp_feature_check.h"
 #include "daw_deduced_type.h"
 #include "daw_enable_if.h"
-#include "daw_is_detected.h"
 #include "daw_move.h"
 #include "daw_remove_cvref.h"
 #include "traits/daw_traits_conditional.h"
@@ -30,21 +29,15 @@ namespace daw {
 	template<typename B>
 	using negation = std::bool_constant<not bool( B::value )>;
 
-	template<typename...>
-	struct conjunction : std::true_type {};
+	template<typename... Ts>
+	inline constexpr bool conjunction_v =
+	  ( static_cast<bool>( Ts::value ) and ... );
 
-	template<typename B1>
-	struct conjunction<B1> : B1 {};
+	template<typename... Ts>
+	using conjunction_t = std::bool_constant<conjunction_v<Ts...>>;
 
-	template<typename B1, typename... Bn>
-	struct conjunction<B1, Bn...>
-	  : conditional_t<static_cast<bool>( B1::value ), conjunction<Bn...>, B1> {};
-
-	template<typename... T>
-	using conjunction_t = typename conjunction<T...>::type;
-
-	template<typename... T>
-	inline constexpr bool const conjunction_v = conjunction<T...>::value;
+	template<typename... Ts>
+	using conjunction = conjunction_t<Ts...>;
 
 	template<bool... values>
 	inline constexpr bool all_true_v = ( values and ... );
@@ -112,10 +105,10 @@ namespace daw {
 	using is_reference_wrapper = std::bool_constant<is_reference_wrapper_v<T>>;
 
 	template<typename T>
-	using not_trait = std::integral_constant<bool, not T::value>;
+	using not_trait = std::bool_constant<not T::value>;
 
 	template<typename T>
-	[[nodiscard]] constexpr std::add_const_t<T> &as_const( T &t ) noexcept {
+	[[nodiscard]] constexpr std::add_const_t<T> &as_const( T const &t ) noexcept {
 		return t;
 	}
 
@@ -126,25 +119,8 @@ namespace daw {
 		return c.size( );
 	}
 
-#ifdef __cpp_lib_is_swappable
 	template<typename T>
 	inline constexpr bool is_swappable_v = std::is_swappable_v<T>;
-#else
-	namespace detectors {
-		template<typename T>
-		using detect_std_swap =
-		  decltype( std::swap( std::declval<T &>( ), std::declval<T &>( ) ) );
-
-		template<typename T>
-		using detect_adl_swap =
-		  decltype( swap( std::declval<T &>( ), std::declval<T &>( ) ) );
-	} // namespace detectors
-
-	template<typename T>
-	inline constexpr bool is_swappable_v =
-	  is_detected_v<detectors::detect_std_swap, T> or
-	  is_detected_v<detectors::detect_adl_swap, T>;
-#endif
 
 	// Iterator movement, until I can use c++ 17 and the std ones are constexpr
 	namespace cpp_17_details {
@@ -177,21 +153,15 @@ namespace daw {
 		} // namespace math
 	} // namespace cpp_17_details
 
-	template<typename...>
-	struct disjunction : std::false_type {};
+	template<typename... Ts>
+	inline constexpr bool disjunction_v =
+	  ( static_cast<bool>( Ts::value ) or ... );
 
-	template<typename B1>
-	struct disjunction<B1> : B1 {};
+	template<typename... Ts>
+	using disjunction_t = std::bool_constant<disjunction_v<Ts...>>;
 
-	template<typename B1, typename... Bn>
-	struct disjunction<B1, Bn...>
-	  : conditional_t<bool( B1::value ), B1, disjunction<Bn...>> {};
-
-	template<typename... B>
-	using disjunction_t = typename disjunction<B...>::type;
-
-	template<typename... B>
-	inline constexpr bool disjunction_v = disjunction<B...>::value;
+	template<typename... Ts>
+	using disjunction = disjunction_t<Ts...>;
 
 	namespace cpp_17_details {
 		template<typename From, typename To,

@@ -19,6 +19,7 @@
 #include "daw_utility.h"
 #include "daw_visit.h"
 #include "impl/daw_int_to_iterator.h"
+#include "impl/daw_make_trait.h
 
 #include <cstddef>
 #include <limits>
@@ -36,19 +37,10 @@ namespace daw {
 					return std::string{ str };
 				}
 
-				template<typename T>
-				using has_to_string = decltype( std::declval<T>( ).to_string( ) );
+				DAW_MAKE_REQ_TRAIT( has_to_string_v, std::declval<T>( ).to_string( ) );
 
-				template<typename T>
-				constexpr bool has_to_string_v = daw::is_detected_v<has_to_string, T>;
-
-				template<typename T>
-				using can_cast_to_string =
-				  decltype( static_cast<std::string>( std::declval<T>( ) ) );
-
-				template<typename T>
-				constexpr bool can_cast_to_string_v =
-				  daw::is_detected_v<can_cast_to_string, T>;
+				DAW_MAKE_REQ_TRAIT( can_cast_to_string_v,
+				                    static_cast<std::string>( std::declval<T>( ) ) );
 
 				template<typename T,
 				         std::enable_if_t<
@@ -79,14 +71,12 @@ namespace daw {
 						using std::to_string;
 						return to_string( DAW_FWD( arg ) );
 					}
-					return get_arg_impl<Cnt + 1, Sz>( idx,
-					                                  DAW_FWD( args )... );
+					return get_arg_impl<Cnt + 1, Sz>( idx, DAW_FWD( args )... );
 				}
 
 				template<typename... Args>
 				std::string get_arg( uint8_t const idx, Args &&...args ) {
-					return get_arg_impl<0, sizeof...( Args )>(
-					  idx, DAW_FWD( args )... );
+					return get_arg_impl<0, sizeof...( Args )>( idx, DAW_FWD( args )... );
 				}
 			} // namespace string_fmt_details
 
@@ -115,8 +105,7 @@ namespace daw {
 						auto const idx_str = sv.pop_front_until( '}' );
 						auto const idx =
 						  daw::parser::parse_unsigned_int<uint8_t>( idx_str );
-						result +=
-						  string_fmt_details::get_arg( idx, DAW_FWD( args )... );
+						result += string_fmt_details::get_arg( idx, DAW_FWD( args )... );
 						result += sv.pop_front_until( '{' ).to_string( );
 					}
 					return result;
@@ -125,30 +114,22 @@ namespace daw {
 
 			template<typename... Args>
 			std::string fmt( std::string format_str, Args &&...args ) {
-				return fmt_t{ std::move( format_str ) }(
-				  DAW_FWD( args )... );
+				return fmt_t{ std::move( format_str ) }( DAW_FWD( args )... );
 			}
 		} // namespace v1
 		namespace v2 {
 			namespace string_fmt_details {
 				using daw::string_fmt::v1::string_fmt_details::to_string;
 				using std::to_string;
-				template<typename T>
-				constexpr auto to_string_test( )
-				  -> decltype( to_string( std::declval<T>( ) ) );
+				void to_string( );
 
-				template<typename T>
-				using has_to_string_test = decltype( to_string_test<T>( ) );
-
-				template<typename T>
-				inline constexpr bool has_to_string_v =
-				  daw::is_detected_v<has_to_string_test, T>;
+				DAW_MAKE_REQ_TRAIT( has_to_string_v, to_string( std::declval<T>( ) ) );
 
 				template<typename CharT>
 				struct parse_token {
 					std::variant<size_t, CharT, daw::basic_string_view<CharT>> m_data;
 
-					constexpr parse_token( ) noexcept = default;
+					parse_token( ) = default;
 
 					explicit constexpr parse_token(
 					  daw::basic_string_view<CharT> sv ) noexcept
@@ -227,17 +208,8 @@ namespace daw {
 
 				struct private_ctor {};
 
-				template<typename T>
-				auto has_reserve_test( )
-				  -> decltype( std::declval<T>( ).reserve( std::declval<size_t>( ) ) );
-
-				template<typename T>
-				using has_reserve_detector = decltype( has_reserve_test<T>( ) );
-
-				template<typename T>
-				inline constexpr bool has_reserve_v =
-				  daw::is_detected_v<has_reserve_detector, T>;
-
+				DAW_MAKE_REQ_TRAIT( has_reserve_v, std::declval<T>( ).reserve(
+				                                     std::declval<size_t>( ) ) );
 			} // namespace string_fmt_details
 			template<typename CharT, size_t N>
 			class fmt_t {
@@ -326,11 +298,10 @@ namespace daw {
 			constexpr Result fmt( Args &&...args ) {
 				constexpr auto const formatter =
 				  fmt_t<char, N>( string_fmt_details::private_ctor{ }, fmt_string );
-				return formatter.template operator( )<Result>(
-				  DAW_FWD( args )... );
+				return formatter.template operator( )<Result>( DAW_FWD( args )... );
 			}
 		} // namespace v2
-	}   // namespace string_fmt
+	} // namespace string_fmt
 	using string_fmt::v1::invalid_string_fmt_index;
 	using string_fmt::v2::fmt;
 	using string_fmt::v2::fmt_t;

@@ -6,10 +6,9 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#pragma once
+#include <daw/daw_is_any_of.h>
 
-namespace daw {
-	struct empty_t {};
-	using Empty = empty_t;
-	using nothing = empty_t;
-} // namespace daw
+static_assert( daw::is_any_of_v<1, 4, 3, 2, 1> );
+static_assert( not daw::is_any_of_v<1, 4, 3, 2> );
+
+int main( ) {}

@@ -188,7 +188,7 @@ namespace daw {
 
 		/// Construct a bitset of all zeros
 		///
-		constexpr static_bitset( ) noexcept = default;
+		static_bitset( ) = default;
 
 		/// Construct a static_bitset from a set of uintmax_t integers
 		/// \tparam Unsigned unsigned integer types convertable to uintmax_t

@@ -33,7 +33,7 @@ namespace daw {
 		std::byte m_data[sizeof( value_type )];
 
 	public:
-		constexpr uninitialized_storage( ) noexcept = default;
+		uninitialized_storage( ) = default;
 
 		template<typename... Args>
 		void construct( Args &&...args ) noexcept(

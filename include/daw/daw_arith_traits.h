@@ -273,6 +273,9 @@ namespace daw {
 	template<typename T>
 	struct make_unsigned : std::make_unsigned<T> {};
 
+	template<typename T>
+	struct make_signed : std::make_signed<T> {};
+
 #if defined( DAW_HAS_INT128 )
 	template<>
 	struct make_unsigned<__uint128_t> {
@@ -313,10 +316,53 @@ namespace daw {
 	struct make_unsigned<__int128_t const volatile> {
 		using type = __uint128_t const volatile;
 	};
+
+	template<>
+	struct make_signed<__uint128_t> {
+		using type = __int128_t;
+	};
+
+	template<>
+	struct make_signed<__uint128_t const> {
+		using type = __int128_t const;
+	};
+
+	template<>
+	struct make_signed<__uint128_t volatile> {
+		using type = __int128_t volatile;
+	};
+
+	template<>
+	struct make_signed<__uint128_t const volatile> {
+		using type = __int128_t const volatile;
+	};
+
+	template<>
+	struct make_signed<__int128_t> {
+		using type = __int128_t;
+	};
+
+	template<>
+	struct make_signed<__int128_t const> {
+		using type = __int128_t const;
+	};
+
+	template<>
+	struct make_signed<__int128_t volatile> {
+		using type = __int128_t volatile;
+	};
+
+	template<>
+	struct make_signed<__int128_t const volatile> {
+		using type = __int128_t const volatile;
+	};
 #endif
 
 	template<typename T>
 	using make_unsigned_t = typename make_unsigned<T>::type;
+
+	template<typename T>
+	using make_signed_t = typename make_signed<T>::type;
 
 	template<typename T>
 	struct is_system_integral : std::is_integral<T> {};
@@ -363,4 +409,12 @@ namespace daw {
 	        conditional_t<is_same_size_v<unsigned long long, BitSize>, long long,
 	                      unsupported_int_size<BitSize>>>>>>;
 
+	template<typename T>
+	inline constexpr auto max_value = numeric_limits<T>::max( );
+
+	template<typename T>
+	inline constexpr auto min_value = numeric_limits<T>::min( );
+
+	template<typename T>
+	inline constexpr auto lowest_value = numeric_limits<T>::lowest( );
 } // namespace daw

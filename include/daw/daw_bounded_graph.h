@@ -46,7 +46,7 @@ namespace daw {
 		friend struct bounded_graph_t;
 
 	public:
-		constexpr node_id_t( ) noexcept = default;
+		node_id_t( ) = default;
 		explicit constexpr node_id_t( size_t id ) noexcept
 		  : m_value( id ) {}
 
@@ -113,7 +113,7 @@ namespace daw {
 			edges_t m_outgoing_edges{ };
 
 		public:
-			constexpr node_impl_t( ) noexcept = default;
+			node_impl_t( ) = default;
 
 			constexpr node_impl_t( node_id_t id, T &&value ) noexcept
 			  : m_id( id )
@@ -164,7 +164,7 @@ namespace daw {
 		std::optional<size_t> m_id = { };
 
 	public:
-		constexpr invalid_node_exception( ) noexcept = default;
+		invalid_node_exception( ) = default;
 		explicit constexpr invalid_node_exception( size_t Id ) noexcept
 		  : m_id( Id ) {}
 
@@ -191,7 +191,7 @@ namespace daw {
 		using edges_t =
 		  typename bounded_graph_impl::node_impl_t<T, MaxVerticesPerNode>::edges_t;
 
-		constexpr const_graph_node_t( ) noexcept = default;
+		const_graph_node_t( ) = default;
 
 		constexpr const_graph_node_t(
 		  bounded_graph_t<T, MaxVerticesPerNode, Hash> const *graph_ptr,
@@ -277,7 +277,7 @@ namespace daw {
 		using edges_t =
 		  typename bounded_graph_impl::node_impl_t<T, MaxVerticesPerNode>::edges_t;
 
-		constexpr bounded_graph_node_t( ) noexcept = default;
+		bounded_graph_node_t( ) = default;
 
 		constexpr bounded_graph_node_t(
 		  bounded_graph_t<T, MaxVerticesPerNode, Hash> *graph_ptr,
@@ -387,7 +387,7 @@ namespace daw {
 		  m_nodes{ };
 
 	public:
-		constexpr bounded_graph_t( ) noexcept = default;
+		bounded_graph_t( ) = default;
 
 		template<typename... Args>
 		constexpr node_id_t add_node( Args &&...args ) {
@@ -395,10 +395,9 @@ namespace daw {
 			++cur_id;
 			auto id = node_id_t( id_value );
 
-			m_nodes.insert(
-			  id_value,
-			  bounded_graph_impl::node_impl_t<T, MaxVerticesPerNode>(
-			    id, daw::construct_a<T>( DAW_FWD( args )... ) ) );
+			m_nodes.insert( id_value,
+			                bounded_graph_impl::node_impl_t<T, MaxVerticesPerNode>(
+			                  id, daw::construct_a<T>( DAW_FWD( args )... ) ) );
 
 			return id;
 		}

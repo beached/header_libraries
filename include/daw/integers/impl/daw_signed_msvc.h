@@ -30,15 +30,15 @@
 namespace daw::integers::sint_impl {
 	template<typename T>
 	inline constexpr bool is_valid_int_type =
-	  std::is_integral_v<T> and std::is_signed_v<T> and
+	  daw::is_integral_v<T> and daw::is_signed_v<T> and
 	  sizeof( T ) <= sizeof( std::int64_t );
 
 	namespace {
 		template<typename SignedInteger>
 		constexpr bool wrapping_add( SignedInteger a, SignedInteger b,
 		                             SignedInteger &result ) {
-			static_assert( std::is_integral_v<SignedInteger> and
-			                 std::is_signed_v<SignedInteger> and
+			static_assert( daw::is_integral_v<SignedInteger> and
+			                 daw::is_signed_v<SignedInteger> and
 			                 sizeof( SignedInteger ) <= 8U,
 			               "Invalid signed integer" );
 			auto const res64 =
@@ -49,17 +49,17 @@ namespace daw::integers::sint_impl {
 				return result != res64;
 			} else {
 				return ( b > 0 and
-				         a > ( std::numeric_limits<SignedInteger>::max( ) - b ) ) or
+				         a > ( daw::numeric_limits<SignedInteger>::max( ) - b ) ) or
 				       ( b < 0 and
-				         a < ( std::numeric_limits<SignedInteger>::min( ) - b ) );
+				         a < ( daw::numeric_limits<SignedInteger>::min( ) - b ) );
 			}
 		}
 
 		template<typename SignedInteger>
 		constexpr bool wrapping_sub( SignedInteger a, SignedInteger b,
 		                             SignedInteger &result ) {
-			static_assert( std::is_integral_v<SignedInteger> and
-			                 std::is_signed_v<SignedInteger> and
+			static_assert( daw::is_integral_v<SignedInteger> and
+			                 daw::is_signed_v<SignedInteger> and
 			                 sizeof( SignedInteger ) <= 8U,
 			               "Invalid signed integer" );
 			auto const res64 =
@@ -171,9 +171,9 @@ namespace daw::integers::sint_impl {
 				if( DAW_UNLIKELY( rhs == 0 ) ) {
 					on_signed_integer_div_by_zero( );
 					return lhs;
-				} else if( rhs == T{ -1 } and lhs == std::numeric_limits<T>::min( ) ) {
+				} else if( rhs == T{ -1 } and lhs == daw::numeric_limits<T>::min( ) ) {
 					on_signed_integer_overflow( );
-					return std::numeric_limits<T>::max( );
+					return daw::numeric_limits<T>::max( );
 				}
 				return lhs / rhs;
 			}

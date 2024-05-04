@@ -68,9 +68,9 @@ namespace daw {
 		  : m_ptr( std::make_unique<BaseClass>( ) )
 		  , m_copier( poly_value_impl::make_copier<BaseClass>( ) ) {}
 
-		poly_value( poly_value && ) noexcept = default;
-		poly_value &operator=( poly_value && ) noexcept = default;
-		~poly_value( ) noexcept = default;
+		poly_value( poly_value && ) = default;
+		poly_value &operator=( poly_value && ) = default;
+		~poly_value( ) = default;
 
 		poly_value( poly_value const &other )
 		  : daw::enable_default_constructor<BaseClass>( other )

@@ -49,7 +49,7 @@ namespace daw {
 				  std::ref( std::get<Tpos>( DAW_FWD2( Tuple, tp ) ) ) );
 			}
 		} // namespace tuple_details
-	}   // namespace tuple
+	} // namespace tuple
 
 	template<typename... Args>
 	constexpr auto get( std::tuple<Args...> &tp, size_t index ) noexcept {
@@ -133,7 +133,7 @@ namespace daw {
 					m_os << " " << v;
 				}
 			}; // print_t
-		}    // namespace tuple_details
+		} // namespace tuple_details
 
 		template<typename... Ts, typename F>
 		constexpr void for_each( std::tuple<Ts...> const &t1, F &&f ) {
@@ -277,7 +277,7 @@ namespace daw {
 						return result;
 					}
 				}; // div_t
-			}    // namespace tuple_details
+			} // namespace tuple_details
 
 			template<typename... Op1, typename... Op2>
 			constexpr std::tuple<Op1...> operator+( std::tuple<Op1...> const &lhs,
@@ -404,9 +404,8 @@ namespace daw {
 			struct call_func {
 				Func func;
 
-				template<typename Arg,
-				         std::enable_if_t<traits::is_callable_v<Func, Arg>,
-				                          std::nullptr_t> = nullptr>
+				template<typename Arg, std::enable_if_t<std::is_invocable_v<Func, Arg>,
+				                                        std::nullptr_t> = nullptr>
 				constexpr void
 				operator( )( Arg &&value ) noexcept( noexcept( func( value ) ) ) {
 					func( DAW_FWD2( Arg, value ) );
@@ -489,7 +488,7 @@ namespace daw {
 			constexpr std::integral_constant<size_t, sizeof...( Args )>
 			tuple_size_test( std::tuple<Args...> const volatile & ) noexcept;
 		} // namespace tuple_details
-	}   // namespace tuple
+	} // namespace tuple
 
 	template<class T, class Tuple>
 	constexpr T make_from_tuple2( Tuple &&t ) {

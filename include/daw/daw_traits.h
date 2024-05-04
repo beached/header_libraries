@@ -15,10 +15,12 @@
 #include "daw_move.h"
 #include "daw_pack_element.h"
 #include "daw_remove_cvref.h"
+#include "impl/daw_make_trait.h"
 #include "impl/daw_traits_impl.h"
 #include "traits/daw_traits_conditional.h"
 #include "traits/daw_traits_first_type.h"
 #include "traits/daw_traits_is_const.h"
+#include "traits/daw_traits_is_one_of.h"
 #include "traits/daw_traits_is_rvalue_reference.h"
 
 #include <cstdlib>
@@ -137,25 +139,6 @@ namespace daw::traits {
 	template<typename R, bool... Bs>
 	using enable_if_all = std::enable_if<bool_and_v<Bs...>, R>;
 
-	//////////////////////////////////////////////////////////////////////////
-	/// Summary:	Is type T on of the other types
-	///
-	template<typename T, typename... Types>
-	struct is_one_of : std::false_type {};
-
-	template<typename T, typename Type>
-	struct is_one_of<T, Type> : std::is_same<T, Type> {};
-
-	template<typename T, typename Type, typename... Types>
-	struct is_one_of<T, Type, Types...>
-	  : daw::disjunction<std::is_same<T, Type>, is_one_of<T, Types...>> {};
-
-	template<typename T, typename... Types>
-	using is_one_of_t = typename is_one_of<T, Types...>::type;
-
-	template<typename T, typename... Types>
-	inline constexpr bool is_one_of_v = is_one_of<T, Types...>::value;
-
 	template<typename...>
 	struct can_convert_from : std::false_type {};
 
@@ -183,49 +166,21 @@ namespace daw::traits {
 		using type_sink_t = typename type_sink<T>::type;
 	} // namespace traits_details
 
-// Build a check for the presence of a member
-// Can be used like METHOD_CHECKER_ANY( has_begin_method, begin, ( ) ) and the
-// check will look for begin( ) If you want to check args you could do the
-// following METHOD_CHECKER_ANY( has_index_operation, operator[], (
-// std::declval<size_t>( ) ) )
-#define METHOD_CHECKER_ANY( name, fn )                                    \
-	namespace traits_details_##name {                                       \
-		template<typename T, typename... Args>                                \
-		using name =                                                          \
-		  decltype( std::declval<T>( ).fn( std::declval<Args>( )... ) );      \
-	}                                                                       \
-	template<typename T, typename... Args>                                  \
-	constexpr bool name##_v = is_detected_v<traits_details_##name::name, T, \
-	                                        Args...> // END METHOD_CHECKER_ANY
+	DAW_MAKE_REQ_TRAIT_TYPE( has_type_member_v, T::type );
 
-	// decltype( std::declval<typename T::MemberName>( ) );
-#define HAS_STATIC_TYPE_MEMBER( MemberName )                                   \
-	namespace traits_details::detectors_##MemberName {                           \
-		template<typename T>                                                       \
-		using MemberName##_member = typename T::MemberName;                        \
-	}                                                                            \
-	template<typename T>                                                         \
-	constexpr bool has_##MemberName##_member_v =                                 \
-	  is_detected_v<traits_details::detectors_##MemberName::MemberName##_member, \
-	                T>
+	DAW_MAKE_REQ_TRAIT_TYPE( has_value_type_member_v, T::value_type );
 
-	HAS_STATIC_TYPE_MEMBER( type );
-	HAS_STATIC_TYPE_MEMBER( value_type );
-	HAS_STATIC_TYPE_MEMBER( mapped_type );
-	HAS_STATIC_TYPE_MEMBER( iterator );
+	DAW_MAKE_REQ_TRAIT_TYPE( has_mapped_type_member_v, T::mapped_type );
 
-	METHOD_CHECKER_ANY( has_begin_member, begin );
-	METHOD_CHECKER_ANY( has_end_member, end );
+	DAW_MAKE_REQ_TRAIT_TYPE( has_iterator_member_v, T::iterator );
 
-	namespace traits_details::detectors {
-		template<typename T>
-		using has_substr_member = decltype( std::declval<T>( ).substr(
-		  std::declval<size_t>( ), std::declval<size_t>( ) ) );
-	}
+	DAW_MAKE_REQ_TRAIT( has_begin_member_v, std::declval<T &>( ).begin( ) );
 
-	template<typename T>
-	inline constexpr bool has_substr_member_v =
-	  is_detected_v<traits_details::detectors::has_substr_member, T>;
+	DAW_MAKE_REQ_TRAIT( has_end_member_v, std::declval<T &>( ).end( ) );
+
+	DAW_MAKE_REQ_TRAIT( has_substr_member_v,
+	                    std::declval<T>( ).substr( std::declval<size_t>( ),
+	                                               std::declval<size_t>( ) ) );
 
 	template<typename T>
 	inline constexpr bool is_map_like_v =
@@ -251,14 +206,14 @@ namespace daw::traits {
 	inline constexpr bool is_numeric_v
 	  [[deprecated( "use std::is_arithmetic_v" )]] = is_numeric<T>::value;
 
-	namespace traits_details::detectors {
-		template<typename OutStream, typename T>
-		using streamable =
-		  decltype( std::declval<OutStream>( ) << std::declval<T>( ) );
-	}
+	template<typename OutStream, typename T, typename = void>
+	inline constexpr bool is_streamable_v = false;
+
 	template<typename OutStream, typename T>
-	inline constexpr bool is_streamable_v =
-	  daw::is_detected_v<traits_details::detectors::streamable, OutStream &, T>;
+	inline constexpr bool
+	  is_streamable_v<OutStream, T,
+	                  std::void_t<decltype( std::declval<OutStream &>( )
+	                                        << std::declval<T>( ) )>> = true;
 
 	template<template<class> class Base, typename Derived>
 	inline constexpr bool is_mixed_from_v =
@@ -314,7 +269,7 @@ namespace daw::traits {
 			[[maybe_unused]] auto has_op_ge_impl( L const &lhs, R const &rhs, int )
 			  -> std::is_convertible<decltype( lhs >= rhs ), bool>;
 		} // namespace operators
-	}   // namespace traits_details
+	} // namespace traits_details
 
 	namespace operators {
 		template<typename L, typename R = L>
@@ -359,9 +314,16 @@ namespace daw::traits {
 	inline constexpr bool are_convertible_to_v =
 	  all_true_v<std::is_convertible_v<From, To>...>;
 
-	template<typename String>
-	inline constexpr bool is_not_array_array_v =
-	  not daw::is_detected_v<detectors::is_array_array, String>;
+	namespace traits_impl {
+		template<typename T, std::size_t N, std::size_t M>
+		void is_array_of_array_test( T ( & )[N][M] );
+	} // namespace traits_impl
+
+	DAW_MAKE_REQ_TRAIT( is_array_array_v, traits_impl::is_array_of_array_test(
+	                                        std::declval<T>( ) ) );
+
+	template<typename T>
+	inline constexpr bool is_not_array_array_v = not is_array_array_v<T>;
 
 	template<typename String>
 	inline constexpr bool is_string_view_like_v =
@@ -435,13 +397,16 @@ namespace daw::traits {
 	  decltype( std::declval<Function>( )( std::declval<Args>( )... ) );
 
 	namespace traits_details {
-		template<typename... Ts>
-		[[maybe_unused]] constexpr void
-		tuple_test( std::tuple<Ts...> const & ) noexcept {}
+		template<typename>
+		inline constexpr bool is_tuple_impl_v = false;
 
 		template<typename... Ts>
-		using detect_is_tuple = decltype( tuple_test( std::declval<Ts>( )... ) );
+		inline constexpr bool is_tuple_impl_v<std::tuple<Ts...>> = true;
+
 	} // namespace traits_details
+	template<typename T>
+	inline constexpr bool is_tuple_v =
+	  traits_details::is_tuple_impl_v<daw::remove_cvref_t<T>>;
 
 	template<typename...>
 	struct is_first_type;
@@ -456,10 +421,6 @@ namespace daw::traits {
 	// empty it is false
 	template<typename T, typename... Args>
 	inline constexpr bool is_first_type_v = is_first_type<T, Args...>::value;
-
-	template<typename... Ts>
-	inline constexpr bool is_tuple_v =
-	  is_detected_v<traits_details::detect_is_tuple, Ts...>;
 
 	template<typename T, typename... Args>
 	inline constexpr bool is_init_list_constructible_v = all_true_v<
@@ -641,14 +602,18 @@ namespace daw::traits {
 	}
 
 	namespace traits_details {
+		template<typename T, typename = void>
+		inline constexpr bool is_list_constructible_impl_v = false;
+
 		template<typename T, typename... Args>
-		using is_list_constructible_test =
-		  decltype( T{ std::declval<Args>( )... } );
-	}
+		inline constexpr bool is_list_constructible_impl_v<
+		  daw::pack_list<T, Args...>,
+		  std::void_t<decltype( T{ std::declval<Args>( )... } )>> = true;
+	} // namespace traits_details
 
 	template<typename T, typename... Args>
 	inline constexpr bool is_list_constructible_v =
-	  daw::is_detected_v<traits_details::is_list_constructible_test, T, Args...>;
+	  traits_details::is_list_constructible_impl_v<daw::pack_list<T, Args...>>;
 
 	template<typename T, typename... Args>
 	using is_list_constructible =

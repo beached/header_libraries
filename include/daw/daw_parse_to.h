@@ -16,11 +16,13 @@
 #include "daw_string_view.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
+#include "impl/daw_make_trait.h"
 
 #include <cstddef>
 #include <iterator>
 #include <string>
 #include <tuple>
+#include <type_traits>
 #include <utility>
 
 namespace daw {
@@ -288,7 +290,7 @@ namespace daw {
 		/// @param splitter Function to split string into arguments
 		/// @return A tuple of values of the types specified in Args
 		template<typename... Args, typename Splitter,
-		         std::enable_if_t<traits::is_callable_v<Splitter, daw::string_view>,
+		         std::enable_if_t<std::is_invocable_v<Splitter, daw::string_view>,
 		                          std::nullptr_t> = nullptr>
 		constexpr decltype( auto ) parse_to( daw::string_view str,
 		                                     Splitter &&splitter ) {
@@ -328,7 +330,7 @@ namespace daw {
 	/// @param splitter split what string arguments on
 	/// @return A constructed Destination
 	template<typename Destination, typename... ExpectedArgs, typename Splitter,
-	         std::enable_if_t<traits::is_callable_v<Splitter, daw::string_view>,
+	         std::enable_if_t<std::is_invocable_v<Splitter, daw::string_view>,
 	                          std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) construct_from( daw::string_view str,
 	                                           Splitter &&splitter ) {
@@ -385,7 +387,7 @@ namespace daw {
 	/// @param splitter Function to split string into arguments
 	/// @return The result of callable
 	template<typename Callable, typename Splitter,
-	         std::enable_if_t<traits::is_callable_v<Splitter, daw::string_view>,
+	         std::enable_if_t<std::is_invocable_v<Splitter, daw::string_view>,
 	                          std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) apply_string2( Callable &&callable,
 	                                          daw::string_view str,
@@ -424,12 +426,12 @@ namespace daw {
 	/// @param splitter Function to split string into arguments
 	/// @return result of callable
 	template<typename... Args, typename Callable, typename Splitter,
-	         std::enable_if_t<traits::is_callable_v<Splitter, daw::string_view>,
+	         std::enable_if_t<std::is_invocable_v<Splitter, daw::string_view>,
 	                          std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) apply_string( Callable &&callable,
 	                                         daw::string_view str,
 	                                         Splitter &&splitter ) {
-		//		static_assert( traits::is_callable_v<Callable, Args...>,
+		//		static_assert( std::is_invocable_v<Callable, Args...>,
 		//		               "Callable must accept Args..." );
 		return std::apply( DAW_FWD( callable ),
 		                   parser::parse_to<Args...>( str, DAW_FWD( splitter ) ) );
@@ -445,7 +447,7 @@ namespace daw {
 	/// @param delemiter split what string arguments on
 	/// @return result of callable
 	/*	template<typename... Args, typename Callable,
-	           std::enable_if_t<traits::is_callable_v<Callable, Args...>,
+	           std::enable_if_t<std::is_invocable_v<Callable, Args...>,
 	   std::nullptr_t> = nullptr>
 	             */
 	template<typename... Args, typename Callable>
@@ -468,7 +470,7 @@ namespace daw {
 	/*
 	template<
 	  typename Arg, typename Callable,
-	  std::enable_if_t<traits::is_callable_v<Callable, Arg>, std::nullptr_t> =
+	  std::enable_if_t<std::is_invocable_v<Callable, Arg>, std::nullptr_t> =
 	nullptr>
 	  */
 	template<typename Arg, typename Callable>
@@ -479,9 +481,8 @@ namespace daw {
 		                          parser::default_splitter{ " " } );
 	}
 
-	namespace detectors {
-		template<typename Stream>
-		using has_str = decltype( Stream( ).str( ) );
+	namespace parse_to_impl {
+		DAW_MAKE_REQ_TRAIT( has_str_member_v, std::declval<T>( ).str( ) );
 	}
 
 	/// @brief Extract specified argument types from a stream of character data
@@ -493,8 +494,8 @@ namespace daw {
 	/// @param splitter Function to split string into arguments
 	/// @return A tuple of values of the types specified in Args
 	template<typename... Args, typename Stream, typename Splitter,
-	         std::enable_if_t<(!is_detected_v<detectors::has_str, Stream> &&
-	                           traits::is_callable_v<Splitter, daw::string_view>),
+	         std::enable_if_t<(not parse_to_impl::has_str_member_v<Stream> and
+	                           std::is_invocable_v<Splitter, daw::string_view>),
 	                          std::nullptr_t> = nullptr>
 	decltype( auto ) values_from_stream( Stream &&stream, Splitter &&splitter ) {
 
@@ -514,8 +515,8 @@ namespace daw {
 	/// @param splitter Function to split string into arguments
 	/// @return A tuple of values of the types specified in Args
 	template<typename... Args, typename Stream, typename Splitter,
-	         std::enable_if_t<(is_detected_v<detectors::has_str, Stream> &&
-	                           traits::is_callable_v<Splitter, daw::string_view>),
+	         std::enable_if_t<(parse_to_impl::has_str_member_v<Stream> and
+	                           std::is_invocable_v<Splitter, daw::string_view>),
 	                          std::nullptr_t> = nullptr>
 	decltype( auto ) values_from_stream( Stream &&s, Splitter &&splitter ) {
 

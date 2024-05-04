@@ -19,6 +19,7 @@
 #include <exception>
 #include <stdexcept>
 #include <string>
+#include <type_traits>
 #include <utility>
 
 namespace daw {
@@ -69,11 +70,6 @@ namespace daw {
 		/// Summary: No value, aka null
 		//////////////////////////////////////////////////////////////////////////
 		checked_expected_t( ) = default;
-		checked_expected_t( checked_expected_t const & ) = default;
-		checked_expected_t &operator=( checked_expected_t const & ) = default;
-		checked_expected_t( checked_expected_t && ) noexcept = default;
-		checked_expected_t &operator=( checked_expected_t && ) noexcept = default;
-		~checked_expected_t( ) = default;
 
 		friend bool operator==( checked_expected_t const &lhs,
 		                        checked_expected_t const &rhs ) {
@@ -128,7 +124,7 @@ namespace daw {
 		// std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename... Args,
-		         std::enable_if_t<traits::is_callable_v<Function, Args...>,
+		         std::enable_if_t<std::is_invocable_v<Function, Args...>,
 		                          std::nullptr_t> = nullptr>
 		static checked_expected_t from_code( Function func, Args &&...args ) {
 			try {
@@ -141,8 +137,8 @@ namespace daw {
 		// std::enable_if_t<is_callable_v<Function, Args...>>>
 		template<class Function, typename... Args>
 		checked_expected_t( Function func, Args &&...args )
-		  : checked_expected_t{ checked_expected_t::from_code(
-		      func, DAW_FWD( args )... ) } {}
+		  : checked_expected_t{
+		      checked_expected_t::from_code( func, DAW_FWD( args )... ) } {}
 
 		[[nodiscard]] bool has_value( ) const noexcept {
 			return static_cast<bool>( m_value );
@@ -333,8 +329,8 @@ namespace daw {
 		         typename result = decltype( std::declval<Function>( )(
 		           std::declval<Args>( )... ) )>
 		checked_expected_t( Function func, Args &&...args )
-		  : checked_expected_t{ checked_expected_t::from_code(
-		      func, DAW_FWD( args )... ) } {}
+		  : checked_expected_t{
+		      checked_expected_t::from_code( func, DAW_FWD( args )... ) } {}
 
 		[[nodiscard]] bool has_value( ) const noexcept {
 			return m_value;
@@ -386,8 +382,7 @@ namespace daw {
 
 	template<typename... ExpectedExceptions, typename Function, typename... Args>
 	auto checked_from_code( Function func, Args &&...args ) {
-		using result_t =
-		  std::decay_t<decltype( func( DAW_FWD( args )... ) )>;
+		using result_t = std::decay_t<decltype( func( DAW_FWD( args )... ) )>;
 		return checked_expected_t<result_t, ExpectedExceptions...>::from_code(
 		  func, DAW_FWD( args )... );
 	}

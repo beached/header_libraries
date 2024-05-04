@@ -9,7 +9,6 @@
 #pragma once
 
 namespace daw {
-	struct empty_t {};
-	using Empty = empty_t;
-	using nothing = empty_t;
-} // namespace daw
+	template<auto Needle, auto... Haystack>
+	inline constexpr bool is_any_of_v = ( ( Needle == Haystack ) or ... );
+}

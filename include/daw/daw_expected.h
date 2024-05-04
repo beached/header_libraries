@@ -24,12 +24,12 @@ namespace daw::expected_details {
 	enum expected_value_types : bool { Empty, Void };
 	template<expected_value_types>
 	struct ExpectedTag {
-		ExpectedTag( ) noexcept = default;
-		bool operator==( ExpectedTag const & ) const noexcept {
+		ExpectedTag( ) = default;
+		constexpr bool operator==( ExpectedTag const & ) const noexcept {
 			return true;
 		}
 
-		bool operator!=( ExpectedTag const & ) const noexcept {
+		constexpr bool operator!=( ExpectedTag const & ) const noexcept {
 			return false;
 		}
 	};
@@ -53,7 +53,7 @@ namespace daw {
 	public:
 		struct exception_tag {};
 
-		expected_t( ) noexcept = default;
+		expected_t( ) = default;
 
 		/// Summary: No value, aka null
 		bool operator==( expected_t const &rhs ) const noexcept {
@@ -260,7 +260,7 @@ namespace daw {
 
 	public:
 		/// Summary: No value, aka null
-		expected_t( ) noexcept = default;
+		expected_t( ) = default;
 
 		friend bool operator==( expected_t const &lhs,
 		                        expected_t const &rhs ) noexcept {

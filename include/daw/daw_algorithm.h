@@ -817,7 +817,7 @@ namespace daw::algorithm {
 				return DAW_FWD2( T, value ) <= m_value;
 			}
 		}; // less_than_or_equal_to
-	}    // namespace algorithm_details
+	} // namespace algorithm_details
 
 	/// @brief Returns a callable that returns true if the value passed is in
 	/// the range [Lower, Upper]
@@ -990,7 +990,7 @@ namespace daw::algorithm {
 		traits::is_output_iterator_test<OutputIterator,
 		                                decltype( pred( *first ) )>( );
 
-		static_assert( traits::is_callable_v<TransformFunction, decltype( *first )>,
+		static_assert( std::is_invocable_v<TransformFunction, decltype( *first )>,
 		               "TransformFunction does not accept a single argument of "
 		               "the dereferenced type of first" );
 
@@ -1026,8 +1026,8 @@ namespace daw::algorithm {
 
 		traits::is_input_iterator_test<InputIterator>( );
 		static_assert(
-		  traits::is_callable_v<UnaryOperation, decltype( *first )> or
-		    traits::is_callable_v<UnaryOperation, decltype( *first ), size_t>,
+		  std::is_invocable_v<UnaryOperation, decltype( *first )> or
+		    std::is_invocable_v<UnaryOperation, decltype( *first ), size_t>,
 		  "UnaryOperation does not accept a single argument of the "
 		  "dereferenced type of first or with an addditional argument of "
 		  "size_t" );
@@ -1035,7 +1035,7 @@ namespace daw::algorithm {
 		traits::is_output_iterator_test<OutputIterator,
 		                                decltype( unary_op( *first ) )>( );
 
-		if constexpr( traits::is_callable_v<UnaryOperation, decltype( *first )> ) {
+		if constexpr( std::is_invocable_v<UnaryOperation, decltype( *first )> ) {
 			while( count-- > 0 ) {
 				*first_out = unary_op( *first );
 				++first;
@@ -1082,7 +1082,7 @@ namespace daw::algorithm {
 		               "type of the output iterator" );
 		traits::is_input_iterator_test<InputIterator>( );
 
-		static_assert( traits::is_callable_v<UnaryOperation, decltype( *first )>,
+		static_assert( std::is_invocable_v<UnaryOperation, decltype( *first )>,
 		               "UnaryOperation does not accept a single argument of the "
 		               "dereferenced type of first" );
 
@@ -1338,12 +1338,12 @@ namespace daw::algorithm {
 	/// @param value value to compare to
 	/// @return position of first element greater than value or last
 	template<typename ForwardIterator, typename T, typename Compare = std::less<>>
-	constexpr ForwardIterator
-	upper_bound( ForwardIterator first, ForwardIterator last, T const &value,
-	             Compare comp =
-	               Compare{ } ) noexcept( noexcept( daw::advance( first, 1 ) )
-	                                        and noexcept( ++first ) and noexcept(
-	                                          daw::distance( first, last ) ) ) {
+	constexpr ForwardIterator upper_bound(
+	  ForwardIterator first, ForwardIterator last, T const &value,
+	  Compare comp =
+	    Compare{ } ) noexcept( noexcept( daw::advance( first, 1 ) ) and
+	                           noexcept( ++first ) and
+	                           noexcept( daw::distance( first, last ) ) ) {
 
 		traits::is_forward_access_iterator_test<ForwardIterator>( );
 		traits::is_input_iterator_test<ForwardIterator>( );
@@ -1716,8 +1716,8 @@ namespace daw::algorithm {
 	  InputIterator1 first1, LastType1 last1, InputIterator2 first2,
 	  LastType2 last2, OutputIterator d_first,
 	  Compare &&comp =
-	    Compare{ } ) noexcept( noexcept( comp( *first2, *first1 ) )
-	                             and noexcept( comp( *first1, *first2 ) ) ) {
+	    Compare{ } ) noexcept( noexcept( comp( *first2, *first1 ) ) and
+	                           noexcept( comp( *first1, *first2 ) ) ) {
 
 		while( first1 != last1 and first2 != last2 ) {
 			if( daw::invoke( comp, *first1, *first2 ) ) {

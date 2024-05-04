@@ -15,6 +15,7 @@
 #include "daw_traits.h"
 #include "daw_utility.h"
 #include "daw_virtual_base.h"
+#include "impl/daw_make_trait.h"
 
 #include <cstddef>
 #include <functional>
@@ -30,27 +31,21 @@
 
 namespace daw {
 	namespace func_impl {
-		template<typename T>
-		using is_boolable_detect =
-		  decltype( static_cast<bool>( std::declval<T>( ) ) );
+		DAW_MAKE_REQ_TRAIT( is_boolable_v,
+		                    static_cast<bool>( std::declval<T>( ) ) );
 
-		template<typename T>
-		inline constexpr bool is_boolable_v =
-		  daw::is_detected_v<is_boolable_detect, T>;
-
-		template<typename T>
-		using has_empty_member_detect = decltype( std::declval<T>( ).empty( ) );
-
-		template<typename T>
-		inline constexpr bool has_empty_member_v =
-		  daw::is_detected_v<has_empty_member_detect, T>;
+		DAW_MAKE_REQ_TRAIT( has_empty_member_v, std::declval<T>( ).empty( ) );
 
 		template<size_t StorageSize, typename Base>
 		struct function_storage {
 			std::aligned_storage_t<StorageSize> m_data;
 
-			function_storage( function_storage const & ) noexcept = default;
-			function_storage( function_storage && ) noexcept = default;
+			~function_storage( ) {
+				clean( );
+			}
+
+			function_storage( function_storage const & ) = default;
+			function_storage( function_storage && ) = default;
 
 			function_storage &operator=( function_storage const &rhs ) {
 				if( this == &rhs ) {
@@ -91,17 +86,12 @@ namespace daw {
 				std::destroy_at( ptr( ) );
 			}
 
-			~function_storage( ) {
-				clean( );
-			}
-
 			template<typename Func>
 			void store( Func &&f ) {
 				static_assert( sizeof( std::decay_t<Func> ) <= StorageSize );
 				static_assert( std::is_base_of_v<Base, Func>,
 				               "Can only store children of func_base" );
-				new( &m_data )
-				  daw::remove_cvref_t<std::decay_t<Func>>( DAW_FWD( f ) );
+				new( &m_data ) daw::remove_cvref_t<std::decay_t<Func>>( DAW_FWD( f ) );
 			}
 
 			[[nodiscard]] Base &operator*( ) noexcept {
@@ -124,11 +114,12 @@ namespace daw {
 		template<typename Result, typename... FuncArgs>
 		struct function_base
 		  : daw::virtual_base<function_base<Result, FuncArgs...>> {
+
+			function_base( ) = default;
+
 			virtual Result operator( )( FuncArgs... ) const = 0;
 			virtual Result operator( )( FuncArgs... ) = 0;
 			virtual bool empty( ) const = 0;
-
-			function_base( ) noexcept = default;
 		};
 
 		template<typename Result, typename... FuncArgs>
@@ -248,7 +239,8 @@ namespace daw {
 		template<typename Func>
 		using function_child = func_impl::function_child<Func, Result, FuncArgs...>;
 
-		func_impl::function_storage<MaxSize, function_base> m_storage;
+		func_impl::function_storage<MaxSize, function_base> m_storage =
+		  empty_child{ };
 
 		template<typename Func>
 		decltype( auto ) store_if_not_empty( Func &&f ) {
@@ -259,17 +251,8 @@ namespace daw {
 		}
 
 	public:
-		function( ) noexcept
-		  : m_storage( empty_child{ } ) {}
-
-		function( std::nullptr_t )
-		  : m_storage( empty_child{ } ) {}
-
-		function( function const & ) = default;
-		function( function && ) noexcept = default;
-		function &operator=( function const & ) = default;
-		function &operator=( function && ) noexcept = default;
-		~function( ) = default;
+		function( ) = default;
+		function( std::nullptr_t ) {}
 
 		template<size_t N,
 		         std::enable_if_t<( N <= MaxSize ), std::nullptr_t> = nullptr>

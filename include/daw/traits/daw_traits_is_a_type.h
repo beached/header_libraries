@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/daw_traits.h"
+#include "daw/impl/daw_make_trait.h"
 
 #include <deque>
 #include <iterator>
@@ -95,13 +96,6 @@ namespace daw::traits {
 	inline constexpr bool is_vector_like_not_string_v =
 	  all_true_v<is_container_not_string_v<T>, isnt_map_like_v<T>>;
 
-	namespace traits_details {
-		template<typename T>
-		using has_to_string_test =
-		  decltype( std::string( std::declval<T>( ).to_string( ) ) );
-	} // namespace traits_details
-
-	template<typename T>
-	inline constexpr bool has_to_string_v =
-	  is_detected_v<traits_details::has_to_string_test, T>;
+	DAW_MAKE_REQ_TRAIT( has_to_string_v,
+	                    std::string( std::declval<T>( ).to_string( ) ) );
 } // namespace daw::traits

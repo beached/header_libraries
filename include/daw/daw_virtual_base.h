@@ -9,13 +9,14 @@
 #pragma once
 
 namespace daw {
-	template<typename Base>
+	template<typename /*CRTP*/>
 	struct virtual_base {
-		virtual_base( ) noexcept = default;
-		virtual_base( virtual_base const & ) noexcept = default;
-		virtual_base( virtual_base && ) noexcept = default;
-		virtual_base &operator=( virtual_base const & ) noexcept = default;
-		virtual_base &operator=( virtual_base && ) noexcept = default;
+		virtual_base( ) = default;
+
+		virtual_base( virtual_base const & ) = default;
+		virtual_base( virtual_base && ) = default;
+		virtual_base &operator=( virtual_base const & ) = default;
+		virtual_base &operator=( virtual_base && ) = default;
 		virtual ~virtual_base( ) = default;
 	};
 } // namespace daw

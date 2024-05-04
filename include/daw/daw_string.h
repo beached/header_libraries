@@ -10,6 +10,7 @@
 
 #include "ciso646.h"
 #include "daw_exception.h"
+#include "daw_is_detected.h"
 #include "daw_move.h"
 #include "daw_traits.h"
 
@@ -425,18 +426,8 @@ namespace daw::string {
 			BasicString( Args &&...args )
 			  : m_string( DAW_FWD( args )... ) {}
 
-			BasicString( BasicString const & ) = default;
-
-			BasicString( BasicString && ) noexcept = default;
-
 			BasicString( value_type other )
 			  : m_string{ std::move( other ) } {}
-
-			~BasicString( ) = default;
-
-			BasicString &operator=( BasicString const & ) = default;
-
-			BasicString &operator=( BasicString && ) noexcept = default;
 
 			BasicString &operator=( value_type rhs ) {
 				m_string = std::move( rhs );

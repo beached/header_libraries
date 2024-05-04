@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "../ciso646.h"
+#include "daw/ciso646.h"
 
 #include <iterator>
 
@@ -26,7 +26,7 @@ namespace daw {
 		pointer m_pointer = nullptr;
 
 	public:
-		constexpr RandomIterator( ) noexcept = default;
+		RandomIterator( ) = default;
 
 		explicit constexpr RandomIterator( T *ptr ) noexcept
 		  : m_pointer{ ptr } {}

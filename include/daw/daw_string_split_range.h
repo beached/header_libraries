@@ -51,7 +51,7 @@ namespace daw {
 		using pointer = daw::sv1::basic_string_view<CharT>;
 		using difference_type = ptrdiff_t;
 
-		constexpr string_split_iterator( ) noexcept = default;
+		string_split_iterator( ) = default;
 
 		constexpr string_split_iterator(
 		  daw::sv1::basic_string_view<CharT> str,
@@ -119,7 +119,7 @@ namespace daw {
 		iterator m_first{ };
 
 	public:
-		constexpr string_split_range( ) noexcept = default;
+		string_split_range( ) = default;
 
 		constexpr string_split_range(
 		  daw::sv1::basic_string_view<CharT> str,

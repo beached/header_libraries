@@ -602,12 +602,8 @@ namespace daw {
 			DAW_ATTRIB_INLINE constexpr basic_string_view(
 			  CharT const ( &string_literal )[N] ) noexcept
 			  : m_first( string_literal )
-			  , m_last( make_last<BoundsType>( string_literal, N - 1 ) ) {
-				static_assert( N > 0 );
-				if( string_literal[N - 1] != '\0' ) {
-					m_last = make_last<BoundsType>( string_literal, N );
-				}
-			}
+			  , m_last( make_last<BoundsType>(
+			      string_literal, string_literal[N - 1] == CharT{ } ? N - 1 : N ) ) {}
 
 			/// @brief Construct a string_view from a range formed by two
 			/// character pointers

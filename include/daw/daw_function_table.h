@@ -10,6 +10,7 @@
 
 #include "ciso646.h"
 #include "cpp_17.h"
+#include "daw_is_detected.h"
 #include "daw_move.h"
 #include "daw_traits.h"
 #include "traits/daw_traits_conditional.h"
@@ -68,8 +69,7 @@ namespace daw {
 		static constexpr R apply_at_impl( size_t idx, T &&t, Args &&...args ) {
 			if( idx == I ) {
 				if constexpr( is_t_callable_v<I, T, Args...> ) {
-					return sfinae_get<I>( DAW_FWD( t ) )(
-					  DAW_FWD( args )... );
+					return sfinae_get<I>( DAW_FWD( t ) )( DAW_FWD( args )... );
 				} else if constexpr( allow_empty and is_t_callable_v<I, T> ) {
 					return sfinae_get<I>( DAW_FWD( t ) )( );
 				} else {
@@ -77,8 +77,8 @@ namespace daw {
 				}
 			}
 			if constexpr( is_t_in_range_v<I + 1, T> ) {
-				return apply_at_impl<R, allow_empty, I + 1>(
-				  idx, DAW_FWD( t ), DAW_FWD( args )... );
+				return apply_at_impl<R, allow_empty, I + 1>( idx, DAW_FWD( t ),
+				                                             DAW_FWD( args )... );
 			}
 			std::abort( );
 		}
@@ -95,13 +95,12 @@ namespace daw {
 				}
 			}
 			if constexpr( is_t_in_range_v<I + 1, T> ) {
-				set_at_impl<I + 1>( idx, DAW_FWD( t ),
-				                    DAW_FWD( v ) );
+				set_at_impl<I + 1>( idx, DAW_FWD( t ), DAW_FWD( v ) );
 				return;
 			}
 			std::abort( );
 		} // namespace
-	}   // namespace function_table_impl
+	} // namespace function_table_impl
 
 	template<typename R, typename Function, typename... Functions>
 	struct function_table_t {
@@ -138,8 +137,7 @@ namespace daw {
 			if constexpr( using_array_v ) {
 				fns[idx] = DAW_FWD( v );
 			} else {
-				function_table_impl::set_at_impl<0>( idx, fns,
-				                                     DAW_FWD( v ) );
+				function_table_impl::set_at_impl<0>( idx, fns, DAW_FWD( v ) );
 			}
 		}
 

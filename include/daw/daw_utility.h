@@ -15,11 +15,14 @@
 #include "daw_construct_a.h"
 #include "daw_empty.h"
 #include "daw_exception.h"
+#include "daw_int_cmp.h"
+#include "daw_likely.h"
 #include "daw_move.h"
 #include "daw_remove_cvref.h"
 #include "daw_traits.h"
 #include "daw_typeof.h"
 #include "daw_unused.h"
+#include "impl/daw_make_trait.h"
 
 #include <cmath>
 #include <cstddef>
@@ -105,7 +108,7 @@ namespace daw {
 				return m_value == value;
 			}
 		}; // class EqualToImpl
-	}    // namespace utility_details
+	} // namespace utility_details
 	template<typename T>
 	inline constexpr utility_details::EqualToImpl<T> equal_to( T value ) {
 		return utility_details::EqualToImpl<T>( std::move( value ) );
@@ -116,7 +119,7 @@ namespace daw {
 		T *m_value = nullptr;
 
 	public:
-		inline constexpr equal_to_last( ) noexcept = default;
+		equal_to_last( ) = default;
 
 		inline bool operator( )( T const &value ) noexcept {
 			bool result = false;
@@ -143,7 +146,7 @@ namespace daw {
 				return !m_function( DAW_FWD2( Args, args )... );
 			}
 		}; // class NotImpl
-	}    // namespace utility_details
+	} // namespace utility_details
 
 	template<typename Function>
 	[[nodiscard]] inline constexpr utility_details::NotImpl<Function>
@@ -187,6 +190,7 @@ namespace daw {
 		using arg_pack = daw::pack_list<Args...>;
 		using result_type = ReturnType;
 	};
+
 	template<typename F>
 	using function_traits_t = typename function_traits<F>::type;
 
@@ -668,11 +672,7 @@ namespace daw {
 		template<typename... Args>
 		constexpr void is_tuple_test( std::tuple<Args...> const & ) noexcept;
 
-		template<typename T>
-		using is_tuple_detect = decltype( is_tuple_test( std::declval<T>( ) ) );
-
-		template<typename T>
-		constexpr bool is_tuple_v = daw::is_detected_v<is_tuple_detect, T>;
+		DAW_MAKE_REQ_TRAIT( is_tuple_v, is_tuple_test( std::declval<T>( ) ) );
 	} // namespace utility_details
 
 	template<typename Destination, typename... Args>
@@ -866,50 +866,16 @@ namespace daw {
 		};
 	} // namespace utility_details
 
-	template<typename Integer, typename T>
+	template<typename Integer, typename... Ts, typename T>
 	[[nodiscard]] constexpr Integer narrow_cast( T value ) {
-		if constexpr( std::is_signed_v<T> ) {
-			if constexpr( std::is_signed_v<Integer> ) {
-				if constexpr( sizeof( T ) <= sizeof( Integer ) ) {
-					return value;
-				} else if( value <= static_cast<T>(
-				                      ( std::numeric_limits<Integer>::max )( ) ) ) {
-					return static_cast<Integer>( value );
-				} else {
-					daw::exception::daw_throw<std::out_of_range>( "value" );
-				}
-			} else if constexpr( sizeof( T ) <= sizeof( Integer ) ) {
-				if( value >= 0 ) {
-					return value;
-				}
-				daw::exception::daw_throw<std::out_of_range>( "value" );
-			} else {
-				if( value >= 0 and
-				    value <=
-				      static_cast<T>( ( std::numeric_limits<Integer>::max )( ) ) ) {
-					return value;
-				}
-				daw::exception::daw_throw<std::out_of_range>( "value" );
-			}
-		} else if constexpr( std::is_signed_v<Integer> ) {
-			if constexpr( sizeof( T ) < sizeof( Integer ) ) {
-				return static_cast<Integer>( value );
-			} else {
-				daw::exception::precondition_check<std::out_of_range>(
-				  value <= static_cast<T>( ( std::numeric_limits<Integer>::max )( ) ),
-				  "value" );
-
-				return static_cast<Integer>( value );
-			}
-		} else if constexpr( sizeof( T ) <= sizeof( Integer ) ) {
+		static_assert(
+		  sizeof...( Ts ) == 0,
+		  "Only 1 parameter expected in narrow cast, the destination type" );
+		if( DAW_LIKELY( daw::in_range<Integer>( value ) ) ) {
+			DAW_LIKELY_BRANCH
 			return static_cast<Integer>( value );
-		} else {
-			if( value <=
-			    static_cast<T>( ( std::numeric_limits<Integer>::max )( ) ) ) {
-				return static_cast<Integer>( value );
-			}
-			daw::exception::daw_throw<std::out_of_range>( "value" );
 		}
+		daw::exception::daw_throw<std::out_of_range>( "value" );
 	}
 
 	template<size_t N, std::size_t pos = 0, typename Arg, typename... Args>

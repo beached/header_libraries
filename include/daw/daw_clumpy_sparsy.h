@@ -145,7 +145,7 @@ namespace daw {
 		clumpy_sparsy<T> *m_items = nullptr;
 
 	public:
-		constexpr clumpy_sparsy_iterator( ) noexcept = default;
+		clumpy_sparsy_iterator( ) = default;
 
 		constexpr clumpy_sparsy_iterator( clumpy_sparsy<T> *items,
 		                                  size_t position = 0 ) noexcept
