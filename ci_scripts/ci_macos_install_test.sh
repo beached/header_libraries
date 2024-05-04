@@ -7,7 +7,7 @@ cd build
 echo "#################################"
 echo "Starting Install Tests"
 cmake --install .
-cd ../cmake/test_project/
+cd /tmp/header_libraries/cmake/test_project/
 mkdir build
 cd build
 cmake ..
