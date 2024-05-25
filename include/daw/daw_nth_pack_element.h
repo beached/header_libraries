@@ -20,7 +20,7 @@ namespace daw {
 		template<std::size_t... Is, typename... Ts>
 		DAW_ATTRIB_INLINE constexpr decltype( auto )
 		nth_pack_element_impl( std::index_sequence<Is...>, Ts &&...values ) {
-			return []( decltype( ignored_t{ Is } )..., auto &&nth,
+			return []( ignore_constants_t<Is>..., auto &&nth,
 			           auto &&... ) -> decltype( nth ) && {
 				return DAW_FWD( nth );
 			}( DAW_FWD( values )... );

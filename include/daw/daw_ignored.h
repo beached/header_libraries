@@ -25,5 +25,11 @@ namespace daw {
 		};
 
 		constexpr ignored_t ignored = ignored_t{ };
+
+		template<auto...>
+		using ignore_constants_t = ignored_t;
+
+		template<typename...>
+		using ignore_types_t = ignored_t;	
 	} // namespace
 } // namespace daw
