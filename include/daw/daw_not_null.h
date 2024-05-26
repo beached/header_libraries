@@ -23,48 +23,112 @@ namespace daw {
 	struct never_null_t {};
 	inline constexpr never_null_t never_null = never_null_t{ };
 
+	template<typename Pointer>
+	inline constexpr Pointer not_null_null_value = Pointer{ };
+
+	template<typename Pointer>
+	struct not_null_value_type {
+		using type = std::remove_reference_t<decltype( *std::declval<Pointer>( ) )>;
+	};
+
+	template<typename Pointer>
+	using not_null_value_type_t = typename not_null_value_type<Pointer>::type;
+
+	template<typename Pointer>
+	using not_null_value_reference_t =
+	  std::conditional_t<std::is_pointer_v<Pointer>,
+	                     std::remove_reference_t<Pointer>,
+	                     not_null_value_type_t<Pointer> &>;
+
+	template<typename Pointer>
+	using not_null_value_const_reference_t =
+	  std::conditional_t<std::is_pointer_v<Pointer>,
+	                     std::remove_reference_t<Pointer>,
+	                     not_null_value_type_t<Pointer> const &>;
+
+	template<typename Pointer>
+	using not_null_pointer_reference_t =
+	  std::conditional_t<std::is_pointer_v<Pointer>, Pointer, Pointer &>;
+
+	template<typename Pointer>
+	using not_null_pointer_const_reference_t =
+	  std::conditional_t<std::is_pointer_v<Pointer>, Pointer, Pointer const &>;
+
 	template<class Pointer>
 	struct not_null {
 		using pointer = Pointer;
-		using value_type = std::remove_pointer_t<Pointer>;
-		using reference = value_type &;
+		using value_type = not_null_value_type_t<pointer>;
+		using reference = not_null_value_reference_t<pointer>;
+		using const_reference = not_null_value_const_reference_t<pointer>;
 		using difference_type = std::ptrdiff_t;
 		using size_type = std::size_t;
 		using iterator_category = std::random_access_iterator_tag;
+		using pointer_reference = not_null_pointer_reference_t<pointer>;
+		using pointer_const_reference = not_null_pointer_const_reference_t<pointer>;
+		static constexpr pointer null_value = not_null_null_value<pointer>;
 
 	private:
 		pointer m_ptr;
 
 	public:
-		DAW_ATTRIB_INLINE constexpr not_null( pointer ptr ) noexcept
+		DAW_ATTRIB_INLINE constexpr not_null( pointer_const_reference ptr ) noexcept
 		  : m_ptr( ptr ) {
-			if( not ptr ) {
+			if( ptr == null_value ) {
+				std::terminate( );
+			}
+		}
+
+		DAW_ATTRIB_INLINE constexpr not_null &
+		operator=( pointer_const_reference ptr ) noexcept {
+			m_ptr = ptr;
+			if( ptr == null_value ) {
 				std::terminate( );
 			}
 		}
 
 		DAW_ATTRIB_INLINE constexpr not_null( never_null_t, pointer ptr ) noexcept
 		  : m_ptr( ptr ) {
-			DAW_ASSUME( m_ptr != nullptr );
+			DAW_ASSUME( m_ptr != null_value );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer get( ) const noexcept {
-			DAW_ASSUME( m_ptr != nullptr );
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer_reference
+		get( ) const noexcept {
+			DAW_ASSUME( m_ptr != null_value );
 			return m_ptr;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer_const_reference
+		get( ) noexcept {
+			DAW_ASSUME( m_ptr != null_value );
+			return m_ptr;
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_reference
 		operator*( ) const noexcept {
 			return *get( );
 		}
 
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference operator*( ) noexcept {
+			return *get( );
+		}
+
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr
-		operator pointer( ) const noexcept {
+		operator pointer_const_reference( ) const noexcept {
 			return get( );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr
+		operator pointer_reference( ) noexcept {
+			return get( );
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer_const_reference
 		operator->( ) const noexcept {
+			return get( );
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer_reference
+		operator->( ) noexcept {
 			return get( );
 		}
 
@@ -80,22 +144,23 @@ namespace daw {
 
 		/// @pre (std::intptr_t)get( ) != std::numeric_limits<std::intptr_t>::max( )
 		DAW_ATTRIB_INLINE constexpr not_null &operator++( ) noexcept {
-			DAW_ASSUME( m_ptr != nullptr );
+			DAW_ASSUME( m_ptr != null_value );
 			++m_ptr;
 			return *this;
 		}
 
 		/// @pre (std::intptr_t)get( ) - 1 > 0
 		DAW_ATTRIB_INLINE constexpr not_null &operator--( ) noexcept {
-			DAW_ASSUME( m_ptr != nullptr );
+			DAW_ASSUME( m_ptr != null_value );
 			--m_ptr;
-			assert( m_ptr != nullptr );
+			// For the rare chance that (uintptr_t)m_ptr == 1
+			assert( m_ptr != null_value );
 			return *this;
 		}
 
 		/// @pre (std::intptr_t)get( ) != std::numeric_limits<std::intptr_t>::max( )
 		DAW_ATTRIB_INLINE constexpr not_null operator++( int ) noexcept {
-			DAW_ASSUME( m_ptr != nullptr );
+			DAW_ASSUME( m_ptr != null_value );
 			auto result = *this;
 			++m_ptr;
 			return result;
@@ -103,10 +168,11 @@ namespace daw {
 
 		/// @pre (std::intptr_t)get( ) - 1 > 0
 		DAW_ATTRIB_INLINE constexpr not_null operator--( int ) noexcept {
-			DAW_ASSUME( m_ptr != nullptr );
+			DAW_ASSUME( m_ptr != null_value );
 			auto result = *this;
 			--m_ptr;
-			assert( m_ptr != nullptr );
+			// For the rare chance that (uintptr_t)m_ptr == 1
+			assert( m_ptr != null_value );
 			return result;
 		}
 
@@ -116,9 +182,10 @@ namespace daw {
 		template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
 		                                            std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE constexpr not_null &operator+=( Integer n ) noexcept {
-			DAW_ASSUME( m_ptr != nullptr );
+			DAW_ASSUME( m_ptr != null_value );
 			m_ptr += static_cast<difference_type>( n );
-			assert( m_ptr != nullptr );
+			// For the rare chance that (uintptr_t)m_ptr == -n
+			assert( m_ptr != null_value );
 			return *this;
 		}
 
@@ -127,9 +194,10 @@ namespace daw {
 		template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
 		                                            std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE constexpr not_null &operator-=( Integer n ) noexcept {
-			DAW_ASSUME( m_ptr != nullptr );
+			DAW_ASSUME( m_ptr != null_value );
 			m_ptr -= static_cast<difference_type>( n );
-			assert( m_ptr != nullptr );
+			// For the rare chance that (uintptr_t)m_ptr == n
+			assert( m_ptr != null_value );
 			return *this;
 		}
 
@@ -158,7 +226,7 @@ namespace daw {
 		           std::is_same_v<NotNull, not_null>, std::nullptr_t> = nullptr>
 		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr not_null<Pointer>
 		operator-( NotNull lhs, std::ptrdiff_t n ) noexcept {
-			DAW_ASSUME( lhs.m_ptr != nullptr );
+			DAW_ASSUME( lhs.m_ptr != null_value );
 			lhs -= n;
 			return lhs;
 		}
@@ -171,7 +239,7 @@ namespace daw {
 		           std::is_same_v<NotNull, not_null>, std::nullptr_t> = nullptr>
 		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr not_null<Pointer>
 		operator+( NotNull lhs, std::ptrdiff_t n ) noexcept {
-			DAW_ASSUME( lhs.m_ptr != nullptr );
+			DAW_ASSUME( lhs.m_ptr != null_value );
 			lhs += n;
 			return lhs;
 		}
@@ -184,7 +252,7 @@ namespace daw {
 		           std::is_same_v<NotNull, not_null>, std::nullptr_t> = nullptr>
 		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr not_null<Pointer>
 		operator+( std::ptrdiff_t n, NotNull rhs ) noexcept {
-			DAW_ASSUME( rhs.m_ptr != nullptr );
+			DAW_ASSUME( rhs.m_ptr != null_value );
 			rhs += n;
 			return rhs;
 		}
@@ -192,44 +260,116 @@ namespace daw {
 
 	template<typename Lhs, typename Rhs>
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
-	operator==( daw::not_null<Lhs *> const &lhs,
-	            daw::not_null<Rhs *> const &rhs ) noexcept {
+	operator==( daw::not_null<Lhs> const &lhs,
+	            daw::not_null<Rhs> const &rhs ) noexcept {
 		return std::equal_to<>{ }( lhs.get( ), rhs.get( ) );
 	}
 
+	template<typename Pointer>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+	operator==( daw::not_null<Pointer> const &lhs, Pointer const &rhs ) noexcept {
+		return std::equal_to<>{ }( lhs.get( ), rhs );
+	}
+
+	template<typename Pointer>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+	operator==( Pointer const &lhs, daw::not_null<Pointer> const &rhs ) noexcept {
+		return std::equal_to<>{ }( lhs, rhs.get( ) );
+	}
+
 	template<typename Lhs, typename Rhs>
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
-	operator!=( daw::not_null<Lhs *> const &lhs,
-	            daw::not_null<Rhs *> const &rhs ) noexcept {
+	operator!=( daw::not_null<Lhs> const &lhs,
+	            daw::not_null<Rhs> const &rhs ) noexcept {
 		return std::not_equal_to<>{ }( lhs.get( ), rhs.get( ) );
 	}
 
+	template<typename Pointer>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+	operator!=( daw::not_null<Pointer> const &lhs, Pointer const &rhs ) noexcept {
+		return std::not_equal_to<>{ }( lhs.get( ), rhs );
+	}
+
+	template<typename Pointer>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+	operator!=( Pointer const &lhs, daw::not_null<Pointer> const &rhs ) noexcept {
+		return std::not_equal_to<>{ }( lhs, rhs.get( ) );
+	}
+
 	template<typename Lhs, typename Rhs>
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
-	operator<( daw::not_null<Lhs *> const &lhs,
-	           daw::not_null<Rhs *> const &rhs ) noexcept {
+	operator<( daw::not_null<Lhs> const &lhs,
+	           daw::not_null<Rhs> const &rhs ) noexcept {
 		return std::less<>{ }( lhs.get( ), rhs.get( ) );
 	}
 
+	template<typename Pointer>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+	operator<( daw::not_null<Pointer> const &lhs, Pointer const &rhs ) noexcept {
+		return std::less<>{ }( lhs.get( ), rhs );
+	}
+
+	template<typename Pointer>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+	operator<( Pointer const &lhs, daw::not_null<Pointer> const &rhs ) noexcept {
+		return std::less<>{ }( lhs, rhs.get( ) );
+	}
+
 	template<typename Lhs, typename Rhs>
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
-	operator<=( daw::not_null<Lhs *> const &lhs,
-	            daw::not_null<Rhs *> const &rhs ) noexcept {
+	operator<=( daw::not_null<Lhs> const &lhs,
+	            daw::not_null<Rhs> const &rhs ) noexcept {
 		return std::less_equal<>{ }( lhs.get( ), rhs.get( ) );
 	}
 
-	template<typename Lhs, typename Rhs>
+	template<typename Pointer>
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
-	operator>( daw::not_null<Lhs *> const &lhs,
-	           daw::not_null<Rhs *> const &rhs ) noexcept {
-		return std::greater<>{ }( lhs.get( ), rhs.get( ) );
+	operator<=( daw::not_null<Pointer> const &lhs, Pointer const &rhs ) noexcept {
+		return std::less_equal<>{ }( lhs.get( ), rhs );
+	}
+
+	template<typename Pointer>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+	operator<=( Pointer const &lhs, daw::not_null<Pointer> const &rhs ) noexcept {
+		return std::less_equal<>{ }( lhs, rhs.get( ) );
 	}
 
 	template<typename Lhs, typename Rhs>
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
-	operator>=( daw::not_null<Lhs *> const &lhs,
-	            daw::not_null<Rhs *> const &rhs ) noexcept {
+	operator>( daw::not_null<Lhs> const &lhs,
+	           daw::not_null<Rhs> const &rhs ) noexcept {
+		return std::greater<>{ }( lhs.get( ), rhs.get( ) );
+	}
+
+	template<typename Pointer>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+	operator>( daw::not_null<Pointer> const &lhs, Pointer const &rhs ) noexcept {
+		return std::greater<>{ }( lhs.get( ), rhs );
+	}
+
+	template<typename Pointer>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+	operator>( Pointer const &lhs, daw::not_null<Pointer> const &rhs ) noexcept {
+		return std::greater<>{ }( lhs, rhs.get( ) );
+	}
+
+	template<typename Lhs, typename Rhs>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+	operator>=( daw::not_null<Lhs> const &lhs,
+	            daw::not_null<Rhs> const &rhs ) noexcept {
 		return std::greater_equal<>{ }( lhs.get( ), rhs.get( ) );
+	}
+
+	template<typename Pointer>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+	operator>=( daw::not_null<Pointer> const &lhs, Pointer const &rhs ) noexcept {
+		return std::greater_equal<>{ }( lhs.get( ), rhs );
+	}
+
+	template<typename Pointer>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+	operator>=( Pointer const &lhs, daw::not_null<Pointer> const &rhs ) noexcept {
+		return std::greater_equal<>{ }( lhs, rhs.get( ) );
 	}
 
 	template<typename Pointer>

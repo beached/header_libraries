@@ -7,9 +7,9 @@
 //
 
 #include "daw/daw_benchmark.h"
+#include "daw/daw_ensure.h"
 #include "daw/daw_not_null.h"
 
-#include <cassert>
 #include <memory>
 #include <optional>
 
@@ -25,7 +25,7 @@ void daw_not_null_test_002( ) {
 	daw::not_null<int *> last = tst.get( ) + 5;
 	(void)first;
 	(void)last;
-	assert( ( last - first ) == 5 );
+	daw_ensure( ( last - first ) == 5 );
 }
 
 void daw_not_null_test_003( ) {
@@ -34,7 +34,7 @@ void daw_not_null_test_003( ) {
 	int *last = tst.get( ) + 5;
 	(void)first;
 	(void)last;
-	assert( ( last - first ) == 5 );
+	daw_ensure( ( last - first ) == 5 );
 }
 
 void daw_not_null_test_004( ) {
@@ -43,7 +43,7 @@ void daw_not_null_test_004( ) {
 	daw::not_null<int *> last = tst.get( ) + 5;
 	(void)first;
 	(void)last;
-	assert( ( last - first ) == 5 );
+	daw_ensure( ( last - first ) == 5 );
 }
 
 void daw_not_null_test_005( ) {
@@ -54,10 +54,16 @@ void daw_not_null_test_005( ) {
 	(void)u;
 }
 
+void daw_not_null_test_006( ) {
+	daw::not_null<std::optional<int>> t = { 5 };
+	daw_ensure( t.get( ) == 5 );
+}
+
 int main( ) {
 	daw_not_null_test_001( );
 	daw_not_null_test_002( );
 	daw_not_null_test_003( );
 	daw_not_null_test_004( );
 	daw_not_null_test_005( );
+	daw_not_null_test_006( );
 }
