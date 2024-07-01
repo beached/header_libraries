@@ -84,6 +84,7 @@ namespace daw {
 			if( ptr == null_value ) {
 				std::terminate( );
 			}
+			return *this;
 		}
 
 		DAW_ATTRIB_INLINE constexpr not_null( never_null_t, pointer ptr ) noexcept
