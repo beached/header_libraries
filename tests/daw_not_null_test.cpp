@@ -46,6 +46,8 @@ void daw_not_null_test_004( ) {
 	daw_ensure( ( last - first ) == 5 );
 }
 
+#if defined( __cpp_constexpr_dynamic_alloc )
+#if __cpp_constexpr_dynamic_alloc >= 201907L
 constexpr bool daw_not_null_test_004c( ) {
 	auto tst = std::unique_ptr<int[]>( new int[5]{ } );
 	int *first = tst.get( );
@@ -59,7 +61,8 @@ constexpr bool daw_not_null_test_004c( ) {
 	return true;
 }
 static_assert( daw_not_null_test_004c() );
-
+#endif
+#endif
 
 void daw_not_null_test_005( ) {
 	auto tst = std::make_unique<int>( 5 );
