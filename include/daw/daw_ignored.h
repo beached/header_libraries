@@ -24,7 +24,7 @@ namespace daw {
 			}
 		};
 
-		nline constexpr ignored_t ignored = ignored_t{ };
+		inline constexpr ignored_t ignored = ignored_t{ };
 
 		template<auto...>
 		using ignore_constants_t = ignored_t;
