@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['backinsertablecontainer_4127',['BackInsertableContainer',['../namespacedaw.html#acb6a1ec2119e5bac7816e4e9b98e785c',1,'daw']]],
-  ['begin_5f_4128',['begin_',['../structdaw_1_1split__buffer.html#af9863817357836e3cf9e73154e1e3389',1,'daw::split_buffer']]],
-  ['bool_5fand_5fv_4129',['bool_and_v',['../namespacedaw_1_1traits.html#a2dbf9b031881eb65d38d36090e134596',1,'daw::traits']]],
-  ['bool_5for_5fv_4130',['bool_or_v',['../namespacedaw_1_1traits.html#ad1a81ce9987fb81eaedf535850cbe122',1,'daw::traits']]],
-  ['bsizeof_4131',['bsizeof',['../namespacedaw.html#a30cd41d016c1898b2b5a44940193ab42',1,'daw']]]
+  ['backinsertablecontainer_4129',['BackInsertableContainer',['../namespacedaw.html#acb6a1ec2119e5bac7816e4e9b98e785c',1,'daw']]],
+  ['begin_5f_4130',['begin_',['../structdaw_1_1split__buffer.html#af9863817357836e3cf9e73154e1e3389',1,'daw::split_buffer']]],
+  ['bool_5fand_5fv_4131',['bool_and_v',['../namespacedaw_1_1traits.html#a2dbf9b031881eb65d38d36090e134596',1,'daw::traits']]],
+  ['bool_5for_5fv_4132',['bool_or_v',['../namespacedaw_1_1traits.html#ad1a81ce9987fb81eaedf535850cbe122',1,'daw::traits']]],
+  ['bsizeof_4133',['bsizeof',['../namespacedaw.html#a30cd41d016c1898b2b5a44940193ab42',1,'daw']]]
 ];
