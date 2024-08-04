@@ -11,6 +11,7 @@
 #include "ciso646.h"
 #include "daw_move.h"
 #include "daw_traits.h"
+#include "daw_typeof.h"
 
 #include <fstream>
 #include <iostream>
