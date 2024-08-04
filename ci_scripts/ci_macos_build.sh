@@ -5,7 +5,7 @@ cd build
 
 echo "#################################"
 echo "Configure Cmake"
-cmake -DCMAKE_BUILD_TYPE=Debug .. -DDAW_ENABLE_TESTING=On -DCMAKE_INSTALL_PREFIX=/tmp/header_libraries
+cmake -GNinja -DCMAKE_BUILD_TYPE=Debug .. -DDAW_ENABLE_TESTING=On -DCMAKE_INSTALL_PREFIX=/tmp/header_libraries
 
 echo "#################################"
 echo "Starting full build"
