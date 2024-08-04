@@ -4,6 +4,10 @@ mkdir build
 cd build
 
 echo "#################################"
+echo "Install Ninja"
+brew install ninja
+
+echo "#################################"
 echo "Configure Cmake"
 cmake -GNinja -DCMAKE_BUILD_TYPE=Debug .. -DDAW_ENABLE_TESTING=On -DCMAKE_INSTALL_PREFIX=/tmp/header_libraries
 
