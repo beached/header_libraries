@@ -11,6 +11,22 @@
 #include "ciso646.h"
 #include "daw_cpp_feature_check.h"
 
+#ifdef __has_cpp_attribute
+#define DAW_HAS_ATTRIBUTE( Attrib ) __has_cpp_attribute( Attrib )
+#else
+#define DAW_HAS_ATTRIBUTE( Attrib ) false
+#endif
+
+#if DAW_HAS_ATTRIBUTE( clang::lifetimebound )
+#define DAW_ATTRIB_LIFETIME_BOUND [[clang::lifetimebound]]
+#elif DAW_HAS_ATTRIBUTE( msvc::lifetimebound )
+#define DAW_ATTRIB_LIFETIME_BOUND [[msvc::lifetimebound]]
+#elif DAW_HAS_ATTRIBUTE( lifetimebound )
+#define DAW_ATTRIB_LIFETIME_BOUND __attribute( ( lifetimebound ) )
+#else
+#define DAW_ATTRIB_LIFETIME_BOUND
+#endif
+
 #if defined( DAW_HAS_GCC_LIKE )
 
 #if not defined( DAW_NO_FLATTEN )

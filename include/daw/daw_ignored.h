@@ -19,6 +19,11 @@ namespace daw {
 			DAW_ATTRIB_INLINE constexpr ignored_t( T && ) noexcept {}
 
 			template<typename T>
+			DAW_ATTRIB_INLINE constexpr ignored_t const &operator=( T && ) const noexcept {
+				return *this;
+			}
+
+			template<typename T>
 			DAW_ATTRIB_INLINE constexpr ignored_t &operator=( T && ) noexcept {
 				return *this;
 			}
