@@ -96,6 +96,8 @@ Functions</h2></td></tr>
 <tr class="memitem:ae92a4c3058a4d472f1d7c3557a7a95ba"><td class="memTemplParams" colspan="2">template&lt;typename Number , typename Number2 &gt; </td></tr>
 <tr class="memitem:ae92a4c3058a4d472f1d7c3557a7a95ba"><td class="memTemplItemLeft" align="right" valign="top">constexpr Number&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1cxmath.html#ae92a4c3058a4d472f1d7c3557a7a95ba">copy_sign</a> (Number x, Number2 s) noexcept</td></tr>
 <tr class="separator:ae92a4c3058a4d472f1d7c3557a7a95ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7986d54416a88b9dbd856e543fc37d6a"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1cxmath.html#a7986d54416a88b9dbd856e543fc37d6a">count_digits</a> (std::uint64_t value)</td></tr>
+<tr class="separator:a7986d54416a88b9dbd856e543fc37d6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af316b1bfc78b0c4fff2d919df8fc525d"><td class="memItemLeft" align="right" valign="top">constexpr std::uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1cxmath.html#af316b1bfc78b0c4fff2d919df8fc525d">count_leading_zeroes</a> (<a class="el" href="namespacedaw.html#ab6fc64a62e7b74189f2d3dbee80b0a75">daw::UInt32</a> v) noexcept</td></tr>
 <tr class="separator:af316b1bfc78b0c4fff2d919df8fc525d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae57d23e30e49974f2a1fdb41e6894af"><td class="memItemLeft" align="right" valign="top">constexpr std::uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1cxmath.html#aae57d23e30e49974f2a1fdb41e6894af">count_leading_zeroes</a> (<a class="el" href="namespacedaw.html#a6df1567073d79619c8174c1b7fb2b752">daw::UInt64</a> v) noexcept</td></tr>
@@ -188,6 +190,8 @@ Variables</h2></td></tr>
 <tr class="memitem:aa555e064667e6f9919899a546aea8647"><td class="memTemplParams" colspan="2">template&lt;size_t exp&gt; </td></tr>
 <tr class="memitem:aa555e064667e6f9919899a546aea8647"><td class="memTemplItemLeft" align="right" valign="top">constexpr uintmax_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1cxmath.html#aa555e064667e6f9919899a546aea8647">pow10_v</a> = cxmath_impl::pow10_t&lt;uintmax_t&gt;::<a class="el" href="namespacedaw.html#aec26be2bcbe261d3cea14098d110f63b">get</a>( exp )</td></tr>
 <tr class="separator:aa555e064667e6f9919899a546aea8647"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace9e74ed2792ff8f684222986393efe2"><td class="memItemLeft" align="right" valign="top">constexpr std::uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1cxmath.html#ace9e74ed2792ff8f684222986393efe2">powers_of_ten</a> [19]</td></tr>
+<tr class="separator:ace9e74ed2792ff8f684222986393efe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53ab57ded45e63a2f021cc2d3057ae86"><td class="memTemplParams" colspan="2">template&lt;typename Float &gt; </td></tr>
 <tr class="memitem:a53ab57ded45e63a2f021cc2d3057ae86"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1cxmath.html#a53ab57ded45e63a2f021cc2d3057ae86">sqrt0_5</a></td></tr>
 <tr class="separator:a53ab57ded45e63a2f021cc2d3057ae86"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -295,6 +299,34 @@ template&lt;typename Number , typename Number2 &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__cxmath_8h_source.html#l01125">1125</a> of file <a class="el" href="daw__cxmath_8h_source.html">daw_cxmath.h</a>.</p>
+
+</div>
+</div>
+<a id="a7986d54416a88b9dbd856e543fc37d6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7986d54416a88b9dbd856e543fc37d6a">&#9670;&nbsp;</a></span>count_digits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int daw::cxmath::count_digits </td>
+          <td>(</td>
+          <td class="paramtype">std::uint64_t&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__cxmath_8h_source.html#l01365">1365</a> of file <a class="el" href="daw__cxmath_8h_source.html">daw_cxmath.h</a>.</p>
 
 </div>
 </div>
@@ -1268,6 +1300,50 @@ template&lt;size_t exp&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__cxmath_8h_source.html#l00442">442</a> of file <a class="el" href="daw__cxmath_8h_source.html">daw_cxmath.h</a>.</p>
+
+</div>
+</div>
+<a id="ace9e74ed2792ff8f684222986393efe2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace9e74ed2792ff8f684222986393efe2">&#9670;&nbsp;</a></span>powers_of_ten</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr std::uint64_t daw::cxmath::powers_of_ten[19]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    10ull,</div>
+<div class="line">    100ull,</div>
+<div class="line">    1&#39;000ull,</div>
+<div class="line">    10&#39;000ull,</div>
+<div class="line">    100&#39;000ull,</div>
+<div class="line">    1&#39;000&#39;000ull,</div>
+<div class="line">    10&#39;000&#39;000ull,</div>
+<div class="line">    100&#39;000&#39;000ull,</div>
+<div class="line">    1&#39;000&#39;000&#39;000ull,</div>
+<div class="line">    10&#39;000&#39;000&#39;000ull,</div>
+<div class="line">    100&#39;000&#39;000&#39;000ull,</div>
+<div class="line">    1&#39;000&#39;000&#39;000&#39;000ull,</div>
+<div class="line">    10&#39;000&#39;000&#39;000&#39;000ull,</div>
+<div class="line">    100&#39;000&#39;000&#39;000&#39;000ull,</div>
+<div class="line">    1&#39;000&#39;000&#39;000&#39;000&#39;000ull,</div>
+<div class="line">    10&#39;000&#39;000&#39;000&#39;000&#39;000ull,</div>
+<div class="line">    100&#39;000&#39;000&#39;000&#39;000&#39;000ull,</div>
+<div class="line">    1&#39;000&#39;000&#39;000&#39;000&#39;000&#39;000ull,</div>
+<div class="line">    10&#39;000&#39;000&#39;000&#39;000&#39;000&#39;000ull }</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__cxmath_8h_source.html#l01344">1344</a> of file <a class="el" href="daw__cxmath_8h_source.html">daw_cxmath.h</a>.</p>
 
 </div>
 </div>
