@@ -263,9 +263,11 @@ namespace daw {
 
 	template<typename T>
 	using is_arithmetic =
-	  std::disjunction<is_number<T>, std::is_enum<T>,
+	  std::disjunction<is_number<T>,
+	                   std::is_enum<T>,
 	                   conditional_t<daw::numeric_limits<T>::is_specialized,
-	                                 std::true_type, std::false_type>>;
+	                                 std::true_type,
+	                                 std::false_type>>;
 
 	template<typename T>
 	inline constexpr bool is_arithmetic_v = is_arithmetic<T>::value;
@@ -388,26 +390,34 @@ namespace daw {
 
 	template<std::size_t BitSize>
 	using intN_t = conditional_t<
-	  is_same_size_v<char, BitSize>, char,
+	  is_same_size_v<char, BitSize>,
+	  char,
 	  conditional_t<
-	    is_same_size_v<short, BitSize>, short,
+	    is_same_size_v<short, BitSize>,
+	    short,
 	    conditional_t<
-	      is_same_size_v<int, BitSize>, int,
-	      conditional_t<
-	        is_same_size_v<long, BitSize>, long,
-	        conditional_t<is_same_size_v<long long, BitSize>, long long,
-	                      unsupported_int_size<BitSize>>>>>>;
+	      is_same_size_v<int, BitSize>,
+	      int,
+	      conditional_t<is_same_size_v<long, BitSize>,
+	                    long,
+	                    conditional_t<is_same_size_v<long long, BitSize>,
+	                                  long long,
+	                                  unsupported_int_size<BitSize>>>>>>;
 	template<std::size_t BitSize>
 	using uintN_t = conditional_t<
-	  is_same_size_v<char, BitSize>, unsigned char,
+	  is_same_size_v<char, BitSize>,
+	  unsigned char,
 	  conditional_t<
-	    is_same_size_v<short, BitSize>, unsigned short,
+	    is_same_size_v<short, BitSize>,
+	    unsigned short,
 	    conditional_t<
-	      is_same_size_v<int, BitSize>, unsigned int,
-	      conditional_t<
-	        is_same_size_v<long, BitSize>, unsigned long,
-	        conditional_t<is_same_size_v<unsigned long long, BitSize>, long long,
-	                      unsupported_int_size<BitSize>>>>>>;
+	      is_same_size_v<int, BitSize>,
+	      unsigned int,
+	      conditional_t<is_same_size_v<long, BitSize>,
+	                    unsigned long,
+	                    conditional_t<is_same_size_v<unsigned long long, BitSize>,
+	                                  long long,
+	                                  unsupported_int_size<BitSize>>>>>>;
 
 	template<typename T>
 	inline constexpr auto max_value = numeric_limits<T>::max( );

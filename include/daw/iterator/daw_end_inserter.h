@@ -33,8 +33,9 @@ namespace daw {
 		  : m_container( &c ) {}
 
 		template<typename T,
-		         daw::enable_when_t<!std::is_same_v<
-		           daw::remove_cvref_t<T>, end_inserter_iterator>> = nullptr>
+		         daw::enable_when_t<
+		           !std::is_same_v<daw::remove_cvref_t<T>, end_inserter_iterator>> =
+		           nullptr>
 		constexpr end_inserter_iterator &operator=( T &&val ) {
 			m_container->insert( std::end( *m_container ), DAW_FWD( val ) );
 			return *this;

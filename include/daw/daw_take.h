@@ -25,11 +25,12 @@ namespace daw {
 	template<typename T>
 	inline constexpr bool reset_on_take = true;
 
-	template<typename T, std::enable_if_t<std::is_default_constructible_v<T>,
-	                                      std::nullptr_t> = nullptr>
+	template<typename T,
+	         std::enable_if_t<std::is_default_constructible_v<T>,
+	                          std::nullptr_t> = nullptr>
 	constexpr T
 	take( T &value ) noexcept( std::is_nothrow_move_constructible_v<T> and
-	                             std::is_nothrow_default_constructible_v<T> ) {
+	                           std::is_nothrow_default_constructible_v<T> ) {
 		auto result = std::move( value );
 		if constexpr( reset_on_take<T> ) {
 			value = T{ };
@@ -64,26 +65,27 @@ namespace daw {
 		}
 
 		template<
-		  typename Arg, typename... Args,
+		  typename Arg,
+		  typename... Args,
 		  std::enable_if_t<not std::is_same_v<take_t, daw::remove_cvref_t<Arg>>,
 		                   std::nullptr_t> = nullptr>
 		constexpr take_t( Arg &&arg, Args &&...args ) noexcept(
 		  std::is_nothrow_constructible_v<T, Arg, Args...> )
 		  : value{ DAW_FWD( arg ), DAW_FWD( args )... } {}
 
-		constexpr reference operator*( ) &noexcept {
+		constexpr reference operator*( ) & noexcept {
 			return value;
 		}
 
-		constexpr const_reference operator*( ) const &noexcept {
+		constexpr const_reference operator*( ) const & noexcept {
 			return value;
 		}
 
-		constexpr value_type operator*( ) &&noexcept {
+		constexpr value_type operator*( ) && noexcept {
 			return take( value );
 		}
 
-		constexpr const_reference operator*( ) const &&noexcept {
+		constexpr const_reference operator*( ) const && noexcept {
 			return value;
 		}
 
@@ -95,19 +97,19 @@ namespace daw {
 			return &value;
 		}
 
-		constexpr reference get( ) &noexcept {
+		constexpr reference get( ) & noexcept {
 			return value;
 		}
 
-		constexpr const_reference get( ) const &noexcept {
+		constexpr const_reference get( ) const & noexcept {
 			return value;
 		}
 
-		constexpr value_type get( ) &&noexcept {
+		constexpr value_type get( ) && noexcept {
 			return take( value );
 		}
 
-		constexpr const_reference get( ) const &&noexcept {
+		constexpr const_reference get( ) const && noexcept {
 			return value;
 		}
 
@@ -116,7 +118,7 @@ namespace daw {
 		}
 
 #if defined( DAW_HAS_3WAY_COMPARE )
-		constexpr auto operator<=>( take_t const & ) const = default;
+		constexpr auto operator<= > ( take_t const & ) const = default;
 #endif
 	};
 

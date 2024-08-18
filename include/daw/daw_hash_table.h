@@ -100,13 +100,14 @@ namespace daw {
 				return *this;
 			}
 		}; // hash_table_item
-	} // namespace impl
+	}    // namespace impl
 
 	template<typename ValueType>
 	struct hash_table_item_iterator
 	  : public std::iterator<
 	      std::bidirectional_iterator_tag,
-	      typename impl::hash_table_item<ValueType>::value_type, std::ptrdiff_t,
+	      typename impl::hash_table_item<ValueType>::value_type,
+	      std::ptrdiff_t,
 	      impl::hash_table_item<ValueType> *,
 	      typename impl::hash_table_item<ValueType>::value_type &> {
 		using pointer = impl::hash_table_item<ValueType> *;
@@ -329,7 +330,8 @@ namespace daw {
 		}
 
 	public:
-		hash_table( size_t start_size, double resize_ratio = 2.0,
+		hash_table( size_t start_size,
+		            double resize_ratio = 2.0,
 		            size_t max_load_percent = 70 )
 		  : m_resize_ratio{ resize_ratio }
 		  , m_load{ 0 }
@@ -424,7 +426,8 @@ namespace daw {
 			return load;
 		}
 
-		static auto find_item_by_hash( size_t hash, values_type const &tbl,
+		static auto find_item_by_hash( size_t hash,
+		                               values_type const &tbl,
 		                               bool skip_removed = true ) {
 			auto const scaled_hash =
 			  static_cast<ptrdiff_t>( scale_hash( hash, tbl.size( ) ) );

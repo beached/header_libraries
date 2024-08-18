@@ -80,11 +80,11 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr const_reference get( ) const &noexcept {
+		constexpr const_reference get( ) const & noexcept {
 			return m_value;
 		}
 
-		constexpr value_t get( ) &&noexcept {
+		constexpr value_t get( ) && noexcept {
 			return std::move( m_value );
 		}
 

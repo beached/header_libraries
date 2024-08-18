@@ -359,9 +359,9 @@ namespace daw {
 			auto const id = cur_id;
 			++cur_id;
 			m_nodes.emplace( std::make_pair(
-			  id, graph_impl::node_impl_t<T>(
-			        node_id_t{ id },
-			        daw::construct_a<T>( DAW_FWD( args )... ) ) ) );
+			  id,
+			  graph_impl::node_impl_t<T>(
+			    node_id_t{ id }, daw::construct_a<T>( DAW_FWD( args )... ) ) ) );
 
 			return node_id_t{ id };
 		}

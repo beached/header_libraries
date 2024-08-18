@@ -43,7 +43,8 @@ namespace daw {
 
 		template<typename T, typename Deleter>
 		struct pointer_type_impl<
-		  T, Deleter,
+		  T,
+		  Deleter,
 		  std::void_t<typename std::remove_reference_t<Deleter>::pointer>> {
 			using type = typename Deleter::pointer;
 		};

@@ -164,7 +164,7 @@ namespace daw {
 		}
 	}; // iota_iterator
 
-	iota_iterator( )->iota_iterator<int>;
+	iota_iterator( ) -> iota_iterator<int>;
 
 	template<typename T, typename... Step>
 	iota_iterator( T, Step... ) -> iota_iterator<T>;
@@ -192,7 +192,8 @@ namespace daw {
 		  : m_first( start_value )
 		  , m_last( last_value ) {}
 
-		explicit constexpr iota_range( reference start_value, reference last_value,
+		explicit constexpr iota_range( reference start_value,
+		                               reference last_value,
 		                               difference_type step ) noexcept
 		  : m_first( start_value, step )
 		  , m_last( last_value ) {}
@@ -217,7 +218,7 @@ namespace daw {
 			return m_first[idx];
 		}
 	};
-	iota_range( )->iota_range<int>;
+	iota_range( ) -> iota_range<int>;
 
 	template<typename T, typename... EndStep>
 	iota_range( T, EndStep... ) -> iota_range<T>;

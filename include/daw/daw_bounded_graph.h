@@ -105,7 +105,8 @@ namespace daw {
 			using value_type = T;
 			using reference = value_type &;
 			using const_reference = value_type const &;
-			using edges_t = daw::bounded_hash_set_t<node_id_t, MaxVerticesPerNode,
+			using edges_t = daw::bounded_hash_set_t<node_id_t,
+			                                        MaxVerticesPerNode,
 			                                        std::hash<daw::node_id_t>>;
 
 		private:

@@ -33,16 +33,18 @@ namespace daw {
 
 		explicit default_deleter( ) = default;
 
-		template<typename U, std::enable_if_t<not std::is_same_v<T, U>,
-		                                      std::nullptr_t> = nullptr>
+		template<
+		  typename U,
+		  std::enable_if_t<not std::is_same_v<T, U>, std::nullptr_t> = nullptr>
 		constexpr default_deleter( default_deleter<U> const & ) noexcept {
 			static_assert( unique_ptr_details::is_safe_child_type_v<T, U>,
 			               "One cannot destruct U, if T does not have a virtual "
 			               "destructor, and U being a child of T" );
 		}
 
-		template<typename P, std::enable_if_t<std::is_constructible_v<pointer, P *>,
-		                                      std::nullptr_t> = nullptr>
+		template<typename P,
+		         std::enable_if_t<std::is_constructible_v<pointer, P *>,
+		                          std::nullptr_t> = nullptr>
 		DAW_CPP20_CX_ALLOC void operator( )( P *p ) const noexcept {
 			static_assert( sizeof( P ) > 0,
 			               "One cannot delete a pointer to an incomplete type" );
@@ -91,7 +93,9 @@ namespace daw {
 
 		template<typename T, typename Deleter>
 		inline constexpr auto default_pointer_value_v<
-		  T, Deleter, std::void_t<decltype( Deleter::default_pointer_value )>> =
+		  T,
+		  Deleter,
+		  std::void_t<decltype( Deleter::default_pointer_value )>> =
 		  Deleter::default_pointer_value;
 	} // namespace unique_ptr_del
 
@@ -117,8 +121,9 @@ namespace daw {
 		constexpr unique_ptr( pointer p ) noexcept
 		  : m_ptr( p ) {}
 
-		template<typename U, std::enable_if_t<not std::is_same_v<T, U>,
-		                                      std::nullptr_t> = nullptr>
+		template<
+		  typename U,
+		  std::enable_if_t<not std::is_same_v<T, U>, std::nullptr_t> = nullptr>
 		constexpr unique_ptr( U *p ) noexcept
 		  : m_ptr( p ) {
 			static_assert( unique_ptr_details::is_safe_child_type_v<T, U>,
@@ -132,7 +137,8 @@ namespace daw {
 		  : m_ptr( other.release( ) ) {}
 
 		template<
-		  typename U, typename D,
+		  typename U,
+		  typename D,
 		  std::enable_if_t<not std::is_same_v<T, U>, std::nullptr_t> = nullptr>
 		constexpr unique_ptr( unique_ptr<U, D> &&other ) noexcept
 		  : Deleter( static_cast<D &&>( other ) )
@@ -150,8 +156,9 @@ namespace daw {
 			return *this;
 		}
 
-		template<typename U, std::enable_if_t<not std::is_same_v<T, U>,
-		                                      std::nullptr_t> = nullptr>
+		template<
+		  typename U,
+		  std::enable_if_t<not std::is_same_v<T, U>, std::nullptr_t> = nullptr>
 		constexpr unique_ptr &operator=( unique_ptr<U, Deleter> &&rhs ) noexcept {
 			static_assert( unique_ptr_details::is_safe_child_type_v<T, U>,
 			               "One cannot destruct U, if T does not have a virtual "
@@ -227,8 +234,9 @@ namespace daw {
 		constexpr unique_ptr( pointer p ) noexcept
 		  : m_ptr( p ) {}
 
-		template<typename U, std::enable_if_t<not std::is_same_v<T, U>,
-		                                      std::nullptr_t> = nullptr>
+		template<
+		  typename U,
+		  std::enable_if_t<not std::is_same_v<T, U>, std::nullptr_t> = nullptr>
 		constexpr unique_ptr( U *p ) noexcept
 		  : m_ptr( p ) {
 			static_assert( unique_ptr_details::is_safe_child_type_v<T, U>,
@@ -241,8 +249,9 @@ namespace daw {
 		constexpr unique_ptr( unique_ptr &&other ) noexcept
 		  : m_ptr( other.release( ) ) {}
 
-		template<typename U, std::enable_if_t<not std::is_same_v<T, U>,
-		                                      std::nullptr_t> = nullptr>
+		template<
+		  typename U,
+		  std::enable_if_t<not std::is_same_v<T, U>, std::nullptr_t> = nullptr>
 		constexpr unique_ptr( unique_ptr<U, Deleter> &&other ) noexcept
 		  : m_ptr( other.release( ) ) {
 			static_assert( unique_ptr_details::is_safe_child_type_v<T, U>,
@@ -258,8 +267,9 @@ namespace daw {
 			return *this;
 		}
 
-		template<typename U, std::enable_if_t<not std::is_same_v<T, U>,
-		                                      std::nullptr_t> = nullptr>
+		template<
+		  typename U,
+		  std::enable_if_t<not std::is_same_v<T, U>, std::nullptr_t> = nullptr>
 		constexpr unique_ptr &operator=( unique_ptr<U, Deleter> &&rhs ) noexcept {
 			static_assert( unique_ptr_details::is_safe_child_type_v<T, U>,
 			               "One cannot destruct U, if T does not have a virtual "

@@ -23,7 +23,8 @@ namespace daw::algorithm {
 	/// @return end of output range written to
 	template<typename InputIterator, typename LastType, typename OutputIterator>
 	constexpr OutputIterator
-	copy( InputIterator first, LastType last,
+	copy( InputIterator first,
+	      LastType last,
 	      OutputIterator first_out ) noexcept( noexcept( *first_out = *first ) ) {
 
 		traits::is_input_iterator_test<InputIterator>( );

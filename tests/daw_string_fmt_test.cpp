@@ -18,8 +18,10 @@
 
 void string_fmt_test_001( ) {
 	std::cout << daw::string_fmt::v1::fmt(
-	  "This is a {0} of the {1} and has been used {2} times for {0}ing\n", "test",
-	  "daw::string_fmt::v1::fmt", 1'000'000 );
+	  "This is a {0} of the {1} and has been used {2} times for {0}ing\n",
+	  "test",
+	  "daw::string_fmt::v1::fmt",
+	  1'000'000 );
 }
 
 void string_fmt_test_002( ) {
@@ -55,7 +57,9 @@ void string_fmt_perf_001( ) {
 	daw::bench_n_test<1'000'000>( "string_fmt perf", [&]( ) {
 		auto tst = daw::string_fmt::v1::fmt(
 		  "This is a {0} of the {1} and has been used {2} times for {0}ing\n",
-		  "test", "daw::string_fmt::v1::fmt", n++ );
+		  "test",
+		  "daw::string_fmt::v1::fmt",
+		  n++ );
 		daw::do_not_optimize( tst );
 	} );
 
@@ -89,7 +93,9 @@ void string_fmt_perf_002( ) {
 		  "{2} "
 		  "times for "
 		  "testing\n",
-		  "test", "daw::string_fmt::v1::fmt", n++ );
+		  "test",
+		  "daw::string_fmt::v1::fmt",
+		  n++ );
 		daw::do_not_optimize( tst );
 	} );
 
@@ -130,8 +136,10 @@ void string_fmt_has_to_string_001( ) {
 // #########
 void string_fmt2_test_001( ) {
 	std::cout << daw::string_fmt::v2::fmt(
-	  "This is a {0} of the {1} and has been used {2} times for {0}ing\n", "test",
-	  "daw::string_fmt::v2::fmt", 1'000'000 );
+	  "This is a {0} of the {1} and has been used {2} times for {0}ing\n",
+	  "test",
+	  "daw::string_fmt::v2::fmt",
+	  1'000'000 );
 	std::cout << std::endl;
 }
 
@@ -161,7 +169,9 @@ void string_fmt2_perf_001( ) {
 	daw::bench_n_test<1'000'000>( "string_fmt perf", [&]( ) {
 		auto tst = daw::string_fmt::v2::fmt(
 		  "This is a {0} of the {1} and has been used {2} times for {0}ing\n",
-		  "test", "daw::string_fmt::v2::fmt", n++ );
+		  "test",
+		  "daw::string_fmt::v2::fmt",
+		  n++ );
 		daw::do_not_optimize( tst );
 	} );
 
@@ -193,7 +203,9 @@ void string_fmt2_perf_002( ) {
 		  "{2} "
 		  "times for "
 		  "testing\n",
-		  "test", "daw::string_fmt::v2::fmt", n++ );
+		  "test",
+		  "daw::string_fmt::v2::fmt",
+		  n++ );
 		daw::do_not_optimize( tst );
 	} );
 

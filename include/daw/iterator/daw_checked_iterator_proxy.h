@@ -33,7 +33,8 @@ namespace daw {
 			return 0 != ( flags & flag );
 		}
 
-		constexpr auto get_flag_value( bool CheckIncrement, bool CheckDecrement,
+		constexpr auto get_flag_value( bool CheckIncrement,
+		                               bool CheckDecrement,
 		                               bool CheckDereference ) const noexcept {
 			auto result =
 			  static_cast<std::uint8_t>( CheckIncrement ? check_increment : 0 );
@@ -46,15 +47,16 @@ namespace daw {
 		}
 
 	public:
-		checked_iterator_proxy_t( IteratorFirst it_first, IteratorLast it_last,
+		checked_iterator_proxy_t( IteratorFirst it_first,
+		                          IteratorLast it_last,
 		                          bool CheckIncrement = true,
 		                          bool CheckDecrement = true,
 		                          bool CheckDereference = true )
 		  : current{ it_first }
 		  , first{ std::move( it_first ) }
 		  , last{ std::move( it_last ) }
-		  , flags{ get_flag_value( CheckIncrement, CheckDecrement,
-		                           CheckDereference ) } {}
+		  , flags{ get_flag_value(
+		      CheckIncrement, CheckDecrement, CheckDereference ) } {}
 
 		checked_iterator_proxy_t( checked_iterator_proxy_t const & ) = default;
 		checked_iterator_proxy_t( checked_iterator_proxy_t && ) = default;
@@ -132,8 +134,10 @@ namespace daw {
 			return current.operator->( );
 		}
 
-		template<typename IteratorFirst_lhs, typename IteratorFirst_rhs,
-		         typename IteratorLast_lhs, typename IteratorLast_rhs>
+		template<typename IteratorFirst_lhs,
+		         typename IteratorFirst_rhs,
+		         typename IteratorLast_lhs,
+		         typename IteratorLast_rhs>
 		friend bool operator==(
 		  checked_iterator_proxy_t<IteratorFirst_lhs, IteratorLast_lhs> const &lhs,
 		  checked_iterator_proxy_t<IteratorFirst_rhs, IteratorLast_rhs> const
@@ -141,7 +145,8 @@ namespace daw {
 			return lhs.current == rhs.current;
 		}
 
-		template<typename IteratorFirst_lhs, typename IteratorLast_lhs,
+		template<typename IteratorFirst_lhs,
+		         typename IteratorLast_lhs,
 		         typename Iterator_rhs>
 		friend bool operator==(
 		  checked_iterator_proxy_t<IteratorFirst_lhs, IteratorLast_lhs> const &lhs,
@@ -149,8 +154,10 @@ namespace daw {
 			return lhs.current == rhs;
 		}
 
-		template<typename IteratorFirst_lhs, typename IteratorFirst_rhs,
-		         typename IteratorLast_lhs, typename IteratorLast_rhs>
+		template<typename IteratorFirst_lhs,
+		         typename IteratorFirst_rhs,
+		         typename IteratorLast_lhs,
+		         typename IteratorLast_rhs>
 		friend bool operator!=(
 		  checked_iterator_proxy_t<IteratorFirst_lhs, IteratorLast_lhs> const &lhs,
 		  checked_iterator_proxy_t<IteratorFirst_rhs, IteratorLast_rhs> const
@@ -158,7 +165,8 @@ namespace daw {
 			return lhs.current != rhs.current;
 		}
 
-		template<typename IteratorFirst_lhs, typename IteratorLast_lhs,
+		template<typename IteratorFirst_lhs,
+		         typename IteratorLast_lhs,
 		         typename Iterator_rhs>
 		friend bool operator!=(
 		  checked_iterator_proxy_t<IteratorFirst_lhs, IteratorLast_lhs> const &lhs,
@@ -168,7 +176,8 @@ namespace daw {
 	}; // checked_iterator_proxy_t
 
 	template<typename IteratorFirst, typename IteratorLast>
-	auto make_checked_iterator_proxy( IteratorFirst first, IteratorLast last,
+	auto make_checked_iterator_proxy( IteratorFirst first,
+	                                  IteratorLast last,
 	                                  bool CheckIncrement = true,
 	                                  bool CheckDecrement = true,
 	                                  bool CheckDereference = true ) {

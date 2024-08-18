@@ -12,6 +12,7 @@
 #include "cpp_17.h"
 #include "daw_arith_traits.h"
 #include "daw_cpp_feature_check.h"
+#include "daw_iterator_traits.h"
 #include "daw_move.h"
 
 #include <concepts>
@@ -218,22 +219,6 @@ namespace daw {
 	  assignable_from<T &, T> and swappable<T>;
 #endif
 
-	template<typename T>
-	using iter_difference_t =
-#if defined( __cpp_lib_concepts )
-	  std::iter_difference_t<T>;
-#else
-	  typename std::iterator_traits<T>::difference_type;
-#endif
-
-	template<typename T>
-	using iter_reference_t =
-#if defined( __cpp_lib_concepts )
-	  std::iter_reference_t<T>;
-#else
-	  typename std::iterator_traits<T>::reference_type;
-#endif
-
 	template<typename I>
 	concept weakly_incrementable =
 #if defined( __cpp_lib_concepts )
@@ -259,7 +244,7 @@ namespace daw {
 	concept invocable_result = requires( Func && f, Args &&...args ) {
 		{
 			std::invoke( DAW_FWD( f ), DAW_FWD( args )... )
-			} -> convertible_to<Result>;
+		} -> convertible_to<Result>;
 	};
 
 	template<typename I>
@@ -282,8 +267,7 @@ namespace daw {
 		*o = DAW_FWD( t );
 		*DAW_FWD( o ) = DAW_FWD( t );
 		const_cast<const iter_reference_t<Out> &&>( *o ) = DAW_FWD( t );
-		const_cast<const iter_reference_t<Out> &&>( *DAW_FWD( o ) ) =
-		  DAW_FWD( t );
+		const_cast<const iter_reference_t<Out> &&>( *DAW_FWD( o ) ) = DAW_FWD( t );
 	};
 #endif
 
@@ -308,10 +292,10 @@ namespace daw {
 	  typename std::iterator_traits<T>::iterator_category;
 
 	template<typename T>
-	using iter_reference_type = typename std::iterator_traits<T>::reference;
+	using iter_reference_type = iter_reference_t<T>;
 
 	template<typename T>
-	using iter_value_type = typename std::iterator_traits<T>::value_type;
+	using iter_value_type = iter_value_t<T>;
 
 	template<typename I>
 	concept input_iterator =

@@ -16,20 +16,28 @@ int main( ) {
 	daw_ensure( daw::nth_pack_element<1>( 1, 2, 3 ) == 2 );
 	daw_ensure( daw::forward_nth_pack_element<2>( 1, 2, 3 ) == 3 );
 	static_assert(
-	  std::is_same_v<int, daw::traits::nth_element<0, int, int &, int const &,
-	                                               int &&, int const &&>> );
+	  std::is_same_v<
+	    int,
+	    daw::traits::
+	      nth_element<0, int, int &, int const &, int &&, int const &&>> );
 	static_assert(
-	  std::is_same_v<int &, daw::traits::nth_element<1, int, int &, int const &,
-	                                                 int &&, int const &&>> );
+	  std::is_same_v<
+	    int &,
+	    daw::traits::
+	      nth_element<1, int, int &, int const &, int &&, int const &&>> );
 	static_assert(
-	  std::is_same_v<int const &,
-	                 daw::traits::nth_element<2, int, int &, int const &, int &&,
-	                                          int const &&>> );
+	  std::is_same_v<
+	    int const &,
+	    daw::traits::
+	      nth_element<2, int, int &, int const &, int &&, int const &&>> );
 	static_assert(
-	  std::is_same_v<int &&, daw::traits::nth_element<3, int, int &, int const &,
-	                                                  int &&, int const &&>> );
+	  std::is_same_v<
+	    int &&,
+	    daw::traits::
+	      nth_element<3, int, int &, int const &, int &&, int const &&>> );
 	static_assert(
-	  std::is_same_v<int const &&,
-	                 daw::traits::nth_element<4, int, int &, int const &, int &&,
-	                                          int const &&>> );
+	  std::is_same_v<
+	    int const &&,
+	    daw::traits::
+	      nth_element<4, int, int &, int const &, int &&, int const &&>> );
 }

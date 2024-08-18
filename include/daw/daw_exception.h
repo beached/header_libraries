@@ -87,7 +87,8 @@ namespace daw::exception {
 #endif
 	}
 
-	template<typename ExceptionType = DefaultException, typename Arg,
+	template<typename ExceptionType = DefaultException,
+	         typename Arg,
 	         typename... Args>
 	[[noreturn]] void daw_throw( Arg &&arg, Args &&...args ) {
 #if defined( __cpp_exceptions ) or defined( __EXCEPTIONS ) or \
@@ -111,7 +112,8 @@ namespace daw::exception {
 #endif
 
 #ifndef NODEBUGTHROW
-	template<typename ExceptionType = NullPtrAccessException, typename ValueType,
+	template<typename ExceptionType = NullPtrAccessException,
+	         typename ValueType,
 	         typename... Args>
 	constexpr void dbg_throw_on_null( ValueType const *const value,
 	                                  Args &&...args ) {
@@ -120,14 +122,16 @@ namespace daw::exception {
 		}
 	}
 #else
-	template<typename ExceptionType = NullPtrAccessException, typename ValueType,
+	template<typename ExceptionType = NullPtrAccessException,
+	         typename ValueType,
 	         typename... Args>
 	constexpr void dbg_throw_on_null( ValueType &&, Args &&... ) {}
 
 #endif
 
 #ifndef NODEBUGTHROW
-	template<typename ExceptionType = NullPtrAccessException, typename ValueType,
+	template<typename ExceptionType = NullPtrAccessException,
+	         typename ValueType,
 	         typename... Args>
 	constexpr ValueType *dbg_throw_on_null_or_return( ValueType *value,
 	                                                  Args &&...args ) {
@@ -137,7 +141,8 @@ namespace daw::exception {
 		return value;
 	}
 #else
-	template<typename ExceptionType = NullPtrAccessException, typename ValueType,
+	template<typename ExceptionType = NullPtrAccessException,
+	         typename ValueType,
 	         typename... Args>
 	constexpr ValueType *dbg_throw_on_null_or_return( ValueType *value,
 	                                                  Args &&...args ) {
@@ -146,10 +151,11 @@ namespace daw::exception {
 #endif
 
 #ifndef NODEBUGTHROW
-	template<typename ExceptionType = AssertException, typename ValueType,
+	template<typename ExceptionType = AssertException,
+	         typename ValueType,
 	         typename... Args>
-	constexpr auto dbg_throw_on_false_or_return( ValueType &&value, bool test,
-	                                             Args &&...args ) {
+	constexpr auto
+	dbg_throw_on_false_or_return( ValueType &&value, bool test, Args &&...args ) {
 		if( not static_cast<bool>( test ) ) {
 			debug_throw<ExceptionType>( DAW_FWD( args )... );
 		}
@@ -168,7 +174,8 @@ namespace daw::exception {
 #endif
 
 #ifndef NODEBUGTHROW
-	template<typename ExceptionType = AssertException, typename Bool,
+	template<typename ExceptionType = AssertException,
+	         typename Bool,
 	         typename... Args>
 	constexpr void dbg_throw_on_false( Bool &&test, Args &&...args ) {
 		if( not static_cast<bool>( DAW_FWD( test ) ) ) {
@@ -176,7 +183,8 @@ namespace daw::exception {
 		}
 	}
 
-	template<typename ExceptionType = AssertException, typename Bool,
+	template<typename ExceptionType = AssertException,
+	         typename Bool,
 	         typename... Args>
 	constexpr void DebugAssert( Bool &&test, Args &&...args ) {
 		if( not static_cast<bool>( DAW_FWD( test ) ) ) {
@@ -203,17 +211,19 @@ namespace daw::exception {
 	constexpr void DebugAssert( T... ) noexcept {}
 #endif
 
-	template<typename ExceptionType = AssertException, typename ValueType,
+	template<typename ExceptionType = AssertException,
+	         typename ValueType,
 	         typename... Args>
-	constexpr ValueType &dbg_throw_on_true_or_return( ValueType &value, bool test,
-	                                                  Args &&...args ) {
+	constexpr ValueType &
+	dbg_throw_on_true_or_return( ValueType &value, bool test, Args &&...args ) {
 		if( static_cast<bool>( test ) ) {
 			debug_throw<ExceptionType>( DAW_FWD( args )... );
 		}
 		return value;
 	}
 
-	template<typename ExceptionType = AssertException, typename Bool,
+	template<typename ExceptionType = AssertException,
+	         typename Bool,
 	         typename... Args>
 	constexpr bool dbg_throw_on_true_or_return( const Bool &test,
 	                                            Args &&...args ) {
@@ -230,7 +240,8 @@ namespace daw::exception {
 		}
 	}
 
-	template<typename ExceptionType = NullPtrAccessException, typename ValueType,
+	template<typename ExceptionType = NullPtrAccessException,
+	         typename ValueType,
 	         typename... Args>
 	constexpr void daw_throw_on_null( ValueType const *const value,
 	                                  Args &&...args ) {
@@ -239,7 +250,8 @@ namespace daw::exception {
 		}
 	}
 
-	template<typename ExceptionType = AssertException, typename ValueType,
+	template<typename ExceptionType = AssertException,
+	         typename ValueType,
 	         typename... Args>
 	constexpr void daw_throw_on_null( ValueType *value, Args &&...args ) {
 		if( nullptr == value ) {
@@ -247,7 +259,8 @@ namespace daw::exception {
 		}
 	}
 
-	template<typename ExceptionType = AssertException, typename ValueType,
+	template<typename ExceptionType = AssertException,
+	         typename ValueType,
 	         typename... Args>
 	constexpr ValueType *daw_throw_on_null_or_return( ValueType *value,
 	                                                  Args &&...args ) {
@@ -257,7 +270,8 @@ namespace daw::exception {
 		return value;
 	}
 
-	template<typename ExceptionType = AssertException, typename... Args,
+	template<typename ExceptionType = AssertException,
+	         typename... Args,
 	         typename Bool>
 	constexpr bool daw_throw_on_false_or_return( Bool &&test, Args &&...args ) {
 		if( not static_cast<bool>( test ) ) {
@@ -291,7 +305,8 @@ namespace daw::exception {
 		}
 	}
 #ifndef NODEBUGTHROW
-	template<typename Exception = AssertException, typename Bool,
+	template<typename Exception = AssertException,
+	         typename Bool,
 	         typename... Args>
 	constexpr void dbg_precondition_check( Bool &&condition, Args &&... ) {
 
@@ -309,15 +324,18 @@ namespace daw::exception {
 		}
 	}
 #else
-	template<typename Exception = AssertException, typename Bool,
+	template<typename Exception = AssertException,
+	         typename Bool,
 	         typename... Args>
 	constexpr void dbg_precondition_check( Bool &&, Args &&... ) {}
 
 	template<typename Bool, typename... Args>
 	constexpr void dbg_postcondition_check( Bool &&, Args &&... ) {}
 #endif
-	template<typename ExceptionType = AssertException, typename ValueType,
-	         typename... Args, typename Bool>
+	template<typename ExceptionType = AssertException,
+	         typename ValueType,
+	         typename... Args,
+	         typename Bool>
 	constexpr ValueType daw_throw_on_false_or_return( ValueType &&value,
 	                                                  Bool &&test,
 	                                                  Args &&...args ) {
@@ -327,7 +345,8 @@ namespace daw::exception {
 		return DAW_FWD( value );
 	}
 
-	template<typename ExceptionType = AssertException, typename Bool,
+	template<typename ExceptionType = AssertException,
+	         typename Bool,
 	         typename... Args>
 	constexpr void daw_throw_on_false( Bool &&test, Args &&...args ) {
 		if( not static_cast<bool>( DAW_FWD( test ) ) ) {
@@ -335,7 +354,8 @@ namespace daw::exception {
 		}
 	}
 
-	template<typename ExceptionType = AssertException, typename Bool,
+	template<typename ExceptionType = AssertException,
+	         typename Bool,
 	         typename... Args>
 	constexpr void Assert( Bool const &test, Args &&...args ) {
 		if( not static_cast<bool>( test ) ) {
@@ -381,8 +401,10 @@ namespace daw::exception {
 		daw_throw<ExceptionType>( "Unknown/Unexpected enum" );
 	}
 
-	template<typename ExceptionType = AssertException, typename ValueType,
-	         typename... Args, typename Bool>
+	template<typename ExceptionType = AssertException,
+	         typename ValueType,
+	         typename... Args,
+	         typename Bool>
 	constexpr ValueType daw_throw_on_true_or_return( ValueType &&value,
 	                                                 Bool &&test,
 	                                                 Args &&...args ) {
@@ -392,8 +414,10 @@ namespace daw::exception {
 		return DAW_FWD( value );
 	}
 
-	template<typename ExceptionType = AssertException, typename ValueType,
-	         typename... Args, typename Bool>
+	template<typename ExceptionType = AssertException,
+	         typename ValueType,
+	         typename... Args,
+	         typename Bool>
 	constexpr ValueType &&daw_throw_on_true_or_return( ValueType &&value,
 	                                                   Bool &&test,
 	                                                   Args &&...args ) {
@@ -403,17 +427,19 @@ namespace daw::exception {
 		return DAW_FWD( value );
 	}
 
-	template<typename ExceptionType = AssertException, typename ValueType,
+	template<typename ExceptionType = AssertException,
+	         typename ValueType,
 	         typename... Args>
-	constexpr ValueType daw_throw_on_true_or_return( ValueType &&value, bool test,
-	                                                 Args &&...args ) {
+	constexpr ValueType
+	daw_throw_on_true_or_return( ValueType &&value, bool test, Args &&...args ) {
 		if( static_cast<bool>( test ) ) {
 			daw_throw<ExceptionType>( DAW_FWD( args )... );
 		}
 		return DAW_FWD( value );
 	}
 
-	template<typename ExceptionType = AssertException, typename Bool,
+	template<typename ExceptionType = AssertException,
+	         typename Bool,
 	         typename... Args>
 	constexpr bool daw_throw_on_true_or_return( Bool &&test, Args &&...args ) {
 		if( static_cast<bool>( DAW_FWD( test ) ) ) {
@@ -430,7 +456,9 @@ namespace daw::exception {
 	}
 
 	template<
-	  typename ExceptionType = AssertException, typename Bool, typename... Args,
+	  typename ExceptionType = AssertException,
+	  typename Bool,
+	  typename... Args,
 	  std::enable_if_t<( sizeof...( Args ) > 0 ), std::nullptr_t> = nullptr>
 	constexpr void daw_throw_on_true( Bool &&test, Args &&...args ) {
 		if( static_cast<bool>( DAW_FWD( test ) ) ) {
@@ -438,8 +466,10 @@ namespace daw::exception {
 		}
 	}
 
-	template<typename ExceptionType = AssertException, typename Predicate,
-	         typename Message, typename Container>
+	template<typename ExceptionType = AssertException,
+	         typename Predicate,
+	         typename Message,
+	         typename Container>
 	constexpr void assert_all_false( Container &&container,
 	                                 Message &&assert_message,
 	                                 Predicate &&predicate ) {
@@ -453,13 +483,16 @@ namespace daw::exception {
 		}
 	}
 
-	template<typename ExceptionType = AssertException, typename Predicate,
-	         typename Message, typename Container>
+	template<typename ExceptionType = AssertException,
+	         typename Predicate,
+	         typename Message,
+	         typename Container>
 	constexpr void assert_all_true( Container const &container,
 	                                Message &&assert_message,
 	                                Predicate &&predicate ) {
 		assert_all_false<ExceptionType>(
-		  container, DAW_FWD( assert_message ),
+		  container,
+		  DAW_FWD( assert_message ),
 		  [pred = DAW_FWD( predicate )]( auto const &v ) {
 			  return not pred( v );
 		  } );

@@ -16,18 +16,19 @@ namespace daw::traits_is_sv {
 
 	template<typename S>
 	inline constexpr bool is_string_view_like_v<
-	  S, std::void_t<
-	       decltype( ( (void)std::declval<S const &>( ).begin( ) ), /* has begin(
-	                                                                   ) member */
-	                 ( (void)std::declval<S const &>( ).end( ) ),   /* has end( )
-	                                                                   member */
-	                 ( (void)std::declval<S const &>( )[0] ),       /* has integer
-	                                                                   subscript */
-	                 ( (void)std::declval<S const &>( ).empty( ) ), /* has empty(
-	                                                                   ) member */
-	                 ( (void)std::declval<S const &>( ).data( ) ),  /* has data( )
-	                                                                   member */
-	                 ( (void)std::declval<S const &>( ).size( ) )   /* has size( )
-	                                                                   member */
-	                 )>> = true;
+	  S,
+	  std::void_t<
+	    decltype( ( (void)std::declval<S const &>( ).begin( ) ), /* has begin(
+	                                                                ) member */
+	              ( (void)std::declval<S const &>( ).end( ) ),   /* has end( )
+	                                                                member */
+	              ( (void)std::declval<S const &>( )[0] ),       /* has integer
+	                                                                subscript */
+	              ( (void)std::declval<S const &>( ).empty( ) ), /* has empty(
+	                                                                ) member */
+	              ( (void)std::declval<S const &>( ).data( ) ),  /* has data( )
+	                                                                member */
+	              ( (void)std::declval<S const &>( ).size( ) )   /* has size( )
+	                                                                member */
+	              )>> = true;
 } // namespace daw::traits_is_sv

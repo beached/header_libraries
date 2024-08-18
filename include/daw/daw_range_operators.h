@@ -55,7 +55,8 @@ namespace daw {
 						std::tuple<Args...> clause_name##_args;                            \
                                                                                \
 						template<                                                          \
-						  typename Container, typename... ClauseArgs,                      \
+						  typename Container,                                              \
+						  typename... ClauseArgs,                                          \
 						  typename std::enable_if_t<daw::all_true_v<                       \
 						    !daw::range::is_range_reference_v<Container>,                  \
 						    !daw::range::is_range_collection_v<Container>>> * = nullptr,   \
@@ -63,33 +64,33 @@ namespace daw {
 						static auto clause_name##_helper( Container const &container,      \
 						                                  ClauseArgs &&...clause_args ) {  \
 							return from( container )                                         \
-							  .clause_name( DAW_FWD( clause_args )... );    \
+							  .clause_name( DAW_FWD( clause_args )... );                     \
 						}                                                                  \
                                                                                \
 						template<                                                          \
-						  typename Container, typename... ClauseArgs,                      \
+						  typename Container,                                              \
+						  typename... ClauseArgs,                                          \
 						  typename std::enable_if_t<                                       \
 						    daw::range::is_range_reference_v<Container>> * = nullptr>      \
 						static auto clause_name##_helper( Container container,             \
 						                                  ClauseArgs &&...clause_args ) {  \
-							return container.clause_name(                                    \
-							  DAW_FWD( clause_args )... );                  \
+							return container.clause_name( DAW_FWD( clause_args )... );       \
 						}                                                                  \
                                                                                \
 						template<                                                          \
-						  typename Container, typename... ClauseArgs,                      \
+						  typename Container,                                              \
+						  typename... ClauseArgs,                                          \
 						  typename std::enable_if_t<                                       \
 						    daw::range::is_range_collection_v<Container>> * = nullptr>     \
 						static auto clause_name##_helper( Container const &container,      \
 						                                  ClauseArgs &&...clause_args ) {  \
-							return container.clause_name(                                    \
-							  DAW_FWD( clause_args )... );                  \
+							return container.clause_name( DAW_FWD( clause_args )... );       \
 						}                                                                  \
                                                                                \
 						template<typename Container>                                       \
 						auto delayed_dispatch( Container &&container ) const {             \
 							return call_##clause_name(                                       \
-							  DAW_FWD( container ),                          \
+							  DAW_FWD( container ),                                          \
 							  typename gens<sizeof...( Args )>::type( ) );                   \
 						}                                                                  \
                                                                                \
@@ -97,8 +98,7 @@ namespace daw {
 						auto call_##clause_name( Container &&container,                    \
 						                         seq<S...> ) const {                       \
 							return clause_name##_helper(                                     \
-							  DAW_FWD( container ),                          \
-							  std::get<S>( clause_name##_args )... );                        \
+							  DAW_FWD( container ), std::get<S>( clause_name##_args )... );  \
 						}                                                                  \
                                                                                \
 						template<typename Iterator, int... S>                              \
@@ -111,12 +111,11 @@ namespace daw {
                                                                                \
 					public:                                                              \
 						clause_name##_t( std::tuple<Args...> &&args )                      \
-						  : clause_name                                                    \
-						  ##_args( DAW_FWD( args )... ) {}          \
+						  : clause_name##_args( DAW_FWD( args )... ) {}                    \
                                                                                \
 						template<typename Container>                                       \
 						auto operator( )( Container &&container ) const {                  \
-							return delayed_dispatch( DAW_FWD( container ) ); \
+							return delayed_dispatch( DAW_FWD( container ) );                 \
 						}                                                                  \
 					};                                                                   \
 				}                                                                      \
@@ -131,7 +130,8 @@ namespace daw {
 			}                                                                        \
 		}                                                                          \
 	}                                                                            \
-	template<typename Container, typename... Args,                               \
+	template<typename Container,                                                 \
+	         typename... Args,                                                   \
 	         typename std::enable_if_t<daw::all_true_v<                          \
 	           !daw::range::is_range_reference_v<Container>,                     \
 	           !daw::range::is_range_collection_v<Container>>> * = nullptr,      \
@@ -140,25 +140,27 @@ namespace daw {
 	  Container &&container,                                                     \
 	  daw::range::operators::details::clause_name##_t<Args...> const             \
 	    &predicate ) {                                                           \
-		return predicate( DAW_FWD( container ) );                  \
+		return predicate( DAW_FWD( container ) );                                  \
 	}                                                                            \
-	template<typename Container, typename... Args,                               \
+	template<typename Container,                                                 \
+	         typename... Args,                                                   \
 	         typename std::enable_if_t<                                          \
 	           daw::range::is_range_collection_v<Container>> * = nullptr>        \
 	auto operator<<(                                                             \
 	  Container &&container,                                                     \
 	  daw::range::operators::details::clause_name##_t<Args...> const             \
 	    &predicate ) {                                                           \
-		return predicate( DAW_FWD( container ) );                  \
+		return predicate( DAW_FWD( container ) );                                  \
 	}                                                                            \
-	template<typename Container, typename... Args,                               \
+	template<typename Container,                                                 \
+	         typename... Args,                                                   \
 	         typename std::enable_if_t<                                          \
 	           daw::range::is_range_reference_v<Container>> * = nullptr>         \
 	auto operator<<(                                                             \
 	  Container &&container,                                                     \
 	  daw::range::operators::details::clause_name##_t<Args...> const             \
 	    &predicate ) {                                                           \
-		return predicate( DAW_FWD( container ) );                  \
+		return predicate( DAW_FWD( container ) );                                  \
 	}
 
 DAW_RANGE_GENERATE_VCLAUSE( accumulate )

@@ -272,8 +272,7 @@ namespace daw {
 
 			template<typename UniformRandomNumberGenerator>
 			auto shuffle( UniformRandomNumberGenerator &&urng ) {
-				return make_range_reference( *this ).shuffle(
-				  DAW_FWD( urng ) );
+				return make_range_reference( *this ).shuffle( DAW_FWD( urng ) );
 			}
 
 			auto slice( size_t first_pos ) {
@@ -317,7 +316,7 @@ namespace daw {
 				daw::hex( m_begin, m_end, std::back_inserter( result ) );
 				return result;
 			}
-		}; // struct Range
+		}; // struct range_t
 
 		template<typename Iterator>
 		Range<Iterator> make_range( Iterator first, Iterator last ) {

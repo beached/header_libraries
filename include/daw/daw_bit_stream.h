@@ -62,7 +62,8 @@ namespace daw {
 	    }
 	};*/
 
-	template<typename InputIteratorF, typename InputIteratorL,
+	template<typename InputIteratorF,
+	         typename InputIteratorL,
 	         typename BitQueueLSB = bit_queue_source_native_endian>
 	struct bit_stream {
 		using value_type =
@@ -187,7 +188,8 @@ namespace daw {
 	}
 
 	template<typename BitQueueLSB = bit_queue_source_native_endian,
-	         typename InputIteratorF, typename InputIteratorL>
+	         typename InputIteratorF,
+	         typename InputIteratorL>
 	constexpr auto make_bit_stream( InputIteratorF first,
 	                                InputIteratorL last ) noexcept {
 		return bit_stream<InputIteratorF, InputIteratorL, BitQueueLSB>{ first,

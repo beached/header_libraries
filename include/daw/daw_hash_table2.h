@@ -56,7 +56,8 @@ namespace daw {
 		};
 	} // namespace resize_policies
 
-	template<typename Value, size_t m_initial_size = 11,
+	template<typename Value,
+	         size_t m_initial_size = 11,
 	         uint8_t resize_ratio = 80,
 	         typename ResizePolicy = resize_policies::golden_ratio>
 	struct hash_table2 {

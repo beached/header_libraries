@@ -21,8 +21,9 @@ namespace daw::algorithm {
 
 		template<typename C>
 		inline constexpr bool is_container_like_v<
-		  C, std::void_t<decltype( ( (void)std::declval<C const &>( ).begin( ) ),
-		                           ( (void)std::declval<C const &>( ).end( ) ) )>> =
+		  C,
+		  std::void_t<decltype( ( (void)std::declval<C const &>( ).begin( ) ),
+		                        ( (void)std::declval<C const &>( ).end( ) ) )>> =
 		  true;
 
 		struct plus {
@@ -33,8 +34,8 @@ namespace daw::algorithm {
 		};
 	} // namespace accum_impl
 	template<typename InputIterator, typename T>
-	constexpr auto accumulate( InputIterator first, InputIterator last,
-	                           T init ) noexcept {
+	constexpr auto
+	accumulate( InputIterator first, InputIterator last, T init ) noexcept {
 		DAW_UNSAFE_BUFFER_FUNC_START
 		for( ; first != last; ++first ) {
 			init = std::move( init ) + *first;
@@ -56,12 +57,16 @@ namespace daw::algorithm {
 	 * @param binary_op operation to run
 	 * @return sum of values
 	 */
-	template<typename InputIterator, typename LastType, typename T,
+	template<typename InputIterator,
+	         typename LastType,
+	         typename T,
 	         typename BinaryOperation = accum_impl::plus,
 	         std::enable_if_t<not accum_impl::is_container_like_v<InputIterator>,
 	                          std::nullptr_t> = nullptr>
 	constexpr auto accumulate(
-	  InputIterator first, LastType last, T init,
+	  InputIterator first,
+	  LastType last,
+	  T init,
 	  BinaryOperation binary_op =
 	    BinaryOperation{ } ) noexcept( noexcept( binary_op( std::move( init ),
 	                                                        *first ) ) ) {

@@ -83,8 +83,8 @@ constexpr bool daw_container_algorithm_test_copy_001( ) {
 	daw::algorithm::iota( std::begin( a1 ), std::end( a1 ), 2 );
 	std::array<int, 100> a2{ };
 	daw::container::copy( a1, a2.begin( ) );
-	daw::expecting( daw::algorithm::equal( std::cbegin( a1 ), std::cend( a1 ),
-	                                       std::cbegin( a2 ), std::cend( a2 ) ) );
+	daw::expecting( daw::algorithm::equal(
+	  std::cbegin( a1 ), std::cend( a1 ), std::cbegin( a2 ), std::cend( a2 ) ) );
 	return true;
 }
 static_assert( daw_container_algorithm_test_copy_001( ) );
@@ -94,8 +94,8 @@ constexpr bool daw_container_algorithm_test_copy_n_001( ) {
 	daw::algorithm::iota( std::begin( a1 ), std::end( a1 ), 2 );
 	std::array<int, 100> a2{ };
 	daw::container::copy_n( a1, 100, a2.begin( ) );
-	daw::expecting( daw::algorithm::equal( std::cbegin( a1 ), std::cend( a1 ),
-	                                       std::cbegin( a2 ), std::cend( a2 ) ) );
+	daw::expecting( daw::algorithm::equal(
+	  std::cbegin( a1 ), std::cend( a1 ), std::cbegin( a2 ), std::cend( a2 ) ) );
 	return true;
 }
 static_assert( daw_container_algorithm_test_copy_n_001( ) );
@@ -123,10 +123,10 @@ namespace daw_for_each_with_pos_002_ns {
 
 void daw_for_each_subset_001( ) {
 	std::array<int, 5> const blah = { 0, 1, 2, 3, 4 };
-	daw::container::for_each_subset( blah, 1, 4,
-	                                 []( auto &container, size_t pos ) {
-		                                 std::cout << container[pos] << '\n';
-	                                 } );
+	daw::container::for_each_subset(
+	  blah, 1, 4, []( auto &container, size_t pos ) {
+		  std::cout << container[pos] << '\n';
+	  } );
 }
 
 namespace daw_for_each_subset_002_ns {
@@ -163,8 +163,8 @@ void daw_append_001( ) {
 	std::vector<int> const b = { 4, 5, 6 };
 	std::vector<int> const expect = { 1, 2, 3, 4, 5, 6 };
 	daw::container::append( b, a );
-	auto const tst = daw::algorithm::equal( expect.cbegin( ), expect.cend( ),
-	                                        a.cbegin( ), a.cend( ) );
+	auto const tst = daw::algorithm::equal(
+	  expect.cbegin( ), expect.cend( ), a.cbegin( ), a.cend( ) );
 	daw::expecting( tst );
 }
 

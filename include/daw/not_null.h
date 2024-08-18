@@ -38,8 +38,9 @@ namespace daw {
 		static_assert( std::is_assignable_v<T &, std::nullptr_t>,
 		               "T cannot be assigned nullptr." );
 
-		template<typename U, std::enable_if_t<std::is_convertible_v<U, T>,
-		                                      std::nullptr_t> = nullptr>
+		template<
+		  typename U,
+		  std::enable_if_t<std::is_convertible_v<U, T>, std::nullptr_t> = nullptr>
 		constexpr not_null( U ptr )
 		  : m_ptr( static_cast<T>( ptr ) ) {
 

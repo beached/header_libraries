@@ -37,7 +37,8 @@ namespace daw::parser {
 
 	template<typename ForwardIterator, typename Result>
 	constexpr void parse_unsigned_int( ForwardIterator first,
-	                                   ForwardIterator last, Result &result ) {
+	                                   ForwardIterator last,
+	                                   Result &result ) {
 		size_t count = std::numeric_limits<Result>::digits;
 
 		daw::exception::precondition_check<ParserOutOfRangeException>(
@@ -54,8 +55,8 @@ namespace daw::parser {
 	}
 
 	template<typename ForwardIterator, typename Result>
-	constexpr void parse_int( ForwardIterator first, ForwardIterator last,
-	                          Result &result ) {
+	constexpr void
+	parse_int( ForwardIterator first, ForwardIterator last, Result &result ) {
 		intmax_t count = std::numeric_limits<Result>::digits;
 		result = 0;
 		bool is_neg = false;

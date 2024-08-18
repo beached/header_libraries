@@ -190,7 +190,8 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			ReferenceRange &unique( UnaryPredicate predicate ) {
-				erase( std::unique( begin( ), end( ),
+				erase( std::unique( begin( ),
+				                    end( ),
 				                    [&predicate]( auto const &v ) {
 					                    return predicate( v.get( ) );
 				                    } ),
@@ -229,10 +230,10 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			ReferenceRange &stable_partition( UnaryPredicate predicate ) {
-				std::stable_partition( m_values.begin( ), m_values.end( ),
-				                       [&predicate]( auto const &v ) {
-					                       return predicate( v.get( ) );
-				                       } );
+				std::stable_partition(
+				  m_values.begin( ), m_values.end( ), [&predicate]( auto const &v ) {
+					  return predicate( v.get( ) );
+				  } );
 				return *this;
 			}
 
@@ -243,10 +244,10 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			auto stable_partition_it( UnaryPredicate predicate ) {
-				auto mid = std::stable_partition( begin( ), end( ),
-				                                  [&predicate]( auto const &v ) {
-					                                  return predicate( v.get( ) );
-				                                  } );
+				auto mid = std::stable_partition(
+				  begin( ), end( ), [&predicate]( auto const &v ) {
+					  return predicate( v.get( ) );
+				  } );
 				return std::make_pair( mid, *this );
 			}
 
@@ -262,7 +263,9 @@ namespace daw {
 
 			template<typename T, typename BinaryOperator>
 			auto accumulate( T &&init, BinaryOperator oper ) const {
-				return std::accumulate( begin( ), end( ), DAW_FWD( init ),
+				return std::accumulate( begin( ),
+				                        end( ),
+				                        DAW_FWD( init ),
 				                        [&oper]( auto const &a, auto const &b ) {
 					                        return oper( a.get( ), b.get( ) );
 				                        } );
@@ -272,7 +275,9 @@ namespace daw {
 			auto transform( UnaryOperator oper ) const {
 				using v_t = decltype( oper( *begin( ) ) );
 				auto result = daw::range::make_range_collection<v_t>( );
-				std::transform( begin( ), end( ), std::back_inserter( result ),
+				std::transform( begin( ),
+				                end( ),
+				                std::back_inserter( result ),
 				                [&oper]( auto const &v ) {
 					                return oper( v.get( ) );
 				                } );
@@ -294,7 +299,8 @@ namespace daw {
 
 			template<typename UnaryPredicate>
 			ReferenceRange &erase( UnaryPredicate predicate ) {
-				m_values.erase( std::remove_if( m_values.begin( ), m_values.end( ),
+				m_values.erase( std::remove_if( m_values.begin( ),
+				                                m_values.end( ),
 				                                [&predicate]( auto const &v ) {
 					                                return predicate( v.get( ) );
 				                                } ),
@@ -388,15 +394,13 @@ namespace daw {
 
 			template<typename UniformRandomNumberGenerator>
 			ReferenceRange &shuffle( UniformRandomNumberGenerator &&urng ) {
-				std::shuffle( begin( ), end( ),
-				              DAW_FWD( urng ) );
+				std::shuffle( begin( ), end( ), DAW_FWD( urng ) );
 				return *this;
 			}
 
 			template<typename UniformRandomNumberGenerator>
 			ReferenceRange shuffle( UniformRandomNumberGenerator &&urng ) const {
-				return copy( ).shuffle(
-				  DAW_FWD( urng ) );
+				return copy( ).shuffle( DAW_FWD( urng ) );
 			}
 		}; // class ReferenceRange
 
@@ -424,8 +428,8 @@ namespace daw {
 		} // namespace impl
 		template<typename Arg, typename... Args>
 		auto make_range_reference( Arg &&arg, Args &&...args ) {
-			return daw::range::impl::make_range_reference(
-			  DAW_FWD( arg ), DAW_FWD( args )... );
+			return daw::range::impl::make_range_reference( DAW_FWD( arg ),
+			                                               DAW_FWD( args )... );
 		}
 
 		namespace details {
@@ -446,7 +450,8 @@ namespace daw {
 		template<typename T>
 		constexpr bool is_range_reference_v = is_range_reference<T>::value;
 
-		template<typename OStream, typename Iterator,
+		template<typename OStream,
+		         typename Iterator,
 		         std::enable_if_t<daw::traits::is_ostream_like_lite_v<OStream>,
 		                          std::nullptr_t> = nullptr>
 		OStream &operator<<( OStream &os, ReferenceRange<Iterator> const &rng ) {

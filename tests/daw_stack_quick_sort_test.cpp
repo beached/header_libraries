@@ -40,10 +40,10 @@ void test_perf_comp( ) {
 	auto const values = copy_n_values( get_random_data( ), N );
 	daw::do_not_optimize( values );
 	auto const validator = []( auto const &v ) {
-		auto unsorted_pos = std::adjacent_find( v.begin( ), v.end( ),
-		                                        []( auto const &l, auto const &r ) {
-			                                        return r < l;
-		                                        } );
+		auto unsorted_pos = std::adjacent_find(
+		  v.begin( ), v.end( ), []( auto const &l, auto const &r ) {
+			  return r < l;
+		  } );
 		if( unsorted_pos == v.end( ) ) {
 			return true;
 		}
@@ -54,7 +54,9 @@ void test_perf_comp( ) {
 
 	auto const bytes = values.size( ) * sizeof( value_type );
 	daw::bench_n_test_mbs2<500>(
-	  "stack sort", bytes, validator,
+	  "stack sort",
+	  bytes,
+	  validator,
 	  []( auto v ) {
 		  daw::quick_sort( v.begin( ), v.end( ) );
 		  daw::do_not_optimize( v );
@@ -63,7 +65,9 @@ void test_perf_comp( ) {
 	  values );
 
 	daw::bench_n_test_mbs2<500>(
-	  "std::sort", bytes, validator,
+	  "std::sort",
+	  bytes,
+	  validator,
 	  []( auto v ) {
 		  std::sort( v.begin( ), v.end( ) );
 		  daw::do_not_optimize( v );

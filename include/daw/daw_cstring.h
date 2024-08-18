@@ -38,14 +38,16 @@ namespace daw {
 
 		struct no_copy_t {};
 
-		[[deprecated]] constexpr CString( CharT const *ptr, no_copy_t,
+		[[deprecated]] constexpr CString( CharT const *ptr,
+		                                  no_copy_t,
 		                                  size_t const length ) noexcept
 		  : m_data{ ptr }
 		  , m_size{ 0 == length ? string_length( ptr ) : length }
 		  , m_local_string{ false } {}
 
 	public:
-		[[deprecated]] constexpr CString( CharT const *ptr, bool do_copy,
+		[[deprecated]] constexpr CString( CharT const *ptr,
+		                                  bool do_copy,
 		                                  size_t const length )
 		  : m_data{ ptr }
 		  , m_size{ 0 == length ? string_length( ptr ) : length }

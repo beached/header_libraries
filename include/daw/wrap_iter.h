@@ -58,7 +58,7 @@ namespace daw {
 			return *this;
 		}
 
-		[[nodiscard]] constexpr wrap_iter operator++( int ) &noexcept {
+		[[nodiscard]] constexpr wrap_iter operator++( int ) & noexcept {
 			auto tmp = *this;
 			operator++( );
 			return tmp;
@@ -71,7 +71,7 @@ namespace daw {
 			return *this;
 		}
 
-		[[nodiscard]] constexpr wrap_iter operator--( int ) &noexcept {
+		[[nodiscard]] constexpr wrap_iter operator--( int ) & noexcept {
 			auto tmp = *this;
 			operator--( );
 			return tmp;
@@ -105,11 +105,11 @@ namespace daw {
 			return i;
 		}
 
-		constexpr auto operator<=>( wrap_iter const &rhs ) const noexcept {
-			// clang-format off
+		// clang-format off
+		constexpr auto operator<=> ( wrap_iter const &rhs ) const noexcept {
 			return base( ) <=> rhs.base( );
-			// clang-format on
 		}
+		// clang-format on
 
 		constexpr bool operator==( wrap_iter const &rhs ) const noexcept {
 			return base( ) == rhs.base( );

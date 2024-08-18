@@ -1,0 +1,26 @@
+// Copyright (c) Darrell Wright
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+// Official repository: https://github.com/beached/header_libraries
+//
+
+#pragma once
+
+#include "pipelines/algorithm.h"
+#include "pipelines/filter_view.h"
+#include "pipelines/foreach.h"
+#include "pipelines/iota_view.h"
+#include "pipelines/map_view.h"
+#include "pipelines/maybe_view.h"
+#include "pipelines/numeric.h"
+#include "pipelines/pipeline.h"
+#include "pipelines/predicates.h"
+#include "pipelines/println.h"
+#include "pipelines/range.h"
+#include "pipelines/swizzle.h"
+#include "pipelines/take.h"
+#include "pipelines/to.h"
+#include "pipelines/unique_view.h"
+#include "pipelines/zip_view.h"

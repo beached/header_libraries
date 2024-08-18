@@ -46,8 +46,12 @@ namespace daw {
 		enum fn_ary_item { OpDel, OpEqual, OpNotEqual, OpInc, OpArrow, OpClone };
 
 		template<typename Value>
-		using vtable_t = std::tuple<op_del_t, op_cmp_t, op_cmp_t, op_inc_t,
-		                            op_arrow_t<Value>, op_clone_t>;
+		using vtable_t = std::tuple<op_del_t,
+		                            op_cmp_t,
+		                            op_cmp_t,
+		                            op_inc_t,
+		                            op_arrow_t<Value>,
+		                            op_clone_t>;
 
 		template<fn_ary_item Idx, typename Value>
 		decltype( auto ) get( vtable_t<Value> const *tbl ) {

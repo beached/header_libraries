@@ -10,8 +10,8 @@
 
 #include <iostream>
 
-std::string concat2( std::string const &s0, std::string const &s1,
-                     std::string const &s2 ) {
+std::string
+concat2( std::string const &s0, std::string const &s1, std::string const &s2 ) {
 	return daw::string_concat( s0, s1, s2 );
 }
 

@@ -17,14 +17,14 @@ namespace daw {
 	auto a = Vector( { 1, 2, 3 } );
 
 	Vector<int> foo( std::size_t n ) {
-		auto v =
-		  Vector<int>( sized_for_overwrite, std::max( std::size_t{ 128 }, n ),
-		               [maxsz = n]( int *p, std::size_t ) {
-			               for( std::size_t m = 0; m < maxsz; ++m ) {
-				               p[m] = static_cast<int>( m );
-			               }
-			               return maxsz;
-		               } );
+		auto v = Vector<int>( sized_for_overwrite,
+		                      std::max( std::size_t{ 128 }, n ),
+		                      [maxsz = n]( int *p, std::size_t ) {
+			                      for( std::size_t m = 0; m < maxsz; ++m ) {
+				                      p[m] = static_cast<int>( m );
+			                      }
+			                      return maxsz;
+		                      } );
 		return v;
 	}
 } // namespace daw
@@ -89,7 +89,9 @@ int main( ) {
 
 	int const t[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 	auto v2 = daw::Vector<int>( t, daw::data_end( t ) );
-	assert( std::equal( std::data( t ), daw::data_end( t ), std::data( v2 ),
+	assert( std::equal( std::data( t ),
+	                    daw::data_end( t ),
+	                    std::data( v2 ),
 	                    daw::data_end( v2 ) ) );
 	std::cout << "v2 size: " << v2.size( ) << '\n';
 }

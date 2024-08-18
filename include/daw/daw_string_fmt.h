@@ -50,22 +50,28 @@ namespace daw {
 					return value.to_string( );
 				}
 
-				template<typename T, std::enable_if_t<can_cast_to_string_v<T>,
-				                                      std::nullptr_t> = nullptr>
+				template<
+				  typename T,
+				  std::enable_if_t<can_cast_to_string_v<T>, std::nullptr_t> = nullptr>
 				inline std::string to_string( T const &value ) {
 					return static_cast<std::string>( value );
 				}
 
-				template<uint8_t Cnt, uint8_t Sz, typename... Args,
+				template<uint8_t Cnt,
+				         uint8_t Sz,
+				         typename... Args,
 				         std::enable_if_t<( Cnt >= Sz ), std::nullptr_t> = nullptr>
 				inline std::string get_arg_impl( uint8_t const, Args &&... ) {
 					daw::exception::daw_throw<invalid_string_fmt_index>( );
 				}
 
-				template<uint8_t Cnt, uint8_t Sz, typename Arg, typename... Args,
+				template<uint8_t Cnt,
+				         uint8_t Sz,
+				         typename Arg,
+				         typename... Args,
 				         std::enable_if_t<( Cnt < Sz ), std::nullptr_t> = nullptr>
-				std::string get_arg_impl( uint8_t const idx, Arg &&arg,
-				                          Args &&...args ) {
+				std::string
+				get_arg_impl( uint8_t const idx, Arg &&arg, Args &&...args ) {
 					if( Cnt == idx ) {
 						using daw::string_fmt::v1::string_fmt_details::to_string;
 						using std::to_string;
@@ -160,7 +166,8 @@ namespace daw {
 							    [&]( auto &&val ) {
 								    using val_t = decltype( val );
 								    if constexpr( std::is_convertible_v<
-								                    val_t, daw::basic_string_view<CharT>> ) {
+								                    val_t,
+								                    daw::basic_string_view<CharT>> ) {
 									    auto sv = daw::basic_string_view<CharT>( val );
 									    out = daw::algorithm::copy( sv.begin( ), sv.end( ), out );
 								    } else if constexpr( std::is_convertible_v<
@@ -208,17 +215,18 @@ namespace daw {
 
 				struct private_ctor {};
 
-				DAW_MAKE_REQ_TRAIT( has_reserve_v, std::declval<T>( ).reserve(
-				                                     std::declval<size_t>( ) ) );
+				DAW_MAKE_REQ_TRAIT(
+				  has_reserve_v,
+				  std::declval<T>( ).reserve( std::declval<size_t>( ) ) );
 			} // namespace string_fmt_details
 			template<typename CharT, size_t N>
 			class fmt_t {
 				daw::bounded_vector_t<string_fmt_details::parse_token<CharT>, N / 2>
 				  m_tokens;
 
-				constexpr static daw::bounded_vector_t<
-				  string_fmt_details::parse_token<CharT>, N / 2>
-				parse_tokens( daw::basic_string_view<CharT> msg ) {
+				constexpr static daw::
+				  bounded_vector_t<string_fmt_details::parse_token<CharT>, N / 2>
+				  parse_tokens( daw::basic_string_view<CharT> msg ) {
 					daw::bounded_vector_t<string_fmt_details::parse_token<CharT>, N / 2>
 					  result{ };
 					size_t sz = 0;
@@ -292,16 +300,17 @@ namespace daw {
 				return formatter( DAW_FWD( args )... );
 			}
 
-			template<
-			  char const *fmt_string, typename Result = std::basic_string<char>,
-			  size_t N = string_fmt_details::cxstrlen( fmt_string ), typename... Args>
+			template<char const *fmt_string,
+			         typename Result = std::basic_string<char>,
+			         size_t N = string_fmt_details::cxstrlen( fmt_string ),
+			         typename... Args>
 			constexpr Result fmt( Args &&...args ) {
 				constexpr auto const formatter =
 				  fmt_t<char, N>( string_fmt_details::private_ctor{ }, fmt_string );
 				return formatter.template operator( )<Result>( DAW_FWD( args )... );
 			}
 		} // namespace v2
-	} // namespace string_fmt
+	}   // namespace string_fmt
 	using string_fmt::v1::invalid_string_fmt_index;
 	using string_fmt::v2::fmt;
 	using string_fmt::v2::fmt_t;

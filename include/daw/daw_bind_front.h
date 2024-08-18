@@ -28,8 +28,9 @@ namespace daw {
 			static_assert( std::is_invocable_v<Function, Params..., Args...>,
 			               "Arguments are not valid for function" );
 			return std::apply(
-			  m_func, std::tuple_cat( m_params,
-			                          std::forward_as_tuple( DAW_FWD( args )... ) ) );
+			  m_func,
+			  std::tuple_cat( m_params,
+			                  std::forward_as_tuple( DAW_FWD( args )... ) ) );
 		}
 
 		template<typename... Args>
@@ -37,8 +38,9 @@ namespace daw {
 			static_assert( std::is_invocable_v<Function, Params..., Args...>,
 			               "Arguments are not valid for function" );
 			return std::apply(
-			  m_func, std::tuple_cat( m_params,
-			                          std::forward_as_tuple( DAW_FWD( args )... ) ) );
+			  m_func,
+			  std::tuple_cat( m_params,
+			                  std::forward_as_tuple( DAW_FWD( args )... ) ) );
 		}
 	};
 

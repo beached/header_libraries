@@ -20,13 +20,11 @@ namespace daw {
 	template<typename T, typename Storage, typename... Args>
 	inline T *construct_at( Storage *p, Args &&...args ) {
 		if constexpr( std::is_aggregate_v<T> ) {
-			return ::new(
-			  const_cast<void *>( static_cast<const volatile void *>( p ) ) )
-			  T{ DAW_FWD( args )... };
+			return ::new( const_cast<void *>(
+			  static_cast<const volatile void *>( p ) ) ) T{ DAW_FWD( args )... };
 		} else {
-			return ::new(
-			  const_cast<void *>( static_cast<const volatile void *>( p ) ) )
-			  T( DAW_FWD( args )... );
+			return ::new( const_cast<void *>(
+			  static_cast<const volatile void *>( p ) ) ) T( DAW_FWD( args )... );
 		}
 	}
 #else

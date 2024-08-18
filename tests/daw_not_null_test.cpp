@@ -60,7 +60,7 @@ constexpr bool daw_not_null_test_004c( ) {
 	daw_ensure( ( last - first ) == 5 );
 	return true;
 }
-static_assert( daw_not_null_test_004c() );
+static_assert( daw_not_null_test_004c( ) );
 #endif
 #endif
 
@@ -76,8 +76,6 @@ void daw_not_null_test_006( ) {
 	daw::not_null<std::optional<int>> t = { 5 };
 	daw_ensure( t.get( ) == 5 );
 }
-
-
 
 int main( ) {
 	daw_not_null_test_001( );

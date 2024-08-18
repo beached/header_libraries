@@ -45,7 +45,7 @@ namespace daw {
 		bounded_array_t<T, N> m_stack{ };
 
 	public:
-		bounded_vector_t( )= default;
+		bounded_vector_t( ) = default;
 
 		constexpr bounded_vector_t( const_pointer ptr, size_type count ) noexcept
 		  : m_index{ ( daw::min )( count, N ) } {
@@ -260,8 +260,7 @@ namespace daw {
 			if( can_move_front( sizeof...( Args ) ) ) {
 				do_move_to_front( );
 			}
-			m_stack[m_index] =
-			  daw::construct_a<value_type>( DAW_FWD( args )... );
+			m_stack[m_index] = daw::construct_a<value_type>( DAW_FWD( args )... );
 			++m_index;
 		}
 

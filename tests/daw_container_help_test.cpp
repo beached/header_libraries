@@ -31,7 +31,8 @@ int main( ) {
 
 		constexpr auto vec_size = sizeof( std::vector<int> );
 		auto const empty_vector = std::vector<int>{ };
-		daw_ensure( memcmp( std::addressof( foo ), std::addressof( empty_vector ),
+		daw_ensure( memcmp( std::addressof( foo ),
+		                    std::addressof( empty_vector ),
 		                    vec_size ) == 0 );
 	}
 	{

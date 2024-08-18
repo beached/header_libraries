@@ -70,8 +70,8 @@ int main( ) {
 	static_assert( sum( 10 ) == 45 );
 	static_assert( test( ) );
 
-	auto v = daw::vector<int>( daw::do_resize_and_overwrite, 100,
-	                           daw::algorithm::iota_op<int>( ) );
+	auto v = daw::vector<int>(
+	  daw::do_resize_and_overwrite, 100, daw::algorithm::iota_op<int>( ) );
 	daw_ensure( v.size( ) == 100 );
 	daw_ensure( v.back( ) == 99 );
 	daw_ensure( v.front( ) == 0 );

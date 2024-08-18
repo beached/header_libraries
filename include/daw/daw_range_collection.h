@@ -151,8 +151,7 @@ namespace daw {
 
 			template<typename U, typename BinaryOperator>
 			decltype( auto ) accumulate( U &&init, BinaryOperator oper ) const {
-				return std::accumulate( begin( ), end( ), DAW_FWD( init ),
-				                        oper );
+				return std::accumulate( begin( ), end( ), DAW_FWD( init ), oper );
 			}
 
 			template<typename Value>
@@ -257,8 +256,10 @@ namespace daw {
 			CollectionRange &transform( UnaryOperator oper ) const {
 				using v_t = daw::traits::root_type_t<decltype( oper( front( ) ) )>;
 				auto result = CollectionRange<v_t>( );
-				std::transform( std::begin( m_values ), std::end( m_values ),
-				                std::back_inserter( result ), oper );
+				std::transform( std::begin( m_values ),
+				                std::end( m_values ),
+				                std::back_inserter( result ),
+				                oper );
 				return result;
 			}
 
@@ -314,10 +315,10 @@ namespace daw {
 			template<typename Container>
 			decltype( auto ) as( ) const {
 				Container result;
-				std::transform( begin( ), end( ), std::back_inserter( result ),
-				                []( auto const &rv ) {
-					                return rv.get( );
-				                } );
+				std::transform(
+				  begin( ), end( ), std::back_inserter( result ), []( auto const &rv ) {
+					  return rv.get( );
+				  } );
 				return result;
 			}
 
@@ -343,15 +344,13 @@ namespace daw {
 
 			template<typename UniformRandomNumberGenerator>
 			CollectionRange &shuffle( UniformRandomNumberGenerator &&urng ) {
-				std::shuffle( begin( ), end( ),
-				              DAW_FWD( urng ) );
+				std::shuffle( begin( ), end( ), DAW_FWD( urng ) );
 				return *this;
 			}
 
 			template<typename UniformRandomNumberGenerator>
 			decltype( auto ) shuffle( UniformRandomNumberGenerator &&urng ) const {
-				return make_range_reference( *this ).shuffle(
-				  DAW_FWD( urng ) );
+				return make_range_reference( *this ).shuffle( DAW_FWD( urng ) );
 			}
 
 			CollectionRange &shuffle( ) {
@@ -391,8 +390,10 @@ namespace daw {
 				using ValueType =
 				  impl::cleanup_t<typename std::iterator_traits<Iterator>::value_type>;
 				CollectionRange<ValueType> result{ };
-				std::transform( std::begin( collection ), std::end( collection ),
-				                std::back_inserter( result ), []( auto const &rv ) {
+				std::transform( std::begin( collection ),
+				                std::end( collection ),
+				                std::back_inserter( result ),
+				                []( auto const &rv ) {
 					                return rv.get( );
 				                } );
 				return result;
@@ -401,8 +402,8 @@ namespace daw {
 
 		template<typename Arg, typename... Args>
 		decltype( auto ) make_range_collection( Arg &&arg, Args &&...args ) {
-			return daw::range::impl::make_range_collection(
-			  DAW_FWD( arg ), DAW_FWD( args )... );
+			return daw::range::impl::make_range_collection( DAW_FWD( arg ),
+			                                                DAW_FWD( args )... );
 		}
 
 		namespace details {
@@ -427,14 +428,12 @@ namespace daw {
 		namespace impl {
 			template<typename Arg, typename... Args>
 			decltype( auto ) from( std::true_type, Arg &&arg, Args &&...args ) {
-				return make_range_reference( DAW_FWD( arg ),
-				                             DAW_FWD( args )... );
+				return make_range_reference( DAW_FWD( arg ), DAW_FWD( args )... );
 			}
 
 			template<typename Arg, typename... Args>
 			decltype( auto ) from( std::false_type, Arg &&arg, Args &&...args ) {
-				return make_range_collection( DAW_FWD( arg ),
-				                              DAW_FWD( args )... );
+				return make_range_collection( DAW_FWD( arg ), DAW_FWD( args )... );
 			}
 
 		} // namespace impl
@@ -448,11 +447,12 @@ namespace daw {
 
 		template<typename Arg, typename... Args>
 		auto from_mutable( Arg &&arg, Args &&...args ) {
-			return impl::from( std::false_type( ), DAW_FWD( arg ),
-			                   DAW_FWD( args )... );
+			return impl::from(
+			  std::false_type( ), DAW_FWD( arg ), DAW_FWD( args )... );
 		}
 
-		template<typename OStream, typename T,
+		template<typename OStream,
+		         typename T,
 		         std::enable_if_t<daw::traits::is_ostream_like_lite_v<OStream>,
 		                          std::nullptr_t> = nullptr>
 		OStream &operator<<( OStream &os, CollectionRange<T> const &rng ) {

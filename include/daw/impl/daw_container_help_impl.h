@@ -67,8 +67,10 @@ namespace daw {
 	public:
 		explicit container_data( ) = default;
 
-		explicit constexpr container_data( pointer buff, Allocator alloc,
-		                                   size_type sz, size_type cap )
+		explicit constexpr container_data( pointer buff,
+		                                   Allocator alloc,
+		                                   size_type sz,
+		                                   size_type cap )
 		  : m_data( buff, deleter_type( std::move( alloc ), cap ) )
 		  , m_size( sz ) {}
 

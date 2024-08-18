@@ -29,7 +29,8 @@ namespace daw {
 			std::size_t count_from_start;
 		};
 	} // namespace iter_view_details
-	template<typename ForwardIterator, typename Last = ForwardIterator,
+	template<typename ForwardIterator,
+	         typename Last = ForwardIterator,
 	         bool ExplicitConv = false>
 	struct iter_view {
 		using iterator = ForwardIterator;
@@ -354,8 +355,8 @@ namespace daw {
 		}
 
 	private:
-		[[nodiscard]] static constexpr bool equal( iterator lf, last_iterator ll,
-		                                           iterator rf, last_iterator rl ) {
+		[[nodiscard]] static constexpr bool
+		equal( iterator lf, last_iterator ll, iterator rf, last_iterator rl ) {
 			while( lf != ll and rf != rl ) {
 				if( *lf != *rf ) {
 					return false;
@@ -379,8 +380,8 @@ namespace daw {
 
 		[[nodiscard]] friend constexpr bool operator<( iter_view const &x,
 		                                               iter_view const &y ) {
-			return std::lexicographical_compare( x.begin( ), x.end( ), y.begin( ),
-			                                     y.end( ) );
+			return std::lexicographical_compare(
+			  x.begin( ), x.end( ), y.begin( ), y.end( ) );
 		}
 
 		[[nodiscard]] friend constexpr bool operator>( iter_view const &x,

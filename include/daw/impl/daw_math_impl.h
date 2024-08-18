@@ -23,8 +23,9 @@ namespace daw {
 			}
 		};
 	} // namespace math_impl
-	template<typename Float, std::enable_if_t<std::is_floating_point_v<Float>,
-	                                          std::nullptr_t> = nullptr>
+	template<
+	  typename Float,
+	  std::enable_if_t<std::is_floating_point_v<Float>, std::nullptr_t> = nullptr>
 	constexpr Float float_abs( Float f ) {
 		if( f < 0 ) {
 			return -f;
@@ -55,8 +56,8 @@ namespace daw {
 	}
 
 	template<typename T, typename Compare = math_impl::less>
-	constexpr decltype( auto ) min_comp( T &&lhs, T &&rhs,
-	                                     Compare &&comp = Compare{ } ) {
+	constexpr decltype( auto )
+	min_comp( T &&lhs, T &&rhs, Compare &&comp = Compare{ } ) {
 		if( comp( lhs, rhs ) ) {
 			return DAW_FWD2( T, lhs );
 		}
@@ -64,8 +65,8 @@ namespace daw {
 	}
 
 	template<typename T, typename Compare = math_impl::less>
-	constexpr decltype( auto ) max_comp( T &&lhs, T &&rhs,
-	                                     Compare &&comp = Compare{ } ) {
+	constexpr decltype( auto )
+	max_comp( T &&lhs, T &&rhs, Compare &&comp = Compare{ } ) {
 		if( comp( rhs, lhs ) ) {
 			return DAW_FWD2( T, lhs );
 		}

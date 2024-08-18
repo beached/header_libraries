@@ -22,8 +22,9 @@ namespace daw {
 	namespace impl {
 		DAW_MAKE_REQ_TRAIT( has_size_member_v, std::declval<T>( ).size( ) );
 
-		template<typename Container, std::enable_if_t<has_size_member_v<Container>,
-		                                              std::nullptr_t> = nullptr>
+		template<
+		  typename Container,
+		  std::enable_if_t<has_size_member_v<Container>, std::nullptr_t> = nullptr>
 		constexpr std::size_t container_size( Container &c ) {
 			return c.size( );
 		}

@@ -65,8 +65,7 @@ namespace daw::mixins {
 
 		template<typename... Args>
 		void emplace( iterator where, Args &&...args ) {
-			return derived( ).container( ).emplace( where,
-			                                        DAW_FWD( args )... );
+			return derived( ).container( ).emplace( where, DAW_FWD( args )... );
 		}
 
 		[[nodiscard]] size_type size( ) const {

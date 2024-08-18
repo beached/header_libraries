@@ -26,7 +26,8 @@ namespace daw {
 
 		template<typename T, typename U>
 		inline constexpr bool
-		  has_member_swap_v<T, U,
+		  has_member_swap_v<T,
+		                    U,
 		                    std::void_t<decltype( std::declval<T &>( ).swap(
 		                      std::declval<U &>( ) ) )>> = true;
 
@@ -35,7 +36,8 @@ namespace daw {
 
 		template<typename T, typename U>
 		inline constexpr bool
-		  has_adl_swap_v<T, U,
+		  has_adl_swap_v<T,
+		                 U,
 		                 std::void_t<decltype( swap(
 		                   std::declval<T &>( ), std::declval<U &>( ) ) )>> = true;
 	} // namespace swap_details
@@ -76,7 +78,8 @@ namespace daw {
 
 	template<typename ForwardIterator1, typename ForwardIterator2>
 	constexpr ForwardIterator2 swap_ranges(
-	  ForwardIterator1 first1, ForwardIterator1 last1,
+	  ForwardIterator1 first1,
+	  ForwardIterator1 last1,
 	  ForwardIterator2 first2 ) noexcept( noexcept( daw::iter_swap( first1,
 	                                                                first2 ) ) ) {
 		while( first1 != last1 ) {

@@ -76,8 +76,8 @@ namespace daw {
 		}
 
 		template<typename Bytes, typename Time = double>
-		[[nodiscard]] std::string to_bytes_per_second( Bytes bytes, Time t = 1.0,
-		                                               size_t prec = 1 ) {
+		[[nodiscard]] std::string
+		to_bytes_per_second( Bytes bytes, Time t = 1.0, size_t prec = 1 ) {
 			std::stringstream ss;
 			ss << std::setprecision( static_cast<int>( prec ) ) << std::fixed;
 			auto val = static_cast<double>( bytes ) / static_cast<double>( t );
@@ -112,10 +112,12 @@ namespace daw {
 	} // namespace utility
 
 	template<typename Func>
-	DAW_ATTRIB_NOINLINE void
-	show_benchmark( size_t data_size_bytes, std::string const &title, Func &&func,
-	                size_t data_prec = 1, size_t time_prec = 0,
-	                size_t item_count = 1 ) {
+	DAW_ATTRIB_NOINLINE void show_benchmark( size_t data_size_bytes,
+	                                         std::string const &title,
+	                                         Func &&func,
+	                                         size_t data_prec = 1,
+	                                         size_t time_prec = 0,
+	                                         size_t item_count = 1 ) {
 		double const t = benchmark( DAW_FWD2( Func, func ) );
 		double const t_per_item = t / static_cast<double>( item_count );
 		std::cout << title << ": took " << utility::format_seconds( t, time_prec )
@@ -131,8 +133,8 @@ namespace daw {
 	}
 
 	template<typename Test, typename... Args>
-	DAW_ATTRIB_NOINLINE auto bench_test( std::string const &title,
-	                                     Test &&test_callable, Args &&...args ) {
+	DAW_ATTRIB_NOINLINE auto
+	bench_test( std::string const &title, Test &&test_callable, Args &&...args ) {
 		static_assert( std::is_invocable_v<Test, Args...>,
 		               "Unable to call Test with provided Args" );
 		using result_t = std::invoke_result_t<Test, Args...>;
@@ -159,7 +161,8 @@ namespace daw {
 
 	template<typename Test, typename... Args>
 	DAW_ATTRIB_NOINLINE auto bench_test2( std::string const &title,
-	                                      Test &&test_callable, size_t item_count,
+	                                      Test &&test_callable,
+	                                      size_t item_count,
 	                                      Args &&...args ) {
 		static_assert( std::is_invocable_v<Test, Args...>,
 		               "Unable to call Test with provided Args" );
@@ -308,11 +311,17 @@ namespace daw {
 	/// @param func Callable value to bench
 	/// @param args args values to pass to func
 	/// @return last result timing counts of runs
-	template<size_t Runs, char delem = '\n', typename Validator,
-	         typename Function, typename... Args>
+	template<size_t Runs,
+	         char delem = '\n',
+	         typename Validator,
+	         typename Function,
+	         typename... Args>
 	[[nodiscard]] DAW_ATTRIB_NOINLINE std::array<double, Runs>
-	bench_n_test_mbs2( std::string const &, size_t, Validator &&validator,
-	                   Function &&func, Args const &...args ) noexcept {
+	bench_n_test_mbs2( std::string const &,
+	                   size_t,
+	                   Validator &&validator,
+	                   Function &&func,
+	                   Args const &...args ) noexcept {
 		static_assert( Runs > 0 );
 		static_assert( std::is_invocable_v<Function, Args...>,
 		               "Unable to call Function with provided Args" );
@@ -366,8 +375,10 @@ namespace daw {
 
 	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
 	[[nodiscard]] DAW_ATTRIB_NOINLINE auto
-	bench_n_test_mbs( std::string const &title, size_t bytes,
-	                  Test &&test_callable, Args const &...args ) noexcept {
+	bench_n_test_mbs( std::string const &title,
+	                  size_t bytes,
+	                  Test &&test_callable,
+	                  Args const &...args ) noexcept {
 		static_assert( Runs > 0 );
 		static_assert( std::is_invocable_v<Test, Args...>,
 		               "Unable to call Test with provided Args" );
@@ -529,7 +540,8 @@ namespace daw {
 	/// @return last result timing counts of runs
 	template<size_t Runs, typename Validator, typename Function, typename... Args>
 	DAW_ATTRIB_NOINLINE std::vector<std::chrono::nanoseconds>
-	bench_n_test_json_val( Validator &&validator, Function &&func,
+	bench_n_test_json_val( Validator &&validator,
+	                       Function &&func,
 	                       Args &&...args ) noexcept {
 		static_assert( Runs > 0 );
 		static_assert( std::is_invocable_v<Function, Args...>,
@@ -585,11 +597,14 @@ namespace daw {
 		inline constexpr bool is_streamable_v = false;
 
 		template<typename T>
-		inline constexpr bool is_streamable_v<
-		  T, std::void_t<decltype( std::declval<std::ios &>( )
-		                           << std::declval<T const &>( ) )>> = true;
+		inline constexpr bool
+		  is_streamable_v<T,
+		                  std::void_t<decltype( std::declval<std::ios &>( )
+		                                        << std::declval<T const &>( ) )>> =
+		    true;
 
-		template<typename T, typename U,
+		template<typename T,
+		         typename U,
 		         std::enable_if_t<is_streamable_v<T> and is_streamable_v<U>,
 		                          std::nullptr_t> = nullptr>
 		DAW_ATTRIB_NOINLINE void output_expected_error( T &&expected_result,
@@ -599,7 +614,8 @@ namespace daw {
 		}
 
 		template<
-		  typename T, typename U,
+		  typename T,
+		  typename U,
 		  std::enable_if_t<(not is_streamable_v<T> and not is_streamable_v<U>),
 		                   std::nullptr_t> = nullptr>
 		DAW_ATTRIB_NOINLINE constexpr void output_expected_error( T &&, U && ) {
@@ -651,7 +667,8 @@ namespace daw {
 		};
 	} // namespace benchmark_impl
 
-	template<typename Exception = std::exception, typename Expression,
+	template<typename Exception = std::exception,
+	         typename Expression,
 	         typename Predicate = benchmark_impl::always_true,
 	         std::enable_if_t<std::is_invocable_v<Predicate, Exception>,
 	                          std::nullptr_t> = nullptr>

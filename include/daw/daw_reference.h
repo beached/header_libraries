@@ -88,7 +88,8 @@ namespace daw {
 		return result;
 	}
 
-	template<typename OStream, typename T,
+	template<typename OStream,
+	         typename T,
 	         std::enable_if_t<daw::traits::is_ostream_like_lite_v<OStream>,
 	                          std::nullptr_t> = nullptr>
 	OStream &operator<<( OStream &os, Reference<T> const &ref ) {

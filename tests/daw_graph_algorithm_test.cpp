@@ -94,10 +94,10 @@ void test_topoligical_range_001( ) {
 		  return lhs.value( ) < rhs.value( );
 	  } );
 	result.reserve( rng.size( ) );
-	daw::algorithm::transform( rng.begin( ), rng.end( ),
-	                           std::back_inserter( result ), []( auto &&node ) {
-		                           return node.value( );
-	                           } );
+	daw::algorithm::transform(
+	  rng.begin( ), rng.end( ), std::back_inserter( result ), []( auto &&node ) {
+		  return node.value( );
+	  } );
 	daw::expecting( "542310", result );
 }
 
@@ -105,7 +105,8 @@ void test_bfs_walk_001( daw::graph_t<char> const &graph,
                         daw::node_id_t root_id ) {
 	std::string result{ };
 	daw::bfs_walk(
-	  graph, root_id,
+	  graph,
+	  root_id,
 	  [&result]( auto &&node ) {
 		  result.push_back( node.value( ) );
 	  },
@@ -116,7 +117,8 @@ void test_bfs_walk_001( daw::graph_t<char> const &graph,
 void test_dfs_walk_001( daw::graph_t<char> graph, daw::node_id_t root_id ) {
 	std::string result{ };
 	daw::dfs_walk(
-	  graph, root_id,
+	  graph,
+	  root_id,
 	  [&result]( auto &&node ) {
 		  result.push_back( node.value( ) );
 	  },
@@ -128,7 +130,8 @@ void test_dfs_walk_002( daw::graph_t<char> const &graph,
                         daw::node_id_t root_id ) {
 	std::string result{ };
 	daw::dfs_walk(
-	  graph, root_id,
+	  graph,
+	  root_id,
 	  [&result]( auto &&node ) {
 		  result.push_back( node.value( ) );
 	  },

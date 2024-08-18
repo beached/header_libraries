@@ -150,9 +150,10 @@ namespace daw {
 
 			Func m_func;
 
-			template<typename F, std::enable_if_t<
-			                       !std::is_same_v<std::decay_t<F>, function_child>,
-			                       std::nullptr_t> = nullptr>
+			template<
+			  typename F,
+			  std::enable_if_t<!std::is_same_v<std::decay_t<F>, function_child>,
+			                   std::nullptr_t> = nullptr>
 			function_child( F &&func ) noexcept(
 			  std::is_nothrow_constructible_v<Func, F> )
 			  : m_func( DAW_FWD( func ) ) {}
@@ -196,8 +197,11 @@ namespace daw {
 			}
 		};
 
-		template<size_t MaxSize, typename function_base, typename function_child,
-		         typename empty_child, typename Func>
+		template<size_t MaxSize,
+		         typename function_base,
+		         typename function_child,
+		         typename empty_child,
+		         typename Func>
 		function_storage<MaxSize, function_base> store_if_not_empty( Func &&f ) {
 			static_assert( sizeof( std::decay_t<Func> ) <= MaxSize );
 			if constexpr( func_impl::has_empty_member_v<Func> ) {
@@ -245,9 +249,10 @@ namespace daw {
 		template<typename Func>
 		decltype( auto ) store_if_not_empty( Func &&f ) {
 			func_impl::validate_size<sizeof( std::decay_t<Func> ), MaxSize>( );
-			return func_impl::store_if_not_empty<MaxSize, function_base,
-			                                     function_child<Func>, empty_child>(
-			  DAW_FWD( f ) );
+			return func_impl::store_if_not_empty<MaxSize,
+			                                     function_base,
+			                                     function_child<Func>,
+			                                     empty_child>( DAW_FWD( f ) );
 		}
 
 	public:

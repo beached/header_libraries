@@ -190,7 +190,8 @@ int main( ) {
 		  return sum;
 	  },
 	  daw::make_random_data<int32_t, std::vector<float>>(
-	    1'000, std::numeric_limits<float>::min_exponent10,
+	    1'000,
+	    std::numeric_limits<float>::min_exponent10,
 	    std::numeric_limits<float>::max_exponent10 ) );
 
 	daw::bench_n_test<RUNCOUNT>(

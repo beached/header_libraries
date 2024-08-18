@@ -289,7 +289,8 @@ namespace daw {
 	}
 
 	template<
-	  typename T, typename U,
+	  typename T,
+	  typename U,
 	  std::enable_if_t<not std::is_convertible_v<T, U>, std::nullptr_t> = nullptr>
 	constexpr bool operator==( indexed_iterator<T> const &,
 	                           indexed_iterator<U> const & ) noexcept {
@@ -303,7 +304,8 @@ namespace daw {
 	}
 
 	template<
-	  typename T, typename U,
+	  typename T,
+	  typename U,
 	  std::enable_if_t<not std::is_convertible_v<T, U>, std::nullptr_t> = nullptr>
 	constexpr bool operator!=( indexed_iterator<T> const &,
 	                           indexed_iterator<U> const & ) noexcept {

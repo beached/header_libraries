@@ -39,21 +39,21 @@ namespace daw {
 			return std::addressof( m_value );
 		}
 
-		[[nodiscard]] constexpr operator T &( ) const &noexcept {
+		[[nodiscard]] constexpr operator T &( ) const & noexcept {
 			return m_value;
 		}
 
 		[[nodiscard]] constexpr
-		operator T( ) const &&noexcept( std::is_nothrow_move_constructible_v<T> ) {
+		operator T( ) const && noexcept( std::is_nothrow_move_constructible_v<T> ) {
 			return std::move( m_value );
 		}
 
-		[[nodiscard]] constexpr T &operator*( ) const &noexcept {
+		[[nodiscard]] constexpr T &operator*( ) const & noexcept {
 			return m_value;
 		}
 
 		[[nodiscard]] constexpr T
-		operator*( ) const &&noexcept( std::is_nothrow_move_constructible_v<T> ) {
+		operator*( ) const && noexcept( std::is_nothrow_move_constructible_v<T> ) {
 			return std::move( m_value );
 		}
 

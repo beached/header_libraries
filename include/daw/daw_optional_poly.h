@@ -30,9 +30,10 @@ namespace daw {
 	private:
 		std::unique_ptr<value_type> m_value;
 
-		template<typename T, typename = std::enable_if_t<
-		                       std::is_base_of<value_type, T>::value or
-		                       std::is_same<value_type, T>::value>>
+		template<
+		  typename T,
+		  typename = std::enable_if_t<std::is_base_of<value_type, T>::value or
+		                              std::is_same<value_type, T>::value>>
 		constexpr static T *make_copy( T *ptr ) {
 			if( !ptr ) {
 				return nullptr;
@@ -63,33 +64,38 @@ namespace daw {
 			m_value.reset( new value_type{ DAW_FWD( args )... } );
 		}
 
-		template<typename T, typename = std::enable_if_t<
-		                       std::is_base_of<value_type, T>::value or
-		                       std::is_same<value_type, T>::value>>
+		template<
+		  typename T,
+		  typename = std::enable_if_t<std::is_base_of<value_type, T>::value or
+		                              std::is_same<value_type, T>::value>>
 		optional_poly( T &&value )
 		  : m_value{ new std::decay_t<T>{ DAW_FWD( value ) } } {}
 
-		template<typename T, typename = std::enable_if_t<
-		                       std::is_base_of<value_type, T>::value or
-		                       std::is_same<value_type, T>::value>>
+		template<
+		  typename T,
+		  typename = std::enable_if_t<std::is_base_of<value_type, T>::value or
+		                              std::is_same<value_type, T>::value>>
 		optional_poly( T const &value )
 		  : m_value{ new std::decay_t<T>{ value } } {}
 
-		template<typename T, typename = std::enable_if_t<
-		                       std::is_base_of<value_type, T>::value or
-		                       std::is_same<value_type, T>::value>>
+		template<
+		  typename T,
+		  typename = std::enable_if_t<std::is_base_of<value_type, T>::value or
+		                              std::is_same<value_type, T>::value>>
 		explicit optional_poly( optional_poly<T> const &other )
 		  : m_value{ make_copy( other.m_value.get( ) ) } {}
 
-		template<typename T, typename = std::enable_if_t<
-		                       std::is_base_of<value_type, T>::value or
-		                       std::is_same<value_type, T>::value>>
+		template<
+		  typename T,
+		  typename = std::enable_if_t<std::is_base_of<value_type, T>::value or
+		                              std::is_same<value_type, T>::value>>
 		explicit optional_poly( optional_poly<T> &&other ) noexcept
 		  : m_value{ other.m_value.release( ) } {}
 
-		template<typename T, typename = std::enable_if_t<
-		                       std::is_base_of<value_type, T>::value or
-		                       std::is_same<value_type, T>::value>>
+		template<
+		  typename T,
+		  typename = std::enable_if_t<std::is_base_of<value_type, T>::value or
+		                              std::is_same<value_type, T>::value>>
 		optional_poly &operator=( optional_poly<T> const &rhs ) {
 			m_value.reset( make_copy( rhs.m_value.get( ) ) );
 			return *this;

@@ -69,8 +69,9 @@ namespace daw {
 
 		template<typename T>
 		inline constexpr bool has_pointer_traits_to_address_v<
-		  T, std::void_t<decltype( std::pointer_traits<T>::to_address(
-		       std::declval<T const &>( ) ) )>> = true;
+		  T,
+		  std::void_t<decltype( std::pointer_traits<T>::to_address(
+		    std::declval<T const &>( ) ) )>> = true;
 #endif
 	} // namespace cpp_20_details
 

@@ -125,8 +125,9 @@ namespace daw::traits {
 	  is_iterator_v<OutputIterator> and
 	  is_assignable_iterator_v<OutputIterator, T>;
 
-	template<typename OutputIterator, typename T = typename std::iterator_traits<
-	                                    OutputIterator>::value_type>
+	template<
+	  typename OutputIterator,
+	  typename T = typename std::iterator_traits<OutputIterator>::value_type>
 	DAW_ATTRIB_INLINE static constexpr bool is_output_iterator_test( ) {
 		static_assert(
 		  is_output_iterator_v<OutputIterator, T>,
@@ -184,8 +185,9 @@ namespace daw::traits {
 	  is_input_iterator_v<InOutIterator> and
 	  is_output_iterator_v<InOutIterator, T>;
 
-	template<typename InOutIterator, typename T = typename std::iterator_traits<
-	                                   InOutIterator>::value_type>
+	template<
+	  typename InOutIterator,
+	  typename T = typename std::iterator_traits<InOutIterator>::value_type>
 	DAW_ATTRIB_INLINE static constexpr bool is_inout_iterator_test( ) {
 		static_assert( is_inout_iterator_v<InOutIterator, T>,
 		               "InOutIterator does not fullfill the Input and Output "
@@ -266,11 +268,7 @@ namespace daw::traits {
 
 	template<typename RandomIterator>
 	DAW_ATTRIB_INLINE static constexpr bool is_random_access_iterator_test( ) {
-		static_assert(
-		  is_random_access_iterator_v<RandomIterator>,
-		  "RandomIterator does not fullfill the RandomIterator concept.  See "
-		  "https://en.cppreference.com/w/cpp/named_req/RandomAccessIterator" );
-		is_bidirectional_access_iterator_test<RandomIterator>( );
+
 		// Mathematics
 		static_assert(
 		  traits::has_addition_operator_v<RandomIterator, int>,
@@ -305,6 +303,11 @@ namespace daw::traits {
 		// Subscript
 		static_assert( traits::has_integer_subscript_v<RandomIterator>,
 		               "RandomIterator does not support subscript operator" );
+		static_assert(
+		  is_random_access_iterator_v<RandomIterator>,
+		  "RandomIterator does not fullfill the RandomIterator concept.  See "
+		  "https://en.cppreference.com/w/cpp/named_req/RandomAccessIterator" );
+		is_bidirectional_access_iterator_test<RandomIterator>( );
 		return true;
 	}
 

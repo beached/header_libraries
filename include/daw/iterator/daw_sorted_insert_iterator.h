@@ -28,10 +28,9 @@ namespace daw {
 
 			template<typename T>
 			constexpr void operator( )( T &&value ) const {
-				auto pos = std::lower_bound( std::begin( *ptr ), std::end( *ptr ),
-				                             value, compare );
-				ptr->emplace( std::move( pos ),
-				              DAW_FWD( value ) );
+				auto pos = std::lower_bound(
+				  std::begin( *ptr ), std::end( *ptr ), value, compare );
+				ptr->emplace( std::move( pos ), DAW_FWD( value ) );
 			}
 		};
 
@@ -42,10 +41,9 @@ namespace daw {
 
 			template<typename T>
 			constexpr void operator( )( T &&value ) const {
-				auto pos = std::lower_bound( std::begin( *ptr ), std::end( *ptr ),
-				                             value, compare );
-				ptr->emplace( std::move( pos ),
-				              DAW_FWD( value ) );
+				auto pos = std::lower_bound(
+				  std::begin( *ptr ), std::end( *ptr ), value, compare );
+				ptr->emplace( std::move( pos ), DAW_FWD( value ) );
 			}
 		};
 
@@ -56,10 +54,9 @@ namespace daw {
 
 			template<typename T>
 			constexpr void operator( )( T &&value ) const {
-				auto const pos = std::lower_bound( std::begin( *ptr ), std::end( *ptr ),
-				                                   value, compare );
-				ptr->emplace( std::move( pos ),
-				              DAW_FWD( value ) );
+				auto const pos = std::lower_bound(
+				  std::begin( *ptr ), std::end( *ptr ), value, compare );
+				ptr->emplace( std::move( pos ), DAW_FWD( value ) );
 			}
 		};
 

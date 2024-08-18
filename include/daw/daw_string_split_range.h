@@ -182,8 +182,10 @@ namespace daw {
 		         daw::sv1::basic_string_view<CharT, Bounds, N - 1>( delemiter ) };
 	}
 
-	template<typename CharT, daw::sv2::string_view_bounds_type Bounds,
-	         std::ptrdiff_t Ex, size_t N>
+	template<typename CharT,
+	         daw::sv2::string_view_bounds_type Bounds,
+	         std::ptrdiff_t Ex,
+	         size_t N>
 	constexpr string_split_range<CharT>
 	split_string( daw::sv2::basic_string_view<CharT, Bounds> str,
 	              CharT const ( &delemiter )[N] ) noexcept {
@@ -193,7 +195,8 @@ namespace daw {
 
 	template<typename CharT,
 	         typename Bounds = daw::sv1::default_string_view_bounds_type,
-	         size_t N, size_t M>
+	         size_t N,
+	         size_t M>
 	constexpr string_split_range<CharT>
 	split_string( CharT const ( &str )[N],
 	              CharT const ( &delemiter )[M] ) noexcept {

@@ -31,8 +31,8 @@ namespace daw {
 		}
 
 		template<typename A, typename B, typename C, typename D>
-		constexpr void half_round( A &a, B &b, C &c, D &d, size_t s,
-		                           size_t t ) noexcept {
+		constexpr void
+		half_round( A &a, B &b, C &c, D &d, size_t s, size_t t ) noexcept {
 			a += b;
 			c += d;
 			b = rotate( b, s ) ^ a;
@@ -81,8 +81,8 @@ namespace daw {
 	} // namespace sip_impl
 
 	template<typename Byte>
-	constexpr uint64_t siphash24( Byte const *first, size_t sz,
-	                              Byte const *const key ) {
+	constexpr uint64_t
+	siphash24( Byte const *first, size_t sz, Byte const *const key ) {
 		static_assert( sizeof( Byte ) == 1U );
 		auto const k = sip_impl::key_to_u64( key );
 

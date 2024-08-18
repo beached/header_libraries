@@ -14,10 +14,12 @@
 #include <daw/stdinc/iterator_traits.h>
 
 namespace daw::algorithm {
-	template<typename InputIterator, typename OutputIterator,
+	template<typename InputIterator,
+	         typename OutputIterator,
 	         typename BinaryOperator = accum_impl::plus>
 	constexpr OutputIterator
-	partial_sum( InputIterator first, InputIterator last,
+	partial_sum( InputIterator first,
+	             InputIterator last,
 	             OutputIterator first_out,
 	             BinaryOperator op = BinaryOperator{ } ) {
 

@@ -89,9 +89,9 @@ namespace daw::func {
 			using plain_type = daw::traits::remove_cvref_t<type>;
 		};
 
-		using params_t = typename func_traits_impl::make_arg_pack<
-		  argument, std::make_index_sequence<arity>>::type;
-		using plain_params_t = typename func_traits_impl::make_arg_pack<
-		  argument, std::make_index_sequence<arity>>::plain_type;
+		using params_t = typename func_traits_impl::
+		  make_arg_pack<argument, std::make_index_sequence<arity>>::type;
+		using plain_params_t = typename func_traits_impl::
+		  make_arg_pack<argument, std::make_index_sequence<arity>>::plain_type;
 	};
 } // namespace daw::func

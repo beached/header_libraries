@@ -49,15 +49,15 @@ DAW_ATTRIB_NOINLINE int test_plus( std::initializer_list<daw::i32> const &vals,
 	return sum.value( );
 }
 
-DAW_ATTRIB_NOINLINE daw::i32 test_div( daw::i32 first, daw::i32 inc,
-                                       daw::i32 expected ) {
+DAW_ATTRIB_NOINLINE daw::i32
+test_div( daw::i32 first, daw::i32 inc, daw::i32 expected ) {
 	first /= inc;
 	daw_ensure( first == expected );
 	return first;
 }
 
-DAW_ATTRIB_NOINLINE daw::i64 test_div( daw::i64 first, daw::i64 inc,
-                                       daw::i64 expected ) {
+DAW_ATTRIB_NOINLINE daw::i64
+test_div( daw::i64 first, daw::i64 inc, daw::i64 expected ) {
 	first /= inc;
 	daw_ensure( first == expected );
 	return first;
