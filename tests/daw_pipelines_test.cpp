@@ -42,6 +42,12 @@ inline constexpr auto to_lower = []( char c ) -> char {
 };
 
 int main( ) {
+	static constexpr auto prices = std::array{ 100, 200, 150, 180, 130 };
+	static constexpr auto costs = std::array{ 10, 20, 50, 40, 100 };
+
+	auto m1 = pipeline( To<std::map> )( zip_view( prices, costs ) );
+	daw_ensure( m1[prices[0]] == costs[0] );
+
 	constexpr auto p = pipeline(
 	  Filter( Not( vowel ) ), Take( 8 ), Map( to_lower ), Filter( is_letter )
 
@@ -141,14 +147,19 @@ int main( ) {
 	            } ) );
 	(void)tp0( iota_view<unsigned>( 0, 52 ) );
 
-	constexpr auto tp1 = pipeline( Zip( iota_view<char>( 'A', 'Z' ) ),
-	                               ForEachApply( []( char a, char b ) {
-		                               daw::println( "{}, {}", a, b );
+	constexpr auto tp1 = pipeline( ZipMore( iota_view<char>( 'A', 'Z' ) ),
+	                               ForEachApply( []( auto... cs ) {
+		                               if constexpr( sizeof...( cs ) == 2 ) {
+			                               daw::println( "{}, {}", cs... );
+		                               } else {
+			                               static_assert( sizeof...( cs ) == 3 );
+			                               daw::println( "{}, {}, {}", cs... );
+		                               }
 	                               } ) );
 	(void)tp1( iota_view<char>( 'a', 'z' ) );
+	(void)tp1(
+	  zip_view( iota_view<char>( 'a', 'z' ), iota_view<char>( 'a', 'z' ) ) );
 
-	static constexpr auto prices = std::array{ 100, 200, 150, 180, 130 };
-	static constexpr auto costs = std::array{ 10, 20, 50, 40, 100 };
 	static constexpr auto const v = pipeline( zip_view( prices, costs ),
 	                                          MapApply( []( auto pr, auto co ) {
 		                                          return pr - co;
@@ -173,7 +184,6 @@ int main( ) {
 	                              To<std::map> );
 	auto const m = pm( iota_view<int>( 0, 26 ) );
 	daw::println( "To<std::map>\n{}", daw::fmt_range( m ) );
-
 	auto va = to_array( std::integral_constant<std::size_t, 15>{ }, v );
 
 	auto da = std::array{ 1024.123,

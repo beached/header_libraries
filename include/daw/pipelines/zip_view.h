@@ -16,19 +16,38 @@
 #include <utility>
 
 namespace daw::pipelines {
+	namespace pipelines_impl {
+		template<typename... Ts>
+		struct tuple_pair_t {
+			using type = std::tuple<Ts...>;
+		};
+
+		template<typename... Ts>
+		requires( sizeof...( Ts ) == 2 ) struct tuple_pair_t<Ts...> {
+			using type = std::pair<Ts...>;
+		};
+
+		template<typename... Ts>
+		using tuple_pair = typename tuple_pair_t<Ts...>::type;
+	} // namespace pipelines_impl
 	template<Iterator... Iterators>
 	struct zip_iterator {
 		static_assert( sizeof...( Iterators ) > 0,
 		               "Empty zip iterator is unsupported" );
+
+	private:
+	public:
 		using iterator_category =
 		  daw::common_iterator_category_t<iter_category_t<Iterators>...>;
 		static_assert( not std::same_as<void, iterator_category> );
-		using types_t = std::tuple<Iterators...>;
+		using types_t = pipelines_impl::tuple_pair<Iterators...>;
 		static constexpr std::size_t types_size_v = sizeof...( Iterators );
-		using value_type = std::tuple<daw::iter_value_t<Iterators>...>;
-		using reference = std::tuple<daw::iter_reference_t<Iterators>...>;
+		using value_type =
+		  pipelines_impl::tuple_pair<daw::iter_value_t<Iterators>...>;
+		using reference =
+		  pipelines_impl::tuple_pair<daw::iter_reference_t<Iterators>...>;
 		using const_reference =
-		  std::tuple<daw::iter_const_reference_t<Iterators>...>;
+		  pipelines_impl::tuple_pair<daw::iter_const_reference_t<Iterators>...>;
 		using difference_type = std::ptrdiff_t;
 		using i_am_a_daw_zip_iterator_class = void;
 
@@ -228,10 +247,36 @@ namespace daw::pipelines {
 	template<Range... Ranges>
 	zip_view( Ranges... ) -> zip_view<Ranges...>;
 
+	/// Zip any number of containers and then the containers in the current
+	/// pipeline.  If the Range passed is a zip_view or tuple<Ranges> it will
+	/// merge them
 	template<Range... Ranges>
-	[[nodiscard]] constexpr auto Zip( Ranges &&...rs ) {
-		return [=]( Range auto &&r ) {
-			return zip_view( rs..., DAW_FWD( r ) );
+	[[nodiscard]] constexpr auto ZipMore( Ranges &&...rs ) {
+		return [=]<Range R>( R &&r ) {
+			if constexpr( requires( R ) {
+				              typename iterator_t<R>::i_am_a_daw_zip_iterator_class;
+			              } ) {
+				// zip_view
+				auto tp_first = std::begin( DAW_FWD( r ) ).get_tuple( );
+				auto tp_last = std::end( DAW_FWD( r ) ).get_tuple( );
+				static_assert( std::tuple_size_v<decltype( tp_first )> ==
+				                 std::tuple_size_v<decltype( tp_last )>,
+				               "There is a bug in zip_view.  The begin( ) and end( ) "
+				               "should have the same size" );
+				return [&]<std::size_t... Is>( std::index_sequence<Is...> ) {
+					return zip_view( rs...,
+					                 range_t{ std::get<Is>( std::move( tp_first ) ),
+					                          std::get<Is>( std::move( tp_last ) ) }... );
+				}( std::make_index_sequence<
+				         std::tuple_size_v<decltype( tp_first )>>{ } );
+			} else if constexpr( daw::is_tuple_like_v<range_value_t<R>> ) {
+				// tuple like.
+				return [&]<std::size_t... Is>( std::index_sequence<Is...> ) {
+					return zip_view( rs..., std::get<Is>( DAW_FWD( r ) )... );
+				}( std::make_index_sequence<std::tuple_size_v<DAW_TYPEOF( r )>>{ } );
+			} else {
+				return zip_view( rs..., DAW_FWD( r ) );
+			}
 		};
 	}
 } // namespace daw::pipelines

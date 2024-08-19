@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "daw/daw_traits.h"
+
 #include <tuple>
 #include <type_traits>
 
@@ -28,12 +30,24 @@ namespace daw::pipelines::traits {
 	inline constexpr bool is_applicable_v<Fn, std::tuple<Ts...>> =
 	  std::is_invocable_v<Fn, Ts...>;
 
+	template<typename Fn, typename T0, typename T1>
+	inline constexpr bool is_applicable_v<Fn, std::pair<T0, T1>> =
+	  std::is_invocable_v<Fn, T0, T1>;
+
+	template<std::size_t, typename T>
+	using ignore_num = T;
+
 	template<typename Fn, typename Arg>
 	struct apply_result {};
 
 	template<typename Fn, typename... Ts>
 	struct apply_result<Fn, std::tuple<Ts...>> {
 		using type = std::invoke_result_t<Fn, Ts...>;
+	};
+
+	template<typename Fn, typename T0, typename T1>
+	struct apply_result<Fn, std::pair<T0, T1>> {
+		using type = std::invoke_result_t<Fn, T0, T1>;
 	};
 
 	template<typename Fn, typename Arg>

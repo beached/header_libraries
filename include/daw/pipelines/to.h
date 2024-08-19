@@ -14,49 +14,51 @@
 #include <iterator>
 #include <type_traits>
 
-namespace daw::pipelines {
+namespace daw::pipelines::pipelines_impl {
+	template<typename T, std::size_t N>
+	void array_test( std::array<T, N> const & );
+
+	// Sentinel type to indicate default template type.  This type will not be
+	// used for other purposes
+	struct UseTypeDefault {};
+
 	template<template<typename...> typename Container>
-	[[nodiscard]] constexpr auto To( ) {
-		// inline constexpr auto To = pipelines_impl::To_t<Container>{ };
-		return []<typename R>( R &&r ) {
-			if constexpr( Range<R> ) {
-				return Container( std::begin( DAW_FWD( r ) ),
-				                  std::end( DAW_FWD( r ) ) );
-			} else {
-				auto mv = maybe_view{ r };
-				return Container{ std::begin( mv ), std::end( mv ) };
-			}
-		};
-	}
+	struct ToTemplateTemplateContainer {
+		template<Range R>
+		[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			static_assert(
+			  requires( iterator_t<R> it ) { Container( it, it ); },
+			  "To requires the container to be constructible from an iterator "
+			  "pair" );
+			return Container( std::begin( DAW_FWD( r ) ), std::end( DAW_FWD( r ) ) );
+		}
 
-	namespace pipelines_impl {
-
-		template<typename T, std::size_t N>
-		void array_test( std::array<T, N> const & );
-
-		struct UseTypeDefault {};
-	} // namespace pipelines_impl
+		[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+		operator( )( auto &&value ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			return ToTemplateTemplateContainer<Container>{ }( maybe_view{ value } );
+		}
+	};
 
 	template<typename Container>
-	requires( not requires( Container c ) { pipelines_impl::array_test( c ); } )
-	  [[nodiscard]] constexpr auto To( ) {
-		// inline constexpr auto To = pipelines_impl::To_t<Container>{ };
-		return []<typename R>( R &&r ) {
-			if constexpr( Range<R> ) {
-				return Container( std::begin( DAW_FWD( r ) ),
-				                  std::end( DAW_FWD( r ) ) );
-			} else {
-				auto mv = maybe_view{ r };
-				return Container{ std::begin( mv ), std::end( mv ) };
-			}
-		};
-	}
+	struct ToContainer {
+		template<Range R>
+		[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			return Container( std::begin( DAW_FWD( r ) ), std::end( DAW_FWD( r ) ) );
+		}
 
-	template<typename Array, auto Default = pipelines_impl::UseTypeDefault{ }>
-	requires( requires( Array a ) { pipelines_impl::array_test( a ); } )
-	  [[nodiscard]] constexpr auto To( ) {
-		// inline constexpr auto To = pipelines_impl::To_t<Container>{ };
-		return []<typename R>( R &&r ) {
+		[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+		operator( )( auto &&value ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			return ToContainer<Container>( )( maybe_view{ value } );
+		}
+	};
+
+	template<typename Array, auto Default>
+	struct ToArray {
+		template<Range R>
+		[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
 			constexpr auto sz = std::tuple_size_v<Array>;
 			using value_t = typename Array::value_type;
 			static_assert(
@@ -80,6 +82,36 @@ namespace daw::pipelines {
 			return [&]<std::size_t... Is>( std::index_sequence<Is...> ) {
 				return std::array<value_t, sz>{ make_value( Is )... };
 			}( std::make_index_sequence<sz>{ } );
-		};
+		}
+
+		[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+		operator( )( auto &&value ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			return ToArray<Array, Default>{ }( maybe_view{ value } );
+		}
+	};
+} // namespace daw::pipelines::pipelines_impl
+
+namespace daw::pipelines {
+	/// Convert Range to a Container that has deduction guides to get the
+	/// value_type from two iterators or a single value
+	template<template<typename...> typename Container>
+	[[nodiscard]] constexpr auto To( ) {
+		return pipelines_impl::ToTemplateTemplateContainer<Container>{ };
+	}
+
+	/// For fully qualified names, construct a compatible Container, that isn't
+	/// std::array, from a Range or a single value
+	template<typename Container>
+	requires( not requires( Container c ) { pipelines_impl::array_test( c ); } )
+	  [[nodiscard]] constexpr auto To( ) {
+		return pipelines_impl::ToContainer<Container>{ };
+	}
+
+	/// Construct a std::array from a Range
+	/// TODO: add single value method
+	template<typename Array, auto Default = pipelines_impl::UseTypeDefault{ }>
+	requires( requires( Array a ) { pipelines_impl::array_test( a ); } )
+	  [[nodiscard]] constexpr auto To( ) {
+		return pipelines_impl::ToArray<Array, Default>{ };
 	}
 } // namespace daw::pipelines

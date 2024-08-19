@@ -223,54 +223,54 @@ namespace daw::traits {
 	namespace traits_details {
 		namespace operators {
 			template<typename L, typename R>
-			[[maybe_unused]] auto has_op_eq_impl( L const &, R const &, long )
-			  -> std::false_type;
+			[[maybe_unused]] auto
+			has_op_eq_impl( L const &, R const &, long ) -> std::false_type;
 
 			template<typename L, typename R>
 			[[maybe_unused]] auto has_op_eq_impl( L const &lhs, R const &rhs, int )
 			  -> std::is_convertible<decltype( lhs == rhs ), bool>;
 
 			template<typename L, typename R>
-			[[maybe_unused]] auto has_op_ne_impl( L const &, R const &, long )
-			  -> std::false_type;
+			[[maybe_unused]] auto
+			has_op_ne_impl( L const &, R const &, long ) -> std::false_type;
 
 			template<typename L, typename R>
 			[[maybe_unused]] auto has_op_ne_impl( L const &lhs, R const &rhs, int )
 			  -> std::is_convertible<decltype( lhs != rhs ), bool>;
 
 			template<typename L, typename R>
-			[[maybe_unused]] auto has_op_lt_impl( L const &, R const &, long )
-			  -> std::false_type;
+			[[maybe_unused]] auto
+			has_op_lt_impl( L const &, R const &, long ) -> std::false_type;
 
 			template<typename L, typename R>
 			[[maybe_unused]] auto has_op_lt_impl( L const &lhs, R const &rhs, int )
 			  -> std::is_convertible<decltype( lhs < rhs ), bool>;
 
 			template<typename L, typename R>
-			[[maybe_unused]] auto has_op_le_impl( L const &, R const &, long )
-			  -> std::false_type;
+			[[maybe_unused]] auto
+			has_op_le_impl( L const &, R const &, long ) -> std::false_type;
 
 			template<typename L, typename R>
 			[[maybe_unused]] auto has_op_le_impl( L const &lhs, R const &rhs, int )
 			  -> std::is_convertible<decltype( lhs <= rhs ), bool>;
 
 			template<typename L, typename R>
-			[[maybe_unused]] auto has_op_gt_impl( L const &, R const &, long )
-			  -> std::false_type;
+			[[maybe_unused]] auto
+			has_op_gt_impl( L const &, R const &, long ) -> std::false_type;
 
 			template<typename L, typename R>
 			[[maybe_unused]] auto has_op_gt_impl( L const &lhs, R const &rhs, int )
 			  -> std::is_convertible<decltype( lhs > rhs ), bool>;
 
 			template<typename L, typename R>
-			[[maybe_unused]] auto has_op_ge_impl( L const &, R const &, long )
-			  -> std::false_type;
+			[[maybe_unused]] auto
+			has_op_ge_impl( L const &, R const &, long ) -> std::false_type;
 
 			template<typename L, typename R>
 			[[maybe_unused]] auto has_op_ge_impl( L const &lhs, R const &rhs, int )
 			  -> std::is_convertible<decltype( lhs >= rhs ), bool>;
 		} // namespace operators
-	}   // namespace traits_details
+	} // namespace traits_details
 
 	namespace operators {
 		template<typename L, typename R = L>
@@ -910,8 +910,8 @@ namespace daw {
 
 	namespace is_complete_details {
 		template<typename T>
-		auto is_complete_test( T * )
-		  -> decltype( (void)sizeof( T ), std::true_type{ } );
+		auto is_complete_test( T * ) -> decltype( (void)sizeof( T ),
+		                                          std::true_type{ } );
 		auto is_complete_test( ... ) -> std::false_type;
 	} // namespace is_complete_details
 
@@ -950,4 +950,13 @@ namespace daw {
 	template<typename T>
 	inline constexpr std::size_t const bsizeof =
 	  static_cast<size_t>( sizeof( daw::remove_cvref_t<T> ) * 8U );
+
+#if defined( DAW_HAS_CPP_CONCEPTS )
+	template<typename Tp>
+	inline constexpr bool is_tuple_like_v = requires {
+		std::tuple_size_v<std::remove_cvref_t<Tp>>;
+		typename std::tuple_element_t<0, daw::remove_cvref_t<Tp>>;
+		get<0>( std::declval<Tp>( ) );
+	};
+#endif
 } // namespace daw

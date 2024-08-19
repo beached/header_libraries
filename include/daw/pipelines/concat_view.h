@@ -11,6 +11,7 @@
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
 #include "daw/daw_visit.h"
+#include "pipeline_traits.h"
 #include "range.h"
 
 #include <tuple>
@@ -133,7 +134,7 @@ namespace daw::pipelines {
 					}( std::make_index_sequence<
 					         daw::remove_cvref_t<iterator_t<R>>::types_size_v>{ } );
 				} else {
-					static_assert( daw::traits::is_tuple_v<daw::remove_cvref_t<R>> );
+					static_assert( daw::is_tuple_like_v<daw::remove_cvref_t<R>> );
 					return [&]<std::size_t... Is>( std::index_sequence<Is...> ) {
 						static_assert(
 						  ( Range<std::tuple_element_t<Is, daw::remove_cvref_t<R>>> and

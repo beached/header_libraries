@@ -148,3 +148,7 @@ inline constexpr bool daw_has_cx_cmath = true;
 #else
 inline constexpr bool daw_has_cx_cmath = false;
 #endif
+
+#if defined( __cpp_concepts )
+#define DAW_HAS_CPP_CONCEPTS
+#endif

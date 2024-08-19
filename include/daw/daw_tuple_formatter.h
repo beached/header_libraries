@@ -10,7 +10,6 @@
 
 #include "daw/daw_string_view.h"
 #include "daw_iterator_traits.h"
-#include "daw_tuple_formatter.h"
 #include "impl/formatter_common.h"
 
 #include <cassert>
@@ -18,47 +17,47 @@
 #include <string_view>
 
 namespace daw {
-	template<Range R, typename CharT = formatter_impl::DefaultCharT>
-	struct fmt_range {
-		R const &container;
+	template<typename T, typename CharT = formatter_impl::DefaultCharT>
+	struct fmt_tuple {
+		T const &value;
 		daw::basic_string_view<CharT> Separator =
 		  formatter_impl::DefaultSeparator<CharT>;
 		daw::basic_string_view<CharT> Left = formatter_impl::DefaultLeft<CharT>;
 		daw::basic_string_view<CharT> Right = formatter_impl::DefaultRight<CharT>;
 
-		explicit constexpr fmt_range( R const &c )
-		  : container( c ) {}
+		explicit constexpr fmt_tuple( T const &c )
+		  : value( c ) {}
 
-		explicit constexpr fmt_range( R const &c, CharT const *separator )
-		  : container( c )
+		explicit constexpr fmt_tuple( T const &c, CharT const *separator )
+		  : value( c )
 		  , Separator( separator ) {}
 
-		explicit constexpr fmt_range( R const &c,
+		explicit constexpr fmt_tuple( T const &c,
 		                              CharT const *separator,
 		                              CharT const *left,
 		                              CharT const *right )
-		  : container( c )
+		  : value( c )
 		  , Separator( separator )
 		  , Left( left )
 		  , Right( right ) {}
 	};
-	template<Range R>
-	fmt_range( R ) -> fmt_range<R>;
+	template<typename T>
+	fmt_tuple( T ) -> fmt_tuple<T>;
 
-	template<Range R, typename CharT>
-	fmt_range( R, CharT const * ) -> fmt_range<R, CharT>;
+	template<typename T, typename CharT>
+	fmt_tuple( T, CharT const * ) -> fmt_tuple<T, CharT>;
 
-	template<Range R, typename CharT>
-	fmt_range( R, CharT const *, CharT const *, CharT const * )
-	  -> fmt_range<R, CharT>;
+	template<typename T, typename CharT>
+	fmt_tuple( T, CharT const *, CharT const *, CharT const * )
+	  -> fmt_tuple<T, CharT>;
 } // namespace daw
 
 namespace std {
-	template<daw::Range R, typename CharT>
-	struct formatter<daw::fmt_range<R, CharT>, CharT> {
+	template<typename T, typename CharT>
+	struct formatter<daw::fmt_tuple<T, CharT>, CharT> {
 		daw::string_view flags = { };
 
-		formatter( ) = default;
+		formatter() = default;
 
 		template<class ParseContext>
 		constexpr ParseContext::iterator parse( ParseContext &ctx ) {
@@ -106,37 +105,29 @@ namespace std {
 		}
 
 		template<typename Ctx>
-		Ctx::iterator format( daw::fmt_range<R, CharT> c, Ctx &ctx ) const {
-			using value_t = daw::range_value_t<R>;
-			if constexpr( std::is_same_v<daw::formatter_impl::DefaultCharT,
-			                             value_t> ) {
-				// format as string
-				auto out = std::copy(
-				  std::begin( c.container ), std::end( c.container ), ctx.out( ) );
-				return out;
-			} else {
-				auto out = ctx.out( );
-				out = std::copy( std::data( c.Left ), daw::data_end( c.Left ), out );
-				bool is_first = true;
-				for( auto const &v : c.container ) {
-					if( is_first ) {
-						is_first = false;
-					} else {
-						out = std::copy(
-						  std::data( c.Separator ), daw::data_end( c.Separator ), out );
-					}
-					if constexpr( daw::is_tuple_like_v<daw::range_value_t<R>> ) {
-						auto t = daw::fmt_tuple( v );
-						out = std::vformat_to(
-						  out, std::string_view( flags ), std::make_format_args( t ) );
-					} else {
-						out = std::vformat_to(
-						  out, std::string_view( flags ), std::make_format_args( v ) );
-					}
-				}
-				out = std::copy( std::data( c.Right ), daw::data_end( c.Right ), out );
-				return out;
-			}
+		Ctx::iterator format( daw::fmt_tuple<T, CharT> c, Ctx &ctx ) const {
+			auto out = ctx.out( );
+			out = std::copy( std::data( c.Left ), daw::data_end( c.Left ), out );
+			bool is_first = true;
+			auto const write_value =
+			  [&]<std::size_t Idx>( std::integral_constant<std::size_t, Idx> ) {
+				  if( is_first ) {
+					  is_first = false;
+				  } else {
+					  out = std::copy(
+					    std::data( c.Separator ), daw::data_end( c.Separator ), out );
+				  }
+				  out = std::vformat_to( out,
+				                         std::string_view( flags ),
+				                         std::make_format_args( get<Idx>( c.value ) ) );
+			  };
+			[&]<std::size_t... Is>( std::index_sequence<Is...> ) {
+				(void)( write_value( std::integral_constant<std::size_t, Is>{ } ),
+				        ...,
+				        1 );
+			}( std::make_index_sequence<std::tuple_size_v<T>>{ } );
+			out = std::copy( std::data( c.Right ), daw::data_end( c.Right ), out );
+			return out;
 		}
 	};
 } // namespace std
