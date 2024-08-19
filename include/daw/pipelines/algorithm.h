@@ -20,7 +20,7 @@ namespace daw::pipelines {
 	template<typename R>
 	concept Sortable = Range<R> and RandomIterator<iterator_t<R>>;
 
-	namespace impl {
+	namespace pipelines_impl {
 		template<typename Compare>
 		struct Sort_t : Compare {
 			[[nodiscard]] constexpr decltype( auto )
@@ -72,37 +72,37 @@ namespace daw::pipelines {
 		MinMax_t( ) -> MinMax_t<std::less<>>;
 		template<typename Compare>
 		MinMax_t( Compare ) -> MinMax_t<Compare>;
-	} // namespace impl
+	} // namespace pipelines_impl
 
 	[[nodiscard]] constexpr auto Sort( ) {
-		return impl::Sort_t{ };
+		return pipelines_impl::Sort_t{ };
 	}
 
 	[[nodiscard]] constexpr auto SortC( auto &&compare ) {
-		return impl::Sort_t{ DAW_FWD( compare ) };
+		return pipelines_impl::Sort_t{ DAW_FWD( compare ) };
 	}
 
 	[[nodiscard]] constexpr auto Max( ) {
-		return impl::Max_t{ };
+		return pipelines_impl::Max_t{ };
 	}
 
 	[[nodiscard]] constexpr auto MaxC( auto &&compare ) {
-		return impl::Max_t{ DAW_FWD( compare ) };
+		return pipelines_impl::Max_t{ DAW_FWD( compare ) };
 	}
 
 	[[nodiscard]] constexpr auto Min( ) {
-		return impl::Min_t{ };
+		return pipelines_impl::Min_t{ };
 	}
 
 	[[nodiscard]] constexpr auto MinC( auto &&compare ) {
-		return impl::Min_t{ DAW_FWD( compare ) };
+		return pipelines_impl::Min_t{ DAW_FWD( compare ) };
 	}
 
 	[[nodiscard]] constexpr auto MinMax( ) {
-		return impl::MinMax_t{ };
+		return pipelines_impl::MinMax_t{ };
 	}
 
 	[[nodiscard]] constexpr auto MinMaxC( auto &&compare ) {
-		return impl::MinMax_t{ DAW_FWD( compare ) };
+		return pipelines_impl::MinMax_t{ DAW_FWD( compare ) };
 	}
 } // namespace daw::pipelines

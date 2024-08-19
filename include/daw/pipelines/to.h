@@ -17,7 +17,7 @@
 namespace daw::pipelines {
 	template<template<typename...> typename Container>
 	[[nodiscard]] constexpr auto To( ) {
-		// inline constexpr auto To = impl::To_t<Container>{ };
+		// inline constexpr auto To = pipelines_impl::To_t<Container>{ };
 		return []<typename R>( R &&r ) {
 			if constexpr( Range<R> ) {
 				return Container( std::begin( DAW_FWD( r ) ),
@@ -29,18 +29,18 @@ namespace daw::pipelines {
 		};
 	}
 
-	namespace impl {
+	namespace pipelines_impl {
 
 		template<typename T, std::size_t N>
 		void array_test( std::array<T, N> const & );
 
 		struct UseTypeDefault {};
-	} // namespace impl
+	} // namespace pipelines_impl
 
 	template<typename Container>
-	requires( not requires( Container c ) { impl::array_test( c ); } )
+	requires( not requires( Container c ) { pipelines_impl::array_test( c ); } )
 	  [[nodiscard]] constexpr auto To( ) {
-		// inline constexpr auto To = impl::To_t<Container>{ };
+		// inline constexpr auto To = pipelines_impl::To_t<Container>{ };
 		return []<typename R>( R &&r ) {
 			if constexpr( Range<R> ) {
 				return Container( std::begin( DAW_FWD( r ) ),
@@ -52,10 +52,10 @@ namespace daw::pipelines {
 		};
 	}
 
-	template<typename Array, auto Default = impl::UseTypeDefault{ }>
-	requires( requires( Array a ) { impl::array_test( a ); } )
+	template<typename Array, auto Default = pipelines_impl::UseTypeDefault{ }>
+	requires( requires( Array a ) { pipelines_impl::array_test( a ); } )
 	  [[nodiscard]] constexpr auto To( ) {
-		// inline constexpr auto To = impl::To_t<Container>{ };
+		// inline constexpr auto To = pipelines_impl::To_t<Container>{ };
 		return []<typename R>( R &&r ) {
 			constexpr auto sz = std::tuple_size_v<Array>;
 			using value_t = typename Array::value_type;
@@ -69,7 +69,7 @@ namespace daw::pipelines {
 					return *first++;
 				}
 				if constexpr( std::is_same_v<decltype( Default ),
-				                             impl::UseTypeDefault> ) {
+				                             pipelines_impl::UseTypeDefault> ) {
 					return value_t{ };
 				} else if constexpr( std::is_invocable_v<decltype( Default )> ) {
 					return Default( );

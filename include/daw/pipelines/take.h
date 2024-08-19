@@ -18,8 +18,8 @@
 #include <iterator>
 
 namespace daw::pipelines {
-	namespace impl {
-		template<typename It, ForwardIterator Last>
+	namespace pipelines_impl {
+		template<ForwardIterator It, typename Last>
 		constexpr It
 		safe_next( It first, Last const &last, std::size_t how_many = 1U ) {
 			auto const max_how_many = std::distance( first, last );
@@ -32,9 +32,9 @@ namespace daw::pipelines {
 			std::size_t how_many_to_skip = 0;
 			std::size_t how_many = 0;
 
-			[[nodiscard]] constexpr auto operator( )( auto &&r ) const {
-				static_assert( Range<DAW_TYPEOF( r )>,
-				               "Take requires a Range passed to it" );
+			template<typename R>
+			[[nodiscard]] constexpr auto operator( )( R &&r ) const {
+				static_assert( Range<R>, "Take requires a Range passed to it" );
 				auto first =
 				  how_many_to_skip == 0
 				    ? std::begin( r )
@@ -43,14 +43,14 @@ namespace daw::pipelines {
 				return range_t{ first, last };
 			}
 		};
-	} // namespace impl
+	} // namespace pipelines_impl
 
 	[[nodiscard]] constexpr auto Take( std::size_t how_many ) {
-		return impl::Take_t{ 0, how_many };
+		return pipelines_impl::Take_t{ 0, how_many };
 	}
 
 	[[nodiscard]] constexpr auto Take( std::size_t how_many_to_skip,
 	                                   std::size_t how_many ) {
-		return impl::Take_t{ how_many_to_skip, how_many };
+		return pipelines_impl::Take_t{ how_many_to_skip, how_many };
 	}
 } // namespace daw::pipelines

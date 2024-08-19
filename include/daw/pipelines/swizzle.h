@@ -20,7 +20,7 @@ namespace daw::pipelines {
 	template<std::size_t... Indices>
 	inline constexpr auto Swizzle = []<Range R>( R &&r ) {
 		if constexpr( requires {
-			              typename std::remove_cvref_t<
+			              typename daw::remove_cvref_t<
 			                R>::i_am_a_daw_zip_iterator_class;
 		              } ) {
 			return map_view{ std::begin( r ), std::end( r ), []( auto &&tp ) {

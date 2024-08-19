@@ -101,7 +101,7 @@ namespace daw::pipelines {
 	template<typename I, typename F>
 	filter_view( I, I, F ) -> filter_view<I, F>;
 
-	namespace impl {
+	namespace pipelines_impl {
 		template<typename Fn>
 		struct filter_t {
 			[[no_unique_address]] Fn fn;
@@ -124,7 +124,7 @@ namespace daw::pipelines {
 				static_assert(
 				  std::is_invocable_r_v<bool, Fn, Value>,
 				  "Filter requires an invokable function that returns a bool" );
-				using result_t = std::remove_cvref_t<std::invoke_result_t<Fn, Value>>;
+				using result_t = daw::remove_cvref_t<std::invoke_result_t<Fn, Value>>;
 				if( fn( v ) ) {
 					return std::optional<result_t>( DAW_FWD( v ) );
 				}
@@ -133,10 +133,10 @@ namespace daw::pipelines {
 		};
 		template<typename F>
 		filter_t( F ) -> filter_t<F>;
-	} // namespace impl
+	} // namespace pipelines_impl
 
 	template<typename Fn>
 	[[nodiscard]] constexpr auto Filter( Fn &&fn ) {
-		return impl::filter_t{ DAW_FWD( fn ) };
+		return pipelines_impl::filter_t{ DAW_FWD( fn ) };
 	};
 } // namespace daw::pipelines

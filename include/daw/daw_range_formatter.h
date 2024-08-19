@@ -100,6 +100,8 @@ namespace std {
 						}
 					}
 					break;
+				default:
+					break;
 				}
 				f.remove_prefix( );
 			}

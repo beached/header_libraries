@@ -144,16 +144,18 @@ int main( ) {
 	                               } ) );
 	(void)tp1( iota_view<char>( 'a', 'z' ) );
 
-	std::vector const prices = { 100, 200, 150, 180, 130 };
-	std::vector const costs = { 10, 20, 50, 40, 100 };
-	auto const v = pipeline( zip_view( prices, costs ),
-	                         MapApply( []( auto pr, auto co ) {
-		                         return pr - co;
-	                         } ),
-	                         Print,
-	                         Clamp( 5, 100 ),
-	                         To<std::vector> );
-	daw::println( "{}", daw::fmt_range( v ) );
+	static constexpr auto prices = std::array{ 100, 200, 150, 180, 130 };
+	static constexpr auto costs = std::array{ 10, 20, 50, 40, 100 };
+	static constexpr auto const v = pipeline( zip_view( prices, costs ),
+	                                          MapApply( []( auto pr, auto co ) {
+		                                          return pr - co;
+	                                          } ),
+	                                          Clamp( 5, 100 ),
+	                                          To<std::array<int, 5>> );
+	daw::println( "MapApply, Clamp, To<std::vector>\n{}", daw::fmt_range( v ) );
+
+	constexpr auto v1 = pipeline( zip_view( prices, costs, v ), Concat );
+	daw::println( "Concat\n{}", daw::fmt_range( v1 ) );
 
 	auto to_array = []<std::size_t ArraySize, typename C>(
 	                  std::integral_constant<std::size_t, ArraySize>,
@@ -171,14 +173,14 @@ int main( ) {
 	                      1.0,
 	                      1.000001,
 	                      0.0000000000000000001,
-												0.0000000000000000001,
-												0.0000000000000000001,
-												0.0000000000000000001,
-												0.0000000000000000001,
-												0.0000000000000000001,
-												0.0000000000000000001,
-												0.0000000000000000001,
-												0.0000000000000000001,
+	                      0.0000000000000000001,
+	                      0.0000000000000000001,
+	                      0.0000000000000000001,
+	                      0.0000000000000000001,
+	                      0.0000000000000000001,
+	                      0.0000000000000000001,
+	                      0.0000000000000000001,
+	                      0.0000000000000000001,
 	                      1.657348632812501,
 	                      1032.03423423 };
 	auto s_kahan = SumKahanBabushkaNeumaier( da );

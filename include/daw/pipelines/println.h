@@ -18,7 +18,7 @@
 #include <type_traits>
 
 namespace daw::pipelines {
-	namespace impl {
+	namespace pipelines_impl {
 		struct Print_t {
 			DAW_ATTRIB_NOINLINE
 			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP inline decltype( auto )
@@ -31,6 +31,6 @@ namespace daw::pipelines {
 				return DAW_FWD( r );
 			}
 		};
-	} // namespace impl
-	inline constexpr auto Print = impl::Print_t{ };
+	} // namespace pipelines_impl
+	inline constexpr auto Print = pipelines_impl::Print_t{ };
 } // namespace daw::pipelines

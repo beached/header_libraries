@@ -20,8 +20,11 @@ namespace daw::pipelines {
 	struct zip_iterator {
 		static_assert( sizeof...( Iterators ) > 0,
 		               "Empty zip iterator is unsupported" );
-		using iterator_category = daw::common_iterator_category_t<Iterators...>;
+		using iterator_category =
+		  daw::common_iterator_category_t<iter_category_t<Iterators>...>;
+		static_assert( not std::same_as<void, iterator_category> );
 		using types_t = std::tuple<Iterators...>;
+		static constexpr std::size_t types_size_v = sizeof...( Iterators );
 		using value_type = std::tuple<daw::iter_value_t<Iterators>...>;
 		using reference = std::tuple<daw::iter_reference_t<Iterators>...>;
 		using const_reference =

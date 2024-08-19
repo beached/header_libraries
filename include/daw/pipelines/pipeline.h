@@ -21,7 +21,7 @@
 #include <memory>
 #include <utility>
 
-namespace daw::pipelines::impl {
+namespace daw::pipelines::pipelines_impl {
 
 	template<typename Fn>
 	struct pipeline_t {
@@ -80,18 +80,19 @@ namespace daw::pipelines::impl {
 	pipeline( R &&r, Fn const &fn, auto const &...fns ) {
 		return pipeline_t{ fn }( DAW_FWD( r ), fns... );
 	}
-} // namespace daw::pipelines::impl
+} // namespace daw::pipelines::pipelines_impl
 
 namespace daw::pipelines {
 	template<typename Fn>
 	DAW_ATTRIB_FLATTEN constexpr auto pipeline( Fn &&fn, auto &&...fns ) {
 		return [=]<typename R>( R &&r ) {
-			return impl::pipeline( DAW_FWD( r ), fn, fns... );
+			return pipelines_impl::pipeline( DAW_FWD( r ), fn, fns... );
 		};
 	}
 
 	template<Range R, typename Fn>
 	DAW_ATTRIB_FLATTEN constexpr auto pipeline( R &&r, Fn &&fn, auto &&...fns ) {
-		return impl::pipeline( DAW_FWD( r ), DAW_FWD( fn ), DAW_FWD( fns )... );
+		return pipelines_impl::pipeline(
+		  DAW_FWD( r ), DAW_FWD( fn ), DAW_FWD( fns )... );
 	}
 } // namespace daw::pipelines

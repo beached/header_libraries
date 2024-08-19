@@ -31,15 +31,18 @@ namespace daw {
 	  std::common_reference_t<iter_value_t<It> const &&, iter_reference_t<It>>;
 
 	template<typename It>
+	using iter_category_t =
+	  typename std::iterator_traits<daw::remove_cvref_t<It>>::iterator_category;
+
+	template<typename It>
 	concept Iterator = requires( It & it ) {
 		{ ++it } -> std::same_as<It &>;
 		{ it++ };
 		{ *it };
 	};
 
-	template<typename It, typename IteratorCategory>
-	concept IsIteratorTag =
-	  std::is_base_of_v<IteratorCategory, typename It::iterator_category>;
+	template<typename ItCat, typename IteratorCategory>
+	concept IsIteratorTag = std::is_base_of_v<IteratorCategory, ItCat>;
 
 	template<typename Tag>
 	concept OutputIteratorTag = std::is_base_of_v<std::output_iterator_tag, Tag>;
@@ -49,7 +52,8 @@ namespace daw {
 
 	template<typename It>
 	concept InputIterator =
-	  Iterator<It> and IsIteratorTag<It, std::input_iterator_tag>;
+	  Iterator<It> and
+	  IsIteratorTag<iter_category_t<It>, std::input_iterator_tag>;
 
 	template<typename Tag>
 	concept ForwardIteratorTag =
@@ -57,7 +61,8 @@ namespace daw {
 
 	template<typename It>
 	concept ForwardIterator =
-	  InputIterator<It> and IsIteratorTag<It, std::forward_iterator_tag>;
+	  InputIterator<It> and
+	  IsIteratorTag<iter_category_t<It>, std::forward_iterator_tag>;
 
 	template<typename Tag>
 	concept BidirectionalIteratorTag =
@@ -65,35 +70,37 @@ namespace daw {
 
 	template<typename It>
 	concept BidirectionalIterator =
-	  ForwardIterator<It> and IsIteratorTag<It, std::bidirectional_iterator_tag>;
+	  ForwardIterator<It> and
+	  IsIteratorTag<iter_category_t<It>, std::bidirectional_iterator_tag>;
 
 	template<typename Tag>
 	concept RandomIteratorTag =
 	  std::is_base_of_v<std::random_access_iterator_tag, Tag>;
 
 	template<typename It>
-	concept RandomIterator = BidirectionalIterator<It> and
-	                         IsIteratorTag<It, std::random_access_iterator_tag>;
+	concept RandomIterator =
+	  BidirectionalIterator<It> and
+	  IsIteratorTag<iter_category_t<It>, std::random_access_iterator_tag>;
 
 	template<typename IteratorTag, typename... Its>
 	inline constexpr bool are_all_same_iterator_tag_v =
 	  ( IsIteratorTag<Its, IteratorTag> and ... );
 
-	template<typename... Its>
+	template<typename... ItCats>
 	using common_iterator_category_t = std::conditional_t<
-	  are_all_same_iterator_tag_v<std::random_access_iterator_tag, Its...>,
+	  are_all_same_iterator_tag_v<std::random_access_iterator_tag, ItCats...>,
 	  std::random_access_iterator_tag,
 	  std::conditional_t<
-	    are_all_same_iterator_tag_v<std::bidirectional_iterator_tag, Its...>,
+	    are_all_same_iterator_tag_v<std::bidirectional_iterator_tag, ItCats...>,
 	    std::bidirectional_iterator_tag,
 	    std::conditional_t<
-	      are_all_same_iterator_tag_v<std::forward_iterator_tag, Its...>,
+	      are_all_same_iterator_tag_v<std::forward_iterator_tag, ItCats...>,
 	      std::forward_iterator_tag,
 	      std::conditional_t<
-	        are_all_same_iterator_tag_v<std::input_iterator_tag, Its...>,
+	        are_all_same_iterator_tag_v<std::input_iterator_tag, ItCats...>,
 	        std::input_iterator_tag,
 	        std::conditional_t<
-	          are_all_same_iterator_tag_v<std::output_iterator_tag, Its...>,
+	          are_all_same_iterator_tag_v<std::output_iterator_tag, ItCats...>,
 	          std::output_iterator_tag,
 	          void>>>>>;
 
@@ -118,6 +125,9 @@ namespace daw {
 
 	template<Range R>
 	using range_const_reference_t = iter_const_reference_t<iterator_t<R>>;
+
+	template<Range R>
+	using range_category_t = iter_category_t<iterator_t<R>>;
 
 	template<typename R>
 	concept InputRange = Range<R> and InputIterator<iterator_t<R>>;

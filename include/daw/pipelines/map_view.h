@@ -251,7 +251,7 @@ namespace daw::pipelines {
 				  } );
 			} else {
 				static_assert(
-				  std::convertible_to<T, std::remove_cvref_t<R>>,
+				  std::convertible_to<T, daw::remove_cvref_t<R>>,
 				  "Clamp requires a lo/hi values convertible to the value type" );
 				return std::clamp( r, lo, hi, compare );
 			}

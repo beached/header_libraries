@@ -17,7 +17,7 @@
 #include <iterator>
 
 namespace daw::pipelines {
-	namespace impl {
+	namespace pipelines_impl {
 		struct sum_t {
 			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
 			operator( )( Range auto &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
@@ -67,12 +67,12 @@ namespace daw::pipelines {
 				return sum + c;
 			}
 		};
-	} // namespace impl
+	} // namespace pipelines_impl
 
-	inline constexpr auto Sum = impl::sum_t{ };
+	inline constexpr auto Sum = pipelines_impl::sum_t{ };
 	inline constexpr auto SumKahanBabushkaNeumaier =
-	  impl::SumKahanBabushkaNeumaier_t{ };
-	inline constexpr auto Count = impl::count_t{ };
+	  pipelines_impl::SumKahanBabushkaNeumaier_t{ };
+	inline constexpr auto Count = pipelines_impl::count_t{ };
 
 	[[nodiscard]] constexpr auto CountIf( auto &&fn ) {
 		return [func = DAW_FWD( fn )]( Range auto const &r ) {

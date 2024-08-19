@@ -9,6 +9,7 @@
 #pragma once
 
 #include "pipelines/algorithm.h"
+#include "pipelines/concat_view.h"
 #include "pipelines/filter_view.h"
 #include "pipelines/foreach.h"
 #include "pipelines/iota_view.h"
