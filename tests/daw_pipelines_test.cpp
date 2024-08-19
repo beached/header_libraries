@@ -10,12 +10,15 @@
 #include <daw/daw_pipelines.h>
 #include <daw/daw_print.h>
 
+#include <array>
 #include <complex>
 #include <cstdio>
 #include <iterator>
+#include <map>
 #include <string>
 #include <type_traits>
 #include <utility>
+#include <vector>
 
 using namespace daw::pipelines;
 
@@ -164,6 +167,13 @@ int main( ) {
 		return To<std::array<value_t, ArraySize>>( )( c );
 	};
 
+	constexpr auto pm = pipeline( Map( []( int i ) {
+		                              return std::pair{ i, to_letter( i ) };
+	                              } ),
+	                              To<std::map> );
+	auto const m = pm( iota_view<int>( 0, 26 ) );
+	daw::println( "To<std::map>\n{}", daw::fmt_range( m ) );
+
 	auto va = to_array( std::integral_constant<std::size_t, 15>{ }, v );
 
 	auto da = std::array{ 1024.123,
@@ -185,7 +195,7 @@ int main( ) {
 	                      1032.03423423 };
 	auto s_kahan = SumKahanBabushkaNeumaier( da );
 	daw::println( "{:.19f}\nThe Kahan sum is {:.19f}",
-	              daw::fmt_range{ da, "\n\t", "[\t", " ]" },
+	              daw::fmt_range{ da, ",\n\t", "[\t", " ]" },
 	              s_kahan );
 	auto s_naive = Sum( da );
 	daw::println( "The naive sum is {:.19f}", s_naive );
