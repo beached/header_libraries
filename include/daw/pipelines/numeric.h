@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/daw_cpp_feature_check.h"
+#include "daw/daw_cxmath.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
 
@@ -43,9 +44,34 @@ namespace daw::pipelines {
 				}
 			}
 		};
+
+		struct SumKahanBabushkaNeumaier_t {
+			template<Range R>
+			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+			operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
+				using fp_t = range_value_t<R>;
+				static_assert( std::is_floating_point_v<fp_t>,
+				               "Use of Kahan Babushka Neumaier summation requires the "
+				               "range value type to be a floating point type" );
+				auto sum = fp_t{ 0.0 };
+				auto c = fp_t{ 0.0 };
+				for( fp_t input : r ) {
+					auto t = sum + input;
+					if( daw::cxmath::abs( sum ) >= daw::cxmath::abs( input ) ) {
+						c += ( sum - t ) + input;
+					} else {
+						c += ( input - t ) + sum;
+					}
+					sum = t;
+				}
+				return sum + c;
+			}
+		};
 	} // namespace impl
 
 	inline constexpr auto Sum = impl::sum_t{ };
+	inline constexpr auto SumKahanBabushkaNeumaier =
+	  impl::SumKahanBabushkaNeumaier_t{ };
 	inline constexpr auto Count = impl::count_t{ };
 
 	[[nodiscard]] constexpr auto CountIf( auto &&fn ) {
@@ -57,4 +83,5 @@ namespace daw::pipelines {
 			return result;
 		};
 	};
+
 } // namespace daw::pipelines

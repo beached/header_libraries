@@ -1033,16 +1033,22 @@ namespace daw::cxmath {
 	  typename Real,
 	  std::enable_if_t<std::is_floating_point_v<Real>, std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr Real abs( Real number ) noexcept {
+		if( DAW_IS_CONSTANT_EVALUATED_COMPAT( ) and not daw_has_cx_cmath ) {
 #if defined( DAW_CX_BIT_CAST )
-		auto uint =
-		  DAW_BIT_CAST( cxmath_impl::unsigned_float_type_t<Real>, number );
-		return DAW_BIT_CAST( Real, cxmath_impl::set_sign_impl<Real>( uint, 0UL ) );
+			auto uint =
+			  DAW_BIT_CAST( cxmath_impl::unsigned_float_type_t<Real>, number );
+			using uint_t = decltype( uint );
+			return DAW_BIT_CAST(
+			  Real, cxmath_impl::set_sign_impl<Real>( uint, uint_t{ 0 } ) );
 #else
-		if( number < Real{ 0 } ) {
-			return -number;
-		}
-		return number;
+			if( number < Real{ 0 } ) {
+				return -number;
+			}
+			return number;
 #endif
+		} else {
+			return std::abs( number );
+		}
 	}
 
 #if defined( DAW_CX_BIT_CAST )

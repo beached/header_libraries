@@ -233,5 +233,28 @@ namespace daw::pipelines {
 				return std::apply( func, tp );
 			} );
 		};
-	};
+	}
+
+	template<typename T, typename Compare = std::less<>>
+	[[nodiscard]] constexpr auto
+	Clamp( T const &lo, T const &hi, Compare compare = Compare{ } ) {
+		return [=]( auto &&r ) {
+			using R = DAW_TYPEOF( r );
+			if constexpr( Range<R> ) {
+				using value_type = range_value_t<R>;
+				static_assert(
+				  std::convertible_to<T, value_type>,
+				  "Clamp requires a lo/hi values convertible to the range value type" );
+				return map_view(
+				  std::begin( r ), std::end( r ), [=]( value_type const &v ) {
+					  return std::clamp( v, lo, hi, compare );
+				  } );
+			} else {
+				static_assert(
+				  std::convertible_to<T, std::remove_cvref_t<R>>,
+				  "Clamp requires a lo/hi values convertible to the value type" );
+				return std::clamp( r, lo, hi, compare );
+			}
+		};
+	}
 } // namespace daw::pipelines

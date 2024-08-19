@@ -71,6 +71,8 @@ namespace daw::pipelines {
 				if constexpr( std::is_same_v<decltype( Default ),
 				                             impl::UseTypeDefault> ) {
 					return value_t{ };
+				} else if constexpr( std::is_invocable_v<decltype( Default )> ) {
+					return Default( );
 				} else {
 					return Default;
 				}

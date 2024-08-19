@@ -19,7 +19,7 @@
 
 namespace daw::pipelines {
 	namespace impl {
-		struct PrintLn_t {
+		struct Print_t {
 			DAW_ATTRIB_NOINLINE
 			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP inline decltype( auto )
 			operator( )( auto &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
@@ -32,5 +32,5 @@ namespace daw::pipelines {
 			}
 		};
 	} // namespace impl
-	inline constexpr auto PrintLn = impl::PrintLn_t{ };
+	inline constexpr auto Print = impl::Print_t{ };
 } // namespace daw::pipelines

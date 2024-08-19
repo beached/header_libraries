@@ -48,19 +48,19 @@ int main( ) {
 	constexpr auto r1 = p1( "Blah blah blah, how is yah?" );
 	daw::println( "{}", daw::fmt_range( r0 ) );
 	daw::println( "{}", daw::fmt_range( r1 ) );
-	constexpr auto q = pipeline( PrintLn,
+	constexpr auto q = pipeline( Print,
 	                             Filter( Not( vowel ) ),
 	                             Take( 8 ),
 	                             Map( to_lower ),
-	                             PrintLn,
+	                             Print,
 	                             Filter( is_letter ),
-	                             PrintLn,
+	                             Print,
 	                             To<std::basic_string>,
-	                             PrintLn,
+	                             Print,
 	                             Sort,
-	                             PrintLn,
+	                             Print,
 	                             Unique,
-	                             PrintLn,
+	                             Print,
 	                             Sum );
 	(void)q( "Hello World, How are you?" );
 	daw::println( );
@@ -150,7 +150,44 @@ int main( ) {
 	                         MapApply( []( auto pr, auto co ) {
 		                         return pr - co;
 	                         } ),
+	                         Print,
+	                         Clamp( 5, 100 ),
 	                         To<std::vector> );
 	daw::println( "{}", daw::fmt_range( v ) );
+
+	auto to_array = []<std::size_t ArraySize, typename C>(
+	                  std::integral_constant<std::size_t, ArraySize>,
+	                  C const &c ) {
+		using value_t = typename C::value_type;
+		return To<std::array<value_t, ArraySize>>( )( c );
+	};
+
+	auto va = to_array( std::integral_constant<std::size_t, 15>{ }, v );
+
+	auto da = std::array{ 1024.123,
+	                      0.000000013143,
+	                      0.0001123434,
+	                      4533.5,
+	                      1.0,
+	                      1.000001,
+	                      0.0000000000000000001,
+												0.0000000000000000001,
+												0.0000000000000000001,
+												0.0000000000000000001,
+												0.0000000000000000001,
+												0.0000000000000000001,
+												0.0000000000000000001,
+												0.0000000000000000001,
+												0.0000000000000000001,
+	                      1.657348632812501,
+	                      1032.03423423 };
+	auto s_kahan = SumKahanBabushkaNeumaier( da );
+	daw::println( "{:.19f}\nThe Kahan sum is {:.19f}",
+	              daw::fmt_range{ da, "\n\t", "[\t", " ]" },
+	              s_kahan );
+	auto s_naive = Sum( da );
+	daw::println( "The naive sum is {:.19f}", s_naive );
+
+	daw::println( "{}", daw::fmt_range( va ) );
 	daw::println( "Done" );
 }
