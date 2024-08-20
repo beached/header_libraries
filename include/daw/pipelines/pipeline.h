@@ -36,7 +36,7 @@ namespace daw::pipelines::pipelines_impl {
 	template<typename R,
 	         typename... Ts,
 	         std::size_t Idx = ( sizeof...( Ts ) - 1 )>
-	[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
+	[[nodiscard]] DAW_ATTRIB_FLATINLINE constexpr auto
 	pipeline( R &&r,
 	          std::tuple<Ts...> const &tpfns,
 	          daw::constant<Idx> = daw::constant_v<Idx> ) {

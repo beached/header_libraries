@@ -27,14 +27,9 @@ namespace daw::pipelines {
 				                return daw::forward_nonrvalue_as_tuple(
 				                  get<Indices>( DAW_FWD( tp ) )... );
 			                } };
-			//auto &&tp = r.get_tuple( );
+			// auto &&tp = r.get_tuple( );
 			//			return zip_iterator{ std::get<Indices>( FWD( tp ) )... };
-		} else if constexpr( requires {
-			                     typename std::tuple_size<range_reference_t<R>>;
-			                     { std::tuple_size_v<range_reference_t<R>> };
-			                     { std::get<0>(
-			                       std::declval<range_reference_t<R>>( ) ) };
-		                     } ) {
+		} else if constexpr( is_tuple_like_v<range_value_t<R>> ) {
 			using std::get;
 			static_assert( std::max( { Indices... } ) <
 			                 std::tuple_size_v<range_reference_t<R>>,
