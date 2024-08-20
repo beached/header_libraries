@@ -269,11 +269,12 @@ namespace {
 		void test011( ) {
 			constexpr auto a =
 			  std::array{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
-			auto p = pipeline( a, Take( 5 ), To<std::vector> );
+			constexpr auto p0 = pipeline( Take( 1, 5 ), To<std::vector> );
+			auto v0 = p0( a );
 			daw::println(
 			  "\ntest011: pipeline( a, Take( 5 ), To<std::vector> ):\n\tinput: "
 			  "[1,2,3,4,5,6,7,8,9]\n\touput: {}",
-			  p );
+			  daw::fmt_range( v0 ) );
 		}
 	} // namespace tests
 } // namespace

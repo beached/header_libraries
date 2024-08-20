@@ -16,46 +16,48 @@
 #include <algorithm>
 #include <cstddef>
 #include <iterator>
+#include <limits>
 
 namespace daw::pipelines {
-	template<typename Iterator>
-	struct sized_iterator {
+	template<Iterator Iterator>
+	struct sized_iterator;
+
+	template<ForwardIterator Iterator>
+	struct sized_iterator<Iterator> {
 		using iterator_category = iter_category_t<Iterator>;
 		using value_type = iter_value_t<Iterator>;
 		using reference = iter_reference_t<Iterator>;
 		using const_reference = iter_const_reference_t<Iterator>;
 		using difference_type = std::ptrdiff_t;
-		static_assert( ForwardIterator<Iterator>,
-		               "Must supply at least forward iterator types" );
 
 	private:
 		Iterator m_iter = Iterator{ };
-		difference_type m_position = 0;
+		difference_type m_count = 0;
 
 		constexpr void increment( ) {
-			++m_position;
+			--m_count;
 			++m_iter;
+#if defined( DEBUG ) or not defined( NDEBUG )
+			daw_ensure( m_count >= 0 );
+#endif
 		}
 
 		constexpr void decrement( ) {
-			--m_position;
+			++m_count;
 			--m_iter;
 		}
 
 		constexpr void advance( difference_type n ) {
-			m_position += n;
+			m_count -= std::min( { n, m_count } );
 			std::advance( m_iter, n );
 		}
 
 	public:
 		explicit sized_iterator( ) = default;
 
-		explicit constexpr sized_iterator( Iterator it, std::size_t pos )
-		  : m_iter( std::move( it ) )
-		  , m_position( static_cast<difference_type>( pos ) ) {}
-
-		explicit constexpr sized_iterator( std::size_t pos )
-		  : m_position( static_cast<difference_type>( pos ) ) {}
+		explicit constexpr sized_iterator( Iterator first, std::size_t how_many )
+		  : m_iter( std::move( first ) )
+		  , m_count( static_cast<difference_type>( how_many ) ) {}
 
 		constexpr sized_iterator &operator++( ) {
 			increment( );
@@ -78,12 +80,12 @@ namespace daw::pipelines {
 
 		[[nodiscard]] constexpr bool
 		operator==( sized_iterator const &rhs ) const noexcept {
-			return m_position == rhs.m_position;
+			return m_count == rhs.m_count;
 		}
 
 		[[nodiscard]] constexpr bool
 		operator!=( sized_iterator const &rhs ) const noexcept {
-			return m_position != rhs.m_position;
+			return m_count != rhs.m_count;
 		}
 
 		// bidirectional iterator interface
@@ -139,52 +141,123 @@ namespace daw::pipelines {
 
 		constexpr difference_type operator-( sized_iterator const &rhs ) const
 		  requires( RandomIteratorTag<iterator_category> ) {
-			return m_iter - rhs.m_iter;
+			return rhs.m_count - m_count;
 		}
 
 		[[nodiscard]] constexpr bool operator<( sized_iterator const &rhs )
 		  requires( RandomIteratorTag<iterator_category> ) {
-			return m_position < rhs.m_position;
+			return m_count > rhs.m_count;
 		}
 
 		[[nodiscard]] constexpr bool operator<=( sized_iterator const &rhs )
 		  requires( RandomIteratorTag<iterator_category> ) {
-			return m_position <= rhs.m_position;
+			return m_count >= rhs.m_count;
 		}
 
 		[[nodiscard]] constexpr bool operator>( sized_iterator const &rhs )
 		  requires( RandomIteratorTag<iterator_category> ) {
-			return m_position > rhs.m_position;
+			return m_count < rhs.m_count;
 		}
 
 		[[nodiscard]] constexpr bool operator>=( sized_iterator const &rhs )
 		  requires( RandomIteratorTag<iterator_category> ) {
-			return m_position >= rhs.m_position;
+			return m_count <= rhs.m_count;
 		}
 	};
-	namespace pimple {
-		template<ForwardIterator It, typename Last>
-		constexpr It
-		safe_next( It first, Last const &last, std::size_t how_many = 1U ) {
-			auto const max_how_many = std::distance( first, last );
-			auto const h =
-			  std::min( static_cast<std::ptrdiff_t>( how_many ), max_how_many );
-			return std::next( last, h );
+
+	template<InputIterator Iterator>
+	struct sized_iterator<Iterator> {
+		using iterator_category = std::input_iterator_tag;
+		using value_type = iter_value_t<Iterator>;
+		using reference = iter_reference_t<Iterator>;
+		using const_reference = iter_const_reference_t<Iterator>;
+		using difference_type = std::ptrdiff_t;
+
+	private:
+		Iterator m_first = Iterator{ };
+		Iterator m_last = Iterator{ };
+		difference_type m_count = 0;
+
+		constexpr void increment( ) {
+			--m_count;
+			++m_first;
+			if( m_first == m_last ) {
+				m_count = 0;
+			}
 		}
 
+	public:
+		explicit sized_iterator( ) = default;
+
+		explicit constexpr sized_iterator( Iterator first,
+		                                   Iterator last,
+		                                   std::size_t how_many )
+		  : m_first( first )
+		  , m_last( last )
+		  , m_count( static_cast<difference_type>( how_many ) ) {}
+
+		constexpr sized_iterator &operator++( ) {
+			increment( );
+			return *this;
+		}
+
+		[[nodiscard]] constexpr sized_iterator operator++( int ) {
+			auto tmp = *this;
+			increment( );
+			return tmp;
+		}
+
+		[[nodiscard]] constexpr reference operator*( ) noexcept {
+			return *m_first;
+		}
+
+		[[nodiscard]] constexpr const_reference operator*( ) const noexcept {
+			return *m_first;
+		}
+
+		[[nodiscard]] constexpr bool
+		operator==( sized_iterator const &rhs ) const noexcept {
+			return m_count == rhs.m_count;
+		}
+
+		[[nodiscard]] constexpr bool
+		operator!=( sized_iterator const &rhs ) const noexcept {
+			return m_count != rhs.m_count;
+		}
+	};
+
+	namespace pimple {
 		struct Take_t {
 			std::size_t how_many_to_skip = 0;
 			std::size_t how_many = 0;
 
 			template<Range R>
 			[[nodiscard]] constexpr auto operator( )( R &&r ) const {
-				auto first =
-				  how_many_to_skip == 0
-				    ? std::begin( r )
-				    : safe_next( std::begin( r ), std::end( r ), how_many_to_skip );
 				using iter_t = iterator_t<R>;
-				return range_t{ sized_iterator<iter_t>{ first, 0 },
-				                sized_iterator<iter_t>{ first, how_many } };
+				auto first = std::begin( r );
+				auto last = std::end( r );
+
+				if constexpr( ForwardIterator<iter_t> ) {
+					auto const range_size = std::distance( first, last );
+					auto const skip = std::min(
+					  { static_cast<std::ptrdiff_t>( how_many_to_skip ), range_size } );
+					first = std::next( first, skip );
+					auto take_size = std::min(
+					  { range_size - skip, static_cast<std::ptrdiff_t>( how_many ) } );
+					return range_t{ sized_iterator<iter_t>{
+					                  first, static_cast<std::size_t>( take_size ) },
+					                sized_iterator<iter_t>{ last, 0 } };
+				} else {
+					// Input
+					for( auto n = how_many_to_skip; n > 0; --n ) {
+						if( first == last ) {
+							break;
+						}
+						++first;
+					}
+					return range_t{ sized_iterator<iter_t>{ first, how_many },
+					                sized_iterator<iter_t>{ last, 0 } };
+				}
 			}
 		};
 	} // namespace pimple
