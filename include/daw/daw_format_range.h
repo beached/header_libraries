@@ -9,8 +9,8 @@
 #pragma once
 
 #include "daw/daw_string_view.h"
+#include "daw_format_tuple.h"
 #include "daw_iterator_traits.h"
-#include "daw_tuple_formatter.h"
 #include "impl/formatter_common.h"
 
 #include <cassert>
