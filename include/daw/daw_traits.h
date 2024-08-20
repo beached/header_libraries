@@ -957,7 +957,7 @@ namespace daw {
 #if defined( DAW_HAS_CPP_CONCEPTS )
 	template<typename Tp>
 	inline constexpr bool is_tuple_like_v = requires {
-		std::tuple_size_v<std::remove_cvref_t<Tp>>;
+		std::tuple_size_v<daw::remove_cvref_t<Tp>>;
 		typename std::tuple_element_t<0, daw::remove_cvref_t<Tp>>;
 		get<0>( std::declval<Tp>( ) );
 	};
@@ -968,7 +968,7 @@ namespace daw {
 	template<typename Tp>
 	inline constexpr bool is_tuple_like_v<
 	  Tp,
-	  void_t<decltype( (void)(std::tuple_size_v<std::remove_cvref_t<Tp>>),
+	  void_t<decltype( (void)(std::tuple_size_v<daw::remove_cvref_t<Tp>>),
 	                   (void)( get<0>( std::declval<Tp>( ) ) ) ),
 	         typename std::tuple_element_t<0, daw::remove_cvref_t<Tp>>>> = true;
 #endif
