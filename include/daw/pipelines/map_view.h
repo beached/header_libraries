@@ -199,7 +199,7 @@ namespace daw::pipelines {
 	template<typename I, typename F>
 	map_view( I, I, F ) -> map_view<I, F>;
 
-	namespace pipelines_impl {
+	namespace pimple {
 		template<typename Fn>
 		struct Map_t {
 			Fn m_func;
@@ -233,8 +233,8 @@ namespace daw::pipelines {
 				static_assert( traits::is_applicable_v<Fn, range_reference_t<R>>,
 				               "MapApply requires the function to be able to be called "
 				               "with apply and the range_reference_t" );
-				static_assert( traits::NoVoidApplyResults<Fn, range_reference_t<R>>,
-				               "MapApply requires the result to not be void" );
+//				static_assert( traits::NoVoidApplyResults<Fn, range_reference_t<R>>,
+//				               "MapApply requires the result to not be void" );
 				auto func = m_func;
 				return map_view( std::begin( r ), std::end( r ), [=]( auto &&tp ) {
 					return std::apply( func, tp );
@@ -270,22 +270,22 @@ namespace daw::pipelines {
 				}
 			}
 		};
-	} // namespace pipelines_impl
+	} // namespace pimple
 
 	template<typename Fn>
 	[[nodiscard]] constexpr auto Map( Fn const &fn ) {
-		return pipelines_impl::Map_t<Fn>{ fn };
+		return pimple::Map_t<Fn>{ fn };
 	};
 
 	template<typename Fn>
 	[[nodiscard]] constexpr auto MapApply( Fn const &fn ) {
-		return pipelines_impl::MapApply_t<Fn>{ fn };
+		return pimple::MapApply_t<Fn>{ fn };
 	}
 
 	template<typename T, typename Compare = std::less<>>
 	[[nodiscard]] constexpr auto
 	Clamp( T const &lo, T const &hi, Compare compare = Compare{ } ) {
-		return pipelines_impl::Clamp_t<T, Compare>{
+		return pimple::Clamp_t<T, Compare>{
 		  std::move( lo ), std::move( hi ), std::move( compare ) };
 	}
 } // namespace daw::pipelines

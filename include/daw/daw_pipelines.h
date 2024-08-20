@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "pipelines/take_view.h"
+
 #include "pipelines/algorithm.h"
 #include "pipelines/concat_view.h"
 #include "pipelines/enumerate.h"
@@ -22,7 +24,6 @@
 #include "pipelines/print.h"
 #include "pipelines/range.h"
 #include "pipelines/swizzle.h"
-#include "pipelines/take.h"
 #include "pipelines/to.h"
 #include "pipelines/unique_view.h"
 #include "pipelines/zip_view.h"

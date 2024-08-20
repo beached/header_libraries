@@ -14,7 +14,7 @@
 #include <iterator>
 #include <type_traits>
 
-namespace daw::pipelines::pipelines_impl {
+namespace daw::pipelines::pimple {
 	template<typename T, std::size_t N>
 	void array_test( std::array<T, N> const & );
 
@@ -71,7 +71,7 @@ namespace daw::pipelines::pipelines_impl {
 					return *first++;
 				}
 				if constexpr( std::is_same_v<decltype( Default ),
-				                             pipelines_impl::UseTypeDefault> ) {
+				                             pimple::UseTypeDefault> ) {
 					return value_t{ };
 				} else if constexpr( std::is_invocable_v<decltype( Default )> ) {
 					return Default( );
@@ -89,29 +89,29 @@ namespace daw::pipelines::pipelines_impl {
 			return ToArray<Array, Default>{ }( maybe_view{ value } );
 		}
 	};
-} // namespace daw::pipelines::pipelines_impl
+} // namespace daw::pipelines::pimple
 
 namespace daw::pipelines {
 	/// Convert Range to a Container that has deduction guides to get the
 	/// value_type from two iterators or a single value
 	template<template<typename...> typename Container>
 	[[nodiscard]] constexpr auto To( ) {
-		return pipelines_impl::ToTemplateTemplateContainer<Container>{ };
+		return pimple::ToTemplateTemplateContainer<Container>{ };
 	}
 
 	/// For fully qualified names, construct a compatible Container, that isn't
 	/// std::array, from a Range or a single value
 	template<typename Container>
-	requires( not requires( Container c ) { pipelines_impl::array_test( c ); } )
+	requires( not requires( Container c ) { pimple::array_test( c ); } )
 	  [[nodiscard]] constexpr auto To( ) {
-		return pipelines_impl::ToContainer<Container>{ };
+		return pimple::ToContainer<Container>{ };
 	}
 
 	/// Construct a std::array from a Range
 	/// TODO: add single value method
-	template<typename Array, auto Default = pipelines_impl::UseTypeDefault{ }>
-	requires( requires( Array a ) { pipelines_impl::array_test( a ); } )
+	template<typename Array, auto Default = pimple::UseTypeDefault{ }>
+	requires( requires( Array a ) { pimple::array_test( a ); } )
 	  [[nodiscard]] constexpr auto To( ) {
-		return pipelines_impl::ToArray<Array, Default>{ };
+		return pimple::ToArray<Array, Default>{ };
 	}
 } // namespace daw::pipelines

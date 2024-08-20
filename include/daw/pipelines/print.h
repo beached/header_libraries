@@ -18,20 +18,23 @@
 #include <type_traits>
 
 namespace daw::pipelines {
-	namespace pipelines_impl {
+	namespace pimple {
 		struct Print_t {
 
 			DAW_ATTRIB_NOINLINE
 			[[nodiscard]] inline decltype( auto ) operator( )( auto &&r ) const {
-				if constexpr( not Range<DAW_TYPEOF( r )> ) {
-					daw::println( "{}", r );
-				} else {
+				using R = DAW_TYPEOF( r );
+				if constexpr( is_tuple_like_v<R> ) {
+					daw::println( "{}", daw::fmt_tuple( r ) );
+				} else if constexpr( Range<R> ) {
 					daw::println( "{}", daw::fmt_range( r ) );
+				} else {
+					daw::println( "{}", r );
 				}
 				return DAW_FWD( r );
 			}
 		};
-	} // namespace pipelines_impl
+	} // namespace pimple
 
-	inline constexpr auto Print = pipelines_impl::Print_t{ };
+	inline constexpr auto Print = pimple::Print_t{ };
 } // namespace daw::pipelines

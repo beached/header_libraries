@@ -17,7 +17,7 @@
 #include <utility>
 
 namespace daw::pipelines {
-	namespace pipelines_impl {
+	namespace pimple {
 		template<typename... Ts>
 		struct tuple_pair_t {
 			using type = std::tuple<Ts...>;
@@ -30,25 +30,21 @@ namespace daw::pipelines {
 
 		template<typename... Ts>
 		using tuple_pair = typename tuple_pair_t<Ts...>::type;
-	} // namespace pipelines_impl
+	} // namespace pimple
 	template<Iterator... Iterators>
 	struct zip_iterator {
 		static_assert( sizeof...( Iterators ) > 0,
 		               "Empty zip iterator is unsupported" );
 
-	private:
-	public:
 		using iterator_category =
 		  daw::common_iterator_category_t<iter_category_t<Iterators>...>;
 		static_assert( not std::same_as<void, iterator_category> );
-		using types_t = pipelines_impl::tuple_pair<Iterators...>;
+		using types_t = pimple::tuple_pair<Iterators...>;
 		static constexpr std::size_t types_size_v = sizeof...( Iterators );
-		using value_type =
-		  pipelines_impl::tuple_pair<daw::iter_value_t<Iterators>...>;
-		using reference =
-		  pipelines_impl::tuple_pair<daw::iter_reference_t<Iterators>...>;
+		using value_type = pimple::tuple_pair<daw::iter_value_t<Iterators>...>;
+		using reference = pimple::tuple_pair<daw::iter_reference_t<Iterators>...>;
 		using const_reference =
-		  pipelines_impl::tuple_pair<daw::iter_const_reference_t<Iterators>...>;
+		  pimple::tuple_pair<daw::iter_const_reference_t<Iterators>...>;
 		using difference_type = std::ptrdiff_t;
 		using i_am_a_daw_zip_iterator_class = void;
 
@@ -88,13 +84,13 @@ namespace daw::pipelines {
 		}
 
 		template<size_t... Is>
-		[[nodiscard]] constexpr reference
+		[[nodiscard]] DAW_ATTRIB_FLATINLINE constexpr reference
 		get_items( std::index_sequence<Is...> ) noexcept {
 			return { *std::get<Is>( m_values )... };
 		}
 
 		template<size_t... Is>
-		[[nodiscard]] constexpr const_reference
+		[[nodiscard]] DAW_ATTRIB_FLATINLINE constexpr const_reference
 		get_items( std::index_sequence<Is...> ) const noexcept {
 			return { *std::get<Is>( m_values )... };
 		}
@@ -139,6 +135,7 @@ namespace daw::pipelines {
 
 		[[nodiscard]] constexpr bool
 		operator!=( zip_iterator const &rhs ) const noexcept {
+			// we don't know if they are the same length.  Return false if any are equal
 			return [&]<std::size_t... Is>( std::index_sequence<Is...> ) -> bool {
 				using std::get;
 				auto result =
@@ -251,7 +248,7 @@ namespace daw::pipelines {
 	};
 
 	template<Range... Ranges>
-	zip_view( Ranges... ) -> zip_view<Ranges...>;
+	zip_view( Ranges &&... ) -> zip_view<Ranges...>;
 
 	/// Zip any number of containers and then the containers in the current
 	/// pipeline.  If the Range passed is a zip_view or tuple<Ranges> it will

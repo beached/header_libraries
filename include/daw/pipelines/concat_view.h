@@ -118,7 +118,7 @@ namespace daw::pipelines {
 	template<typename... Ranges>
 	concat_view( Ranges... ) -> concat_view<Ranges...>;
 
-	namespace pipelines_impl {
+	namespace pimple {
 		struct Concat_t {
 			template<typename R>
 			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
@@ -149,6 +149,6 @@ namespace daw::pipelines {
 				}
 			}
 		};
-	} // namespace pipelines_impl
-	inline constexpr auto Concat = pipelines_impl::Concat_t{ };
+	} // namespace pimple
+	inline constexpr auto Concat = pimple::Concat_t{ };
 } // namespace daw::pipelines

@@ -20,10 +20,9 @@
 
 #include <cstddef>
 #include <functional>
-#include <memory>
 #include <utility>
 
-namespace daw::pipelines::pipelines_impl {
+namespace daw::pipelines::pimple {
 	template<typename Fn>
 	[[nodiscard]] constexpr auto invoke_if_needed( Fn &&fn ) {
 		if constexpr( requires { fn( ); } ) {
@@ -101,26 +100,26 @@ namespace daw::pipelines::pipelines_impl {
 			return std::tuple{ invoke_if_needed( maybe_lift( DAW_FWD( fs ) ) )... };
 		}
 	};
-} // namespace daw::pipelines::pipelines_impl
+} // namespace daw::pipelines::pimple
 
 namespace daw::pipelines {
 	template<Range R, typename... Fns>
 	DAW_ATTRIB_FLATTEN constexpr auto pipeline( R &&r, Fns &&...fns ) {
-		return pipelines_impl::pipeline(
-		  pipelines_impl::fix_range( DAW_FWD( r ) ),
-		  pipelines_impl::make_tpfns<true>( DAW_FWD( fns )... ) );
+		return pimple::pipeline( pimple::fix_range( DAW_FWD( r ) ),
+		                         pimple::make_tpfns<true>( DAW_FWD( fns )... ) );
 	}
 
 	template<typename Fn, typename... Fns>
 	requires( not Range<Fn> ) //
 	  DAW_ATTRIB_FLATTEN constexpr auto pipeline( Fn &&fn, Fns &&...fns ) {
-		return [tpfns = pipelines_impl::make_tpfns<false>(
+		// Store all passed functions as they must outlive the call to pipeline
+		return [tpfns = pimple::make_tpfns<false>(
 		          DAW_FWD( fn ), DAW_FWD( fns )... )]( Range auto &&r ) {
 			// We are going to forward refs to the current tuple to ensure it is
 			// only stored here if there are large callables passed
 			return [&]<std::size_t... Is>( std::index_sequence<Is...> ) {
-				return pipelines_impl::pipeline(
-				  pipelines_impl::fix_range( DAW_FWD( r ) ),
+				return pimple::pipeline(
+				  pimple::fix_range( DAW_FWD( r ) ),
 				  std::forward_as_tuple( std::get<Is>( tpfns )... ) );
 			}( std::make_index_sequence<std::tuple_size_v<decltype( tpfns )>>{ } );
 		};
