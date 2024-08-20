@@ -43,35 +43,36 @@ namespace daw::pipelines {
 		  , m_last( last )
 		  , filt( std::move( fn ) ) {}
 
-		[[nodiscard]] constexpr filter_view begin( ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr filter_view begin( ) const {
 			return *this;
 		}
 
-		[[nodiscard]] constexpr filter_view end( ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr filter_view end( ) const {
 			return filter_view( m_last, m_last, filt );
 		}
 
-		[[nodiscard]] constexpr reference operator*( ) {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference operator*( ) {
 			return *m_first;
 		}
 
-		[[nodiscard]] constexpr const_reference operator*( ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_reference
+		operator*( ) const {
 			return *m_first;
 		}
 
-		[[nodiscard]] constexpr pointer operator->( ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer operator->( ) const {
 			return m_first.operator->( );
 		}
 
-		[[nodiscard]] constexpr bool good( ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool good( ) const {
 			return m_first != m_last;
 		}
 
-		[[nodiscard]] explicit constexpr operator bool( ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE explicit constexpr operator bool( ) const {
 			return good( );
 		}
 
-		constexpr filter_view &operator++( ) {
+		DAW_ATTRIB_INLINE constexpr filter_view &operator++( ) {
 			if( not good( ) ) {
 				return *this;
 			}
@@ -82,19 +83,19 @@ namespace daw::pipelines {
 			return *this;
 		}
 
-		[[nodiscard]] constexpr filter_view operator++( int ) {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr filter_view operator++( int ) {
 			auto result = *this;
 			operator++( );
 			return result;
 		}
 
-		[[nodiscard]] constexpr friend bool operator==( filter_view const &lhs,
-		                                                filter_view const &rhs ) {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
+		operator==( filter_view const &lhs, filter_view const &rhs ) {
 			return lhs.m_first == rhs.m_first;
 		}
 
-		[[nodiscard]] constexpr friend bool operator!=( filter_view const &lhs,
-		                                                filter_view const &rhs ) {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
+		operator!=( filter_view const &lhs, filter_view const &rhs ) {
 			return lhs.m_first != rhs.m_first;
 		}
 	};

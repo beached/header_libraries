@@ -43,75 +43,75 @@ namespace daw::pipelines {
 		  , m_func( f ) {}
 
 	private:
-		[[nodiscard]] constexpr decltype( auto ) raw_get( size_type n )
-		  requires( RandomIterator<Iterator> ) {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr decltype( auto )
+		raw_get( size_type n ) requires( RandomIterator<Iterator> ) {
 			return *( m_iter + static_cast<difference_type>( n ) );
 		}
 
-		[[nodiscard]] constexpr decltype( auto ) raw_get( size_type n ) const
-		  requires( RandomIterator<Iterator> ) {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr decltype( auto )
+		raw_get( size_type n ) const requires( RandomIterator<Iterator> ) {
 			return *( m_iter + static_cast<difference_type>( n ) );
 		}
 
 	public:
-		[[nodiscard]] constexpr value_type operator[]( size_type n ) const
-		  requires( RandomIterator<Iterator> ) {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr value_type
+		operator[]( size_type n ) const requires( RandomIterator<Iterator> ) {
 			return std::invoke( m_func, raw_get( n ) );
 		}
 
-		[[nodiscard]] constexpr value_type operator*( ) {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr value_type operator*( ) {
 			return std::invoke( m_func, *m_iter );
 		}
 
-		[[nodiscard]] constexpr value_type operator*( ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr value_type operator*( ) const {
 			return std::invoke( m_func, *m_iter );
 		}
 
-		[[nodiscard]] constexpr pointer operator->( ) {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer operator->( ) {
 			return poiner( std::invoke( m_func, *m_iter ) );
 		}
 
-		[[nodiscard]] constexpr pointer operator->( ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer operator->( ) const {
 			return poiner( std::invoke( m_func, *m_iter ) );
 		}
 
-		constexpr map_iterator &operator++( ) {
+		DAW_ATTRIB_INLINE constexpr map_iterator &operator++( ) {
 			++m_iter;
 			return *this;
 		}
 
-		[[nodiscard]] constexpr map_iterator operator++( int ) {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr map_iterator operator++( int ) {
 			map_iterator result = *this;
 			++m_iter;
 			return result;
 		}
 
-		constexpr map_iterator &operator--( )
+		DAW_ATTRIB_INLINE constexpr map_iterator &operator--( )
 		  requires( BidirectionalIterator<Iterator> ) {
 			--m_iter;
 			return *this;
 		}
 
-		[[nodiscard]] constexpr map_iterator operator--( int )
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr map_iterator operator--( int )
 		  requires( BidirectionalIterator<Iterator> ) {
 			map_iterator result = *this;
 			--m_iter;
 			return result;
 		}
 
-		constexpr map_iterator &operator+=( difference_type n )
+		DAW_ATTRIB_INLINE constexpr map_iterator &operator+=( difference_type n )
 		  requires( RandomIterator<Iterator> ) {
 			m_iter += n;
 			return *this;
 		}
 
-		constexpr map_iterator &operator-=( difference_type n )
+		DAW_ATTRIB_INLINE constexpr map_iterator &operator-=( difference_type n )
 		  requires( RandomIterator<Iterator> ) {
 			m_iter -= n;
 			return *this;
 		}
 
-		[[nodiscard]] constexpr map_iterator
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr map_iterator
 		operator+( difference_type n ) const noexcept
 		  requires( RandomIterator<Iterator> ) {
 			map_iterator result = *this;
@@ -119,7 +119,7 @@ namespace daw::pipelines {
 			return result;
 		}
 
-		[[nodiscard]] constexpr map_iterator
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr map_iterator
 		operator-( difference_type n ) const noexcept
 		  requires( RandomIterator<Iterator> ) {
 			map_iterator result = *this;
@@ -127,41 +127,41 @@ namespace daw::pipelines {
 			return result;
 		}
 
-		[[nodiscard]] constexpr difference_type operator-( map_iterator const &rhs )
-		  requires( RandomIterator<Iterator> ) {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr difference_type
+		operator-( map_iterator const &rhs ) requires( RandomIterator<Iterator> ) {
 			return m_iter - rhs.m_iter;
 		}
 
-		[[nodiscard]] constexpr friend bool operator==( map_iterator const &lhs,
-		                                                map_iterator const &rhs ) {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
+		operator==( map_iterator const &lhs, map_iterator const &rhs ) {
 			return lhs.m_iter == rhs.m_iter;
 		}
 
-		[[nodiscard]] constexpr friend bool operator!=( map_iterator const &lhs,
-		                                                map_iterator const &rhs ) {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
+		operator!=( map_iterator const &lhs, map_iterator const &rhs ) {
 			return lhs.m_iter != rhs.m_iter;
 		}
 
-		[[nodiscard]] constexpr friend bool operator<( map_iterator const &lhs,
-		                                               map_iterator const &rhs )
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
+		operator<( map_iterator const &lhs, map_iterator const &rhs )
 		  requires( RandomIterator<Iterator> ) {
 			return lhs.m_iter < rhs.m_iter;
 		}
 
-		[[nodiscard]] constexpr friend bool operator<=( map_iterator const &lhs,
-		                                                map_iterator const &rhs )
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
+		operator<=( map_iterator const &lhs, map_iterator const &rhs )
 		  requires( RandomIterator<Iterator> ) {
 			return lhs.m_iter <= rhs.m_iter;
 		}
 
-		[[nodiscard]] constexpr friend bool operator>( map_iterator const &lhs,
-		                                               map_iterator const &rhs )
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
+		operator>( map_iterator const &lhs, map_iterator const &rhs )
 		  requires( RandomIterator<Iterator> ) {
 			return lhs.m_iter > rhs.m_iter;
 		}
 
-		[[nodiscard]] constexpr friend bool operator>=( map_iterator const &lhs,
-		                                                map_iterator const &rhs )
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
+		operator>=( map_iterator const &lhs, map_iterator const &rhs )
 		  requires( RandomIterator<Iterator> ) {
 			return lhs.m_iter >= rhs.m_iter;
 		}
@@ -186,11 +186,11 @@ namespace daw::pipelines {
 		  : m_first( first, fn )
 		  , m_last( last, fn ) {}
 
-		[[nodiscard]] constexpr iterator begin( ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr iterator begin( ) const {
 			return m_first;
 		}
 
-		[[nodiscard]] constexpr iterator end( ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr iterator end( ) const {
 			return m_last;
 		}
 	};
@@ -233,8 +233,10 @@ namespace daw::pipelines {
 				static_assert( traits::is_applicable_v<Fn, range_reference_t<R>>,
 				               "MapApply requires the function to be able to be called "
 				               "with apply and the range_reference_t" );
-//				static_assert( traits::NoVoidApplyResults<Fn, range_reference_t<R>>,
-//				               "MapApply requires the result to not be void" );
+				//				static_assert( traits::NoVoidApplyResults<Fn,
+				// range_reference_t<R>>, 				               "MapApply requires the
+				// result to not be void"
+				//);
 				auto func = m_func;
 				return map_view( std::begin( r ), std::end( r ), [=]( auto &&tp ) {
 					return std::apply( func, tp );

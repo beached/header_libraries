@@ -59,31 +59,32 @@ namespace daw::pipelines {
 		  : m_iter( std::move( first ) )
 		  , m_count( static_cast<difference_type>( how_many ) ) {}
 
-		constexpr sized_iterator &operator++( ) {
+		DAW_ATTRIB_INLINE constexpr sized_iterator &operator++( ) {
 			increment( );
 			return *this;
 		}
 
-		[[nodiscard]] constexpr sized_iterator operator++( int ) {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr sized_iterator operator++( int ) {
 			auto tmp = *this;
 			increment( );
 			return tmp;
 		}
 
-		[[nodiscard]] constexpr reference operator*( ) noexcept {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference operator*( ) noexcept {
 			return *m_iter;
 		}
 
-		[[nodiscard]] constexpr const_reference operator*( ) const noexcept {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_reference
+		operator*( ) const noexcept {
 			return *m_iter;
 		}
 
-		[[nodiscard]] constexpr bool
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
 		operator==( sized_iterator const &rhs ) const noexcept {
 			return m_count == rhs.m_count;
 		}
 
-		[[nodiscard]] constexpr bool
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
 		operator!=( sized_iterator const &rhs ) const noexcept {
 			return m_count != rhs.m_count;
 		}
@@ -95,7 +96,7 @@ namespace daw::pipelines {
 			return *this;
 		}
 
-		[[nodiscard]] constexpr sized_iterator operator--( int )
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr sized_iterator operator--( int )
 		  requires( BidirectionalIteratorTag<iterator_category> ) {
 			auto tmp = *this;
 			decrement( );
@@ -103,12 +104,14 @@ namespace daw::pipelines {
 		}
 
 		// random access iterator interface
-		[[nodiscard]] constexpr reference operator[]( difference_type n )
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference
+		operator[]( difference_type n )
 		  requires( RandomIteratorTag<iterator_category> ) {
 			return m_iter[n];
 		}
 
-		[[nodiscard]] constexpr reference operator[]( difference_type n ) const
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference
+		operator[]( difference_type n ) const
 		  requires( RandomIteratorTag<iterator_category> ) {
 			return m_iter[n];
 		}
@@ -144,22 +147,26 @@ namespace daw::pipelines {
 			return rhs.m_count - m_count;
 		}
 
-		[[nodiscard]] constexpr bool operator<( sized_iterator const &rhs )
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+		operator<( sized_iterator const &rhs )
 		  requires( RandomIteratorTag<iterator_category> ) {
 			return m_count > rhs.m_count;
 		}
 
-		[[nodiscard]] constexpr bool operator<=( sized_iterator const &rhs )
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+		operator<=( sized_iterator const &rhs )
 		  requires( RandomIteratorTag<iterator_category> ) {
 			return m_count >= rhs.m_count;
 		}
 
-		[[nodiscard]] constexpr bool operator>( sized_iterator const &rhs )
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+		operator>( sized_iterator const &rhs )
 		  requires( RandomIteratorTag<iterator_category> ) {
 			return m_count < rhs.m_count;
 		}
 
-		[[nodiscard]] constexpr bool operator>=( sized_iterator const &rhs )
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+		operator>=( sized_iterator const &rhs )
 		  requires( RandomIteratorTag<iterator_category> ) {
 			return m_count <= rhs.m_count;
 		}
@@ -196,31 +203,32 @@ namespace daw::pipelines {
 		  , m_last( last )
 		  , m_count( static_cast<difference_type>( how_many ) ) {}
 
-		constexpr sized_iterator &operator++( ) {
+		DAW_ATTRIB_INLINE constexpr sized_iterator &operator++( ) {
 			increment( );
 			return *this;
 		}
 
-		[[nodiscard]] constexpr sized_iterator operator++( int ) {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr sized_iterator operator++( int ) {
 			auto tmp = *this;
 			increment( );
 			return tmp;
 		}
 
-		[[nodiscard]] constexpr reference operator*( ) noexcept {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference operator*( ) noexcept {
 			return *m_first;
 		}
 
-		[[nodiscard]] constexpr const_reference operator*( ) const noexcept {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_reference
+		operator*( ) const noexcept {
 			return *m_first;
 		}
 
-		[[nodiscard]] constexpr bool
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
 		operator==( sized_iterator const &rhs ) const noexcept {
 			return m_count == rhs.m_count;
 		}
 
-		[[nodiscard]] constexpr bool
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
 		operator!=( sized_iterator const &rhs ) const noexcept {
 			return m_count != rhs.m_count;
 		}

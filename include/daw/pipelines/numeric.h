@@ -47,7 +47,7 @@ namespace daw::pipelines {
 
 		struct SumKahanBabushkaNeumaier_t {
 			template<Range R>
-			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+			[[nodiscard]] DAW_ATTRIB_NOINLINE DAW_CPP23_STATIC_CALL_OP constexpr auto
 			operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
 				using fp_t = range_value_t<R>;
 				static_assert( std::is_floating_point_v<fp_t>,
@@ -70,8 +70,10 @@ namespace daw::pipelines {
 	} // namespace pimple
 
 	inline constexpr auto Sum = pimple::sum_t{ };
+
 	inline constexpr auto SumKahanBabushkaNeumaier =
 	  pimple::SumKahanBabushkaNeumaier_t{ };
+
 	inline constexpr auto Count = pimple::count_t{ };
 
 	[[nodiscard]] constexpr auto CountIf( auto &&fn ) {
