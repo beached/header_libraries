@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/daw_iterator_traits.h"
+#include "daw/daw_traits.h"
 #include "range.h"
 
 #include <cstddef>
@@ -138,7 +139,12 @@ namespace daw::pipelines {
 
 		[[nodiscard]] constexpr bool
 		operator!=( zip_iterator const &rhs ) const noexcept {
-			return m_values != rhs.m_values;
+			return [&]<std::size_t... Is>( std::index_sequence<Is...> ) -> bool {
+				using std::get;
+				auto result =
+				  ( ( get<Is>( m_values ) == get<Is>( rhs.m_values ) ) or ... );
+				return not result;
+			}( std::make_index_sequence<sizeof...( Iterators )>{ } );
 		}
 
 		// bidirectional iterator interface

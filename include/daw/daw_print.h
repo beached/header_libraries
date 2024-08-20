@@ -23,8 +23,20 @@ namespace daw {
 	}
 
 	template<typename... Args>
+	void vprint( FILE *fout, std::string_view fmt, Args &&...args ) {
+		auto const r =
+		  std::vformat( fmt, std::make_format_args( DAW_FWD( args )... ) );
+		(void)std::fwrite( std::data( r ), 1, r.size( ), fout );
+	}
+
+	template<typename... Args>
 	void print( std::format_string<Args...> fmt, Args &&...args ) {
 		daw::print( stdout, std::move( fmt ), DAW_FWD( args )... );
+	}
+
+	template<typename... Args>
+	void vprint( std::string_view fmt, Args &&...args ) {
+		vprint( stdout, fmt, DAW_FWD( args )... );
 	}
 
 	template<typename... Args>
@@ -34,9 +46,21 @@ namespace daw {
 	}
 
 	template<typename... Args>
+	void vprintln( FILE *f, std::string fmt, Args &&...args ) {
+		fmt += '\n';
+		daw::print( f, fmt, DAW_FWD( args )... );
+	}
+
+	template<typename... Args>
 	void println( std::format_string<Args...> fmt, Args &&...args ) {
 		daw::print(
 		  stdout, "{}\n", std::format( std::move( fmt ), DAW_FWD( args )... ) );
+	}
+
+	template<typename... Args>
+	void vprintln( std::string fmt, Args &&...args ) {
+		fmt += '\n';
+		daw::print( stdout, fmt, DAW_FWD( args )... );
 	}
 
 	void println( ) {

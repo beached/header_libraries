@@ -10,6 +10,8 @@
 
 #include "daw_consteval.h"
 #include "daw_cpp_feature_check.h"
+#include "daw_parser_helper_sv.h"
+#include "daw_string_view.h"
 
 #include <cstdlib>
 
@@ -31,4 +33,17 @@ namespace daw {
 
 	template<auto Value>
 	inline constexpr auto constant_v = constant<Value>{ };
+
+#if defined( DAW_HAS_CPP_CONSTEVAL )
+	// TODO check for __cpp_user_defined_literal support if there is one with a
+	// version since 2008
+	template<char... Cs>
+	consteval auto operator""_c( ) {
+		constexpr char const str[] = { Cs..., '\0' };
+		constexpr daw::string_view sv = str;
+		constexpr auto result =
+		  daw::parser::parse_unsigned_int<unsigned long long>( sv );
+		return constant<result>{ };
+	}
+#endif
 } // namespace daw

@@ -10,6 +10,7 @@
 
 #include "pipelines/algorithm.h"
 #include "pipelines/concat_view.h"
+#include "pipelines/enumerate.h"
 #include "pipelines/filter_view.h"
 #include "pipelines/foreach.h"
 #include "pipelines/iota_view.h"
@@ -18,7 +19,7 @@
 #include "pipelines/numeric.h"
 #include "pipelines/pipeline.h"
 #include "pipelines/predicates.h"
-#include "pipelines/println.h"
+#include "pipelines/print.h"
 #include "pipelines/range.h"
 #include "pipelines/swizzle.h"
 #include "pipelines/take.h"

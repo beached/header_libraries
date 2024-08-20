@@ -199,62 +199,93 @@ namespace daw::pipelines {
 	template<typename I, typename F>
 	map_view( I, I, F ) -> map_view<I, F>;
 
-	template<typename Fn>
-	[[nodiscard]] constexpr auto Map( Fn const &fn ) {
-		return [func = DAW_FWD( fn )]( auto &&r ) {
-			using R = DAW_TYPEOF( r );
-			if constexpr( Range<R> ) {
-				static_assert( std::is_invocable_v<Fn, range_reference_t<R>>,
-				               "Map requires the function to be able to be called "
-				               "with invoke and the range_reference_t" );
-				static_assert( traits::NoVoidResults<Fn, range_reference_t<R>>,
-				               "Map requires the result to not be void" );
-				return map_view( std::begin( r ), std::end( r ), func );
-			} else {
-				static_assert( std::is_invocable_v<Fn, R>,
-				               "Map requires the function to be able to be called "
-				               "with invoke and passed value" );
-				static_assert( traits::NoVoidResults<Fn, R>,
-				               "Map requires the result to not be void" );
-				return std::invoke( func, DAW_FWD( r ) );
+	namespace pipelines_impl {
+		template<typename Fn>
+		struct Map_t {
+			Fn m_func;
+
+			[[nodiscard]] constexpr auto operator( )( auto &&r ) const {
+				using R = DAW_TYPEOF( r );
+				if constexpr( Range<R> ) {
+					static_assert( std::is_invocable_v<Fn, range_reference_t<R>>,
+					               "Map requires the function to be able to be called "
+					               "with invoke and the range_reference_t" );
+					static_assert( traits::NoVoidResults<Fn, range_reference_t<R>>,
+					               "Map requires the result to not be void" );
+					return map_view( std::begin( r ), std::end( r ), m_func );
+				} else {
+					static_assert( std::is_invocable_v<Fn, R>,
+					               "Map requires the function to be able to be called "
+					               "with invoke and passed value" );
+					static_assert( traits::NoVoidResults<Fn, R>,
+					               "Map requires the result to not be void" );
+					return std::invoke( m_func, DAW_FWD( r ) );
+				}
 			}
 		};
+
+		template<typename Fn>
+		struct MapApply_t {
+			Fn m_func;
+
+			[[nodiscard]] constexpr auto operator( )( auto &&r ) const {
+				using R = DAW_TYPEOF( r );
+				static_assert( traits::is_applicable_v<Fn, range_reference_t<R>>,
+				               "MapApply requires the function to be able to be called "
+				               "with apply and the range_reference_t" );
+				static_assert( traits::NoVoidApplyResults<Fn, range_reference_t<R>>,
+				               "MapApply requires the result to not be void" );
+				auto func = m_func;
+				return map_view( std::begin( r ), std::end( r ), [=]( auto &&tp ) {
+					return std::apply( func, tp );
+				} );
+			}
+		};
+
+		template<typename T, typename Compare>
+		struct Clamp_t {
+			T lo;
+			T hi;
+			[[no_unique_address]] Compare compare;
+
+			[[nodiscard]] constexpr auto operator( )( auto &&r ) const {
+				using R = DAW_TYPEOF( r );
+				auto h = hi;
+				auto l = lo;
+				auto c = compare;
+				if constexpr( Range<R> ) {
+					using value_type = range_value_t<R>;
+					static_assert( std::convertible_to<T, value_type>,
+					               "Clamp requires a lo/hi values convertible to the "
+					               "range value type" );
+					return map_view(
+					  std::begin( r ), std::end( r ), [=]( value_type const &v ) {
+						  return std::clamp( v, l, h, c );
+					  } );
+				} else {
+					static_assert(
+					  std::convertible_to<T, daw::remove_cvref_t<R>>,
+					  "Clamp requires a lo/hi values convertible to the value type" );
+					return std::clamp( r, l, h, c );
+				}
+			}
+		};
+	} // namespace pipelines_impl
+
+	template<typename Fn>
+	[[nodiscard]] constexpr auto Map( Fn const &fn ) {
+		return pipelines_impl::Map_t<Fn>{ fn };
 	};
 
 	template<typename Fn>
 	[[nodiscard]] constexpr auto MapApply( Fn const &fn ) {
-		return [func = DAW_FWD( fn )]<Range R>( R &&r ) {
-			static_assert( traits::is_applicable_v<Fn, range_reference_t<R>>,
-			               "MapApply requires the function to be able to be called "
-			               "with apply and the range_reference_t" );
-			static_assert( traits::NoVoidApplyResults<Fn, range_reference_t<R>>,
-			               "MapApply requires the result to not be void" );
-			return map_view( std::begin( r ), std::end( r ), [=]( auto &&tp ) {
-				return std::apply( func, tp );
-			} );
-		};
+		return pipelines_impl::MapApply_t<Fn>{ fn };
 	}
 
 	template<typename T, typename Compare = std::less<>>
 	[[nodiscard]] constexpr auto
 	Clamp( T const &lo, T const &hi, Compare compare = Compare{ } ) {
-		return [=]( auto &&r ) {
-			using R = DAW_TYPEOF( r );
-			if constexpr( Range<R> ) {
-				using value_type = range_value_t<R>;
-				static_assert(
-				  std::convertible_to<T, value_type>,
-				  "Clamp requires a lo/hi values convertible to the range value type" );
-				return map_view(
-				  std::begin( r ), std::end( r ), [=]( value_type const &v ) {
-					  return std::clamp( v, lo, hi, compare );
-				  } );
-			} else {
-				static_assert(
-				  std::convertible_to<T, daw::remove_cvref_t<R>>,
-				  "Clamp requires a lo/hi values convertible to the value type" );
-				return std::clamp( r, lo, hi, compare );
-			}
-		};
+		return pipelines_impl::Clamp_t<T, Compare>{
+		  std::move( lo ), std::move( hi ), std::move( compare ) };
 	}
 } // namespace daw::pipelines

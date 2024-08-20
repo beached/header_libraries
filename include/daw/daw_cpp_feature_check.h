@@ -150,5 +150,13 @@ inline constexpr bool daw_has_cx_cmath = false;
 #endif
 
 #if defined( __cpp_concepts )
+#if __cpp_concepts >= 202002L
 #define DAW_HAS_CPP_CONCEPTS
+#endif
+#endif
+
+#if defined( __cpp_consteval )
+#if __cpp_consteval >= 201811L
+#define DAW_HAS_CPP_CONSTEVAL
+#endif
 #endif

@@ -10,6 +10,7 @@
 
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
+#include "daw/daw_traits.h"
 #include "daw/daw_visit.h"
 #include "pipeline_traits.h"
 #include "range.h"

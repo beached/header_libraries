@@ -20,9 +20,9 @@
 namespace daw::pipelines {
 	namespace pipelines_impl {
 		struct Print_t {
+
 			DAW_ATTRIB_NOINLINE
-			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP inline decltype( auto )
-			operator( )( auto &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			[[nodiscard]] inline decltype( auto ) operator( )( auto &&r ) const {
 				if constexpr( not Range<DAW_TYPEOF( r )> ) {
 					daw::println( "{}", r );
 				} else {
@@ -32,5 +32,6 @@ namespace daw::pipelines {
 			}
 		};
 	} // namespace pipelines_impl
+
 	inline constexpr auto Print = pipelines_impl::Print_t{ };
 } // namespace daw::pipelines

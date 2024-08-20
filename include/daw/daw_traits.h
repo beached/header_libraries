@@ -951,6 +951,9 @@ namespace daw {
 	inline constexpr std::size_t const bsizeof =
 	  static_cast<size_t>( sizeof( daw::remove_cvref_t<T> ) * 8U );
 
+	template<typename...>
+	using void_t = void;
+
 #if defined( DAW_HAS_CPP_CONCEPTS )
 	template<typename Tp>
 	inline constexpr bool is_tuple_like_v = requires {
@@ -958,5 +961,15 @@ namespace daw {
 		typename std::tuple_element_t<0, daw::remove_cvref_t<Tp>>;
 		get<0>( std::declval<Tp>( ) );
 	};
+#else
+	template<typename Tp, typename = void>
+	inline constexpr bool is_tuple_like_v = false;
+
+	template<typename Tp>
+	inline constexpr bool is_tuple_like_v<
+	  Tp,
+	  void_t<decltype( (void)(std::tuple_size_v<std::remove_cvref_t<Tp>>),
+	                   (void)( get<0>( std::declval<Tp>( ) ) ) ),
+	         typename std::tuple_element_t<0, daw::remove_cvref_t<Tp>>>> = true;
 #endif
 } // namespace daw

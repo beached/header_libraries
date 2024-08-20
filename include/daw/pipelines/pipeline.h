@@ -10,10 +10,12 @@
 
 #include "daw/daw_attributes.h"
 #include "daw/daw_concepts.h"
+#include "daw/daw_constant.h"
 #include "daw/daw_contiguous_view.h"
 #include "daw/daw_move.h"
 #include "daw/daw_remove_cvref.h"
 #include "daw/daw_string_view.h"
+#include "daw/daw_tuple_forward.h"
 #include "pipeline_traits.h"
 
 #include <cstddef>
@@ -22,77 +24,105 @@
 #include <utility>
 
 namespace daw::pipelines::pipelines_impl {
-
 	template<typename Fn>
-	struct pipeline_t {
-		Fn const &fn;
-
-		template<typename R>
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto operator( )( R &&r ) const {
-			if constexpr( std::is_invocable_v<Fn> ) {
-				return std::invoke( fn( ), DAW_FWD( r ) );
-			} else {
-				return std::invoke( fn, DAW_FWD( r ) );
-			}
+	[[nodiscard]] constexpr auto invoke_if_needed( Fn &&fn ) {
+		if constexpr( requires { fn( ); } ) {
+			return fn( );
+		} else {
+			return DAW_FWD( fn );
 		}
+	}
 
-		template<typename R, typename FNNext>
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
-		operator( )( R &&r, FNNext const &fn_next, auto const &...fns ) const {
-			if constexpr( std::is_invocable_v<Fn> ) {
-				return pipeline_t<FNNext>{ fn_next }(
-				  std::invoke( fn( ), DAW_FWD( r ) ), fns... );
-			} else {
-				return pipeline_t<FNNext>{ fn_next }( std::invoke( fn, DAW_FWD( r ) ),
-				                                      fns... );
-			}
+	template<typename R,
+	         typename... Ts,
+	         std::size_t Idx = ( sizeof...( Ts ) - 1 )>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
+	pipeline( R &&r,
+	          std::tuple<Ts...> const &tpfns,
+	          daw::constant<Idx> = daw::constant_v<Idx> ) {
+		using std::get;
+		if constexpr( Idx > 0 ) {
+			return std::invoke(
+			  get<Idx>( tpfns ),
+			  pipeline( DAW_FWD( r ), tpfns, daw::constant_v<Idx - 1> ) );
+		} else {
+			return std::invoke( get<0>( tpfns ), DAW_FWD( r ) );
 		}
+	}
 
-		template<typename R, typename FNNext>
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
-		operator( )( R &&r, FNNext const &fn_next, auto const &...fns ) {
-			if constexpr( std::is_invocable_v<Fn> ) {
-				return pipeline_t<FNNext>{ fn_next }(
-				  std::invoke( fn( ), DAW_FWD( r ) ), fns... );
-			} else {
-				return pipeline_t<FNNext>{ fn_next }( std::invoke( fn, DAW_FWD( r ) ),
-				                                      fns... );
-			}
+	// We know the string s is owned above the call to fix_range
+	template<std::size_t N>
+	[[nodiscard]] constexpr auto fix_range( char const ( &s )[N] ) {
+		return daw::string_view( s, N - 1 );
+	}
+
+	template<typename T, std::size_t N>
+	[[nodiscard]] constexpr auto fix_range( T ( &s )[N] ) {
+		return daw::contiguous_view( s, N );
+	}
+
+	[[nodiscard]] constexpr decltype( auto ) fix_range( Range auto &&r ) {
+		return DAW_FWD( r );
+	}
+
+	template<typename F>
+	struct lifted_t {
+		F f;
+
+		template<typename... Args>
+		[[nodiscard]] constexpr auto operator( )( Args &&...args ) const {
+			static_assert( std::is_invocable_v<F, Args...> );
+			return f( DAW_FWD( args )... );
 		}
 	};
-	template<typename Fn>
-	pipeline_t( Fn const & ) -> pipeline_t<Fn>;
+	template<typename F>
+	lifted_t( F ) -> lifted_t<F>;
 
-	template<std::size_t N, typename Fn>
-	[[nodiscard]] constexpr auto
-	pipeline( char const ( &s )[N], Fn const &fn, auto const &...fns ) {
-		return pipeline_t{ fn }( daw::string_view( s, N - 1 ), fns... );
+	template<typename R, typename... Args>
+	[[nodiscard]] constexpr auto maybe_lift( R ( *f )( Args... ) ) {
+		return lifted_t{ f };
 	}
 
-	template<typename T, std::size_t N, typename Fn>
-	[[nodiscard]] constexpr auto
-	pipeline( T ( &r )[N], Fn const &fn, auto const &...fns ) {
-		return pipeline_t{ fn }( daw::contiguous_view( r, N ), fns... );
+	template<typename R, typename... Args>
+	[[nodiscard]] constexpr auto maybe_lift( R ( *&f )( Args... ) ) {
+		return lifted_t{ f };
 	}
 
-	template<typename R, typename Fn>
-	[[nodiscard]] constexpr auto
-	pipeline( R &&r, Fn const &fn, auto const &...fns ) {
-		return pipeline_t{ fn }( DAW_FWD( r ), fns... );
+	[[nodiscard]] constexpr auto maybe_lift( auto f ) {
+		return std::move( f );
 	}
+
+	template<bool DoForward>
+	[[nodiscard]] constexpr auto make_tpfns( auto &&...fs ) {
+		if constexpr( DoForward ) {
+			return daw::forward_nonrvalue_as_tuple(
+			  invoke_if_needed( maybe_lift( DAW_FWD( fs ) ) )... );
+		} else {
+			return std::tuple{ invoke_if_needed( maybe_lift( DAW_FWD( fs ) ) )... };
+		}
+	};
 } // namespace daw::pipelines::pipelines_impl
 
 namespace daw::pipelines {
-	template<typename Fn>
-	DAW_ATTRIB_FLATTEN constexpr auto pipeline( Fn &&fn, auto &&...fns ) {
-		return [=]<typename R>( R &&r ) {
-			return pipelines_impl::pipeline( DAW_FWD( r ), fn, fns... );
-		};
+	template<Range R, typename... Fns>
+	DAW_ATTRIB_FLATTEN constexpr auto pipeline( R &&r, Fns &&...fns ) {
+		return pipelines_impl::pipeline(
+		  pipelines_impl::fix_range( DAW_FWD( r ) ),
+		  pipelines_impl::make_tpfns<true>( DAW_FWD( fns )... ) );
 	}
 
-	template<Range R, typename Fn>
-	DAW_ATTRIB_FLATTEN constexpr auto pipeline( R &&r, Fn &&fn, auto &&...fns ) {
-		return pipelines_impl::pipeline(
-		  DAW_FWD( r ), DAW_FWD( fn ), DAW_FWD( fns )... );
+	template<typename Fn, typename... Fns>
+	requires( not Range<Fn> ) //
+	  DAW_ATTRIB_FLATTEN constexpr auto pipeline( Fn &&fn, Fns &&...fns ) {
+		return [tpfns = pipelines_impl::make_tpfns<false>(
+		          DAW_FWD( fn ), DAW_FWD( fns )... )]( Range auto &&r ) {
+			// We are going to forward refs to the current tuple to ensure it is
+			// only stored here if there are large callables passed
+			return [&]<std::size_t... Is>( std::index_sequence<Is...> ) {
+				return pipelines_impl::pipeline(
+				  pipelines_impl::fix_range( DAW_FWD( r ) ),
+				  std::forward_as_tuple( std::get<Is>( tpfns )... ) );
+			}( std::make_index_sequence<std::tuple_size_v<decltype( tpfns )>>{ } );
+		};
 	}
 } // namespace daw::pipelines
