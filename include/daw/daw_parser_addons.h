@@ -12,6 +12,8 @@
 #include "daw_exception.h"
 #include "daw_parser_helper.h"
 
+#include <limits>
+
 DAW_UNSAFE_BUFFER_FUNC_START
 namespace daw::parser {
 	template<typename ForwardIterator>

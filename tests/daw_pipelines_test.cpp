@@ -6,6 +6,7 @@
 // Official repository: https://github.com/beached/
 //
 
+#include <daw/daw_constant.h>
 #include <daw/daw_ensure.h>
 #include <daw/daw_pipelines.h>
 #include <daw/daw_print.h>
@@ -111,48 +112,48 @@ int main( ) {
 	// Example from https://youtu.be/itnyR9j8y6E?t=404
 	constexpr auto p3 =
 	  pipeline( Map( []( auto i ) {
-	              return std::pair{ i, std::to_string( i ) };
+		            return std::pair{ i, std::to_string( i ) };
 	            } ),
 	            Filter( []( auto const &v ) {
-	              auto lhs = static_cast<std::size_t>( v.first );
-	              auto const h = std::hash<std::string>{ }( v.second );
-	              return lhs >= h;
+		            auto lhs = static_cast<std::size_t>( v.first );
+		            auto const h = std::hash<std::string>{ }( v.second );
+		            return lhs >= h;
 	            } ),
 	            Map( &std::pair<std::size_t, std::string>::second ),
 	            Take( 4 ) );
 
 	for( auto s : p3( iota_view( 1, 10001 ) ) ) {
-	  daw::println( "{}", s );
+		daw::println( "{}", s );
 	}
 
 	auto r2 = pipeline( iota_view( 1, 10001 ),
 	                    Map( []( auto i ) {
-	                      return std::pair{ i, std::to_string( i ) };
+		                    return std::pair{ i, std::to_string( i ) };
 	                    } ),
 	                    Filter( []( auto const &v ) {
-	                      auto lhs = static_cast<std::size_t>( v.first );
-	                      auto const h = std::hash<std::string>{ }( v.second );
-	                      return lhs >= h;
+		                    auto lhs = static_cast<std::size_t>( v.first );
+		                    auto const h = std::hash<std::string>{ }( v.second );
+		                    return lhs >= h;
 	                    } ),
 	                    Map( &std::pair<std::size_t, std::string>::second ),
 	                    Take( 4 ) );
 	for( auto s : r2 ) {
-	  daw::println( "{}", s );
+		daw::println( "{}", s );
 	}
 
 	auto const p4 = pipeline( Filter( []( int x ) {
-	                            return x % 2 == 0;
+		                          return x % 2 == 0;
 	                          } ),
 	                          Map( []( std::optional<int> x ) {
-	                            if( not x ) {
-	                              return iota_view<int>{ 0 };
-	                            }
-	                            return iota_view<int>{ *x };
+		                          if( not x ) {
+			                          return iota_view<int>{ 0 };
+		                          }
+		                          return iota_view<int>{ *x };
 	                          } ),
 	                          Count,
 	                          ToIota,
 	                          Map( []( int x ) {
-	                            return x * 2;
+		                          return x * 2;
 	                          } ) );
 	auto x = p4( std::array{ 1, 2, 3 } );
 	auto y = *std::next( x.begin( ) );
@@ -160,25 +161,25 @@ int main( ) {
 
 	constexpr auto tp0 =
 	  pipeline( Map( []( unsigned i ) {
-	              return std::tuple( i, to_letter( i ) );
+		            return std::tuple( i, to_letter( i ) );
 	            } ),
 	            ForEachApply( []( signed i, char c ) {
-	              daw::println( "{}, {}", i, c );
+		            daw::println( "{}, {}", i, c );
 	            } ),
 	            Swizzle<1, 0, 0>,
 	            ForEachApply( []( char c, signed i, signed j ) {
-	              daw::println( "{}, {}, {}", c, i, j );
+		            daw::println( "{}, {}, {}", c, i, j );
 	            } ) );
 	(void)tp0( iota_view<unsigned>( 0, 52 ) );
 
 	constexpr auto tp1 = pipeline( ZipMore( iota_view<char>( 'A', 'Z' ) ),
 	                               ForEachApply( []( auto... cs ) {
-	                                 if constexpr( sizeof...( cs ) == 2 ) {
-	                                   daw::println( "{}, {}", cs... );
-	                                 } else {
-	                                   static_assert( sizeof...( cs ) == 3 );
-	                                   daw::println( "{}, {}, {}", cs... );
-	                                 }
+		                               if constexpr( sizeof...( cs ) == 2 ) {
+			                               daw::println( "{}, {}", cs... );
+		                               } else {
+			                               static_assert( sizeof...( cs ) == 3 );
+			                               daw::println( "{}, {}, {}", cs... );
+		                               }
 	                               } ) );
 	(void)tp1( iota_view<char>( 'a', 'z' ) );
 	(void)tp1(
@@ -186,7 +187,7 @@ int main( ) {
 
 	static constexpr auto const v = pipeline( zip_view( prices, costs ),
 	                                          MapApply( []( auto pr, auto co ) {
-	                                            return pr - co;
+		                                          return pr - co;
 	                                          } ),
 	                                          Clamp( 5, 100 ),
 	                                          To<std::array<int, 5>> );
@@ -196,23 +197,18 @@ int main( ) {
 	daw::println( "Concat\n{}", daw::fmt_range( v1 ) );
 
 	auto to_array = []<std::size_t ArraySize, typename C>(
-	                  std::integral_constant<std::size_t, ArraySize>,
-	                  C const &c ) {
-	  using value_t = typename C::value_type;
-	  return To<std::array<value_t, ArraySize>>( )( c );
+	                  daw::constant<ArraySize>, C const &c ) {
+		using value_t = typename C::value_type;
+		return To<std::array<value_t, ArraySize>>( )( c );
 	};
 
-	auto m = To<std::map>( )( Map( []( int i ) {
-	  return std::pair{ i, to_letter( i ) };
-	} )( iota_view<int>( 0, 26 ) ) );
-	//
-//}) pipeline( Map( []( int i ) {
-//	                              return std::pair{ i, to_letter( i ) };
-//	                            } ),
-//	                            To<std::map> );
-	// auto const m = pm( iota_view<int>( 0, 26 ) );
+	constexpr auto pm = pipeline( Map( []( int i ) {
+		                              return std::pair{ i, to_letter( i ) };
+	                              } ),
+	                              To<std::map> );
+	auto const m = pm( iota_view<int>( 0, 26 ) );
 	daw::println( "To<std::map>\n{}", daw::fmt_range( m ) );
-	auto va = to_array( std::integral_constant<std::size_t, 15>{ }, v );
+	auto va = to_array( daw::constant<std::size_t{ 15 }>{ }, v );
 
 	auto da = std::array{ 1024.123,
 	                      0.000000013143,
