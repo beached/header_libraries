@@ -33,7 +33,7 @@ namespace daw::pipelines {
 	private:
 		Iterator m_first = Iterator{ };
 		Iterator m_last = Iterator{ };
-		[[no_unique_address]] Filter filt = Filter( );
+		DAW_NO_UNIQUE_ADDRESS Filter filt = Filter( );
 
 	public:
 		explicit filter_view( ) = default;
@@ -105,7 +105,7 @@ namespace daw::pipelines {
 	namespace pimpl {
 		template<typename Fn>
 		struct filter_t {
-			[[no_unique_address]] Fn fn;
+			DAW_NO_UNIQUE_ADDRESS Fn fn;
 
 			template<Range R>
 			[[nodiscard]] constexpr auto operator( )( R &&r ) const {

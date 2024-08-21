@@ -223,6 +223,8 @@ namespace daw::pipelines {
 				}
 			}
 		};
+		template<typename Fn>
+		Map_t( Fn ) -> Map_t<Fn>;
 
 		template<typename Fn>
 		struct MapApply_t {
@@ -243,12 +245,14 @@ namespace daw::pipelines {
 				} );
 			}
 		};
+		template<typename Fn>
+		MapApply_t( Fn ) -> MapApply_t<Fn>;
 
 		template<typename T, typename Compare>
 		struct Clamp_t {
 			T lo;
 			T hi;
-			[[no_unique_address]] Compare compare;
+			DAW_NO_UNIQUE_ADDRESS Compare compare;
 
 			[[nodiscard]] constexpr auto operator( )( auto &&r ) const {
 				using R = DAW_TYPEOF( r );
@@ -272,22 +276,25 @@ namespace daw::pipelines {
 				}
 			}
 		};
+		template<typename T, typename Compare>
+		Clamp_t( T, T, Compare ) -> Clamp_t<T, Compare>;
 	} // namespace pimpl
 
 	template<typename Fn>
-	[[nodiscard]] constexpr auto Map( Fn const &fn ) {
-		return pimpl::Map_t<Fn>{ fn };
+	[[nodiscard]] constexpr auto Map( Fn &&fn ) {
+		return pimpl::Map_t{ DAW_FWD( fn ) };
 	};
 
 	template<typename Fn>
-	[[nodiscard]] constexpr auto MapApply( Fn const &fn ) {
-		return pimpl::MapApply_t<Fn>{ fn };
+	[[nodiscard]] constexpr auto MapApply( Fn &&fn ) {
+		return pimpl::MapApply_t{ DAW_FWD( fn ) };
 	}
 
 	template<typename T, typename Compare = std::less<>>
-	[[nodiscard]] constexpr auto
-	Clamp( T const &lo, T const &hi, Compare compare = Compare{ } ) {
-		return pimpl::Clamp_t<T, Compare>{
-		  std::move( lo ), std::move( hi ), std::move( compare ) };
+	[[nodiscard]] constexpr auto Clamp( T const &lo,
+	                                    std::type_identity_t<T> const &hi,
+	                                    Compare &&compare = Compare{ } ) {
+		return pimpl::Clamp_t{
+		  std::move( lo ), std::move( hi ), DAW_FWD( compare ) };
 	}
 } // namespace daw::pipelines
