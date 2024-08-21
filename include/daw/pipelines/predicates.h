@@ -15,7 +15,7 @@
 #include <type_traits>
 
 namespace daw::pipelines {
-	namespace pimple {
+	namespace pimpl {
 		template<auto... haystack>
 		struct is_one_of_t {
 			explicit is_one_of_t( ) = default;
@@ -37,12 +37,12 @@ namespace daw::pipelines {
 		};
 		template<typename F>
 		not_fn_t( F ) -> not_fn_t<F>;
-	} // namespace pimple
+	} // namespace pimpl
 
 	template<auto... haystack>
-	inline constexpr auto IsOneOf = pimple::is_one_of_t<haystack...>{ };
+	inline constexpr auto IsOneOf = pimpl::is_one_of_t<haystack...>{ };
 
 	[[nodiscard]] constexpr auto Not( auto &&fn ) {
-		return pimple::not_fn_t{ DAW_FWD( fn ) };
+		return pimpl::not_fn_t{ DAW_FWD( fn ) };
 	};
 } // namespace daw::pipelines

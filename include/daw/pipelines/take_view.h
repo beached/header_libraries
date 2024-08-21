@@ -234,7 +234,7 @@ namespace daw::pipelines {
 		}
 	};
 
-	namespace pimple {
+	namespace pimpl {
 		struct Take_t {
 			std::size_t how_many_to_skip = 0;
 			std::size_t how_many = 0;
@@ -268,14 +268,14 @@ namespace daw::pipelines {
 				}
 			}
 		};
-	} // namespace pimple
+	} // namespace pimpl
 
 	[[nodiscard]] constexpr auto Take( std::size_t how_many ) {
-		return pimple::Take_t{ 0, how_many };
+		return pimpl::Take_t{ 0, how_many };
 	}
 
 	[[nodiscard]] constexpr auto Take( std::size_t how_many_to_skip,
 	                                   std::size_t how_many ) {
-		return pimple::Take_t{ how_many_to_skip, how_many };
+		return pimpl::Take_t{ how_many_to_skip, how_many };
 	}
 } // namespace daw::pipelines

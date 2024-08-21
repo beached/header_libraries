@@ -199,7 +199,7 @@ namespace daw::pipelines {
 	template<typename I, typename F>
 	map_view( I, I, F ) -> map_view<I, F>;
 
-	namespace pimple {
+	namespace pimpl {
 		template<typename Fn>
 		struct Map_t {
 			Fn m_func;
@@ -272,22 +272,22 @@ namespace daw::pipelines {
 				}
 			}
 		};
-	} // namespace pimple
+	} // namespace pimpl
 
 	template<typename Fn>
 	[[nodiscard]] constexpr auto Map( Fn const &fn ) {
-		return pimple::Map_t<Fn>{ fn };
+		return pimpl::Map_t<Fn>{ fn };
 	};
 
 	template<typename Fn>
 	[[nodiscard]] constexpr auto MapApply( Fn const &fn ) {
-		return pimple::MapApply_t<Fn>{ fn };
+		return pimpl::MapApply_t<Fn>{ fn };
 	}
 
 	template<typename T, typename Compare = std::less<>>
 	[[nodiscard]] constexpr auto
 	Clamp( T const &lo, T const &hi, Compare compare = Compare{ } ) {
-		return pimple::Clamp_t<T, Compare>{
+		return pimpl::Clamp_t<T, Compare>{
 		  std::move( lo ), std::move( hi ), std::move( compare ) };
 	}
 } // namespace daw::pipelines

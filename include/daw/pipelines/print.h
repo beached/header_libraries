@@ -18,7 +18,7 @@
 #include <type_traits>
 
 namespace daw::pipelines {
-	namespace pimple {
+	namespace pimpl {
 		struct Print_t {
 
 			DAW_ATTRIB_NOINLINE
@@ -34,7 +34,7 @@ namespace daw::pipelines {
 				return DAW_FWD( r );
 			}
 		};
-	} // namespace pimple
+	} // namespace pimpl
 
-	inline constexpr auto Print = pimple::Print_t{ };
+	inline constexpr auto Print = pimpl::Print_t{ };
 } // namespace daw::pipelines

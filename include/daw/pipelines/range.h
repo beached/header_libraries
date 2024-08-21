@@ -11,12 +11,12 @@
 #include <iterator>
 
 namespace daw::pipelines {
-	template<typename Iterator, typename Last>
+	template<Iterator First, Iterator Last>
 	struct range_t {
-		Iterator first;
+		First first;
 		Last last;
 
-		[[nodiscard]] constexpr Iterator begin( ) const {
+		[[nodiscard]] constexpr First begin( ) const {
 			return first;
 		}
 

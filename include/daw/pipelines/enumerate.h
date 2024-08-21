@@ -16,7 +16,7 @@
 #include <cstddef>
 #include <limits>
 
-namespace daw::pipelines::pimple {
+namespace daw::pipelines::pimpl {
 	struct Enumerate_t {
 		template<typename R>
 		[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
@@ -37,10 +37,9 @@ namespace daw::pipelines::pimple {
 			  DAW_FWD( r ) );
 		}
 	};
-} // namespace daw::pipelines::pimple
+} // namespace daw::pipelines::pimpl
 
 namespace daw::pipelines {
-	inline constexpr auto Enumerate = pimple::Enumerate_t{ };
-
-	inline constexpr auto EnumerateApply = pimple::EnumerateApply_t{ };
+	inline constexpr auto Enumerate = pimpl::Enumerate_t{ };
+	inline constexpr auto EnumerateApply = pimpl::EnumerateApply_t{ };
 } // namespace daw::pipelines

@@ -17,7 +17,7 @@
 #include <iterator>
 
 namespace daw::pipelines {
-	namespace pimple {
+	namespace pimpl {
 		struct sum_t {
 			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
 			operator( )( Range auto &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
@@ -45,6 +45,22 @@ namespace daw::pipelines {
 			}
 		};
 
+		template<typename Fn>
+		struct CountIf_t {
+			[[no_unique_address]] Fn fn;
+
+			[[nodiscard]] constexpr std::size_t
+			operator( )( Range auto const &r ) const {
+				std::size_t result = 0;
+				for( auto const &v : r ) {
+					result += static_cast<std::size_t>( func( v ) );
+				}
+				return result;
+			}
+		};
+		template<typename Fn>
+		CountIf_t( Fn ) -> CountIf_t<Fn>;
+
 		struct SumKahanBabushkaNeumaier_t {
 			template<Range R>
 			[[nodiscard]] DAW_ATTRIB_NOINLINE DAW_CPP23_STATIC_CALL_OP constexpr auto
@@ -67,23 +83,15 @@ namespace daw::pipelines {
 				return sum + c;
 			}
 		};
-	} // namespace pimple
+	} // namespace pimpl
 
-	inline constexpr auto Sum = pimple::sum_t{ };
-
+	inline constexpr auto Count = pimpl::count_t{ };
+	inline constexpr auto Sum = pimpl::sum_t{ };
 	inline constexpr auto SumKahanBabushkaNeumaier =
-	  pimple::SumKahanBabushkaNeumaier_t{ };
-
-	inline constexpr auto Count = pimple::count_t{ };
+	  pimpl::SumKahanBabushkaNeumaier_t{ };
 
 	[[nodiscard]] constexpr auto CountIf( auto &&fn ) {
-		return [func = DAW_FWD( fn )]( Range auto const &r ) {
-			std::size_t result = 0;
-			for( auto const &v : r ) {
-				result += static_cast<std::size_t>( func( v ) );
-			}
-			return result;
-		};
+		return pimpl::CountIf_t{ DAW_FWD( fn ) };
 	};
 
 } // namespace daw::pipelines

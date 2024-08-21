@@ -17,7 +17,7 @@
 #include <utility>
 
 namespace daw::pipelines {
-	namespace pimple {
+	namespace pimpl {
 		template<typename... Ts>
 		struct tuple_pair_t {
 			using type = std::tuple<Ts...>;
@@ -30,7 +30,7 @@ namespace daw::pipelines {
 
 		template<typename... Ts>
 		using tuple_pair = typename tuple_pair_t<Ts...>::type;
-	} // namespace pimple
+	} // namespace pimpl
 	template<Iterator... Iterators>
 	struct zip_iterator {
 		static_assert( sizeof...( Iterators ) > 0,
@@ -39,12 +39,12 @@ namespace daw::pipelines {
 		using iterator_category =
 		  daw::common_iterator_category_t<iter_category_t<Iterators>...>;
 		static_assert( not std::same_as<void, iterator_category> );
-		using types_t = pimple::tuple_pair<Iterators...>;
+		using types_t = pimpl::tuple_pair<Iterators...>;
 		static constexpr std::size_t types_size_v = sizeof...( Iterators );
-		using value_type = pimple::tuple_pair<daw::iter_value_t<Iterators>...>;
-		using reference = pimple::tuple_pair<daw::iter_reference_t<Iterators>...>;
+		using value_type = pimpl::tuple_pair<daw::iter_value_t<Iterators>...>;
+		using reference = pimpl::tuple_pair<daw::iter_reference_t<Iterators>...>;
 		using const_reference =
-		  pimple::tuple_pair<daw::iter_const_reference_t<Iterators>...>;
+		  pimpl::tuple_pair<daw::iter_const_reference_t<Iterators>...>;
 		using difference_type = std::ptrdiff_t;
 		using i_am_a_daw_zip_iterator_class = void;
 
@@ -135,7 +135,8 @@ namespace daw::pipelines {
 
 		[[nodiscard]] constexpr bool
 		operator!=( zip_iterator const &rhs ) const noexcept {
-			// we don't know if they are the same length.  Return false if any are equal
+			// we don't know if they are the same length.  Return false if any are
+			// equal
 			return [&]<std::size_t... Is>( std::index_sequence<Is...> ) -> bool {
 				using std::get;
 				auto result =

@@ -14,10 +14,13 @@
 
 #include <functional>
 
-namespace daw::pipelines {
+namespace daw::pipelines::pimpl {
 	template<typename Fn>
-	[[nodiscard]] constexpr auto ForEach( Fn &&fn ) {
-		return [=]<ForwardRange R>( R &&r ) {
+	struct ForEach_t {
+		Fn fn;
+
+		template<Range R>
+		[[nodiscard]] constexpr auto operator( )( R &&r ) const {
 			static_assert( std::is_invocable_v<Fn, range_reference_t<R>>,
 			               "ForEach requires the function to be able to be called "
 			               "with invoke and passed value" );
@@ -25,12 +28,17 @@ namespace daw::pipelines {
 				(void)std::invoke( fn, v );
 			}
 			return DAW_FWD( r );
-		};
-	}
+		}
+	};
+	template<typename Fn>
+	ForEach_t( Fn ) -> ForEach_t<Fn>;
 
 	template<typename Fn>
-	[[nodiscard]] constexpr auto ForEachApply( Fn &&fn ) {
-		return [=]<ForwardRange R>( R &&r ) {
+	struct ForEachApply_t {
+		Fn fn;
+
+		template<Range R>
+		[[nodiscard]] constexpr auto operator( )( R &&r ) const {
 			static_assert( traits::is_applicable_v<Fn, range_reference_t<R>>,
 			               "ForEach requires the function to be able to be called "
 			               "with apply and passed value" );
@@ -38,6 +46,18 @@ namespace daw::pipelines {
 				(void)std::apply( fn, v );
 			}
 			return DAW_FWD( r );
-		};
+		}
+	};
+	template<typename Fn>
+	ForEachApply_t( Fn ) -> ForEachApply_t<Fn>;
+} // namespace daw::pipelines::pimpl
+
+namespace daw::pipelines {
+	[[nodiscard]] constexpr auto ForEach( auto &&fn ) {
+		return pimpl::ForEach_t{ DAW_FWD( fn ) };
+	}
+
+	[[nodiscard]] constexpr auto ForEachApply( auto &&fn ) {
+		return pimpl::ForEachApply_t{ DAW_FWD( fn ) };
 	}
 } // namespace daw::pipelines

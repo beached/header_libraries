@@ -14,7 +14,7 @@
 #include <iterator>
 #include <type_traits>
 
-namespace daw::pipelines::pimple {
+namespace daw::pipelines::pimpl {
 	template<typename T, std::size_t N>
 	void array_test( std::array<T, N> const & );
 
@@ -54,23 +54,20 @@ namespace daw::pipelines::pimple {
 		}
 	};
 
-	namespace pimpl {
-		template<typename value_t, auto Default>
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
-		make_array_value( auto &first, auto const &last, std::size_t ) {
-			if( first != last ) {
-				return *first++;
-			}
-			if constexpr( std::is_same_v<decltype( Default ),
-			                             pimple::UseTypeDefault> ) {
-				return value_t{ };
-			} else if constexpr( std::is_invocable_v<decltype( Default )> ) {
-				return Default( );
-			} else {
-				return Default;
-			}
+	template<typename value_t, auto Default>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
+	make_array_value( auto &first, auto const &last, std::size_t ) {
+		if( first != last ) {
+			return *first++;
 		}
-	} // namespace pimpl
+		if constexpr( std::is_same_v<decltype( Default ), pimpl::UseTypeDefault> ) {
+			return value_t{ };
+		} else if constexpr( std::is_invocable_v<decltype( Default )> ) {
+			return Default( );
+		} else {
+			return Default;
+		}
+	}
 
 	template<typename Array, auto Default>
 	struct ToArray {
@@ -95,30 +92,30 @@ namespace daw::pipelines::pimple {
 		operator( )( auto &&value ) DAW_CPP23_STATIC_CALL_OP_CONST {
 			return ToArray<Array, Default>{ }( maybe_view{ value } );
 		}
-	}; // namespace pimpl
-} // namespace daw::pipelines::pimple
+	};
+} // namespace daw::pipelines::pimpl
 
 namespace daw::pipelines {
 	/// Convert Range to a Container that has deduction guides to get the
 	/// value_type from two iterators or a single value
 	template<template<typename...> typename Container>
 	[[nodiscard]] constexpr auto To( ) {
-		return pimple::ToTemplateTemplateContainer<Container>{ };
+		return pimpl::ToTemplateTemplateContainer<Container>{ };
 	}
 
 	/// For fully qualified names, construct a compatible Container, that isn't
 	/// std::array, from a Range or a single value
 	template<typename Container>
-	requires( not requires( Container c ) { pimple::array_test( c ); } )
+	requires( not requires( Container c ) { pimpl::array_test( c ); } )
 	  [[nodiscard]] constexpr auto To( ) {
-		return pimple::ToContainer<Container>{ };
+		return pimpl::ToContainer<Container>{ };
 	}
 
 	/// Construct a std::array from a Range
 	/// TODO: add single value method
-	template<typename Array, auto Default = pimple::UseTypeDefault{ }>
-	requires( requires( Array a ) { pimple::array_test( a ); } )
+	template<typename Array, auto Default = pimpl::UseTypeDefault{ }>
+	requires( requires( Array a ) { pimpl::array_test( a ); } )
 	  [[nodiscard]] constexpr auto To( ) {
-		return pimple::ToArray<Array, Default>{ };
+		return pimpl::ToArray<Array, Default>{ };
 	}
 } // namespace daw::pipelines

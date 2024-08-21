@@ -102,7 +102,7 @@ namespace daw::pipelines {
 	template<typename I, typename F>
 	filter_view( I, I, F ) -> filter_view<I, F>;
 
-	namespace pimple {
+	namespace pimpl {
 		template<typename Fn>
 		struct filter_t {
 			[[no_unique_address]] Fn fn;
@@ -134,10 +134,10 @@ namespace daw::pipelines {
 		};
 		template<typename F>
 		filter_t( F ) -> filter_t<F>;
-	} // namespace pimple
+	} // namespace pimpl
 
 	template<typename Fn>
 	[[nodiscard]] constexpr auto Filter( Fn &&fn ) {
-		return pimple::filter_t{ DAW_FWD( fn ) };
+		return pimpl::filter_t{ DAW_FWD( fn ) };
 	};
 } // namespace daw::pipelines

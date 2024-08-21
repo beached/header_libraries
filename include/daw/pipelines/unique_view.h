@@ -100,13 +100,14 @@ namespace daw::pipelines {
 	template<typename I>
 	unique_view( I ) -> unique_view<I>;
 
-	namespace pimple {
+	namespace pimpl {
 		struct Unique_t {
-			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP inline constexpr auto
+			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
 			operator( )( Range auto &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
 				return unique_view( std::begin( r ), std::end( r ) );
 			}
 		};
-	} // namespace pimple
-	inline constexpr auto Unique = pimple::Unique_t{ };
+	} // namespace pimpl
+
+	inline constexpr auto Unique = pimpl::Unique_t{ };
 } // namespace daw::pipelines

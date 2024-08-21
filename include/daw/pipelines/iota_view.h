@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw/daw_concepts.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/iterator/daw_arrow_proxy.h"
 
@@ -173,7 +174,7 @@ namespace daw::pipelines {
 	template<typename T>
 	iota_view( T, T ) -> iota_view<std::size_t>;
 
-	inline constexpr auto ToIota = []<typename T>( T last ) {
-		return iota_view<T>{ 0, last };
+	inline constexpr auto ToIota = []<Integer I>( I last ) {
+		return iota_view<I>{ 0, last };
 	};
 } // namespace daw::pipelines

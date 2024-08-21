@@ -20,14 +20,21 @@ namespace daw::pipelines {
 	template<typename R>
 	concept Sortable = Range<R> and RandomIterator<iterator_t<R>>;
 
-	namespace pimple {
+	namespace pimpl {
 		template<typename Compare>
-		struct Sort_t : Compare {
+		struct Sort_t {
+			[[no_unique_address]] Compare m_compare{ };
+
+			template<typename C>
+			requires( not Range<C> ) //
+			  [[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+			  operator( )( C &&c ) DAW_CPP23_STATIC_CALL_OP_CONST {
+				return Sort_t<C>( DAW_FWD( c ) );
+			}
+
 			[[nodiscard]] constexpr decltype( auto )
 			operator( )( Sortable auto &&r ) const {
-				std::sort( std::begin( r ),
-				           std::end( r ),
-				           *static_cast<Compare const *>( this ) );
+				std::sort( std::begin( r ), std::end( r ), m_compare );
 				return DAW_FWD( r );
 			}
 		};
@@ -37,6 +44,13 @@ namespace daw::pipelines {
 
 		template<typename Compare>
 		struct Max_t : Compare {
+			template<typename C>
+			requires( not Range<C> ) //
+			  [[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+			  operator( )( C &&c ) DAW_CPP23_STATIC_CALL_OP_CONST {
+				return Max_t<C>( DAW_FWD( c ) );
+			}
+
 			[[nodiscard]] constexpr auto operator( )( Range auto &&r ) const {
 				return std::max_element( std::begin( r ),
 				                         std::end( r ),
@@ -49,6 +63,13 @@ namespace daw::pipelines {
 
 		template<typename Compare>
 		struct Min_t : Compare {
+			template<typename C>
+			requires( not Range<C> ) //
+			  [[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+			  operator( )( C &&c ) DAW_CPP23_STATIC_CALL_OP_CONST {
+				return Min_t<C>( DAW_FWD( c ) );
+			}
+
 			[[nodiscard]] constexpr auto operator( )( Range auto &&r ) const {
 				return std::min_element( std::begin( r ),
 				                         std::end( r ),
@@ -61,6 +82,13 @@ namespace daw::pipelines {
 
 		template<typename Compare>
 		struct MinMax_t : Compare {
+			template<typename C>
+			requires( not Range<C> ) //
+			  [[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+			  operator( )( C &&c ) DAW_CPP23_STATIC_CALL_OP_CONST {
+				return MinMax_t<C>( DAW_FWD( c ) );
+			}
+
 			[[nodiscard]] constexpr auto operator( )( Range auto &&r ) const {
 				auto result =
 				  std::minmax_element( std::begin( r ),
@@ -72,37 +100,10 @@ namespace daw::pipelines {
 		MinMax_t( ) -> MinMax_t<std::less<>>;
 		template<typename Compare>
 		MinMax_t( Compare ) -> MinMax_t<Compare>;
-	} // namespace pimple
+	} // namespace pimpl
 
-	[[nodiscard]] constexpr auto Sort( ) {
-		return pimple::Sort_t{ };
-	}
-
-	[[nodiscard]] constexpr auto SortC( auto &&compare ) {
-		return pimple::Sort_t{ DAW_FWD( compare ) };
-	}
-
-	[[nodiscard]] constexpr auto Max( ) {
-		return pimple::Max_t{ };
-	}
-
-	[[nodiscard]] constexpr auto MaxC( auto &&compare ) {
-		return pimple::Max_t{ DAW_FWD( compare ) };
-	}
-
-	[[nodiscard]] constexpr auto Min( ) {
-		return pimple::Min_t{ };
-	}
-
-	[[nodiscard]] constexpr auto MinC( auto &&compare ) {
-		return pimple::Min_t{ DAW_FWD( compare ) };
-	}
-
-	[[nodiscard]] constexpr auto MinMax( ) {
-		return pimple::MinMax_t{ };
-	}
-
-	[[nodiscard]] constexpr auto MinMaxC( auto &&compare ) {
-		return pimple::MinMax_t{ DAW_FWD( compare ) };
-	}
+	inline constexpr auto Sort = pimpl::Sort_t{ };
+	inline constexpr auto Max = pimpl::Max_t{ };
+	inline constexpr auto Min = pimpl::Min_t{ };
+	inline constexpr auto MinMax = pimpl::MinMax_t{ };
 } // namespace daw::pipelines
