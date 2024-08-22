@@ -8,14 +8,12 @@
 
 #pragma once
 
-#include "pipelines/generate.h"
-
-#include "pipelines/take_view.h"
 #include "pipelines/algorithm.h"
 #include "pipelines/concat_view.h"
 #include "pipelines/enumerate.h"
 #include "pipelines/filter_view.h"
 #include "pipelines/foreach.h"
+#include "pipelines/generate.h"
 #include "pipelines/iota_view.h"
 #include "pipelines/map_view.h"
 #include "pipelines/maybe_view.h"
@@ -25,6 +23,7 @@
 #include "pipelines/print.h"
 #include "pipelines/range.h"
 #include "pipelines/swizzle.h"
+#include "pipelines/take_view.h"
 #include "pipelines/to.h"
 #include "pipelines/unique_view.h"
 #include "pipelines/zip_view.h"

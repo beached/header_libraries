@@ -17,15 +17,22 @@ namespace daw {
 	template<typename T>
 	struct undefined_t;
 
+	namespace impl {
+		template<typename T>
+		struct undefind_fn_t {
+			[[deprecated( "Use deleted<T...>" )]]
+			auto operator( )( ) const {
+				if constexpr( not daw::is_same_v<T, undefined_t<T>> ) {
+					std::abort( );
+				} else {
+					return static_cast<T *>( nullptr );
+				}
+			}
+		};
+	} // namespace impl
 	template<typename T>
 	[[deprecated( "Use deleted<T...>" )]]
-	inline constexpr auto undefined_v = [] {
-		if constexpr( not daw::is_same_v<T, undefined_t<T>> ) {
-			std::abort( );
-		} else {
-			return static_cast<T *>( nullptr );
-		}
-	}( );
+	inline constexpr auto undefined_v = impl::undefind_fn_t<T>{ };
 
 	template<typename...>
 	void deleted( ) = delete;
