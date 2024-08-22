@@ -18,6 +18,7 @@ namespace daw {
 	struct undefined_t;
 
 	template<typename T>
+	[[deprecated( "Use deleted<T...>" )]]
 	inline constexpr auto undefined_v = [] {
 		if constexpr( not daw::is_same_v<T, undefined_t<T>> ) {
 			std::abort( );
@@ -25,4 +26,7 @@ namespace daw {
 			return static_cast<T *>( nullptr );
 		}
 	}( );
+
+	template<typename...>
+	void deleted( ) = delete;
 } // namespace daw

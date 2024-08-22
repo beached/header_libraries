@@ -60,4 +60,15 @@ namespace daw::pipelines {
 	[[nodiscard]] constexpr auto ForEachApply( auto &&fn ) {
 		return pimpl::ForEachApply_t{ DAW_FWD( fn ) };
 	}
+
+	[[nodiscard]] constexpr auto ForEachIndexed( auto && fn ) {
+		// Maybe used owned range
+		return [=]( RandomRange auto && r ) {
+			auto const sz = std::distance( std::begin( r ), std::end( r ) );
+			for( std::size_t n=0; n<sz; ++n ) {
+				(void)std::invoke( fn, r[n] );
+			}
+			return DAW_FWD( r );
+		};
+	}
 } // namespace daw::pipelines
