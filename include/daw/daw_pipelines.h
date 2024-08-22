@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "pipelines/skip.h"
+
 #include "pipelines/algorithm.h"
 #include "pipelines/concat_view.h"
 #include "pipelines/enumerate.h"

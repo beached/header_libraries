@@ -269,7 +269,7 @@ namespace tests {
 		constexpr auto p0 = pipeline( Take( 1, 5 ), To<std::vector> );
 		auto v0 = p0( a );
 		daw::println(
-		  "\ntest011: pipeline( a, Take( 5 ), To<std::vector> ):\n\tinput: "
+		  "\ntest011: pipeline( a, Take( 1, 5 ), To<std::vector> ):\n\tinput: "
 		  "[1,2,3,4,5,6,7,8,9]\n\touput: {}",
 		  daw::fmt_range( v0 ) );
 	}
@@ -350,6 +350,17 @@ namespace tests {
 		  "i++;}}),To<std::array<std::size_t, 5>>);\n{}",
 		  daw::fmt_range{ a } );
 	}
+
+	DAW_ATTRIB_NOINLINE void test016( ) {
+		constexpr auto a =
+		  std::array{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+		constexpr auto p0 = pipeline( Skip( 3 ), To<std::vector> );
+		auto v0 = p0( a );
+		daw::println(
+		  "\ntest011: pipeline( a, Skip( 3 ), To<std::vector> ):\n\tinput: "
+		  "[1,2,3,4,5,6,7,8,9]\n\touput: {}",
+		  daw::fmt_range( v0 ) );
+	}
 } // namespace tests
 
 int main( ) {
@@ -368,6 +379,7 @@ int main( ) {
 	tests::test013( );
 	tests::test014( );
 	tests::test015( );
+	tests::test016( );
 
 	daw::println( "Done" );
 }
