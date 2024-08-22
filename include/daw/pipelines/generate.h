@@ -17,7 +17,7 @@
 namespace daw::pipelines::pimpl {
 	template<typename Fn>
 	struct GenerateN_t {
-		mutable Fn m_func;
+		DAW_NO_UNIQUE_ADDRESS mutable Fn m_func;
 
 		[[nodiscard]] constexpr auto operator( )( std::size_t ) const {
 			return std::invoke( m_func );

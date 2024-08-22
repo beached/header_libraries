@@ -33,15 +33,17 @@ namespace daw::pipelines {
 	private:
 		Iterator m_first = Iterator{ };
 		Iterator m_last = Iterator{ };
-		DAW_NO_UNIQUE_ADDRESS mutable Filter m_func = Filter( );
+		DAW_NO_UNIQUE_ADDRESS Filter m_func = Filter( );
 
 	public:
 		explicit filter_view( ) = default;
 
-		explicit constexpr filter_view( Iterator first, Iterator last, Filter fn )
+		template<typename F>
+		requires constructible_from<Filter, F> //
+		  explicit constexpr filter_view( Iterator first, Iterator last, F &&fn )
 		  : m_first( first )
 		  , m_last( last )
-		  , m_func( std::move( fn ) ) {}
+		  , m_func( DAW_FWD( fn ) ) {}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr filter_view begin( ) const {
 			return *this;
