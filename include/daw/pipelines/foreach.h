@@ -17,7 +17,7 @@
 namespace daw::pipelines::pimpl {
 	template<typename Fn>
 	struct ForEach_t {
-		Fn fn;
+		DAW_NO_UNIQUE_ADDRESS mutable Fn fn;
 
 		template<Range R>
 		[[nodiscard]] constexpr auto operator( )( R &&r ) const {
@@ -35,7 +35,7 @@ namespace daw::pipelines::pimpl {
 
 	template<typename Fn>
 	struct ForEachApply_t {
-		Fn fn;
+		DAW_NO_UNIQUE_ADDRESS mutable Fn fn;
 
 		template<Range R>
 		[[nodiscard]] constexpr auto operator( )( R &&r ) const {

@@ -33,7 +33,7 @@ namespace daw::pipelines {
 	private:
 		Iterator m_first = Iterator{ };
 		Iterator m_last = Iterator{ };
-		[[no_unique_address]] Filter filt = Filter( );
+		DAW_NO_UNIQUE_ADDRESS mutable Filter m_func = Filter( );
 
 	public:
 		explicit filter_view( ) = default;
@@ -41,14 +41,14 @@ namespace daw::pipelines {
 		explicit constexpr filter_view( Iterator first, Iterator last, Filter fn )
 		  : m_first( first )
 		  , m_last( last )
-		  , filt( std::move( fn ) ) {}
+		  , m_func( std::move( fn ) ) {}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr filter_view begin( ) const {
 			return *this;
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr filter_view end( ) const {
-			return filter_view( m_last, m_last, filt );
+			return filter_view( m_last, m_last, m_func );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference operator*( ) {
@@ -77,7 +77,7 @@ namespace daw::pipelines {
 				return *this;
 			}
 			++m_first;
-			while( good( ) and not filt( *m_first ) ) {
+			while( good( ) and not m_func( *m_first ) ) {
 				++m_first;
 			}
 			return *this;
@@ -105,7 +105,7 @@ namespace daw::pipelines {
 	namespace pimpl {
 		template<typename Fn>
 		struct filter_t {
-			[[no_unique_address]] Fn fn;
+			DAW_NO_UNIQUE_ADDRESS Fn fn;
 
 			template<Range R>
 			[[nodiscard]] constexpr auto operator( )( R &&r ) const {

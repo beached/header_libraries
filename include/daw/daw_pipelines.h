@@ -8,8 +8,9 @@
 
 #pragma once
 
-#include "pipelines/take_view.h"
+#include "pipelines/generate.h"
 
+#include "pipelines/take_view.h"
 #include "pipelines/algorithm.h"
 #include "pipelines/concat_view.h"
 #include "pipelines/enumerate.h"

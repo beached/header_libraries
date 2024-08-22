@@ -23,7 +23,7 @@ namespace daw::pipelines {
 	namespace pimpl {
 		template<typename Compare>
 		struct Sort_t {
-			[[no_unique_address]] Compare m_compare{ };
+			DAW_NO_UNIQUE_ADDRESS Compare m_compare{ };
 
 			template<typename C>
 			requires( not Range<C> ) //

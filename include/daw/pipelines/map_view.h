@@ -202,7 +202,7 @@ namespace daw::pipelines {
 	namespace pimpl {
 		template<typename Fn>
 		struct Map_t {
-			Fn m_func;
+			mutable Fn m_func;
 
 			[[nodiscard]] constexpr auto operator( )( auto &&r ) const {
 				using R = DAW_TYPEOF( r );
@@ -226,17 +226,13 @@ namespace daw::pipelines {
 
 		template<typename Fn>
 		struct MapApply_t {
-			Fn m_func;
+			mutable Fn m_func;
 
 			[[nodiscard]] constexpr auto operator( )( auto &&r ) const {
 				using R = DAW_TYPEOF( r );
 				static_assert( traits::is_applicable_v<Fn, range_reference_t<R>>,
 				               "MapApply requires the function to be able to be called "
 				               "with apply and the range_reference_t" );
-				//				static_assert( traits::NoVoidApplyResults<Fn,
-				// range_reference_t<R>>, 				               "MapApply requires the
-				// result to not be void"
-				//);
 				auto func = m_func;
 				return map_view( std::begin( r ), std::end( r ), [=]( auto &&tp ) {
 					return std::apply( func, tp );
@@ -248,7 +244,7 @@ namespace daw::pipelines {
 		struct Clamp_t {
 			T lo;
 			T hi;
-			[[no_unique_address]] Compare compare;
+			DAW_NO_UNIQUE_ADDRESS Compare compare;
 
 			[[nodiscard]] constexpr auto operator( )( auto &&r ) const {
 				using R = DAW_TYPEOF( r );

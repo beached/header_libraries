@@ -338,6 +338,16 @@ namespace tests {
 		auto s_naive = Sum( da );
 		daw::println( "The naive sum is {:.19f}", s_naive );
 	}
+
+	DAW_ATTRIB_NOINLINE void test015( ) {
+		constexpr auto a = pipeline(
+			generate_n( 5, [i=1]() mutable {
+				return i++;
+			}),
+			To<std::array<std::size_t, 5>>
+		);
+		daw::println( "\ntest015: pipeline( generate_n( 5, [&]{{return i++;}}),To<std::array<std::size_t, 5>>);\n{}", a );
+	}
 } // namespace tests
 
 int main( ) {
@@ -355,6 +365,7 @@ int main( ) {
 	tests::test012( );
 	tests::test013( );
 	tests::test014( );
+tests::test015( );
 
 	daw::println( "Done" );
 }

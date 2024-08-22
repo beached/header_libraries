@@ -29,7 +29,7 @@ namespace daw::pipelines {
 		template<typename Fn>
 		struct not_fn_t {
 			using func_t = daw::remove_cvref_t<Fn>;
-			[[no_unique_address]] func_t fn;
+			DAW_NO_UNIQUE_ADDRESS func_t fn;
 
 			[[nodiscard]] constexpr auto operator( )( auto &&value ) const {
 				return not fn( DAW_FWD( value ) );

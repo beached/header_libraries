@@ -47,7 +47,7 @@ namespace daw::pipelines {
 
 		template<typename Fn>
 		struct CountIf_t {
-			[[no_unique_address]] Fn fn;
+			DAW_NO_UNIQUE_ADDRESS Fn fn;
 
 			[[nodiscard]] constexpr std::size_t
 			operator( )( Range auto const &r ) const {
