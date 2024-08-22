@@ -651,7 +651,7 @@ namespace daw {
 	  std::integral_constant<std::size_t, pack_index_of_v<T, Ts...>>;
 
 	template<typename T, typename>
-	inline constexpr auto param_pack_index_of_v = undefined_v<T>;
+	inline constexpr auto param_pack_index_of_v = deleted<T>;
 
 	template<template<typename...> typename Pack, typename... Ts, typename T>
 	inline constexpr std::size_t param_pack_index_of_v<Pack<Ts...>, T> =

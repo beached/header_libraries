@@ -118,7 +118,9 @@ namespace daw {
 		}
 
 #if defined( DAW_HAS_3WAY_COMPARE )
-		constexpr auto operator<= > ( take_t const & ) const = default;
+		// clang-format off
+		constexpr auto operator<=>( take_t const & ) const = default;
+		// clang-format on
 #endif
 	};
 

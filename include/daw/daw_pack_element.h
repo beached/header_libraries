@@ -26,7 +26,7 @@ namespace daw {
 	using pack_element_t = typename pack_element<Idx, Pack>::type;
 
 	template<typename Pack>
-	inline constexpr auto pack_size_v = undefined_v<Pack>;
+	inline constexpr auto pack_size_v = deleted<Pack>;
 
 	template<template<typename...> typename Pack, typename... Ts>
 	inline constexpr std::size_t pack_size_v<Pack<Ts...>> = sizeof...( Ts );
