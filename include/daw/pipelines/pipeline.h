@@ -23,6 +23,8 @@
 #include <utility>
 
 namespace daw::pipelines::pimpl {
+	/// This allows specialized overloads like To( ) to work without putting the (
+	/// ) e.g. To<std::vector>( ) can be typed as To<std::vector>
 	template<typename Fn>
 	[[nodiscard]] constexpr auto invoke_if_needed( Fn &&fn ) {
 		if constexpr( requires { fn( ); } ) {

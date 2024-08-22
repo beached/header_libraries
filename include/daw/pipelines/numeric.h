@@ -61,17 +61,42 @@ namespace daw::pipelines {
 		template<typename Fn>
 		CountIf_t( Fn ) -> CountIf_t<Fn>;
 
+		inline constexpr struct IdentityFn_t {
+			template<typename T>
+			[[nodiscard]] constexpr DAW_CPP23_STATIC_CALL_OP T &&
+			operator( )( T &&v ) DAW_CPP23_STATIC_CALL_OP_CONST {
+				return DAW_FWD( v );
+			}
+		} IdentityFn;
+
+		template<typename Projection = IdentityFn_t>
 		struct SumKahanBabushkaNeumaier_t {
+			DAW_NO_UNIQUE_ADDRESS Projection m_projection = Projection{ };
+
+			template<typename P>
+			requires( not Range<P> ) [[nodiscard]] DAW_CPP23_STATIC_CALL_OP
+			  constexpr auto
+			  operator( )( P &&proj ) DAW_CPP23_STATIC_CALL_OP_CONST {
+				return SumKahanBabushkaNeumaier_t<daw::remove_cvrvref_t<P>>{
+				  DAW_FWD( proj ) };
+			}
+
 			template<Range R>
-			[[nodiscard]] DAW_ATTRIB_NOINLINE DAW_CPP23_STATIC_CALL_OP constexpr auto
-			operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			[[nodiscard]] constexpr auto operator( )( R &&r ) const {
 				using fp_t = range_value_t<R>;
 				static_assert( std::is_floating_point_v<fp_t>,
 				               "Use of Kahan Babushka Neumaier summation requires the "
 				               "range value type to be a floating point type" );
 				auto sum = fp_t{ 0.0 };
 				auto c = fp_t{ 0.0 };
-				for( fp_t input : r ) {
+				for( auto &&cur_v : r ) {
+					fp_t input = [&] {
+						if constexpr( std::is_same_v<Projection, IdentityFn_t> ) {
+							return cur_v;
+						} else {
+							return std::invoke( cur_v, m_projection );
+						}
+					}( );
 					auto t = sum + input;
 					if( daw::cxmath::abs( sum ) >= daw::cxmath::abs( input ) ) {
 						c += ( sum - t ) + input;
@@ -83,6 +108,11 @@ namespace daw::pipelines {
 				return sum + c;
 			}
 		};
+		SumKahanBabushkaNeumaier_t( ) -> SumKahanBabushkaNeumaier_t<>;
+
+		template<typename Projection>
+		SumKahanBabushkaNeumaier_t( Projection )
+		  -> SumKahanBabushkaNeumaier_t<Projection>;
 	} // namespace pimpl
 
 	inline constexpr auto Count = pimpl::count_t{ };
