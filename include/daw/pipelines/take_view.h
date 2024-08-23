@@ -22,15 +22,13 @@
 
 namespace daw::pipelines::pimpl {
 	struct Take_t {
-		std::size_t how_many_to_skip = 0;
 		std::size_t how_many = 0;
 
 		template<Range R>
 		[[nodiscard]] constexpr auto operator( )( R &&r ) const {
-			auto r2 = Skip( how_many_to_skip )( DAW_FWD( r ) );
-			using iter_t = iterator_t<decltype( r2 )>;
-			auto first = std::begin( r2 );
-			auto last = std::end( r2 );
+			using iter_t = iterator_t<decltype( r )>;
+			auto first = std::begin( r );
+			auto last = std::end( r );
 
 			if constexpr( ForwardIterator<iter_t> ) {
 				auto const range_size = std::distance( first, last );
@@ -49,11 +47,6 @@ namespace daw::pipelines::pimpl {
 
 namespace daw::pipelines {
 	[[nodiscard]] constexpr auto Take( std::size_t how_many ) {
-		return pimpl::Take_t{ 0, how_many };
-	}
-
-	[[nodiscard]] constexpr auto Take( std::size_t how_many_to_skip,
-	                                   std::size_t how_many ) {
-		return pimpl::Take_t{ how_many_to_skip, how_many };
+		return pimpl::Take_t{ how_many };
 	}
 } // namespace daw::pipelines

@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "pipelines/skip.h"
+#include "pipelines/sample.h"
 
 #include "pipelines/algorithm.h"
 #include "pipelines/concat_view.h"
@@ -24,6 +24,7 @@
 #include "pipelines/predicates.h"
 #include "pipelines/print.h"
 #include "pipelines/range.h"
+#include "pipelines/skip.h"
 #include "pipelines/swizzle.h"
 #include "pipelines/take_view.h"
 #include "pipelines/to.h"

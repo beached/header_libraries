@@ -9,12 +9,15 @@
 #pragma once
 
 #include "daw/daw_cpp_feature_check.h"
+#include "daw/daw_is_constant_evaluated.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
+#include "daw/daw_print.h"
 #include "daw/daw_remove_cvref.h"
 #include "daw/daw_typeof.h"
 #include "range.h"
 
+#include <concepts>
 #include <cstddef>
 #include <iterator>
 #include <optional>
@@ -39,11 +42,15 @@ namespace daw::pipelines {
 		explicit filter_view( ) = default;
 
 		template<typename F>
-		requires constructible_from<Filter, F> //
+		requires std::constructible_from<Filter, F> //
 		  explicit constexpr filter_view( Iterator first, Iterator last, F &&fn )
 		  : m_first( first )
 		  , m_last( last )
-		  , m_func( DAW_FWD( fn ) ) {}
+		  , m_func( DAW_FWD( fn ) ) {
+			while( good( ) and not m_func( *m_first ) ) {
+				++m_first;
+			}
+		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr filter_view begin( ) const {
 			return *this;
@@ -75,9 +82,6 @@ namespace daw::pipelines {
 		}
 
 		DAW_ATTRIB_INLINE constexpr filter_view &operator++( ) {
-			if( not good( ) ) {
-				return *this;
-			}
 			++m_first;
 			while( good( ) and not m_func( *m_first ) ) {
 				++m_first;

@@ -266,10 +266,11 @@ namespace tests {
 	DAW_ATTRIB_NOINLINE void test011( ) {
 		constexpr auto a =
 		  std::array{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
-		constexpr auto p0 = pipeline( Take( 1, 5 ), To<std::vector> );
+		constexpr auto p0 = pipeline( Skip( 1 ), Take( 5 ), To<std::vector> );
 		auto v0 = p0( a );
 		daw::println(
-		  "\ntest011: pipeline( a, Take( 1, 5 ), To<std::vector> ):\n\tinput: "
+		  "\ntest011: pipeline( a, Skip( 1 ), Take( 5 ), To<std::vector> "
+		  "):\n\tinput: "
 		  "[1,2,3,4,5,6,7,8,9]\n\touput: {}",
 		  daw::fmt_range( v0 ) );
 	}
@@ -357,9 +358,18 @@ namespace tests {
 		constexpr auto p0 = pipeline( Skip( 3 ), To<std::vector> );
 		auto v0 = p0( a );
 		daw::println(
-		  "\ntest011: pipeline( a, Skip( 3 ), To<std::vector> ):\n\tinput: "
+		  "\ntest016: pipeline( a, Skip( 3 ), To<std::vector> ):\n\tinput: "
 		  "[1,2,3,4,5,6,7,8,9]\n\touput: {}",
 		  daw::fmt_range( v0 ) );
+	}
+
+	DAW_ATTRIB_NOINLINE void test017( ) {
+		auto const p = pipeline( iota_view<int>{ -5, 5 }, Print, Sample( 4, 10 ) );
+		daw::println(
+		  "\ntest017: pipeline( iota_view<int>{{ -16, 16 }}, Sample( 4, 10 ) "
+		  ")\n{}",
+		  daw::fmt_range{ p } );
+		(void)p;
 	}
 } // namespace tests
 
@@ -380,6 +390,7 @@ int main( ) {
 	tests::test014( );
 	tests::test015( );
 	tests::test016( );
+	tests::test017( );
 
 	daw::println( "Done" );
 }
