@@ -7,14 +7,14 @@
 //
 
 #include <daw/daw_utility.h>
-#include <daw/daw_vector.h>
+#include <daw/deprecated/daw_vector.h>
 
 #include <cstddef>
 #include <iostream>
 #include <utility>
 
 namespace daw {
-	auto a = Vector( { 1, 2, 3 } );
+	inline auto a = Vector( { 1, 2, 3 } );
 
 	Vector<int> foo( std::size_t n ) {
 		auto v = Vector<int>( sized_for_overwrite,

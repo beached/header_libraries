@@ -8,13 +8,13 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_algorithm.h"
-#include "daw_check_exceptions.h"
-#include "daw_cxmath.h"
-#include "daw_exchange.h"
-#include "daw_likely.h"
-#include "daw_move.h"
+#include "daw/ciso646.h"
+#include "daw/daw_algorithm.h"
+#include "daw/daw_check_exceptions.h"
+#include "daw/daw_cxmath.h"
+#include "daw/daw_exchange.h"
+#include "daw/daw_likely.h"
+#include "daw/daw_move.h"
 
 #include <algorithm>
 #include <cassert>
