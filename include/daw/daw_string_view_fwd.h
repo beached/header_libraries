@@ -11,7 +11,7 @@
 #include "daw_string_view_version.h"
 
 #if DAW_STRINGVIEW_VERSION == 1
-#include "daw_string_view1_fwd.h"
+#include "deprecated/daw_string_view1_fwd.h"
 #else
 #include "daw_string_view2_fwd.h"
 #endif

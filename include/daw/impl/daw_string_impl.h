@@ -9,7 +9,7 @@
 #pragma once
 
 #include "daw/ciso646.h"
-#include "daw/daw_string_view1_fwd.h"
+#include "daw/deprecated/daw_string_view1_fwd.h"
 #include "daw/daw_traits.h"
 
 #include <array>

@@ -9,6 +9,7 @@
 #pragma once
 
 namespace daw {
+	// A virtual base type that allows virtual types to do rule of zero
 	template<typename /*CRTP*/>
 	struct virtual_base {
 		virtual_base( ) = default;

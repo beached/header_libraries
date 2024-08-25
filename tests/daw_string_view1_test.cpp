@@ -7,7 +7,7 @@
 //
 
 #include "daw/daw_benchmark.h"
-#include "daw/daw_string_view1.h"
+#include "daw/deprecated/daw_string_view1.h"
 #include "daw/daw_utility.h"
 
 #include <algorithm>

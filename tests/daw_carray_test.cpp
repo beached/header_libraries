@@ -7,7 +7,7 @@
 //
 
 #include "daw/daw_benchmark.h"
-#include "daw/daw_carray.h"
+#include "daw/deprecated/daw_carray.h"
 #include "daw/daw_utility.h"
 
 struct A {

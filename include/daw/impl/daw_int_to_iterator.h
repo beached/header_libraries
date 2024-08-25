@@ -9,7 +9,7 @@
 #pragma once
 
 #include "daw/ciso646.h"
-#include "daw/daw_bounded_string.h"
+#include "daw/deprecated/daw_bounded_string.h"
 #include "daw/daw_exception.h"
 #include "daw/daw_traits.h"
 

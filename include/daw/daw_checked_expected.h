@@ -7,6 +7,10 @@
 //
 #pragma once
 
+// This is an experiment in a library solution to make checked exceptions
+// via an expected type.  Unexpected exception types that are thrown result
+// in a terminate( ) call
+
 #include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_exception.h"

@@ -9,7 +9,7 @@
 #pragma once
 
 namespace daw {
-	// Template helper to mark type as being deduced
+	// Sentinel type to mark type as being deduced
 	struct deduced_type {};
 
 	template<typename T>
