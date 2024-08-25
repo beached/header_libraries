@@ -8,7 +8,7 @@
 
 #include "daw/iterator/daw_zipiter.h"
 
-#include "daw/deprecated/daw_bounded_array.h"
+#include "daw/daw_bounded_array.h"
 
 #include <algorithm>
 #include <cstdint>

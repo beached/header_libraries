@@ -8,14 +8,14 @@
 
 #pragma once
 
-#include "daw/ciso646.h"
-#include "daw/cpp_17.h"
-#include "daw/daw_algorithm.h"
-#include "daw/daw_construct_a.h"
-#include "daw/daw_math.h"
-#include "daw/daw_move.h"
-#include "daw/daw_swap.h"
+#include "ciso646.h"
+#include "cpp_17.h"
+#include "daw_algorithm.h"
 #include "daw_bounded_array.h"
+#include "daw_construct_a.h"
+#include "daw_math.h"
+#include "daw_move.h"
+#include "daw_swap.h"
 
 #include <array>
 #include <exception>

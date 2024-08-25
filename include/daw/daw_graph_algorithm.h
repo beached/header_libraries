@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include "daw/ciso646.h"
-#include "daw/cpp_17.h"
-#include "daw/daw_move.h"
+#include "ciso646.h"
+#include "cpp_17.h"
 #include "daw_graph.h"
+#include "daw_move.h"
 
 #include <algorithm>
 #include <deque>
