@@ -16,7 +16,8 @@ namespace daw {
 	namespace cpp_17_details {
 		template<typename InputIterator>
 		[[nodiscard, maybe_unused]] constexpr ptrdiff_t
-		distance_impl( InputIterator first, InputIterator last,
+		distance_impl( InputIterator first,
+		               InputIterator last,
 		               std::input_iterator_tag ) noexcept( noexcept( ++first ) ) {
 
 			ptrdiff_t count = 0;
@@ -29,7 +30,8 @@ namespace daw {
 
 		template<typename Iterator1, typename Iterator2>
 		[[nodiscard, maybe_unused]] constexpr ptrdiff_t distance_impl(
-		  Iterator1 first, Iterator2 last,
+		  Iterator1 first,
+		  Iterator2 last,
 		  std::random_access_iterator_tag ) noexcept( noexcept( last - first ) ) {
 
 			return last - first;
@@ -37,7 +39,8 @@ namespace daw {
 
 		template<typename Iterator, typename Distance>
 		constexpr void
-		advance( Iterator &first, Distance n,
+		advance( Iterator &first,
+		         Distance n,
 		         std::input_iterator_tag ) noexcept( noexcept( ++first ) ) {
 
 			while( n-- > 0 ) {
@@ -47,7 +50,8 @@ namespace daw {
 
 		template<typename Iterator, typename Distance>
 		constexpr void
-		advance( Iterator &first, Distance n,
+		advance( Iterator &first,
+		         Distance n,
 		         std::output_iterator_tag ) noexcept( noexcept( ++first ) ) {
 
 			while( n-- > 0 ) {
@@ -57,7 +61,8 @@ namespace daw {
 
 		template<typename Iterator, typename Distance>
 		constexpr void advance(
-		  Iterator &first, Distance n,
+		  Iterator &first,
+		  Distance n,
 		  std::bidirectional_iterator_tag ) noexcept( noexcept( ++first )
 		                                                and noexcept( --first ) ) {
 
@@ -74,7 +79,8 @@ namespace daw {
 
 		template<typename Iterator, typename Distance>
 		constexpr void
-		advance( Iterator &first, Distance n,
+		advance( Iterator &first,
+		         Distance n,
 		         std::random_access_iterator_tag ) noexcept( noexcept( first +=
 		                                                               static_cast<
 		                                                                 ptrdiff_t>(
@@ -95,10 +101,12 @@ namespace daw {
 	[[nodiscard]] constexpr ptrdiff_t
 	distance( Iterator first, Iterator second ) noexcept(
 	  noexcept( cpp_17_details::distance_impl(
-	    first, second,
+	    first,
+	    second,
 	    typename std::iterator_traits<Iterator>::iterator_category{ } ) ) ) {
 		return cpp_17_details::distance_impl(
-		  first, second,
+		  first,
+		  second,
 		  typename std::iterator_traits<Iterator>::iterator_category{ } );
 	}
 
@@ -110,7 +118,8 @@ namespace daw {
 	template<typename Iterator, typename Distance>
 	constexpr void advance( Iterator &it, Distance n ) {
 		cpp_17_details::advance(
-		  it, static_cast<ptrdiff_t>( n ),
+		  it,
+		  static_cast<ptrdiff_t>( n ),
 		  typename std::iterator_traits<Iterator>::iterator_category{ } );
 	}
 

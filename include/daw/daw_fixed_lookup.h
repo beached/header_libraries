@@ -88,8 +88,7 @@ namespace daw {
 	private:
 		template<typename KeyType>
 		static constexpr hash_value_t hash_fn( KeyType &&key ) noexcept {
-			auto const hash =
-			  daw::generic_hash<HashSize>( DAW_FWD( key ) );
+			auto const hash = daw::generic_hash<HashSize>( DAW_FWD( key ) );
 			auto const divisor =
 			  ( std::numeric_limits<hash_value_t>::max )( ) -
 			  impl::fixed_lookup_sentinals::fixed_lookup_sentinals_size;

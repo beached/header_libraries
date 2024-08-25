@@ -22,11 +22,13 @@ static_assert( t4 == t3 );
 static_assert( t4 != t2 );
 
 static_assert( daw::get<1>( t0 ) == 2 );
-static_assert( std::is_same_v<
-               double, std::tuple_element_t<1, daw::tuple<int, double, int>>> );
+static_assert(
+  std::is_same_v<double,
+                 std::tuple_element_t<1, daw::tuple<int, double, int>>> );
 static_assert(
   std::is_same_v<
-    int, typename std::tuple_element<2, daw::tuple<int, int, int>>::type> );
+    int,
+    typename std::tuple_element<2, daw::tuple<int, int, int>>::type> );
 
 static_assert( sizeof( daw::tuple<int, int, int> ) == sizeof( int ) * 3 );
 struct empty {};

@@ -24,10 +24,11 @@
 namespace daw {
 	namespace value_ptr_details {
 		DAW_MAKE_REQ_TRAIT3(
-		  is_comparable_v, std::declval<V /*Compare*/>( )( std::declval<T>( ),
-		                                                   std::declval<U>( ) ) and
-		                     std::declval<V /*Compare*/>( )( std::declval<U>( ),
-		                                                     std::declval<T>( ) ) );
+		  is_comparable_v,
+		  std::declval<V /*Compare*/>( )( std::declval<T>( ),
+		                                  std::declval<U>( ) ) and
+		    std::declval<V /*Compare*/>( )( std::declval<U>( ),
+		                                    std::declval<T>( ) ) );
 	} // namespace value_ptr_details
 
 	template<typename T, typename Compare = std::less<>>
@@ -60,7 +61,8 @@ namespace daw {
 		  , m_value( std::make_unique<value_type>( DAW_FWD( args )... ) ) {}
 
 		template<
-		  typename U, typename... Args,
+		  typename U,
+		  typename... Args,
 		  std::enable_if_t<
 		    all_true_v<std::is_constructible_v<value_type, Args...>,
 		               !traits::is_first_type_v<value_ptr, std::decay_t<Args>...>>,
@@ -238,7 +240,8 @@ namespace daw {
 		                     std::declval<T>( ) <= std::declval<U>( ) );
 	} // namespace value_ptr_details
 
-	template<typename T, typename U,
+	template<typename T,
+	         typename U,
 	         std::enable_if_t<value_ptr_details::has_compare_equality<T, U>,
 	                          std::nullptr_t> = nullptr>
 	constexpr bool
@@ -248,7 +251,8 @@ namespace daw {
 		return lhs.compare( rhs ) == 0;
 	}
 
-	template<typename T, typename U,
+	template<typename T,
+	         typename U,
 	         std::enable_if_t<value_ptr_details::has_compare_inequality<T, U>,
 	                          std::nullptr_t> = nullptr>
 	constexpr bool
@@ -257,7 +261,8 @@ namespace daw {
 		return lhs.compare( rhs ) != 0;
 	}
 
-	template<typename T, typename U,
+	template<typename T,
+	         typename U,
 	         std::enable_if_t<value_ptr_details::has_compare_greater<T, U>,
 	                          std::nullptr_t> = nullptr>
 	constexpr bool
@@ -266,7 +271,8 @@ namespace daw {
 		return lhs.compare( rhs ) > 0;
 	}
 
-	template<typename T, typename U,
+	template<typename T,
+	         typename U,
 	         std::enable_if_t<value_ptr_details::has_compare_greater_equal<T, U>,
 	                          std::nullptr_t> = nullptr>
 	constexpr bool
@@ -275,7 +281,8 @@ namespace daw {
 		return lhs.compare( rhs ) >= 0;
 	}
 
-	template<typename T, typename U,
+	template<typename T,
+	         typename U,
 	         std::enable_if_t<value_ptr_details::has_compare_less<T, U>,
 	                          std::nullptr_t> = nullptr>
 	constexpr bool
@@ -284,7 +291,8 @@ namespace daw {
 		return lhs.compare( rhs ) < 0;
 	}
 
-	template<typename T, typename U,
+	template<typename T,
+	         typename U,
 	         std::enable_if_t<value_ptr_details::has_compare_less_equal<T, U>,
 	                          std::nullptr_t> = nullptr>
 	constexpr bool

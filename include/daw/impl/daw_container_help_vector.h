@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/daw_exchange.h"
+#include "daw/third_party/private_access.h"
 
 #include <cassert>
 #include <cstddef>
@@ -91,7 +92,41 @@ namespace daw {
 		};
 #elif defined( _GLIBCXX_VECTOR )
 		// libstdc++
+	}
+}
+template<typename T, typename Allocator>
+struct StdVecStart
+  : accessor::MemberWrapper<std::vector<T, Allocator>,
+                            typename std::vector<T, Allocator>::pointer> {};
+template<typename T, typename Allocator>
+class accessor::MakeProxy<StdVecStart<T, Allocator>,
+                          &std::vector<T, Allocator>::_M_start>;
 
+template<typename T, typename Allocator>
+struct StdVecFinish
+  : accessor::MemberWrapper<std::vector<T, Allocator>,
+                            typename std::vector<T, Allocator>::pointer> {};
+template<typename T, typename Allocator>
+class accessor::MakeProxy<StdVecFinish<T, Allocator>,
+                          &std::vector<T, Allocator>::_M_finish>;
+
+template<typename T, typename Allocator>
+struct StdVecEndOfStorage
+  : accessor::MemberWrapper<std::vector<T, Allocator>,
+                            typename std::vector<T, Allocator>::pointer> {};
+template<typename T, typename Allocator>
+class accessor::MakeProxy<StdVecEndOfStorage<T, Allocator>,
+                          &std::vector<T, Allocator>::_M_end_of_storage>;
+
+template<typename T, typename Allocator>
+struct StdVecImpl
+  : accessor::MemberWrapper<std::vector<T, Allocator>, Allocator> {};
+template<typename T, typename Allocator>
+class accessor::MakeProxy<StdVecImpl<T, Allocator>,
+                          &std::vector<T, Allocator>::_M_impl>;
+
+namespace daw {
+	namespace container_help_impl {
 		template<typename T, typename Alloc>
 		struct std_vector_layout_impl {
 			static_assert( not std::is_same_v<T, bool>, "bad instance" );
@@ -115,6 +150,80 @@ namespace daw {
 			};
 		};
 
+		template<typename T, typename Allocator>
+		using rebound_allocator_type =
+		  typename std::allocator_traits<Allocator>::template rebind_alloc<T>;
+
+		template<typename T, typename Allocator>
+		constexpr decltype( auto ) first_ptr( std::vector<T, Allocator> &vec ) {
+			return ::accessor::accessMember<StdVecStart<T, Allocator>>( vec );
+		}
+
+		template<typename T, typename Allocator>
+		constexpr decltype( auto ) last_ptr( std::vector<T, Allocator> &vec ) {
+			return ::accessor::accessMember<StdVecFinish<T, Allocator>>( vec );
+		}
+
+		template<typename T, typename Allocator>
+		constexpr decltype( auto ) capacity_ptr( std::vector<T, Allocator> &vec ) {
+			return ::accessor::accessMember<StdVecEndOfStorage<T, Allocator>>( vec );
+		}
+
+		template<typename T, typename Allocator>
+		constexpr decltype( auto ) get_alloc( std::vector<T, Allocator> &vec ) {
+			return ::accessor::accessMember<StdVecImpl<T, Allocator>>( vec );
+		}
+
+		template<typename T, typename Allocator>
+		constexpr auto take_allocator( std::vector<T, Allocator> &vec ) {
+			using alloc_traits = std::allocator_traits<Allocator>;
+			using alloc = rebound_allocator_type<T, Allocator>;
+			static_assert(
+			  alloc_traits::is_always_equal::value or
+			    alloc_traits::propagate_on_container_move_assignment::value,
+			  "Unsupported allocator" );
+			if constexpr( alloc_traits::is_always_equal::value ) {
+				return alloc{ };
+			} else {
+				return std::move( get_alloc( vec ).get( ) );
+			}
+		}
+
+		template<typename T, typename Allocator>
+		constexpr auto take_buffer( std::vector<T, Allocator> &vec ) {
+			using pointer = typename std::vector<T, Allocator>::pointer;
+			auto ret = daw::exchange( first_ptr( vec ).get( ), pointer( ) );
+			last_ptr( vec ).get( ) = pointer( );
+			capacity_ptr( vec ).get( ) = pointer( );
+			return ret;
+		}
+
+		template<typename T, typename Allocator>
+		constexpr void give_allocator( std::vector<T, Allocator> &vec,
+		                               Allocator &&alloc ) {
+			using pointer = typename std::vector<T, Allocator>::pointer;
+			using alloc_traits = std::allocator_traits<Allocator>;
+			assert( first_ptr( vec ) == pointer( ) );
+			static_assert(
+			  alloc_traits::is_always_equal::value or
+			    alloc_traits::propagate_on_container_move_assignment::value,
+			  "Unsupported allocator" );
+			if constexpr( alloc_traits::propagate_on_container_move_assignment::
+			                value ) {
+				get_alloc( vec ).get( ) = std::move( alloc );
+			}
+		}
+
+		template<typename T, typename Allocator>
+		constexpr void
+		give_buffer( std::vector<T, Allocator> &vec,
+		             typename std::vector<T, Allocator>::pointer p ) {
+			// Assumes vector is empty
+			assert( ( first_ptr( vec ) ==
+			          typename std::vector<T, Allocator>::pointer( ) ) );
+			first_ptr( vec ).get( ) = p;
+		}
+
 		template<typename T, typename Alloc>
 		struct std_vector_layout : std_vector_layout_impl<T, Alloc>::impl_type {
 			using pointer = typename std_vector_layout_impl<T, Alloc>::pointer;
@@ -133,22 +242,11 @@ namespace daw {
 			}
 
 			constexpr alloc_type take_allocator( ) {
-				static_assert(
-				  alloc_traits::is_always_equal::value or
-				    alloc_traits::propagate_on_container_move_assignment::value,
-				  "Unsupported allocator" );
-				if constexpr( alloc_traits::is_always_equal::value ) {
-					return { };
-				} else {
-					return std::move( *static_cast<alloc_type *>( this ) );
-				}
+				return ::daw::container_help_impl::take_allocator( *this );
 			}
 
 			constexpr pointer take_buffer( ) {
-				auto ret = daw::exchange( base::m_first, pointer( ) );
-				base::m_last = pointer( );
-				base::m_capacity = pointer( );
-				return ret;
+				return ::daw::container_help_impl::take_buffer( *this );
 			}
 
 			constexpr void capacity( std::size_t sz ) {
@@ -190,12 +288,11 @@ namespace daw {
 			using layout_t = container_help_impl::std_vector_layout<T, Allocator>;
 			static_assert( sizeof( layout_t ) == sizeof( vec_t ), "mismatch" );
 			static_assert( alignof( layout_t ) == alignof( vec_t ), "mismatch" );
-			auto *vec_ptr = reinterpret_cast<layout_t *>( std::addressof( vec ) );
 
-			auto const sz = vec_ptr->size( );
-			auto const cap = vec_ptr->capacity( );
-			auto alloc = vec_ptr->take_allocator( );
-			auto buff = vec_ptr->take_buffer( );
+			auto const sz = vec.size( );
+			auto const cap = vec.capacity( );
+			auto alloc = daw::container_help_impl::take_allocator( vec );
+			auto buff = daw::container_help_impl::take_buffer( vec );
 			return container_data<T, Allocator>( buff, std::move( alloc ), sz, cap );
 		}
 	};
@@ -208,8 +305,10 @@ namespace daw {
 
 		explicit insert_into_container_t( ) = default;
 
-		constexpr void operator( )( std::vector<T, Allocator> &vec, pointer buff,
-		                            alloc_type alloc, std::size_t capacity,
+		constexpr void operator( )( std::vector<T, Allocator> &vec,
+		                            pointer buff,
+		                            alloc_type alloc,
+		                            std::size_t capacity,
 		                            std::size_t size ) const {
 			using vec_t = std::vector<T>;
 			using layout_t = container_help_impl::std_vector_layout<T, Allocator>;

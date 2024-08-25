@@ -26,30 +26,34 @@
 namespace daw {
 	namespace function_table_impl {
 		template<
-		  size_t I, typename... TpArgs,
+		  size_t I,
+		  typename... TpArgs,
 		  std::enable_if_t<( I < sizeof...( TpArgs ) ), std::nullptr_t> = nullptr>
 		constexpr decltype( auto ) sfinae_get( std::tuple<TpArgs...> const &tp ) {
 			return std::get<I>( tp );
 		}
 
 		template<
-		  size_t I, typename... TpArgs,
+		  size_t I,
+		  typename... TpArgs,
 		  std::enable_if_t<( I < sizeof...( TpArgs ) ), std::nullptr_t> = nullptr>
 		constexpr decltype( auto ) sfinae_get( std::tuple<TpArgs...> &&tp ) {
 			return std::get<I>( std::move( tp ) );
 		}
 
 		template<
-		  size_t I, typename... TpArgs,
+		  size_t I,
+		  typename... TpArgs,
 		  std::enable_if_t<( I < sizeof...( TpArgs ) ), std::nullptr_t> = nullptr>
 		constexpr decltype( auto ) sfinae_get( std::tuple<TpArgs...> &tp ) {
 			return std::get<I>( tp );
 		}
 
-		template<
-		  size_t I, typename T,
-		  typename F = std::integral_constant<
-		    bool, ( I < std::tuple_size<std::remove_reference_t<T>>::value )>>
+		template<size_t I,
+		         typename T,
+		         typename F = std::integral_constant<
+		           bool,
+		           ( I < std::tuple_size<std::remove_reference_t<T>>::value )>>
 		struct is_t_in_range : F {};
 
 		template<size_t I, typename T>
@@ -61,10 +65,15 @@ namespace daw {
 
 		template<size_t I, typename T, typename... Args>
 		constexpr bool is_t_callable_v =
-		  is_detected_v<is_t_callable_test, std::integral_constant<size_t, I>, T,
+		  is_detected_v<is_t_callable_test,
+		                std::integral_constant<size_t, I>,
+		                T,
 		                Args...>;
 
-		template<typename R, bool allow_empty, size_t I, typename T,
+		template<typename R,
+		         bool allow_empty,
+		         size_t I,
+		         typename T,
 		         typename... Args>
 		static constexpr R apply_at_impl( size_t idx, T &&t, Args &&...args ) {
 			if( idx == I ) {
@@ -77,8 +86,8 @@ namespace daw {
 				}
 			}
 			if constexpr( is_t_in_range_v<I + 1, T> ) {
-				return apply_at_impl<R, allow_empty, I + 1>( idx, DAW_FWD( t ),
-				                                             DAW_FWD( args )... );
+				return apply_at_impl<R, allow_empty, I + 1>(
+				  idx, DAW_FWD( t ), DAW_FWD( args )... );
 			}
 			std::abort( );
 		}
@@ -100,7 +109,7 @@ namespace daw {
 			}
 			std::abort( );
 		} // namespace
-	} // namespace function_table_impl
+	}   // namespace function_table_impl
 
 	template<typename R, typename Function, typename... Functions>
 	struct function_table_t {

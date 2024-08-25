@@ -37,11 +37,12 @@ namespace daw::traits {
 
 #undef GENERATE_IS_STD_CONTAINER1
 
-#define GENERATE_IS_STD_CONTAINER2( ContainerName )                        \
-	template<typename T>                                                     \
-	inline constexpr bool is_##ContainerName##_v = std::is_same_v<           \
-	  T, std::ContainerName<typename T::key_type, typename T::mapped_type>>; \
-	template<typename T>                                                     \
+#define GENERATE_IS_STD_CONTAINER2( ContainerName )                     \
+	template<typename T>                                                  \
+	inline constexpr bool is_##ContainerName##_v = std::is_same_v<        \
+	  T,                                                                  \
+	  std::ContainerName<typename T::key_type, typename T::mapped_type>>; \
+	template<typename T>                                                  \
 	using is_##ContainerName = std::bool_constant<is_##ContainerName##_v<T>>
 
 	GENERATE_IS_STD_CONTAINER2( map );
@@ -50,18 +51,24 @@ namespace daw::traits {
 #undef GENERATE_IS_STD_CONTAINER2
 
 	template<typename T>
-	using is_single_item_container =
-	  std::disjunction<is_vector<T>, is_list<T>, is_set<T>, is_deque<T>,
-	                   is_unordered_set<T>>;
+	using is_single_item_container = std::disjunction<is_vector<T>,
+	                                                  is_list<T>,
+	                                                  is_set<T>,
+	                                                  is_deque<T>,
+	                                                  is_unordered_set<T>>;
 
 	template<typename T>
 	inline constexpr bool is_single_item_container_v =
 	  is_single_item_container<T>::value;
 
 	template<typename T>
-	using is_container =
-	  std::disjunction<is_vector<T>, is_list<T>, is_set<T>, is_deque<T>,
-	                   is_unordered_set<T>, is_map<T>, is_unordered_map<T>>;
+	using is_container = std::disjunction<is_vector<T>,
+	                                      is_list<T>,
+	                                      is_set<T>,
+	                                      is_deque<T>,
+	                                      is_unordered_set<T>,
+	                                      is_map<T>,
+	                                      is_unordered_map<T>>;
 
 	template<typename T>
 	inline constexpr bool is_container_v = is_container<T>::value;

@@ -132,9 +132,11 @@ namespace {
 		std::string str = "this 1 1.234 test";
 		std::stringstream ss{ str };
 		auto vals =
-		  daw::values_from_stream<daw::parser::converters::unquoted_string, int,
-		                          float, daw::parser::converters::unquoted_string>(
-		    ss, " " );
+		  daw::values_from_stream<daw::parser::converters::unquoted_string,
+		                          int,
+		                          float,
+		                          daw::parser::converters::unquoted_string>( ss,
+		                                                                     " " );
 
 		daw::expecting( std::get<0>( vals ), "this" );
 		daw::expecting( std::get<1>( vals ), 1 );
@@ -182,7 +184,8 @@ namespace {
 			  []( e_colours a, e_colours b ) {
 				  return sum_colours( a, b );
 			  },
-			  "green blue", daw::parser::whitespace_splitter{ } );
+			  "green blue",
+			  daw::parser::whitespace_splitter{ } );
 			daw::expecting( result, 12 );
 			return true;
 		}
@@ -211,7 +214,8 @@ namespace {
 			  []( e_colours a, e_colours b, int c ) {
 				  return sum_colours( a, b ) + c;
 			  },
-			  "green blue 534", daw::parser::whitespace_splitter{ } );
+			  "green blue 534",
+			  daw::parser::whitespace_splitter{ } );
 			daw::expecting( result, 546 );
 			return true;
 		}

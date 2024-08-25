@@ -28,8 +28,7 @@ namespace daw {
 				tmp.remove_suffix( suffix );
 				return std::array<char const, name_size - ( suffix + prefix ) + 1>{
 				  tmp[Is]... };
-			}
-			( std::make_index_sequence<name_size>{ } );
+			}( std::make_index_sequence<name_size>{ } );
 #elif defined( __GNUC__ )
 			auto name = daw::string_view( __PRETTY_FUNCTION__ );
 			constexpr auto prefix =

@@ -26,10 +26,12 @@ namespace daw {
 	}
 
 	template<typename Container, typename Allocator, typename Pointer>
-	constexpr void insert_into_container( Container &vec, Pointer *buff,
-	                                      Allocator alloc, std::size_t capacity,
+	constexpr void insert_into_container( Container &vec,
+	                                      Pointer *buff,
+	                                      Allocator alloc,
+	                                      std::size_t capacity,
 	                                      std::size_t size ) {
-		insert_into_container_t<Container>{ }( vec, buff, std::move( alloc ),
-		                                       capacity, size );
+		insert_into_container_t<Container>{ }(
+		  vec, buff, std::move( alloc ), capacity, size );
 	}
 } // namespace daw

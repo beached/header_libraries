@@ -37,7 +37,8 @@ int main( ) {
 		(void)v;
 	}
 	{
-		using string_t = std::basic_string<char, std::char_traits<char>,
+		using string_t = std::basic_string<char,
+		                                   std::char_traits<char>,
 		                                   daw::memory::tracked_allocator<char>>;
 		using pair_t = std::pair<string_t const, int>;
 		using Allocator =

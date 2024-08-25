@@ -7,8 +7,8 @@
 //
 
 #include "daw/daw_benchmark.h"
-#include "daw/daw_string_split_range.h"
-#include "daw/daw_string_view1.h"
+#include "daw/deprecated/daw_string_split_range.h"
+#include "daw/deprecated/daw_string_view1.h"
 
 #include <algorithm>
 #include <array>
@@ -34,16 +34,16 @@ static_assert( splt_test_000( ) );
 
 void string_split_range_001( ) {
 	std::string const str = "This is a test of the split";
-	std::vector<std::string> const expected_tst = { "This", "is",  "a",    "test",
-	                                                "of",   "the", "split" };
+	std::vector<std::string> const expected_tst = {
+	  "This", "is", "a", "test", "of", "the", "split" };
 	std::vector<std::string> tst{ };
 	std::string delem = " ";
 	daw::string_split_range<char> rng = daw::split_string( str, delem );
 
-	daw::algorithm::transform( rng.begin( ), rng.end( ),
-	                           std::back_inserter( tst ), []( auto sv ) {
-		                           return sv.to_string( );
-	                           } );
+	daw::algorithm::transform(
+	  rng.begin( ), rng.end( ), std::back_inserter( tst ), []( auto sv ) {
+		  return sv.to_string( );
+	  } );
 
 	bool const ans = daw::algorithm::equal(
 	  tst.cbegin( ), tst.cend( ), expected_tst.cbegin( ), expected_tst.cend( ) );
@@ -51,22 +51,22 @@ void string_split_range_001( ) {
 }
 
 void string_split_range_002( ) {
-	std::vector<std::string> const expected_tst = { "This", "is",  "a",    "test",
-	                                                "of",   "the", "split" };
+	std::vector<std::string> const expected_tst = {
+	  "This", "is", "a", "test", "of", "the", "split" };
 	std::vector<std::string> tst{ };
 
 	for( auto sv : daw::split_string( "This is a test of the split", " " ) ) {
 		tst.push_back( sv.to_string( ) );
 	}
 
-	bool const ans = std::equal( tst.cbegin( ), tst.cend( ),
-	                             expected_tst.cbegin( ), expected_tst.cend( ) );
+	bool const ans = std::equal(
+	  tst.cbegin( ), tst.cend( ), expected_tst.cbegin( ), expected_tst.cend( ) );
 	daw::expecting( ans );
 }
 
 void string_split_range_003( ) {
-	std::vector<std::string> const expected_tst = { "This", "is",  "a",    "test",
-	                                                "of",   "the", "split" };
+	std::vector<std::string> const expected_tst = {
+	  "This", "is", "a", "test", "of", "the", "split" };
 	std::vector<std::string> tst{ };
 
 	for( auto sv :
@@ -74,8 +74,8 @@ void string_split_range_003( ) {
 		tst.push_back( sv.to_string( ) );
 	}
 
-	bool const ans = std::equal( tst.cbegin( ), tst.cend( ),
-	                             expected_tst.cbegin( ), expected_tst.cend( ) );
+	bool const ans = std::equal(
+	  tst.cbegin( ), tst.cend( ), expected_tst.cbegin( ), expected_tst.cend( ) );
 	daw::expecting( ans );
 }
 

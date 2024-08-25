@@ -52,7 +52,8 @@ namespace daw {
 		};
 	} // namespace keep_n_impl
 
-	template<typename T, size_t MaxItems,
+	template<typename T,
+	         size_t MaxItems,
 	         keep_n_order Order = keep_n_order::ascending,
 	         typename Predicate = std::less<>>
 	class keep_n {

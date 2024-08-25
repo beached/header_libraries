@@ -91,11 +91,14 @@ namespace daw {
 		}
 
 		[[nodiscard]] size_t size( ) const noexcept {
-			return daw::algorithm::accumulate(
-			  std::begin( m_indices ), std::end( m_indices ), 0ULL,
-			  []( auto const &opt ) {
-				  return static_cast<bool>( opt ) ? 1ULL : 0ULL;
-			  } );
+			return daw::algorithm::accumulate( std::begin( m_indices ),
+			                                   std::end( m_indices ),
+			                                   0ULL,
+			                                   []( auto const &opt ) {
+				                                   return static_cast<bool>( opt )
+				                                            ? 1ULL
+				                                            : 0ULL;
+			                                   } );
 		}
 	};
 } // namespace daw

@@ -45,8 +45,8 @@ namespace {
 } // namespace
 
 void daw_sip_hash_test_001( ) {
-	std::array<char const, 16> key = { 0, 1, 2,    3,    4,    5,    6,    7,
-	                                   8, 9, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F };
+	std::array<char const, 16> key = {
+	  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F };
 
 	auto const plaintext = []( ) {
 		std::array<char, 64> result{ };

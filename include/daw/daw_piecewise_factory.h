@@ -45,7 +45,8 @@ namespace daw {
 			  typename Callable,
 			  std::enable_if_t<
 			    std::is_convertible_v<
-			      decltype( std::declval<daw::remove_cvref_t<Callable>>( )( ) ), T>,
+			      decltype( std::declval<daw::remove_cvref_t<Callable>>( )( ) ),
+			      T>,
 			    std::nullptr_t> = nullptr>
 			constexpr T operator( )( Callable &&f ) const {
 				return DAW_FWD( f )( );
@@ -98,17 +99,23 @@ namespace daw {
 		}
 
 		template<
-		  size_t N, bool, typename... Args, typename Value,
+		  size_t N,
+		  bool,
+		  typename... Args,
+		  typename Value,
 		  std::enable_if_t<( N >= sizeof...( Args ) ), std::nullptr_t> = nullptr>
 		void set_tuple( size_t, std::tuple<Args...> &, Value && ) {
 			daw::exception::daw_throw<std::out_of_range>( );
 		}
 
 		template<
-		  size_t N, bool use_late, typename... Args, typename Value,
+		  size_t N,
+		  bool use_late,
+		  typename... Args,
+		  typename Value,
 		  std::enable_if_t<( N < sizeof...( Args ) ), std::nullptr_t> = nullptr>
-		constexpr void set_tuple( size_t index, std::tuple<Args...> &tp,
-		                          Value &&value ) {
+		constexpr void
+		set_tuple( size_t index, std::tuple<Args...> &tp, Value &&value ) {
 			if( N != index ) {
 				set_tuple<N + 1, use_late>( index, tp, DAW_FWD( value ) );
 				return;
@@ -199,19 +206,19 @@ namespace daw {
 	struct piecewise_factory_late_t
 	  : private impl::piecewise_factory_impl_t<T, true, Args...> {
 
-		using impl::piecewise_factory_impl_t<T, true,
-		                                     Args...>::piecewise_factory_impl_t;
+		using impl::piecewise_factory_impl_t<T, true, Args...>::
+		  piecewise_factory_impl_t;
 		using impl::piecewise_factory_impl_t<T, true, Args...>::set;
 		using impl::piecewise_factory_impl_t<T, true, Args...>::operator( );
 
-		template<size_t N, typename Callable,
+		template<size_t N,
+		         typename Callable,
 		         std::enable_if_t<
 		           std::is_convertible_v<decltype( std::declval<Callable>( )( ) ),
 		                                 traits::nth_type<N, Args...>>,
 		           std::nullptr_t> = nullptr>
 		void set( Callable &&f ) {
-			std::function<traits::nth_type<N, Args...>( )> func =
-			  DAW_FWD( f );
+			std::function<traits::nth_type<N, Args...>( )> func = DAW_FWD( f );
 			std::get<N>( this->m_args ) = std::move( func );
 		}
 	};
@@ -220,8 +227,8 @@ namespace daw {
 	struct piecewise_factory_t
 	  : private impl::piecewise_factory_impl_t<T, false, Args...> {
 
-		using impl::piecewise_factory_impl_t<T, false,
-		                                     Args...>::piecewise_factory_impl_t;
+		using impl::piecewise_factory_impl_t<T, false, Args...>::
+		  piecewise_factory_impl_t;
 		using impl::piecewise_factory_impl_t<T, false, Args...>::set;
 		using impl::piecewise_factory_impl_t<T, false, Args...>::operator( );
 	};

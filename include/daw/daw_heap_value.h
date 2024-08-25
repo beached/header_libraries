@@ -47,8 +47,9 @@ namespace daw {
 		}
 
 		// Make this less perfect so that we can still do copy/move construction
-		template<typename Arg, typename = std::enable_if_t<
-		                         daw::traits::not_self<Arg, value_t>( )>>
+		template<
+		  typename Arg,
+		  typename = std::enable_if_t<daw::traits::not_self<Arg, value_t>( )>>
 		heap_value( Arg &&arg )
 		  : m_value{ std::make_unique<value_t>( DAW_FWD( arg ) ) } {}
 

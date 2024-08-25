@@ -20,22 +20,22 @@ void daw_parser_helper001( ) {
 	static std::string uint_test = "43453";
 	uint32_t ui32 = 0;
 	int32_t i32 = 0;
-	daw::parser::parse_unsigned_int( std::data( uint_test ),
-	                                 daw::data_end( uint_test ), ui32 );
+	daw::parser::parse_unsigned_int(
+	  std::data( uint_test ), daw::data_end( uint_test ), ui32 );
 	std::cout << "parse_unsigned_int: uint32 parser test from: '" << uint_test
 	          << "' to " << ui32 << '\n';
 	daw::expecting_message( 43453 == ui32, "Value did not parse correctly" );
 	std::cout << std::endl;
-	daw::parser::parse_int( std::data( uint_test ), daw::data_end( uint_test ),
-	                        i32 );
+	daw::parser::parse_int(
+	  std::data( uint_test ), daw::data_end( uint_test ), i32 );
 	std::cout << "parse_int: int32 parser test from: '" << uint_test << "' to "
 	          << i32 << '\n';
 	daw::expecting_message( 43453 == i32, "Value did not parse correctly" );
 
 	static std::string int_test = "-34534";
 	i32 = 0;
-	daw::parser::parse_int( std::data( int_test ), daw::data_end( int_test ),
-	                        i32 );
+	daw::parser::parse_int(
+	  std::data( int_test ), daw::data_end( int_test ), i32 );
 	std::cout << "parse_int: int32 parser test from: '" << int_test << "' to "
 	          << i32 << '\n';
 	daw::expecting_message( -34534 == i32, "Value did not parse correctly" );

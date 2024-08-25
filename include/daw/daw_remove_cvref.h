@@ -10,7 +10,13 @@
 
 #include <daw/stdinc/remove_cvref.h>
 
+#include <type_traits>
+
 namespace daw {
 	template<typename T>
 	using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
-}
+
+	template<typename T>
+	using remove_cvrvref_t =
+	  std::conditional_t<std::is_rvalue_reference_v<T>, remove_cvref_t<T>, T>;
+} // namespace daw

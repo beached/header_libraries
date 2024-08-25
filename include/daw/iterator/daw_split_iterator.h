@@ -93,10 +93,11 @@ namespace daw {
 	struct split_it;
 
 	template<typename Iterator, typename Splitter>
-	struct split_it<
-	  Iterator, Splitter,
-	  std::enable_if_t<not std::is_same_v<
-	    char, typename std::iterator_traits<Iterator>::value_type>>> {
+	struct split_it<Iterator,
+	                Splitter,
+	                std::enable_if_t<not std::is_same_v<
+	                  char,
+	                  typename std::iterator_traits<Iterator>::value_type>>> {
 
 		using CharT = typename std::iterator_traits<Iterator>::value_type;
 		static_assert( daw::traits::is_unary_predicate_v<Splitter, CharT>,
@@ -116,13 +117,13 @@ namespace daw {
 		constexpr Iterator find_prev( ) noexcept {
 			static_assert( impl::can_decrement<Iterator>,
 			               "Supplied Iterator is not Bidirectional" );
-			auto pos = daw::algorithm::find_last_of( m_data.cbegin( ),
-			                                         m_position.cend( ), m_splitter );
+			auto pos = daw::algorithm::find_last_of(
+			  m_data.cbegin( ), m_position.cend( ), m_splitter );
 			if( pos == m_data.cend( ) ) {
 				return 0;
 			}
-			return daw::safe_next( pos, m_data.cend( ),
-			                       impl::splitter_size{ }( m_splitter ) );
+			return daw::safe_next(
+			  pos, m_data.cend( ), impl::splitter_size{ }( m_splitter ) );
 		}
 
 		constexpr void move_prev( ) noexcept {
@@ -132,7 +133,8 @@ namespace daw {
 				return;
 			}
 			m_position.end( ) =
-			  daw::safe_prev( m_position.cbegin( ), m_data.cbegin( ),
+			  daw::safe_prev( m_position.cbegin( ),
+			                  m_data.cbegin( ),
 			                  impl::splitter_size{ }( m_splitter ) );
 			m_position.begin( ) = find_prev( );
 		}
@@ -142,7 +144,8 @@ namespace daw {
 				return m_position.end( );
 			}
 			return daw::algorithm::find_first_of(
-			  daw::safe_next( m_position.end( ), m_data.cend( ) ), m_data.cend( ),
+			  daw::safe_next( m_position.end( ), m_data.cend( ) ),
+			  m_data.cend( ),
 			  impl::splitter_size{ }( m_splitter ) );
 		}
 
@@ -155,7 +158,8 @@ namespace daw {
 		}
 
 	public:
-		constexpr split_it( Iterator first, Iterator last,
+		constexpr split_it( Iterator first,
+		                    Iterator last,
 		                    Splitter &&splitter ) noexcept
 		  : m_data{ first, last }
 		  , m_position{ first, last }
@@ -168,7 +172,8 @@ namespace daw {
 		  typename Container,
 		  daw::required<daw::traits::is_container_like_v<Container>> = nullptr>
 		constexpr split_it( Container &container, Splitter &&splitter ) noexcept
-		  : split_it( std::begin( container ), std::end( container ),
+		  : split_it( std::begin( container ),
+		              std::end( container ),
 		              DAW_FWD( splitter ) ) {}
 
 		constexpr split_it( ) noexcept
@@ -298,10 +303,10 @@ namespace daw {
 			if( lhs.at_end( ) == rhs.at_end( ) ) {
 				return false;
 			}
-			return std::tie( lhs.m_position.begin( ), lhs.m_position.end( ),
-			                 lhs.m_data ) != std::tie( rhs.m_position.begin( ),
-			                                           rhs.m_position.end( ),
-			                                           rhs.m_data );
+			return std::tie(
+			         lhs.m_position.begin( ), lhs.m_position.end( ), lhs.m_data ) !=
+			       std::tie(
+			         rhs.m_position.begin( ), rhs.m_position.end( ), rhs.m_data );
 		}
 
 		constexpr friend bool operator!=( split_it const &lhs,
@@ -324,10 +329,11 @@ namespace daw {
 	};
 
 	template<typename Iterator, typename Splitter>
-	struct split_it<
-	  Iterator, Splitter,
-	  std::enable_if_t<std::is_same_v<
-	    char, typename std::iterator_traits<Iterator>::value_type>>> {
+	struct split_it<Iterator,
+	                Splitter,
+	                std::enable_if_t<std::is_same_v<
+	                  char,
+	                  typename std::iterator_traits<Iterator>::value_type>>> {
 
 		using CharT = char;
 		static_assert( daw::traits::is_unary_predicate_v<Splitter, CharT>,
@@ -347,13 +353,13 @@ namespace daw {
 		constexpr Iterator find_prev( ) noexcept {
 			static_assert( impl::can_decrement<Iterator>,
 			               "Supplied Iterator is not Bidirectional" );
-			auto pos = daw::algorithm::find_last_of( m_data.cbegin( ),
-			                                         m_position.cend( ), m_splitter );
+			auto pos = daw::algorithm::find_last_of(
+			  m_data.cbegin( ), m_position.cend( ), m_splitter );
 			if( pos == m_data.cend( ) ) {
 				return 0;
 			}
-			return daw::safe_next( pos, m_data.cend( ),
-			                       impl::splitter_size{ }( m_splitter ) );
+			return daw::safe_next(
+			  pos, m_data.cend( ), impl::splitter_size{ }( m_splitter ) );
 		}
 
 		constexpr void move_prev( ) noexcept {
@@ -363,7 +369,8 @@ namespace daw {
 				return;
 			}
 			m_position.end( ) =
-			  daw::safe_prev( m_position.cbegin( ), m_data.cbegin( ),
+			  daw::safe_prev( m_position.cbegin( ),
+			                  m_data.cbegin( ),
 			                  impl::splitter_size{ }( m_splitter ) );
 			m_position.begin( ) = find_prev( );
 		}
@@ -373,7 +380,8 @@ namespace daw {
 				return m_position.end( );
 			}
 			return daw::algorithm::find_first_of(
-			  daw::safe_next( m_position.end( ), m_data.cend( ) ), m_data.cend( ),
+			  daw::safe_next( m_position.end( ), m_data.cend( ) ),
+			  m_data.cend( ),
 			  impl::splitter_size{ }( m_splitter ) );
 		}
 
@@ -386,7 +394,8 @@ namespace daw {
 		}
 
 	public:
-		constexpr split_it( Iterator first, Iterator last,
+		constexpr split_it( Iterator first,
+		                    Iterator last,
 		                    Splitter &&splitter ) noexcept
 		  : m_data{ first, last }
 		  , m_position{ first, last }
@@ -399,7 +408,8 @@ namespace daw {
 		  typename Container,
 		  daw::required<daw::traits::is_container_like_v<Container>> = nullptr>
 		constexpr split_it( Container &container, Splitter &&splitter ) noexcept
-		  : split_it( std::begin( container ), std::end( container ),
+		  : split_it( std::begin( container ),
+		              std::end( container ),
 		              DAW_FWD( splitter ) ) {}
 
 		constexpr split_it( ) noexcept
@@ -529,10 +539,10 @@ namespace daw {
 			if( lhs.at_end( ) == rhs.at_end( ) ) {
 				return false;
 			}
-			return std::tie( lhs.m_position.begin( ), lhs.m_position.end( ),
-			                 lhs.m_data ) != std::tie( rhs.m_position.begin( ),
-			                                           rhs.m_position.end( ),
-			                                           rhs.m_data );
+			return std::tie(
+			         lhs.m_position.begin( ), lhs.m_position.end( ), lhs.m_data ) !=
+			       std::tie(
+			         rhs.m_position.begin( ), rhs.m_position.end( ), rhs.m_data );
 		}
 
 		constexpr friend bool operator!=( split_it const &lhs,
@@ -563,12 +573,13 @@ namespace daw {
 		  daw::traits::is_unary_predicate_v<Splitter, string_char_t<String>>;
 	} // namespace impl
 
-	template<typename String, typename Splitter,
+	template<typename String,
+	         typename Splitter,
 	         daw::required<impl::is_splitter_v<Splitter, String>> = nullptr>
 	constexpr auto make_split_it( String &sv, Splitter &&splitter ) noexcept {
 		using IterT = DAW_TYPEOF( std::begin( sv ) );
-		auto result = split_it<IterT, Splitter>{ std::begin( sv ), std::end( sv ),
-		                                         DAW_FWD( splitter ) };
+		auto result = split_it<IterT, Splitter>{
+		  std::begin( sv ), std::end( sv ), DAW_FWD( splitter ) };
 		return result;
 	}
 
@@ -579,7 +590,7 @@ namespace daw {
 		using SpltT = char_splitter_t<CharT>;
 		using iterator = DAW_TYPEOF( str.begin( ) );
 
-		return split_it<iterator, SpltT>( str.begin( ), str.end( ),
-		                                  SpltT{ divider } );
+		return split_it<iterator, SpltT>(
+		  str.begin( ), str.end( ), SpltT{ divider } );
 	}
 } // namespace daw

@@ -19,8 +19,8 @@ void daw_range_test01( ) {
 	using namespace daw::range::operators;
 	using daw::range::from;
 
-	std::vector<int32_t> const t = { -400, 4, -1, 1000, 4, 0, 1, 2,
-	                                 3,    4, 5,  6,    7, 8, 9, 10 };
+	std::vector<int32_t> const t = {
+	  -400, 4, -1, 1000, 4, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto result = from( t ) << shuffle( ) << sort( ) << where( []( auto v ) {
 		              return v > 0;
 	              } ) << stable_partition( []( auto v ) {
@@ -40,8 +40,8 @@ void daw_range_test01( ) {
 void daw_range_test02( ) {
 	using daw::range::from;
 
-	std::vector<int32_t> const t = { -400, 4, -1, 1000, 4, 0, 1, 2,
-	                                 3,    4, 5,  6,    7, 8, 9, 10 };
+	std::vector<int32_t> const t = {
+	  -400, 4, -1, 1000, 4, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	auto result = from( t )
 	                .shuffle( )
 	                .sort( )

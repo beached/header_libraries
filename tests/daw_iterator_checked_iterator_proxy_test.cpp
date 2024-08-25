@@ -17,7 +17,8 @@ void daw_checked_iterator_proxy_001( ) {
 	std::vector<int> const test = { 0, 1, 2, 3, 4 };
 
 	for( auto it = daw::make_checked_iterator_proxy( test.begin( ), test.end( ) );
-	     it != test.end( ); ++it ) {
+	     it != test.end( );
+	     ++it ) {
 		std::cout << *it << '\n';
 	}
 }
@@ -29,7 +30,8 @@ void daw_checked_iterator_proxy_002( ) {
 	try {
 		for( auto it =
 		       daw::make_checked_iterator_proxy( test.begin( ), test.begin( ) + 2 );
-		     it != test.end( ); ++it ) {
+		     it != test.end( );
+		     ++it ) {
 			std::cout << *it << '\n';
 		}
 	} catch( std::out_of_range const &ex ) {

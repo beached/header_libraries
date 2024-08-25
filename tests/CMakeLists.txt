@@ -131,7 +131,9 @@ set( CPP20_TEST_SOURCES
      daw_concepts_test.cpp
      daw_contiguous_view_test.cpp
      daw_iter_view_test.cpp
+		 daw_move_only_test.cpp
      daw_named_params_test.cpp
+		 daw_pipelines_test.cpp
      vector_test.cpp
 )
 #NOT COMPLETED daw_iterator_split_iterator_test.cpp
@@ -143,7 +145,6 @@ set( NOT_MSVC_TEST_SOURCES
      daw_bounded_graph_test.cpp
      daw_bounded_hash_map_test.cpp
      daw_bounded_hash_set_test.cpp
-     daw_container_help_test.cpp
      daw_parser_helper_test.cpp
      daw_piecewise_factory_test.cpp
      daw_tuple2_test.cpp
@@ -152,6 +153,7 @@ set( NOT_MSVC_TEST_SOURCES
 #not included in CI as they are not ready
 set( DEV_TEST_SOURCES
      daw_bind_args_at_test.cpp
+		 daw_container_help_test.cpp
      daw_bit_queues_test.cpp
      daw_bit_test.cpp
      daw_cstring_test.cpp

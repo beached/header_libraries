@@ -53,8 +53,9 @@ struct HashMe {
 };
 
 struct MetroHash {
-	template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
-	                                            std::nullptr_t> = nullptr>
+	template<
+	  typename Integer,
+	  std::enable_if_t<std::is_integral_v<Integer>, std::nullptr_t> = nullptr>
 	constexpr size_t operator( )( Integer value, size_t seed = 0 ) const {
 		char buff[sizeof( Integer )]{ };
 		for( size_t n = 0; n < sizeof( Integer ); ++n ) {
@@ -73,10 +74,13 @@ struct MetroHash {
 };
 template<size_t N>
 using matching_unsigned_t = std::conditional_t<
-  N == 64, uint64_t,
+  N == 64,
+  uint64_t,
   std::conditional_t<
-    N == 32, uint32_t,
-    std::conditional_t<N == 16, uint16_t,
+    N == 32,
+    uint32_t,
+    std::conditional_t<N == 16,
+                       uint16_t,
                        std::conditional_t<N == 8, uint8_t, uintmax_t>>>>;
 
 template<typename Hm, typename Arry>
@@ -134,19 +138,39 @@ constexpr uint32_t u32( char const ( &str )[5] ) {
 }
 
 inline constexpr std::pair<uint32_t, bool> values[16]{
-  { u32( "INFO" ), true }, { u32( "CONN" ), true }, { u32( "PUB " ), true },
-  { u32( "SUB " ), true }, { u32( "UNSU" ), true }, { u32( "PING" ), true },
-  { u32( "PONG" ), true }, { u32( "+OK " ), true }, { u32( "-ERR" ), true },
-  { u32( "AUTH" ), true }, { u32( "PUSH" ), true }, { u32( "ADD " ), true },
-  { u32( "DECR" ), true }, { u32( "SET " ), true }, { u32( "GET " ), true },
+  { u32( "INFO" ), true },
+  { u32( "CONN" ), true },
+  { u32( "PUB " ), true },
+  { u32( "SUB " ), true },
+  { u32( "UNSU" ), true },
+  { u32( "PING" ), true },
+  { u32( "PONG" ), true },
+  { u32( "+OK " ), true },
+  { u32( "-ERR" ), true },
+  { u32( "AUTH" ), true },
+  { u32( "PUSH" ), true },
+  { u32( "ADD " ), true },
+  { u32( "DECR" ), true },
+  { u32( "SET " ), true },
+  { u32( "GET " ), true },
   { u32( "QUIT" ), true } };
 
 inline constexpr std::pair<std::string_view, bool> values2[16]{
-  { "INFO"sv, true }, { "CONN"sv, true }, { "PUB "sv, true },
-  { "SUB "sv, true }, { "UNSU"sv, true }, { "PING"sv, true },
-  { "PONG"sv, true }, { "+OK "sv, true }, { "-ERR"sv, true },
-  { "AUTH"sv, true }, { "PUSH"sv, true }, { "ADD "sv, true },
-  { "DECR"sv, true }, { "SET "sv, true }, { "GET "sv, true },
+  { "INFO"sv, true },
+  { "CONN"sv, true },
+  { "PUB "sv, true },
+  { "SUB "sv, true },
+  { "UNSU"sv, true },
+  { "PING"sv, true },
+  { "PONG"sv, true },
+  { "+OK "sv, true },
+  { "-ERR"sv, true },
+  { "AUTH"sv, true },
+  { "PUSH"sv, true },
+  { "ADD "sv, true },
+  { "DECR"sv, true },
+  { "SET "sv, true },
+  { "GET "sv, true },
   { "QUIT"sv, true } };
 
 template<size_t Runs>
@@ -299,7 +323,7 @@ inline constexpr auto http_response_codes =
       { 413, "Payload Too Large" },
       { 414, "URI Too Long" },
       { 415, "Unsupported Media Type" },
-      { 416, "Range Not Satisfiable" },
+      { 416, "range_t Not Satisfiable" },
       { 417, "Expectation Failed" },
       { 422, "Unprocessable Entity" },
       { 423, "Locked" },
@@ -324,7 +348,8 @@ template<size_t Runs>
 void test_min_perf_hash3( ) {
 	auto phm_resp =
 	  daw::perfect_hash_table<std::tuple_size_v<decltype( http_response_codes )>,
-	                          std::string_view, uint16_t,
+	                          std::string_view,
+	                          uint16_t,
 	                          std::hash<std::string_view>>(
 	    http_response_codes.begin( ), http_response_codes.end( ) );
 	validate( phm_resp, http_response_codes );
@@ -367,8 +392,10 @@ void test_unorderd_map4( ) {
 extern uint16_t http_test_daw( std::string_view sv ) {
 	auto phm_resp =
 	  daw::perfect_hash_table<std::tuple_size_v<decltype( http_response_codes )>,
-	                          std::string_view, uint16_t, MetroHash>(
-	    http_response_codes.begin( ), http_response_codes.end( ) );
+	                          std::string_view,
+	                          uint16_t,
+	                          MetroHash>( http_response_codes.begin( ),
+	                                      http_response_codes.end( ) );
 	return phm_resp[sv];
 }
 

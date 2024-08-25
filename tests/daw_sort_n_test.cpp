@@ -1124,8 +1124,8 @@ void sort_n_test_001( ) {
 #ifdef BIGCONSTEXPR
 		static_assert( []( ) {
 			std::array<int, std::size( big_arry )> out_test{ };
-			daw::sort_to( std::cbegin( big_arry ), std::cend( big_arry ),
-			              out_test.data( ) );
+			daw::sort_to(
+			  std::cbegin( big_arry ), std::cend( big_arry ), out_test.data( ) );
 			return daw::algorithm::is_sorted( std::cbegin( out_test ),
 			                                  std::cend( out_test ) );
 		}( ) );
@@ -1135,7 +1135,8 @@ void sort_n_test_001( ) {
 		  "daw::sort_to                  ",
 		  []( auto container ) {
 			  size_t values[10'000];
-			  daw::sort_to( std::begin( container ), std::end( container ),
+			  daw::sort_to( std::begin( container ),
+			                std::end( container ),
 			                std::begin( values ) );
 			  daw::do_not_optimize( container );
 			  daw::do_not_optimize( values );
@@ -1158,7 +1159,8 @@ void sort_n_test_001( ) {
 		  "daw::sort_to               ",
 		  []( auto container ) {
 			  size_t values[DATASIZE];
-			  daw::sort_to( std::begin( container ), std::end( container ),
+			  daw::sort_to( std::begin( container ),
+			                std::end( container ),
 			                std::begin( values ) );
 			  daw::do_not_optimize( container );
 			  daw::do_not_optimize( values );
@@ -1180,8 +1182,10 @@ void sort_n_test_001( ) {
 #ifdef BIGCONSTEXPR
 		static_assert( []( ) constexpr {
 			std::array<int, std::size( big_arry )> out_test{ };
-			daw::sort_to( std::cbegin( big_arry ), std::cend( big_arry ),
-			              out_test.data( ), std::greater<>{ } );
+			daw::sort_to( std::cbegin( big_arry ),
+			              std::cend( big_arry ),
+			              out_test.data( ),
+			              std::greater<>{ } );
 			return daw::algorithm::is_sorted(
 			  std::cbegin( out_test ), std::cend( out_test ), std::greater<>{ } );
 		}( ) );
@@ -1191,8 +1195,10 @@ void sort_n_test_001( ) {
 		  "daw::sort_to                  ",
 		  []( auto container ) {
 			  size_t values[10'000];
-			  daw::sort_to( std::begin( container ), std::end( container ),
-			                std::begin( values ), std::greater<>{ } );
+			  daw::sort_to( std::begin( container ),
+			                std::end( container ),
+			                std::begin( values ),
+			                std::greater<>{ } );
 			  daw::do_not_optimize( container );
 			  daw::do_not_optimize( values );
 		  },
@@ -1202,8 +1208,8 @@ void sort_n_test_001( ) {
 		  []( auto container ) {
 			  std::vector<size_t> values( std::begin( container ),
 			                              std::end( container ) );
-			  daw::sort( std::begin( values ), std::end( values ),
-			             std::greater<>{ } );
+			  daw::sort(
+			    std::begin( values ), std::end( values ), std::greater<>{ } );
 			  daw::do_not_optimize( container );
 			  daw::do_not_optimize( values );
 		  },
@@ -1215,8 +1221,10 @@ void sort_n_test_001( ) {
 		  "daw::sort_to               ",
 		  []( auto container ) {
 			  size_t values[DATASIZE];
-			  daw::sort_to( std::begin( container ), std::end( container ),
-			                std::begin( values ), std::greater<>{ } );
+			  daw::sort_to( std::begin( container ),
+			                std::end( container ),
+			                std::begin( values ),
+			                std::greater<>{ } );
 			  daw::do_not_optimize( container );
 			  daw::do_not_optimize( values );
 		  },
@@ -1226,8 +1234,8 @@ void sort_n_test_001( ) {
 		  []( auto container ) {
 			  std::vector<size_t> values( std::begin( container ),
 			                              std::end( container ) );
-			  daw::sort( std::begin( values ), std::end( values ),
-			             std::greater<>{ } );
+			  daw::sort(
+			    std::begin( values ), std::end( values ), std::greater<>{ } );
 			  daw::do_not_optimize( container );
 			  daw::do_not_optimize( values );
 		  },

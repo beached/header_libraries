@@ -28,8 +28,9 @@ namespace daw {
 		constexpr set_node_t( ) noexcept(
 		  std::is_nothrow_default_constructible_v<Key> ) = default;
 
-		template<typename K, std::enable_if_t<std::is_convertible_v<K, Key>,
-		                                      std::nullptr_t> = nullptr>
+		template<
+		  typename K,
+		  std::enable_if_t<std::is_convertible_v<K, Key>, std::nullptr_t> = nullptr>
 		constexpr set_node_t( K &&k ) noexcept(
 		  std::is_nothrow_constructible_v<Key, K> )
 		  : key( DAW_FWD( k ) ) {}
@@ -58,7 +59,8 @@ namespace daw {
 
 	public:
 		constexpr const_bounded_hash_set_iterator(
-		  set_node_t<Key> const *first, set_node_t<Key> const *last,
+		  set_node_t<Key> const *first,
+		  set_node_t<Key> const *last,
 		  set_node_t<Key> const *pos ) noexcept
 		  : m_first( first )
 		  , m_last( last )
@@ -275,7 +277,9 @@ namespace daw {
 		return lhs.compare( rhs ) != 0;
 	}
 
-	template<typename Key, size_t Capacity, typename Hash = std::hash<Key>,
+	template<typename Key,
+	         size_t Capacity,
+	         typename Hash = std::hash<Key>,
 	         typename KeyEqual = std::equal_to<Key>>
 	struct bounded_hash_set_t {
 		using key_type = Key;
@@ -339,7 +343,8 @@ namespace daw {
 				m_data[*index].key = key;
 				m_data[*index].has_value = true;
 			}
-			return { m_data.data( ), m_data.data( ) + m_data.size( ),
+			return { m_data.data( ),
+			         m_data.data( ) + m_data.size( ),
 			         m_data.data( ) + *index };
 		}
 
@@ -353,7 +358,8 @@ namespace daw {
 				m_data[*index].key = std::move( key );
 				m_data[*index].has_value = true;
 			}
-			return { m_data.data( ), m_data.data( ) + m_data.size( ),
+			return { m_data.data( ),
+			         m_data.data( ) + m_data.size( ),
 			         m_data.data( ) + *index };
 		}
 
@@ -425,17 +431,20 @@ namespace daw {
 		}
 
 		constexpr iterator end( ) noexcept {
-			return { m_data.data( ), m_data.data( ) + m_data.size( ),
+			return { m_data.data( ),
+			         m_data.data( ) + m_data.size( ),
 			         m_data.data( ) + m_data.size( ) };
 		}
 
 		constexpr const_iterator end( ) const noexcept {
-			return { m_data.data( ), m_data.data( ) + m_data.size( ),
+			return { m_data.data( ),
+			         m_data.data( ) + m_data.size( ),
 			         m_data.data( ) + m_data.size( ) };
 		}
 
 		constexpr const_iterator cend( ) const noexcept {
-			return { m_data.data( ), m_data.data( ) + m_data.size( ),
+			return { m_data.data( ),
+			         m_data.data( ) + m_data.size( ),
 			         m_data.data( ) + m_data.size( ) };
 		}
 

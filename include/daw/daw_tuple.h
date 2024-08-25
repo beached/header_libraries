@@ -39,19 +39,19 @@ namespace daw::impl {
 		struct tuple_value {
 			T m_value;
 
-			constexpr T &get( daw::index_constant<N> ) &noexcept {
+			constexpr T &get( daw::index_constant<N> ) & noexcept {
 				return m_value;
 			}
 
-			constexpr T const &get( daw::index_constant<N> ) const &noexcept {
+			constexpr T const &get( daw::index_constant<N> ) const & noexcept {
 				return m_value;
 			}
 
-			constexpr T &&get( daw::index_constant<N> ) &&noexcept {
+			constexpr T &&get( daw::index_constant<N> ) && noexcept {
 				return std::move( m_value );
 			}
 
-			constexpr T const &&get( daw::index_constant<N> ) const &&noexcept {
+			constexpr T const &&get( daw::index_constant<N> ) const && noexcept {
 				return std::move( m_value );
 			}
 		};
@@ -59,19 +59,19 @@ namespace daw::impl {
 		template<std::size_t N, typename T>
 		struct tuple_value<N, T, true> : T {
 
-			constexpr T &get( daw::index_constant<N> ) &noexcept {
+			constexpr T &get( daw::index_constant<N> ) & noexcept {
 				return *this;
 			}
 
-			constexpr T const &get( daw::index_constant<N> ) const &noexcept {
+			constexpr T const &get( daw::index_constant<N> ) const & noexcept {
 				return *this;
 			}
 
-			constexpr T &&get( daw::index_constant<N> ) &&noexcept {
+			constexpr T &&get( daw::index_constant<N> ) && noexcept {
 				return std::move( *this );
 			}
 
-			constexpr T const &&get( daw::index_constant<N> ) const &&noexcept {
+			constexpr T const &&get( daw::index_constant<N> ) const && noexcept {
 				return std::move( *this );
 			}
 		};
@@ -112,7 +112,8 @@ namespace daw::impl {
 			constexpr tuple_storage( ) = default;
 
 			template<
-			  typename U, typename... Us,
+			  typename U,
+			  typename... Us,
 			  std::enable_if_t<( sizeof...( Us ) > 0 ), std::nullptr_t> = nullptr>
 			constexpr tuple_storage( U &&value, Us &&...us )
 			  : base_value{ DAW_FWD( value ) }
@@ -126,9 +127,9 @@ namespace daw {
 	class tuple : private conditional_t<( sizeof...( Ts ) > 0 ),
 	                                    impl::tuple_storage<0, Ts...>,
 	                                    impl::tuple_storage_empty> {
-		using base_type =
-		  conditional_t<( sizeof...( Ts ) > 0 ), impl::tuple_storage<0, Ts...>,
-		                impl::tuple_storage_empty>;
+		using base_type = conditional_t<( sizeof...( Ts ) > 0 ),
+		                                impl::tuple_storage<0, Ts...>,
+		                                impl::tuple_storage_empty>;
 		using base_type::base_type;
 
 		template<typename T>
@@ -138,14 +139,16 @@ namespace daw {
 		friend DAW_TUPLESPECIALCLASS ::std::tuple_element;
 
 		template<typename Predicate, std::size_t... Is, typename... Us>
-		constexpr bool and_all( Predicate p, std::index_sequence<Is...>,
+		constexpr bool and_all( Predicate p,
+		                        std::index_sequence<Is...>,
 		                        tuple<Us...> const &rhs ) const {
 			(void)p;
 			return ( p( get<Is>( ), rhs.template get<Is>( ) ) and ... );
 		}
 
 		template<typename Predicate, std::size_t... Is, typename... Us>
-		constexpr bool or_all( Predicate p, std::index_sequence<Is...>,
+		constexpr bool or_all( Predicate p,
+		                       std::index_sequence<Is...>,
 		                       tuple<Us...> const &rhs ) const {
 			(void)p;
 			return ( p( get<Is>( ), rhs.template get<Is>( ) ) or ... );
@@ -182,7 +185,8 @@ namespace daw {
 				  []( auto const &l, auto const &r ) {
 					  return l == r;
 				  },
-				  std::make_index_sequence<sizeof...( Vs )>{ }, rhs );
+				  std::make_index_sequence<sizeof...( Vs )>{ },
+				  rhs );
 			} else {
 				return false;
 			}
@@ -196,7 +200,8 @@ namespace daw {
 				  []( auto const &l, auto const &r ) {
 					  return l != r;
 				  },
-				  std::make_index_sequence<sizeof...( Vs )>{ }, rhs );
+				  std::make_index_sequence<sizeof...( Vs )>{ },
+				  rhs );
 			} else {
 				return true;
 			}
@@ -270,8 +275,8 @@ namespace std {
 namespace daw {
 	namespace tuple_apply_detail {
 		template<typename F, typename Tuple, std::size_t... Is>
-		inline constexpr decltype( auto ) apply_impl( F &&f, Tuple &&t,
-		                                              std::index_sequence<Is...> ) {
+		inline constexpr decltype( auto )
+		apply_impl( F &&f, Tuple &&t, std::index_sequence<Is...> ) {
 			return daw::invoke( DAW_FWD( f ), daw::get<Is>( DAW_FWD( t ) )... );
 		}
 	} // namespace tuple_apply_detail
@@ -279,21 +284,24 @@ namespace daw {
 	template<typename F, typename... Ts>
 	inline constexpr decltype( auto ) apply( F &&f, tuple<Ts...> &t ) {
 		return tuple_apply_detail::apply_impl(
-		  DAW_FWD( f ), t,
+		  DAW_FWD( f ),
+		  t,
 		  std::make_index_sequence<std::tuple_size_v<tuple<Ts...>>>{ } );
 	}
 
 	template<typename F, typename... Ts>
 	inline constexpr decltype( auto ) apply( F &&f, tuple<Ts...> const &t ) {
 		return tuple_apply_detail::apply_impl(
-		  DAW_FWD( f ), t,
+		  DAW_FWD( f ),
+		  t,
 		  std::make_index_sequence<std::tuple_size_v<tuple<Ts...>>>{ } );
 	}
 
 	template<typename F, typename... Ts>
 	inline constexpr decltype( auto ) apply( F &&f, tuple<Ts...> &&t ) {
 		return tuple_apply_detail::apply_impl(
-		  DAW_FWD( f ), DAW_FWD( t ),
+		  DAW_FWD( f ),
+		  DAW_FWD( t ),
 		  std::make_index_sequence<
 		    std::tuple_size_v<std::remove_reference_t<tuple<Ts...>>>>{ } );
 	}
@@ -301,7 +309,8 @@ namespace daw {
 	template<typename F, typename... Ts>
 	inline constexpr decltype( auto ) apply( F &&f, tuple<Ts...> const &&t ) {
 		return tuple_apply_detail::apply_impl(
-		  DAW_FWD( f ), DAW_FWD( t ),
+		  DAW_FWD( f ),
+		  DAW_FWD( t ),
 		  std::make_index_sequence<
 		    std::tuple_size_v<std::remove_reference_t<tuple<Ts...>>>>{ } );
 	}

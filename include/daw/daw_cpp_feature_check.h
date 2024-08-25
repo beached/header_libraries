@@ -132,3 +132,31 @@
 #define DAW_CPP23_STATIC_CALL_OP
 #define DAW_CPP23_STATIC_CALL_OP_CONST const
 #endif
+
+#if defined( __cpp_lib_constexpr_cmath )
+#if __cpp_lib_constexpr_cmath >= 202202L
+#define DAW_CPP23_CX_CMATH
+#endif
+#if __cpp_lib_constexpr_cmath >= 202306L
+#define DAW_CPP26_CX_CMATH
+#endif
+#elif defined( DAW_HAS_GCC ) and not defined( DAW_CPP23_CX_MATH )
+#define DAW_CPP23_CX_CMATH
+#endif
+#if defined( DAW_CPP23_CX_CMATH )
+inline constexpr bool daw_has_cx_cmath = true;
+#else
+inline constexpr bool daw_has_cx_cmath = false;
+#endif
+
+#if defined( __cpp_concepts )
+#if __cpp_concepts >= 202002L
+#define DAW_HAS_CPP_CONCEPTS
+#endif
+#endif
+
+#if defined( __cpp_consteval )
+#if __cpp_consteval >= 201811L
+#define DAW_HAS_CPP_CONSTEVAL
+#endif
+#endif

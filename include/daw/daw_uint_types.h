@@ -52,10 +52,13 @@ namespace daw {
 
 	template<unsigned Bits>
 	using UInt = conditional_t<
-	  ( Bits == 8 ), UInt8,
+	  ( Bits == 8 ),
+	  UInt8,
 	  conditional_t<
-	    ( Bits == 16 ), UInt16,
-	    conditional_t<( Bits == 32 ), UInt32,
+	    ( Bits == 16 ),
+	    UInt16,
+	    conditional_t<( Bits == 32 ),
+	                  UInt32,
 	                  conditional_t<( Bits == 64 ), UInt64, InvalidUIntSize>>>>;
 
 	constexpr UInt64 &operator<<=( UInt64 &b, std::uint64_t shift ) noexcept {

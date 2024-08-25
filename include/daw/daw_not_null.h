@@ -180,8 +180,9 @@ namespace daw {
 		/// @pre (std::intptr_t)get( ) < std::numeric_limits<std::intptr_t>::max( )
 		/// - n
 		/// @pre not_null refers to a valid range of objects
-		template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
-		                                            std::nullptr_t> = nullptr>
+		template<
+		  typename Integer,
+		  std::enable_if_t<std::is_integral_v<Integer>, std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE constexpr not_null &operator+=( Integer n ) noexcept {
 			DAW_ASSUME( m_ptr != null_value );
 			m_ptr += static_cast<difference_type>( n );
@@ -192,8 +193,9 @@ namespace daw {
 
 		/// @pre (std::intptr_t)get( ) - n > 0
 		/// @pre not_null refers to a valid range of objects
-		template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
-		                                            std::nullptr_t> = nullptr>
+		template<
+		  typename Integer,
+		  std::enable_if_t<std::is_integral_v<Integer>, std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE constexpr not_null &operator-=( Integer n ) noexcept {
 			DAW_ASSUME( m_ptr != null_value );
 			m_ptr -= static_cast<difference_type>( n );
@@ -203,8 +205,9 @@ namespace daw {
 		}
 
 		/// @pre not_null refers to a valid range of objects
-		template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
-		                                            std::nullptr_t> = nullptr>
+		template<
+		  typename Integer,
+		  std::enable_if_t<std::is_integral_v<Integer>, std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE constexpr reference
 		operator[]( Integer idx ) const noexcept {
 			return *( get( ) + static_cast<difference_type>( idx ) );
@@ -213,7 +216,8 @@ namespace daw {
 		template<typename NotNull,
 		         std::enable_if_t<
 		           // prevent implicit conversions
-		           std::is_same_v<NotNull, not_null>, std::nullptr_t> = nullptr>
+		           std::is_same_v<NotNull, not_null>,
+		           std::nullptr_t> = nullptr>
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr difference_type
 		operator-( NotNull const &rhs ) const noexcept {
 			return get( ) - rhs.get( );
@@ -224,7 +228,8 @@ namespace daw {
 		template<typename NotNull,
 		         std::enable_if_t<
 		           // prevent implicit conversions
-		           std::is_same_v<NotNull, not_null>, std::nullptr_t> = nullptr>
+		           std::is_same_v<NotNull, not_null>,
+		           std::nullptr_t> = nullptr>
 		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr not_null<Pointer>
 		operator-( NotNull lhs, std::ptrdiff_t n ) noexcept {
 			DAW_ASSUME( lhs.m_ptr != null_value );
@@ -237,7 +242,8 @@ namespace daw {
 		template<typename NotNull,
 		         std::enable_if_t<
 		           // prevent implicit conversions
-		           std::is_same_v<NotNull, not_null>, std::nullptr_t> = nullptr>
+		           std::is_same_v<NotNull, not_null>,
+		           std::nullptr_t> = nullptr>
 		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr not_null<Pointer>
 		operator+( NotNull lhs, std::ptrdiff_t n ) noexcept {
 			DAW_ASSUME( lhs.m_ptr != null_value );
@@ -250,7 +256,8 @@ namespace daw {
 		template<typename NotNull,
 		         std::enable_if_t<
 		           // prevent implicit conversions
-		           std::is_same_v<NotNull, not_null>, std::nullptr_t> = nullptr>
+		           std::is_same_v<NotNull, not_null>,
+		           std::nullptr_t> = nullptr>
 		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr not_null<Pointer>
 		operator+( std::ptrdiff_t n, NotNull rhs ) noexcept {
 			DAW_ASSUME( rhs.m_ptr != null_value );

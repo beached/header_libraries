@@ -56,8 +56,8 @@ namespace daw {
 	}
 
 	template<typename Integer, typename MaskBit, typename... MaskBits>
-	constexpr bool are_set( Integer value, MaskBit mask_bit,
-	                        MaskBits... mask_bits ) noexcept {
+	constexpr bool
+	are_set( Integer value, MaskBit mask_bit, MaskBits... mask_bits ) noexcept {
 		static_assert( std::is_integral_v<Integer>,
 		               "Only integer types are supported" );
 		static_assert( std::is_integral_v<MaskBit>,

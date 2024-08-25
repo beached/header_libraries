@@ -93,8 +93,9 @@ namespace daw {
 
 		DAW_MAKE_REQ_TRAIT( has_integer_subscript_v, std::declval<T>( )[0U] );
 
-		DAW_MAKE_REQ_TRAIT( has_size_memberfn_v, std::declval<size_t &>( ) =
-		                                           std::declval<T>( ).size( ) );
+		DAW_MAKE_REQ_TRAIT(
+		  has_size_memberfn_v,
+		  std::declval<size_t &>( ) = std::declval<T>( ).size( ) );
 
 		DAW_MAKE_REQ_TRAIT(
 		  has_empty_memberfn_v,
@@ -135,7 +136,8 @@ namespace daw {
 
 		template<typename Iterator, typename T>
 		inline constexpr bool is_assignable_iterator_v<
-		  Iterator, T,
+		  Iterator,
+		  T,
 		  std::void_t<decltype( *std::declval<Iterator>( ) =
 		                          std::declval<T>( ) )>> = true;
 
@@ -216,8 +218,9 @@ namespace daw {
 
 		template<typename Function>
 		struct void_function<
-		  Function, std::enable_if_t<std::is_default_constructible_v<Function>,
-		                             std::nullptr_t>> {
+		  Function,
+		  std::enable_if_t<std::is_default_constructible_v<Function>,
+		                   std::nullptr_t>> {
 
 			Function function;
 
@@ -250,8 +253,9 @@ namespace daw {
 
 		template<typename Function>
 		struct void_function<
-		  Function, std::enable_if_t<not std::is_default_constructible_v<Function>,
-		                             std::nullptr_t>> {
+		  Function,
+		  std::enable_if_t<not std::is_default_constructible_v<Function>,
+		                   std::nullptr_t>> {
 
 			Function function;
 

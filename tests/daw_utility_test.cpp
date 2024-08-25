@@ -116,8 +116,8 @@ void daw_pack_type_at_001( ) {
 	constexpr bool tst = std::is_same_v<int, tst_t>;
 	daw::expecting( tst );
 
-	constexpr size_t pos = daw::pack_index_of_v<int, double, float, std::string,
-	                                            char, char *, int, void *>;
+	constexpr size_t pos = daw::
+	  pack_index_of_v<int, double, float, std::string, char, char *, int, void *>;
 	std::cout << "type of daw::pack_index_of_v<int, double, float, std::string, "
 	             "char, char *, int, void *> should be 5: "
 	          << 5 << '\n';

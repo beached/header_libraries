@@ -64,11 +64,12 @@ namespace daw::integers {
 
 		template<typename T>
 		inline constexpr bool is_signed_integral_v<
-		  T, std::enable_if_t<daw::is_integral_v<T> and daw::is_signed_v<T>>> =
-		  true;
+		  T,
+		  std::enable_if_t<daw::is_integral_v<T> and daw::is_signed_v<T>>> = true;
 
 		template<
-		  typename Lhs, typename Rhs,
+		  typename Lhs,
+		  typename Rhs,
 		  std::enable_if_t<is_signed_integral_v<Lhs> and is_signed_integral_v<Rhs>,
 		                   std::nullptr_t> = nullptr>
 		using int_result_t =
@@ -83,7 +84,9 @@ namespace daw::integers {
 	using i64 = signed_integer<64>;
 
 	template<std::size_t Bits>
-	struct [[DAW_PREF_NAME( i8 ), DAW_PREF_NAME( i16 ), DAW_PREF_NAME( i32 ),
+	struct [[DAW_PREF_NAME( i8 ),
+	         DAW_PREF_NAME( i16 ),
+	         DAW_PREF_NAME( i32 ),
 	         DAW_PREF_NAME( i64 )]] signed_integer {
 		using SignedInteger = typename sint_impl::signed_integer_type<Bits>::type;
 		static_assert( daw::is_integral_v<SignedInteger> and
@@ -178,8 +181,9 @@ namespace daw::integers {
 		}
 
 		// Construct from types guaranteed to fit
-		template<std::size_t I, std::enable_if_t<( I / 8 <= sizeof( value_type ) ),
-		                                         std::nullptr_t> = nullptr>
+		template<std::size_t I,
+		         std::enable_if_t<( I / 8 <= sizeof( value_type ) ),
+		                          std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE constexpr signed_integer(
 		  signed_integer<I> other ) noexcept
 		  : m_private{ static_cast<value_type>( other.value( ) ) } {}
@@ -192,11 +196,11 @@ namespace daw::integers {
 			return static_cast<Arithmetic>( value( ) );
 		}
 
-		template<
-		  std::size_t I,
-		  std::enable_if_t<sint_impl::convertible_signed_int<
-		                     sint_impl::signed_integer_type_t<I>, value_type>,
-		                   std::nullptr_t> = nullptr>
+		template<std::size_t I,
+		         std::enable_if_t<sint_impl::convertible_signed_int<
+		                            sint_impl::signed_integer_type_t<I>,
+		                            value_type>,
+		                          std::nullptr_t> = nullptr>
 		[[nodiscard]] DAW_ATTRIB_INLINE explicit constexpr
 		operator signed_integer<I>( ) const noexcept {
 			return signed_integer<I>( value( ) );
@@ -622,10 +626,13 @@ namespace daw::integers {
 	};
 
 	template<typename I,
-	         typename U = std::enable_if_t<
-	           daw::traits::is_one_of_v<daw::make_signed_t<I>, std::int8_t,
-	                                    std::int16_t, std::int32_t, std::int64_t>,
-	           daw::make_signed_t<I>>>
+	         typename U =
+	           std::enable_if_t<daw::traits::is_one_of_v<daw::make_signed_t<I>,
+	                                                     std::int8_t,
+	                                                     std::int16_t,
+	                                                     std::int32_t,
+	                                                     std::int64_t>,
+	                            daw::make_signed_t<I>>>
 	signed_integer( I ) -> signed_integer<sizeof( U ) * 8>;
 
 	// Addition

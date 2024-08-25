@@ -111,8 +111,23 @@ struct T13 {};
 struct T14 {};
 struct T15 {};
 struct T16 {};
-constexpr std::variant<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12,
-                       T13, T14, T15, T16>
+constexpr std::variant<T0,
+                       T1,
+                       T2,
+                       T3,
+                       T4,
+                       T5,
+                       T6,
+                       T7,
+                       T8,
+                       T9,
+                       T10,
+                       T11,
+                       T12,
+                       T13,
+                       T14,
+                       T15,
+                       T16>
 foobar( int n ) {
 	switch( n ) {
 	case 0:
@@ -154,9 +169,23 @@ foobar( int n ) {
 	}
 }
 
-int foofoo( std::variant<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12,
-                         T13, T14, T15, T16>
-              v ) {
+int foofoo( std::variant<T0,
+                         T1,
+                         T2,
+                         T3,
+                         T4,
+                         T5,
+                         T6,
+                         T7,
+                         T8,
+                         T9,
+                         T10,
+                         T11,
+                         T12,
+                         T13,
+                         T14,
+                         T15,
+                         T16> v ) {
 	return daw::visit_nt(
 	  v,
 	  []( T0 ) {

@@ -15,38 +15,38 @@
 	template<typename T>                                   \
 	inline constexpr bool Name = requires {                \
 		__VA_ARGS__;                                         \
-	};
+	}
 
 #define DAW_MAKE_REQ_TRAIT2( Name, /*ReqExpression*/... ) \
 	template<typename T, typename U>                        \
 	inline constexpr bool Name = requires {                 \
 		__VA_ARGS__;                                          \
-	};
+	}
 
 #define DAW_MAKE_REQ_TRAIT3( Name, /*ReqExpression*/... ) \
 	template<typename T, typename U, typename V>            \
 	inline constexpr bool Name = requires {                 \
 		__VA_ARGS__;                                          \
-	};
+	}
 
 #define DAW_MAKE_REQ_TRAIT_TYPE( Name, /*ReqExpression*/... ) \
 	template<typename T>                                        \
 	inline constexpr bool Name = requires {                     \
 		typename __VA_ARGS__;                                     \
-	};
+	}
 
 #define DAW_MAKE_REQ_TRAIT2D( Name, /*ReqExpression*/... ) \
 	template<typename T, typename U = T>                     \
 	inline constexpr bool Name = requires {                  \
 		__VA_ARGS__;                                           \
-	};
+	}
 #else
 #define DAW_MAKE_REQ_TRAIT( Name, /*ReqExpression*/... ) \
 	template<typename, typename = void>                    \
 	inline constexpr bool Name = false;                    \
                                                          \
 	template<typename T>                                   \
-	inline constexpr bool Name<T, std::void_t<decltype( __VA_ARGS__ )>> = true;
+	inline constexpr bool Name<T, std::void_t<decltype( __VA_ARGS__ )>> = true
 
 #define DAW_MAKE_REQ_TRAIT2( Name, /*ReqExpression*/... )                  \
 	template<typename, typename, typename = void>                            \
@@ -54,7 +54,7 @@
                                                                            \
 	template<typename T, typename U>                                         \
 	inline constexpr bool Name<T, U, std::void_t<decltype( __VA_ARGS__ )>> = \
-	  true;
+	  true
 
 #define DAW_MAKE_REQ_TRAIT3( Name, /*ReqExpression*/... )                     \
 	template<typename, typename, typename, typename = void>                     \
@@ -62,14 +62,14 @@
                                                                               \
 	template<typename T, typename U, typename V>                                \
 	inline constexpr bool Name<T, U, V, std::void_t<decltype( __VA_ARGS__ )>> = \
-	  true;
+	  true
 
 #define DAW_MAKE_REQ_TRAIT_TYPE( Name, /*ReqExpression*/... ) \
 	template<typename, typename = void>                         \
 	inline constexpr bool Name = false;                         \
                                                               \
 	template<typename T>                                        \
-	inline constexpr bool Name<T, std::void_t<typename __VA_ARGS__>> = true;
+	inline constexpr bool Name<T, std::void_t<typename __VA_ARGS__>> = true
 
 #define DAW_MAKE_REQ_TRAIT2D( Name, /*ReqExpression*/... )                 \
 	template<typename T, typename = T, typename = void>                      \
@@ -77,5 +77,5 @@
                                                                            \
 	template<typename T, typename U>                                         \
 	inline constexpr bool Name<T, U, std::void_t<decltype( __VA_ARGS__ )>> = \
-	  true;
+	  true
 #endif

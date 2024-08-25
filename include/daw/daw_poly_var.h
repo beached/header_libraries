@@ -24,13 +24,15 @@ namespace daw {
 
 		constexpr poly_var( ) = default;
 
-		template<typename T, daw::enable_when_t<std::is_constructible_v<
-		                       std::variant<Types...>, T>> = nullptr>
+		template<typename T,
+		         daw::enable_when_t<
+		           std::is_constructible_v<std::variant<Types...>, T>> = nullptr>
 		constexpr poly_var( T &&value )
 		  : m_value( DAW_FWD( value ) ) {}
 
-		template<typename T, daw::enable_when_t<std::is_constructible_v<
-		                       std::variant<Types...>, T>> = nullptr>
+		template<typename T,
+		         daw::enable_when_t<
+		           std::is_constructible_v<std::variant<Types...>, T>> = nullptr>
 		constexpr poly_var &operator=( T &&value ) {
 			m_value = DAW_FWD( value );
 			return *this;

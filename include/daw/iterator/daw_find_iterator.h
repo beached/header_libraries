@@ -69,8 +69,8 @@ namespace daw {
 		}
 
 		constexpr find_iterator &operator++( ) & {
-			m_first = daw::algorithm::find_if( std::next( m_first ), m_last,
-			                                   this->filter( ) );
+			m_first = daw::algorithm::find_if(
+			  std::next( m_first ), m_last, this->filter( ) );
 			return *this;
 		}
 

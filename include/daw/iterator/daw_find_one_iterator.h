@@ -56,16 +56,18 @@ namespace daw {
 		std::size_t m_last_index = -std::size_t{ 1 };
 
 	public:
-		constexpr find_one_iterator( Iterator first, IteratorLast last,
+		constexpr find_one_iterator( Iterator first,
+		                             IteratorLast last,
 		                             Filters... filts )
 		  : find_iterator_impl::FilterProxy<Filters, std::is_class_v<Filters>>(
 		      filts )...
 		  , m_first( first )
 		  , m_last( last ) {
 			auto tmp = daw::algorithm::find_one_of(
-			  m_first, m_last,
-			  find_iterator_impl::FilterProxy<
-			    Filters, std::is_class_v<Filters>>::filter( )... );
+			  m_first,
+			  m_last,
+			  find_iterator_impl::FilterProxy<Filters, std::is_class_v<Filters>>::
+			    filter( )... );
 		}
 
 		constexpr value_type operator*( ) {
@@ -78,9 +80,10 @@ namespace daw {
 
 		constexpr find_one_iterator &operator++( ) & {
 			auto tmp = daw::algorithm::find_one_of(
-			  std::next( m_first ), m_last,
-			  find_iterator_impl::FilterProxy<
-			    Filters, std::is_class_v<Filters>>::filter( )... );
+			  std::next( m_first ),
+			  m_last,
+			  find_iterator_impl::FilterProxy<Filters, std::is_class_v<Filters>>::
+			    filter( )... );
 			m_first = tmp.position;
 			m_last_index = tmp.index;
 			return *this;

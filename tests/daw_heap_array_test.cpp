@@ -7,7 +7,7 @@
 //
 
 #include "daw/daw_benchmark.h"
-#include "daw/daw_heap_array.h"
+#include "daw/deprecated/daw_heap_array.h"
 
 #include <new>
 #include <string>

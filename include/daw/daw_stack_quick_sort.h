@@ -52,8 +52,8 @@ namespace daw {
 	} // namespace quick_sort_impl
 
 	template<typename RandomIterator, typename Compare = std::less<>>
-	constexpr void quick_sort( RandomIterator f, RandomIterator l,
-	                           Compare cmp = Compare{ } ) {
+	constexpr void
+	quick_sort( RandomIterator f, RandomIterator l, Compare cmp = Compare{ } ) {
 
 		constexpr size_t tree_size = sizeof( size_t ) * 8U * 2U;
 

@@ -56,7 +56,9 @@ namespace daw {
 
 	template<typename T, typename U>
 	struct has_op_minus<
-	  T, U, std::void_t<decltype( std::declval<T>( ) - std::declval<U>( ) )>>
+	  T,
+	  U,
+	  std::void_t<decltype( std::declval<T>( ) - std::declval<U>( ) )>>
 	  : std::true_type {};
 
 	template<typename T, typename = void>
@@ -64,8 +66,10 @@ namespace daw {
 
 	template<typename T>
 	struct is_iterator<
-	  T, std::void_t<decltype( std::add_pointer_t<typename std::iterator_traits<
-	                             T>::value_type>{ } )>> : std::true_type {};
+	  T,
+	  std::void_t<decltype( std::add_pointer_t<
+	                        typename std::iterator_traits<T>::value_type>{ } )>>
+	  : std::true_type {};
 
 	template<typename T, typename = void>
 	struct has_reallocate : std::false_type {};
@@ -101,9 +105,12 @@ namespace daw {
 
 	private:
 		[[nodiscard]] static inline pointer allocate_raw( size_type count ) {
-			T *result =
-			  reinterpret_cast<T *>( ::mmap( nullptr, count, PROT_READ | PROT_WRITE,
-			                                 MAP_ANONYMOUS | MAP_PRIVATE, -1, 0 ) );
+			T *result = reinterpret_cast<T *>( ::mmap( nullptr,
+			                                           count,
+			                                           PROT_READ | PROT_WRITE,
+			                                           MAP_ANONYMOUS | MAP_PRIVATE,
+			                                           -1,
+			                                           0 ) );
 			if( DAW_UNLIKELY( not result ) ) {
 				DAW_THROW_OR_TERMINATE_NA( std::bad_alloc );
 			}
@@ -209,14 +216,14 @@ namespace daw {
 	}
 
 	template<typename Iterator, typename OutputIterator>
-	constexpr OutputIterator move_n( Iterator first, std::size_t sz,
-	                                 OutputIterator out_it ) noexcept {
+	constexpr OutputIterator
+	move_n( Iterator first, std::size_t sz, OutputIterator out_it ) noexcept {
 		return std::uninitialized_move_n( first, sz, out_it ).second;
 	}
 
 	template<typename Iterator, typename OutputIterator>
-	constexpr OutputIterator copy_n( Iterator first, std::size_t sz,
-	                                 OutputIterator out_it ) noexcept {
+	constexpr OutputIterator
+	copy_n( Iterator first, std::size_t sz, OutputIterator out_it ) noexcept {
 		return std::uninitialized_copy_n( first, sz, out_it );
 	}
 
@@ -297,8 +304,8 @@ namespace daw {
 			return result;
 		}
 
-		static constexpr void relocate( pointer source, size_type sz,
-		                                pointer destination ) {
+		static constexpr void
+		relocate( pointer source, size_type sz, pointer destination ) {
 			if constexpr( std::is_trivially_copyable_v<value_type> ) {
 #if DAW_HAS_BUILTIN( __builtin_memcpy )
 				(void)__builtin_memcpy( destination, source, sz * sizeof( T ) );
@@ -406,8 +413,9 @@ namespace daw {
 			return *this;
 		}
 
-		template<typename Iterator, std::enable_if_t<is_iterator<Iterator>::value,
-		                                             std::nullptr_t> = nullptr>
+		template<
+		  typename Iterator,
+		  std::enable_if_t<is_iterator<Iterator>::value, std::nullptr_t> = nullptr>
 		explicit constexpr Vector( Iterator p, size_type sz )
 		  : m_first( this->allocate( vector_details::round_to_page_size( sz ) ) )
 		  , m_capacity( m_first + static_cast<difference_type>(
@@ -448,7 +456,8 @@ namespace daw {
 		}
 
 		template<typename Operation>
-		explicit constexpr Vector( sized_for_overwrite_t, size_type sz,
+		explicit constexpr Vector( sized_for_overwrite_t,
+		                           size_type sz,
 		                           Operation op )
 		  : m_first( this->allocate( vector_details::round_to_page_size( sz ) ) )
 		  , m_size( m_first + static_cast<difference_type>( sz ) )
@@ -471,7 +480,8 @@ namespace daw {
 			m_size = p;
 		}
 
-		template<typename IteratorF, typename IteratorL,
+		template<typename IteratorF,
+		         typename IteratorL,
 		         std::enable_if_t<( has_op_minus<IteratorF, IteratorL>::value and
 		                            is_iterator<IteratorF>::value ),
 		                          std::nullptr_t> = nullptr>
@@ -479,7 +489,8 @@ namespace daw {
 		  : Vector( first, static_cast<size_type>( last - first ) ) {}
 
 		template<
-		  typename IteratorF, typename IteratorL,
+		  typename IteratorF,
+		  typename IteratorL,
 		  std::enable_if_t<( not has_op_minus<IteratorF, IteratorL>::value and
 		                     is_iterator<IteratorF>::value ),
 		                   std::nullptr_t> = nullptr>
@@ -637,12 +648,13 @@ namespace daw {
 		}
 
 		template<
-		  typename IteratorF, typename IteratorL,
+		  typename IteratorF,
+		  typename IteratorL,
 		  std::enable_if_t<( not has_op_minus<IteratorF, IteratorL>::value and
 		                     is_iterator<IteratorF>::value ),
 		                   std::nullptr_t> = nullptr>
-		constexpr iterator insert( const_iterator where, IteratorF first,
-		                           IteratorL last ) {
+		constexpr iterator
+		insert( const_iterator where, IteratorF first, IteratorL last ) {
 			auto idx = static_cast<size_type>( where - data( ) );
 
 			while( first != last ) {
@@ -652,12 +664,13 @@ namespace daw {
 			}
 		}
 
-		template<typename IteratorF, typename IteratorL,
+		template<typename IteratorF,
+		         typename IteratorL,
 		         std::enable_if_t<( has_op_minus<IteratorF, IteratorL>::value and
 		                            is_iterator<IteratorF>::value ),
 		                          std::nullptr_t> = nullptr>
-		constexpr iterator insert( const_iterator where, IteratorF first,
-		                           IteratorL last ) {
+		constexpr iterator
+		insert( const_iterator where, IteratorF first, IteratorL last ) {
 			size_type const old_size = size( );
 			size_type const where_idx = static_cast<size_type>( where - data( ) );
 			size_type const insert_size = static_cast<size_type>( last - first );
@@ -698,8 +711,8 @@ namespace daw {
 				return false;
 			}
 
-			return std::equal( m_first, m_size, rhs.m_first,
-			                   std::not_equal_to<value_type>{ } );
+			return std::equal(
+			  m_first, m_size, rhs.m_first, std::not_equal_to<value_type>{ } );
 		}
 	};
 

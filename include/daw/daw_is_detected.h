@@ -51,14 +51,20 @@ namespace daw {
 	};
 #endif
 	namespace is_detect_details {
-		template<class Default, class AlwaysVoid, template<class...> class Op,
+		template<class Default,
+		         class AlwaysVoid,
+		         template<class...>
+		         class Op,
 		         class... Args>
 		struct detector {
 			using value_t = std::false_type;
 			using type = Default;
 		};
 
-		template<class Default, class AlwaysVoid, template<class...> class Op,
+		template<class Default,
+		         class AlwaysVoid,
+		         template<class...>
+		         class Op,
 		         class... Args>
 		inline constexpr bool detector_v = false;
 
@@ -74,14 +80,12 @@ namespace daw {
 	} // namespace is_detect_details
 
 	template<template<class...> class Op, class... Args>
-	using is_detected =
-	  typename is_detect_details::detector<nonesuch<Op, Args...>, void, Op,
-	                                       Args...>::value_t;
+	using is_detected = typename is_detect_details::
+	  detector<nonesuch<Op, Args...>, void, Op, Args...>::value_t;
 
 	template<template<class...> class Op, class... Args>
-	using detected_t =
-	  typename is_detect_details::detector<nonesuch<Op, Args...>, void, Op,
-	                                       Args...>::type;
+	using detected_t = typename is_detect_details::
+	  detector<nonesuch<Op, Args...>, void, Op, Args...>::type;
 
 #ifndef DAW_HAS_CONCEPTS
 	template<template<class...> class Op, class... Args>
