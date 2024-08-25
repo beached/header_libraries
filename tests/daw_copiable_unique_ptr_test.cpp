@@ -6,7 +6,7 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include "daw/daw_copiable_unique_ptr.h"
+#include "daw/deprecated/daw_copiable_unique_ptr.h"
 
 #include "daw/daw_benchmark.h"
 #include "daw/daw_utility.h"

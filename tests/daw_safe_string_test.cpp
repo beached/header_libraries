@@ -6,7 +6,7 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include "daw/daw_safe_string.h"
+#include "daw/deprecated/daw_safe_string.h"
 
 #include <iostream>
 
