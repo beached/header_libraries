@@ -13,6 +13,7 @@
 
 #include <memory>
 #include <optional>
+#include <utility>
 
 void daw_not_null_test_001( ) {
 	auto tst = std::make_unique<int>( 5 );
@@ -78,6 +79,17 @@ void daw_not_null_test_006( ) {
 	daw_ensure( t.get( ) == 5 );
 }
 
+void daw_not_null_test_007( ) {
+	auto p = daw::not_null( new int{ 42 } );
+	auto v = []( auto &&i ) {
+		return i;
+	};
+	auto a0 = v( *p );
+	daw_ensure( a0 == 42 );
+	auto a1 = v( *std::as_const( p ) );
+	daw_ensure( a1 == 42 );
+}
+
 int main( ) {
 	daw_not_null_test_001( );
 	daw_not_null_test_002( );
@@ -85,4 +97,5 @@ int main( ) {
 	daw_not_null_test_004( );
 	daw_not_null_test_005( );
 	daw_not_null_test_006( );
+	daw_not_null_test_007( );
 }
