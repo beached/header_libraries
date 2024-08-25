@@ -1,15 +1,21 @@
 var searchData=
 [
-  ['same_5fas_4443',['same_as',['../namespacedaw.html#aa204958271f536b788a1b0c233df6d5e',1,'daw']]],
-  ['same_5fas_5frrcv_4444',['same_as_rrcv',['../namespacedaw.html#a24228cc2011898842f35aa9463f7216f',1,'daw']]],
-  ['same_5fas_5frrcv_5fv_4445',['same_as_rrcv_v',['../namespacedaw_1_1deprecated.html#a1d2cd784f19c465ea8997bd2cca61684',1,'daw::deprecated']]],
-  ['second_4446',['second',['../structdaw_1_1iterator__pair.html#a0bd69b37f2d2e6a3a6bf40359a896298',1,'daw::iterator_pair']]],
-  ['signedstd_4447',['SignedStd',['../namespacedaw.html#a81bd40f25bd6d73698785063968b5f7f',1,'daw']]],
-  ['sized_5ffor_5foverwrite_4448',['sized_for_overwrite',['../namespacedaw.html#a2497791d9d0312f29dc017caa102a44b',1,'daw']]],
-  ['sqrt0_5f5_4449',['sqrt0_5',['../namespacedaw_1_1cxmath.html#a53ab57ded45e63a2f021cc2d3057ae86',1,'daw::cxmath']]],
-  ['sqrt2_4450',['sqrt2',['../namespacedaw_1_1cxmath.html#a6e9d1a7888d6adb7761f596423f226d8',1,'daw::cxmath']]],
-  ['static_5fnot_5fv_4451',['static_not_v',['../namespacedaw_1_1traits.html#aa418b874270d8ae981ae09a509391ca0',1,'daw::traits']]],
-  ['storage_5fsize_4452',['storage_size',['../structdaw_1_1sbo__storage.html#a12ce91f43894ec18edafc80496596d17',1,'daw::sbo_storage']]],
-  ['stringlike_4453',['StringLike',['../namespacedaw.html#a211faf4c653d88b733f3e4608dbb580d',1,'daw']]],
-  ['swappable_4454',['swappable',['../namespacedaw.html#a2d882d749fe84661d2bb44e48605fdd8',1,'daw']]]
+  ['same_5fas_4846',['same_as',['../namespacedaw.html#aa204958271f536b788a1b0c233df6d5e',1,'daw']]],
+  ['same_5fas_5frrcv_4847',['same_as_rrcv',['../namespacedaw.html#a24228cc2011898842f35aa9463f7216f',1,'daw']]],
+  ['same_5fas_5frrcv_5fv_4848',['same_as_rrcv_v',['../namespacedaw_1_1deprecated.html#a1d2cd784f19c465ea8997bd2cca61684',1,'daw::deprecated']]],
+  ['second_4849',['second',['../structdaw_1_1iterator__pair.html#a0bd69b37f2d2e6a3a6bf40359a896298',1,'daw::iterator_pair']]],
+  ['separator_4850',['Separator',['../structdaw_1_1fmt__range.html#a37cfdcb475d8afccf56fb3b66023bc53',1,'daw::fmt_range::Separator()'],['../structdaw_1_1fmt__tuple.html#aac659d0ec063fdbf9b0dd951692c4d10',1,'daw::fmt_tuple::Separator()']]],
+  ['signedstd_4851',['SignedStd',['../namespacedaw.html#a81bd40f25bd6d73698785063968b5f7f',1,'daw']]],
+  ['sized_5ffor_5foverwrite_4852',['sized_for_overwrite',['../namespacedaw.html#a2497791d9d0312f29dc017caa102a44b',1,'daw']]],
+  ['sort_4853',['Sort',['../namespacedaw_1_1pipelines.html#a3e840e16b01d32df674bcd33b484d4a0',1,'daw::pipelines']]],
+  ['sortable_4854',['Sortable',['../namespacedaw_1_1pipelines.html#adb1b093678b253ce2ba5f78c61cd7e51',1,'daw::pipelines']]],
+  ['sqrt0_5f5_4855',['sqrt0_5',['../namespacedaw_1_1cxmath.html#a53ab57ded45e63a2f021cc2d3057ae86',1,'daw::cxmath']]],
+  ['sqrt2_4856',['sqrt2',['../namespacedaw_1_1cxmath.html#a6e9d1a7888d6adb7761f596423f226d8',1,'daw::cxmath']]],
+  ['static_5fnot_5fv_4857',['static_not_v',['../namespacedaw_1_1traits.html#aa418b874270d8ae981ae09a509391ca0',1,'daw::traits']]],
+  ['storage_5fsize_4858',['storage_size',['../structdaw_1_1sbo__storage.html#a12ce91f43894ec18edafc80496596d17',1,'daw::sbo_storage']]],
+  ['stringlike_4859',['StringLike',['../namespacedaw.html#a211faf4c653d88b733f3e4608dbb580d',1,'daw']]],
+  ['sum_4860',['Sum',['../namespacedaw_1_1pipelines.html#abd91046453c0bd8c43dbec389ff911c5',1,'daw::pipelines']]],
+  ['sumkahanbabushkaneumaier_4861',['SumKahanBabushkaNeumaier',['../namespacedaw_1_1pipelines.html#ae86713db7265cc390d27674a91562fc0',1,'daw::pipelines']]],
+  ['swappable_4862',['swappable',['../namespacedaw.html#a2d882d749fe84661d2bb44e48605fdd8',1,'daw']]],
+  ['swizzle_4863',['Swizzle',['../namespacedaw_1_1pipelines.html#adbb507215943c4a45746ebd11b0380e6',1,'daw::pipelines']]]
 ];

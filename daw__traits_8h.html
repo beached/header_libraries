@@ -231,9 +231,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:adbc77dbaa68374d6143d7286034f489f"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Class , std::size_t StartIdx = 0&gt; </td></tr>
 <tr class="memitem:adbc77dbaa68374d6143d7286034f489f"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#adbc77dbaa68374d6143d7286034f489f">daw::traits::find_class_template_parameter</a> = typename class_parts&lt; Class &gt;::template find_class_template_parameter&lt; T, StartIdx &gt;</td></tr>
 <tr class="separator:adbc77dbaa68374d6143d7286034f489f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9f6f3c76107536d1ece5f94485f073b"><td class="memTemplParams" colspan="2">template&lt;typename ClassA , typename ClassB , std::size_t StartIdx = 0&gt; </td></tr>
-<tr class="memitem:ad9f6f3c76107536d1ece5f94485f073b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#ad9f6f3c76107536d1ece5f94485f073b">daw::traits::find_first_mismatched_class_template_parameter</a> = typename class_parts&lt; ClassA &gt;::template find_first_mismatched_class_template_parameter&lt; class_parts&lt; ClassB &gt;, StartIdx &gt;</td></tr>
-<tr class="separator:ad9f6f3c76107536d1ece5f94485f073b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55d72c870ca08e45a94b3ef4722be832"><td class="memTemplParams" colspan="2">template&lt;typename ClassA , typename ClassB , std::size_t StartIdx = 0&gt; </td></tr>
+<tr class="memitem:a55d72c870ca08e45a94b3ef4722be832"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a55d72c870ca08e45a94b3ef4722be832">daw::traits::find_first_mismatched_class_template_parameter</a> = typename class_parts&lt; ClassA &gt;::template find_first_mismatched_class_template_parameter&lt; class_parts&lt; ClassB &gt;, StartIdx &gt;</td></tr>
+<tr class="separator:a55d72c870ca08e45a94b3ef4722be832"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cb72fe6dfd9d99906ff8ad2a4a6c889"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a2cb72fe6dfd9d99906ff8ad2a4a6c889"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a2cb72fe6dfd9d99906ff8ad2a4a6c889">daw::traits::fn_t</a> = std::add_pointer_t&lt; T &gt;</td></tr>
 <tr class="separator:a2cb72fe6dfd9d99906ff8ad2a4a6c889"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -312,6 +312,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a9847a84ffa414ea53a713f89c3dd47f3"><td class="memTemplParams" colspan="2">template&lt;std::size_t Index, typename... Cases&gt; </td></tr>
 <tr class="memitem:a9847a84ffa414ea53a713f89c3dd47f3"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9847a84ffa414ea53a713f89c3dd47f3">daw::switch_t</a> = pack_element_t&lt; Index, pack_list&lt; Cases... &gt; &gt;</td></tr>
 <tr class="separator:a9847a84ffa414ea53a713f89c3dd47f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9dd289d6deb8833d9a8363e8827ccad8"><td class="memTemplParams" colspan="2">template&lt;typename... &gt; </td></tr>
+<tr class="memitem:a9dd289d6deb8833d9a8363e8827ccad8"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">daw::void_t</a> = void</td></tr>
+<tr class="separator:a9dd289d6deb8833d9a8363e8827ccad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -472,6 +475,9 @@ Variables</h2></td></tr>
 <tr class="memitem:a4dc27b7024589119cf3d40dc030e5380"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a4dc27b7024589119cf3d40dc030e5380"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a4dc27b7024589119cf3d40dc030e5380">daw::traits::is_templated_class</a> = class_parts&lt;T&gt;::is_templated_class</td></tr>
 <tr class="separator:a4dc27b7024589119cf3d40dc030e5380"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabd59ef96aa8392ae4127f0a57336a9e"><td class="memTemplParams" colspan="2">template&lt;typename Tp , typename  = void&gt; </td></tr>
+<tr class="memitem:aabd59ef96aa8392ae4127f0a57336a9e"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aabd59ef96aa8392ae4127f0a57336a9e">daw::is_tuple_like_v</a> = false</td></tr>
+<tr class="separator:aabd59ef96aa8392ae4127f0a57336a9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32de36fc5215bb946331ce4a2a7e9683"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a32de36fc5215bb946331ce4a2a7e9683"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a32de36fc5215bb946331ce4a2a7e9683">daw::traits::is_tuple_v</a></td></tr>
 <tr class="separator:a32de36fc5215bb946331ce4a2a7e9683"><td class="memSeparator" colspan="2">&#160;</td></tr>

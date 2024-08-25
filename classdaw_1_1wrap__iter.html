@@ -84,7 +84,7 @@ Public Types</h2></td></tr>
 <tr class="separator:a691e64aeac8a5737ca4dcb18b60be7f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53d35b031e0d95c80a4a069be1bfb4cb"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1wrap__iter.html#a53d35b031e0d95c80a4a069be1bfb4cb">iterator_category</a> = typename std::iterator_traits&lt; <a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a> &gt;::<a class="el" href="classdaw_1_1wrap__iter.html#a53d35b031e0d95c80a4a069be1bfb4cb">iterator_category</a></td></tr>
 <tr class="separator:a53d35b031e0d95c80a4a069be1bfb4cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2dee487b179ed440ce4711b69bee4690"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a> = Iterator</td></tr>
+<tr class="memitem:a2dee487b179ed440ce4711b69bee4690"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a> = <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a></td></tr>
 <tr class="separator:a2dee487b179ed440ce4711b69bee4690"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c8e51b84a39d395c1af2820be1fe1aa"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1wrap__iter.html#a7c8e51b84a39d395c1af2820be1fe1aa">pointer</a> = typename std::iterator_traits&lt; <a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a> &gt;::<a class="el" href="classdaw_1_1wrap__iter.html#a7c8e51b84a39d395c1af2820be1fe1aa">pointer</a></td></tr>
 <tr class="separator:a7c8e51b84a39d395c1af2820be1fe1aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,7 +128,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae5b5f677fc57bcba629efd8dae04d836"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classdaw_1_1wrap__iter.html#ae17ef1f97a9bf923b042083fc2e21c20">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1wrap__iter.html#ae5b5f677fc57bcba629efd8dae04d836">operator[]</a> (<a class="el" href="classdaw_1_1wrap__iter.html#a691e64aeac8a5737ca4dcb18b60be7f3">difference_type</a> n) const <a class="el" href="classdaw_1_1wrap__iter.html#a8080d310760055095ec14e32bad18947">noexcept</a></td></tr>
 <tr class="separator:ae5b5f677fc57bcba629efd8dae04d836"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f690293700b24f39c5d65692e847ed0"><td class="memTemplParams" colspan="2">template&lt;typename U &gt; </td></tr>
-<tr class="memitem:a4f690293700b24f39c5d65692e847ed0"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdaw_1_1wrap__iter.html#a4f690293700b24f39c5d65692e847ed0">requires</a> (std::is_convertible_v&lt; U, <a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a> &gt; and not std::is_same_v&lt; Iterator, U &gt;) const expr <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>(<a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>&lt; U</td></tr>
+<tr class="memitem:a4f690293700b24f39c5d65692e847ed0"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdaw_1_1wrap__iter.html#a4f690293700b24f39c5d65692e847ed0">requires</a> (std::is_convertible_v&lt; U, <a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a> &gt; and not std::is_same_v&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, U &gt;) const expr <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>(<a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>&lt; U</td></tr>
 <tr class="separator:a4f690293700b24f39c5d65692e847ed0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -152,7 +152,7 @@ class daw::wrap_iter&lt; Iterator, Tag &gt;</h3>
 template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::<a class="el" href="classdaw_1_1wrap__iter.html#a691e64aeac8a5737ca4dcb18b60be7f3">difference_type</a> =  typename std::iterator_traits&lt;<a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a>&gt;::<a class="el" href="classdaw_1_1wrap__iter.html#a691e64aeac8a5737ca4dcb18b60be7f3">difference_type</a></td>
+          <td class="memname">using <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::<a class="el" href="classdaw_1_1wrap__iter.html#a691e64aeac8a5737ca4dcb18b60be7f3">difference_type</a> =  typename std::iterator_traits&lt;<a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a>&gt;::<a class="el" href="classdaw_1_1wrap__iter.html#a691e64aeac8a5737ca4dcb18b60be7f3">difference_type</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -170,7 +170,7 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
 template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::<a class="el" href="classdaw_1_1wrap__iter.html#a53d35b031e0d95c80a4a069be1bfb4cb">iterator_category</a> =  typename std::iterator_traits&lt;<a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a>&gt;::<a class="el" href="classdaw_1_1wrap__iter.html#a53d35b031e0d95c80a4a069be1bfb4cb">iterator_category</a></td>
+          <td class="memname">using <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::<a class="el" href="classdaw_1_1wrap__iter.html#a53d35b031e0d95c80a4a069be1bfb4cb">iterator_category</a> =  typename std::iterator_traits&lt;<a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a>&gt;::<a class="el" href="classdaw_1_1wrap__iter.html#a53d35b031e0d95c80a4a069be1bfb4cb">iterator_category</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -188,7 +188,7 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
 template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::<a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a> =  Iterator</td>
+          <td class="memname">using <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::<a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a> =  <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -206,7 +206,7 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
 template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::<a class="el" href="classdaw_1_1wrap__iter.html#a7c8e51b84a39d395c1af2820be1fe1aa">pointer</a> =  typename std::iterator_traits&lt;<a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a>&gt;::<a class="el" href="classdaw_1_1wrap__iter.html#a7c8e51b84a39d395c1af2820be1fe1aa">pointer</a></td>
+          <td class="memname">using <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::<a class="el" href="classdaw_1_1wrap__iter.html#a7c8e51b84a39d395c1af2820be1fe1aa">pointer</a> =  typename std::iterator_traits&lt;<a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a>&gt;::<a class="el" href="classdaw_1_1wrap__iter.html#a7c8e51b84a39d395c1af2820be1fe1aa">pointer</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -224,7 +224,7 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
 template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::<a class="el" href="classdaw_1_1wrap__iter.html#ae17ef1f97a9bf923b042083fc2e21c20">reference</a> =  typename std::iterator_traits&lt;<a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a>&gt;::<a class="el" href="classdaw_1_1wrap__iter.html#ae17ef1f97a9bf923b042083fc2e21c20">reference</a></td>
+          <td class="memname">using <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::<a class="el" href="classdaw_1_1wrap__iter.html#ae17ef1f97a9bf923b042083fc2e21c20">reference</a> =  typename std::iterator_traits&lt;<a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a>&gt;::<a class="el" href="classdaw_1_1wrap__iter.html#ae17ef1f97a9bf923b042083fc2e21c20">reference</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -242,7 +242,7 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
 template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::<a class="el" href="classdaw_1_1wrap__iter.html#a59cb6a5fe0380e45d83631d7cf7cd9b5">value_type</a> =  typename std::iterator_traits&lt;<a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a>&gt;::<a class="el" href="classdaw_1_1wrap__iter.html#a59cb6a5fe0380e45d83631d7cf7cd9b5">value_type</a></td>
+          <td class="memname">using <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::<a class="el" href="classdaw_1_1wrap__iter.html#a59cb6a5fe0380e45d83631d7cf7cd9b5">value_type</a> =  typename std::iterator_traits&lt;<a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a>&gt;::<a class="el" href="classdaw_1_1wrap__iter.html#a59cb6a5fe0380e45d83631d7cf7cd9b5">value_type</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -264,7 +264,7 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::<a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a> </td>
+          <td class="memname"><a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::<a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -291,7 +291,7 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::<a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a> </td>
+          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::<a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a> </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a>&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
@@ -322,7 +322,7 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a> <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::base </td>
+          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a> <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::base </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -351,9 +351,9 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::<a class="el" href="namespacedaw.html#a4b5346b91ffce4d929d08bf93694afec">operator!</a>= </td>
+          <td class="memname">constexpr bool <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::<a class="el" href="namespacedaw.html#a4b5346b91ffce4d929d08bf93694afec">operator!</a>= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>&lt; Iterator, Tag &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt; const &amp;&#160;</td>
           <td class="paramname"><em>rhs</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -381,7 +381,7 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a> <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::operator+ </td>
+          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a> <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::operator+ </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classdaw_1_1wrap__iter.html#a691e64aeac8a5737ca4dcb18b60be7f3">difference_type</a>&#160;</td>
           <td class="paramname"><em>n</em></td><td>)</td>
@@ -411,7 +411,7 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>&amp; <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::operator++ </td>
+          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>&amp; <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::operator++ </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -440,7 +440,7 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a> <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::operator++ </td>
+          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a> <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::operator++ </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -470,7 +470,7 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>&amp; <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::operator+= </td>
+          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>&amp; <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::operator+= </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classdaw_1_1wrap__iter.html#a691e64aeac8a5737ca4dcb18b60be7f3">difference_type</a>&#160;</td>
           <td class="paramname"><em>n</em></td><td>)</td>
@@ -500,7 +500,7 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a> <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::operator- </td>
+          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a> <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::operator- </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classdaw_1_1wrap__iter.html#a691e64aeac8a5737ca4dcb18b60be7f3">difference_type</a>&#160;</td>
           <td class="paramname"><em>n</em></td><td>)</td>
@@ -530,7 +530,7 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>&amp; <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::operator-- </td>
+          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>&amp; <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::operator-- </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -559,7 +559,7 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a> <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::operator-- </td>
+          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a> <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::operator-- </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -589,7 +589,7 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>&amp; <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::operator-= </td>
+          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>&amp; <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::operator-= </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classdaw_1_1wrap__iter.html#a691e64aeac8a5737ca4dcb18b60be7f3">difference_type</a>&#160;</td>
           <td class="paramname"><em>n</em></td><td>)</td>
@@ -619,7 +619,7 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html#a7c8e51b84a39d395c1af2820be1fe1aa">pointer</a> <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::operator-&gt; </td>
+          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html#a7c8e51b84a39d395c1af2820be1fe1aa">pointer</a> <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::operator-&gt; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -648,9 +648,9 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::operator&lt;=&gt; </td>
+          <td class="memname">constexpr auto <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::operator&lt;=&gt; </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>&lt; Iterator, Tag &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt; const &amp;&#160;</td>
           <td class="paramname"><em>rhs</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -662,7 +662,7 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="wrap__iter_8h_source.html#l00108">108</a> of file <a class="el" href="wrap__iter_8h_source.html">wrap_iter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="wrap__iter_8h_source.html#l00109">109</a> of file <a class="el" href="wrap__iter_8h_source.html">wrap_iter.h</a>.</p>
 
 </div>
 </div>
@@ -678,9 +678,9 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::operator== </td>
+          <td class="memname">constexpr bool <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::operator== </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>&lt; Iterator, Tag &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classdaw_1_1wrap__iter.html">wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt; const &amp;&#160;</td>
           <td class="paramname"><em>rhs</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -708,7 +708,7 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html#ae17ef1f97a9bf923b042083fc2e21c20">reference</a> <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::operator[] </td>
+          <td class="memname">constexpr <a class="el" href="classdaw_1_1wrap__iter.html#ae17ef1f97a9bf923b042083fc2e21c20">reference</a> <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::operator[] </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classdaw_1_1wrap__iter.html#a691e64aeac8a5737ca4dcb18b60be7f3">difference_type</a>&#160;</td>
           <td class="paramname"><em>n</em></td><td>)</td>
@@ -737,9 +737,9 @@ template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
 template&lt;typename U &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::requires </td>
+          <td class="memname"><a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::requires </td>
           <td>(</td>
-          <td class="paramtype">std::is_convertible_v&lt; U, <a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a> &gt; and not std::is_same_v&lt; Iterator, U &gt;&#160;</td>
+          <td class="paramtype">std::is_convertible_v&lt; U, <a class="el" href="classdaw_1_1wrap__iter.html#a2dee487b179ed440ce4711b69bee4690">iterator_type</a> &gt; and not std::is_same_v&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, U &gt;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
@@ -758,7 +758,7 @@ template&lt;typename U &gt; </div>
 template&lt;typename Iterator , typename Tag  = Iterator&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">Tag const&amp; u <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; Iterator, Tag &gt;::noexcept</td>
+          <td class="memname">Tag const&amp; u <a class="el" href="classdaw_1_1wrap__iter.html">daw::wrap_iter</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Tag &gt;::noexcept</td>
         </tr>
       </table>
 </div><div class="memdoc">

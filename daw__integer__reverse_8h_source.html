@@ -153,17 +153,23 @@ $(function() {
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  }</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span>..., <span class="keyword">typename</span> T,</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;           <a class="code" href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">std::enable_if_t</a>&lt;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;             not <a class="code" href="namespacedaw_1_1traits.html#a3e147426b76dd482c4d1ca65346ff30f">daw::traits::is_one_of_v</a>&lt;T, std::uint8_t, std::uint16_t,</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                                          std::uint32_t, std::uint64_t&gt;,</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;             std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
-<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="namespacedaw_1_1integers.html#a99c8d5e3c305ca07c27b61662b9a88de">   89</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] <a class="code" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> constexpr T <a class="code" href="namespacedaw_1_1integers.html#a0e030fbe27d40243541f57e39735fc85">reverse_bits</a>( T ) {</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    static_assert( <a class="code" href="namespacedaw_1_1traits.html#a3e147426b76dd482c4d1ca65346ff30f">daw::traits::is_one_of_v</a>&lt;T, std::uint8_t, std::uint16_t,</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                                            std::uint32_t, std::uint64_t&gt;,</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                   <span class="stringliteral">&quot;Unsupported integer type for bit reversal&quot;</span> );</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  }</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;} <span class="comment">// namespace daw::integers</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span>...,</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;           <span class="keyword">typename</span> T,</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;           <a class="code" href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">std::enable_if_t</a>&lt;not <a class="code" href="namespacedaw_1_1traits.html#a3e147426b76dd482c4d1ca65346ff30f">daw::traits::is_one_of_v</a>&lt;T,</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                                                         std::uint8_t,</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                                                         std::uint16_t,</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                                                         std::uint32_t,</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                                                         std::uint64_t&gt;,</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                            std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="namespacedaw_1_1integers.html#a99c8d5e3c305ca07c27b61662b9a88de">   92</a></span>&#160;  [[<a class="code" href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">nodiscard</a>]] <a class="code" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> constexpr T <a class="code" href="namespacedaw_1_1integers.html#a0e030fbe27d40243541f57e39735fc85">reverse_bits</a>( T ) {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    static_assert( <a class="code" href="namespacedaw_1_1traits.html#a3e147426b76dd482c4d1ca65346ff30f">daw::traits::is_one_of_v</a>&lt;T,</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                                            std::uint8_t,</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                                            std::uint16_t,</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                                            std::uint32_t,</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                                            std::uint64_t&gt;,</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                   <span class="stringliteral">&quot;Unsupported integer type for bit reversal&quot;</span> );</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  }</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;} <span class="comment">// namespace daw::integers</span></div>
 <div class="ttc" id="aciso646_8h_html"><div class="ttname"><a href="ciso646_8h.html">ciso646.h</a></div></div>
 <div class="ttc" id="adaw__attributes_8h_html"><div class="ttname"><a href="daw__attributes_8h.html">daw_attributes.h</a></div></div>
 <div class="ttc" id="adaw__attributes_8h_html_aa015e705db99dcfd51884620baf0d55c"><div class="ttname"><a href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a></div><div class="ttdeci">#define DAW_ATTRIB_NOINLINE</div><div class="ttdef"><b>Definition:</b> <a href="daw__attributes_8h_source.html#l00103">daw_attributes.h:103</a></div></div>

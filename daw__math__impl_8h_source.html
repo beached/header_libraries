@@ -95,86 +95,87 @@ $(function() {
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;      }</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    };</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  } <span class="comment">// namespace math_impl</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Float, std::enable_if_t&lt;std::is_<span class="keywordtype">float</span>ing_po<span class="keywordtype">int</span>_v&lt;Float&gt;,</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                                            std::<span class="keywordtype">nullptr</span>_t&gt; = <span class="keywordtype">nullptr</span>&gt;</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="namespacedaw.html#aa835e04172116a1dde0ed956368a8adc">   28</a></span>&#160;  constexpr Float <a class="code" href="namespacedaw.html#aa835e04172116a1dde0ed956368a8adc">float_abs</a>( Float f ) {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordflow">if</span>( f &lt; 0 ) {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;      <span class="keywordflow">return</span> -f;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    }</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordflow">return</span> f;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  }</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="namespacedaw.html#ac61b1ea4cfda303bd402fd71c17681b8">   36</a></span>&#160;  constexpr <span class="keyword">auto</span>( <a class="code" href="namespacedaw.html#ac61b1ea4cfda303bd402fd71c17681b8">max</a> )( T <span class="keyword">const</span> &amp;val1, Ts <span class="keyword">const</span> &amp;...vs ) noexcept {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordflow">if</span> constexpr( <span class="keyword">sizeof</span>...( Ts ) &gt; 1 ) {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;      <span class="keyword">auto</span> <span class="keyword">const</span> tmp = (<a class="code" href="namespacedaw.html#ac61b1ea4cfda303bd402fd71c17681b8">max</a>)( vs... );</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      <span class="keyword">using</span> result_t = std::common_type_t&lt;T, decltype( tmp )&gt;;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      <span class="keywordflow">if</span>( math_impl::less{ }( tmp, val1 ) ) {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>result_t<span class="keyword">&gt;</span>( val1 );</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;      }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>result_t<span class="keyword">&gt;</span>( tmp );</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr( <span class="keyword">sizeof</span>...( Ts ) == 1 ) {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      <span class="keyword">using</span> result_t = std::common_type_t&lt;T, Ts...&gt;;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      std::common_type_t&lt;Ts...&gt; <span class="keyword">const</span> rhs[1]{ vs... };</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      <span class="keywordflow">if</span>( math_impl::less{ }( rhs[0], val1 ) ) {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>result_t<span class="keyword">&gt;</span>( val1 );</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      }</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>result_t<span class="keyword">&gt;</span>( rhs[0] );</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="keywordflow">return</span> val1;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    }</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> Compare = math_impl::less&gt;</div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="namespacedaw.html#a76479a95067ddf47a23963853aeabac3">   58</a></span>&#160;  constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#a76479a95067ddf47a23963853aeabac3">min_comp</a>( T &amp;&amp;lhs, T &amp;&amp;rhs,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                                       Compare &amp;&amp;comp = Compare{ } ) {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">if</span>( comp( lhs, rhs ) ) {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( T, lhs );</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( T, rhs );</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  }</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> Compare = math_impl::less&gt;</div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="namespacedaw.html#afcd709ccb715aa9c4232e0fffb78cebe">   67</a></span>&#160;  constexpr decltype( <span class="keyword">auto</span> ) <a class="code" href="namespacedaw.html#afcd709ccb715aa9c4232e0fffb78cebe">max_comp</a>( T &amp;&amp;lhs, T &amp;&amp;rhs,</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                                       Compare &amp;&amp;comp = Compare{ } ) {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">if</span>( comp( rhs, lhs ) ) {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( T, lhs );</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( T, rhs );</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="namespacedaw.html#abb3b5cf7b763ba3b534a11d3ed32d76a">   76</a></span>&#160;  constexpr <span class="keyword">auto</span>( <a class="code" href="namespacedaw.html#abb3b5cf7b763ba3b534a11d3ed32d76a">min</a> )( T <span class="keyword">const</span> &amp;val1, Ts <span class="keyword">const</span> &amp;...vs ) noexcept {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">if</span> constexpr( <span class="keyword">sizeof</span>...( Ts ) &gt; 1 ) {</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;      <span class="keyword">auto</span> <span class="keyword">const</span> tmp = (<a class="code" href="namespacedaw.html#abb3b5cf7b763ba3b534a11d3ed32d76a">min</a>)( vs... );</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      <span class="keyword">using</span> result_t = std::common_type_t&lt;T, decltype( tmp )&gt;;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      <span class="keywordflow">if</span>( not math_impl::less{ }( tmp, val1 ) ) {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>result_t<span class="keyword">&gt;</span>( val1 );</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      }</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>result_t<span class="keyword">&gt;</span>( tmp );</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr( <span class="keyword">sizeof</span>...( Ts ) == 1 ) {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      <span class="keyword">using</span> result_t = std::common_type_t&lt;T, Ts...&gt;;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      std::common_type_t&lt;Ts...&gt; <span class="keyword">const</span> rhs[1]{ vs... };</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      <span class="keywordflow">if</span>( not math_impl::less{ }( rhs[0], val1 ) ) {</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>result_t<span class="keyword">&gt;</span>( val1 );</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      }</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>result_t<span class="keyword">&gt;</span>( rhs[0] );</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      <span class="keywordflow">return</span> val1;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    }</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;} <span class="comment">// namespace daw</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">typename</span> Float,</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    std::enable_if_t&lt;std::is_floating_point_v&lt;Float&gt;, std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="namespacedaw.html#aa835e04172116a1dde0ed956368a8adc">   29</a></span>&#160;  constexpr Float <a class="code" href="namespacedaw.html#aa835e04172116a1dde0ed956368a8adc">float_abs</a>( Float f ) {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordflow">if</span>( f &lt; 0 ) {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;      <span class="keywordflow">return</span> -f;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    }</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordflow">return</span> f;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  }</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="namespacedaw.html#ac61b1ea4cfda303bd402fd71c17681b8">   37</a></span>&#160;  constexpr <span class="keyword">auto</span>( <a class="code" href="namespacedaw.html#ac61b1ea4cfda303bd402fd71c17681b8">max</a> )( T <span class="keyword">const</span> &amp;val1, Ts <span class="keyword">const</span> &amp;...vs ) noexcept {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">if</span> constexpr( <span class="keyword">sizeof</span>...( Ts ) &gt; 1 ) {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      <span class="keyword">auto</span> <span class="keyword">const</span> tmp = (<a class="code" href="namespacedaw.html#ac61b1ea4cfda303bd402fd71c17681b8">max</a>)( vs... );</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      <span class="keyword">using</span> result_t = std::common_type_t&lt;T, decltype( tmp )&gt;;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      <span class="keywordflow">if</span>( math_impl::less{ }( tmp, val1 ) ) {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>result_t<span class="keyword">&gt;</span>( val1 );</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      }</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>result_t<span class="keyword">&gt;</span>( tmp );</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr( <span class="keyword">sizeof</span>...( Ts ) == 1 ) {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      <span class="keyword">using</span> result_t = std::common_type_t&lt;T, Ts...&gt;;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      std::common_type_t&lt;Ts...&gt; <span class="keyword">const</span> rhs[1]{ vs... };</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      <span class="keywordflow">if</span>( math_impl::less{ }( rhs[0], val1 ) ) {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>result_t<span class="keyword">&gt;</span>( val1 );</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>result_t<span class="keyword">&gt;</span>( rhs[0] );</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      <span class="keywordflow">return</span> val1;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> Compare = math_impl::less&gt;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  constexpr decltype( <span class="keyword">auto</span> )</div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="namespacedaw.html#a76479a95067ddf47a23963853aeabac3">   60</a></span>&#160;  <a class="code" href="namespacedaw.html#a76479a95067ddf47a23963853aeabac3">min_comp</a>( T &amp;&amp;lhs, T &amp;&amp;rhs, Compare &amp;&amp;comp = Compare{ } ) {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordflow">if</span>( comp( lhs, rhs ) ) {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( T, lhs );</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    }</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( T, rhs );</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> Compare = math_impl::less&gt;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  constexpr decltype( <span class="keyword">auto</span> )</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="namespacedaw.html#afcd709ccb715aa9c4232e0fffb78cebe">   69</a></span>&#160;  <a class="code" href="namespacedaw.html#afcd709ccb715aa9c4232e0fffb78cebe">max_comp</a>( T &amp;&amp;lhs, T &amp;&amp;rhs, Compare &amp;&amp;comp = Compare{ } ) {</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">if</span>( comp( rhs, lhs ) ) {</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( T, lhs );</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a>( T, rhs );</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  }</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="namespacedaw.html#abb3b5cf7b763ba3b534a11d3ed32d76a">   77</a></span>&#160;  constexpr <span class="keyword">auto</span>( <a class="code" href="namespacedaw.html#abb3b5cf7b763ba3b534a11d3ed32d76a">min</a> )( T <span class="keyword">const</span> &amp;val1, Ts <span class="keyword">const</span> &amp;...vs ) noexcept {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordflow">if</span> constexpr( <span class="keyword">sizeof</span>...( Ts ) &gt; 1 ) {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      <span class="keyword">auto</span> <span class="keyword">const</span> tmp = (<a class="code" href="namespacedaw.html#abb3b5cf7b763ba3b534a11d3ed32d76a">min</a>)( vs... );</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      <span class="keyword">using</span> result_t = std::common_type_t&lt;T, decltype( tmp )&gt;;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      <span class="keywordflow">if</span>( not math_impl::less{ }( tmp, val1 ) ) {</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>result_t<span class="keyword">&gt;</span>( val1 );</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>result_t<span class="keyword">&gt;</span>( tmp );</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr( <span class="keyword">sizeof</span>...( Ts ) == 1 ) {</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      <span class="keyword">using</span> result_t = std::common_type_t&lt;T, Ts...&gt;;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      std::common_type_t&lt;Ts...&gt; <span class="keyword">const</span> rhs[1]{ vs... };</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      <span class="keywordflow">if</span>( not math_impl::less{ }( rhs[0], val1 ) ) {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>result_t<span class="keyword">&gt;</span>( val1 );</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>result_t<span class="keyword">&gt;</span>( rhs[0] );</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      <span class="keywordflow">return</span> val1;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;} <span class="comment">// namespace daw</span></div>
 <div class="ttc" id="aciso646_8h_html"><div class="ttname"><a href="ciso646_8h.html">ciso646.h</a></div></div>
 <div class="ttc" id="adaw__move_8h_html"><div class="ttname"><a href="daw__move_8h.html">daw_move.h</a></div></div>
 <div class="ttc" id="adaw__move_8h_html_a92169421367fae95c111acee1e0ebe60"><div class="ttname"><a href="daw__move_8h.html#a92169421367fae95c111acee1e0ebe60">DAW_FWD2</a></div><div class="ttdeci">#define DAW_FWD2(Type, Value)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00045">daw_move.h:45</a></div></div>
 <div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm__accumulate_8h_source.html#l00017">daw_algorithm_accumulate.h:17</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a76479a95067ddf47a23963853aeabac3"><div class="ttname"><a href="namespacedaw.html#a76479a95067ddf47a23963853aeabac3">daw::min_comp</a></div><div class="ttdeci">constexpr decltype(auto) min_comp(T &amp;&amp;lhs, T &amp;&amp;rhs, Compare &amp;&amp;comp=Compare{ })</div><div class="ttdef"><b>Definition:</b> <a href="daw__math__impl_8h_source.html#l00058">daw_math_impl.h:58</a></div></div>
-<div class="ttc" id="anamespacedaw_html_aa835e04172116a1dde0ed956368a8adc"><div class="ttname"><a href="namespacedaw.html#aa835e04172116a1dde0ed956368a8adc">daw::float_abs</a></div><div class="ttdeci">constexpr Float float_abs(Float f)</div><div class="ttdef"><b>Definition:</b> <a href="daw__math__impl_8h_source.html#l00028">daw_math_impl.h:28</a></div></div>
-<div class="ttc" id="anamespacedaw_html_abb3b5cf7b763ba3b534a11d3ed32d76a"><div class="ttname"><a href="namespacedaw.html#abb3b5cf7b763ba3b534a11d3ed32d76a">daw::min</a></div><div class="ttdeci">constexpr auto() min(T const &amp;val1, Ts const &amp;...vs) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math__impl_8h_source.html#l00076">daw_math_impl.h:76</a></div></div>
-<div class="ttc" id="anamespacedaw_html_ac61b1ea4cfda303bd402fd71c17681b8"><div class="ttname"><a href="namespacedaw.html#ac61b1ea4cfda303bd402fd71c17681b8">daw::max</a></div><div class="ttdeci">constexpr auto() max(T const &amp;val1, Ts const &amp;...vs) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math__impl_8h_source.html#l00036">daw_math_impl.h:36</a></div></div>
-<div class="ttc" id="anamespacedaw_html_afcd709ccb715aa9c4232e0fffb78cebe"><div class="ttname"><a href="namespacedaw.html#afcd709ccb715aa9c4232e0fffb78cebe">daw::max_comp</a></div><div class="ttdeci">constexpr decltype(auto) max_comp(T &amp;&amp;lhs, T &amp;&amp;rhs, Compare &amp;&amp;comp=Compare{ })</div><div class="ttdef"><b>Definition:</b> <a href="daw__math__impl_8h_source.html#l00067">daw_math_impl.h:67</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a76479a95067ddf47a23963853aeabac3"><div class="ttname"><a href="namespacedaw.html#a76479a95067ddf47a23963853aeabac3">daw::min_comp</a></div><div class="ttdeci">constexpr decltype(auto) min_comp(T &amp;&amp;lhs, T &amp;&amp;rhs, Compare &amp;&amp;comp=Compare{ })</div><div class="ttdef"><b>Definition:</b> <a href="daw__math__impl_8h_source.html#l00060">daw_math_impl.h:60</a></div></div>
+<div class="ttc" id="anamespacedaw_html_aa835e04172116a1dde0ed956368a8adc"><div class="ttname"><a href="namespacedaw.html#aa835e04172116a1dde0ed956368a8adc">daw::float_abs</a></div><div class="ttdeci">constexpr Float float_abs(Float f)</div><div class="ttdef"><b>Definition:</b> <a href="daw__math__impl_8h_source.html#l00029">daw_math_impl.h:29</a></div></div>
+<div class="ttc" id="anamespacedaw_html_abb3b5cf7b763ba3b534a11d3ed32d76a"><div class="ttname"><a href="namespacedaw.html#abb3b5cf7b763ba3b534a11d3ed32d76a">daw::min</a></div><div class="ttdeci">constexpr auto() min(T const &amp;val1, Ts const &amp;...vs) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math__impl_8h_source.html#l00077">daw_math_impl.h:77</a></div></div>
+<div class="ttc" id="anamespacedaw_html_ac61b1ea4cfda303bd402fd71c17681b8"><div class="ttname"><a href="namespacedaw.html#ac61b1ea4cfda303bd402fd71c17681b8">daw::max</a></div><div class="ttdeci">constexpr auto() max(T const &amp;val1, Ts const &amp;...vs) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math__impl_8h_source.html#l00037">daw_math_impl.h:37</a></div></div>
+<div class="ttc" id="anamespacedaw_html_afcd709ccb715aa9c4232e0fffb78cebe"><div class="ttname"><a href="namespacedaw.html#afcd709ccb715aa9c4232e0fffb78cebe">daw::max_comp</a></div><div class="ttdeci">constexpr decltype(auto) max_comp(T &amp;&amp;lhs, T &amp;&amp;rhs, Compare &amp;&amp;comp=Compare{ })</div><div class="ttdef"><b>Definition:</b> <a href="daw__math__impl_8h_source.html#l00069">daw_math_impl.h:69</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

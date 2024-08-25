@@ -141,32 +141,34 @@ $(function() {
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> has_pointer_traits_to_address_v&lt;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      T, std::void_t&lt;decltype( <a class="code" href="namespacedaw.html#a0440cfb5131998fcb1fddab475ac41cf">std::pointer_traits&lt;T&gt;::to_address</a>(</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;           std::declval&lt;T const &amp;&gt;( ) ) )&gt;&gt; = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  } <span class="comment">// namespace cpp_20_details</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="namespacedaw.html#a19d3feb0211d235cdf6d619ab2900e4b">   78</a></span>&#160;  constexpr T *<a class="code" href="namespacedaw.html#a19d3feb0211d235cdf6d619ab2900e4b">to_address</a>( T *p ) noexcept {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    static_assert( not std::is_function_v&lt;T&gt; );</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">return</span> p;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  }</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="namespacedaw.html#a0440cfb5131998fcb1fddab475ac41cf">   84</a></span>&#160;  constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a19d3feb0211d235cdf6d619ab2900e4b">to_address</a>( T <span class="keyword">const</span> &amp;p ) noexcept {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordflow">if</span> constexpr( cpp_20_details::has_pointer_traits_to_address_v&lt;T&gt; ) {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#a0440cfb5131998fcb1fddab475ac41cf">std::pointer_traits&lt;T&gt;::to_address</a>( p );</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#a19d3feb0211d235cdf6d619ab2900e4b">daw::to_address</a>( p.operator-&gt;( ) );</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    }</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  }</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;} <span class="comment">// namespace daw</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      T,</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      <a class="code" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">std::void_t</a>&lt;decltype( <a class="code" href="namespacedaw.html#a0440cfb5131998fcb1fddab475ac41cf">std::pointer_traits&lt;T&gt;::to_address</a>(</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        std::declval&lt;T const &amp;&gt;( ) ) )&gt;&gt; = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  } <span class="comment">// namespace cpp_20_details</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="namespacedaw.html#a19d3feb0211d235cdf6d619ab2900e4b">   79</a></span>&#160;  constexpr T *<a class="code" href="namespacedaw.html#a19d3feb0211d235cdf6d619ab2900e4b">to_address</a>( T *p ) noexcept {</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    static_assert( not std::is_function_v&lt;T&gt; );</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">return</span> p;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="namespacedaw.html#a0440cfb5131998fcb1fddab475ac41cf">   85</a></span>&#160;  constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a19d3feb0211d235cdf6d619ab2900e4b">to_address</a>( T <span class="keyword">const</span> &amp;p ) noexcept {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordflow">if</span> constexpr( cpp_20_details::has_pointer_traits_to_address_v&lt;T&gt; ) {</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#a0440cfb5131998fcb1fddab475ac41cf">std::pointer_traits&lt;T&gt;::to_address</a>( p );</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="namespacedaw.html#a19d3feb0211d235cdf6d619ab2900e4b">daw::to_address</a>( p.operator-&gt;( ) );</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    }</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;} <span class="comment">// namespace daw</span></div>
 <div class="ttc" id="adaw__cpp__feature__check_8h_html"><div class="ttname"><a href="daw__cpp__feature__check_8h.html">daw_cpp_feature_check.h</a></div></div>
 <div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm__accumulate_8h_source.html#l00017">daw_algorithm_accumulate.h:17</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a0440cfb5131998fcb1fddab475ac41cf"><div class="ttname"><a href="namespacedaw.html#a0440cfb5131998fcb1fddab475ac41cf">daw::to_address</a></div><div class="ttdeci">constexpr auto to_address(T const &amp;p) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="cpp__20_8h_source.html#l00084">cpp_20.h:84</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a0440cfb5131998fcb1fddab475ac41cf"><div class="ttname"><a href="namespacedaw.html#a0440cfb5131998fcb1fddab475ac41cf">daw::to_address</a></div><div class="ttdeci">constexpr auto to_address(T const &amp;p) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="cpp__20_8h_source.html#l00085">cpp_20.h:85</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a0de141d68c9f16a7b1049e527113a570"><div class="ttname"><a href="namespacedaw.html#a0de141d68c9f16a7b1049e527113a570">daw::is_unbounded_array</a></div><div class="ttdeci">std::bool_constant&lt; is_unbounded_array_v&lt; T &gt; &gt; is_unbounded_array</div><div class="ttdef"><b>Definition:</b> <a href="cpp__20_8h_source.html#l00057">cpp_20.h:57</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a19d3feb0211d235cdf6d619ab2900e4b"><div class="ttname"><a href="namespacedaw.html#a19d3feb0211d235cdf6d619ab2900e4b">daw::to_address</a></div><div class="ttdeci">constexpr T * to_address(T *p) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="cpp__20_8h_source.html#l00078">cpp_20.h:78</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a19d3feb0211d235cdf6d619ab2900e4b"><div class="ttname"><a href="namespacedaw.html#a19d3feb0211d235cdf6d619ab2900e4b">daw::to_address</a></div><div class="ttdeci">constexpr T * to_address(T *p) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="cpp__20_8h_source.html#l00079">cpp_20.h:79</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a86f6ab0d795de6e69f1c4f483fae3d34"><div class="ttname"><a href="namespacedaw.html#a86f6ab0d795de6e69f1c4f483fae3d34">daw::is_unbounded_array_v&lt; T[]&gt;</a></div><div class="ttdeci">constexpr bool is_unbounded_array_v&lt; T[]&gt;</div><div class="ttdef"><b>Definition:</b> <a href="cpp__20_8h_source.html#l00054">cpp_20.h:54</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a9dd289d6deb8833d9a8363e8827ccad8"><div class="ttname"><a href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">daw::void_t</a></div><div class="ttdeci">void void_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits_8h_source.html#l00955">daw_traits.h:955</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ad9828c948ec2a577b6369adf8683f2dd"><div class="ttname"><a href="namespacedaw.html#ad9828c948ec2a577b6369adf8683f2dd">daw::is_unbounded_array_v</a></div><div class="ttdeci">constexpr bool is_unbounded_array_v</div><div class="ttdef"><b>Definition:</b> <a href="cpp__20_8h_source.html#l00051">cpp_20.h:51</a></div></div>
 <div class="ttc" id="anamespacedaw_html_afd84e1e250c4b3e259bd9ec200007f81"><div class="ttname"><a href="namespacedaw.html#afd84e1e250c4b3e259bd9ec200007f81">daw::requires</a></div><div class="ttdeci">requires(not std::is_const_v&lt; T &gt;) struct contiguous_view&lt; T</div></div>
 </div><!-- fragment --></div><!-- contents -->

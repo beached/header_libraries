@@ -74,6 +74,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="remove__cvref_8h_source.html">daw/stdinc/remove_cvref.h</a>&gt;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
 </div>
 <p><a href="daw__remove__cvref_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -88,6 +89,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ac1fed2bfc329128fd5d8b3b9bb677928"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ac1fed2bfc329128fd5d8b3b9bb677928"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">daw::remove_cvref_t</a> = std::remove_cv_t&lt; std::remove_reference_t&lt; T &gt; &gt;</td></tr>
 <tr class="separator:ac1fed2bfc329128fd5d8b3b9bb677928"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac121f9d4cd4e125708228d7d7d064da4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ac121f9d4cd4e125708228d7d7d064da4"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ac121f9d4cd4e125708228d7d7d064da4">daw::remove_cvrvref_t</a> = std::conditional_t&lt; std::is_rvalue_reference_v&lt; T &gt;, remove_cvref_t&lt; T &gt;, T &gt;</td></tr>
+<tr class="separator:ac121f9d4cd4e125708228d7d7d064da4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

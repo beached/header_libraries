@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['range_5faccess_2eh_3072',['range_access.h',['../range__access_8h.html',1,'']]],
-  ['readme_2emd_3073',['readme.md',['../readme_8md.html',1,'']]],
-  ['reference_5fwrapper_2eh_3074',['reference_wrapper.h',['../reference__wrapper_8h.html',1,'']]],
-  ['remove_5fcvref_2eh_3075',['remove_cvref.h',['../remove__cvref_8h.html',1,'']]],
-  ['reverse_5fiterator_2eh_3076',['reverse_iterator.h',['../reverse__iterator_8h.html',1,'']]]
+  ['map_5fview_2eh_3342',['map_view.h',['../map__view_8h.html',1,'']]],
+  ['maybe_5fview_2eh_3343',['maybe_view.h',['../maybe__view_8h.html',1,'']]],
+  ['min_5fand_5fmax_2eh_3344',['min_and_max.h',['../min__and__max_8h.html',1,'']]],
+  ['move_5ffwd_5fexch_2eh_3345',['move_fwd_exch.h',['../move__fwd__exch_8h.html',1,'']]]
 ];

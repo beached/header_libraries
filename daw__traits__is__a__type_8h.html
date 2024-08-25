@@ -207,10 +207,11 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;                                                     \</div>
-<div class="line">  inline constexpr <span class="keywordtype">bool</span> is_##ContainerName##_v = <a class="code" href="namespacedaw.html#acb5e8e7aae63bd8ce856c22236d80412">std::is_same_v</a>&lt;           \</div>
-<div class="line">    T, std::ContainerName&lt;typename T::key_type, typename T::mapped_type&gt;&gt;; \</div>
-<div class="line">  template&lt;typename T&gt;                                                     \</div>
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;                                                  \</div>
+<div class="line">  inline constexpr <span class="keywordtype">bool</span> is_##ContainerName##_v = <a class="code" href="namespacedaw.html#acb5e8e7aae63bd8ce856c22236d80412">std::is_same_v</a>&lt;        \</div>
+<div class="line">    T,                                                                  \</div>
+<div class="line">    std::ContainerName&lt;typename T::key_type, typename T::mapped_type&gt;&gt;; \</div>
+<div class="line">  template&lt;typename T&gt;                                                  \</div>
 <div class="line">  using is_##ContainerName = std::bool_constant&lt;is_##ContainerName##_v&lt;T&gt;&gt;</div>
 <div class="ttc" id="anamespacedaw_html_acb5e8e7aae63bd8ce856c22236d80412"><div class="ttname"><a href="namespacedaw.html#acb5e8e7aae63bd8ce856c22236d80412">daw::is_same_v</a></div><div class="ttdeci">constexpr bool is_same_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits__is__same_8h_source.html#l00015">daw_traits_is_same.h:15</a></div></div>
 </div><!-- fragment -->

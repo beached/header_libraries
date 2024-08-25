@@ -78,6 +78,7 @@ $(function() {
 <code>#include &quot;<a class="el" href="cpp__17_8h_source.html">cpp_17.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
 <code>#include &lt;concepts&gt;</code><br />
 <code>#include &lt;functional&gt;</code><br />
@@ -96,18 +97,12 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:abddf63e22b9f359929f097d2f08ffa18"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:abddf63e22b9f359929f097d2f08ffa18"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#abddf63e22b9f359929f097d2f08ffa18">daw::iter_difference_t</a> = typename std::iterator_traits&lt; T &gt;::difference_type</td></tr>
-<tr class="separator:abddf63e22b9f359929f097d2f08ffa18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c7a2b548f0fc456138f702dcdc60e31"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a1c7a2b548f0fc456138f702dcdc60e31"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a1c7a2b548f0fc456138f702dcdc60e31">daw::iter_reference_t</a> = typename std::iterator_traits&lt; T &gt;::reference_type</td></tr>
-<tr class="separator:a1c7a2b548f0fc456138f702dcdc60e31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa03e3e7294958f11cb4ae0d6aa57a4bd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aa03e3e7294958f11cb4ae0d6aa57a4bd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa03e3e7294958f11cb4ae0d6aa57a4bd">daw::iter_reference_type</a> = typename std::iterator_traits&lt; T &gt;::reference</td></tr>
-<tr class="separator:aa03e3e7294958f11cb4ae0d6aa57a4bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a315e7b7b9531824d2124cf74906c4f7f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a315e7b7b9531824d2124cf74906c4f7f"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a315e7b7b9531824d2124cf74906c4f7f">daw::iter_value_type</a> = typename std::iterator_traits&lt; T &gt;::value_type</td></tr>
-<tr class="separator:a315e7b7b9531824d2124cf74906c4f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae81c02be6c815f14b04e1711a0e4a9a5"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ae81c02be6c815f14b04e1711a0e4a9a5"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ae81c02be6c815f14b04e1711a0e4a9a5">daw::iter_reference_type</a> = iter_reference_t&lt; T &gt;</td></tr>
+<tr class="separator:ae81c02be6c815f14b04e1711a0e4a9a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c6dc4601b8b30570b0381445a5382d0"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a5c6dc4601b8b30570b0381445a5382d0"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5c6dc4601b8b30570b0381445a5382d0">daw::iter_value_type</a> = iter_value_t&lt; T &gt;</td></tr>
+<tr class="separator:a5c6dc4601b8b30570b0381445a5382d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c056ca3597b76acfacb29e2eaf83cdf"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a3c056ca3597b76acfacb29e2eaf83cdf"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3c056ca3597b76acfacb29e2eaf83cdf">daw::iterator_category_t</a> = typename std::iterator_traits&lt; T &gt;::iterator_category</td></tr>
 <tr class="separator:a3c056ca3597b76acfacb29e2eaf83cdf"><td class="memSeparator" colspan="2">&#160;</td></tr>

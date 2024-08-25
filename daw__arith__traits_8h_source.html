@@ -335,199 +335,209 @@ $(function() {
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160; </div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00265"></a><span class="lineno"><a class="line" href="namespacedaw.html#a3574ae84b83ccc6a02409ccad76677ac">  265</a></span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacedaw.html#a3574ae84b83ccc6a02409ccad76677ac">is_arithmetic</a> =</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    std::disjunction&lt;is_number&lt;T&gt;, std::is_enum&lt;T&gt;,</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                     <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t&lt;daw::numeric_limits&lt;T&gt;::is_specialized</a>,</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                                   std::true_type, std::false_type&gt;&gt;;</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00271"></a><span class="lineno"><a class="line" href="namespacedaw.html#a9ebe50422eeaa960cf1e0558c25275a6">  271</a></span>&#160;  <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> <a class="code" href="namespacedaw.html#a9ebe50422eeaa960cf1e0558c25275a6">is_arithmetic_v</a> = <a class="code" href="namespacedaw.html#a3574ae84b83ccc6a02409ccad76677ac">is_arithmetic&lt;T&gt;::value</a>;</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00274"></a><span class="lineno"><a class="line" href="structdaw_1_1make__unsigned.html">  274</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1make__unsigned.html">make_unsigned</a> : std::make_unsigned&lt;T&gt; {};</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00277"></a><span class="lineno"><a class="line" href="structdaw_1_1make__signed.html">  277</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1make__signed.html">make_signed</a> : std::make_signed&lt;T&gt; {};</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160; </div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<span class="preprocessor">#if defined( DAW_HAS_INT128 )</span></div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1make__unsigned.html">make_unsigned</a>&lt;__uint128_t&gt; {</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <span class="keyword">using</span> type = __uint128_t;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;  };</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; </div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;  <span class="keyword">struct </span>make_unsigned&lt;__uint128_t const&gt; {</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="keyword">using</span> type = __uint128_t <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;  };</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160; </div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;  <span class="keyword">struct </span>make_unsigned&lt;__uint128_t volatile&gt; {</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    <span class="keyword">using</span> type = __uint128_t <span class="keyword">volatile</span>;</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;  };</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160; </div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;  <span class="keyword">struct </span>make_unsigned&lt;__uint128_t const volatile&gt; {</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    <span class="keyword">using</span> type = __uint128_t <span class="keyword">const</span> <span class="keyword">volatile</span>;</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;  };</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160; </div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;  <span class="keyword">struct </span>make_unsigned&lt;__int128_t&gt; {</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="keyword">using</span> type = __uint128_t;</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;  };</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160; </div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;  <span class="keyword">struct </span>make_unsigned&lt;__int128_t const&gt; {</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    <span class="keyword">using</span> type = __uint128_t <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;  };</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160; </div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;  <span class="keyword">struct </span>make_unsigned&lt;__int128_t volatile&gt; {</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <span class="keyword">using</span> type = __uint128_t <span class="keyword">volatile</span>;</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;  };</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160; </div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;  <span class="keyword">struct </span>make_unsigned&lt;__int128_t const volatile&gt; {</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <span class="keyword">using</span> type = __uint128_t <span class="keyword">const</span> <span class="keyword">volatile</span>;</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;  };</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160; </div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;  <span class="keyword">struct </span>make_signed&lt;__uint128_t&gt; {</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <span class="keyword">using</span> type = __int128_t;</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;  };</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160; </div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;  <span class="keyword">struct </span>make_signed&lt;__uint128_t const&gt; {</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <span class="keyword">using</span> type = __int128_t <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;  };</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160; </div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;  <span class="keyword">struct </span>make_signed&lt;__uint128_t volatile&gt; {</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <span class="keyword">using</span> type = __int128_t <span class="keyword">volatile</span>;</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;  };</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160; </div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;  <span class="keyword">struct </span>make_signed&lt;__uint128_t const volatile&gt; {</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    <span class="keyword">using</span> type = __int128_t <span class="keyword">const</span> <span class="keyword">volatile</span>;</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;  };</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160; </div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;  <span class="keyword">struct </span>make_signed&lt;__int128_t&gt; {</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    <span class="keyword">using</span> type = __int128_t;</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;  };</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160; </div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;  <span class="keyword">struct </span>make_signed&lt;__int128_t const&gt; {</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    <span class="keyword">using</span> type = __int128_t <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;  };</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160; </div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;  <span class="keyword">struct </span>make_signed&lt;__int128_t volatile&gt; {</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    <span class="keyword">using</span> type = __int128_t <span class="keyword">volatile</span>;</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;  };</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160; </div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;  <span class="keyword">struct </span>make_signed&lt;__int128_t const volatile&gt; {</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    <span class="keyword">using</span> type = __int128_t <span class="keyword">const</span> <span class="keyword">volatile</span>;</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;  };</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160; </div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00362"></a><span class="lineno"><a class="line" href="namespacedaw.html#aa88d1d77939be042bb671074e68331cd">  362</a></span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacedaw.html#aa88d1d77939be042bb671074e68331cd">make_unsigned_t</a> = <span class="keyword">typename</span> <a class="code" href="structdaw_1_1make__unsigned.html">make_unsigned&lt;T&gt;::type</a>;</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160; </div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00365"></a><span class="lineno"><a class="line" href="namespacedaw.html#a678783b7a17e1d9db2bcb1d2c92a1dbc">  365</a></span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacedaw.html#a678783b7a17e1d9db2bcb1d2c92a1dbc">make_signed_t</a> = <span class="keyword">typename</span> <a class="code" href="structdaw_1_1make__signed.html">make_signed&lt;T&gt;::type</a>;</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160; </div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00368"></a><span class="lineno"><a class="line" href="structdaw_1_1is__system__integral.html">  368</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1is__system__integral.html">is_system_integral</a> : <a class="code" href="namespacedaw.html#a0a6a232e926db38d6074e30789149088">std::is_integral</a>&lt;T&gt; {};</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160; </div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;<span class="preprocessor">#if defined( DAW_HAS_INT128 )</span></div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1is__system__integral.html">is_system_integral</a>&lt;__uint128_t&gt; : std::true_type {};</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160; </div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;  <span class="keyword">struct </span>is_system_integral&lt;__int128_t&gt; : std::true_type {};</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00378"></a><span class="lineno"><a class="line" href="namespacedaw.html#a6f35f8bb5e2947bfc6285b2525b6b7fd">  378</a></span>&#160;  <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> <a class="code" href="namespacedaw.html#a6f35f8bb5e2947bfc6285b2525b6b7fd">is_system_integral_v</a> = <a class="code" href="structdaw_1_1is__system__integral.html">is_system_integral&lt;T&gt;::value</a>;</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160; </div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, std::<span class="keywordtype">size_t</span> BitSize&gt;</div>
-<div class="line"><a name="l00381"></a><span class="lineno"><a class="line" href="namespacedaw.html#a9108135a98561ea47f1eb0a4c5dfdfa2">  381</a></span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacedaw.html#a9108135a98561ea47f1eb0a4c5dfdfa2">is_same_size</a> = <a class="code" href="namespacedaw.html#aba8740674058543901e83038876e89e2">std::bool_constant</a>&lt;( ( <span class="keyword">sizeof</span>( T ) * 8 ) == BitSize )&gt;;</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160; </div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, std::<span class="keywordtype">size_t</span> BitSize&gt;</div>
-<div class="line"><a name="l00384"></a><span class="lineno"><a class="line" href="namespacedaw.html#a8163e87ed99593ab4f8b6a171515df95">  384</a></span>&#160;  <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> <a class="code" href="namespacedaw.html#a8163e87ed99593ab4f8b6a171515df95">is_same_size_v</a> = <a class="code" href="namespacedaw.html#a9108135a98561ea47f1eb0a4c5dfdfa2">is_same_size&lt;T, BitSize&gt;::value</a>;</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160; </div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;  <span class="keyword">template</span>&lt;std::size_t <span class="comment">/*BitSize*/</span>&gt;</div>
-<div class="line"><a name="l00387"></a><span class="lineno"><a class="line" href="structdaw_1_1unsupported__int__size.html">  387</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1unsupported__int__size.html">unsupported_int_size</a>;</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160; </div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;  <span class="keyword">template</span>&lt;std::<span class="keywordtype">size_t</span> BitSize&gt;</div>
-<div class="line"><a name="l00390"></a><span class="lineno"><a class="line" href="namespacedaw.html#adccc87538bcac65a3e8d3effa944b66d">  390</a></span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacedaw.html#adccc87538bcac65a3e8d3effa944b66d">intN_t</a> = <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt;</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    is_same_size_v&lt;char, BitSize&gt;, char,</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt;</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;      is_same_size_v&lt;short, BitSize&gt;, short,</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;      <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt;</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        is_same_size_v&lt;int, BitSize&gt;, int,</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;        <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt;</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;          is_same_size_v&lt;long, BitSize&gt;, long,</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;          <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t&lt;is_same_size_v&lt;long long, BitSize&gt;</a>, <span class="keywordtype">long</span> long,</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;                        <a class="code" href="structdaw_1_1unsupported__int__size.html">unsupported_int_size&lt;BitSize&gt;</a>&gt;&gt;&gt;&gt;&gt;;</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;  <span class="keyword">template</span>&lt;std::<span class="keywordtype">size_t</span> BitSize&gt;</div>
-<div class="line"><a name="l00401"></a><span class="lineno"><a class="line" href="namespacedaw.html#acf0bd853db2d9386092cf9329d151059">  401</a></span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacedaw.html#acf0bd853db2d9386092cf9329d151059">uintN_t</a> = <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt;</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;    is_same_size_v&lt;char, BitSize&gt;, <span class="keywordtype">unsigned</span> char,</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt;</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;      is_same_size_v&lt;short, BitSize&gt;, <span class="keywordtype">unsigned</span> short,</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;      <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt;</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;        is_same_size_v&lt;int, BitSize&gt;, <span class="keywordtype">unsigned</span> int,</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;        <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt;</div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;          is_same_size_v&lt;long, BitSize&gt;, <span class="keywordtype">unsigned</span> long,</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;          <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t&lt;is_same_size_v&lt;unsigned long long, BitSize&gt;</a>, <span class="keywordtype">long</span> long,</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;                        <a class="code" href="structdaw_1_1unsupported__int__size.html">unsupported_int_size&lt;BitSize&gt;</a>&gt;&gt;&gt;&gt;&gt;;</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160; </div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00413"></a><span class="lineno"><a class="line" href="namespacedaw.html#afbdc0efaba18dd51de4f4b01c1c764e3">  413</a></span>&#160;  <span class="keyword">inline</span> constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#afbdc0efaba18dd51de4f4b01c1c764e3">max_value</a> = <a class="code" href="namespacedaw_1_1tuple.html#a543ce1a1cb4ea6b89b50c454a74631bd">numeric_limits&lt;T&gt;::max</a>( );</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160; </div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00416"></a><span class="lineno"><a class="line" href="namespacedaw.html#aba0394ba8444b7c5f408d214c7344652">  416</a></span>&#160;  <span class="keyword">inline</span> constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#aba0394ba8444b7c5f408d214c7344652">min_value</a> = <a class="code" href="namespacedaw_1_1tuple.html#a85aad7e3b54bb9b033b0b4b628f06846">numeric_limits&lt;T&gt;::min</a>( );</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160; </div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00419"></a><span class="lineno"><a class="line" href="namespacedaw.html#a9e8a26fd7498284e3fec7149c129c8e6">  419</a></span>&#160;  <span class="keyword">inline</span> constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a9e8a26fd7498284e3fec7149c129c8e6">lowest_value</a> = <a class="code" href="structdaw_1_1numeric__limits.html">numeric_limits&lt;T&gt;::lowest</a>( );</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;} <span class="comment">// namespace daw</span></div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    std::disjunction&lt;is_number&lt;T&gt;,</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                     std::is_enum&lt;T&gt;,</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                     <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t&lt;daw::numeric_limits&lt;T&gt;::is_specialized</a>,</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                                   std::true_type,</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                                   std::false_type&gt;&gt;;</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160; </div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00273"></a><span class="lineno"><a class="line" href="namespacedaw.html#a9ebe50422eeaa960cf1e0558c25275a6">  273</a></span>&#160;  <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> <a class="code" href="namespacedaw.html#a9ebe50422eeaa960cf1e0558c25275a6">is_arithmetic_v</a> = <a class="code" href="namespacedaw.html#a3574ae84b83ccc6a02409ccad76677ac">is_arithmetic&lt;T&gt;::value</a>;</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; </div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00276"></a><span class="lineno"><a class="line" href="structdaw_1_1make__unsigned.html">  276</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1make__unsigned.html">make_unsigned</a> : std::make_unsigned&lt;T&gt; {};</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; </div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00279"></a><span class="lineno"><a class="line" href="structdaw_1_1make__signed.html">  279</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1make__signed.html">make_signed</a> : std::make_signed&lt;T&gt; {};</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="preprocessor">#if defined( DAW_HAS_INT128 )</span></div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1make__unsigned.html">make_unsigned</a>&lt;__uint128_t&gt; {</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <span class="keyword">using</span> type = __uint128_t;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;  };</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160; </div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;  <span class="keyword">struct </span>make_unsigned&lt;__uint128_t const&gt; {</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    <span class="keyword">using</span> type = __uint128_t <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;  };</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160; </div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;  <span class="keyword">struct </span>make_unsigned&lt;__uint128_t volatile&gt; {</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <span class="keyword">using</span> type = __uint128_t <span class="keyword">volatile</span>;</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;  };</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160; </div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;  <span class="keyword">struct </span>make_unsigned&lt;__uint128_t const volatile&gt; {</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    <span class="keyword">using</span> type = __uint128_t <span class="keyword">const</span> <span class="keyword">volatile</span>;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;  };</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160; </div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;  <span class="keyword">struct </span>make_unsigned&lt;__int128_t&gt; {</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    <span class="keyword">using</span> type = __uint128_t;</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;  };</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160; </div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;  <span class="keyword">struct </span>make_unsigned&lt;__int128_t const&gt; {</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="keyword">using</span> type = __uint128_t <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;  };</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160; </div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;  <span class="keyword">struct </span>make_unsigned&lt;__int128_t volatile&gt; {</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="keyword">using</span> type = __uint128_t <span class="keyword">volatile</span>;</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;  };</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160; </div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;  <span class="keyword">struct </span>make_unsigned&lt;__int128_t const volatile&gt; {</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <span class="keyword">using</span> type = __uint128_t <span class="keyword">const</span> <span class="keyword">volatile</span>;</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;  };</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160; </div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;  <span class="keyword">struct </span>make_signed&lt;__uint128_t&gt; {</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    <span class="keyword">using</span> type = __int128_t;</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;  };</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160; </div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;  <span class="keyword">struct </span>make_signed&lt;__uint128_t const&gt; {</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    <span class="keyword">using</span> type = __int128_t <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;  };</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160; </div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;  <span class="keyword">struct </span>make_signed&lt;__uint128_t volatile&gt; {</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    <span class="keyword">using</span> type = __int128_t <span class="keyword">volatile</span>;</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;  };</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160; </div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;  <span class="keyword">struct </span>make_signed&lt;__uint128_t const volatile&gt; {</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    <span class="keyword">using</span> type = __int128_t <span class="keyword">const</span> <span class="keyword">volatile</span>;</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;  };</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160; </div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;  <span class="keyword">struct </span>make_signed&lt;__int128_t&gt; {</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    <span class="keyword">using</span> type = __int128_t;</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;  };</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160; </div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;  <span class="keyword">struct </span>make_signed&lt;__int128_t const&gt; {</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    <span class="keyword">using</span> type = __int128_t <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;  };</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160; </div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;  <span class="keyword">struct </span>make_signed&lt;__int128_t volatile&gt; {</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    <span class="keyword">using</span> type = __int128_t <span class="keyword">volatile</span>;</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;  };</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160; </div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;  <span class="keyword">struct </span>make_signed&lt;__int128_t const volatile&gt; {</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    <span class="keyword">using</span> type = __int128_t <span class="keyword">const</span> <span class="keyword">volatile</span>;</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;  };</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160; </div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00364"></a><span class="lineno"><a class="line" href="namespacedaw.html#aa88d1d77939be042bb671074e68331cd">  364</a></span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacedaw.html#aa88d1d77939be042bb671074e68331cd">make_unsigned_t</a> = <span class="keyword">typename</span> <a class="code" href="structdaw_1_1make__unsigned.html">make_unsigned&lt;T&gt;::type</a>;</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160; </div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00367"></a><span class="lineno"><a class="line" href="namespacedaw.html#a678783b7a17e1d9db2bcb1d2c92a1dbc">  367</a></span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacedaw.html#a678783b7a17e1d9db2bcb1d2c92a1dbc">make_signed_t</a> = <span class="keyword">typename</span> <a class="code" href="structdaw_1_1make__signed.html">make_signed&lt;T&gt;::type</a>;</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160; </div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00370"></a><span class="lineno"><a class="line" href="structdaw_1_1is__system__integral.html">  370</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1is__system__integral.html">is_system_integral</a> : <a class="code" href="namespacedaw.html#a0a6a232e926db38d6074e30789149088">std::is_integral</a>&lt;T&gt; {};</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160; </div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;<span class="preprocessor">#if defined( DAW_HAS_INT128 )</span></div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1is__system__integral.html">is_system_integral</a>&lt;__uint128_t&gt; : std::true_type {};</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160; </div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;  <span class="keyword">struct </span>is_system_integral&lt;__int128_t&gt; : std::true_type {};</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00380"></a><span class="lineno"><a class="line" href="namespacedaw.html#a6f35f8bb5e2947bfc6285b2525b6b7fd">  380</a></span>&#160;  <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> <a class="code" href="namespacedaw.html#a6f35f8bb5e2947bfc6285b2525b6b7fd">is_system_integral_v</a> = <a class="code" href="structdaw_1_1is__system__integral.html">is_system_integral&lt;T&gt;::value</a>;</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160; </div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, std::<span class="keywordtype">size_t</span> BitSize&gt;</div>
+<div class="line"><a name="l00383"></a><span class="lineno"><a class="line" href="namespacedaw.html#a9108135a98561ea47f1eb0a4c5dfdfa2">  383</a></span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacedaw.html#a9108135a98561ea47f1eb0a4c5dfdfa2">is_same_size</a> = <a class="code" href="namespacedaw.html#aba8740674058543901e83038876e89e2">std::bool_constant</a>&lt;( ( <span class="keyword">sizeof</span>( T ) * 8 ) == BitSize )&gt;;</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160; </div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, std::<span class="keywordtype">size_t</span> BitSize&gt;</div>
+<div class="line"><a name="l00386"></a><span class="lineno"><a class="line" href="namespacedaw.html#a8163e87ed99593ab4f8b6a171515df95">  386</a></span>&#160;  <span class="keyword">inline</span> constexpr <span class="keywordtype">bool</span> <a class="code" href="namespacedaw.html#a8163e87ed99593ab4f8b6a171515df95">is_same_size_v</a> = <a class="code" href="namespacedaw.html#a9108135a98561ea47f1eb0a4c5dfdfa2">is_same_size&lt;T, BitSize&gt;::value</a>;</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160; </div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;  <span class="keyword">template</span>&lt;std::size_t <span class="comment">/*BitSize*/</span>&gt;</div>
+<div class="line"><a name="l00389"></a><span class="lineno"><a class="line" href="structdaw_1_1unsupported__int__size.html">  389</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1unsupported__int__size.html">unsupported_int_size</a>;</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160; </div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;  <span class="keyword">template</span>&lt;std::<span class="keywordtype">size_t</span> BitSize&gt;</div>
+<div class="line"><a name="l00392"></a><span class="lineno"><a class="line" href="namespacedaw.html#aa93b07cdcc4fa3bbd3fc9224a32480df">  392</a></span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacedaw.html#aa93b07cdcc4fa3bbd3fc9224a32480df">intN_t</a> = <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt;</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    is_same_size_v&lt;char, BitSize&gt;,</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    char,</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt;</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;      is_same_size_v&lt;short, BitSize&gt;,</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;      short,</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;      <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt;</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        is_same_size_v&lt;int, BitSize&gt;,</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;        int,</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;        <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t&lt;is_same_size_v&lt;long, BitSize&gt;</a>,</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;                      long,</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;                      <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t&lt;is_same_size_v&lt;long long, BitSize&gt;</a>,</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;                                    <span class="keywordtype">long</span> long,</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;                                    <a class="code" href="structdaw_1_1unsupported__int__size.html">unsupported_int_size&lt;BitSize&gt;</a>&gt;&gt;&gt;&gt;&gt;;</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;  <span class="keyword">template</span>&lt;std::<span class="keywordtype">size_t</span> BitSize&gt;</div>
+<div class="line"><a name="l00407"></a><span class="lineno"><a class="line" href="namespacedaw.html#a1f8900a47f54d734d73673b813331524">  407</a></span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacedaw.html#a1f8900a47f54d734d73673b813331524">uintN_t</a> = <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt;</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    is_same_size_v&lt;char, BitSize&gt;,</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    <span class="keywordtype">unsigned</span> char,</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt;</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;      is_same_size_v&lt;short, BitSize&gt;,</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;      <span class="keywordtype">unsigned</span> short,</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;      <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt;</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;        is_same_size_v&lt;int, BitSize&gt;,</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;        <span class="keywordtype">unsigned</span> int,</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;        <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t&lt;is_same_size_v&lt;long, BitSize&gt;</a>,</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;                      <span class="keywordtype">unsigned</span> long,</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;                      <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t&lt;is_same_size_v&lt;unsigned long long, BitSize&gt;</a>,</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;                                    <span class="keywordtype">long</span> long,</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;                                    <a class="code" href="structdaw_1_1unsupported__int__size.html">unsupported_int_size&lt;BitSize&gt;</a>&gt;&gt;&gt;&gt;&gt;;</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160; </div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00423"></a><span class="lineno"><a class="line" href="namespacedaw.html#afbdc0efaba18dd51de4f4b01c1c764e3">  423</a></span>&#160;  <span class="keyword">inline</span> constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#afbdc0efaba18dd51de4f4b01c1c764e3">max_value</a> = <a class="code" href="namespacedaw_1_1tuple.html#a543ce1a1cb4ea6b89b50c454a74631bd">numeric_limits&lt;T&gt;::max</a>( );</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160; </div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00426"></a><span class="lineno"><a class="line" href="namespacedaw.html#aba0394ba8444b7c5f408d214c7344652">  426</a></span>&#160;  <span class="keyword">inline</span> constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#aba0394ba8444b7c5f408d214c7344652">min_value</a> = <a class="code" href="namespacedaw_1_1tuple.html#a85aad7e3b54bb9b033b0b4b628f06846">numeric_limits&lt;T&gt;::min</a>( );</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160; </div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00429"></a><span class="lineno"><a class="line" href="namespacedaw.html#a9e8a26fd7498284e3fec7149c129c8e6">  429</a></span>&#160;  <span class="keyword">inline</span> constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a9e8a26fd7498284e3fec7149c129c8e6">lowest_value</a> = <a class="code" href="structdaw_1_1numeric__limits.html">numeric_limits&lt;T&gt;::lowest</a>( );</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;} <span class="comment">// namespace daw</span></div>
 <div class="ttc" id="aciso646_8h_html"><div class="ttname"><a href="ciso646_8h.html">ciso646.h</a></div></div>
 <div class="ttc" id="adaw__cpp__feature__check_8h_html"><div class="ttname"><a href="daw__cpp__feature__check_8h.html">daw_cpp_feature_check.h</a></div></div>
 <div class="ttc" id="adaw__traits__conditional_8h_html"><div class="ttname"><a href="daw__traits__conditional_8h.html">daw_traits_conditional.h</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1cxmath_html_a1fbf2614ecb56c28c2e46b2b682dd778af2fdee93271556e428dd9507b3da7235"><div class="ttname"><a href="namespacedaw_1_1cxmath.html#a1fbf2614ecb56c28c2e46b2b682dd778af2fdee93271556e428dd9507b3da7235">daw::cxmath::fp_classes::infinity</a></div><div class="ttdeci">@ infinity</div></div>
-<div class="ttc" id="anamespacedaw_1_1tuple_html_a543ce1a1cb4ea6b89b50c454a74631bd"><div class="ttname"><a href="namespacedaw_1_1tuple.html#a543ce1a1cb4ea6b89b50c454a74631bd">daw::tuple::max</a></div><div class="ttdeci">constexpr auto() max(std::tuple&lt; Ts... &gt; const &amp;a, std::tuple&lt; Ts... &gt; const &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple__helper_8h_source.html#l00384">daw_tuple_helper.h:384</a></div></div>
-<div class="ttc" id="anamespacedaw_1_1tuple_html_a85aad7e3b54bb9b033b0b4b628f06846"><div class="ttname"><a href="namespacedaw_1_1tuple.html#a85aad7e3b54bb9b033b0b4b628f06846">daw::tuple::min</a></div><div class="ttdeci">constexpr auto() min(std::tuple&lt; Ts... &gt; const &amp;a, std::tuple&lt; Ts... &gt; const &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple__helper_8h_source.html#l00377">daw_tuple_helper.h:377</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1tuple_html_a543ce1a1cb4ea6b89b50c454a74631bd"><div class="ttname"><a href="namespacedaw_1_1tuple.html#a543ce1a1cb4ea6b89b50c454a74631bd">daw::tuple::max</a></div><div class="ttdeci">constexpr auto() max(std::tuple&lt; Ts... &gt; const &amp;a, std::tuple&lt; Ts... &gt; const &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple__helper_8h_source.html#l00412">daw_tuple_helper.h:412</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1tuple_html_a85aad7e3b54bb9b033b0b4b628f06846"><div class="ttname"><a href="namespacedaw_1_1tuple.html#a85aad7e3b54bb9b033b0b4b628f06846">daw::tuple::min</a></div><div class="ttdeci">constexpr auto() min(std::tuple&lt; Ts... &gt; const &amp;a, std::tuple&lt; Ts... &gt; const &amp;b)</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple__helper_8h_source.html#l00405">daw_tuple_helper.h:405</a></div></div>
 <div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm__accumulate_8h_source.html#l00017">daw_algorithm_accumulate.h:17</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a0a6a232e926db38d6074e30789149088"><div class="ttname"><a href="namespacedaw.html#a0a6a232e926db38d6074e30789149088">daw::is_integral</a></div><div class="ttdeci">std::bool_constant&lt; daw::numeric_limits&lt; T &gt;::is_integer &gt; is_integral</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00200">daw_arith_traits.h:200</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a13079bfba0cfaaf579de00c945c7425a"><div class="ttname"><a href="namespacedaw.html#a13079bfba0cfaaf579de00c945c7425a">daw::is_floating_point_v</a></div><div class="ttdeci">constexpr bool is_floating_point_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00226">daw_arith_traits.h:226</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a1f8900a47f54d734d73673b813331524"><div class="ttname"><a href="namespacedaw.html#a1f8900a47f54d734d73673b813331524">daw::uintN_t</a></div><div class="ttdeci">conditional_t&lt; is_same_size_v&lt; char, BitSize &gt;, unsigned char, conditional_t&lt; is_same_size_v&lt; short, BitSize &gt;, unsigned short, conditional_t&lt; is_same_size_v&lt; int, BitSize &gt;, unsigned int, conditional_t&lt; is_same_size_v&lt; long, BitSize &gt;, unsigned long, conditional_t&lt; is_same_size_v&lt; unsigned long long, BitSize &gt;, long long, unsupported_int_size&lt; BitSize &gt; &gt;&gt; &gt;&gt; &gt; uintN_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00407">daw_arith_traits.h:420</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a214d465f63cd9ada4a5c7c473cb814cb"><div class="ttname"><a href="namespacedaw.html#a214d465f63cd9ada4a5c7c473cb814cb">daw::is_unsigned</a></div><div class="ttdeci">std::conjunction&lt; is_integral&lt; T &gt;, std::negation&lt; arith_traits_details::limits_is_signed&lt; T &gt; &gt;&gt; is_unsigned</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00253">daw_arith_traits.h:255</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a33bde176dbe56752560f71c62982c8ec"><div class="ttname"><a href="namespacedaw.html#a33bde176dbe56752560f71c62982c8ec">daw::is_signed</a></div><div class="ttdeci">std::conjunction&lt; is_number&lt; T &gt;, arith_traits_details::limits_is_signed&lt; T &gt; &gt; is_signed</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00242">daw_arith_traits.h:243</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a3574ae84b83ccc6a02409ccad76677ac"><div class="ttname"><a href="namespacedaw.html#a3574ae84b83ccc6a02409ccad76677ac">daw::is_arithmetic</a></div><div class="ttdeci">std::disjunction&lt; is_number&lt; T &gt;, std::is_enum&lt; T &gt;, conditional_t&lt; daw::numeric_limits&lt; T &gt;::is_specialized, std::true_type, std::false_type &gt; &gt; is_arithmetic</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00265">daw_arith_traits.h:268</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a3574ae84b83ccc6a02409ccad76677ac"><div class="ttname"><a href="namespacedaw.html#a3574ae84b83ccc6a02409ccad76677ac">daw::is_arithmetic</a></div><div class="ttdeci">std::disjunction&lt; is_number&lt; T &gt;, std::is_enum&lt; T &gt;, conditional_t&lt; daw::numeric_limits&lt; T &gt;::is_specialized, std::true_type, std::false_type &gt; &gt; is_arithmetic</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00265">daw_arith_traits.h:270</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a5a2631053bcba86f99c5b58e05e0c721"><div class="ttname"><a href="namespacedaw.html#a5a2631053bcba86f99c5b58e05e0c721">daw::is_signed_v</a></div><div class="ttdeci">constexpr bool is_signed_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00246">daw_arith_traits.h:246</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a678783b7a17e1d9db2bcb1d2c92a1dbc"><div class="ttname"><a href="namespacedaw.html#a678783b7a17e1d9db2bcb1d2c92a1dbc">daw::make_signed_t</a></div><div class="ttdeci">typename make_signed&lt; T &gt;::type make_signed_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00365">daw_arith_traits.h:365</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a678783b7a17e1d9db2bcb1d2c92a1dbc"><div class="ttname"><a href="namespacedaw.html#a678783b7a17e1d9db2bcb1d2c92a1dbc">daw::make_signed_t</a></div><div class="ttdeci">typename make_signed&lt; T &gt;::type make_signed_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00367">daw_arith_traits.h:367</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a6817d377e10f6ce514c49e8abd957bc5"><div class="ttname"><a href="namespacedaw.html#a6817d377e10f6ce514c49e8abd957bc5">daw::is_integral_v</a></div><div class="ttdeci">constexpr bool is_integral_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00203">daw_arith_traits.h:203</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a6f35f8bb5e2947bfc6285b2525b6b7fd"><div class="ttname"><a href="namespacedaw.html#a6f35f8bb5e2947bfc6285b2525b6b7fd">daw::is_system_integral_v</a></div><div class="ttdeci">constexpr bool is_system_integral_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00378">daw_arith_traits.h:378</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a8163e87ed99593ab4f8b6a171515df95"><div class="ttname"><a href="namespacedaw.html#a8163e87ed99593ab4f8b6a171515df95">daw::is_same_size_v</a></div><div class="ttdeci">constexpr bool is_same_size_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00384">daw_arith_traits.h:384</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a6f35f8bb5e2947bfc6285b2525b6b7fd"><div class="ttname"><a href="namespacedaw.html#a6f35f8bb5e2947bfc6285b2525b6b7fd">daw::is_system_integral_v</a></div><div class="ttdeci">constexpr bool is_system_integral_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00380">daw_arith_traits.h:380</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a8163e87ed99593ab4f8b6a171515df95"><div class="ttname"><a href="namespacedaw.html#a8163e87ed99593ab4f8b6a171515df95">daw::is_same_size_v</a></div><div class="ttdeci">constexpr bool is_same_size_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00386">daw_arith_traits.h:386</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a882215882ffcb4de6d10c129338593e7"><div class="ttname"><a href="namespacedaw.html#a882215882ffcb4de6d10c129338593e7">daw::is_floating_point</a></div><div class="ttdeci">std::conjunction&lt; std::negation&lt; is_integral&lt; T &gt; &gt;, arith_traits_details::limits_is_signed&lt; T &gt;, std::negation&lt; arith_traits_details::limits_is_exact&lt; T &gt; &gt;&gt; is_floating_point</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00220">daw_arith_traits.h:223</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a8bf218c78227ebd73155aeb469aa0812"><div class="ttname"><a href="namespacedaw.html#a8bf218c78227ebd73155aeb469aa0812">daw::is_unsigned_v</a></div><div class="ttdeci">constexpr bool is_unsigned_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00258">daw_arith_traits.h:258</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a9108135a98561ea47f1eb0a4c5dfdfa2"><div class="ttname"><a href="namespacedaw.html#a9108135a98561ea47f1eb0a4c5dfdfa2">daw::is_same_size</a></div><div class="ttdeci">std::bool_constant&lt;((sizeof(T) *8)==BitSize)&gt; is_same_size</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00381">daw_arith_traits.h:381</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a9e8a26fd7498284e3fec7149c129c8e6"><div class="ttname"><a href="namespacedaw.html#a9e8a26fd7498284e3fec7149c129c8e6">daw::lowest_value</a></div><div class="ttdeci">constexpr auto lowest_value</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00419">daw_arith_traits.h:419</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a9ebe50422eeaa960cf1e0558c25275a6"><div class="ttname"><a href="namespacedaw.html#a9ebe50422eeaa960cf1e0558c25275a6">daw::is_arithmetic_v</a></div><div class="ttdeci">constexpr bool is_arithmetic_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00271">daw_arith_traits.h:271</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a9108135a98561ea47f1eb0a4c5dfdfa2"><div class="ttname"><a href="namespacedaw.html#a9108135a98561ea47f1eb0a4c5dfdfa2">daw::is_same_size</a></div><div class="ttdeci">std::bool_constant&lt;((sizeof(T) *8)==BitSize)&gt; is_same_size</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00383">daw_arith_traits.h:383</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a9e8a26fd7498284e3fec7149c129c8e6"><div class="ttname"><a href="namespacedaw.html#a9e8a26fd7498284e3fec7149c129c8e6">daw::lowest_value</a></div><div class="ttdeci">constexpr auto lowest_value</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00429">daw_arith_traits.h:429</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a9ebe50422eeaa960cf1e0558c25275a6"><div class="ttname"><a href="namespacedaw.html#a9ebe50422eeaa960cf1e0558c25275a6">daw::is_arithmetic_v</a></div><div class="ttdeci">constexpr bool is_arithmetic_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00273">daw_arith_traits.h:273</a></div></div>
 <div class="ttc" id="anamespacedaw_html_aa1b67176374705d67ec1ba51413b02bf"><div class="ttname"><a href="namespacedaw.html#aa1b67176374705d67ec1ba51413b02bf">daw::is_number_v</a></div><div class="ttdeci">constexpr bool is_number_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00235">daw_arith_traits.h:235</a></div></div>
-<div class="ttc" id="anamespacedaw_html_aa88d1d77939be042bb671074e68331cd"><div class="ttname"><a href="namespacedaw.html#aa88d1d77939be042bb671074e68331cd">daw::make_unsigned_t</a></div><div class="ttdeci">typename make_unsigned&lt; T &gt;::type make_unsigned_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00362">daw_arith_traits.h:362</a></div></div>
-<div class="ttc" id="anamespacedaw_html_aba0394ba8444b7c5f408d214c7344652"><div class="ttname"><a href="namespacedaw.html#aba0394ba8444b7c5f408d214c7344652">daw::min_value</a></div><div class="ttdeci">constexpr auto min_value</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00416">daw_arith_traits.h:416</a></div></div>
+<div class="ttc" id="anamespacedaw_html_aa88d1d77939be042bb671074e68331cd"><div class="ttname"><a href="namespacedaw.html#aa88d1d77939be042bb671074e68331cd">daw::make_unsigned_t</a></div><div class="ttdeci">typename make_unsigned&lt; T &gt;::type make_unsigned_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00364">daw_arith_traits.h:364</a></div></div>
+<div class="ttc" id="anamespacedaw_html_aa93b07cdcc4fa3bbd3fc9224a32480df"><div class="ttname"><a href="namespacedaw.html#aa93b07cdcc4fa3bbd3fc9224a32480df">daw::intN_t</a></div><div class="ttdeci">conditional_t&lt; is_same_size_v&lt; char, BitSize &gt;, char, conditional_t&lt; is_same_size_v&lt; short, BitSize &gt;, short, conditional_t&lt; is_same_size_v&lt; int, BitSize &gt;, int, conditional_t&lt; is_same_size_v&lt; long, BitSize &gt;, long, conditional_t&lt; is_same_size_v&lt; long long, BitSize &gt;, long long, unsupported_int_size&lt; BitSize &gt; &gt;&gt; &gt;&gt; &gt; intN_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00392">daw_arith_traits.h:405</a></div></div>
+<div class="ttc" id="anamespacedaw_html_aba0394ba8444b7c5f408d214c7344652"><div class="ttname"><a href="namespacedaw.html#aba0394ba8444b7c5f408d214c7344652">daw::min_value</a></div><div class="ttdeci">constexpr auto min_value</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00426">daw_arith_traits.h:426</a></div></div>
 <div class="ttc" id="anamespacedaw_html_aba8740674058543901e83038876e89e2"><div class="ttname"><a href="namespacedaw.html#aba8740674058543901e83038876e89e2">daw::bool_constant</a></div><div class="ttdeci">std::bool_constant&lt; B &gt; bool_constant</div><div class="ttdef"><b>Definition:</b> <a href="cpp__17_8h_source.html#l00027">cpp_17.h:27</a></div></div>
-<div class="ttc" id="anamespacedaw_html_abb3b5cf7b763ba3b534a11d3ed32d76a"><div class="ttname"><a href="namespacedaw.html#abb3b5cf7b763ba3b534a11d3ed32d76a">daw::min</a></div><div class="ttdeci">constexpr auto() min(T const &amp;val1, Ts const &amp;...vs) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math__impl_8h_source.html#l00076">daw_math_impl.h:76</a></div></div>
-<div class="ttc" id="anamespacedaw_html_ac61b1ea4cfda303bd402fd71c17681b8"><div class="ttname"><a href="namespacedaw.html#ac61b1ea4cfda303bd402fd71c17681b8">daw::max</a></div><div class="ttdeci">constexpr auto() max(T const &amp;val1, Ts const &amp;...vs) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math__impl_8h_source.html#l00036">daw_math_impl.h:36</a></div></div>
-<div class="ttc" id="anamespacedaw_html_acf0bd853db2d9386092cf9329d151059"><div class="ttname"><a href="namespacedaw.html#acf0bd853db2d9386092cf9329d151059">daw::uintN_t</a></div><div class="ttdeci">conditional_t&lt; is_same_size_v&lt; char, BitSize &gt;, unsigned char, conditional_t&lt; is_same_size_v&lt; short, BitSize &gt;, unsigned short, conditional_t&lt; is_same_size_v&lt; int, BitSize &gt;, unsigned int, conditional_t&lt; is_same_size_v&lt; long, BitSize &gt;, unsigned long, conditional_t&lt; is_same_size_v&lt; unsigned long long, BitSize &gt;, long long, unsupported_int_size&lt; BitSize &gt; &gt;&gt; &gt;&gt; &gt; uintN_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00401">daw_arith_traits.h:410</a></div></div>
+<div class="ttc" id="anamespacedaw_html_abb3b5cf7b763ba3b534a11d3ed32d76a"><div class="ttname"><a href="namespacedaw.html#abb3b5cf7b763ba3b534a11d3ed32d76a">daw::min</a></div><div class="ttdeci">constexpr auto() min(T const &amp;val1, Ts const &amp;...vs) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math__impl_8h_source.html#l00077">daw_math_impl.h:77</a></div></div>
+<div class="ttc" id="anamespacedaw_html_ac61b1ea4cfda303bd402fd71c17681b8"><div class="ttname"><a href="namespacedaw.html#ac61b1ea4cfda303bd402fd71c17681b8">daw::max</a></div><div class="ttdeci">constexpr auto() max(T const &amp;val1, Ts const &amp;...vs) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__math__impl_8h_source.html#l00037">daw_math_impl.h:37</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ad0ba831f2a45892800d8f98fe6105f35"><div class="ttname"><a href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">daw::conditional_t</a></div><div class="ttdeci">typename traits_details::select&lt; B &gt;::template type&lt; TrueType, FalseType &gt; conditional_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits__conditional_8h_source.html#l00030">daw_traits_conditional.h:31</a></div></div>
-<div class="ttc" id="anamespacedaw_html_adccc87538bcac65a3e8d3effa944b66d"><div class="ttname"><a href="namespacedaw.html#adccc87538bcac65a3e8d3effa944b66d">daw::intN_t</a></div><div class="ttdeci">conditional_t&lt; is_same_size_v&lt; char, BitSize &gt;, char, conditional_t&lt; is_same_size_v&lt; short, BitSize &gt;, short, conditional_t&lt; is_same_size_v&lt; int, BitSize &gt;, int, conditional_t&lt; is_same_size_v&lt; long, BitSize &gt;, long, conditional_t&lt; is_same_size_v&lt; long long, BitSize &gt;, long long, unsupported_int_size&lt; BitSize &gt; &gt;&gt; &gt;&gt; &gt; intN_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00390">daw_arith_traits.h:399</a></div></div>
 <div class="ttc" id="anamespacedaw_html_aef880af0ef99dea29e0a859d5c1e420b"><div class="ttname"><a href="namespacedaw.html#aef880af0ef99dea29e0a859d5c1e420b">daw::is_number</a></div><div class="ttdeci">std::disjunction&lt; is_integral&lt; T &gt;, is_floating_point&lt; T &gt; &gt; is_number</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00232">daw_arith_traits.h:232</a></div></div>
-<div class="ttc" id="anamespacedaw_html_afbdc0efaba18dd51de4f4b01c1c764e3"><div class="ttname"><a href="namespacedaw.html#afbdc0efaba18dd51de4f4b01c1c764e3">daw::max_value</a></div><div class="ttdeci">constexpr auto max_value</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00413">daw_arith_traits.h:413</a></div></div>
-<div class="ttc" id="astructdaw_1_1is__system__integral_html"><div class="ttname"><a href="structdaw_1_1is__system__integral.html">daw::is_system_integral</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00368">daw_arith_traits.h:368</a></div></div>
-<div class="ttc" id="astructdaw_1_1make__signed_html"><div class="ttname"><a href="structdaw_1_1make__signed.html">daw::make_signed</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00277">daw_arith_traits.h:277</a></div></div>
-<div class="ttc" id="astructdaw_1_1make__unsigned_html"><div class="ttname"><a href="structdaw_1_1make__unsigned.html">daw::make_unsigned</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00274">daw_arith_traits.h:274</a></div></div>
+<div class="ttc" id="anamespacedaw_html_afbdc0efaba18dd51de4f4b01c1c764e3"><div class="ttname"><a href="namespacedaw.html#afbdc0efaba18dd51de4f4b01c1c764e3">daw::max_value</a></div><div class="ttdeci">constexpr auto max_value</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00423">daw_arith_traits.h:423</a></div></div>
+<div class="ttc" id="astructdaw_1_1is__system__integral_html"><div class="ttname"><a href="structdaw_1_1is__system__integral.html">daw::is_system_integral</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00370">daw_arith_traits.h:370</a></div></div>
+<div class="ttc" id="astructdaw_1_1make__signed_html"><div class="ttname"><a href="structdaw_1_1make__signed.html">daw::make_signed</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00279">daw_arith_traits.h:279</a></div></div>
+<div class="ttc" id="astructdaw_1_1make__unsigned_html"><div class="ttname"><a href="structdaw_1_1make__unsigned.html">daw::make_unsigned</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00276">daw_arith_traits.h:276</a></div></div>
 <div class="ttc" id="astructdaw_1_1numeric__limits_html"><div class="ttname"><a href="structdaw_1_1numeric__limits.html">daw::numeric_limits</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00045">daw_arith_traits.h:45</a></div></div>
-<div class="ttc" id="astructdaw_1_1unsupported__int__size_html"><div class="ttname"><a href="structdaw_1_1unsupported__int__size.html">daw::unsupported_int_size</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00387">daw_arith_traits.h:387</a></div></div>
+<div class="ttc" id="astructdaw_1_1unsupported__int__size_html"><div class="ttname"><a href="structdaw_1_1unsupported__int__size.html">daw::unsupported_int_size</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00389">daw_arith_traits.h:389</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
