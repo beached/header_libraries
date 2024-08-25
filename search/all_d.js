@@ -22,7 +22,7 @@ var searchData=
   ['no_5felse_1715',['no_else',['../structdaw_1_1traits_1_1no__else.html',1,'daw::traits']]],
   ['no_5fexception_1716',['no_exception',['../namespacedaw_1_1exception.html#a7cbc8c6a46952b9ad3c4b529f3c61e3f',1,'daw::exception']]],
   ['node_5fid_5ft_1717',['node_id_t',['../classdaw_1_1node__id__t.html',1,'daw::node_id_t'],['../classdaw_1_1node__id__t.html#aa35c01190d6fc2a9328c34bf57ac3205',1,'daw::node_id_t::node_id_t(size_t id) noexcept'],['../classdaw_1_1node__id__t.html#aa35c01190d6fc2a9328c34bf57ac3205',1,'daw::node_id_t::node_id_t(size_t id) noexcept'],['../classdaw_1_1node__id__t.html#aeb2a50b5c09511d1d24ecb3cf9b596d5',1,'daw::node_id_t::node_id_t()=default'],['../classdaw_1_1node__id__t.html#aeb2a50b5c09511d1d24ecb3cf9b596d5',1,'daw::node_id_t::node_id_t()=default']]],
-  ['node_5ft_1718',['node_t',['../structdaw_1_1bounded__graph__t.html#a2e0d61b5adaa9fa105547d2cdd7085ac',1,'daw::bounded_graph_t::node_t()'],['../structdaw_1_1graph__t.html#af744e90dbab8002bcb99f5298d8b0782',1,'daw::graph_t::node_t()']]],
+  ['node_5ft_1718',['node_t',['../structdaw_1_1graph__t.html#af744e90dbab8002bcb99f5298d8b0782',1,'daw::graph_t::node_t()'],['../structdaw_1_1bounded__graph__t.html#a2e0d61b5adaa9fa105547d2cdd7085ac',1,'daw::bounded_graph_t::node_t()']]],
   ['node_5ftype_1719',['node_type',['../structdaw_1_1bounded__hash__set__t.html#a98fb391b2d92bf47f82a5e13512df6f0',1,'daw::bounded_hash_set_t']]],
   ['nodiscard_1720',['nodiscard',['../namespacedaw.html#ad8a64a646f74d139a882242dceee804e',1,'daw']]],
   ['nodiscard_5ft_1721',['nodiscard_t',['../structdaw_1_1nodiscard__t.html',1,'daw']]],
