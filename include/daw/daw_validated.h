@@ -9,6 +9,7 @@
 #pragma once
 
 #include "ciso646.h"
+#include "daw_check_exceptions.h"
 #include "daw_construct_a.h"
 #include "daw_move.h"
 #include "daw_remove_cvref.h"
@@ -16,7 +17,7 @@
 
 #include <cstddef>
 #include <daw/stdinc/in_place.h>
-#include <iso646.h>
+#include <stdexcept>
 #include <type_traits>
 
 /// Provide a class to validate a type T after construction

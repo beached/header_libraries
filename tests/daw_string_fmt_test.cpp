@@ -6,15 +6,16 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include "daw/deprecated/daw_string_fmt.h"
+
+#include "daw/daw_benchmark.h"
+#include "daw/deprecated/daw_bounded_string.h"
+
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
 #include <string>
 #include <vector>
-
-#include "daw/daw_benchmark.h"
-#include "daw/daw_bounded_string.h"
-#include "daw/daw_string_fmt.h"
 
 void string_fmt_test_001( ) {
 	std::cout << daw::string_fmt::v1::fmt(

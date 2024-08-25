@@ -6,8 +6,9 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include "daw/daw_benchmark.h"
 #include "daw/daw_generic_hash.h"
+
+#include "daw/daw_benchmark.h"
 
 constexpr bool test_01( ) {
 	auto const c1 = daw::generic_hash( "Hello" );

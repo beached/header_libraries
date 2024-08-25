@@ -6,8 +6,9 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include "daw/deprecated/daw_string.h"
+
 #include "daw/daw_benchmark.h"
-#include "daw/daw_string.h"
 
 #include <cctype>
 #include <string>

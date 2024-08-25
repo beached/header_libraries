@@ -6,9 +6,10 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include "daw/deprecated/daw_range_collection.h"
+
 #include "daw/daw_benchmark.h"
-#include "daw/daw_range_collection.h"
-#include "daw/daw_range_common.h"
+#include "daw/deprecated/daw_range_common.h"
 
 #include <vector>
 

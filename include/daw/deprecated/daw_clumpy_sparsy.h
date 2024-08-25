@@ -11,7 +11,11 @@
 #include "daw/ciso646.h"
 #include "daw/daw_algorithm.h"
 
+#include <cstddef>
 #include <cstdint>
+#include <iterator>
+#include <limits>
+#include <tuple>
 #include <vector>
 
 namespace daw {

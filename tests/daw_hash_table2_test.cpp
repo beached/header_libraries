@@ -6,7 +6,7 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include "daw/daw_hash_table2.h"
+#include "daw/deprecated/daw_hash_table2.h"
 
 #include <cstdint>
 #include <iostream>

@@ -8,10 +8,11 @@
 
 #define DAW_DEFAULT_SIGNED_CHECKING 0
 
+#include <daw/integers/daw_signed.h>
+
 #include <daw/daw_benchmark.h>
 #include <daw/daw_cpp_feature_check.h>
 #include <daw/daw_ensure.h>
-#include <daw/integers/daw_signed.h>
 
 #include <initializer_list>
 

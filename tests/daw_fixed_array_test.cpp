@@ -6,7 +6,7 @@
 // Official repository: https://github.com/beached/
 //
 
-#include <daw/daw_fixed_array.h>
+#include <daw/deprecated/daw_fixed_array.h>
 
 int main( ) {
 	auto ary = daw::fixed_array<int>( 5 );

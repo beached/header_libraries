@@ -6,9 +6,10 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include "daw/iterator/daw_indexed_iterator.h"
+
 #include "daw/cpp_17.h"
 #include "daw/cpp_17_iterator.h"
-#include "daw/iterator/daw_indexed_iterator.h"
 
 #include <array>
 

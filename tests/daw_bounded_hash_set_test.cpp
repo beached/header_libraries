@@ -6,10 +6,11 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include "daw/deprecated/daw_bounded_hash_set.h"
+
 #include "daw/daw_benchmark.h"
 #include "daw/daw_fnv1a_hash.h"
 #include "daw/daw_string_view.h"
-#include "daw/deprecated/daw_bounded_hash_set.h"
 
 constexpr bool test_002( ) {
 	size_t count = 1024ULL;

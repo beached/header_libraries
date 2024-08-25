@@ -6,9 +6,10 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include "daw/iterator/daw_back_inserter.h"
+
 #include "daw/daw_benchmark.h"
 #include "daw/daw_traits.h"
-#include "daw/iterator/daw_back_inserter.h"
 
 #include <algorithm>
 #include <array>

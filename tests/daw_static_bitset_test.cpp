@@ -6,11 +6,12 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include <bitset>
-#include <iostream>
+#include "daw/daw_static_bitset.h"
 
 #include "daw/daw_benchmark.h"
-#include "daw/daw_static_bitset.h"
+
+#include <bitset>
+#include <iostream>
 
 static_assert( []( ) {
 	daw::static_bitset<128> b(

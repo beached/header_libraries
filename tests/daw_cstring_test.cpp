@@ -6,8 +6,9 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include "daw/daw_benchmark.h"
 #include "daw/deprecated/daw_cstring.h"
+
+#include "daw/daw_benchmark.h"
 
 void daw_cstring_01( ) {
 	daw::cstring a = "a";

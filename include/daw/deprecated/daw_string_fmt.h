@@ -8,18 +8,18 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_algorithm.h"
+#include "daw/ciso646.h"
+#include "daw/daw_algorithm.h"
+#include "daw/daw_exception.h"
+#include "daw/daw_move.h"
+#include "daw/daw_parser_helper_sv.h"
+#include "daw/daw_string_view.h"
+#include "daw/daw_traits.h"
+#include "daw/daw_utility.h"
+#include "daw/daw_visit.h"
+#include "daw/impl/daw_int_to_iterator.h"
+#include "daw/impl/daw_make_trait.h"
 #include "daw_bounded_vector.h"
-#include "daw_exception.h"
-#include "daw_move.h"
-#include "daw_parser_helper_sv.h"
-#include "daw_string_view.h"
-#include "daw_traits.h"
-#include "daw_utility.h"
-#include "daw_visit.h"
-#include "impl/daw_int_to_iterator.h"
-#include "impl/daw_make_trait.h
 
 #include <cstddef>
 #include <limits>
@@ -310,7 +310,7 @@ namespace daw {
 				return formatter.template operator( )<Result>( DAW_FWD( args )... );
 			}
 		} // namespace v2
-	}   // namespace string_fmt
+	} // namespace string_fmt
 	using string_fmt::v1::invalid_string_fmt_index;
 	using string_fmt::v2::fmt;
 	using string_fmt::v2::fmt_t;

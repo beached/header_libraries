@@ -7,6 +7,7 @@
 //
 
 #include "daw/daw_algorithm.h"
+
 #include "daw/daw_benchmark.h"
 #include "daw/daw_container_algorithm.h"
 

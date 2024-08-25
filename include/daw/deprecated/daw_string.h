@@ -8,11 +8,12 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_exception.h"
-#include "daw_is_detected.h"
-#include "daw_move.h"
-#include "daw_traits.h"
+#include "daw/ciso646.h"
+#include "daw/daw_exception.h"
+#include "daw/daw_is_detected.h"
+#include "daw/daw_move.h"
+#include "daw/daw_traits.h"
+#include "daw/traits/daw_traits_is_ostream_like.h"
 
 #include <cstddef>
 #include <cstdlib>
@@ -180,8 +181,9 @@ namespace daw::string {
 	}
 
 	template<typename Arg1, typename Arg2>
-	auto string_join( Arg1 const &arg1, Arg2 const &arg2 )
-	  -> decltype( to_string( arg1 ) + to_string( arg2 ) ) {
+	auto string_join( Arg1 const &arg1,
+	                  Arg2 const &arg2 ) -> decltype( to_string( arg1 ) +
+	                                                  to_string( arg2 ) ) {
 		return to_string( arg1 ) + to_string( arg2 );
 	}
 

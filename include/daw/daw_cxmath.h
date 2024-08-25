@@ -22,6 +22,7 @@
 #include "impl/daw_math_impl.h"
 
 #include <array>
+#include <cmath>
 #include <cstdint>
 #include <limits>
 #include <optional>

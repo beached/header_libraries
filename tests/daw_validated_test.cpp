@@ -6,10 +6,11 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include "daw/daw_validated.h"
+
 #include "daw/daw_algorithm.h"
 #include "daw/daw_benchmark.h"
 #include "daw/daw_utility.h"
-#include "daw/daw_validated.h"
 
 #include <array>
 #include <iterator>

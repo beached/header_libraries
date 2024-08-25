@@ -6,10 +6,11 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include "daw/deprecated/daw_bounded_hash_map.h"
+
 #include "daw/daw_fnv1a_hash.h"
 #include "daw/daw_string_view.h"
 #include "daw/daw_utility.h"
-#include "daw/deprecated/daw_bounded_hash_map.h"
 
 #include <cstddef>
 #include <cstdint>

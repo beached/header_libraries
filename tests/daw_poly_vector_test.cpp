@@ -6,7 +6,7 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include "daw/daw_poly_vector.h"
+#include "daw/deprecated/daw_poly_vector.h"
 
 struct A {
 	int a{ };

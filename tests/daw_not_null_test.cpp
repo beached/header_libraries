@@ -6,9 +6,10 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include "daw/daw_not_null.h"
+
 #include "daw/daw_benchmark.h"
 #include "daw/daw_ensure.h"
-#include "daw/daw_not_null.h"
 
 #include <memory>
 #include <optional>

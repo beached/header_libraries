@@ -6,9 +6,10 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include "daw/iterator/daw_reverse_iterator.h"
+
 #include "daw/daw_algorithm.h"
 #include "daw/daw_string_view.h"
-#include "daw/iterator/daw_reverse_iterator.h"
 
 #include <array>
 

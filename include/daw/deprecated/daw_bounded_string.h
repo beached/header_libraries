@@ -17,6 +17,7 @@
 #include "daw/daw_fnv1a_hash.h"
 #include "daw/daw_generic_hash.h"
 #include "daw/daw_move.h"
+#include "daw/daw_string_view_fwd.h"
 #include "daw/daw_traits.h"
 #include "daw/impl/daw_make_trait.h"
 #include "daw/iterator/daw_back_inserter.h"

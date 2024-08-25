@@ -6,8 +6,9 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include "daw/daw_benchmark.h"
 #include "daw/deprecated/daw_clumpy_sparsy.h"
+
+#include "daw/daw_benchmark.h"
 
 void clumpy_sparsy_test_001( ) {
 	// TODO: Why are we not testing?

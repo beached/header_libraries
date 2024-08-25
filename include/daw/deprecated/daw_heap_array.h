@@ -15,6 +15,7 @@
 #include "daw/daw_swap.h"
 
 #include <algorithm>
+#include <cassert>
 #include <stdexcept>
 #include <utility>
 

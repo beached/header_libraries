@@ -8,11 +8,11 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_exchange.h"
-#include "daw_move.h"
-#include "iterator/daw_pointer_iterator.h"
-#include "traits/daw_traits_concepts.h"
+#include "daw/ciso646.h"
+#include "daw/daw_exchange.h"
+#include "daw/daw_move.h"
+#include "daw/iterator/daw_pointer_iterator.h"
+#include "daw/traits/daw_traits_concepts.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -217,8 +217,8 @@ namespace daw {
 	fixed_array( std::in_place_type_t<T>, Ts... ) -> fixed_array<T>;
 
 	template<typename... Ts>
-	fixed_array( std::in_place_t, Ts... )
-	  -> fixed_array<std::common_type_t<Ts...>>;
+	fixed_array( std::in_place_t,
+	             Ts... ) -> fixed_array<std::common_type_t<Ts...>>;
 
 	template<typename T>
 	fixed_array( std::size_t, T ) -> fixed_array<T>;

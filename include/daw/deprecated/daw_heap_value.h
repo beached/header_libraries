@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_swap.h"
-#include "daw_traits.h"
+#include "daw/ciso646.h"
+#include "daw/daw_swap.h"
+#include "daw/daw_traits.h"
 
 #include <memory>
 #include <type_traits>

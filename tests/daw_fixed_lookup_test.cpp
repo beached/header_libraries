@@ -7,7 +7,7 @@
 //
 
 #include "daw/daw_benchmark.h"
-#include "daw/daw_fixed_lookup.h"
+#include "daw/deprecated/daw_fixed_lookup.h"
 
 #include <cstdint>
 #include <cstdlib>

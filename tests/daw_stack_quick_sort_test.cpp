@@ -6,9 +6,10 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include "daw/deprecated/daw_stack_quick_sort.h"
+
 #include "daw/daw_benchmark.h"
 #include "daw/daw_random.h"
-#include "daw/daw_stack_quick_sort.h"
 
 #include <algorithm>
 #include <cstddef>

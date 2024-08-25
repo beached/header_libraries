@@ -6,8 +6,9 @@
 // Official repository: https://github.com/beached/
 //
 
-#include <daw/daw_utility.h>
 #include <daw/deprecated/daw_vector.h>
+
+#include <daw/daw_utility.h>
 
 #include <cstddef>
 #include <iostream>

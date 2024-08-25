@@ -9,7 +9,7 @@
 #pragma once
 
 #include "ciso646.h"
-#include "daw_check_exceptions.h"
+#include "daw_attributes.h"
 #include "daw_move.h"
 #include "daw_unused.h"
 
