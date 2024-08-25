@@ -21,6 +21,7 @@ set( TEST_SOURCES
 		 daw_arith_traits_test.cpp
 		 daw_array_test.cpp
 		 daw_benchmark_test.cpp
+		 daw_bounded_vector_test.cpp
 		 daw_constant_test.cpp
 		 daw_container_algorithm_test.cpp
 		 daw_cx_offset_of_test.cpp
@@ -29,12 +30,14 @@ set( TEST_SOURCES
 		 daw_exception_test.cpp
 		 daw_expected_test.cpp
 		 daw_fnv1a_hash_test.cpp
-		 daw_function_table_test.cpp
 		 daw_function_ref_test.cpp
+		 daw_function_table_test.cpp
 		 daw_function_test.cpp
 		 daw_function_view_test.cpp
 		 daw_fwd_pack_apply_test.cpp
 		 daw_generic_hash_test.cpp
+		 daw_graph_algorithm_test.cpp
+		 daw_graph_test.cpp
 		 daw_hash_set_test.cpp
 		 daw_integers_signed_test.cpp
 		 daw_is_any_of_test.cpp
@@ -109,20 +112,16 @@ set( TEST_SOURCES
 
 set( DEPRECATED_TEST_SOURCES
 		 daw_cstring_test.cpp
-		 daw_bounded_array_test.cpp
 		 daw_bounded_graph_test.cpp
 		 daw_bounded_hash_map_test.cpp
 		 daw_bounded_hash_set_test.cpp
 		 daw_bounded_string_test.cpp
-		 daw_bounded_vector_test.cpp
 		 daw_carray_test.cpp
 		 daw_checked_expected_test.cpp
 		 daw_clumpy_sparsy_test.cpp
 		 daw_copiable_unique_ptr_test.cpp
 		 daw_fixed_array_test.cpp
 		 daw_fixed_lookup_test.cpp
-		 daw_graph_algorithm_test.cpp
-		 daw_graph_test.cpp
 		 daw_heap_array_test.cpp
 		 daw_heap_value_test.cpp
 		 daw_optional_poly_test.cpp

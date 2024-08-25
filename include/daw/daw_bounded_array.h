@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "daw/ciso646.h"
-#include "daw/daw_algorithm.h"
+#include "ciso646.h"
+#include "daw_algorithm.h"
 
 #include <cstddef>
 #include <cstdint>

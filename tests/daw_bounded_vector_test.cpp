@@ -6,7 +6,7 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include "daw/deprecated/daw_bounded_vector.h"
+#include "daw/daw_bounded_vector.h"
 
 #include "daw/daw_benchmark.h"
 

@@ -6,7 +6,7 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include "daw/deprecated/daw_bounded_array.h"
+#include "daw/daw_bounded_array.h"
 
 constexpr bool daw_bounded_array_test_001( ) {
 	daw::bounded_array_t<int, 5> a = { 1, 2, 3, 4, 5 };
