@@ -81,7 +81,7 @@ $(function() {
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="ciso646_8h.html">ciso646.h</a>&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__check__exceptions_8h.html">daw_check_exceptions.h</a>&quot;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__attributes_8h.html">daw_attributes.h</a>&quot;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__move_8h.html">daw_move.h</a>&quot;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__unused_8h.html">daw_unused.h</a>&quot;</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
@@ -93,12 +93,12 @@ $(function() {
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#if defined( DAW_USE_EXCEPTIONS ) or not defined( NODEBUGTHROW )</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="daw__exception_8h.html#a060e13be26b60cf7a33a397fec75d85a">   24</a></span>&#160;<span class="preprocessor">#define MAY_THROW_EXCEPTIONS true</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#define MAY_THROW_EXCEPTIONS true</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#else</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define MAY_THROW_EXCEPTIONS false</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="daw__exception_8h.html#a060e13be26b60cf7a33a397fec75d85a">   29</a></span>&#160;<span class="preprocessor">#define MAY_THROW_EXCEPTIONS false</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
@@ -613,9 +613,9 @@ $(function() {
 <div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;<span class="preprocessor">  daw::exception::precondition_check&lt;Except&gt;( __VA_ARGS__ )</span></div>
 <div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aciso646_8h_html"><div class="ttname"><a href="ciso646_8h.html">ciso646.h</a></div></div>
+<div class="ttc" id="adaw__attributes_8h_html"><div class="ttname"><a href="daw__attributes_8h.html">daw_attributes.h</a></div></div>
 <div class="ttc" id="adaw__attributes_8h_html_aa015e705db99dcfd51884620baf0d55c"><div class="ttname"><a href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a></div><div class="ttdeci">#define DAW_ATTRIB_NOINLINE</div><div class="ttdef"><b>Definition:</b> <a href="daw__attributes_8h_source.html#l00103">daw_attributes.h:103</a></div></div>
-<div class="ttc" id="adaw__check__exceptions_8h_html"><div class="ttname"><a href="daw__check__exceptions_8h.html">daw_check_exceptions.h</a></div></div>
-<div class="ttc" id="adaw__exception_8h_html_a060e13be26b60cf7a33a397fec75d85a"><div class="ttname"><a href="daw__exception_8h.html#a060e13be26b60cf7a33a397fec75d85a">MAY_THROW_EXCEPTIONS</a></div><div class="ttdeci">#define MAY_THROW_EXCEPTIONS</div><div class="ttdef"><b>Definition:</b> <a href="daw__exception_8h_source.html#l00024">daw_exception.h:24</a></div></div>
+<div class="ttc" id="adaw__exception_8h_html_a060e13be26b60cf7a33a397fec75d85a"><div class="ttname"><a href="daw__exception_8h.html#a060e13be26b60cf7a33a397fec75d85a">MAY_THROW_EXCEPTIONS</a></div><div class="ttdeci">#define MAY_THROW_EXCEPTIONS</div><div class="ttdef"><b>Definition:</b> <a href="daw__exception_8h_source.html#l00029">daw_exception.h:29</a></div></div>
 <div class="ttc" id="adaw__move_8h_html"><div class="ttname"><a href="daw__move_8h.html">daw_move.h</a></div></div>
 <div class="ttc" id="adaw__move_8h_html_a46327bbb47123f9650c3b0e0ce807ec9"><div class="ttname"><a href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a></div><div class="ttdeci">#define DAW_FWD(...)</div><div class="ttdef"><b>Definition:</b> <a href="daw__move_8h_source.html#l00041">daw_move.h:41</a></div></div>
 <div class="ttc" id="adaw__unused_8h_html"><div class="ttname"><a href="daw__unused_8h.html">daw_unused.h</a></div></div>

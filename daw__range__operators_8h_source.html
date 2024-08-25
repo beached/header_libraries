@@ -84,9 +84,9 @@ $(function() {
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__algorithm_8h.html">daw/daw_algorithm.h</a>&quot;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__cpp__feature__check_8h.html">daw/daw_cpp_feature_check.h</a>&quot;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__move_8h.html">daw/daw_move.h</a>&quot;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;daw/daw_range_collection.h&quot;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;daw/daw_range_reference.h&quot;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__traits_8h.html">daw/daw_traits.h</a>&quot;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__traits_8h.html">daw/daw_traits.h</a>&quot;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__range__collection_8h.html">daw_range_collection.h</a>&quot;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__range__reference_8h.html">daw_range_reference.h</a>&quot;</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;algorithm&gt;</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;iterator&gt;</span></div>
@@ -113,8 +113,8 @@ $(function() {
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;          <span class="keyword">typedef</span> seq&lt;S...&gt; type;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        };</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;      } <span class="comment">// namespace details</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    }   <span class="comment">// namespace operators</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  }     <span class="comment">// namespace range</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    } <span class="comment">// namespace operators</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  } <span class="comment">// namespace range</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;} <span class="comment">// namespace daw</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#define DAW_RANGE_GENERATE_VCLAUSE( clause_name )                              \</span></div>
@@ -183,7 +183,7 @@ $(function() {
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor">                                                                               \</span></div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor">          public:                                                              \</span></div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="preprocessor">            clause_name##_t( std::tuple&lt;Args...&gt; &amp;&amp;args )                      \</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor">              : clause_name##_args( DAW_FWD( args )... ) {}                    \</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor">              : clause_name##_args( std::move( args ) ) {}                    \</span></div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor">                                                                               \</span></div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor">            template&lt;typename Container&gt;                                       \</span></div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor">            auto operator( )( Container &amp;&amp;container ) const {                  \</span></div>
@@ -257,6 +257,8 @@ $(function() {
 <div class="ttc" id="adaw__algorithm_8h_html"><div class="ttname"><a href="daw__algorithm_8h.html">daw_algorithm.h</a></div></div>
 <div class="ttc" id="adaw__cpp__feature__check_8h_html"><div class="ttname"><a href="daw__cpp__feature__check_8h.html">daw_cpp_feature_check.h</a></div></div>
 <div class="ttc" id="adaw__move_8h_html"><div class="ttname"><a href="daw__move_8h.html">daw_move.h</a></div></div>
+<div class="ttc" id="adaw__range__collection_8h_html"><div class="ttname"><a href="daw__range__collection_8h.html">daw_range_collection.h</a></div></div>
+<div class="ttc" id="adaw__range__reference_8h_html"><div class="ttname"><a href="daw__range__reference_8h.html">daw_range_reference.h</a></div></div>
 <div class="ttc" id="adaw__traits_8h_html"><div class="ttname"><a href="daw__traits_8h.html">daw_traits.h</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a107922750a7d50071fff62745825ba6d"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a107922750a7d50071fff62745825ba6d">daw::algorithm::find_if</a></div><div class="ttdeci">constexpr InputIterator find_if(InputIterator first, InputIteratorLast last, UnaryPredicate &amp;&amp;unary_predicate)</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm__find_8h_source.html#l00056">daw_algorithm_find.h:56</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1algorithm_html_a3ad054e7ae76c97db42dcf1df8324300"><div class="ttname"><a href="namespacedaw_1_1algorithm.html#a3ad054e7ae76c97db42dcf1df8324300">daw::algorithm::transform</a></div><div class="ttdeci">constexpr OutputIterator transform(InputIterator first, LastType last, OutputIterator first_out, UnaryOperation unary_op) noexcept(std::is_nothrow_constructible_v&lt; decltype(*first_out), decltype(unary_op(*first))&gt;)</div><div class="ttdoc">Transform range [first, last) and output to range [first_out, first_out + std::distance( first,...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm_8h_source.html#l01125">daw_algorithm.h:1125</a></div></div>

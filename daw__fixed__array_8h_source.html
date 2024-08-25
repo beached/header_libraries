@@ -62,7 +62,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_bbe37f38b13c9c6d535338573ad492f6.html">daw</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_bbe37f38b13c9c6d535338573ad492f6.html">daw</a></li><li class="navelem"><a class="el" href="dir_eb7ec533db465cd946374b815eae1976.html">deprecated</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -80,11 +80,11 @@ $(function() {
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="ciso646_8h.html">ciso646.h</a>&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__exchange_8h.html">daw_exchange.h</a>&quot;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__move_8h.html">daw_move.h</a>&quot;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__pointer__iterator_8h.html">iterator/daw_pointer_iterator.h</a>&quot;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__traits__concepts_8h.html">traits/daw_traits_concepts.h</a>&quot;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="ciso646_8h.html">daw/ciso646.h</a>&quot;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__exchange_8h.html">daw/daw_exchange.h</a>&quot;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__move_8h.html">daw/daw_move.h</a>&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__pointer__iterator_8h.html">daw/iterator/daw_pointer_iterator.h</a>&quot;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="daw__traits__concepts_8h.html">daw/traits/daw_traits_concepts.h</a>&quot;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;algorithm&gt;</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;cstddef&gt;</span></div>
@@ -289,8 +289,8 @@ $(function() {
 <div class="line"><a name="l00217"></a><span class="lineno"><a class="line" href="namespacedaw.html#a17514dc68850f23a073e4d3889b36fc0">  217</a></span>&#160;  <a class="code" href="namespacedaw.html#a17514dc68850f23a073e4d3889b36fc0">fixed_array</a>( std::in_place_type_t&lt;T&gt;, Ts... ) -&gt; <a class="code" href="structdaw_1_1fixed__array.html">fixed_array&lt;T&gt;</a>;</div>
 <div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160; </div>
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00220"></a><span class="lineno"><a class="line" href="namespacedaw.html#a128baf44eafe40359e3367f9f2b028ab">  220</a></span>&#160;  <a class="code" href="namespacedaw.html#a17514dc68850f23a073e4d3889b36fc0">fixed_array</a>( std::in_place_t, Ts... )</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    -&gt; <a class="code" href="structdaw_1_1fixed__array.html">fixed_array</a>&lt;std::common_type_t&lt;Ts...&gt;&gt;;</div>
+<div class="line"><a name="l00220"></a><span class="lineno"><a class="line" href="namespacedaw.html#a128baf44eafe40359e3367f9f2b028ab">  220</a></span>&#160;  <a class="code" href="namespacedaw.html#a17514dc68850f23a073e4d3889b36fc0">fixed_array</a>( std::in_place_t,</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;               Ts... ) -&gt; <a class="code" href="structdaw_1_1fixed__array.html">fixed_array</a>&lt;std::common_type_t&lt;Ts...&gt;&gt;;</div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00224"></a><span class="lineno"><a class="line" href="namespacedaw.html#a3a931fa79a5cd7281999eb3165b903a5">  224</a></span>&#160;  <a class="code" href="namespacedaw.html#a17514dc68850f23a073e4d3889b36fc0">fixed_array</a>( std::size_t, T ) -&gt; <a class="code" href="structdaw_1_1fixed__array.html">fixed_array&lt;T&gt;</a>;</div>
@@ -311,7 +311,7 @@ $(function() {
 <div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm__accumulate_8h_source.html#l00017">daw_algorithm_accumulate.h:17</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a17514dc68850f23a073e4d3889b36fc0"><div class="ttname"><a href="namespacedaw.html#a17514dc68850f23a073e4d3889b36fc0">daw::fixed_array</a></div><div class="ttdeci">fixed_array(std::in_place_type_t&lt; T &gt;, Ts...) -&gt; fixed_array&lt; T &gt;</div></div>
 <div class="ttc" id="anamespacedaw_html_a31455c85bc151e17efc6302fa8a422e6"><div class="ttname"><a href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">daw::Iterator</a></div><div class="ttdeci">concept Iterator</div><div class="ttdef"><b>Definition:</b> <a href="daw__iterator__traits_8h_source.html#l00038">daw_iterator_traits.h:38</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a5585663484a000a0bbcac884b40021e5"><div class="ttname"><a href="namespacedaw.html#a5585663484a000a0bbcac884b40021e5">daw::exchange</a></div><div class="ttdeci">constexpr DAW_ATTRIB_INLINE T exchange(T &amp;obj, U &amp;&amp;new_value)</div><div class="ttdef"><b>Definition:</b> <a href="daw__exchange_8h_source.html#l00018">daw_exchange.h:18</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a5585663484a000a0bbcac884b40021e5"><div class="ttname"><a href="namespacedaw.html#a5585663484a000a0bbcac884b40021e5">daw::exchange</a></div><div class="ttdeci">constexpr DAW_ATTRIB_INLINE T exchange(T &amp;obj, U &amp;&amp;new_value)</div><div class="ttdef"><b>Definition:</b> <a href="daw__exchange_8h_source.html#l00026">daw_exchange.h:26</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a5a1f33c75eccb6bd683af47475591ab5"><div class="ttname"><a href="namespacedaw.html#a5a1f33c75eccb6bd683af47475591ab5">daw::construct_for_overwrite</a></div><div class="ttdeci">constexpr construct_for_overwrite_t construct_for_overwrite</div><div class="ttdef"><b>Definition:</b> <a href="daw__fixed__array_8h_source.html#l00025">daw_fixed_array.h:25</a></div></div>
 <div class="ttc" id="anamespacedaw_html_aa19b4953ecb10e84f836dada9b18b449"><div class="ttname"><a href="namespacedaw.html#aa19b4953ecb10e84f836dada9b18b449">daw::take_ownership</a></div><div class="ttdeci">constexpr take_ownership_t take_ownership</div><div class="ttdef"><b>Definition:</b> <a href="daw__fixed__array_8h_source.html#l00028">daw_fixed_array.h:28</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ad8b37b6c283ce451b25949269438de82"><div class="ttname"><a href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">daw::enable_if_t</a></div><div class="ttdeci">std::enable_if_t&lt; B, T &gt; enable_if_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__enable__if_8h_source.html#l00022">daw_enable_if.h:22</a></div></div>

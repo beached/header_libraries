@@ -66,14 +66,365 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">daw_string_view.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="daw__string__view__version_8h_source.html">daw_string_view_version.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__string__view2_8h_source.html">daw_string_view2.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="daw__string__view__fwd_8h_source.html">daw_string_view_fwd.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__algorithm__copy_8h_source.html">algorithms/daw_algorithm_copy.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__algorithm__find_8h_source.html">algorithms/daw_algorithm_find.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ciso646_8h_source.html">ciso646.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__assume_8h_source.html">daw_assume.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__check__exceptions_8h_source.html">daw_check_exceptions.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__compiler__fixups_8h_source.html">daw_compiler_fixups.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__consteval_8h_source.html">daw_consteval.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__data__end_8h_source.html">daw_data_end.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__fnv1a__hash_8h_source.html">daw_fnv1a_hash.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__likely_8h_source.html">daw_likely.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__logic_8h_source.html">daw_logic.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__typeof_8h_source.html">daw_typeof.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__view__tags_8h_source.html">impl/daw_view_tags.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__traits__conditional_8h_source.html">traits/daw_traits_conditional.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__traits__is__ostream__like_8h_source.html">traits/daw_traits_is_ostream_like.h</a>&quot;</code><br />
+<code>#include &lt;cstddef&gt;</code><br />
+<code>#include &lt;cstdlib&gt;</code><br />
+<code>#include &lt;<a class="el" href="data__access_8h_source.html">daw/stdinc/data_access.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="hash_8h_source.html">daw/stdinc/hash.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="iterator__traits_8h_source.html">daw/stdinc/iterator_traits.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="min__and__max_8h_source.html">daw/stdinc/min_and_max.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="reverse__iterator_8h_source.html">daw/stdinc/reverse_iterator.h</a>&gt;</code><br />
+<code>#include &lt;exception&gt;</code><br />
+<code>#include &lt;stdexcept&gt;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
 </div>
 <p><a href="daw__string__view_8h_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The class template <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html" title="The class template basic_string_view describes an object that can refer to a constant contiguous sequ...">basic_string_view</a> describes an object that can refer to a constant contiguous sequence of char-like objects with the first element of the sequence at position zero.  <a href="structdaw_1_1sv2_1_1basic__string__view.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1hash_3_01daw_1_1sv2_1_1basic__string__view_3_01_char_t_00_01_bounds_01_4_01_4.html">std::hash&lt; daw::sv2::basic_string_view&lt; CharT, Bounds &gt; &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
+<tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacedaw_1_1sv2"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html">daw::sv2</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacedaw_1_1sv2_1_1string__view__literals"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2_1_1string__view__literals.html">daw::sv2::string_view_literals</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacestd"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestd.html">std</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a75d7ddf716370861bb98bd1b2a545265"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__string__view_8h.html#a75d7ddf716370861bb98bd1b2a545265">DAW_REQ_CHAR_PTR</a>(Pointer,  CharT)</td></tr>
+<tr class="memdesc:a75d7ddf716370861bb98bd1b2a545265"><td class="mdescLeft">&#160;</td><td class="mdescRight">Require a character pointer.  <a href="daw__string__view_8h.html#a75d7ddf716370861bb98bd1b2a545265">More...</a><br /></td></tr>
+<tr class="separator:a75d7ddf716370861bb98bd1b2a545265"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7d645e61b81d2528c3988d0feb128ea"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__string__view_8h.html#ac7d645e61b81d2528c3988d0feb128ea">DAW_REQ_CONTIG_CHAR_RANGE</a>(Range,  CharT)</td></tr>
+<tr class="memdesc:ac7d645e61b81d2528c3988d0feb128ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Require a contiguous character range.  <a href="daw__string__view_8h.html#ac7d645e61b81d2528c3988d0feb128ea">More...</a><br /></td></tr>
+<tr class="separator:ac7d645e61b81d2528c3988d0feb128ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32752d7143d4d3a6a8fd6bf4427e64f3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__string__view_8h.html#a32752d7143d4d3a6a8fd6bf4427e64f3">DAW_REQ_CONTIG_CHAR_RANGE_CTOR</a>(Type)</td></tr>
+<tr class="memdesc:a32752d7143d4d3a6a8fd6bf4427e64f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Require Type be constructable from a CharT const * and a size_type.  <a href="daw__string__view_8h.html#a32752d7143d4d3a6a8fd6bf4427e64f3">More...</a><br /></td></tr>
+<tr class="separator:a32752d7143d4d3a6a8fd6bf4427e64f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a346e45313282713a9f93b4a27f3e93b8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__string__view_8h.html#a346e45313282713a9f93b4a27f3e93b8">DAW_REQ_UNARY_PRED</a>(Pred,  Type)</td></tr>
+<tr class="memdesc:a346e45313282713a9f93b4a27f3e93b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Require Pred to be a Unary Predicate.  <a href="daw__string__view_8h.html#a346e45313282713a9f93b4a27f3e93b8">More...</a><br /></td></tr>
+<tr class="separator:a346e45313282713a9f93b4a27f3e93b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c80b2fcee6529c6ae9f46d65ab7d843"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__string__view_8h.html#a3c80b2fcee6529c6ae9f46d65ab7d843">DAW_STRING_VIEW_DBG_RNG_CHECK</a>(Bool, ...)&#160;&#160;&#160;<a class="el" href="daw__assume_8h.html#af826633a286b2074a6fc3485dac504da">DAW_ASSUME</a>( Bool )</td></tr>
+<tr class="separator:a3c80b2fcee6529c6ae9f46d65ab7d843"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac929a634b2237194c681494185937fc6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__string__view_8h.html#ac929a634b2237194c681494185937fc6">DAW_STRING_VIEW_PRECOND_CHECK</a>(Bool, ...)</td></tr>
+<tr class="separator:ac929a634b2237194c681494185937fc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a308e74079ad5ae9525359005663f45ff"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__string__view_8h.html#a308e74079ad5ae9525359005663f45ff">DAW_STRING_VIEW_RNG_CHECK</a>(Bool, ...)</td></tr>
+<tr class="separator:a308e74079ad5ae9525359005663f45ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a98dc16bd167f0024e7b44dffa07faafa"><td class="memTemplParams" colspan="2">template&lt;typename CharT &gt; </td></tr>
+<tr class="memitem:a98dc16bd167f0024e7b44dffa07faafa"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#a98dc16bd167f0024e7b44dffa07faafa">daw::sv2::basic_string_view</a> (CharT const *) -&gt; basic_string_view&lt; CharT &gt;</td></tr>
+<tr class="separator:a98dc16bd167f0024e7b44dffa07faafa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf69d50ccfff1f61ca7ac15a89abebf2"><td class="memTemplParams" colspan="2">template&lt;typename CharT &gt; </td></tr>
+<tr class="memitem:abf69d50ccfff1f61ca7ac15a89abebf2"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#abf69d50ccfff1f61ca7ac15a89abebf2">daw::sv2::basic_string_view</a> (CharT const *, CharT const *) -&gt; basic_string_view&lt; CharT &gt;</td></tr>
+<tr class="separator:abf69d50ccfff1f61ca7ac15a89abebf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a934bc4e64eed73a765eaa56538d3761a"><td class="memTemplParams" colspan="2">template&lt;typename CharT &gt; </td></tr>
+<tr class="memitem:a934bc4e64eed73a765eaa56538d3761a"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#a934bc4e64eed73a765eaa56538d3761a">daw::sv2::basic_string_view</a> (CharT const *, std::size_t count) -&gt; basic_string_view&lt; CharT &gt;</td></tr>
+<tr class="separator:a934bc4e64eed73a765eaa56538d3761a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb6b9e7ee896cb9c20f95d7d0da067af"><td class="memTemplParams" colspan="2">template&lt;typename StringView , typename CharT  = std::decay_t&lt;		           DAW_TYPEOF( std::data( std::declval&lt;StringView&gt;( ) ) )&gt;&gt; </td></tr>
+<tr class="memitem:aeb6b9e7ee896cb9c20f95d7d0da067af"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#aeb6b9e7ee896cb9c20f95d7d0da067af">daw::sv2::basic_string_view</a> (StringView &amp;&amp;) -&gt; basic_string_view&lt; CharT &gt;</td></tr>
+<tr class="separator:aeb6b9e7ee896cb9c20f95d7d0da067af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef6d89e08248bc522b34de1c7b5dbd20"><td class="memItemLeft" align="right" valign="top">constexpr string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2_1_1string__view__literals.html#aef6d89e08248bc522b34de1c7b5dbd20">daw::sv2::string_view_literals::operator&quot;&quot;_sv</a> (char const *str, std::size_t len) noexcept</td></tr>
+<tr class="separator:aef6d89e08248bc522b34de1c7b5dbd20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd1690b073e3e4f97ede7a2254297baf"><td class="memItemLeft" align="right" valign="top">constexpr u16string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2_1_1string__view__literals.html#acd1690b073e3e4f97ede7a2254297baf">daw::sv2::string_view_literals::operator&quot;&quot;_sv</a> (char16_t const *str, std::size_t len) noexcept</td></tr>
+<tr class="separator:acd1690b073e3e4f97ede7a2254297baf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92076fe76d6a6554e22acc3faf07ca86"><td class="memItemLeft" align="right" valign="top">constexpr u32string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2_1_1string__view__literals.html#a92076fe76d6a6554e22acc3faf07ca86">daw::sv2::string_view_literals::operator&quot;&quot;_sv</a> (char32_t const *str, std::size_t len) noexcept</td></tr>
+<tr class="separator:a92076fe76d6a6554e22acc3faf07ca86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9455a4814a6f690407149b37bcbac5a7"><td class="memItemLeft" align="right" valign="top">constexpr wstring_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2_1_1string__view__literals.html#a9455a4814a6f690407149b37bcbac5a7">daw::sv2::string_view_literals::operator&quot;&quot;_sv</a> (wchar_t const *str, std::size_t len) noexcept</td></tr>
+<tr class="separator:a9455a4814a6f690407149b37bcbac5a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa88541d11dcb90d941c674f03c5f0433"><td class="memTemplParams" colspan="2">template&lt;typename CharT , string_view_bounds_type Bounds, typename OStream , std::enable_if_t&lt; traits::is_ostream_like_v&lt; OStream, CharT &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:aa88541d11dcb90d941c674f03c5f0433"><td class="memTemplItemLeft" align="right" valign="top">OStream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#aa88541d11dcb90d941c674f03c5f0433">daw::sv2::operator&lt;&lt;</a> (OStream &amp;os, basic_string_view&lt; CharT, Bounds &gt; v)</td></tr>
+<tr class="separator:aa88541d11dcb90d941c674f03c5f0433"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a75d7ddf716370861bb98bd1b2a545265"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75d7ddf716370861bb98bd1b2a545265">&#9670;&nbsp;</a></span>DAW_REQ_CHAR_PTR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_REQ_CHAR_PTR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">Pointer, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">CharT&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <a class="code" href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">std::enable_if_t</a>&lt;                                                \</div>
+<div class="line">    (std::is_same_v&lt;CharT *, daw::remove_cvref_t&lt;Pointer&gt;&gt; or      \</div>
+<div class="line">     std::is_same_v&lt;CharT const *, daw::remove_cvref_t&lt;Pointer&gt;&gt;), \</div>
+<div class="line">    std::nullptr_t&gt; = nullptr</div>
+<div class="ttc" id="anamespacedaw_html_ad8b37b6c283ce451b25949269438de82"><div class="ttname"><a href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">daw::enable_if_t</a></div><div class="ttdeci">std::enable_if_t&lt; B, T &gt; enable_if_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__enable__if_8h_source.html#l00022">daw_enable_if.h:22</a></div></div>
+</div><!-- fragment -->
+<p>Require a character pointer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Pointer</td><td>a const_pointer </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00098">98</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+
+</div>
+</div>
+<a id="ac7d645e61b81d2528c3988d0feb128ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7d645e61b81d2528c3988d0feb128ea">&#9670;&nbsp;</a></span>DAW_REQ_CONTIG_CHAR_RANGE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_REQ_CONTIG_CHAR_RANGE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">Range, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">CharT&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <a class="code" href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">std::enable_if_t</a>&lt;(sv2_details::is_string_view_like_v&lt;Range, CharT&gt; and \</div>
+<div class="line">                    not std::is_convertible_v&lt;Range, char const *&gt;),     \</div>
+<div class="line">                   std::nullptr_t&gt; = nullptr</div>
+</div><!-- fragment -->
+<p>Require a contiguous character range. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Range</td><td>contiguous range </td></tr>
+    <tr><td class="paramname">CharT</td><td>character type of range elements </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00091">91</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+
+</div>
+</div>
+<a id="a32752d7143d4d3a6a8fd6bf4427e64f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32752d7143d4d3a6a8fd6bf4427e64f3">&#9670;&nbsp;</a></span>DAW_REQ_CONTIG_CHAR_RANGE_CTOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_REQ_CONTIG_CHAR_RANGE_CTOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">Type</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <a class="code" href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">std::enable_if_t</a>&lt;                                                     \</div>
+<div class="line">    sv2_details::is_contigious_range_constructible&lt;Type, CharT&gt;::value, \</div>
+<div class="line">    std::nullptr_t&gt; = <span class="keyword">nullptr</span></div>
+</div><!-- fragment -->
+<p>Require Type be constructable from a CharT const * and a size_type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Type</td><td>A type to construct from a pointer/size_type pair </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00106">106</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+
+</div>
+</div>
+<a id="a346e45313282713a9f93b4a27f3e93b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a346e45313282713a9f93b4a27f3e93b8">&#9670;&nbsp;</a></span>DAW_REQ_UNARY_PRED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_REQ_UNARY_PRED</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">Pred, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">Type&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  std::enable_if_t&lt;traits::is_unary_predicate_v&lt;Pred, Type&gt;, std::nullptr_t&gt; = \</div>
+<div class="line">    nullptr</div>
+</div><!-- fragment -->
+<p>Require Pred to be a Unary Predicate. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Pred</td><td>Unary predicate </td></tr>
+    <tr><td class="paramname">Type</td><td>Parameter type of predicate </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00084">84</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+
+</div>
+</div>
+<a id="a3c80b2fcee6529c6ae9f46d65ab7d843"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c80b2fcee6529c6ae9f46d65ab7d843">&#9670;&nbsp;</a></span>DAW_STRING_VIEW_DBG_RNG_CHECK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_STRING_VIEW_DBG_RNG_CHECK</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">Bool, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;<a class="el" href="daw__assume_8h.html#af826633a286b2074a6fc3485dac504da">DAW_ASSUME</a>( Bool )</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00054">54</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+
+</div>
+</div>
+<a id="ac929a634b2237194c681494185937fc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac929a634b2237194c681494185937fc6">&#9670;&nbsp;</a></span>DAW_STRING_VIEW_PRECOND_CHECK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_STRING_VIEW_PRECOND_CHECK</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">Bool, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">do</span> {                                             \</div>
+<div class="line">  } <span class="keywordflow">while</span>( <span class="keyword">false</span> )</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00072">72</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+
+</div>
+</div>
+<a id="a308e74079ad5ae9525359005663f45ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a308e74079ad5ae9525359005663f45ff">&#9670;&nbsp;</a></span>DAW_STRING_VIEW_RNG_CHECK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DAW_STRING_VIEW_RNG_CHECK</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">Bool, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">do</span> {                                         \</div>
+<div class="line">  } <span class="keywordflow">while</span>( <span class="keyword">false</span> )</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00076">76</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
