@@ -7,7 +7,7 @@
 //
 
 #include "daw/daw_benchmark.h"
-#include "daw/daw_bounded_vector.h"
+#include "daw/deprecated/daw_bounded_vector.h"
 
 constexpr bool daw_bounded_vector_test_001( ) {
 	daw::bounded_vector_t<int, 10> a{ };

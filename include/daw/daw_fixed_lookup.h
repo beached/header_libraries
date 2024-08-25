@@ -9,13 +9,13 @@
 #pragma once
 
 #include "ciso646.h"
-#include "daw_bounded_array.h"
 #include "daw_exception.h"
 #include "daw_generic_hash.h"
 #include "daw_move.h"
 #include "daw_traits.h"
 #include "daw_utility.h"
 
+#include <array>
 #include <stdexcept>
 #include <type_traits>
 
@@ -67,8 +67,8 @@ namespace daw {
 		using const_reference = value_t const &;
 
 	private:
-		daw::bounded_array_t<hash_value_t, N> m_hashes;
-		daw::bounded_array_t<value_t, N> m_values;
+		std::array<hash_value_t, N> m_hashes;
+		std::array<value_t, N> m_values;
 
 	public:
 		static constexpr hash_value_t capacity( ) noexcept {

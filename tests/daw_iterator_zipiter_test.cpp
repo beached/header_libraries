@@ -6,7 +6,7 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include "daw/daw_bounded_array.h"
+#include "daw/deprecated/daw_bounded_array.h"
 #include "daw/iterator/daw_zipiter.h"
 
 #include <algorithm>

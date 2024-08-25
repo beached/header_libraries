@@ -7,8 +7,8 @@
 //
 
 #include "daw/daw_benchmark.h"
-#include "daw/daw_bounded_graph.h"
 #include "daw/daw_fnv1a_hash.h"
+#include "daw/deprecated/daw_bounded_graph.h"
 
 #include <cstddef>
 #include <functional>

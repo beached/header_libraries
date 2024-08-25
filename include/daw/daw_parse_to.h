@@ -9,7 +9,6 @@
 #pragma once
 
 #include "ciso646.h"
-#include "daw_bounded_array.h"
 #include "daw_function.h"
 #include "daw_move.h"
 #include "daw_parser_helper.h"
@@ -18,6 +17,7 @@
 #include "daw_utility.h"
 #include "impl/daw_make_trait.h"
 
+#include <array>
 #include <cstddef>
 #include <iterator>
 #include <string>
@@ -179,8 +179,7 @@ namespace daw {
 		namespace impl {
 			template<size_t N, typename... Args>
 			constexpr decltype( auto ) set_value_from_string_view_item(
-			  daw::bounded_array_t<daw::string_view, sizeof...( Args )> const
-			    &positions ) {
+			  std::array<daw::string_view, sizeof...( Args )> const &positions ) {
 				using daw::parser::converters::parse_to_value;
 				using result_t = daw::pack_type_t<N, Args...>;
 				return parse_to_value( positions[N], tag<result_t> );
@@ -188,8 +187,7 @@ namespace daw {
 
 			template<typename... Args, size_t... Is>
 			constexpr decltype( auto ) set_value_from_string_view(
-			  daw::bounded_array_t<daw::string_view, sizeof...( Args )> const
-			    &positions,
+			  std::array<daw::string_view, sizeof...( Args )> const &positions,
 			  std::index_sequence<Is...> ) {
 				return std::make_tuple(
 				  set_value_from_string_view_item<Is, Args...>( positions )... );
@@ -197,8 +195,7 @@ namespace daw {
 
 			template<typename... Args>
 			constexpr decltype( auto ) set_value_from_string_view(
-			  daw::bounded_array_t<daw::string_view, sizeof...( Args )> const
-			    &positions ) {
+			  std::array<daw::string_view, sizeof...( Args )> const &positions ) {
 				return set_value_from_string_view<Args...>(
 				  positions, std::index_sequence_for<Args...>{ } );
 			}
@@ -274,7 +271,7 @@ namespace daw {
 			template<size_t N, typename Splitter>
 			constexpr auto get_positions( daw::string_view str,
 			                              Splitter &&splitter ) {
-				daw::bounded_array_t<daw::string_view, N> result{ };
+				std::array<daw::string_view, N> result{ };
 				for( auto &item : result ) {
 					auto const pos = splitter( str );
 					item = str.substr( 0, pos.first );
