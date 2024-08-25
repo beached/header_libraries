@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw/daw_ensure.h"
 #include "filter_view.h"
 #include "range.h"
 
@@ -32,15 +33,15 @@ namespace daw::pipelines::pimpl {
 			auto distribution = Distribution{
 			  result_type{ 1 }, static_cast<result_type>( m_sample_size ) };
 
-			return filter_view{
-			  std::begin( r ),
-			  std::end( r ),
-			  [engine = m_engine, number_to_keep = m_number_to_keep, distribution](
-			    auto const & ) mutable {
-				  auto n = distribution( engine );
-				  auto result = n <= number_to_keep;
-				  return result;
-			  } };
+			return filter_view{ std::begin( r ),
+			                    std::end( r ),
+			                    [engine = m_engine,
+			                     number_to_keep = m_number_to_keep,
+			                     distribution]( auto const & ) mutable {
+				                    auto n = distribution( engine );
+				                    auto result = n <= number_to_keep;
+				                    return result;
+			                    } };
 		}
 	};
 } // namespace daw::pipelines::pimpl

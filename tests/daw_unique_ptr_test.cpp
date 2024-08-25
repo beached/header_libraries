@@ -9,8 +9,9 @@
 #undef NDEBUG
 #endif
 
-#include <cassert>
 #include <daw/daw_unique_ptr.h>
+
+#include <cassert>
 #include <memory>
 
 struct Base {

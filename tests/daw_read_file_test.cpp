@@ -6,8 +6,9 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include "daw/daw_benchmark.h"
 #include "daw/daw_read_file.h"
+
+#include "daw/daw_benchmark.h"
 
 #include <cstdlib>
 #include <fstream>

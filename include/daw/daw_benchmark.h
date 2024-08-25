@@ -9,7 +9,6 @@
 #pragma once
 
 #include "ciso646.h"
-#include "daw_check_exceptions.h"
 #include "daw_do_not_optimize.h"
 #include "daw_expected.h"
 #include "daw_move.h"
@@ -17,6 +16,7 @@
 
 #include <array>
 #include <chrono>
+#include <exception>
 #include <iomanip>
 #include <iostream>
 #include <limits>

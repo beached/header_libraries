@@ -6,13 +6,14 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include "daw/iterator/daw_random_iterator.h"
+
+#include "daw/daw_benchmark.h"
+
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
 #include <vector>
-
-#include "daw/daw_benchmark.h"
-#include "daw/iterator/daw_random_iterator.h"
 
 void daw_random_iterator_01( ) {
 	int numbers[] = { 1, 2, 3, 4, 5, 6, 7 };

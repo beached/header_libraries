@@ -6,9 +6,10 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include "daw/daw_stack_function.h"
+
 #include "daw/daw_benchmark.h"
 #include "daw/daw_mutable_capture.h"
-#include "daw/daw_stack_function.h"
 #include "daw/daw_utility.h"
 
 #include <functional>

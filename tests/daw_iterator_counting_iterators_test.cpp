@@ -6,9 +6,10 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include <daw/iterator/daw_counting_iterators.h>
+
 #include <daw/daw_benchmark.h>
 #include <daw/daw_random.h>
-#include <daw/iterator/daw_counting_iterators.h>
 
 #include <array>
 #include <vector>

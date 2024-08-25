@@ -11,6 +11,7 @@
 #include "ciso646.h"
 #include "daw_algorithm.h"
 #include "daw_traits.h"
+#include "traits/daw_traits_is_ostream_like.h"
 
 #include <algorithm>
 #include <cstddef>

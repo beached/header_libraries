@@ -6,12 +6,13 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include "daw/daw_min_perfect_hash.h"
+
 #include "daw/cpp_17.h"
 #include "daw/daw_array.h"
 #include "daw/daw_benchmark.h"
 #include "daw/daw_fnv1a_hash.h"
 #include "daw/daw_metro_hash.h"
-#include "daw/daw_min_perfect_hash.h"
 #include "daw/daw_view.h"
 
 #include <array>

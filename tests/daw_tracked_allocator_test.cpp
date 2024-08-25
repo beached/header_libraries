@@ -9,6 +9,7 @@
 // #define DAW_NO_SAFE_POINTER_CHECKS
 
 #include <daw/daw_tracked_allocator.h>
+
 #include <daw/vector.h>
 
 #include <map>

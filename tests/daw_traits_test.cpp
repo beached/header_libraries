@@ -6,12 +6,13 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include "daw/cpp_17.h"
-#include "daw/daw_benchmark.h"
-#include "daw/daw_string_view.h"
 #include "daw/daw_traits.h"
 #include "daw/impl/daw_traits_impl.h"
 #include "daw/traits/daw_traits_is_a_type.h"
+
+#include "daw/cpp_17.h"
+#include "daw/daw_benchmark.h"
+#include "daw/daw_string_view.h"
 
 #include <array>
 #include <cstddef>

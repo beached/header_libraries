@@ -7,6 +7,7 @@
 //
 
 #include "daw/daw_benchmark.h"
+
 #include "daw/daw_expected.h"
 
 #include <iostream>

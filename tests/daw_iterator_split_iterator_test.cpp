@@ -6,14 +6,15 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include "daw/iterator/daw_split_iterator.h"
+
+#include "daw/daw_benchmark.h"
+
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
 #include <iterator>
 #include <string>
-
-#include "daw/daw_benchmark.h"
-#include "daw/iterator/daw_split_iterator.h"
 
 void split_it_001( ) {
 	std::string str = "This is a test of the split";

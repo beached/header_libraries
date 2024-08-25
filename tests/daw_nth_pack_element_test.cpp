@@ -6,8 +6,9 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include <daw/daw_ensure.h>
 #include <daw/daw_nth_pack_element.h>
+
+#include <daw/daw_ensure.h>
 #include <daw/traits/daw_traits_nth_element.h>
 
 #include <type_traits>

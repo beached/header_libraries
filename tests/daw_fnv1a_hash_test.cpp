@@ -6,8 +6,9 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include "daw/daw_benchmark.h"
 #include "daw/daw_fnv1a_hash.h"
+
+#include "daw/daw_benchmark.h"
 #include "daw/daw_utility.h"
 
 constexpr bool fnv1a_hash_test_001( ) {

@@ -6,8 +6,9 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include "daw/daw_algorithm.h"
 #include "daw/daw_array.h"
+
+#include "daw/daw_algorithm.h"
 #include "daw/daw_benchmark.h"
 
 #include <array>

@@ -6,10 +6,11 @@
 // Official repository: https://github.com/beached/
 //
 
+#include <daw/vector.h>
+
 #include <daw/daw_algorithm.h>
 #include <daw/daw_consteval.h>
 #include <daw/daw_ensure.h>
-#include <daw/vector.h>
 #include <daw/vector_algorithm.h>
 
 #include <cstddef>

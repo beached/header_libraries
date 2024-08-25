@@ -21,6 +21,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <array>
 
 namespace daw {
 	namespace sip_impl {

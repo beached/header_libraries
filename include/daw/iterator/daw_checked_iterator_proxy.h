@@ -11,7 +11,9 @@
 #include "daw/ciso646.h"
 #include "daw/daw_check_exceptions.h"
 #include "daw/daw_exception.h"
+#include "daw/daw_logic.h"
 
+#include <cstdint>
 #include <stdexcept>
 #include <type_traits>
 #include <utility>

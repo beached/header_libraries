@@ -9,8 +9,9 @@
 #pragma once
 
 #include "daw/ciso646.h"
-#include "daw/deprecated/daw_string_view1_fwd.h"
 #include "daw/daw_traits.h"
+#include "daw/deprecated/daw_string_view1_fwd.h"
+#include "daw/traits/daw_traits_is_ostream_like.h"
 
 #include <array>
 #include <cstddef>
@@ -103,12 +104,13 @@ namespace daw {
 		                                               ForwardIt s_last,
 		                                               BinaryPredicate p ) {
 			static_assert(
-			  traits::is_binary_predicate_v<
+			  traits::is_binary_prdicate_v<
 			    BinaryPredicate,
+			    typename std::iterator_traits<InputIt>::value_type,
 			    typename std::iterator_traits<InputIt>::value_type>,
-			  "BinaryPredicate p does not fullfill the requires of a binary "
+			  "BinaryPredicate p does not fulfill the requires of a binary "
 			  "predicate concept.  See "
-			  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate" );
+			  "http://en.cppreference.com/w/cpp/concept/UnaryPredicate" );
 			for( ; first != last; ++first ) {
 				for( ForwardIt it = s_first; it != s_last; ++it ) {
 					if( p( *first, *it ) ) {
@@ -126,10 +128,11 @@ namespace daw {
 		                                                   ForwardIt s_last,
 		                                                   BinaryPredicate p ) {
 			static_assert(
-			  traits::is_binary_predicate_v<
+			  traits::is_binary_prdicate_v<
 			    BinaryPredicate,
+			    typename std::iterator_traits<InputIt>::value_type,
 			    typename std::iterator_traits<InputIt>::value_type>,
-			  "BinaryPredicate p does not fullfill the requires of a binary "
+			  "BinaryPredicate p does not fulfill the requires of a binary "
 			  "predicate concept.  See "
 			  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate" );
 			bool found = false;
@@ -158,7 +161,7 @@ namespace daw {
 		[[nodiscard]] constexpr InputIt
 		find_first_of_if( InputIt first, InputIt last, UnaryPredicate p ) {
 			static_assert(
-			  traits::is_unary_predicate_v<
+			  traits::is_unary_prdicate_v<
 			    UnaryPredicate,
 			    typename std::iterator_traits<InputIt>::value_type>,
 			  "UnaryPredicate p does not fullfill the requires of a unary predicate "
@@ -176,7 +179,7 @@ namespace daw {
 		[[nodiscard]] constexpr InputIt
 		find_first_not_of_if( InputIt first, InputIt last, UnaryPredicate p ) {
 			static_assert(
-			  traits::is_unary_predicate_v<
+			  traits::is_unary_prdicate_v<
 			    UnaryPredicate,
 			    typename std::iterator_traits<InputIt>::value_type>,
 			  "UnaryPredicate p does not fullfill the requires of a unary predicate "

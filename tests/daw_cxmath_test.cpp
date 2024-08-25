@@ -6,8 +6,9 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include "daw/daw_benchmark.h"
 #include "daw/daw_cxmath.h"
+
+#include "daw/daw_benchmark.h"
 #include "daw/daw_random.h"
 #include "daw/daw_uint_buffer_ios.h"
 

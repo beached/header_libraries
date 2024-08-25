@@ -9,6 +9,7 @@
 #pragma once
 
 #include <cassert>
+#include <memory>
 #include <type_traits>
 
 #ifdef DAW_CPP26_CONSTEXPR

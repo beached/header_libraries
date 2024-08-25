@@ -6,10 +6,11 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include "daw/iterator/daw_sorted_insert_iterator.h"
+
 #include "daw/daw_benchmark.h"
 #include "daw/daw_random.h"
 #include "daw/iterator/daw_function_iterator.h"
-#include "daw/iterator/daw_sorted_insert_iterator.h"
 
 #include <algorithm>
 #include <cstddef>

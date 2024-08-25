@@ -6,10 +6,11 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include <daw/daw_pipelines.h>
+
 #include <daw/daw_constant.h>
 #include <daw/daw_do_not_optimize.h>
 #include <daw/daw_ensure.h>
-#include <daw/daw_pipelines.h>
 #include <daw/daw_print.h>
 #include <daw/daw_random.h>
 

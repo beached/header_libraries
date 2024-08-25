@@ -6,9 +6,10 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include "daw/daw_union_pair.h"
+
 #include "daw/daw_benchmark.h"
 #include "daw/daw_math.h"
-#include "daw/daw_union_pair.h"
 
 void daw_union_pair_test_001( ) {
 	auto tmp = daw::union_pair_t<int, double>( 5 );
