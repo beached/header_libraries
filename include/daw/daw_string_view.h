@@ -12,9 +12,9 @@
 
 #include "algorithms/daw_algorithm_copy.h"
 #include "algorithms/daw_algorithm_find.h"
-#include "daw_check_exceptions.h"
 #include "ciso646.h"
 #include "daw_assume.h"
+#include "daw_check_exceptions.h"
 #include "daw_compiler_fixups.h"
 #include "daw_consteval.h"
 #include "daw_cpp_feature_check.h"
@@ -35,6 +35,7 @@
 #include <daw/stdinc/iterator_traits.h>
 #include <daw/stdinc/min_and_max.h>
 #include <daw/stdinc/reverse_iterator.h>
+#include <exception>
 #include <stdexcept>
 #include <type_traits>
 

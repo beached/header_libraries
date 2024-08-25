@@ -10,10 +10,10 @@
 
 #include "daw/ciso646.h"
 #include "daw/daw_algorithm.h"
-#include "daw/daw_range_collection.h"
-#include "daw/daw_range_common.h"
 #include "daw/daw_reference.h"
 #include "daw/daw_traits.h"
+#include "daw_range_collection.h"
+#include "daw_range_common.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -443,7 +443,7 @@ namespace daw {
 
 		template<typename T>
 		struct is_range_reference : decltype( details::is_range_reference_impl(
-		                              std::declval<T const &>( ), 1 ) ) {};
+		                              std::declval<T const &>( ), 1 ) ){ };
 
 		template<typename T>
 		using is_range_reference_t = typename is_range_reference<T>::type;

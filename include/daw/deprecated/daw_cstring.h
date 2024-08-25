@@ -8,14 +8,14 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_algorithm.h"
-#include "daw_exchange.h"
+#include "daw/ciso646.h"
+#include "daw/daw_algorithm.h"
+#include "daw/daw_exchange.h"
+#include "daw/daw_operators.h"
+#include "daw/daw_scope_guard.h"
+#include "daw/daw_swap.h"
+#include "daw/daw_traits.h"
 #include "daw_newhelper.h"
-#include "daw_operators.h"
-#include "daw_scope_guard.h"
-#include "daw_swap.h"
-#include "daw_traits.h"
 
 #include <cstdint>
 #include <string>

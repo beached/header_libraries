@@ -12,9 +12,9 @@
 #include "daw/daw_algorithm.h"
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_move.h"
-#include "daw/daw_range_collection.h"
-#include "daw/daw_range_reference.h"
 #include "daw/daw_traits.h"
+#include "daw_range_collection.h"
+#include "daw_range_reference.h"
 
 #include <algorithm>
 #include <iterator>
@@ -41,8 +41,8 @@ namespace daw {
 					typedef seq<S...> type;
 				};
 			} // namespace details
-		}   // namespace operators
-	}     // namespace range
+		} // namespace operators
+	} // namespace range
 } // namespace daw
 
 #define DAW_RANGE_GENERATE_VCLAUSE( clause_name )                              \
@@ -111,7 +111,7 @@ namespace daw {
                                                                                \
 					public:                                                              \
 						clause_name##_t( std::tuple<Args...> &&args )                      \
-						  : clause_name##_args( DAW_FWD( args )... ) {}                    \
+						  : clause_name##_args( std::move( args ) ) {}                    \
                                                                                \
 						template<typename Container>                                       \
 						auto operator( )( Container &&container ) const {                  \

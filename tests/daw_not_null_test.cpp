@@ -47,8 +47,8 @@ void daw_not_null_test_004( ) {
 	daw_ensure( ( last - first ) == 5 );
 }
 
-#if defined( __cpp_constexpr_dynamic_alloc )
-#if __cpp_constexpr_dynamic_alloc >= 201907L
+#if defined( __cpp_lib_constexpr_memory )
+#if __cpp_lib_constexpr_memory >= 202202L
 constexpr bool daw_not_null_test_004c( ) {
 	auto tst = std::unique_ptr<int[]>( new int[5]{ } );
 	int *first = tst.get( );

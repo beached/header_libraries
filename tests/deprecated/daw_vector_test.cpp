@@ -8,6 +8,7 @@
 
 #include <daw/deprecated/daw_vector.h>
 
+#include <daw/daw_data_end.h>
 #include <daw/daw_utility.h>
 
 #include <cstddef>

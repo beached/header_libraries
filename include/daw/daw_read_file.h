@@ -13,6 +13,7 @@
 #include "daw_traits.h"
 #include "daw_typeof.h"
 
+#include <exception>
 #include <fstream>
 #include <iostream>
 #include <iterator>

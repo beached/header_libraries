@@ -18,6 +18,7 @@
 #include "daw_bounded_array.h"
 
 #include <array>
+#include <exception>
 #include <iterator>
 
 namespace daw {

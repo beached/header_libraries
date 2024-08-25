@@ -54,7 +54,7 @@ void test_perf_comp( ) {
 	};
 
 	auto const bytes = values.size( ) * sizeof( value_type );
-	daw::bench_n_test_mbs2<500>(
+	(void)daw::bench_n_test_mbs2<500>(
 	  "stack sort",
 	  bytes,
 	  validator,
@@ -65,7 +65,7 @@ void test_perf_comp( ) {
 	  },
 	  values );
 
-	daw::bench_n_test_mbs2<500>(
+	(void)daw::bench_n_test_mbs2<500>(
 	  "std::sort",
 	  bytes,
 	  validator,
@@ -84,7 +84,7 @@ void do_test( ) {
 	test_perf_comp<N>( );
 }
 
-int main( int argc, char **argv ) {
+int main( ) {
 	do_test<1>( );
 	do_test<2>( );
 	do_test<4>( );
