@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "daw/daw_attributes.h"
+#include "daw/daw_ensure.h"
 #include "daw/daw_iterator_traits.h"
 
 #include <algorithm>
@@ -54,6 +56,14 @@ namespace daw::pipelines {
 		explicit constexpr sized_iterator( Iterator first, std::size_t how_many )
 		  : m_iter( std::move( first ) )
 		  , m_count( static_cast<difference_type>( how_many ) ) {}
+
+		[[nodiscard]] constexpr auto &base( ) {
+			return m_iter;
+		}
+
+		[[nodiscard]] constexpr auto const &base( ) const {
+			return m_iter;
+		}
 
 		DAW_ATTRIB_INLINE constexpr sized_iterator &operator++( ) {
 			increment( );
@@ -198,6 +208,14 @@ namespace daw::pipelines {
 		  : m_first( first )
 		  , m_last( last )
 		  , m_count( static_cast<difference_type>( how_many ) ) {}
+
+		[[nodiscard]] constexpr auto &base( ) {
+			return m_first;
+		}
+
+		[[nodiscard]] constexpr auto const &base( ) const {
+			return m_first;
+		}
 
 		DAW_ATTRIB_INLINE constexpr sized_iterator &operator++( ) {
 			increment( );

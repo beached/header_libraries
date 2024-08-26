@@ -198,14 +198,6 @@ namespace daw::traits {
 	template<typename T>
 	inline constexpr bool static_not_v = static_not<T>::value;
 
-	template<typename T>
-	using is_numeric [[deprecated( "use std::is_arithmetic" )]] =
-	  std::disjunction<std::is_floating_point<T>, std::is_integral<T>>;
-
-	template<typename T>
-	inline constexpr bool is_numeric_v
-	  [[deprecated( "use std::is_arithmetic_v" )]] = is_numeric<T>::value;
-
 	template<typename OutStream, typename T, typename = void>
 	inline constexpr bool is_streamable_v = false;
 

@@ -54,6 +54,14 @@ namespace daw::pipelines {
 		}
 
 	public:
+		[[nodiscard]] constexpr auto &base( ) {
+			return m_iter;
+		}
+
+		[[nodiscard]] constexpr auto const &base( ) const {
+			return m_iter;
+		}
+
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr value_type
 		operator[]( size_type n ) const requires( RandomIterator<Iterator> ) {
 			return std::invoke( m_func, raw_get( n ) );
@@ -209,7 +217,8 @@ namespace daw::pipelines {
 				if constexpr( Range<R> ) {
 					static_assert( std::is_invocable_v<Fn, range_reference_t<R>>,
 					               "Map requires the function to be able to be called "
-					               "with invoke and the range_reference_t(e.g. invoke( MapFn, *it ) )" );
+					               "with invoke and the range_reference_t(e.g. invoke( "
+					               "MapFn, *it ) )" );
 					static_assert( traits::NoVoidResults<Fn, range_reference_t<R>>,
 					               "Map requires the result to not be void" );
 					return map_view( std::begin( r ), std::end( r ), m_func );

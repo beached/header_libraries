@@ -40,6 +40,7 @@ namespace daw::pipelines::pimpl {
 } // namespace daw::pipelines::pimpl
 
 namespace daw::pipelines {
+	/// Given a Range, output every Nth element
 	[[nodiscard]] constexpr auto Every( std::size_t select_every ) {
 		return pimpl::Every_t{ select_every };
 	}

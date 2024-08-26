@@ -52,6 +52,14 @@ namespace daw::pipelines {
 			}
 		}
 
+		[[nodiscard]] constexpr auto &base( ) {
+			return m_first;
+		}
+
+		[[nodiscard]] constexpr auto const &base( ) const {
+			return m_first;
+		}
+
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr filter_view begin( ) const {
 			return *this;
 		}
@@ -142,6 +150,7 @@ namespace daw::pipelines {
 		filter_t( F ) -> filter_t<F>;
 	} // namespace pimpl
 
+	/// Filter a range with the given predicate function.
 	template<typename Fn>
 	[[nodiscard]] constexpr auto Filter( Fn &&fn ) {
 		return pimpl::filter_t{ DAW_FWD( fn ) };

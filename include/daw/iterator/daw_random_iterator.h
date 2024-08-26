@@ -85,18 +85,18 @@ namespace daw {
 		}
 
 		constexpr RandomIterator operator+( std::ptrdiff_t const &n ) noexcept {
-			auto old = this->m_ptr;
-			this->m_ptr += n;
+			auto old = this->m_pointer;
+			this->m_pointer += n;
 			auto temp{ *this };
-			this->m_ptr = old;
+			this->m_pointer = old;
 			return temp;
 		}
 
 		constexpr RandomIterator operator-( std::ptrdiff_t const &n ) noexcept {
-			auto old = this->m_ptr;
-			this->m_ptr -= n;
+			auto old = this->m_pointer;
+			this->m_pointer -= n;
 			auto temp{ *this };
-			this->m_ptr = old;
+			this->m_pointer = old;
 			return temp;
 		}
 
