@@ -10,7 +10,14 @@
 
 namespace daw {
 	// Sentinel type to mark type as being deduced
-	struct deduced_type {};
+	struct deduced_type {
+		deduced_type( ) = delete;
+		~deduced_type( ) = delete;
+		deduced_type( deduced_type const & ) = delete;
+		deduced_type( deduced_type && ) = delete;
+		deduced_type &operator=( deduced_type const & ) = delete;
+		deduced_type &operator=( deduced_type && ) = delete;
+	};
 
 	template<typename T>
 	inline constexpr bool is_deduced_type_v = false;

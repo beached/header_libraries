@@ -129,6 +129,10 @@ namespace daw {
 	template<Range R>
 	using range_category_t = iter_category_t<iterator_t<R>>;
 
+	[[nodiscard]] constexpr bool empty_range( Range auto &&r ) {
+		return std::begin( r ) == std::end( r );
+	}
+
 	template<typename R>
 	concept InputRange = Range<R> and InputIterator<iterator_t<R>>;
 

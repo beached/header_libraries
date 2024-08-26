@@ -10,8 +10,8 @@
 
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_move.h"
-#include "iota_view.h"
-#include "zip_view.h"
+#include "iota.h"
+#include "zip.h"
 
 #include <cstddef>
 #include <limits>

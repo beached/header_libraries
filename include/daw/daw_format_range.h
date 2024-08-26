@@ -129,6 +129,10 @@ namespace std {
 						auto t = daw::fmt_tuple( v );
 						out = std::vformat_to(
 						  out, std::string_view( flags ), std::make_format_args( t ) );
+					} else if constexpr( daw::Range<daw::range_value_t<R>> ) {
+						auto t = daw::fmt_range( v );
+						out = std::vformat_to(
+						  out, std::string_view( flags ), std::make_format_args( t ) );
 					} else {
 						out = std::vformat_to(
 						  out, std::string_view( flags ), std::make_format_args( v ) );
