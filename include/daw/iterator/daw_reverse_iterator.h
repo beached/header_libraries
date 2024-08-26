@@ -113,6 +113,8 @@ namespace daw {
 			return *this;
 		}
 	}; // reverse_iterator
+	template<typename Iterator>
+	reverse_iterator( Iterator ) -> reverse_iterator<Iterator>;
 
 	template<typename Iterator>
 	constexpr reverse_iterator<Iterator>

@@ -18,8 +18,14 @@
 #include <type_traits>
 
 namespace daw::pipelines {
+	enum class AllowPrintInputRange : bool { Disallow, Allow };
 	namespace pimpl {
+		template<AllowPrintInputRange InputRangeAllowed =
+		           AllowPrintInputRange::Disallow>
 		struct Print_t {
+			static consteval auto AllowInput( ) {
+				return Print_t<AllowPrintInputRange::Allow>{ };
+			}
 
 			DAW_ATTRIB_NOINLINE
 			[[nodiscard]] inline decltype( auto ) operator( )( auto &&r ) const {
@@ -27,6 +33,11 @@ namespace daw::pipelines {
 				if constexpr( is_tuple_like_v<R> ) {
 					daw::println( "{}", daw::fmt_tuple( r ) );
 				} else if constexpr( Range<R> ) {
+					static_assert( InputRangeAllowed == AllowPrintInputRange::Allow or
+					                 ForwardRange<R>,
+					               "Printing a non-forward range is not allowed when "
+					               "template param InputRangeAllowed is Disallow.  Use "
+					               "Print::AllowInput to enable this" );
 					daw::println( "{}", daw::fmt_range( r ) );
 				} else {
 					daw::println( "{}", r );
@@ -34,6 +45,7 @@ namespace daw::pipelines {
 				return DAW_FWD( r );
 			}
 		};
+		Print_t( ) -> Print_t<>;
 	} // namespace pimpl
 
 	inline constexpr auto Print = pimpl::Print_t{ };

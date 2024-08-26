@@ -365,12 +365,47 @@ namespace tests {
 	}
 
 	DAW_ATTRIB_NOINLINE void test017( ) {
-		auto const p = pipeline( iota_view<int>{ -5, 5 }, Print, Sample( 4, 10 ) );
 		daw::println(
-		  "\ntest017: pipeline( iota_view<int>{{ -16, 16 }}, Sample( 4, 10 ) "
-		  ")\n{}",
-		  daw::fmt_range{ p } );
-		(void)p;
+		  "\ntest017: pipeline( iota_view<int>{{ -5, 5 }}, Sample( 4, 10 ) )" );
+		auto const p = pipeline( iota_view<int>{ -5, 5 }, Print, Sample( 4, 10 ) );
+		daw::println( "{}", daw::fmt_range{ p } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test018( ) {
+		daw::println( "\ntest018: pipeline( iota_view<int>{{ -5, 5 }}, Reverse )" );
+		auto i = iota_view<int>{ -5, 5 };
+		daw::println( "\t{}", daw::fmt_range( i ) );
+		daw::println( "\treversed" );
+		daw::println( "\t{}", daw::fmt_range( Reverse( i ) ) );
+	}
+
+	DAW_ATTRIB_NOINLINE void test019( ) {
+		daw::println(
+		  "\ntest019: pipeline( iota_view<int>{{ -5, 5 }}, Every( 3 ) )" );
+		auto const p = pipeline( iota_view<int>{ -5, 5 }, Print, Every( 3 ) );
+		daw::println( "{}", daw::fmt_range{ p } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test020( ) {
+		daw::println(
+		  "\ntest020: pipeline( iota_view<int>{{ -5, 5 }}, TakeUntil( []( int x ) "
+		  "{{ return x > 0; }} ) ) )" );
+		daw::println( "\t{}", daw::fmt_range{ iota_view<int>{ -5, 5 } } );
+		auto const p = pipeline( iota_view<int>{ -5, 5 }, TakeUntil( []( int x ) {
+			                         return x > 0;
+		                         } ) );
+		daw::println( "\t{}", daw::fmt_range{ p } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test021( ) {
+		daw::println(
+		  "\ntest021: pipeline( iota_view<int>{{ -5, 5 }}, TakeWhile( []( int x ) "
+		  "{{ return x < 0; }} ) ) )" );
+		daw::println( "\t{}", daw::fmt_range{ iota_view<int>{ -5, 5 } } );
+		auto const p = pipeline( iota_view<int>{ -5, 5 }, TakeWhile( []( int x ) {
+			                         return x < 0;
+		                         } ) );
+		daw::println( "\t{}", daw::fmt_range{ p } );
 	}
 } // namespace tests
 
@@ -392,6 +427,10 @@ int main( ) {
 	tests::test015( );
 	tests::test016( );
 	tests::test017( );
+	tests::test018( );
+	tests::test019( );
+	tests::test020( );
+	tests::test021( );
 
 	daw::println( "Done" );
 }

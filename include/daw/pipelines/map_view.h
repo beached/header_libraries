@@ -209,7 +209,7 @@ namespace daw::pipelines {
 				if constexpr( Range<R> ) {
 					static_assert( std::is_invocable_v<Fn, range_reference_t<R>>,
 					               "Map requires the function to be able to be called "
-					               "with invoke and the range_reference_t" );
+					               "with invoke and the range_reference_t(e.g. invoke( MapFn, *it ) )" );
 					static_assert( traits::NoVoidResults<Fn, range_reference_t<R>>,
 					               "Map requires the result to not be void" );
 					return map_view( std::begin( r ), std::end( r ), m_func );

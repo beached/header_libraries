@@ -11,6 +11,7 @@
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_typeof.h"
+#include "filter_view.h"
 #include "range.h"
 #include "sized_iterator.h"
 #include "skip.h"
@@ -43,10 +44,57 @@ namespace daw::pipelines::pimpl {
 			}
 		}
 	};
+
+	template<typename Fn>
+	struct TakeWhile_t {
+		DAW_NO_UNIQUE_ADDRESS mutable Fn m_func;
+		mutable bool m_trigger = false;
+
+		[[nodiscard]] constexpr auto operator( )( auto &&value ) const {
+			if( m_trigger ) {
+				return true;
+			}
+			if( not m_func( DAW_FWD( value ) ) ) {
+				m_trigger = true;
+				return true;
+			}
+			return false;
+		}
+	};
+	template<typename Fn>
+	TakeWhile_t( Fn ) -> TakeWhile_t<Fn>;
+
+	template<typename Fn>
+	struct TakeUntil_t {
+		DAW_NO_UNIQUE_ADDRESS mutable Fn m_func;
+		mutable bool m_trigger = false;
+
+		[[nodiscard]] constexpr auto operator( )( auto &&value ) const {
+			if( m_trigger ) {
+				return false;
+			}
+			if( m_func( DAW_FWD( value ) ) ) {
+				m_trigger = true;
+				return false;
+			}
+			return true;
+		}
+	};
+	template<typename Fn>
+	TakeUntil_t( Fn ) -> TakeUntil_t<Fn>;
 } // namespace daw::pipelines::pimpl
 
 namespace daw::pipelines {
+	[[nodiscard]] constexpr auto TakeWhile( auto &&fn ) {
+		return Filter( pimpl::TakeWhile_t{ DAW_FWD( fn ) } );
+	}
+
+	[[nodiscard]] constexpr auto TakeUntil( auto &&fn ) {
+		return Filter( pimpl::TakeUntil_t{ DAW_FWD( fn ) } );
+	}
+
 	[[nodiscard]] constexpr auto Take( std::size_t how_many ) {
 		return pimpl::Take_t{ how_many };
 	}
+
 } // namespace daw::pipelines
