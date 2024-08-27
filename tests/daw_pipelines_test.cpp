@@ -419,7 +419,6 @@ namespace tests {
 } // namespace tests
 
 int main( ) {
-	/*
 	tests::test001( );
 	tests::test002( );
 	tests::test003( );
@@ -441,7 +440,6 @@ int main( ) {
 	tests::test019( );
 	tests::test020( );
 	tests::test021( );
-	 */
 	tests::test022( );
 
 	daw::println( "Done" );

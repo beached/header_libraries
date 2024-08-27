@@ -8,13 +8,12 @@
 
 #pragma once
 
-#include "pipelines/flatten.h"
-
 #include "pipelines/algorithm.h"
 #include "pipelines/concat.h"
 #include "pipelines/enumerate.h"
 #include "pipelines/every.h"
 #include "pipelines/filter.h"
+#include "pipelines/flatten.h"
 #include "pipelines/foreach.h"
 #include "pipelines/generate.h"
 #include "pipelines/iota.h"

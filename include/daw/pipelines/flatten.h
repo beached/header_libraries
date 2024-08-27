@@ -36,32 +36,44 @@ common_iterator_category_t<daw::iter_category_t<iterator_t>,
 		using difference_type = std::ptrdiff_t;
 		using i_am_a_daw_flatten_view_class = void;
 
-		// private:
+	private:
+		struct end_t {
+			using iterator_t = daw::iterator_t<R>;
+			using sub_iterator_t = daw::iterator_t<daw::iter_value_t<iterator_t>>;
+			using iterator_category = std::forward_iterator_tag;
+			using value_type = daw::iter_value_t<sub_iterator_t>;
+			using reference = daw::iter_reference_t<sub_iterator_t>;
+			using const_reference = daw::iter_const_reference_t<sub_iterator_t>;
+			using difference_type = std::ptrdiff_t;
+
+			iterator_t m_range_first{ };
+		};
+
 		using m_range_t = daw::remove_cvrvref_t<R>;
 		m_range_t m_range;
 		iterator_t m_range_first{ };
 		sub_iterator_t m_cur_first{ };
 
-		[[nodiscard]] constexpr auto rbegin( ) {
+		[[nodiscard]] constexpr auto rabegin( ) {
 			return std::begin( m_range );
 		}
 
-		[[nodiscard]] constexpr auto rbegin( ) const {
+		[[nodiscard]] constexpr auto rabegin( ) const {
 			return std::begin( m_range );
 		}
 
-		[[nodiscard]] constexpr auto rend( ) {
+		[[nodiscard]] constexpr auto raend( ) {
 			return std::end( m_range );
 		}
 
-		[[nodiscard]] constexpr auto rend( ) const {
+		[[nodiscard]] constexpr auto raend( ) const {
 			return std::end( m_range );
 		}
 
 		DAW_ATTRIB_INLINE constexpr void inc_range( ) {
-			assert( m_range_first != rend( ) );
+			assert( m_range_first != raend( ) );
 			++m_range_first;
-			if( m_range_first == rend( ) ) {
+			if( m_range_first == raend( ) ) {
 				m_cur_first = sub_iterator_t{ };
 				assert( *this == end( ) );
 			} else {
@@ -83,20 +95,17 @@ common_iterator_category_t<daw::iter_category_t<iterator_t>,
 
 		explicit constexpr flatten_view( auto &&r )
 		  : m_range( DAW_FWD( r ) )
-		  , m_range_first( rbegin( ) )
-		  , m_cur_first( m_range_first == rend( ) ? sub_iterator_t{ }
-		                                          : std::begin( *m_range_first ) ) {
-		}
+		  , m_range_first( rabegin( ) )
+		  , m_cur_first( m_range_first == raend( )
+		                   ? sub_iterator_t{ }
+		                   : std::begin( *m_range_first ) ) {}
 
 		[[nodiscard]] constexpr flatten_view begin( ) const {
 			return *this;
 		}
 
-		[[nodiscard]] constexpr flatten_view end( ) const {
-			auto r = *this;
-			r.m_range_first = rend( );
-			r.m_cur_first = sub_iterator_t{ };
-			return r;
+		[[nodiscard]] constexpr auto end( ) const {
+			return end_t{ raend( ) };
 		}
 
 		DAW_ATTRIB_NOINLINE constexpr flatten_view &operator++( ) {
@@ -111,14 +120,14 @@ common_iterator_category_t<daw::iter_category_t<iterator_t>,
 		}
 
 		[[nodiscard]] constexpr reference operator*( ) noexcept {
-			assert( m_range_first != rend( ) );
+			assert( m_range_first != raend( ) );
 			assert( m_cur_first != std::end( *m_range_first ) );
 			assert( m_cur_first != sub_iterator_t{ } );
 			return *m_cur_first;
 		}
 
 		[[nodiscard]] constexpr const_reference operator*( ) const noexcept {
-			assert( m_range_first != rend( ) );
+			assert( m_range_first != raend( ) );
 			assert( m_cur_first != std::end( *m_range_first ) );
 			assert( m_cur_first != sub_iterator_t{ } );
 			return *m_cur_first;
@@ -132,6 +141,15 @@ common_iterator_category_t<daw::iter_category_t<iterator_t>,
 
 		[[nodiscard]] constexpr bool
 		operator!=( flatten_view const &rhs ) const noexcept = default;
+
+		[[nodiscard]] DAW_ATTRIB_NOINLINE constexpr bool
+		operator==( end_t const &rhs ) const noexcept {
+			return m_range_first == rhs.m_range_first;
+		}
+
+		[[nodiscard]] constexpr bool operator!=( end_t const &rhs ) const noexcept {
+			return m_range_first != rhs.m_range_first;
+		}
 	};
 	template<Range R>
 	flatten_view( R && ) -> flatten_view<R>;
