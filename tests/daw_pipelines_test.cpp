@@ -409,17 +409,12 @@ namespace tests {
 	}
 
 	DAW_ATTRIB_NOINLINE void test022( ) {
-		//		daw::println( "\ntest022: pipeline( Print, Flatten, Print )" );
-		//		daw::println( "\t{}", daw::fmt_range{ iota_view<int>{ -5, 5 } } );
-		auto ary = std::array{ iota_view<int>{ 1, 2 },
-		                       iota_view<int>{ 3, 10 },
-		                       iota_view<int>{ 11, 15 } };
-		daw::do_not_optimize( ary );
-		auto p = pipeline( Flatten, Count );
-		daw::do_not_optimize( p );
-		auto r = p( ary );
-		daw::do_not_optimize( r );
-		daw::println( "{}", r );
+		daw::println( "\ntest022: pipeline( Print, Flatten, Print )" );
+		constexpr auto ary = std::array{ iota_view<int>{ 1, 2 },
+		                                 iota_view<int>{ 6, 10 },
+		                                 iota_view<int>{ 15, 17 } };
+		auto r = pipeline( ary, Print, Flatten, Print );
+		(void)r;
 	}
 } // namespace tests
 

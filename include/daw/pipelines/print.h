@@ -30,15 +30,16 @@ namespace daw::pipelines {
 			DAW_ATTRIB_NOINLINE
 			[[nodiscard]] inline decltype( auto ) operator( )( auto &&r ) const {
 				using R = DAW_TYPEOF( r );
-				if constexpr( is_tuple_like_v<R> ) {
-					daw::println( "{}", daw::fmt_tuple( r ) );
-				} else if constexpr( Range<R> ) {
+				if constexpr( Range<R> ) {
 					static_assert( InputRangeAllowed == AllowPrintInputRange::Allow or
 					                 ForwardRange<R>,
 					               "Printing a non-forward range is not allowed when "
 					               "template param InputRangeAllowed is Disallow.  Use "
 					               "Print::AllowInput to enable this" );
 					daw::println( "{}", daw::fmt_range( r ) );
+				} else if constexpr( is_tuple_like_v<R> ) {
+					daw::println( "{}", daw::fmt_tuple( r ) );
+
 				} else {
 					daw::println( "{}", r );
 				}

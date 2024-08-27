@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw/daw_move.h"
 #include "daw_typeof.h"
 
 #include <iterator>
@@ -145,4 +146,12 @@ namespace daw {
 
 	template<typename R>
 	concept RandomRange = Range<R> and RandomIterator<iterator_t<R>>;
+
+	template<typename R>
+	[[nodiscard]] constexpr auto iter_last( R &&r ) {
+		static_assert( ForwardRange<R>, "R is not a ForwardRange" );
+		auto const sz = std::distance( std::begin( r ), std::end( r ) );
+		auto const last_dist = sz == 0 ? 0 : sz - 1;
+		return std::next( std::begin( r ), last_dist );
+	}
 } // namespace daw

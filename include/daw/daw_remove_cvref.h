@@ -16,6 +16,7 @@ namespace daw {
 	template<typename T>
 	using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
 
+	/// Make rvalue references remove_cvref_t<T> and alone otherwise
 	template<typename T>
 	using remove_cvrvref_t =
 	  std::conditional_t<std::is_rvalue_reference_v<T>, remove_cvref_t<T>, T>;

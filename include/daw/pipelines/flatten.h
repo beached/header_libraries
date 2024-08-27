@@ -17,11 +17,12 @@
 #include "pipeline_traits.h"
 #include "range.h"
 
+#include <cassert>
 #include <cstddef>
 #include <iterator>
 
 namespace daw::pipelines::pimpl {
-	template<Range R>
+	template<ForwardRange R>
 	struct flatten_view {
 		using iterator_t = daw::iterator_t<R>;
 		using sub_iterator_t = daw::iterator_t<daw::iter_value_t<iterator_t>>;
@@ -35,21 +36,44 @@ common_iterator_category_t<daw::iter_category_t<iterator_t>,
 		using difference_type = std::ptrdiff_t;
 		using i_am_a_daw_flatten_view_class = void;
 
-	private:
-		R m_range;
+		// private:
+		using m_range_t = daw::remove_cvrvref_t<R>;
+		m_range_t m_range;
 		iterator_t m_range_first{ };
 		sub_iterator_t m_cur_first{ };
 
-		DAW_ATTRIB_NOINLINE constexpr void inc_range( ) {
+		[[nodiscard]] constexpr auto rbegin( ) {
+			return std::begin( m_range );
+		}
+
+		[[nodiscard]] constexpr auto rbegin( ) const {
+			return std::begin( m_range );
+		}
+
+		[[nodiscard]] constexpr auto rend( ) {
+			return std::end( m_range );
+		}
+
+		[[nodiscard]] constexpr auto rend( ) const {
+			return std::end( m_range );
+		}
+
+		DAW_ATTRIB_INLINE constexpr void inc_range( ) {
+			assert( m_range_first != rend( ) );
 			++m_range_first;
-			if( m_range_first == std::end( m_range ) ) {
+			if( m_range_first == rend( ) ) {
 				m_cur_first = sub_iterator_t{ };
+				assert( *this == end( ) );
+			} else {
+				m_cur_first = std::begin( *m_range_first );
 			}
 		}
 
-		DAW_ATTRIB_NOINLINE constexpr void inc_sub_range( ) {
+		DAW_ATTRIB_INLINE constexpr void inc_sub_range( ) {
+			assert( m_cur_first != sub_iterator_t{ } );
+			assert( m_cur_first != std::end( *m_range_first ) );
 			++m_cur_first;
-			if( m_cur_first == std::end( *begin( ) ) ) {
+			if( m_cur_first == std::end( *m_range_first ) ) {
 				inc_range( );
 			}
 		}
@@ -57,24 +81,22 @@ common_iterator_category_t<daw::iter_category_t<iterator_t>,
 	public:
 		explicit flatten_view( ) = default;
 
-		explicit constexpr flatten_view( R const &r )
-		  : m_range( r )
-		  , m_range_first( std::begin( m_range ) )
-		  , m_cur_first( empty_range( m_range ) ? sub_iterator_t{ }
-		                                        : std::begin( *m_range_first ) ) {}
-
-		explicit constexpr flatten_view( R &&r )
+		explicit constexpr flatten_view( auto &&r )
 		  : m_range( DAW_FWD( r ) )
-		  , m_range_first( std::begin( m_range ) )
-		  , m_cur_first( empty_range( m_range ) ? sub_iterator_t{ }
-		                                        : std::begin( *m_range_first ) ) {}
-
-		[[nodiscard]] constexpr sub_iterator_t begin( ) const {
-			return m_cur_first;
+		  , m_range_first( rbegin( ) )
+		  , m_cur_first( m_range_first == rend( ) ? sub_iterator_t{ }
+		                                          : std::begin( *m_range_first ) ) {
 		}
 
-		[[nodiscard]] constexpr sub_iterator_t end( ) const {
-			return std::end( *m_range_first );
+		[[nodiscard]] constexpr flatten_view begin( ) const {
+			return *this;
+		}
+
+		[[nodiscard]] constexpr flatten_view end( ) const {
+			auto r = *this;
+			r.m_range_first = rend( );
+			r.m_cur_first = sub_iterator_t{ };
+			return r;
 		}
 
 		DAW_ATTRIB_NOINLINE constexpr flatten_view &operator++( ) {
@@ -89,10 +111,16 @@ common_iterator_category_t<daw::iter_category_t<iterator_t>,
 		}
 
 		[[nodiscard]] constexpr reference operator*( ) noexcept {
+			assert( m_range_first != rend( ) );
+			assert( m_cur_first != std::end( *m_range_first ) );
+			assert( m_cur_first != sub_iterator_t{ } );
 			return *m_cur_first;
 		}
 
 		[[nodiscard]] constexpr const_reference operator*( ) const noexcept {
+			assert( m_range_first != rend( ) );
+			assert( m_cur_first != std::end( *m_range_first ) );
+			assert( m_cur_first != sub_iterator_t{ } );
 			return *m_cur_first;
 		}
 
@@ -106,7 +134,7 @@ common_iterator_category_t<daw::iter_category_t<iterator_t>,
 		operator!=( flatten_view const &rhs ) const noexcept = default;
 	};
 	template<Range R>
-	flatten_view( R ) -> flatten_view<R>;
+	flatten_view( R && ) -> flatten_view<R>;
 
 	struct Flatten_t {
 		[[nodiscard]] DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr auto
