@@ -15,6 +15,7 @@
 #include "pipeline_traits.h"
 #include "range.h"
 
+#include <array>
 #include <tuple>
 #include <type_traits>
 #include <utility>
@@ -29,7 +30,7 @@ namespace daw::pipelines {
 		  common_iterator_category_t<std::forward_iterator_tag,
 		                             range_category_t<Ranges>...>;
 		static_assert( not std::same_as<void, iterator_category> );
-		using types_t = std::tuple<Ranges...>;
+		using types_t = std::tuple<daw::remove_cvrvref_t<Ranges>...>;
 		using value_type = std::common_type_t<range_value_t<Ranges>...>;
 		using reference = std::common_reference_t<range_reference_t<Ranges>...>;
 		using const_reference =
@@ -116,7 +117,7 @@ namespace daw::pipelines {
 		}
 	};
 	template<typename... Ranges>
-	concat_view( Ranges... ) -> concat_view<Ranges...>;
+	concat_view( Ranges &&... ) -> concat_view<Ranges...>;
 
 	namespace pimpl {
 		struct Concat_t {
