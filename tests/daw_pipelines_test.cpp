@@ -390,22 +390,22 @@ namespace tests {
 		daw::println(
 		  "\ntest020: pipeline( iota_view<int>{{ -5, 5 }}, TakeUntil( []( int x ) "
 		  "{{ return x > 0; }} ) ) )" );
-		daw::println( "\t{}", daw::fmt_range{ iota_view<int>{ -5, 5 } } );
+		daw::println( "\tin:  {}", daw::fmt_range{ iota_view<int>{ -5, 5 } } );
 		auto const p = pipeline( iota_view<int>{ -5, 5 }, TakeUntil( []( int x ) {
 			                         return x > 0;
 		                         } ) );
-		daw::println( "\t{}", daw::fmt_range{ p } );
+		daw::println( "\tout: {}", daw::fmt_range{ p } );
 	}
 
 	DAW_ATTRIB_NOINLINE void test021( ) {
 		daw::println(
 		  "\ntest021: pipeline( iota_view<int>{{ -5, 5 }}, TakeWhile( []( int x ) "
 		  "{{ return x < 0; }} ) ) )" );
-		daw::println( "\t{}", daw::fmt_range{ iota_view<int>{ -5, 5 } } );
+		daw::println( "\tin:  {}", daw::fmt_range{ iota_view<int>{ -5, 5 } } );
 		auto const p = pipeline( iota_view<int>{ -5, 5 }, TakeWhile( []( int x ) {
 			                         return x < 0;
 		                         } ) );
-		daw::println( "\t{}", daw::fmt_range{ p } );
+		daw::println( "\tout: {}", daw::fmt_range{ p } );
 	}
 
 	DAW_ATTRIB_NOINLINE void test022( ) {
@@ -418,7 +418,8 @@ namespace tests {
 	}
 
 	DAW_ATTRIB_NOINLINE void test023( ) {
-		static constexpr auto ary = To<std::array<std::size_t, 9>>( )( iota_view( 9 ) );
+		static constexpr auto ary =
+		  To<std::array<std::size_t, 9>>( )( iota_view( 9 ) );
 		daw::println( "\ntest023: pipeline( Chunk( 3 ), Flatten )" );
 		daw::println( "\tin:  {}", daw::fmt_range( ary ) );
 		constexpr auto p = pipeline( Chunk( 3 ), Flatten );
