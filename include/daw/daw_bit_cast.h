@@ -12,6 +12,7 @@
 #include "daw_aligned_storage.h"
 #include "daw_cpp_feature_check.h"
 
+#include <array>
 #include <cstring>
 #include <type_traits>
 
@@ -42,7 +43,7 @@ namespace daw {
 		static_assert( std::is_default_constructible_v<To>,
 		               "To must be default constructible" );
 
-		auto result = daw::aligned_storage_t<sizeof( To ), alignof( To )>{ };
+		auto result = aligned_storage_for_t<To>{ };
 		return *static_cast<To *>( std::memcpy( &result, &from, sizeof( To ) ) );
 	}
 } // namespace daw
