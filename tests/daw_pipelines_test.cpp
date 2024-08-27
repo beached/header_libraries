@@ -416,6 +416,17 @@ namespace tests {
 		auto r = pipeline( ary, Print, Flatten, Print );
 		(void)r;
 	}
+
+	DAW_ATTRIB_NOINLINE void test023( ) {
+		static constexpr auto ary = To<std::array<std::size_t, 9>>( )( iota_view( 9 ) );
+		daw::println( "\ntest023: pipeline( Chunk( 3 ), Flatten )" );
+		daw::println( "\tin:  {}", daw::fmt_range( ary ) );
+		constexpr auto p = pipeline( Chunk( 3 ), Flatten );
+		constexpr auto r = p( ary );
+		constexpr auto ary2 = To<std::array<std::size_t, 9>>( )( r );
+		static_assert( ary == ary2 );
+		daw::println( "\tout: {}", daw::fmt_range( ary2 ) );
+	}
 } // namespace tests
 
 int main( ) {
@@ -441,6 +452,7 @@ int main( ) {
 	tests::test020( );
 	tests::test021( );
 	tests::test022( );
+	tests::test023( );
 
 	daw::println( "Done" );
 }

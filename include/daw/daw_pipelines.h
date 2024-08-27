@@ -9,6 +9,7 @@
 #pragma once
 
 #include "pipelines/algorithm.h"
+#include "pipelines/chunk.h"
 #include "pipelines/concat.h"
 #include "pipelines/enumerate.h"
 #include "pipelines/every.h"

@@ -11,7 +11,7 @@
 #include <iterator>
 
 namespace daw::pipelines {
-	template<Iterator First, Iterator Last>
+	template<Iterator First, Iterator Last = First>
 	struct range_t {
 		First first;
 		Last last;
