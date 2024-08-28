@@ -10,6 +10,7 @@
 
 #include "daw/daw_algorithm.h"
 #include "daw/daw_attributes.h"
+#include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
 
@@ -24,8 +25,9 @@ namespace daw::pipelines::pimpl {
 	                                                       auto &&it_current,
 	                                                       auto const &last,
 	                                                       auto &&...its ) {
+		static_assert( C >= 0 );
 		if constexpr( C == 0 ) {
-			return needle( *DAW_FWD( its )... );
+			return std::invoke( needle, *DAW_FWD( its )... );
 		} else {
 			auto next = it_current;
 			++it_current;
@@ -37,28 +39,11 @@ namespace daw::pipelines::pimpl {
 		}
 	}
 
-	template<std::size_t FindWidth, typename Needle>
-	struct Find_t {
-		static_assert( FindWidth > 0, "FindWidth must be greater than 0" );
+	template<std::size_t FindWidth, typename Needle, typename>
+	requires( FindWidth > 0 ) //
+	  struct Find_t {
 		DAW_NO_UNIQUE_ADDRESS Needle needle;
 
-		template<Range R>
-		[[nodiscard]] constexpr auto operator( )( R &&r ) const
-		  requires( FindWidth == 1 ) {
-			// Normal find
-			auto first = std::begin( r );
-			auto const last = std::end( r );
-			while( first != last ) {
-				if( needle( *first ) ) {
-					break;
-				}
-				++first;
-			}
-			return first;
-		}
-
-	private:
-	public:
 		template<ForwardRange R>
 		[[nodiscard]] constexpr auto operator( )( R &&r ) const {
 			// Adjacent Find
@@ -79,6 +64,36 @@ namespace daw::pipelines::pimpl {
 			return first;
 		}
 	};
+
+	template<typename Needle, typename Projection>
+	struct Find_t<1, Needle, Projection> {
+		DAW_NO_UNIQUE_ADDRESS Needle needle;
+		DAW_NO_UNIQUE_ADDRESS Projection projection;
+
+		template<Range R>
+		[[nodiscard]] constexpr auto operator( )( R &&r ) const {
+			// Normal find
+			auto first = std::begin( r );
+			auto const last = std::end( r );
+			while( first != last ) {
+				if constexpr( requires {
+					              std::invoke( needle,
+					                           std::invoke( projection, *first ) );
+				              } ) {
+					if( std::invoke( needle, std::invoke( projection, *first ) ) ) {
+						break;
+					}
+				} else {
+					if( std::equal_to<>{ }( needle,
+					                        std::invoke( projection, *first ) ) ) {
+						break;
+					}
+				}
+				++first;
+			}
+			return first;
+		}
+	};
 } // namespace daw::pipelines::pimpl
 
 namespace daw::pipelines {
@@ -86,9 +101,30 @@ namespace daw::pipelines {
 	/// When FindWidth == 1, Find - Needle can be a range_value_type or callable
 	/// When FindWidth > 1, Adjacent Find - Needle must be a callable taking
 	/// FindWidth parameters of type range_value_type
-	template<std::size_t FindWidth = 1, typename Needle>
-	[[nodiscard]] constexpr auto Find( Needle &&needle ) {
-		static_assert( FindWidth > 0, "FindWidth must be greater than 0" );
-		return pimpl::Find_t<FindWidth, Needle>{ DAW_FWD( needle ) };
+	template<typename Needle, typename Projection = std::identity>
+	requires( not Range<Needle> ) //
+	  [[nodiscard]] constexpr auto Find(
+	    Needle &&needle, Projection &&projection = Projection{ } ) {
+		return pimpl::Find_t<1, Needle, Projection>( DAW_FWD( needle ),
+		                                             DAW_FWD( projection ) );
+	}
+
+	template<typename Needle, typename Projection = std::identity>
+	[[nodiscard]] constexpr auto Find( Range auto &&r,
+	                                   Needle &&needle,
+	                                   Projection &&projection = Projection{ } ) {
+		return Find( DAW_FWD( needle ), DAW_FWD( projection ) )( DAW_FWD( r ) );
+	}
+
+	template<std::size_t FindWidth, typename Needle>
+	requires( FindWidth > 1 and not Range<Needle> )
+	  [[nodiscard]] constexpr auto Find( Needle &&needle ) {
+		return pimpl::Find_t<FindWidth, Needle, std::identity>( DAW_FWD( needle ) );
+	}
+
+	template<std::size_t FindWidth, typename Needle>
+	requires( FindWidth > 1 )
+	  [[nodiscard]] constexpr auto Find( Range auto &&r, Needle &&needle ) {
+		return Find<FindWidth>( DAW_FWD( needle ) )( DAW_FWD( r ) );
 	}
 } // namespace daw::pipelines

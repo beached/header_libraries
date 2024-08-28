@@ -430,13 +430,40 @@ namespace tests {
 	}
 
 	DAW_ATTRIB_NOINLINE void test024( ) {
-		constexpr auto p = pipeline( Find<2>( []( auto const &l, auto const &r ) {
-			return l == r;
-		} ) );
 		static constexpr auto ary = std::array{ 1, 2, 3, 4, 4, 5, 6, 6, 7 };
-		auto it = p( ary );
-		daw_ensure( it != std::end( ary ) );
-		daw_ensure( std::distance( std::begin( ary ), it ) == 3 );
+		constexpr auto it = Find<2>( ary, []( auto const &l, auto const &r ) {
+			return l == r;
+		} );
+		static_assert( it != std::end( ary ) );
+		static_assert( std::distance( std::begin( ary ), it ) == 3 );
+
+		constexpr auto it2 = Find( ary, 2 );
+		static_assert( it2 != std::end( ary ) );
+		static_assert( std::distance( std::begin( ary ), it2 ) == 1 );
+		constexpr auto it3 = Find( 2 )( ary );
+		static_assert( it2 == it3 );
+	}
+
+	DAW_ATTRIB_NOINLINE void test025( ) {
+		struct Test {
+			int value;
+
+			constexpr Test( int v )
+			  : value( v ) {}
+		};
+		static constexpr auto ary =
+		  std::array<Test, 9>{ 1, 2, 3, 4, 4, 5, 6, 6, 7 };
+		constexpr auto it = Find<2>( ary, []( auto const &l, auto const &r ) {
+			return l.value == r.value;
+		} );
+		static_assert( it != std::end( ary ) );
+		static_assert( std::distance( std::begin( ary ), it ) == 3 );
+
+		constexpr auto it2 = Find( ary, 2, &Test::value );
+		static_assert( it2 != std::end( ary ) );
+		static_assert( std::distance( std::begin( ary ), it2 ) == 1 );
+		constexpr auto it3 = Find( 2, &Test::value )( ary );
+		static_assert( it2 == it3 );
 	}
 } // namespace tests
 
@@ -465,6 +492,7 @@ int main( ) {
 	tests::test022( );
 	tests::test023( );
 	tests::test024( );
+	tests::test025( );
 
 	daw::println( "Done" );
 }
