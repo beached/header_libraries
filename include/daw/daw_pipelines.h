@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "pipelines/find.h"
+
 #include "pipelines/algorithm.h"
 #include "pipelines/chunk.h"
 #include "pipelines/concat.h"

@@ -428,6 +428,16 @@ namespace tests {
 		daw_ensure( ary == ary2 );
 		daw::println( "\tout: {}", daw::fmt_range( ary2 ) );
 	}
+
+	DAW_ATTRIB_NOINLINE void test024( ) {
+		constexpr auto p = pipeline( Find<2>( []( auto const &l, auto const &r ) {
+			return l == r;
+		} ) );
+		static constexpr auto ary = std::array{ 1, 2, 3, 4, 4, 5, 6, 6, 7 };
+		auto it = p( ary );
+		daw_ensure( it != std::end( ary ) );
+		daw_ensure( std::distance( std::begin( ary ), it ) == 3 );
+	}
 } // namespace tests
 
 int main( ) {
@@ -454,6 +464,7 @@ int main( ) {
 	tests::test021( );
 	tests::test022( );
 	tests::test023( );
+	tests::test024( );
 
 	daw::println( "Done" );
 }
