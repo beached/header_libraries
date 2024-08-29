@@ -24,7 +24,9 @@
 #include <utility>
 
 namespace daw::pipelines {
-	template<typename Iterator, typename Filter>
+	template<typename Iterator,
+	         typename Filter,
+	         typename Projection = std::identity>
 	struct filter_view {
 		using iterator_category = std::forward_iterator_tag;
 		using value_type = daw::iter_value_t<Iterator>;
@@ -36,18 +38,27 @@ namespace daw::pipelines {
 	private:
 		Iterator m_first = Iterator{ };
 		Iterator m_last = Iterator{ };
-		DAW_NO_UNIQUE_ADDRESS Filter m_func = Filter( );
+		DAW_NO_UNIQUE_ADDRESS mutable Filter m_func{ };
+		DAW_NO_UNIQUE_ADDRESS Projection m_projection{ };
+
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+		filter( auto const &v ) const {
+			return std::invoke( m_func, m_projection( v ) );
+		}
 
 	public:
 		explicit filter_view( ) = default;
 
-		template<typename F>
-		requires std::constructible_from<Filter, F> //
-		  explicit constexpr filter_view( Iterator first, Iterator last, F &&fn )
+		explicit constexpr
+		filter_view( Iterator first,
+		             Iterator last,
+		             Filter const &fn,
+		             Projection const &projection = Projection{ } )
 		  : m_first( first )
 		  , m_last( last )
-		  , m_func( DAW_FWD( fn ) ) {
-			while( good( ) and not m_func( *m_first ) ) {
+		  , m_func( fn )
+		  , m_projection( projection ) {
+			while( good( ) and not filter( *m_first ) ) {
 				++m_first;
 			}
 		}
@@ -65,7 +76,7 @@ namespace daw::pipelines {
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr filter_view end( ) const {
-			return filter_view( m_last, m_last, m_func );
+			return filter_view( m_last, m_last, m_func, m_projection );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference operator*( ) {
@@ -91,7 +102,7 @@ namespace daw::pipelines {
 
 		DAW_ATTRIB_INLINE constexpr filter_view &operator++( ) {
 			++m_first;
-			while( good( ) and not m_func( *m_first ) ) {
+			while( good( ) and not filter( *m_first ) ) {
 				++m_first;
 			}
 			return *this;
@@ -117,37 +128,46 @@ namespace daw::pipelines {
 	filter_view( I, I, F ) -> filter_view<I, F>;
 
 	namespace pimpl {
-		template<typename Fn>
+		template<typename Fn, typename Projection = std::identity>
 		struct filter_t {
-			DAW_NO_UNIQUE_ADDRESS Fn fn;
+			DAW_NO_UNIQUE_ADDRESS mutable Fn m_func;
+			DAW_NO_UNIQUE_ADDRESS Projection m_projection{ };
 
 			template<Range R>
 			[[nodiscard]] constexpr auto operator( )( R &&r ) const {
+				static_assert( std::is_invocable_v<Projection, range_value_t<R>>,
+				               "Projection must be invocable with range_value_t<R>" );
+				using projected_t = std::invoke_result_t<Projection, range_value_t<R>>;
 				static_assert(
-				  std::is_invocable_v<Fn, range_reference_t<R>>,
-				  "Filter requires an invokable function with range_reference_t" );
+				  std::is_invocable_v<Fn, projected_t>,
+				  "Filter requires an invokable function with the projected value" );
 				static_assert(
-				  std::convertible_to<std::invoke_result_t<Fn, range_reference_t<R>>,
-				                      bool>,
+				  std::convertible_to<std::invoke_result_t<Fn, projected_t>, bool>,
 				  "Filter requires an invokable function that returns a bool" );
 				return filter_view<iterator_t<R>, Fn>(
-				  std::begin( r ), std::end( r ), fn );
+				  std::begin( r ), std::end( r ), m_func, m_projection );
 			}
 
 			template<typename Value>
 			[[nodiscard]] constexpr auto operator( )( Value &&v ) const {
+				static_assert( std::is_invocable_v<Projection, Value>,
+				               "Projection must be invocable with range_value_t<R>" );
+				using projected_t = std::invoke_result_t<Projection, Value>;
 				static_assert(
-				  std::is_invocable_r_v<bool, Fn, Value>,
+				  std::is_invocable_r_v<bool, Fn, projected_t>,
 				  "Filter requires an invokable function that returns a bool" );
 				using result_t = daw::remove_cvref_t<std::invoke_result_t<Fn, Value>>;
-				if( fn( v ) ) {
-					return std::optional<result_t>( DAW_FWD( v ) );
+				if( std::invoke( m_func, std::invoke( m_projection, v ) ) ) {
+					return std::optional<result_t>( std::invoke( m_func, DAW_FWD( v ) ) );
 				}
 				return std::optional<result_t>( );
 			}
 		};
 		template<typename F>
 		filter_t( F ) -> filter_t<F>;
+
+		template<typename F, typename P>
+		filter_t( F, P ) -> filter_t<F, P>;
 	} // namespace pimpl
 
 	/// Filter a range with the given predicate function.

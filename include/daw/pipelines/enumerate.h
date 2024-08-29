@@ -32,9 +32,15 @@ namespace daw::pipelines::pimpl {
 		template<typename R>
 		[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
 		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
-			return ZipMore(
-			  iota_view<std::size_t>( 0, std::numeric_limits<std::size_t>::max( ) ),
-			  DAW_FWD( r ) );
+			if constexpr( RandomRange<R> ) {
+				auto const sz = static_cast<std::size_t>(
+				  std::distance( std::begin( r ), std::end( r ) ) );
+				return ZipMore( iota_view<std::size_t>( 0, sz ), DAW_FWD( r ) );
+			} else {
+				return ZipMore(
+				  iota_view<std::size_t>( 0, std::numeric_limits<std::size_t>::max( ) ),
+				  DAW_FWD( r ) );
+			}
 		}
 	};
 } // namespace daw::pipelines::pimpl
