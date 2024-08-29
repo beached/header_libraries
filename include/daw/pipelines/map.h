@@ -21,11 +21,11 @@
 #include <type_traits>
 
 namespace daw::pipelines {
-	template<Iterator Iterator, typename Function>
+	template<Iterator Iterator, typename Fn, typename Projection = std::identity>
 	struct map_iterator {
 		using iterator_category = typename Iterator::iterator_category;
 		using value_type = daw::remove_cvref_t<
-		  std::invoke_result_t<Function, daw::iter_value_t<Iterator>>>;
+		  std::invoke_result_t<Fn, daw::iter_value_t<Iterator>>>;
 		using reference = value_type;
 		using const_reference = value_type;
 		using pointer = arrow_proxy<value_type>;
@@ -34,13 +34,18 @@ namespace daw::pipelines {
 
 	private:
 		Iterator m_iter;
-		Function m_func;
+		DAW_NO_UNIQUE_ADDRESS mutable Fn m_func = Fn{ };
+		DAW_NO_UNIQUE_ADDRESS Projection m_projection = Projection{ };
 
 	public:
 		explicit constexpr map_iterator( ) = default;
-		explicit constexpr map_iterator( Iterator it, Function f )
+		explicit constexpr map_iterator( Iterator it, Fn f )
 		  : m_iter( it )
 		  , m_func( f ) {}
+		explicit constexpr map_iterator( Iterator it, Fn f, Projection projection )
+		  : m_iter( it )
+		  , m_func( f )
+		  , m_projection( projection ) {}
 
 	private:
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr decltype( auto )
@@ -150,49 +155,51 @@ namespace daw::pipelines {
 			return lhs.m_iter != rhs.m_iter;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
-		operator<( map_iterator const &lhs, map_iterator const &rhs )
+		// clang-format off
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend auto
+		operator<=>( map_iterator const &lhs, map_iterator const &rhs )
 		  requires( RandomIterator<Iterator> ) {
-			return lhs.m_iter < rhs.m_iter;
+			return lhs.m_iter <=> rhs.m_iter;
 		}
-
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
-		operator<=( map_iterator const &lhs, map_iterator const &rhs )
-		  requires( RandomIterator<Iterator> ) {
-			return lhs.m_iter <= rhs.m_iter;
-		}
-
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
-		operator>( map_iterator const &lhs, map_iterator const &rhs )
-		  requires( RandomIterator<Iterator> ) {
-			return lhs.m_iter > rhs.m_iter;
-		}
-
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
-		operator>=( map_iterator const &lhs, map_iterator const &rhs )
-		  requires( RandomIterator<Iterator> ) {
-			return lhs.m_iter >= rhs.m_iter;
-		}
+		// clang-format on
 	};
 	template<Iterator I, typename F>
 	map_iterator( I, F ) -> map_iterator<I, F>;
 
-	template<Iterator Iterator, typename Fn>
+	template<Iterator I, typename F, typename P>
+	map_iterator( I, F, P ) -> map_iterator<I, F, P>;
+
+	template<Iterator First, typename Fn, typename Projection = std::identity>
 	struct map_view {
-		using value_type = daw::iter_value_t<map_iterator<Iterator, Fn>>;
-		using iterator = map_iterator<Iterator, Fn>;
+		using value_type = daw::iter_value_t<map_iterator<First, Fn, Projection>>;
+		using iterator = map_iterator<First, Fn, Projection>;
 
 		iterator m_first = iterator{ };
 		iterator m_last = iterator{ };
 
 		explicit map_view( ) = default;
 
-		explicit constexpr map_view( Iterator first, Fn const &fn )
+		explicit constexpr map_view( First first, Fn const &fn )
+		  requires( not Iterator<Fn> )
 		  : m_first( first, fn ) {}
 
-		explicit constexpr map_view( Iterator first, Iterator last, Fn const &fn )
+		explicit constexpr
+		map_view( First first, Fn const &fn, Projection const &projection )
+		  requires( not Iterator<Fn> and not Iterator<Projection> )
+		  : m_first( first, fn, projection ) {}
+
+		explicit constexpr map_view( First first, First last, Fn const &fn )
+		  requires( not Iterator<Fn> )
 		  : m_first( first, fn )
 		  , m_last( last, fn ) {}
+
+		explicit constexpr map_view( First first,
+		                             First last,
+		                             Fn const &fn,
+		                             Projection const &projection )
+		  requires( not Iterator<Fn> and not Iterator<Projection> )
+		  : m_first( first, fn, projection )
+		  , m_last( last, fn, projection ) {}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr iterator begin( ) const {
 			return m_first;
@@ -202,42 +209,67 @@ namespace daw::pipelines {
 			return m_last;
 		}
 	};
-	template<typename I, typename F>
-	map_view( I, F ) -> map_view<I, F>;
-	template<typename I, typename F>
-	map_view( I, I, F ) -> map_view<I, F>;
+	template<Iterator I, typename F>
+	requires( not Iterator<F> ) //
+	  map_view( I, F ) -> map_view<I, F>;
+
+	template<Iterator I, typename F, typename P>
+	requires( not Iterator<F> and not Iterator<P> ) //
+	  map_view( I, F, P ) -> map_view<I, F, P>;
+
+	template<Iterator I, typename F>
+	requires( not Iterator<F> ) //
+	  map_view( I, I, F ) -> map_view<I, F>;
+
+	template<Iterator I, typename F, typename P>
+	requires( not Iterator<F> and not Iterator<P> ) //
+	  map_view( I, I, F, P ) -> map_view<I, F, P>;
 
 	namespace pimpl {
-		template<typename Fn>
+		template<typename Fn, typename Projection = std::identity>
 		struct Map_t {
-			mutable Fn m_func;
+			DAW_NO_UNIQUE_ADDRESS mutable Fn m_func;
+			DAW_NO_UNIQUE_ADDRESS Projection m_projection = Projection{ };
 
 			[[nodiscard]] constexpr auto operator( )( auto &&r ) const {
 				using R = DAW_TYPEOF( r );
+				static_assert(
+				  std::is_invocable_v<Projection, range_value_t<R>>,
+				  "Projection must be invacable with the range_value_t<R>" );
+				using projected_t = std::invoke_result_t<Projection, range_value_t<R>>;
+
 				if constexpr( Range<R> ) {
-					static_assert( std::is_invocable_v<Fn, range_reference_t<R>>,
+					static_assert( std::is_invocable_v<Fn, projected_t>,
 					               "Map requires the function to be able to be called "
 					               "with invoke and the range_reference_t(e.g. invoke( "
 					               "MapFn, *it ) )" );
-					static_assert( traits::NoVoidResults<Fn, range_reference_t<R>>,
+					static_assert( traits::NoVoidResults<Fn, projected_t>,
 					               "Map requires the result to not be void" );
-					return map_view( std::begin( r ), std::end( r ), m_func );
+					return map_view<iterator_t<R>, Fn, Projection>(
+					  std::begin( DAW_FWD( r ) ),
+					  std::end( DAW_FWD( r ) ),
+					  m_func,
+					  m_projection );
 				} else {
-					static_assert( std::is_invocable_v<Fn, R>,
+					static_assert( std::is_invocable_v<Fn, projected_t>,
 					               "Map requires the function to be able to be called "
 					               "with invoke and passed value" );
-					static_assert( traits::NoVoidResults<Fn, R>,
+					static_assert( traits::NoVoidResults<Fn, projected_t>,
 					               "Map requires the result to not be void" );
-					return std::invoke( m_func, DAW_FWD( r ) );
+					return std::invoke( m_func,
+					                    std::invoke( m_projection, DAW_FWD( r ) ) );
 				}
 			}
 		};
 		template<typename Fn>
 		Map_t( Fn ) -> Map_t<Fn>;
 
+		template<typename Fn, typename Projection>
+		Map_t( Fn, Projection ) -> Map_t<Fn, Projection>;
+
 		template<typename Fn>
 		struct MapApply_t {
-			mutable Fn m_func;
+			DAW_NO_UNIQUE_ADDRESS mutable Fn m_func;
 
 			[[nodiscard]] constexpr auto operator( )( auto &&r ) const {
 				using R = DAW_TYPEOF( r );
@@ -285,9 +317,10 @@ namespace daw::pipelines {
 		Clamp_t( T, T, Compare ) -> Clamp_t<T, Compare>;
 	} // namespace pimpl
 
-	template<typename Fn>
-	[[nodiscard]] constexpr auto Map( Fn &&fn ) {
-		return pimpl::Map_t{ DAW_FWD( fn ) };
+	template<typename Fn, typename Projection = std::identity>
+	[[nodiscard]] constexpr auto Map( Fn &&fn,
+	                                  Projection &&projection = Projection( ) ) {
+		return pimpl::Map_t{ DAW_FWD( fn ), DAW_FWD( projection ) };
 	};
 
 	template<typename Fn>

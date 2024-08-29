@@ -115,8 +115,15 @@ namespace daw {
 	using iterator_t = DAW_TYPEOF( std::begin( std::declval<R>( ) ) );
 
 	template<Range R>
+	using iterator_end_t = DAW_TYPEOF( std::end( std::declval<R>( ) ) );
+
+	template<Range R>
 	using const_iterator_t =
 	  DAW_TYPEOF( std::cbegin( std::declval<R const &>( ) ) );
+
+	template<Range R>
+	using const_iterator_end_t =
+	  DAW_TYPEOF( std::cend( std::declval<R const &>( ) ) );
 
 	template<Range R>
 	using range_value_t = iter_value_t<iterator_t<R>>;

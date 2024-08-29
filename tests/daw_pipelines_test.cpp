@@ -448,7 +448,7 @@ namespace tests {
 		struct Test {
 			int value;
 
-			constexpr Test( int v )
+			explicit( false ) constexpr Test( int v )
 			  : value( v ) {}
 		};
 		static constexpr auto ary =
