@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "pipelines/slide.h"
+
 #include "pipelines/algorithm.h"
 #include "pipelines/chunk.h"
 #include "pipelines/concat.h"

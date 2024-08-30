@@ -53,7 +53,7 @@ namespace daw::pipelines {
 			operator( )( Range auto const &r ) const {
 				std::size_t result = 0;
 				for( auto const &v : r ) {
-					result += static_cast<std::size_t>( func( v ) );
+					result += static_cast<std::size_t>( fn( v ) );
 				}
 				return result;
 			}

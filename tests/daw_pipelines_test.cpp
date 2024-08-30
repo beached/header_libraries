@@ -431,7 +431,7 @@ namespace tests {
 
 	DAW_ATTRIB_NOINLINE void test024( ) {
 		static constexpr auto ary = std::array{ 1, 2, 3, 4, 4, 5, 6, 6, 7 };
-		constexpr auto it = Find<2>( ary, []( auto const &l, auto const &r ) {
+		constexpr auto it = FindIf<2>( ary, []( auto const &l, auto const &r ) {
 			return l == r;
 		} );
 		static_assert( it != std::end( ary ) );
@@ -453,7 +453,7 @@ namespace tests {
 		};
 		static constexpr auto ary =
 		  std::array<Test, 9>{ 1, 2, 3, 4, 4, 5, 6, 6, 7 };
-		constexpr auto it = Find<2>( ary, []( auto const &l, auto const &r ) {
+		constexpr auto it = FindIf<2>( ary, []( auto const &l, auto const &r ) {
 			return l.value == r.value;
 		} );
 		static_assert( it != std::end( ary ) );
@@ -465,6 +465,20 @@ namespace tests {
 		constexpr auto it3 = Find( 2, &Test::value )( ary );
 		static_assert( it2 == it3 );
 	}
+
+	DAW_ATTRIB_NOINLINE void test026( ) {
+		static constexpr auto ary =
+		  To<std::array<std::size_t, 9>>( )( iota_view( 9 ) );
+		daw::println( "\ntest026: pipeline( Slide( 3 ), Flatten )" );
+		daw::println( "\tin:  {}", daw::fmt_range( ary ) );
+		constexpr auto p = pipeline( Slide( 3 ), Print, Flatten );
+		auto r = p( ary );
+		auto const ary2 = To<std::array<std::size_t, 9>>( )( r );
+		constexpr auto tst_ary = std::array<std::size_t, 9>{ 0, 1, 2, 1, 2, 3, 2, 3, 4 };
+		daw_ensure( ary2 == tst_ary );
+		daw::println( "\tout: {}", daw::fmt_range( ary2 ) );
+	}
+
 } // namespace tests
 
 int main( ) {
@@ -493,6 +507,7 @@ int main( ) {
 	tests::test023( );
 	tests::test024( );
 	tests::test025( );
+	tests::test026( );
 
 	daw::println( "Done" );
 }

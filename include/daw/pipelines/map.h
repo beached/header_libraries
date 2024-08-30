@@ -183,8 +183,9 @@ namespace daw::pipelines {
 		  requires( not Iterator<Fn> )
 		  : m_first( first, fn ) {}
 
-		explicit constexpr
-		map_view( First first, Fn const &fn, Projection const &projection )
+		explicit constexpr map_view( First first,
+		                             Fn const &fn,
+		                             Projection const &projection )
 		  requires( not Iterator<Fn> and not Iterator<Projection> )
 		  : m_first( first, fn, projection ) {}
 
@@ -234,12 +235,12 @@ namespace daw::pipelines {
 			[[nodiscard]] constexpr auto operator( )( auto &&r ) const {
 				using R = DAW_TYPEOF( r );
 				static_assert(
-				  std::is_invocable_v<Projection, range_value_t<R>>,
+				  std::invocable<Projection, range_value_t<R>>,
 				  "Projection must be invacable with the range_value_t<R>" );
 				using projected_t = std::invoke_result_t<Projection, range_value_t<R>>;
 
 				if constexpr( Range<R> ) {
-					static_assert( std::is_invocable_v<Fn, projected_t>,
+					static_assert( std::invocable<Fn, projected_t>,
 					               "Map requires the function to be able to be called "
 					               "with invoke and the range_reference_t(e.g. invoke( "
 					               "MapFn, *it ) )" );
@@ -251,7 +252,7 @@ namespace daw::pipelines {
 					  m_func,
 					  m_projection );
 				} else {
-					static_assert( std::is_invocable_v<Fn, projected_t>,
+					static_assert( std::invocable<Fn, projected_t>,
 					               "Map requires the function to be able to be called "
 					               "with invoke and passed value" );
 					static_assert( traits::NoVoidResults<Fn, projected_t>,

@@ -21,7 +21,7 @@ namespace daw::pipelines::pimpl {
 
 		template<Range R>
 		[[nodiscard]] constexpr auto operator( )( R &&r ) const {
-			static_assert( std::is_invocable_v<Fn, range_reference_t<R>>,
+			static_assert( std::invocable<Fn, range_reference_t<R>>,
 			               "ForEach requires the function to be able to be called "
 			               "with invoke and passed value" );
 			for( auto &&v : r ) {
@@ -61,11 +61,11 @@ namespace daw::pipelines {
 		return pimpl::ForEachApply_t{ DAW_FWD( fn ) };
 	}
 
-	[[nodiscard]] constexpr auto ForEachIndexed( auto && fn ) {
+	[[nodiscard]] constexpr auto ForEachIndexed( auto &&fn ) {
 		// Maybe used owned range
-		return [=]( RandomRange auto && r ) {
+		return [=]( RandomRange auto &&r ) {
 			auto const sz = std::distance( std::begin( r ), std::end( r ) );
-			for( std::size_t n=0; n<sz; ++n ) {
+			for( std::size_t n = 0; n < sz; ++n ) {
 				(void)std::invoke( fn, r[n] );
 			}
 			return DAW_FWD( r );

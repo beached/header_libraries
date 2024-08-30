@@ -20,7 +20,7 @@ namespace daw::pipelines::traits {
 
 	template<typename Fn, typename... Params>
 	concept PipelineInvocable2 =
-	  std::is_invocable_v<Fn, Params...> and
+	  std::invocable<Fn, Params...> and
 	  not std::same_as<void, std::invoke_result_t<Fn, Params...>>;
 
 	template<typename Fn, typename Arg>
@@ -28,11 +28,11 @@ namespace daw::pipelines::traits {
 
 	template<typename Fn, typename... Ts>
 	inline constexpr bool is_applicable_v<Fn, std::tuple<Ts...>> =
-	  std::is_invocable_v<Fn, Ts...>;
+	  std::invocable<Fn, Ts...>;
 
 	template<typename Fn, typename T0, typename T1>
 	inline constexpr bool is_applicable_v<Fn, std::pair<T0, T1>> =
-	  std::is_invocable_v<Fn, T0, T1>;
+	  std::invocable<Fn, T0, T1>;
 
 	template<std::size_t, typename T>
 	using ignore_num = T;

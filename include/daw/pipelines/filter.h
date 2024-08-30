@@ -49,11 +49,11 @@ namespace daw::pipelines {
 	public:
 		explicit filter_view( ) = default;
 
-		explicit constexpr
-		filter_view( Iterator first,
-		             Iterator last,
-		             Filter const &fn,
-		             Projection const &projection = Projection{ } )
+		explicit constexpr filter_view(
+		  Iterator first,
+		  Iterator last,
+		  Filter const &fn,
+		  Projection const &projection = Projection{ } )
 		  : m_first( first )
 		  , m_last( last )
 		  , m_func( fn )
@@ -135,11 +135,11 @@ namespace daw::pipelines {
 
 			template<Range R>
 			[[nodiscard]] constexpr auto operator( )( R &&r ) const {
-				static_assert( std::is_invocable_v<Projection, range_value_t<R>>,
+				static_assert( std::invocable<Projection, range_value_t<R>>,
 				               "Projection must be invocable with range_value_t<R>" );
 				using projected_t = std::invoke_result_t<Projection, range_value_t<R>>;
 				static_assert(
-				  std::is_invocable_v<Fn, projected_t>,
+				  std::invocable<Fn, projected_t>,
 				  "Filter requires an invokable function with the projected value" );
 				static_assert(
 				  std::convertible_to<std::invoke_result_t<Fn, projected_t>, bool>,
@@ -150,7 +150,7 @@ namespace daw::pipelines {
 
 			template<typename Value>
 			[[nodiscard]] constexpr auto operator( )( Value &&v ) const {
-				static_assert( std::is_invocable_v<Projection, Value>,
+				static_assert( std::invocable<Projection, Value>,
 				               "Projection must be invocable with range_value_t<R>" );
 				using projected_t = std::invoke_result_t<Projection, Value>;
 				static_assert(
