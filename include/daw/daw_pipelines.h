@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include "pipelines/slide.h"
-
 #include "pipelines/algorithm.h"
 #include "pipelines/chunk.h"
 #include "pipelines/concat.h"
@@ -31,6 +29,7 @@
 #include "pipelines/reverse.h"
 #include "pipelines/sample.h"
 #include "pipelines/skip.h"
+#include "pipelines/slide.h"
 #include "pipelines/swizzle.h"
 #include "pipelines/take.h"
 #include "pipelines/to.h"

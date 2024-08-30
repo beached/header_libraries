@@ -61,7 +61,7 @@ namespace std {
 		formatter( ) = default;
 
 		template<class ParseContext>
-		constexpr ParseContext::iterator parse( ParseContext &ctx ) {
+		constexpr typename ParseContext::iterator parse( ParseContext &ctx ) {
 			auto f = daw::string_view( ctx.begin( ), ctx.end( ) );
 			if( ctx.begin( ) == ctx.end( ) or *ctx.begin( ) == '}' ) {
 				flags = "{}";
@@ -96,17 +96,17 @@ namespace std {
 				}
 				f.remove_prefix( );
 			}
-			flags =
-			  daw::string_view( first, last ); // static_cast<std::size_t>( sz ) );
+			auto const sz = std::distance( first, last );
+			flags = daw::string_view( first, static_cast<std::size_t>( sz ) );
 			flags.expand_prefix( 2 );
 			assert( flags.front( ) == '{' );
-			auto const sz = last - first;
-			return ctx.begin( ) + sz - 1;
+			return std::next( ctx.begin( ), sz - 1 );
 			//			return ctx.end( ) - 1;
 		}
 
 		template<typename Ctx>
-		Ctx::iterator format( daw::fmt_range<R, CharT> c, Ctx &ctx ) const {
+		typename Ctx::iterator format( daw::fmt_range<R, CharT> c,
+		                               Ctx &ctx ) const {
 			using value_t = daw::range_value_t<R>;
 			if constexpr( std::is_same_v<daw::formatter_impl::DefaultCharT,
 			                             value_t> ) {

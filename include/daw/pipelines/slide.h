@@ -125,7 +125,7 @@ namespace daw::pipelines::pimpl {
 	slide_view( R &&r, std::size_t ) -> slide_view<R>;
 
 	struct Slide_t {
-		std::size_t slide_size;
+		std::size_t slide_size = 1;
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
 		operator( )( ForwardRange auto &&r ) const {
 			return slide_view{ DAW_FWD( r ), slide_size };

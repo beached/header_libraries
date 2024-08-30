@@ -33,7 +33,7 @@ namespace daw::pipelines {
 		using size_type = std::size_t;
 
 	private:
-		Iterator m_iter;
+		Iterator m_iter{};
 		DAW_NO_UNIQUE_ADDRESS mutable Fn m_func = Fn{ };
 		DAW_NO_UNIQUE_ADDRESS Projection m_projection = Projection{ };
 
