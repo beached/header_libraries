@@ -236,7 +236,7 @@ namespace daw::pipelines {
 				using R = DAW_TYPEOF( r );
 				static_assert(
 				  std::invocable<Projection, range_value_t<R>>,
-				  "Projection must be invacable with the range_value_t<R>" );
+				  "Projection must be invocable with the range_value_t<R>" );
 				using projected_t = std::invoke_result_t<Projection, range_value_t<R>>;
 
 				if constexpr( Range<R> ) {

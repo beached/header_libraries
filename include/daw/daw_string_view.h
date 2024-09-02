@@ -51,7 +51,9 @@
 	do {                                                        \
 	} while( false )
 #else
-#define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... ) DAW_ASSUME( Bool )
+#define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... ) \
+	do {                                             \
+	} while( false )
 #endif
 
 #if not defined( DAW_NO_STRING_VIEW_PRECOND_CHECKS )
@@ -2647,12 +2649,12 @@ namespace daw {
 		basic_string_view( CharT const * ) -> basic_string_view<CharT>;
 
 		template<typename CharT>
-		basic_string_view( CharT const *,
-		                   std::size_t count ) -> basic_string_view<CharT>;
+		basic_string_view( CharT const *, std::size_t count )
+		  -> basic_string_view<CharT>;
 
 		template<typename CharT>
-		basic_string_view( CharT const *,
-		                   CharT const * ) -> basic_string_view<CharT>;
+		basic_string_view( CharT const *, CharT const * )
+		  -> basic_string_view<CharT>;
 
 		namespace string_view_literals {
 			[[nodiscard]] constexpr string_view
