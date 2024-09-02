@@ -10,6 +10,8 @@
 
 #include "ciso646.h"
 
+#include <type_traits>
+
 namespace daw {
 	/// Some types can come from a variety of type erase pointers.  This makes it
 	/// easier so that only the To type is validated at compile time

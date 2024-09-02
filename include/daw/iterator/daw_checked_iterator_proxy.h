@@ -21,7 +21,7 @@
 namespace daw {
 	template<typename IteratorFirst, typename IteratorLast>
 	class checked_iterator_proxy_t {
-		enum flag_t : uint8_t {
+		enum flag_t : std::uint8_t {
 			check_increment = 1,
 			check_decrement = 2,
 			check_dereference = 4
@@ -29,7 +29,7 @@ namespace daw {
 		IteratorFirst current;
 		IteratorFirst first;
 		IteratorLast last;
-		uint8_t flags;
+		std::uint8_t flags = 0;
 
 		constexpr bool is_flag_set( flag_t flag ) const noexcept {
 			return 0 != ( flags & flag );
@@ -40,9 +40,9 @@ namespace daw {
 		                               bool CheckDereference ) const noexcept {
 			auto result =
 			  static_cast<std::uint8_t>( CheckIncrement ? check_increment : 0 );
-			result = static_cast<uint8_t>(
+			result = static_cast<std::uint8_t>(
 			  daw::nsc_or( result, CheckDecrement ) ? check_decrement : 0 );
-			result = static_cast<uint8_t>(
+			result = static_cast<std::uint8_t>(
 			  daw::nsc_or( result, CheckDereference ) ? check_dereference : 0 );
 
 			return result;

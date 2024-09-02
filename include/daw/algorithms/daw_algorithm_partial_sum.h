@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include "daw/daw_move.h"
 #include "daw_algorithm_accumulate.h"
 
 #include <daw/stdinc/iterator_traits.h>
+#include <daw/stdinc/move_fwd_exch.h>
 
 namespace daw::algorithm {
 	template<typename InputIterator,

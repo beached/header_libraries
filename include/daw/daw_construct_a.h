@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "daw_attributes.h"
+#include "daw_cpp_feature_check.h"
 #include "daw_is_detected.h"
 #include "daw_move.h"
 #include "daw_traits.h"
@@ -40,7 +42,8 @@ namespace daw {
 	template<typename T>
 	struct construct_a_t {
 		template<typename... Args>
-		[[nodiscard]] inline constexpr auto operator( )( Args &&...args ) const
+		[[nodiscard]] DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr auto
+		operator( )( Args &&...args ) DAW_CPP23_STATIC_CALL_OP_CONST
 		  noexcept( std::is_nothrow_constructible_v<T, Args...> )
 		    -> std::enable_if_t<std::is_constructible_v<T, Args...>, T> {
 			if constexpr( std::is_aggregate_v<T> ) {
@@ -51,7 +54,8 @@ namespace daw {
 		}
 
 		template<typename... Args>
-		[[nodiscard]] inline constexpr auto operator( )( Args &&...args ) const
+		[[nodiscard]] DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr auto
+		operator( )( Args &&...args ) DAW_CPP23_STATIC_CALL_OP_CONST
 		  noexcept( traits::is_nothrow_list_constructible_v<T, Args...> )
 		    -> std::enable_if_t<
 		      std::conjunction_v<
@@ -65,9 +69,9 @@ namespace daw {
 
 	template<typename T>
 	struct construct_a_t<daw::use_aggregate_construction<T>> {
-
 		template<typename... Args>
-		[[nodiscard]] inline constexpr auto operator( )( Args &&...args ) const
+		[[nodiscard]] DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr auto
+		operator( )( Args &&...args ) DAW_CPP23_STATIC_CALL_OP_CONST
 		  noexcept( std::is_nothrow_constructible_v<T, Args...> ) -> T {
 
 			return T{ DAW_FWD( args )... };

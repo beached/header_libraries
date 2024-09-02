@@ -29,7 +29,7 @@ namespace daw {
 		Container *m_container;
 
 	public:
-		constexpr end_inserter_iterator( Container &c ) noexcept
+		explicit constexpr end_inserter_iterator( Container &c ) noexcept
 		  : m_container( &c ) {}
 
 		template<typename T,

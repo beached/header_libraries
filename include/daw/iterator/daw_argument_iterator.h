@@ -17,9 +17,9 @@
 
 namespace daw {
 	class arg_iterator_t {
-		int m_argc;
+		int m_argc = 0;
 		int m_pos = 0;
-		char const *const *m_argv;
+		char const *const *m_argv = nullptr;
 
 	public:
 		using iterator_category = std::random_access_iterator_tag;
@@ -28,9 +28,7 @@ namespace daw {
 		using value_type = std::string_view;
 		using reference = std::string_view;
 
-		constexpr arg_iterator_t( ) noexcept
-		  : m_argc( 0 )
-		  , m_argv( nullptr ) {}
+		arg_iterator_t( ) = default;
 
 		constexpr arg_iterator_t( int argc, char const *const *argv ) noexcept
 		  : m_argc( argc )
@@ -170,7 +168,7 @@ namespace daw {
 			return arg_iterator_t( );
 		}
 
-		[[nodiscard]] constexpr operator bool( ) const noexcept {
+		[[nodiscard]] explicit constexpr operator bool( ) const noexcept {
 			return 0 <= m_pos and m_pos < m_argc;
 		}
 	};

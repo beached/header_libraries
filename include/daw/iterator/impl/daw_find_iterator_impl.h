@@ -23,7 +23,7 @@ namespace daw::find_iterator_impl {
 
 	template<typename Filter, bool>
 	struct FilterProxy : protected Filter {
-		constexpr FilterProxy( Filter filt )
+		explicit constexpr FilterProxy( Filter filt )
 		  : Filter{ filt } {}
 
 	protected:

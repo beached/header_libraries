@@ -17,7 +17,7 @@
 namespace daw {
 	///
 	///	An output iterator that calls supplied function when operator= is called
-	/// This is like std::back_intsert_iterator
+	/// This is like std::back_insert_iterator
 	///
 	template<typename Function>
 	struct function_iterator {
@@ -31,7 +31,7 @@ namespace daw {
 		Function m_function;
 
 	public:
-		constexpr function_iterator( Function function )
+		explicit constexpr function_iterator( Function function )
 		  : m_function( std::move( function ) ) {}
 
 		template<typename T,

@@ -73,12 +73,12 @@ namespace daw {
 			return result;
 		}
 
-		constexpr pointer_iterator &operator--( ) {
+		constexpr pointer_iterator operator--( ) {
 			--m_ptr;
 			return *this;
 		}
 
-		constexpr pointer_iterator &operator--( int ) {
+		constexpr pointer_iterator operator--( int ) {
 			auto result = *this;
 			--m_ptr;
 			return result;
@@ -118,7 +118,7 @@ namespace daw {
 
 		friend constexpr bool operator==( pointer_iterator const &lhs,
 		                                  pointer_iterator const &rhs ) {
-			return lhs.m_ptr == rhs.ptr;
+			return lhs.m_ptr == rhs.m_ptr;
 		}
 
 		friend constexpr bool operator!=( pointer_iterator const &lhs,

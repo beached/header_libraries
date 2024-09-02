@@ -12,6 +12,10 @@
 #include "daw_bit_cast.h"
 #include "daw_deduced_type.h"
 
+#include <functional>
+#include <iterator>
+#include <type_traits>
+
 namespace daw {
 	template<typename T, typename Iterator, typename Function>
 	void
@@ -19,7 +23,7 @@ namespace daw {
 	  noexcept( func( std::declval<T>( ) ) ) ) {
 
 		while( first != last ) {
-			daw::invoke( func, DAW_BIT_CAST( T, *first ) );
+			std::invoke( func, DAW_BIT_CAST( T, *first ) );
 			++first;
 		}
 	}
@@ -41,7 +45,7 @@ namespace daw {
 
 		while( first != last ) {
 			*first_out =
-			  DAW_BIT_CAST( out_t, daw::invoke( func, DAW_BIT_CAST( T, *first ) ) );
+			  DAW_BIT_CAST( out_t, std::invoke( func, DAW_BIT_CAST( T, *first ) ) );
 			++first;
 			++first_out;
 		}

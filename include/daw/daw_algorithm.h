@@ -223,10 +223,8 @@ namespace daw {
 	/// @param n how many steps to move forward from begin
 	/// @return an iterator referencing a value in container n steps from begin
 	template<typename Container>
-	constexpr auto
-	begin_at( Container &container,
-	          size_t n ) noexcept( noexcept( std::begin( container ) ) )
-	  -> decltype( std::begin( container ) ) {
+	constexpr auto begin_at( Container &container, size_t n ) noexcept( noexcept(
+	  std::begin( container ) ) ) -> decltype( std::begin( container ) ) {
 
 		traits::is_container_like_test<Container>( );
 		auto result = std::begin( container );
@@ -242,9 +240,8 @@ namespace daw {
 	/// @return an iterator referencing a value in container n steps from begin
 	template<typename Container>
 	constexpr auto
-	begin_at( Container const &container,
-	          size_t n ) noexcept( noexcept( std::cbegin( container ) ) )
-	  -> decltype( std::cbegin( container ) ) {
+	begin_at( Container const &container, size_t n ) noexcept( noexcept(
+	  std::cbegin( container ) ) ) -> decltype( std::cbegin( container ) ) {
 
 		traits::is_container_like_test<Container>( );
 
@@ -382,36 +379,32 @@ namespace daw::algorithm {
 	}
 
 	template<typename Container>
-	constexpr auto
-	rbegin2( Container &container ) noexcept( noexcept( container.rbegin( ) ) )
-	  -> decltype( container.rbegin( ) ) {
+	constexpr auto rbegin2( Container &container ) noexcept(
+	  noexcept( container.rbegin( ) ) ) -> decltype( container.rbegin( ) ) {
 
 		traits::is_container_like_test<Container>( );
 		return container.rbegin( );
 	}
 
 	template<typename Container>
-	constexpr auto
-	crbegin2( Container &container ) noexcept( noexcept( container.crbegin( ) ) )
-	  -> decltype( container.crbegin( ) ) {
+	constexpr auto crbegin2( Container &container ) noexcept(
+	  noexcept( container.crbegin( ) ) ) -> decltype( container.crbegin( ) ) {
 
 		traits::is_container_like_test<Container>( );
 		return container.crbegin( );
 	}
 
 	template<typename Container>
-	constexpr auto
-	rend2( Container &container ) noexcept( noexcept( container.rend( ) ) )
-	  -> decltype( container.rend( ) ) {
+	constexpr auto rend2( Container &container ) noexcept(
+	  noexcept( container.rend( ) ) ) -> decltype( container.rend( ) ) {
 
 		traits::is_container_like_test<Container>( );
 		return container.rend( );
 	}
 
 	template<typename Container>
-	constexpr auto
-	crend2( Container &container ) noexcept( noexcept( container.crend( ) ) )
-	  -> decltype( container.crend( ) ) {
+	constexpr auto crend2( Container &container ) noexcept(
+	  noexcept( container.crend( ) ) ) -> decltype( container.crend( ) ) {
 
 		traits::is_container_like_test<Container>( );
 		return container.crend( );
@@ -459,14 +452,15 @@ namespace daw::algorithm {
 		};
 
 		template<typename Fwd>
-		auto reverse_impl( Fwd &fwd, long )
-		  -> decltype( Reverser_generic<Fwd>( fwd ) ) {
+		auto reverse_impl( Fwd &fwd,
+		                   long ) -> decltype( Reverser_generic<Fwd>( fwd ) ) {
 			return Reverser_generic<Fwd>( fwd );
 		}
 
 		template<typename Fwd>
-		auto reverse_impl( Fwd &fwd, int )
-		  -> decltype( fwd.rbegin( ), Reverser_special<Fwd>( fwd ) ) {
+		auto reverse_impl( Fwd &fwd,
+		                   int ) -> decltype( fwd.rbegin( ),
+		                                      Reverser_special<Fwd>( fwd ) ) {
 			return Reverser_special<Fwd>( fwd );
 		}
 	} // namespace algorithm_details
@@ -850,7 +844,7 @@ namespace daw::algorithm {
 				return DAW_FWD2( T, value ) <= m_value;
 			}
 		}; // less_than_or_equal_to
-	}    // namespace algorithm_details
+	} // namespace algorithm_details
 
 	/// @brief Returns a callable that returns true if the value passed is in
 	/// the range [Lower, Upper]
@@ -1412,14 +1406,14 @@ namespace daw::algorithm {
 	/// @param value value to compare to
 	/// @return position of first element greater than value or last
 	template<typename ForwardIterator, typename T, typename Compare = std::less<>>
-	constexpr ForwardIterator
-	upper_bound( ForwardIterator first,
-	             ForwardIterator last,
-	             T const &value,
-	             Compare comp =
-	               Compare{ } ) noexcept( noexcept( daw::advance( first, 1 ) )
-	                                        and noexcept( ++first ) and noexcept(
-	                                          daw::distance( first, last ) ) ) {
+	constexpr ForwardIterator upper_bound(
+	  ForwardIterator first,
+	  ForwardIterator last,
+	  T const &value,
+	  Compare comp =
+	    Compare{ } ) noexcept( noexcept( daw::advance( first, 1 ) ) and
+	                           noexcept( ++first ) and
+	                           noexcept( daw::distance( first, last ) ) ) {
 
 		traits::is_forward_access_iterator_test<ForwardIterator>( );
 		traits::is_input_iterator_test<ForwardIterator>( );
@@ -1828,8 +1822,8 @@ namespace daw::algorithm {
 	  LastType2 last2,
 	  OutputIterator d_first,
 	  Compare &&comp =
-	    Compare{ } ) noexcept( noexcept( comp( *first2, *first1 ) )
-	                             and noexcept( comp( *first1, *first2 ) ) ) {
+	    Compare{ } ) noexcept( noexcept( comp( *first2, *first1 ) ) and
+	                           noexcept( comp( *first1, *first2 ) ) ) {
 
 		while( first1 != last1 and first2 != last2 ) {
 			if( daw::invoke( comp, *first1, *first2 ) ) {
@@ -2162,7 +2156,7 @@ namespace daw::algorithm {
 		auto result = std::mismatch( first,
 		                             second_last,
 		                             second,
-		                             [&]( auto const &lhs, auto const &rhs ) {
+		                             [&comp]( auto const &lhs, auto const &rhs ) {
 			                             return not comp( rhs, lhs );
 		                             } )
 		                .first;
