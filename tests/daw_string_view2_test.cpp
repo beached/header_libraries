@@ -1148,6 +1148,20 @@ namespace daw {
 		daw_expecting( sv.empty( ), true );
 	}
 
+	void daw_pop_front_while_sv_test_001( ) {
+		daw::sv2::string_view sv = "    This is a test";
+		auto result = sv.pop_front_while( ' ' );
+		daw_expecting( sv, "This is a test"_sv );
+		daw_expecting( result, "    "_sv );
+	}
+
+	void daw_pop_front_while_sv_test_002( ) {
+		daw::sv2::string_view sv = "    This is a test";
+		auto result = sv.pop_front_while( " " );
+		daw_expecting( sv, "This is a test"_sv );
+		daw_expecting( result, "    "_sv );
+	}
+
 	void daw_pop_front_test_001( ) {
 		daw::sv2::string_view sv = "This is a test";
 		auto result = sv.pop_front( );
@@ -1756,6 +1770,8 @@ int main( )
 	daw::daw_pop_front_test_001( );
 	daw::daw_pop_front_count_test_001( );
 	daw::daw_pop_front_until_sv_test_001( );
+	daw::daw_pop_front_while_sv_test_001( );
+	daw::daw_pop_front_while_sv_test_002( );
 	daw::daw_pop_back_count_test_001( );
 	daw::daw_pop_back_until_sv_test_001( );
 	daw::daw_pop_back_until_sv_test_002( );
