@@ -14,27 +14,23 @@
 #include <daw/stdinc/range_access.h>
 #include <daw/stdinc/void_t.h>
 
-namespace daw {
-	namespace utility_details {
-		template<typename T, typename = void>
-		inline constexpr bool has_data_end_v = false;
+namespace daw::utility_details {
+	template<typename T, typename = void>
+	inline constexpr bool has_data_end_v = false;
 
-		template<typename T>
-		inline constexpr bool has_data_end_v<
-		  T,
-		  std::void_t<decltype( std::declval<T &>( ).data_end( ) )>> = true;
+	template<typename T>
+	inline constexpr bool
+	  has_data_end_v<T,
+	                 std::void_t<decltype( std::declval<T &>( ).data_end( ) )>> =
+	    true;
 
-		template<typename T, typename = void>
-		inline constexpr bool has_data_v = false;
+	template<typename T, typename = void>
+	inline constexpr bool has_data_v = false;
 
-		template<typename T>
-		inline constexpr bool
-		  has_data_v<T, std::void_t<decltype( std::declval<T &>( ).data( ) )>> =
-		    true;
-
-		struct AlwaysNull {};
-	} // namespace utility_details
-} // namespace daw
+	template<typename T>
+	inline constexpr bool
+	  has_data_v<T, std::void_t<decltype( std::declval<T &>( ).data( ) )>> = true;
+} // namespace daw::utility_details
 
 namespace daw {
 	template<typename Container>

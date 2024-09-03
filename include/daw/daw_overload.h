@@ -80,8 +80,8 @@ namespace daw {
 	struct overload : overload_details::fp_wrapper<Funcs>... {
 		using overload_details::fp_wrapper<Funcs>::operator( )...;
 
-		constexpr overload( Funcs... fs )
-		  : overload_details::fp_wrapper<Funcs>{ fs }... {}
+		explicit constexpr overload( Funcs... fs )
+		  : overload_details::fp_wrapper<Funcs>{ std::move( fs ) }... {}
 	};
 
 	template<typename... Funcs>

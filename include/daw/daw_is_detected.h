@@ -16,14 +16,14 @@
 
 namespace daw {
 
-	template<template<class...> class, class...>
+	template<template<typename...> typename, typename...>
 	struct nonesuch {
-		nonesuch( ) = delete; // prevent pre C++20 aggregate construction
+		nonesuch( ) = delete;
 		~nonesuch( ) = delete;
-		nonesuch( nonesuch const & ) = delete;
-		nonesuch operator=( nonesuch const & ) = delete;
 		nonesuch( nonesuch && ) = delete;
+		nonesuch( nonesuch const & ) = delete;
 		nonesuch &operator=( nonesuch && ) = delete;
+		nonesuch operator=( nonesuch const & ) = delete;
 	};
 
 	template<typename>
@@ -61,57 +61,72 @@ namespace daw {
 			using type = Default;
 		};
 
-		template<class Default,
-		         class AlwaysVoid,
-		         template<class...>
-		         class Op,
-		         class... Args>
+		template<typename /*Default*/,
+		         typename /*AlwaysVoid*/,
+		         template<typename...>
+		         typename /*Op*/,
+		         typename... /*Args*/>
 		inline constexpr bool detector_v = false;
 
-		template<class Default, template<class...> class Op, class... Args>
+		template<typename Default, template<class...> class Op, class... Args>
 		struct detector<Default, std::void_t<Op<Args...>>, Op, Args...> {
 			using value_t = std::true_type;
 			using type = Op<Args...>;
 		};
 
-		template<class Default, template<class...> class Op, class... Args>
+		template<typename Default,
+		         template<typename...>
+		         typename Op,
+		         typename... Args>
 		inline constexpr bool
 		  detector_v<Default, std::void_t<Op<Args...>>, Op, Args...> = true;
 	} // namespace is_detect_details
 
-	template<template<class...> class Op, class... Args>
+	template<template<typename...> typename Op, typename... Args>
 	using is_detected = typename is_detect_details::
 	  detector<nonesuch<Op, Args...>, void, Op, Args...>::value_t;
 
-	template<template<class...> class Op, class... Args>
+	template<template<typename...> typename Op, typename... Args>
 	using detected_t = typename is_detect_details::
 	  detector<nonesuch<Op, Args...>, void, Op, Args...>::type;
 
 #ifndef DAW_HAS_CONCEPTS
-	template<template<class...> class Op, class... Args>
+	template<template<typename...> typename Op, typename... Args>
 	inline constexpr bool is_detected_v =
 	  is_detect_details::detector_v<nonesuch<Op, Args...>, void, Op, Args...>;
 
 #endif
-	template<class Default, template<class...> class Op, class... Args>
+	template<typename Default,
+	         template<typename...>
+	         typename Op,
+	         typename... Args>
 	using detected_or = is_detect_details::detector<Default, void, Op, Args...>;
 
-	template<class Default, template<class...> class Op, class... Args>
+	template<typename Default,
+	         template<typename...>
+	         typename Op,
+	         typename... Args>
 	using detected_or_t = typename detected_or<Default, Op, Args...>::type;
 
-	template<class Expected, template<class...> class Op, class... Args>
+	template<typename Expected,
+	         template<typename...>
+	         typename Op,
+	         typename... Args>
 	inline constexpr bool is_detected_exact_v =
 	  daw::is_same_v<Expected, detected_t<Op, Args...>>;
 
-	template<class Expected, template<class...> class Op, class... Args>
+	template<typename Expected,
+	         template<typename...>
+	         typename Op,
+	         typename... Args>
 	using is_detected_exact =
 	  std::bool_constant<is_detected_exact_v<Expected, Op, Args...>>;
 
-	template<class To, template<class...> class Op, class... Args>
+	template<typename To, template<typename...> typename Op, typename... Args>
 	using is_detected_convertible =
 	  std::is_convertible<detected_t<Op, Args...>, To>;
 
-	template<class To, template<class...> class Op, class... Args>
+	template<typename To, template<typename...> typename Op, typename... Args>
 	inline constexpr bool is_detected_convertible_v =
 	  is_detected_convertible<To, Op, Args...>::value;
 } // namespace daw

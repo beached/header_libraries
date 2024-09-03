@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/daw_move.h"
+#include "daw_remove_cvref.h"
 #include "daw_typeof.h"
 
 #include <iterator>
@@ -17,7 +18,7 @@
 namespace daw {
 	template<typename It>
 	using iter_value_t =
-	  typename std::iterator_traits<std::remove_cvref_t<It>>::value_type;
+	  typename std::iterator_traits<daw::remove_cvref_t<It>>::value_type;
 
 	template<typename It>
 	using iter_reference_t =

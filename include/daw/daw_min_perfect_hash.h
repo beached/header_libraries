@@ -52,7 +52,7 @@ namespace daw {
 				return uint32_t{ };
 			} else if constexpr( sz == 64U ) {
 				return uint64_t{ };
-			};
+			}
 		}
 
 		template<size_t Bits>
