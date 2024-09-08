@@ -28,7 +28,7 @@ namespace std {
 		template<typename Ctx>
 		Ctx::iterator format( daw::basic_string_view<CharT, Bounds> sv,
 		                      Ctx &ctx ) const {
-			return fmter( std::basic_string_view<CharT>( sv.data( ), sv.size( ) ),
+			return fmter.format( std::basic_string_view<CharT>( sv.data( ), sv.size( ) ),
 			              ctx );
 		}
 	};
