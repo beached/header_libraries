@@ -12,6 +12,7 @@
 #include "daw/daw_remove_cvref.h"
 #include "daw/daw_traits.h"
 #include "daw_format_range.h"
+#include "daw_format_string_view.h"
 #include "daw_format_tuple.h"
 
 namespace daw {
