@@ -41,6 +41,7 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
                 -Wno-missing-braces
                 -Wno-date-time
                 -Wno-unneeded-member-function
+								-Wno-switch-default
         )
         if( DAW_HEADERLIBS_USE_STDEXCEPT )
             # When std::exception is the parent, this warning is emitted because the destructor is defined inline

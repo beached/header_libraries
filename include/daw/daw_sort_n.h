@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "algorithms/daw_algorithm_copy.h"
 #include "algorithms/daw_algorithm_partial_sum.h"
 #include "ciso646.h"
 #include "daw_move.h"
@@ -773,10 +774,10 @@ namespace daw {
 			bool const is_ascend =
 			  comp( static_cast<value_t>( 0 ), static_cast<value_t>( 1 ) );
 
-			std::array<size_t, 10> counts{ };
+			std::array<std::size_t, 10> counts{ };
 			size_t d = 0;
 			for( auto it = first_in; it != last_in; ++it ) {
-				++counts[static_cast<size_t>( ( *it ) % 10 )];
+				++counts[static_cast<std::size_t>( ( *it ) % 10 )];
 				++d;
 			}
 			daw::algorithm::partial_sum(
@@ -784,7 +785,7 @@ namespace daw {
 
 			if( is_ascend ) {
 				while( first_in != last_in ) {
-					auto const pos = static_cast<size_t>( *first_in % 10 );
+					auto const pos = static_cast<std::size_t>( *first_in % 10 );
 					first_out[counts[pos] - 1U] = *first_in;
 					--counts[pos];
 					++first_in;
@@ -793,7 +794,7 @@ namespace daw {
 				auto rf = daw::make_reverse_iterator( first_out + d );
 				auto const rl = daw::make_reverse_iterator( first_out );
 				while( rf != rl ) {
-					auto const pos = static_cast<size_t>( *first_in % 10 );
+					auto const pos = static_cast<std::size_t>( *first_in % 10 );
 					rf[counts[pos] - 1U] = *first_in;
 					--counts[pos];
 					++rf;
