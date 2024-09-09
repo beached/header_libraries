@@ -474,9 +474,26 @@ namespace tests {
 		constexpr auto p = pipeline( Slide( 3 ), Print, Flatten );
 		auto r = p( ary );
 		auto const ary2 = To<std::array<std::size_t, 9>>( )( r );
-		constexpr auto tst_ary = std::array<std::size_t, 9>{ 0, 1, 2, 1, 2, 3, 2, 3, 4 };
+		constexpr auto tst_ary =
+		  std::array<std::size_t, 9>{ 0, 1, 2, 1, 2, 3, 2, 3, 4 };
 		daw_ensure( ary2 == tst_ary );
 		daw::println( "\tout: {}", daw::fmt_range( ary2 ) );
+	}
+
+	DAW_ATTRIB_NOINLINE void test027( ) {
+		using namespace daw::string_view_literals;
+		static constexpr std::array ids = { "597216680271282192"_sv,
+		                                    "155149108183695360"_sv,
+		                                    "843841057833877588"_sv,
+		                                    "1013956772245020774"_sv,
+		                                    "1013960757127422113"_sv };
+		static constexpr auto exists = []( daw::string_view needle ) {
+			return Contains( needle )( ids );
+		};
+		constexpr auto x = "12345"_sv;
+		static_assert( not exists( x ) );
+		constexpr auto y = "1013960757127422113"_sv;
+		static_assert( exists( y ) );
 	}
 
 } // namespace tests
@@ -508,6 +525,7 @@ int main( ) {
 	tests::test024( );
 	tests::test025( );
 	tests::test026( );
+	tests::test027( );
 
 	daw::println( "Done" );
 }

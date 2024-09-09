@@ -153,10 +153,61 @@ namespace daw::pipelines {
 
 		template<typename Compare, typename Projection>
 		MinMax_t( Compare, Projection ) -> MinMax_t<Compare, Projection>;
+
+		template<typename Needle,
+		         typename Compare = std::equal_to<>,
+		         typename Projection = std::identity>
+		struct Contains_t {
+			DAW_NO_UNIQUE_ADDRESS Needle m_needle;
+			DAW_NO_UNIQUE_ADDRESS Compare m_compare{ };
+			DAW_NO_UNIQUE_ADDRESS Projection m_projection{ };
+
+			DAW_ATTRIB_FLATTEN [[nodiscard]] constexpr bool
+			operator( )( Range auto &&r ) const {
+				auto first = std::begin( r );
+				auto const last = std::end( r );
+				while( first != last ) {
+					auto const found = std::invoke(
+					  m_compare, std::invoke( m_projection, *first ), m_needle );
+					if( found ) {
+						return true;
+					}
+					++first;
+				}
+				return false;
+			}
+		};
+		template<typename Needle>
+		Contains_t( Needle ) -> Contains_t<Needle>;
+
+		template<typename Needle, typename Compare>
+		Contains_t( Needle, Compare ) -> Contains_t<Needle, Compare>;
+
+		template<typename Needle, typename Compare, typename Projection>
+		Contains_t( Needle,
+		            Compare,
+		            Projection ) -> Contains_t<Needle, Compare, Projection>;
+
 	} // namespace pimpl
 
 	inline constexpr auto Sort = pimpl::Sort_t{ };
 	inline constexpr auto Max = pimpl::Max_t{ };
 	inline constexpr auto Min = pimpl::Min_t{ };
 	inline constexpr auto MinMax = pimpl::MinMax_t{ };
+
+	[[nodiscard]] constexpr auto Contains( auto &&needle ) {
+		return pimpl::Contains_t{ DAW_FWD( needle ) };
+	}
+
+	[[nodiscard]] constexpr auto Contains( auto &&needle, auto &&compare ) {
+		return pimpl::Contains_t{ DAW_FWD( needle ), DAW_FWD( compare ) };
+	}
+
+	[[nodiscard]] constexpr auto
+	Contains( auto &&needle, auto &&compare, auto &&projection ) {
+		return pimpl::Contains_t{
+		  DAW_FWD( needle ),
+		  DAW_FWD( compare ),
+		  DAW_FWD( projection ) }; // namespace daw::pipelines
+	}
 } // namespace daw::pipelines
