@@ -69,7 +69,7 @@ namespace daw {
 			} else {
 				return *ptr;
 			}
-		} else if( get_nt_details::has_adl_get_v<variant_t> ) {
+		} else if constexpr( get_nt_details::has_adl_get_v<variant_t> ) {
 			using get_nt_details::get;
 			return get<Idx>( DAW_FWD( var ) );
 		} else {
