@@ -8,20 +8,20 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "cpp_17.h"
-#include "daw_cpp_feature_check.h"
-#include "daw_enable_if.h"
-#include "daw_move.h"
-#include "daw_pack_element.h"
-#include "daw_remove_cvref.h"
-#include "impl/daw_make_trait.h"
-#include "impl/daw_traits_impl.h"
-#include "traits/daw_traits_conditional.h"
-#include "traits/daw_traits_first_type.h"
-#include "traits/daw_traits_is_const.h"
-#include "traits/daw_traits_is_one_of.h"
-#include "traits/daw_traits_is_rvalue_reference.h"
+#include "daw/ciso646.h"
+#include "daw/cpp_17.h"
+#include "daw/daw_cpp_feature_check.h"
+#include "daw/daw_enable_if.h"
+#include "daw/daw_move.h"
+#include "daw/daw_pack_element.h"
+#include "daw/daw_remove_cvref.h"
+#include "daw/impl/daw_make_trait.h"
+#include "daw/impl/daw_traits_impl.h"
+#include "daw/traits/daw_traits_conditional.h"
+#include "daw/traits/daw_traits_first_type.h"
+#include "daw/traits/daw_traits_is_const.h"
+#include "daw/traits/daw_traits_is_one_of.h"
+#include "daw/traits/daw_traits_is_rvalue_reference.h"
 
 #include <cstdlib>
 #include <daw/stdinc/data_access.h>
@@ -950,8 +950,8 @@ namespace daw {
 	template<typename Tp>
 	inline constexpr bool is_tuple_like_v = requires {
 		std::tuple_size_v<daw::remove_cvref_t<Tp>>;
-		typename std::tuple_element_t<0, daw::remove_cvref_t<Tp>>;
 		std::get<0>( std::declval<Tp>( ) );
+		typename std::tuple_element_t<0, daw::remove_cvref_t<Tp>>;
 	};
 #else
 	template<typename Tp, typename = void>
