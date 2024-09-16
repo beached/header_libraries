@@ -9,7 +9,6 @@
 #pragma once
 
 #include "daw/daw_exchange.h"
-#include "daw/third_party/private_access.h"
 
 #include <cassert>
 #include <cstddef>
