@@ -496,6 +496,10 @@ namespace tests {
 		static_assert( exists( y ) );
 	}
 
+	DAW_ATTRIB_NOINLINE void test028( ) {
+		daw::dump( 1, 2, 3, 4 );
+	}
+
 } // namespace tests
 
 int main( ) {
@@ -526,6 +530,7 @@ int main( ) {
 	tests::test025( );
 	tests::test026( );
 	tests::test027( );
+	tests::test028( );
 
 	daw::println( "Done" );
 }

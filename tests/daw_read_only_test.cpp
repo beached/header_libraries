@@ -43,9 +43,6 @@ namespace test_02 {
 		constexpr auto e = daw::read_only<int>( 5 );
 		::Unused( e );
 
-		constexpr daw::read_only<A> x{ };
-		x->c( );
-
 		// a & b
 		daw::expecting( not( a == b ) );
 		daw::expecting( not( b == a ) );
@@ -73,6 +70,22 @@ constexpr bool daw_read_only_test_03( ) {
 	return true;
 }
 static_assert( daw_read_only_test_03( ) );
+
+struct read_only_test_004_t {
+	daw::read_only<int, read_only_test_004_t> x{ };
+
+	constexpr void set_x( int v ) {
+		x.value = v;
+	}
+};
+
+constexpr std::true_type read_only_test_004( ) {
+	auto v = read_only_test_004_t{ 55 };
+	v.set_x( 52 );
+
+	return { };
+}
+static_assert( read_only_test_004( ) );
 
 int main( ) {
 	test_02::daw_read_only_test_02( );

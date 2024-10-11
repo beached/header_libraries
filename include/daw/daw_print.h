@@ -73,4 +73,24 @@ namespace daw {
 	DAW_ATTRIB_INLINE void println( ) {
 		std::putchar( '\n' );
 	}
+
+	template<typename... Args>
+	void dump( Args &&...args ) {
+		static constexpr auto fmt = [] {
+			if constexpr( sizeof...( Args ) == 0 ) {
+				return std::array<char, 0>{ };
+			} else {
+				auto result = std::array<char, ( 3 * sizeof...( Args ) )>{ };
+				for( std::size_t n = 0; n < result.size( ); n += 3 ) {
+					result[n] = '{';
+					result[n + 1] = '}';
+					result[n + 2] = ' ';
+				}
+				return result;
+			}
+		}( );
+		daw::println( std::format_string<Args...>(
+		                std::string_view( fmt.data( ), fmt.size( ) ) ),
+		              DAW_FWD( args )... );
+	}
 } // namespace daw
