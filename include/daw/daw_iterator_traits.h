@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "daw/daw_move.h"
+#include "daw_remove_cvref.h"
 #include "daw_typeof.h"
 
 #include <iterator>
@@ -16,7 +18,7 @@
 namespace daw {
 	template<typename It>
 	using iter_value_t =
-	  typename std::iterator_traits<std::remove_cvref_t<It>>::value_type;
+	  typename std::iterator_traits<daw::remove_cvref_t<It>>::value_type;
 
 	template<typename It>
 	using iter_reference_t =
@@ -101,8 +103,7 @@ namespace daw {
 	        std::input_iterator_tag,
 	        std::conditional_t<
 	          are_all_same_iterator_tag_v<std::output_iterator_tag, ItCats...>,
-	          std::output_iterator_tag,
-	          void>>>>>;
+	          std::output_iterator_tag, void>>>>>;
 
 	template<typename R>
 	concept Range = requires( R const &r ) {
@@ -114,8 +115,15 @@ namespace daw {
 	using iterator_t = DAW_TYPEOF( std::begin( std::declval<R>( ) ) );
 
 	template<Range R>
+	using iterator_end_t = DAW_TYPEOF( std::end( std::declval<R>( ) ) );
+
+	template<Range R>
 	using const_iterator_t =
 	  DAW_TYPEOF( std::cbegin( std::declval<R const &>( ) ) );
+
+	template<Range R>
+	using const_iterator_end_t =
+	  DAW_TYPEOF( std::cend( std::declval<R const &>( ) ) );
 
 	template<Range R>
 	using range_value_t = iter_value_t<iterator_t<R>>;
@@ -129,6 +137,10 @@ namespace daw {
 	template<Range R>
 	using range_category_t = iter_category_t<iterator_t<R>>;
 
+	[[nodiscard]] constexpr bool empty_range( Range auto &&r ) {
+		return std::begin( r ) == std::end( r );
+	}
+
 	template<typename R>
 	concept InputRange = Range<R> and InputIterator<iterator_t<R>>;
 
@@ -141,4 +153,12 @@ namespace daw {
 
 	template<typename R>
 	concept RandomRange = Range<R> and RandomIterator<iterator_t<R>>;
+
+	template<typename R>
+	[[nodiscard]] constexpr auto iter_last( R &&r ) {
+		static_assert( ForwardRange<R>, "R is not a ForwardRange" );
+		auto const sz = std::distance( std::begin( r ), std::end( r ) );
+		auto const last_dist = sz == 0 ? 0 : sz - 1;
+		return std::next( std::begin( r ), last_dist );
+	}
 } // namespace daw

@@ -62,7 +62,7 @@ namespace daw::pipelines::pimpl {
 		}
 		if constexpr( std::is_same_v<decltype( Default ), pimpl::UseTypeDefault> ) {
 			return value_t{ };
-		} else if constexpr( std::is_invocable_v<decltype( Default )> ) {
+		} else if constexpr( std::invocable<decltype( Default )> ) {
 			return static_cast<value_t>( Default( ) );
 		} else {
 			return static_cast<value_t>( Default );

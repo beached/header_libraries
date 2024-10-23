@@ -1,7 +1,7 @@
 // Originally from the LLVM Project, under the Apache v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
 // Since modified by Darrell Wright
-// Official repository: https://github.com/beached/
+// Official repository: https://github.com/beached/header_libraries
 //
 
 #pragma once
@@ -36,18 +36,16 @@ namespace daw::impl {
 	  Traits::is_always_equal::value;
 
 	template<typename Alloc, typename Ptr>
-	constexpr void construct_backward_with_exception_guarantees( Alloc &a,
-	                                                             Ptr begin1,
-	                                                             Ptr end1,
-	                                                             Ptr &end2 ) {
+	constexpr void
+	construct_backward_with_exception_guarantees( Alloc &a, Ptr begin1, Ptr end1,
+	                                              Ptr &end2 ) {
 		static_assert( is_move_insertable_v<Alloc>,
 		               "The specified type does not meet the requirements of "
 		               "Cpp17MoveInsertable" );
 		using traits = std::allocator_traits<Alloc>;
 		DAW_UNSAFE_BUFFER_FUNC_START
 		while( end1 != begin1 ) {
-			traits::construct( a,
-			                   std::to_address( end2 - 1 ),
+			traits::construct( a, std::to_address( end2 - 1 ),
 #if defined( DAW_USE_EXCEPTIONS )
 			                   std::move_if_noexcept( *--end1 )
 #else
@@ -60,18 +58,16 @@ namespace daw::impl {
 	}
 
 	template<typename Alloc, typename Ptr>
-	constexpr void construct_forward_with_exception_guarantees( Alloc &a,
-	                                                            Ptr begin1,
-	                                                            Ptr end1,
-	                                                            Ptr &begin2 ) {
+	constexpr void
+	construct_forward_with_exception_guarantees( Alloc &a, Ptr begin1, Ptr end1,
+	                                             Ptr &begin2 ) {
 		static_assert( is_move_insertable_v<Alloc>,
 		               "The specified type does not meet the requirements of "
 		               "Cpp17MoveInsertable" );
 		using traits_t = std::allocator_traits<Alloc>;
 		DAW_UNSAFE_BUFFER_FUNC_START
 		for( ; begin1 != end1; ++begin1, (void)++begin2 ) {
-			traits_t::construct( a,
-			                     std::to_address( begin2 ),
+			traits_t::construct( a, std::to_address( begin2 ),
 #if defined( DAW_USE_EXCEPTIONS )
 			                     std::move_if_noexcept( *begin1 )
 #else
@@ -83,8 +79,8 @@ namespace daw::impl {
 	}
 
 	template<typename Alloc, typename Iter, typename Ptr>
-	constexpr void
-	construct_range_forward( Alloc &a, Iter begin1, Iter end1, Ptr &begin2 ) {
+	constexpr void construct_range_forward( Alloc &a, Iter begin1, Iter end1,
+	                                        Ptr &begin2 ) {
 		using traits_t = std::allocator_traits<Alloc>;
 		DAW_UNSAFE_BUFFER_FUNC_START
 		for( ; begin1 != end1; ++begin1, (void)++begin2 ) {
@@ -170,8 +166,7 @@ namespace daw {
 			}
 		}
 
-		explicit constexpr vector( size_type n,
-		                           value_type const &x,
+		explicit constexpr vector( size_type n, value_type const &x,
 		                           allocator_type const &a )
 		  : m_endcap_( nullptr, a ) {
 
@@ -181,8 +176,7 @@ namespace daw {
 			}
 		}
 
-		explicit constexpr vector( do_resize_and_overwrite_t,
-		                           size_type n,
+		explicit constexpr vector( do_resize_and_overwrite_t, size_type n,
 		                           auto operation ) {
 			if( n == 0 ) {
 				return;
@@ -190,10 +184,8 @@ namespace daw {
 			(void)resize_and_overwrite( n, std::move( operation ) );
 		}
 
-		explicit constexpr vector( do_resize_and_overwrite_t,
-		                           size_type n,
-		                           auto operation,
-		                           allocator_type const &a )
+		explicit constexpr vector( do_resize_and_overwrite_t, size_type n,
+		                           auto operation, allocator_type const &a )
 		  : m_endcap_( nullptr, a ) {
 			if( n == 0 ) {
 				return;
@@ -216,8 +208,7 @@ namespace daw {
 		template<input_iterator InputIterator>
 		requires( constructible_from<value_type,
 		                             iter_reference_type<InputIterator>> ) //
-		  explicit constexpr vector( InputIterator first,
-		                             InputIterator last,
+		  explicit constexpr vector( InputIterator first, InputIterator last,
 		                             allocator_type const &a )
 		  : m_endcap_( nullptr, a ) {
 
@@ -245,8 +236,7 @@ namespace daw {
 		requires( not has_slow_distance_v<ForwardIterator> and
 		          constructible_from<value_type,
 		                             iter_reference_type<ForwardIterator>> ) //
-		  explicit constexpr vector( ForwardIterator first,
-		                             ForwardIterator last,
+		  explicit constexpr vector( ForwardIterator first, ForwardIterator last,
 		                             allocator_type const &a )
 		  : m_endcap_( nullptr, a ) {
 			auto const n = static_cast<size_type>( std::distance( first, last ) );
@@ -264,9 +254,8 @@ namespace daw {
 		}
 
 		constexpr vector( vector const &x )
-		  : m_endcap_(
-		      nullptr,
-		      alloc_traits::select_on_container_copy_construction( x.alloc( ) ) ) {
+		  : m_endcap_( nullptr, alloc_traits::select_on_container_copy_construction(
+		                          x.alloc( ) ) ) {
 
 			size_type const n = x.size( );
 			if( n > 0 ) {
@@ -340,9 +329,8 @@ namespace daw {
 		    impl::noexcept_move_assign_container_v<Allocator, alloc_traits> ) {
 
 			move_assign(
-			  x,
-			  std::bool_constant<
-			    alloc_traits::propagate_on_container_move_assignment::value>{ } );
+			  x, std::bool_constant<
+			       alloc_traits::propagate_on_container_move_assignment::value>{ } );
 
 			return *this;
 		}
@@ -693,8 +681,8 @@ namespace daw {
 			return make_iter( p );
 		}
 
-		constexpr iterator
-		insert( const_iterator position, size_type n, const_reference x ) {
+		constexpr iterator insert( const_iterator position, size_type n,
+		                           const_reference x ) {
 			pointer p = m_begin + ( position - begin( ) );
 			if( n > 0 ) {
 				if( n <= static_cast<size_type>( endcap( ) - m_end ) ) {
@@ -727,8 +715,7 @@ namespace daw {
 		template<input_iterator InputIterator>
 		requires(
 		  constructible_from<value_type, iter_reference_type<InputIterator>> ) //
-		  constexpr iterator insert( const_iterator position,
-		                             InputIterator first,
+		  constexpr iterator insert( const_iterator position, InputIterator first,
 		                             InputIterator last ) {
 			difference_type off = position - begin( );
 			pointer p = m_begin + off;
@@ -756,8 +743,7 @@ namespace daw {
 #endif
 			}
 			p = std::rotate( p, old_last, m_end );
-			insert( make_iter( p ),
-			        std::make_move_iterator( v.begin( ) ),
+			insert( make_iter( p ), std::make_move_iterator( v.begin( ) ),
 			        std::make_move_iterator( v.end( ) ) );
 			return begin( ) + off;
 		}
@@ -766,8 +752,7 @@ namespace daw {
 		requires( not has_slow_distance_v<ForwardIterator> and
 		          constructible_from<value_type,
 		                             iter_reference_type<ForwardIterator>> ) //
-		  constexpr iterator insert( const_iterator position,
-		                             ForwardIterator first,
+		  constexpr iterator insert( const_iterator position, ForwardIterator first,
 		                             ForwardIterator last ) {
 			pointer p = m_begin + ( position - begin( ) );
 			difference_type n = std::distance( first, last );
@@ -792,8 +777,7 @@ namespace daw {
 					allocator_type &a = alloc( );
 					auto v = split_buffer<value_type, allocator_type &>(
 					  recommend( static_cast<size_type>( ssize( ) + n ) ),
-					  static_cast<size_type>( p - m_begin ),
-					  a );
+					  static_cast<size_type>( p - m_begin ), a );
 					v.construct_at_end( first, last );
 					p = swap_out_circular_buffer( v, p );
 				}
@@ -944,8 +928,7 @@ namespace daw {
 			std::swap( m_begin, other.m_begin );
 			std::swap( m_end, other.m_end );
 			std::swap( endcap( ), other.endcap( ) );
-			swap_allocator( alloc( ),
-			                other.alloc( ),
+			swap_allocator( alloc( ), other.alloc( ),
 			                std::bool_constant<
 			                  alloc_traits::propagate_on_container_swap::value>{ } );
 		}
@@ -1016,8 +999,7 @@ namespace daw {
 		template<forward_iterator ForwardIterator>
 		requires( not has_slow_distance_v<ForwardIterator> ) //
 		  constexpr void construct_at_end( ForwardIterator first,
-		                                   ForwardIterator last,
-		                                   size_type n ) {
+		                                   ForwardIterator last, size_type n ) {
 			ConstructTransaction tx( *this, n );
 			impl::construct_range_forward( alloc( ), first, last, tx.pos );
 		}
@@ -1071,8 +1053,8 @@ namespace daw {
 
 		constexpr void
 		swap_out_circular_buffer( split_buffer<value_type, allocator_type &> &v ) {
-			impl::construct_backward_with_exception_guarantees(
-			  alloc( ), m_begin, m_end, v.begin_ );
+			impl::construct_backward_with_exception_guarantees( alloc( ), m_begin,
+			                                                    m_end, v.begin_ );
 			std::swap( m_begin, v.begin_ );
 			std::swap( m_end, v.end_ );
 			std::swap( endcap( ), v.end_cap( ) );
@@ -1083,10 +1065,10 @@ namespace daw {
 		swap_out_circular_buffer( split_buffer<value_type, allocator_type &> &v,
 		                          pointer p ) {
 			pointer r = v.begin_;
-			impl::construct_backward_with_exception_guarantees(
-			  alloc( ), m_begin, p, v.begin_ );
-			impl::construct_forward_with_exception_guarantees(
-			  alloc( ), p, m_end, v.end_ );
+			impl::construct_backward_with_exception_guarantees( alloc( ), m_begin, p,
+			                                                    v.begin_ );
+			impl::construct_forward_with_exception_guarantees( alloc( ), p, m_end,
+			                                                   v.end_ );
 			std::swap( m_begin, v.begin_ );
 			std::swap( m_end, v.end_ );
 			std::swap( endcap( ), v.end_cap( ) );
@@ -1102,8 +1084,8 @@ namespace daw {
 				ConstructTransaction tx( *this, static_cast<size_type>( from_e - i ) );
 				for( pointer pos = tx.pos; i < from_e;
 				     ++i, (void)++pos, tx.pos = pos ) {
-					alloc_traits::construct(
-					  alloc( ), std::to_address( pos ), std::move( *i ) );
+					alloc_traits::construct( alloc( ), std::to_address( pos ),
+					                         std::move( *i ) );
 				}
 			}
 			std::move_backward( from_s, from_s + n, old_last );
@@ -1155,8 +1137,8 @@ namespace daw {
 			auto v = split_buffer<value_type, allocator_type &>(
 			  recommend( size( ) + 1 ), size( ), a );
 			//    v.emplace_back(DAW_FWD(args)...);
-			alloc_traits::construct(
-			  a, std::to_address( v.end_ ), DAW_FWD2( Args, args )... );
+			alloc_traits::construct( a, std::to_address( v.end_ ),
+			                         DAW_FWD2( Args, args )... );
 			DAW_UNSAFE_BUFFER_FUNC_START
 			++v.end_;
 			DAW_UNSAFE_BUFFER_FUNC_STOP
@@ -1186,8 +1168,8 @@ namespace daw {
 		template<typename... Args>
 		constexpr void construct_one_at_end( Args &&...args ) {
 			ConstructTransaction tx( *this, 1 );
-			alloc_traits::construct(
-			  alloc( ), std::to_address( tx.pos ), DAW_FWD2( Args, args )... );
+			alloc_traits::construct( alloc( ), std::to_address( tx.pos ),
+			                         DAW_FWD2( Args, args )... );
 			DAW_UNSAFE_BUFFER_FUNC_START
 			++tx.pos;
 			DAW_UNSAFE_BUFFER_FUNC_STOP
@@ -1221,18 +1203,16 @@ namespace daw {
 
 		constexpr void copy_assign_alloc( vector const &c ) {
 			copy_assign_alloc(
-			  c,
-			  std::bool_constant<
-			    alloc_traits::propagate_on_container_copy_assignment::value>{ } );
+			  c, std::bool_constant<
+			       alloc_traits::propagate_on_container_copy_assignment::value>{ } );
 		}
 
 		constexpr void move_assign_alloc( vector &c ) noexcept(
 		  not alloc_traits::propagate_on_container_move_assignment::value or
 		  std::is_nothrow_move_assignable_v<allocator_type> ) {
 			move_assign_alloc(
-			  c,
-			  std::bool_constant<
-			    alloc_traits::propagate_on_container_move_assignment::value>{ } );
+			  c, std::bool_constant<
+			       alloc_traits::propagate_on_container_move_assignment::value>{ } );
 		}
 
 		[[noreturn]] void throw_length_error( ) const {
@@ -1276,8 +1256,8 @@ namespace daw {
 
 		[[nodiscard]] friend constexpr bool operator<( vector const &x,
 		                                               vector const &y ) {
-			return std::lexicographical_compare(
-			  x.data( ), x.data_end( ), y.data( ), y.data_end( ) );
+			return std::lexicographical_compare( x.data( ), x.data_end( ), y.data( ),
+			                                     y.data_end( ) );
 		}
 
 		[[nodiscard]] friend constexpr bool operator>( vector const &x,
@@ -1328,12 +1308,10 @@ namespace daw {
 		return old_size - c.size( );
 	}
 
-	template<typename T,
-	         typename Allocator = std::allocator<T>,
+	template<typename T, typename Allocator = std::allocator<T>,
 	         input_iterator InputIterator>
 	constexpr void block_append_from( vector<T, Allocator> &v,
-	                                  InputIterator first,
-	                                  InputIterator last,
+	                                  InputIterator first, InputIterator last,
 	                                  std::size_t block_size = 512 ) {
 		auto cur_size = v.size( );
 		DAW_UNSAFE_BUFFER_FUNC_START
@@ -1353,11 +1331,11 @@ namespace daw {
 		DAW_UNSAFE_BUFFER_FUNC_STOP
 	}
 
-	template<typename T,
-	         typename Allocator = std::allocator<T>,
+	template<typename T, typename Allocator = std::allocator<T>,
 	         input_iterator InputIterator>
-	[[nodiscard]] constexpr vector<T, Allocator> block_create_from(
-	  InputIterator first, InputIterator last, std::size_t block_size = 512 ) {
+	[[nodiscard]] constexpr vector<T, Allocator>
+	block_create_from( InputIterator first, InputIterator last,
+	                   std::size_t block_size = 512 ) {
 		auto v = vector<T, Allocator>{ };
 		block_append_from( v, first, last, block_size );
 		return v;

@@ -113,7 +113,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr const indexed_iterator operator--( int ) noexcept {
+		constexpr indexed_iterator operator--( int ) noexcept {
 			daw::exception::dbg_precondition_check( m_position >= 0 );
 
 			auto result = indexed_iterator( *this );

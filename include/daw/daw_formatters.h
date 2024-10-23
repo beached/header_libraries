@@ -12,16 +12,18 @@
 #include "daw/daw_remove_cvref.h"
 #include "daw/daw_traits.h"
 #include "daw_format_range.h"
+#include "daw_format_string_view.h"
 #include "daw_format_tuple.h"
 
 namespace daw {
 	template<typename T>
 	[[nodiscard]] constexpr decltype( auto ) fmt_any( T &&v ) {
 		using type = daw::remove_cvref_t<T>;
-		if constexpr( daw::is_tuple_like_v<type> ) {
-			return daw::fmt_tuple( DAW_FWD( v ) );
-		} else if constexpr( Range<T> ) {
+
+		if constexpr( Range<T> ) {
 			return daw::fmt_range( DAW_FWD( v ) );
+		} else if constexpr( daw::is_tuple_like_v<type> ) {
+			return daw::fmt_tuple( DAW_FWD( v ) );
 		} else {
 			return DAW_FWD( v );
 		}

@@ -72,7 +72,7 @@ namespace daw::pipelines::pimpl {
 
 		template<typename... Args>
 		[[nodiscard]] constexpr auto operator( )( Args &&...args ) const {
-			static_assert( std::is_invocable_v<F, Args...> );
+			static_assert( std::invocable<F, Args...> );
 			return f( DAW_FWD( args )... );
 		}
 	};

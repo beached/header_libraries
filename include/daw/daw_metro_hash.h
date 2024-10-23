@@ -114,7 +114,7 @@ namespace daw::metro {
 			buff.remove_prefix( 2U );
 		}
 
-		if( buff.size( ) >= 1 ) {
+		if( not buff.empty( ) ) {
 			hash += static_cast<uint64_t>( buff.front( ) ) * k3;
 			hash ^= metro_impl::rotr<37U>( hash ) * k1;
 			buff.remove_prefix( );

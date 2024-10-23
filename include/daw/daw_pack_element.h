@@ -13,6 +13,9 @@
 
 #include <cstddef>
 
+/**
+ * Provides utilities for working with parameter packs in templates.
+ */
 namespace daw {
 	template<std::size_t Idx, typename Pack>
 	struct pack_element;

@@ -26,8 +26,7 @@ namespace daw {
 	                     bit_queue_source_little_endian,
 	                     bit_queue_source_big_endian>;
 
-	template<typename queue_type,
-	         typename value_type = uint8_t,
+	template<typename queue_type, typename value_type = uint8_t,
 	         typename BitQueueLSB = bit_queue_source_native_endian>
 	class basic_bit_queue {
 		static_assert( std::is_unsigned_v<queue_type> and

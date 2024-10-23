@@ -6,6 +6,13 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#pragma once
+#include <daw/daw_ensure.h>
+#include <daw/daw_formatters.h>
 
-namespace daw {}
+#include <format>
+
+int main( ) {
+	constexpr daw::string_view sv = "Hello World!";
+	auto const s = std::format( "{}", sv );
+	daw_ensure( s == sv );
+}

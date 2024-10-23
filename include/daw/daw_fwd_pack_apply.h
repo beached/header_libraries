@@ -108,8 +108,7 @@ namespace daw {
 	namespace fwd_pack_impl {
 		template<typename Func, typename... Ts, std::size_t... Is>
 		DAW_ATTRIB_FLATINLINE constexpr decltype( auto ) apply_impl(
-		  Func &&func,
-		  fwd_pack<Ts...> &&p,
+		  Func &&func, fwd_pack<Ts...> &&p,
 		  std::index_sequence<
 		    Is...> ) noexcept( std::is_nothrow_invocable_v<Func, Ts...> ) {
 			return DAW_FWD( func )( get<Is>( std::move( p ) )... );
@@ -120,8 +119,8 @@ namespace daw {
 	DAW_ATTRIB_FLATTEN constexpr decltype( auto ) apply(
 	  Func &&func,
 	  fwd_pack<Ts...> &&p ) noexcept( std::is_nothrow_invocable_v<Func, Ts...> ) {
-		return fwd_pack_impl::apply_impl(
-		  DAW_FWD( func ), std::move( p ), std::index_sequence_for<Ts...>{ } );
+		return fwd_pack_impl::apply_impl( DAW_FWD( func ), std::move( p ),
+		                                  std::index_sequence_for<Ts...>{ } );
 	}
 
 	template<typename>

@@ -133,7 +133,7 @@ namespace daw {
 
 		friend constexpr bool operator==( prop_const_ptr const &lhs,
 		                                  prop_const_ptr const &rhs ) {
-			return lhs.m_ptr == rhs.ptr;
+			return lhs.m_ptr == rhs.m_ptr;
 		}
 
 		friend constexpr bool operator!=( prop_const_ptr const &lhs,

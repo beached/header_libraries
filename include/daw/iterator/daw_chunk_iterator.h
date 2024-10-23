@@ -65,7 +65,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr chunk_iterator &operator++( int ) {
+		constexpr chunk_iterator operator++( int ) {
 			auto result = *this;
 			m_iterator += m_chunk_size;
 			return result;
@@ -76,7 +76,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr chunk_iterator &operator--( int ) {
+		constexpr chunk_iterator operator--( int ) {
 			auto result = *this;
 			m_iterator -= m_chunk_size;
 			return result;

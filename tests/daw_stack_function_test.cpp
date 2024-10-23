@@ -56,8 +56,9 @@ void stack_function_test_002( ) {
 	std::cout << func( ) << '\n';
 	func = &strfunc;
 	std::cout << func( ) << '\n';
-	daw::function<100, int( )> f{ };
-	daw::function<100, std::string( )> f2( callable{ } );
+	auto f = daw::function<100, int( )>{ };
+	(void)f;
+	auto f2 = daw::function<100, std::string( )>( callable{ } );
 	std::cout << "f2 empty state:" << ( f2.empty( ) ? "empty" : "not empty" )
 	          << '\n';
 	std::cout << f2( ) << '\n';

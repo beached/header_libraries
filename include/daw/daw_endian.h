@@ -139,8 +139,7 @@ namespace daw {
 		}
 	}
 
-	template<endian SourceEndian,
-	         typename T,
+	template<endian SourceEndian, typename T,
 	         std::enable_if_t<daw::is_integral_v<T>, std::nullptr_t> = nullptr>
 	constexpr T to_native_endian( T value ) noexcept {
 		if constexpr( SourceEndian == endian::native ) {

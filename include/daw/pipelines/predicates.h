@@ -20,7 +20,7 @@ namespace daw::pipelines {
 		struct is_one_of_t {
 			explicit is_one_of_t( ) = default;
 
-			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+			[[nodiscard]] DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr auto
 			operator( )( auto const &needle ) DAW_CPP23_STATIC_CALL_OP_CONST {
 				return ( ( needle == haystack ) or ... );
 			}
@@ -28,13 +28,14 @@ namespace daw::pipelines {
 
 		template<typename Fn>
 		struct not_fn_t {
-			using func_t = daw::remove_cvref_t<Fn>;
-			DAW_NO_UNIQUE_ADDRESS func_t fn;
+			DAW_NO_UNIQUE_ADDRESS mutable Fn m_func{ };
 
-			[[nodiscard]] constexpr auto operator( )( auto &&value ) const {
-				return not fn( DAW_FWD( value ) );
+			[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
+			operator( )( auto &&value ) const {
+				return not m_func( DAW_FWD( value ) );
 			}
 		};
+
 		template<typename F>
 		not_fn_t( F ) -> not_fn_t<F>;
 	} // namespace pimpl
@@ -42,7 +43,7 @@ namespace daw::pipelines {
 	template<auto... haystack>
 	inline constexpr auto IsOneOf = pimpl::is_one_of_t<haystack...>{ };
 
-	[[nodiscard]] constexpr auto Not( auto &&fn ) {
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto Not( auto &&fn ) {
 		return pimpl::not_fn_t{ DAW_FWD( fn ) };
 	};
 } // namespace daw::pipelines

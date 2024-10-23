@@ -39,8 +39,8 @@ namespace daw::algorithm {
 		  , m_step{ DAW_FWD( step ) } {}
 
 		template<typename SizeType, typename Allocator>
-		constexpr SizeType
-		operator( )( T *ptr, SizeType sz, Allocator &alloc ) const {
+		constexpr SizeType operator( )( T *ptr, SizeType sz,
+		                                Allocator &alloc ) const {
 			DAW_UNSAFE_BUFFER_FUNC_START
 			auto value = m_first;
 			auto const last = m_first + static_cast<T>( sz ) * m_step;

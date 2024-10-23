@@ -15,6 +15,7 @@
 #include "pipeline_traits.h"
 #include "range.h"
 
+#include <array>
 #include <tuple>
 #include <type_traits>
 #include <utility>
@@ -29,7 +30,7 @@ namespace daw::pipelines {
 		  common_iterator_category_t<std::forward_iterator_tag,
 		                             range_category_t<Ranges>...>;
 		static_assert( not std::same_as<void, iterator_category> );
-		using types_t = std::tuple<Ranges...>;
+		using types_t = std::tuple<daw::remove_cvrvref_t<Ranges>...>;
 		using value_type = std::common_type_t<range_value_t<Ranges>...>;
 		using reference = std::common_reference_t<range_reference_t<Ranges>...>;
 		using const_reference =
@@ -116,7 +117,7 @@ namespace daw::pipelines {
 		}
 	};
 	template<typename... Ranges>
-	concat_view( Ranges... ) -> concat_view<Ranges...>;
+	concat_view( Ranges &&... ) -> concat_view<Ranges...>;
 
 	namespace pimpl {
 		struct Concat_t {
@@ -128,8 +129,8 @@ namespace daw::pipelines {
 					              typename iterator_t<R>::i_am_a_daw_zip_iterator_class;
 				              } ) {
 					return [&]<std::size_t... Is>( std::index_sequence<Is...> ) {
-						auto tp_first = std::begin( r ).get_tuple( );
-						auto tp_last = std::end( r ).get_tuple( );
+						auto tp_first = std::begin( r ).base( );
+						auto tp_last = std::end( r ).base( );
 						return concat_view{ range_t{ get<Is>( std::move( tp_first ) ),
 						                             get<Is>( std::move( tp_last ) ) }... };
 					}( std::make_index_sequence<
@@ -150,5 +151,8 @@ namespace daw::pipelines {
 			}
 		};
 	} // namespace pimpl
+	/// Make a Range that is a zip iterator, or who's value is a tuple of Ranges
+	/// act as if it was one range. e.g tuple<vector<int>,
+	/// vector<int>>{{1,2,3},{4,5,6}} would output {1,2,3,4,5,6}
 	inline constexpr auto Concat = pimpl::Concat_t{ };
 } // namespace daw::pipelines

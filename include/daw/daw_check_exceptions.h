@@ -6,7 +6,6 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-
 #pragma once
 
 #include "ciso646.h"

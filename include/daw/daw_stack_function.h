@@ -9,6 +9,7 @@
 #pragma once
 
 #include "ciso646.h"
+#include "daw_aligned_storage.h"
 #include "daw_compiler_fixups.h"
 #include "daw_exception.h"
 #include "daw_move.h"
@@ -38,7 +39,7 @@ namespace daw {
 
 		template<size_t StorageSize, typename Base>
 		struct function_storage {
-			std::aligned_storage_t<StorageSize> m_data;
+			daw::aligned_storage_t<StorageSize> m_data;
 
 			~function_storage( ) {
 				clean( );
@@ -114,12 +115,11 @@ namespace daw {
 		template<typename Result, typename... FuncArgs>
 		struct function_base
 		  : daw::virtual_base<function_base<Result, FuncArgs...>> {
-
 			function_base( ) = default;
 
 			virtual Result operator( )( FuncArgs... ) const = 0;
 			virtual Result operator( )( FuncArgs... ) = 0;
-			virtual bool empty( ) const = 0;
+			[[nodiscard]] virtual bool empty( ) const = 0;
 		};
 
 		template<typename Result, typename... FuncArgs>
@@ -147,13 +147,11 @@ namespace daw {
 		    enable_move_constructor<Func>,
 		    enable_copy_assignment<Func>,
 		    enable_move_assignment<Func> {
-
 			Func m_func;
 
-			template<
-			  typename F,
-			  std::enable_if_t<!std::is_same_v<std::decay_t<F>, function_child>,
-			                   std::nullptr_t> = nullptr>
+			template<typename F, std::enable_if_t<
+			                       !std::is_same_v<std::decay_t<F>, function_child>,
+			                       std::nullptr_t> = nullptr>
 			function_child( F &&func ) noexcept(
 			  std::is_nothrow_constructible_v<Func, F> )
 			  : m_func( DAW_FWD( func ) ) {}
@@ -163,6 +161,7 @@ namespace daw {
 				if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
 					// daw::invoke( m_func, std::move( args )... );
 					m_func( args... );
+					return;
 				} else {
 					// return daw::invoke( m_func, std::move( args )... );
 					return m_func( args... );
@@ -174,6 +173,7 @@ namespace daw {
 				if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
 					// daw::invoke( m_func, std::move( args )... );
 					m_func( args... );
+					return;
 				} else {
 					// return daw::invoke( m_func, std::move( args )... );
 					return m_func( args... );
@@ -197,11 +197,8 @@ namespace daw {
 			}
 		};
 
-		template<size_t MaxSize,
-		         typename function_base,
-		         typename function_child,
-		         typename empty_child,
-		         typename Func>
+		template<size_t MaxSize, typename function_base, typename function_child,
+		         typename empty_child, typename Func>
 		function_storage<MaxSize, function_base> store_if_not_empty( Func &&f ) {
 			static_assert( sizeof( std::decay_t<Func> ) <= MaxSize );
 			if constexpr( func_impl::has_empty_member_v<Func> ) {
@@ -229,7 +226,6 @@ namespace daw {
 			static_assert( Sz <= MaxSz,
 			               "Size of function is larger than allocated space" );
 		}
-
 	} // namespace func_impl
 
 	template<size_t, typename>
@@ -249,15 +245,15 @@ namespace daw {
 		template<typename Func>
 		decltype( auto ) store_if_not_empty( Func &&f ) {
 			func_impl::validate_size<sizeof( std::decay_t<Func> ), MaxSize>( );
-			return func_impl::store_if_not_empty<MaxSize,
-			                                     function_base,
-			                                     function_child<Func>,
-			                                     empty_child>( DAW_FWD( f ) );
+			return func_impl::store_if_not_empty<MaxSize, function_base,
+			                                     function_child<Func>, empty_child>(
+			  DAW_FWD( f ) );
 		}
 
 	public:
-		function( ) = default;
-		function( std::nullptr_t ) {}
+		explicit function( ) = default;
+
+		explicit function( std::nullptr_t ) {}
 
 		template<size_t N,
 		         std::enable_if_t<( N <= MaxSize ), std::nullptr_t> = nullptr>
@@ -287,7 +283,6 @@ namespace daw {
 		           std::nullptr_t> = nullptr>
 		function( Func &&f )
 		  : m_storage( store_if_not_empty( DAW_FWD( f ) ) ) {
-
 			func_impl::validate_size<sizeof( std::decay_t<Func> ), MaxSize>( );
 			static_assert( std::is_invocable_r_v<Result, Func, FuncArgs...>,
 			               "Function isn't callable with FuncArgs" );
@@ -312,6 +307,7 @@ namespace daw {
 			function_base &f = *m_storage;
 			if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
 				f( DAW_FWD( args )... );
+				return;
 			} else {
 				return f( DAW_FWD( args )... );
 			}
@@ -323,6 +319,7 @@ namespace daw {
 			function_base const &f = *m_storage;
 			if constexpr( std::is_same_v<std::decay_t<Result>, void> ) {
 				f( DAW_FWD( args )... );
+				return;
 			} else {
 				return f( DAW_FWD( args )... );
 			}

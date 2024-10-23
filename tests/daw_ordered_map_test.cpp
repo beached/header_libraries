@@ -6,7 +6,7 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include "daw/daw_ordered_map.h"
+#include "daw/deprecated/daw_ordered_map.h"
 
 #include "daw/daw_benchmark.h"
 

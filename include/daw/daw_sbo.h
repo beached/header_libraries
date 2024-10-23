@@ -8,10 +8,12 @@
 #pragma once
 
 #include "ciso646.h"
+#include "daw_aligned_storage.h"
 #include "daw_move.h"
 
 #include <cassert>
 #include <cstddef>
+#include <cstdint>
 #include <cstdio>
 #include <memory>
 #include <type_traits>
@@ -23,8 +25,10 @@ namespace daw {
 		static constexpr std::size_t storage_size =
 		  Size >= sizeof( void * ) ? Size : sizeof( void * );
 
-		std::aligned_storage_t<storage_size, Align> data{ };
-		enum class engaged_types : uint8_t { none, local, allocated };
+		daw::aligned_storage_t<storage_size, Align> data{ };
+
+		enum class engaged_types : std::uint8_t { none, local, allocated };
+
 		engaged_types engaged = engaged_types::none;
 
 		template<typename T>
@@ -67,9 +71,8 @@ namespace daw {
 			engaged = engaged_types::none;
 		}
 
-		template<typename T,
-		         typename Allocator =
-		           std::allocator<std::remove_cv_t<std::remove_cv_t<T>>>>
+		template<typename T, typename Allocator = std::allocator<
+		                       std::remove_cv_t<std::remove_cv_t<T>>>>
 		std::remove_cv_t<T> *allocate( T &&value,
 		                               Allocator const &alloc = Allocator{ } ) {
 			using base_type = std::remove_cv_t<T>;
@@ -94,13 +97,13 @@ namespace daw {
 				// Store pointer from allocator in buffer
 				new( &data ) base_type_ptr{ ptr };
 				// Construct new value from passed value at location from allocator
-				std::allocator_traits<Allocator>::construct(
-				  allocator, ptr, DAW_FWD( value ) );
+				std::allocator_traits<Allocator>::construct( allocator, ptr,
+				                                             DAW_FWD( value ) );
 				engaged = engaged_types::allocated;
 				return ptr;
 			}
 		}
 	};
-	static_assert( std::is_aggregate_v<sbo_storage<>> );
 
+	static_assert( std::is_aggregate_v<sbo_storage<>> );
 } // namespace daw

@@ -67,8 +67,7 @@ namespace daw {
 		struct unspecified_type {};
 	} // namespace make_array_impl
 	template<
-	  typename T = make_array_impl::unspecified_type,
-	  typename... Args,
+	  typename T = make_array_impl::unspecified_type, typename... Args,
 	  std::enable_if_t<not std::is_same_v<T, void>, std::nullptr_t> = nullptr>
 	constexpr auto make_array( Args &&...args ) {
 		constexpr size_t sz = sizeof...( Args );

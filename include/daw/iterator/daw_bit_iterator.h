@@ -17,7 +17,7 @@
 namespace daw {
 	///
 	///	An output iterator that calls supplied bit when operator= is called
-	/// This is like std::back_intsert_iterator
+	/// This is like std::back_insert_iterator
 	///
 	template<typename Iterator>
 	struct bit_iterator {

@@ -63,9 +63,8 @@ namespace daw {
 
 	struct fnv1a_hash_t {
 		// TODO: check for UB if values are signed
-		template<
-		  typename Value,
-		  std::enable_if_t<std::is_integral_v<Value>, std::nullptr_t> = nullptr>
+		template<typename Value, std::enable_if_t<std::is_integral_v<Value>,
+		                                          std::nullptr_t> = nullptr>
 		[[nodiscard]] static constexpr fnv1a_uint_t
 		append_hash( fnv1a_uint_t current_hash, Value const &value ) noexcept {
 			for( fnv1a_uint_t n = 0; n < sizeof( Value ); ++n ) {
@@ -106,8 +105,7 @@ namespace daw {
 		}
 
 		template<
-		  typename Member,
-		  fnv1a_uint_t N,
+		  typename Member, fnv1a_uint_t N,
 		  std::enable_if_t<std::is_integral_v<Member>, std::nullptr_t> = nullptr>
 		[[nodiscard]] constexpr fnv1a_uint_t
 		operator( )( Member const ( &member )[N] ) const noexcept {
@@ -116,9 +114,8 @@ namespace daw {
 			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 
-		template<
-		  typename Integral,
-		  std::enable_if_t<std::is_integral_v<Integral>, std::nullptr_t> = nullptr>
+		template<typename Integral, std::enable_if_t<std::is_integral_v<Integral>,
+		                                             std::nullptr_t> = nullptr>
 		[[nodiscard]] constexpr fnv1a_uint_t
 		operator( )( Integral const value ) const noexcept {
 			return append_hash( fnv1a_impl::fnv_offset, value );
@@ -151,9 +148,8 @@ namespace daw {
 		}
 	};
 
-	template<
-	  typename Integer,
-	  std::enable_if_t<std::is_integral_v<Integer>, std::nullptr_t> = nullptr>
+	template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
+	                                            std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr fnv1a_uint_t fnv1a_hash( Integer value ) noexcept {
 		return fnv1a_hash_t{ }( value );
 	}

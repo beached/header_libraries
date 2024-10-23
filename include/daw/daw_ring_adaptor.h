@@ -3,7 +3,7 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// Official repository: https://github.com/beached/
+// Official repository: https://github.com/beached/header_libraries
 //
 
 #pragma once
@@ -43,8 +43,7 @@ namespace daw {
 	public:
 		constexpr ring_adaptor( ) = default;
 
-		template<typename Arg,
-		         typename... Args,
+		template<typename Arg, typename... Args,
 		         std::enable_if_t<
 		           not std::is_same_v<ring_adaptor, daw::remove_cvref_t<Arg>>,
 		           std::nullptr_t> = nullptr>

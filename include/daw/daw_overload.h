@@ -17,61 +17,58 @@
 
 #include <type_traits>
 
+namespace daw::overload_details {
+	template<typename>
+	struct fp_wrapper_t;
+
+	template<typename ReturnType, typename... Arguments>
+	struct fp_wrapper_t<ReturnType ( * )( Arguments... )> {
+		std::add_pointer_t<ReturnType( Arguments... )> fp;
+
+		template<typename... Args,
+		         std::enable_if_t<std::is_invocable_v<decltype( fp ), Args...>,
+		                          std::nullptr_t> = nullptr>
+		inline constexpr ReturnType operator( )( Args &&...args ) const {
+			return fp( DAW_FWD2( Args, args )... );
+		}
+	};
+
+	template<typename ReturnType, typename... Arguments>
+	struct fp_wrapper_t<ReturnType ( & )( Arguments... )> {
+		std::add_pointer_t<ReturnType( Arguments... )> fp;
+
+		template<typename... Args,
+		         std::enable_if_t<std::is_invocable_v<decltype( fp ), Args...>,
+		                          std::nullptr_t> = nullptr>
+		inline constexpr ReturnType operator( )( Args &&...args ) const {
+			return fp( DAW_FWD2( Args, args )... );
+		}
+	};
+
+	template<typename Func>
+	using fp_wrapper = conditional_t<std::is_class_v<daw::remove_cvref_t<Func>>,
+	                                 Func, fp_wrapper_t<Func>>;
+
+	template<auto>
+	struct lift_t;
+
+	template<typename ReturnType, typename... Arguments,
+	         ReturnType ( *fp )( Arguments... )>
+	struct lift_t<fp> {
+		template<typename... Args,
+		         std::enable_if_t<std::is_invocable_v<decltype( fp ), Args...>,
+		                          std::nullptr_t> = nullptr>
+		inline constexpr ReturnType operator( )( Args &&...args ) const
+		  noexcept( noexcept( fp( DAW_FWD2( Args, args )... ) ) ) {
+			return fp( DAW_FWD2( Args, args )... );
+		}
+	};
+
+} // namespace daw::overload_details
+
+/// Provides structs for wrapping function pointers and callable objects to
+/// facilitate function overloading and safe invocation.
 namespace daw {
-	// overload_t/overload create a callable with the overloads of operator( )
-	// provided
-	//
-	namespace overload_details {
-		template<typename>
-		struct fp_wrapper_t;
-
-		template<typename ReturnType, typename... Arguments>
-		struct fp_wrapper_t<ReturnType ( * )( Arguments... )> {
-			std::add_pointer_t<ReturnType( Arguments... )> fp;
-
-			template<typename... Args,
-			         std::enable_if_t<std::is_invocable_v<decltype( fp ), Args...>,
-			                          std::nullptr_t> = nullptr>
-			inline constexpr ReturnType operator( )( Args &&...args ) const {
-				return fp( DAW_FWD2( Args, args )... );
-			}
-		};
-
-		template<typename ReturnType, typename... Arguments>
-		struct fp_wrapper_t<ReturnType ( & )( Arguments... )> {
-			std::add_pointer_t<ReturnType( Arguments... )> fp;
-
-			template<typename... Args,
-			         std::enable_if_t<std::is_invocable_v<decltype( fp ), Args...>,
-			                          std::nullptr_t> = nullptr>
-			inline constexpr ReturnType operator( )( Args &&...args ) const {
-				return fp( DAW_FWD2( Args, args )... );
-			}
-		};
-
-		template<typename Func>
-		using fp_wrapper = conditional_t<std::is_class_v<daw::remove_cvref_t<Func>>,
-		                                 Func,
-		                                 fp_wrapper_t<Func>>;
-
-		template<auto>
-		struct lift_t;
-
-		template<typename ReturnType,
-		         typename... Arguments,
-		         ReturnType ( *fp )( Arguments... )>
-		struct lift_t<fp> {
-			template<typename... Args,
-			         std::enable_if_t<std::is_invocable_v<decltype( fp ), Args...>,
-			                          std::nullptr_t> = nullptr>
-			inline constexpr ReturnType operator( )( Args &&...args ) const
-			  noexcept( noexcept( fp( DAW_FWD2( Args, args )... ) ) ) {
-				return fp( DAW_FWD2( Args, args )... );
-			}
-		};
-
-	} // namespace overload_details
-
 	template<auto fp>
 	inline constexpr overload_details::lift_t<fp> lift =
 	  overload_details::lift_t<fp>{ };
@@ -80,13 +77,12 @@ namespace daw {
 	struct overload : overload_details::fp_wrapper<Funcs>... {
 		using overload_details::fp_wrapper<Funcs>::operator( )...;
 
-		constexpr overload( Funcs... fs )
-		  : overload_details::fp_wrapper<Funcs>{ fs }... {}
+		explicit constexpr overload( Funcs... fs )
+		  : overload_details::fp_wrapper<Funcs>{ std::move( fs ) }... {}
 	};
 
 	template<typename... Funcs>
 	overload( Funcs &&... )
 	  -> overload<conditional_t<std::is_class_v<daw::remove_cvref_t<Funcs>>,
-	                            daw::remove_cvref_t<Funcs>,
-	                            Funcs>...>;
+	                            daw::remove_cvref_t<Funcs>, Funcs>...>;
 } // namespace daw

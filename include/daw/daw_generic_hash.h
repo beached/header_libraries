@@ -49,8 +49,7 @@ namespace daw {
 
 		template<typename Value>
 		static constexpr hash_value_t
-		append_hash_block( hash_value_t current_hash,
-		                   Value value,
+		append_hash_block( hash_value_t current_hash, Value value,
 		                   std::size_t count = sizeof( Value ) ) noexcept {
 			hash_value_t const JODY_HASH_CONSTANT = 0x1F5B;
 			hash_value_t const JODY_HASH_SHIFT = 14;
@@ -75,9 +74,8 @@ namespace daw {
 		}
 
 	public:
-		template<
-		  typename Value,
-		  std::enable_if_t<std::is_integral_v<Value>, std::nullptr_t> = nullptr>
+		template<typename Value, std::enable_if_t<std::is_integral_v<Value>,
+		                                          std::nullptr_t> = nullptr>
 		static constexpr hash_value_t append_hash( hash_value_t current_hash,
 		                                           Value const & ) noexcept {
 			// TODO	static_assert( sizeof( Value ) >= sizeof( hash_value_t ), "Value
@@ -93,9 +91,8 @@ namespace daw {
 		static constexpr std::size_t const hash_size = 4;
 		static constexpr hash_value_t const hash_init = 2166136261UL;
 
-		template<
-		  typename Value,
-		  std::enable_if_t<std::is_integral_v<Value>, std::nullptr_t> = nullptr>
+		template<typename Value, std::enable_if_t<std::is_integral_v<Value>,
+		                                          std::nullptr_t> = nullptr>
 		static constexpr hash_value_t append_hash( hash_value_t current_hash,
 		                                           Value const &value ) noexcept {
 			hash_value_t const fnv1a_prime = 16777619UL;
@@ -120,8 +117,7 @@ namespace daw {
 			return hash;
 		}
 		template<
-		  typename Member,
-		  std::size_t N,
+		  typename Member, std::size_t N,
 		  std::enable_if_t<std::is_integral_v<Member>, std::nullptr_t> = nullptr>
 		constexpr hash_value_t
 		operator( )( Member const ( &member )[N] ) const noexcept {
@@ -130,9 +126,8 @@ namespace daw {
 			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 
-		template<
-		  typename Integral,
-		  std::enable_if_t<std::is_integral_v<Integral>, std::nullptr_t> = nullptr>
+		template<typename Integral, std::enable_if_t<std::is_integral_v<Integral>,
+		                                             std::nullptr_t> = nullptr>
 		constexpr hash_value_t operator( )( Integral const value ) const noexcept {
 			return append_hash( hash_init, value );
 		}
@@ -143,9 +138,8 @@ namespace daw {
 		static constexpr std::size_t const hash_size = 8;
 		static constexpr hash_value_t const hash_init = 14695981039346656037ULL;
 
-		template<
-		  typename Value,
-		  std::enable_if_t<std::is_integral_v<Value>, std::nullptr_t> = nullptr>
+		template<typename Value, std::enable_if_t<std::is_integral_v<Value>,
+		                                          std::nullptr_t> = nullptr>
 		static constexpr hash_value_t append_hash( hash_value_t current_hash,
 		                                           Value const &value ) noexcept {
 			hash_value_t const fnv1a_prime = 1099511628211ULL;
@@ -170,8 +164,7 @@ namespace daw {
 			return hash;
 		}
 		template<
-		  typename Member,
-		  std::size_t N,
+		  typename Member, std::size_t N,
 		  std::enable_if_t<std::is_integral_v<Member>, std::nullptr_t> = nullptr>
 		constexpr hash_value_t
 		operator( )( Member const ( &member )[N] ) const noexcept {
@@ -180,9 +173,8 @@ namespace daw {
 			DAW_UNSAFE_BUFFER_FUNC_STOP
 		}
 
-		template<
-		  typename Integral,
-		  std::enable_if_t<std::is_integral_v<Integral>, std::nullptr_t> = nullptr>
+		template<typename Integral, std::enable_if_t<std::is_integral_v<Integral>,
+		                                             std::nullptr_t> = nullptr>
 		constexpr hash_value_t operator( )( Integral const value ) const noexcept {
 			return append_hash( hash_init, value );
 		}
@@ -198,15 +190,13 @@ namespace daw {
 		}
 	};
 
-	template<size_t HashBytes = sizeof( genhash_uint_t ),
-	         typename T,
+	template<size_t HashBytes = sizeof( genhash_uint_t ), typename T,
 	         std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
 	constexpr auto generic_hash( T const value ) noexcept {
 		return generic_hash_t<HashBytes>{ }( value );
 	}
 
-	template<size_t HashBytes = sizeof( genhash_uint_t ),
-	         typename Iterator,
+	template<size_t HashBytes = sizeof( genhash_uint_t ), typename Iterator,
 	         typename IteratorL>
 	constexpr auto generic_hash( Iterator first, IteratorL const last ) noexcept {
 		using hash_t = generic_hash_t<HashBytes>;
@@ -230,8 +220,7 @@ namespace daw {
 		return hash;
 	}
 
-	template<size_t HashBytes = sizeof( genhash_uint_t ),
-	         typename StringViewLike,
+	template<size_t HashBytes = sizeof( genhash_uint_t ), typename StringViewLike,
 	         std::enable_if_t<traits_is_sv::is_string_view_like_v<StringViewLike>,
 	                          std::nullptr_t> = nullptr>
 	auto generic_hash( StringViewLike const &&sv ) noexcept {

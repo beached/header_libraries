@@ -19,10 +19,10 @@ namespace daw::func {
 		template<typename A>
 		using type_t = typename A::type;
 
-		template<template<std::size_t> class Arguments, typename>
+		template<template<std::size_t> typename Arguments, typename>
 		struct make_arg_pack;
 
-		template<template<std::size_t> class Arguments, std::size_t... Is>
+		template<template<std::size_t> typename Arguments, std::size_t... Is>
 		struct make_arg_pack<Arguments, std::index_sequence<Is...>> {
 			using type = std::tuple<type_t<Arguments<Is>>...>;
 			using plain_type =
@@ -30,14 +30,14 @@ namespace daw::func {
 		};
 	} // namespace func_traits_impl
 
-	template<class>
+	template<typename, typename = void>
 	struct function_traits;
 
 	// function pointer
-	template<class R, class... Args>
+	template<typename R, typename... Args>
 	struct function_traits<R ( * )( Args... )> : function_traits<R( Args... )> {};
 
-	template<class R, class... Args>
+	template<typename R, typename... Args>
 	struct function_traits<R( Args... )> {
 		using result_t = R;
 		using plain_result_t = daw::traits::remove_cvref_t<R>;
@@ -56,22 +56,23 @@ namespace daw::func {
 	};
 
 	// member function pointer
-	template<class C, class R, class... Args>
+	template<typename C, typename R, typename... Args>
 	struct function_traits<R ( C::* )( Args... )>
 	  : function_traits<R( C &, Args... )> {};
 
 	// const member function pointer
-	template<class C, class R, class... Args>
+	template<typename C, typename R, typename... Args>
 	struct function_traits<R ( C::* )( Args... ) const>
 	  : function_traits<R( C &, Args... )> {};
 
 	// member object pointer
-	template<class C, class R>
+	template<typename C, typename R>
 	struct function_traits<R( C::* )> : function_traits<R( C & )> {};
 
 	// functor
-	template<class F>
-	struct function_traits {
+	template<typename F>
+	struct function_traits<
+	  F, std::void_t<decltype( &std::remove_reference_t<F>::operator( ) )>> {
 	private:
 		using call_type =
 		  function_traits<decltype( &std::remove_reference_t<F>::operator( ) )>;
@@ -89,9 +90,17 @@ namespace daw::func {
 			using plain_type = daw::traits::remove_cvref_t<type>;
 		};
 
-		using params_t = typename func_traits_impl::
-		  make_arg_pack<argument, std::make_index_sequence<arity>>::type;
-		using plain_params_t = typename func_traits_impl::
-		  make_arg_pack<argument, std::make_index_sequence<arity>>::plain_type;
+		using params_t = typename func_traits_impl::make_arg_pack<
+		  argument, std::make_index_sequence<arity>>::type;
+		using plain_params_t = typename func_traits_impl::make_arg_pack<
+		  argument, std::make_index_sequence<arity>>::plain_type;
 	};
+
+	template<typename F, typename = void>
+	inline constexpr bool has_function_traits_v = false;
+
+	template<typename F>
+	inline constexpr bool
+	  has_function_traits_v<F, std::void_t<decltype( function_traits<F>{ } )>> =
+	    true;
 } // namespace daw::func

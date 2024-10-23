@@ -19,8 +19,7 @@ namespace daw {
 	struct default_init_tag {};
 	struct value_init_tag {};
 
-	template<typename Tp,
-	         int Idx,
+	template<typename Tp, int Idx,
 	         bool /*Can Be Empty Base*/ =
 	           std::is_empty_v<Tp> and not std::is_final_v<Tp>>
 	struct compressed_pair_elem {
@@ -121,11 +120,9 @@ namespace daw {
 		explicit constexpr compressed_pair( std::piecewise_construct_t pc,
 		                                    std::tuple<Args1...> first_args,
 		                                    std::tuple<Args2...> second_args )
-		  : Base1( pc,
-		           std::move( first_args ),
+		  : Base1( pc, std::move( first_args ),
 		           std::make_index_sequence<sizeof...( Args1 )>{ } )
-		  , Base2( pc,
-		           std::move( second_args ),
+		  , Base2( pc, std::move( second_args ),
 		           std::make_index_sequence<sizeof...( Args2 )>{ } ) {}
 
 		[[nodiscard]] constexpr typename Base1::reference first( ) noexcept {

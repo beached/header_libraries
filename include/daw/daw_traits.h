@@ -8,20 +8,20 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "cpp_17.h"
-#include "daw_cpp_feature_check.h"
-#include "daw_enable_if.h"
-#include "daw_move.h"
-#include "daw_pack_element.h"
-#include "daw_remove_cvref.h"
-#include "impl/daw_make_trait.h"
-#include "impl/daw_traits_impl.h"
-#include "traits/daw_traits_conditional.h"
-#include "traits/daw_traits_first_type.h"
-#include "traits/daw_traits_is_const.h"
-#include "traits/daw_traits_is_one_of.h"
-#include "traits/daw_traits_is_rvalue_reference.h"
+#include "daw/ciso646.h"
+#include "daw/cpp_17.h"
+#include "daw/daw_cpp_feature_check.h"
+#include "daw/daw_enable_if.h"
+#include "daw/daw_move.h"
+#include "daw/daw_pack_element.h"
+#include "daw/daw_remove_cvref.h"
+#include "daw/impl/daw_make_trait.h"
+#include "daw/impl/daw_traits_impl.h"
+#include "daw/traits/daw_traits_conditional.h"
+#include "daw/traits/daw_traits_first_type.h"
+#include "daw/traits/daw_traits_is_const.h"
+#include "daw/traits/daw_traits_is_one_of.h"
+#include "daw/traits/daw_traits_is_rvalue_reference.h"
 
 #include <cstdlib>
 #include <daw/stdinc/data_access.h>
@@ -53,8 +53,9 @@ namespace daw::traits {
 	template<typename First, typename... Args>
 	struct max_sizeof<First, Args...> {
 		using next = typename max_sizeof<Args...>::type;
-		using type = typename daw::
-		  conditional_t<( sizeof( First ) >= sizeof( next ) ), First, next>;
+		using type =
+		  typename daw::conditional_t<( sizeof( First ) >= sizeof( next ) ), First,
+		                              next>;
 		static const size_t value = sizeof( type );
 	};
 
@@ -79,8 +80,8 @@ namespace daw::traits {
 	}
 
 	template<typename BoolType1, typename BoolType2, typename... Booleans>
-	constexpr bool
-	are_true( BoolType1 b1, BoolType2 b2, Booleans... others ) noexcept {
+	constexpr bool are_true( BoolType1 b1, BoolType2 b2,
+	                         Booleans... others ) noexcept {
 		return are_true( b1, b2 ) and are_true( others... );
 	}
 
@@ -95,9 +96,8 @@ namespace daw::traits {
 
 	template<typename T, typename First, typename... Rest>
 	struct are_same_types<T, First, Rest...>
-	  : std::integral_constant<bool,
-	                           std::is_same_v<T, First> or
-	                             are_same_types<T, Rest...>::value> {};
+	  : std::integral_constant<bool, std::is_same_v<T, First> or
+	                                   are_same_types<T, Rest...>::value> {};
 
 	template<typename T, typename... Rest>
 	inline constexpr bool are_same_types_v = are_same_types<T, Rest...>::value;
@@ -198,21 +198,12 @@ namespace daw::traits {
 	template<typename T>
 	inline constexpr bool static_not_v = static_not<T>::value;
 
-	template<typename T>
-	using is_numeric [[deprecated( "use std::is_arithmetic" )]] =
-	  std::disjunction<std::is_floating_point<T>, std::is_integral<T>>;
-
-	template<typename T>
-	inline constexpr bool is_numeric_v
-	  [[deprecated( "use std::is_arithmetic_v" )]] = is_numeric<T>::value;
-
 	template<typename OutStream, typename T, typename = void>
 	inline constexpr bool is_streamable_v = false;
 
 	template<typename OutStream, typename T>
 	inline constexpr bool
-	  is_streamable_v<OutStream,
-	                  T,
+	  is_streamable_v<OutStream, T,
 	                  std::void_t<decltype( std::declval<OutStream &>( )
 	                                        << std::declval<T>( ) )>> = true;
 
@@ -223,48 +214,48 @@ namespace daw::traits {
 	namespace traits_details {
 		namespace operators {
 			template<typename L, typename R>
-			[[maybe_unused]] auto
-			has_op_eq_impl( L const &, R const &, long ) -> std::false_type;
+			[[maybe_unused]] auto has_op_eq_impl( L const &, R const &, long )
+			  -> std::false_type;
 
 			template<typename L, typename R>
 			[[maybe_unused]] auto has_op_eq_impl( L const &lhs, R const &rhs, int )
 			  -> std::is_convertible<decltype( lhs == rhs ), bool>;
 
 			template<typename L, typename R>
-			[[maybe_unused]] auto
-			has_op_ne_impl( L const &, R const &, long ) -> std::false_type;
+			[[maybe_unused]] auto has_op_ne_impl( L const &, R const &, long )
+			  -> std::false_type;
 
 			template<typename L, typename R>
 			[[maybe_unused]] auto has_op_ne_impl( L const &lhs, R const &rhs, int )
 			  -> std::is_convertible<decltype( lhs != rhs ), bool>;
 
 			template<typename L, typename R>
-			[[maybe_unused]] auto
-			has_op_lt_impl( L const &, R const &, long ) -> std::false_type;
+			[[maybe_unused]] auto has_op_lt_impl( L const &, R const &, long )
+			  -> std::false_type;
 
 			template<typename L, typename R>
 			[[maybe_unused]] auto has_op_lt_impl( L const &lhs, R const &rhs, int )
 			  -> std::is_convertible<decltype( lhs < rhs ), bool>;
 
 			template<typename L, typename R>
-			[[maybe_unused]] auto
-			has_op_le_impl( L const &, R const &, long ) -> std::false_type;
+			[[maybe_unused]] auto has_op_le_impl( L const &, R const &, long )
+			  -> std::false_type;
 
 			template<typename L, typename R>
 			[[maybe_unused]] auto has_op_le_impl( L const &lhs, R const &rhs, int )
 			  -> std::is_convertible<decltype( lhs <= rhs ), bool>;
 
 			template<typename L, typename R>
-			[[maybe_unused]] auto
-			has_op_gt_impl( L const &, R const &, long ) -> std::false_type;
+			[[maybe_unused]] auto has_op_gt_impl( L const &, R const &, long )
+			  -> std::false_type;
 
 			template<typename L, typename R>
 			[[maybe_unused]] auto has_op_gt_impl( L const &lhs, R const &rhs, int )
 			  -> std::is_convertible<decltype( lhs > rhs ), bool>;
 
 			template<typename L, typename R>
-			[[maybe_unused]] auto
-			has_op_ge_impl( L const &, R const &, long ) -> std::false_type;
+			[[maybe_unused]] auto has_op_ge_impl( L const &, R const &, long )
+			  -> std::false_type;
 
 			template<typename L, typename R>
 			[[maybe_unused]] auto has_op_ge_impl( L const &lhs, R const &rhs, int )
@@ -320,9 +311,8 @@ namespace daw::traits {
 		void is_array_of_array_test( T ( & )[N][M] );
 	} // namespace traits_impl
 
-	DAW_MAKE_REQ_TRAIT(
-	  is_array_array_v,
-	  traits_impl::is_array_of_array_test( std::declval<T>( ) ) );
+	DAW_MAKE_REQ_TRAIT( is_array_array_v, traits_impl::is_array_of_array_test(
+	                                        std::declval<T>( ) ) );
 
 	template<typename T>
 	inline constexpr bool is_not_array_array_v = not is_array_array_v<T>;
@@ -377,8 +367,7 @@ namespace daw::traits {
 		template<typename T, typename... Ts>
 		struct isnt_cv_ref<T, Ts...>
 		  : std::bool_constant<(
-		      not std::disjunction_v<daw::traits::is_const<T>,
-		                             std::is_reference<T>,
+		      not std::disjunction_v<daw::traits::is_const<T>, std::is_reference<T>,
 		                             std::is_volatile<T>> and
 		      std::is_same_v<std::true_type, typename isnt_cv_ref<Ts...>::type> )> {
 		};
@@ -641,9 +630,7 @@ namespace daw::traits {
 	template<typename T, typename... Args>
 	struct is_nothrow_list_constructible
 	  : traits_details::is_nothrow_list_constructible<
-	      is_list_constructible_v<T, Args...>,
-	      T,
-	      Args...>::type {};
+	      is_list_constructible_v<T, Args...>, T, Args...>::type {};
 
 	template<typename T, typename... Args>
 	inline constexpr bool is_nothrow_list_constructible_v =
@@ -686,24 +673,20 @@ namespace daw::traits {
 			static_assert( StartIdx < sizeof...( Args ) );
 			std::size_t result = NotFound;
 			find_template_parameter<StartIdx, T, pack_list<Args...>>(
-			  result,
-			  std::make_index_sequence<sizeof...( Args ) - StartIdx>{ },
+			  result, std::make_index_sequence<sizeof...( Args ) - StartIdx>{ },
 			  NotFound );
 			return result;
 		}
 
-		template<std::size_t StartIdx,
-		         typename Lhs,
-		         typename Rhs,
+		template<std::size_t StartIdx, typename Lhs, typename Rhs,
 		         std::size_t... Idx>
-		constexpr std::size_t find_first_mismatch( Lhs *,
-		                                           Rhs *,
+		constexpr std::size_t find_first_mismatch( Lhs *, Rhs *,
 		                                           std::index_sequence<Idx...>,
 		                                           std::size_t NotFound ) {
 			std::size_t result = NotFound;
 			(void)( update_if_different<StartIdx + Idx,
-			                            pack_element_t<StartIdx + Idx, Lhs>,
-			                            Rhs>( result, NotFound ) &&
+			                            pack_element_t<StartIdx + Idx, Lhs>, Rhs>(
+			          result, NotFound ) &&
 			        ... );
 			return result;
 		}
@@ -716,10 +699,8 @@ namespace daw::traits {
 				return r < l ? r : l;
 			}( pack_size_v<TpL>, pack_size_v<TpL> );
 			return find_first_mismatch<StartIdx>(
-			  static_cast<TpL *>( nullptr ),
-			  static_cast<TpR *>( nullptr ),
-			  std::make_index_sequence<Max - StartIdx>{ },
-			  Max );
+			  static_cast<TpL *>( nullptr ), static_cast<TpR *>( nullptr ),
+			  std::make_index_sequence<Max - StartIdx>{ }, Max );
 		}
 	} // namespace class_parts_details
 
@@ -755,10 +736,10 @@ namespace daw::traits {
 		  std::integral_constant<std::size_t, static_cast<std::size_t>( -1 )>;
 
 		template<typename T, std::size_t StartIdx = 0>
-		using find_class_template_parameter = std::integral_constant<
-		  std::size_t,
-		  class_parts_details::find_template_parameter<StartIdx, T, Args...>(
-		    NotFound{ } )>;
+		using find_class_template_parameter =
+		  std::integral_constant<std::size_t,
+		                         class_parts_details::find_template_parameter<
+		                           StartIdx, T, Args...>( NotFound{ } )>;
 		template<typename OtherClass, std::size_t StartIdx = 0>
 		using find_first_mismatched_class_template_parameter =
 		  std::integral_constant<std::size_t,
@@ -795,16 +776,16 @@ namespace daw::traits {
 	  find_class_template_parameter<T, Class, StartIdx>::value;
 
 	template<typename ClassA, typename ClassB, std::size_t StartIdx = 0>
-	using find_first_mismatched_class_template_parameter = typename class_parts<
-	  ClassA>::
-	  template find_first_mismatched_class_template_parameter<class_parts<ClassB>,
-	                                                          StartIdx>;
+	using find_first_mismatched_class_template_parameter =
+	  typename class_parts<ClassA>::
+	    template find_first_mismatched_class_template_parameter<
+	      class_parts<ClassB>, StartIdx>;
 
 	template<typename ClassA, typename ClassB, std::size_t StartIdx = 0>
 	inline constexpr std::size_t
 	  find_first_mismatched_class_template_parameter_v =
-	    find_first_mismatched_class_template_parameter<ClassA, ClassB, StartIdx>::
-	      value;
+	    find_first_mismatched_class_template_parameter<ClassA, ClassB,
+	                                                   StartIdx>::value;
 
 	template<typename, typename>
 	struct not_same : std::true_type {};
@@ -910,8 +891,8 @@ namespace daw {
 
 	namespace is_complete_details {
 		template<typename T>
-		auto is_complete_test( T * ) -> decltype( (void)sizeof( T ),
-		                                          std::true_type{ } );
+		auto is_complete_test( T * )
+		  -> decltype( (void)sizeof( T ), std::true_type{ } );
 		auto is_complete_test( ... ) -> std::false_type;
 	} // namespace is_complete_details
 
@@ -958,8 +939,8 @@ namespace daw {
 	template<typename Tp>
 	inline constexpr bool is_tuple_like_v = requires {
 		std::tuple_size_v<daw::remove_cvref_t<Tp>>;
-		typename std::tuple_element_t<0, daw::remove_cvref_t<Tp>>;
 		std::get<0>( std::declval<Tp>( ) );
+		typename std::tuple_element_t<0, daw::remove_cvref_t<Tp>>;
 	};
 #else
 	template<typename Tp, typename = void>
@@ -967,9 +948,12 @@ namespace daw {
 
 	template<typename Tp>
 	inline constexpr bool is_tuple_like_v<
-	  Tp,
-	  void_t<decltype( (void)(std::tuple_size_v<daw::remove_cvref_t<Tp>>),
-	                   (void)( std::get<0>( std::declval<Tp>( ) ) ) ),
-	         typename std::tuple_element_t<0, daw::remove_cvref_t<Tp>>>> = true;
+	  Tp, void_t<decltype( (void)(std::tuple_size_v<daw::remove_cvref_t<Tp>>),
+	                       (void)( std::get<0>( std::declval<Tp>( ) ) ) ),
+	             typename std::tuple_element_t<0, daw::remove_cvref_t<Tp>>>> =
+	  true;
 #endif
+
+	template<auto, typename T>
+	using ignore_one_t = T;
 } // namespace daw

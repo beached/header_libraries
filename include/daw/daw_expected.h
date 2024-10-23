@@ -47,8 +47,7 @@ namespace daw {
 	private:
 		using variant_type =
 		  std::variant<expected_details::ExpectedTag<expected_details::Empty>,
-		               std::exception_ptr,
-		               value_type>;
+		               std::exception_ptr, value_type>;
 		variant_type m_value{ };
 
 	public:
@@ -111,8 +110,7 @@ namespace daw {
 
 	private:
 		template<
-		  typename Function,
-		  typename... Args,
+		  typename Function, typename... Args,
 		  std::enable_if_t<std::is_invocable_r_v<value_type, Function, Args...>,
 		                   std::nullptr_t> = nullptr>
 		[[nodiscard]] inline static variant_type
@@ -128,16 +126,14 @@ namespace daw {
 
 	public:
 		template<
-		  class Function,
-		  typename... Args,
+		  class Function, typename... Args,
 		  std::enable_if_t<std::is_invocable_r_v<value_type, Function, Args...>,
 		                   std::nullptr_t> = nullptr>
 		explicit expected_t( Function &&func, Args &&...args )
 		  : m_value( variant_from_code( DAW_FWD( func ), DAW_FWD( args )... ) ) {}
 
 		template<
-		  class Function,
-		  typename... Args,
+		  class Function, typename... Args,
 		  std::enable_if_t<std::is_invocable_r_v<value_type, Function, Args...>,
 		                   std::nullptr_t> = nullptr>
 		[[nodiscard]] static expected_t from_code( Function &&func,
@@ -256,8 +252,7 @@ namespace daw {
 	private:
 		using variant_type =
 		  std::variant<expected_details::ExpectedTag<expected_details::Empty>,
-		               std::exception_ptr,
-		               value_type>;
+		               std::exception_ptr, value_type>;
 		variant_type m_value{ };
 
 		expected_t( bool ) noexcept
@@ -327,15 +322,13 @@ namespace daw {
 		}
 
 	public:
-		template<class Function,
-		         typename... Args,
+		template<class Function, typename... Args,
 		         std::enable_if_t<std::is_invocable_v<Function, Args...>,
 		                          std::nullptr_t> = nullptr>
 		explicit expected_t( Function &&func, Args &&...args ) noexcept
 		  : m_value( variant_from_code( DAW_FWD( func ), DAW_FWD( args )... ) ) {}
 
-		template<class Function,
-		         typename... Args,
+		template<class Function, typename... Args,
 		         std::enable_if_t<std::is_invocable_v<Function, Args...>,
 		                          std::nullptr_t> = nullptr>
 		[[nodiscard]] static expected_t from_code( Function &&func,

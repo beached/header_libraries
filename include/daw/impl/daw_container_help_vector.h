@@ -9,7 +9,6 @@
 #pragma once
 
 #include "daw/daw_exchange.h"
-#include "daw/third_party/private_access.h"
 
 #include <cassert>
 #include <cstddef>
@@ -95,35 +94,37 @@ namespace daw {
 	}
 }
 template<typename T, typename Allocator>
-struct StdVecStart
-  : accessor::MemberWrapper<std::vector<T, Allocator>,
-                            typename std::vector<T, Allocator>::pointer> {};
+struct StdVecStart : daw::pa::member_variable_wrapper<
+                       std::vector<T, Allocator>,
+                       typename std::vector<T, Allocator>::pointer> {};
 template<typename T, typename Allocator>
-class accessor::MakeProxy<StdVecStart<T, Allocator>,
-                          &std::vector<T, Allocator>::_M_start>;
+struct daw::pa::make_proxy<StdVecStart<T, Allocator>,
+                                   &std::vector<T, Allocator>::_M_start>;
 
 template<typename T, typename Allocator>
-struct StdVecFinish
-  : accessor::MemberWrapper<std::vector<T, Allocator>,
-                            typename std::vector<T, Allocator>::pointer> {};
+struct StdVecFinish : daw::pa::member_variable_wrapper<
+                        std::vector<T, Allocator>,
+                        typename std::vector<T, Allocator>::pointer> {};
 template<typename T, typename Allocator>
-class accessor::MakeProxy<StdVecFinish<T, Allocator>,
-                          &std::vector<T, Allocator>::_M_finish>;
+struct daw::pa::make_proxy<StdVecFinish<T, Allocator>,
+                                   &std::vector<T, Allocator>::_M_finish>;
 
 template<typename T, typename Allocator>
-struct StdVecEndOfStorage
-  : accessor::MemberWrapper<std::vector<T, Allocator>,
-                            typename std::vector<T, Allocator>::pointer> {};
+struct StdVecEndOfStorage : daw::pa::member_variable_wrapper<
+                              std::vector<T, Allocator>,
+                              typename std::vector<T, Allocator>::pointer> {};
 template<typename T, typename Allocator>
-class accessor::MakeProxy<StdVecEndOfStorage<T, Allocator>,
-                          &std::vector<T, Allocator>::_M_end_of_storage>;
+struct daw::pa::make_proxy<
+  StdVecEndOfStorage<T, Allocator>,
+  &std::vector<T, Allocator>::_M_end_of_storage>;
 
 template<typename T, typename Allocator>
 struct StdVecImpl
-  : accessor::MemberWrapper<std::vector<T, Allocator>, Allocator> {};
+  : daw::pa::member_variable_wrapper<std::vector<T, Allocator>,
+                                           Allocator> {};
 template<typename T, typename Allocator>
-class accessor::MakeProxy<StdVecImpl<T, Allocator>,
-                          &std::vector<T, Allocator>::_M_impl>;
+struct daw::pa::make_proxy<StdVecImpl<T, Allocator>,
+                                   &std::vector<T, Allocator>::_M_impl>;
 
 namespace daw {
 	namespace container_help_impl {
@@ -156,22 +157,22 @@ namespace daw {
 
 		template<typename T, typename Allocator>
 		constexpr decltype( auto ) first_ptr( std::vector<T, Allocator> &vec ) {
-			return ::accessor::accessMember<StdVecStart<T, Allocator>>( vec );
+			return daw::pa::access_member<StdVecStart<T, Allocator>>( vec );
 		}
 
 		template<typename T, typename Allocator>
 		constexpr decltype( auto ) last_ptr( std::vector<T, Allocator> &vec ) {
-			return ::accessor::accessMember<StdVecFinish<T, Allocator>>( vec );
+			return daw::pa::access_member<StdVecFinish<T, Allocator>>( vec );
 		}
 
 		template<typename T, typename Allocator>
 		constexpr decltype( auto ) capacity_ptr( std::vector<T, Allocator> &vec ) {
-			return ::accessor::accessMember<StdVecEndOfStorage<T, Allocator>>( vec );
+			return daw::pa::access_member<StdVecEndOfStorage<T, Allocator>>( vec );
 		}
 
 		template<typename T, typename Allocator>
 		constexpr decltype( auto ) get_alloc( std::vector<T, Allocator> &vec ) {
-			return ::accessor::accessMember<StdVecImpl<T, Allocator>>( vec );
+			return daw::pa::access_member<StdVecImpl<T, Allocator>>( vec );
 		}
 
 		template<typename T, typename Allocator>

@@ -70,9 +70,8 @@ namespace daw {
 		  : m_first( arr )
 		  , m_size( N ) {}
 
-		template<
-		  typename Container,
-		  std::enable_if_t<not is_daw_span_v<Container>, std::nullptr_t> = nullptr>
+		template<typename Container, std::enable_if_t<not is_daw_span_v<Container>,
+		                                              std::nullptr_t> = nullptr>
 		constexpr span( Container const &c ) noexcept
 		  : m_first( std::data( c ) )
 		  , m_size( std::size( c ) ) {}
@@ -265,9 +264,8 @@ namespace daw {
 		  : m_first( arr )
 		  , m_size( N ) {}
 
-		template<
-		  typename Container,
-		  std::enable_if_t<not is_daw_span_v<Container>, std::nullptr_t> = nullptr>
+		template<typename Container, std::enable_if_t<not is_daw_span_v<Container>,
+		                                              std::nullptr_t> = nullptr>
 		constexpr span( Container &c ) noexcept
 		  : m_first( std::data( c ) )
 		  , m_size( std::size( c ) ) {}

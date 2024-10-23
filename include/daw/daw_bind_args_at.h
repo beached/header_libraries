@@ -22,9 +22,7 @@
 
 namespace daw {
 	template<
-	  std::size_t StartN,
-	  typename... Args,
-	  std::size_t... Is,
+	  std::size_t StartN, typename... Args, std::size_t... Is,
 	  std::enable_if_t<( sizeof...( Args ) >= ( sizeof...( Is ) + StartN ) ),
 	                   std::nullptr_t> = nullptr>
 	constexpr auto split_args_impl( std::tuple<Args...> &&args,
@@ -38,9 +36,7 @@ namespace daw {
 	}
 
 	template<
-	  std::size_t StartN,
-	  std::size_t EndN,
-	  typename... Args,
+	  std::size_t StartN, std::size_t EndN, typename... Args,
 	  std::enable_if_t<( sizeof...( Args ) >= EndN ), std::nullptr_t> = nullptr>
 	constexpr auto split_args( std::tuple<Args...> args ) {
 		return split_args_impl<StartN>(
@@ -85,11 +81,8 @@ namespace daw {
 
 	template<size_t N, typename Invokable, typename TpArgs, typename... Args>
 	inline constexpr bool can_call_v =
-	  daw::is_detected_v<can_call_test,
-	                     std::integral_constant<std::size_t, N>,
-	                     Invokable,
-	                     TpArgs,
-	                     Args...>;
+	  daw::is_detected_v<can_call_test, std::integral_constant<std::size_t, N>,
+	                     Invokable, TpArgs, Args...>;
 	/*
 	    std::conjunction_v<enough_args_t<N, TpArgs, Args...>,
 	                       can_call2<N, Invokable, TpArgs, Args...>>;
@@ -114,12 +107,11 @@ namespace daw {
 		constexpr decltype( auto ) operator( )( Args &&...args ) const
 		  noexcept( is_nothrow_callable_v<N, Invokable, TpArgs, Args...> ) {
 			return std::apply(
-			  func,
-			  std::tuple_cat(
-			    split_args<0, N>( std::forward_as_tuple( DAW_FWD( args )... ) ),
-			    tp_args,
-			    split_args<N, sizeof...( Args )>(
-			      std::forward_as_tuple( DAW_FWD( args )... ) ) ) );
+			  func, std::tuple_cat(
+			          split_args<0, N>( std::forward_as_tuple( DAW_FWD( args )... ) ),
+			          tp_args,
+			          split_args<N, sizeof...( Args )>(
+			            std::forward_as_tuple( DAW_FWD( args )... ) ) ) );
 		}
 
 		template<typename... Args,
@@ -129,19 +121,17 @@ namespace daw {
 		  is_nothrow_callable_v<N, Invokable, TpArgs, Args...> ) {
 			static_assert( N <= sizeof...( Args ) );
 			return std::apply(
-			  func,
-			  std::tuple_cat(
-			    split_args<0, N>( std::forward_as_tuple( DAW_FWD( args )... ) ),
-			    tp_args,
-			    split_args<N, sizeof...( Args )>(
-			      std::forward_as_tuple( DAW_FWD( args )... ) ) ) );
+			  func, std::tuple_cat(
+			          split_args<0, N>( std::forward_as_tuple( DAW_FWD( args )... ) ),
+			          tp_args,
+			          split_args<N, sizeof...( Args )>(
+			            std::forward_as_tuple( DAW_FWD( args )... ) ) ) );
 		}
 	};
 
 	template<std::size_t N, typename Invokable, typename... Args>
 	constexpr auto bind_args_at( Invokable &&func, Args &&...args ) {
-		return bind_args_at_fn<N,
-		                       daw::remove_cvref_t<Invokable>,
+		return bind_args_at_fn<N, daw::remove_cvref_t<Invokable>,
 		                       std::tuple<std::decay_t<Args>...>>{
 		  DAW_FWD( func ),
 		  std::tuple<std::decay_t<Args>...>( DAW_FWD( args )... ) };

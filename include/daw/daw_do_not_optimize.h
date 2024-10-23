@@ -52,9 +52,8 @@ namespace daw {
 #pragma warning( default : 4702 )
 #endif
 
-	template<
-	  typename... Values,
-	  std::enable_if_t<( sizeof...( Values ) != 1 ), std::nullptr_t> = nullptr>
+	template<typename... Values, std::enable_if_t<( sizeof...( Values ) != 1 ),
+	                                              std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE void do_not_optimize( Values &&...values ) {
 		if constexpr( sizeof...( Values ) > 0 ) {
 			(void)( ( do_not_optimize( DAW_FWD2( Values, values ) ), 1 ) | ... );

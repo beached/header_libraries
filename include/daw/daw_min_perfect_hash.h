@@ -52,7 +52,7 @@ namespace daw {
 				return uint32_t{ };
 			} else if constexpr( sz == 64U ) {
 				return uint64_t{ };
-			};
+			}
 		}
 
 		template<size_t Bits>
@@ -117,9 +117,7 @@ namespace daw {
 	// Adapted from
 	// https://blog.demofox.org/2015/12/14/o1-data-lookups-with-minimal-perfect-hashing/
 	// and https://blog.gopheracademy.com/advent-2017/mphf/
-	template<size_t N,
-	         typename Key,
-	         typename Value,
+	template<size_t N, typename Key, typename Value,
 	         typename Hasher = std::hash<Key>,
 	         typename KeyEqual = std::equal_to<>>
 	struct perfect_hash_table {
@@ -160,8 +158,7 @@ namespace daw {
 
 			static_assert( std::is_default_constructible_v<ForwardIterator> );
 
-			daw::algorithm::iota( buckets.begin( ),
-			                      buckets.end( ),
+			daw::algorithm::iota( buckets.begin( ), buckets.end( ),
 			                      static_cast<size_type>( 0 ),
 			                      []( auto &i, size_type num ) {
 				                      i.bucket_index = num;
@@ -172,22 +169,21 @@ namespace daw {
 				buckets[bucket].items.push_back( it );
 			}
 
-			daw::sort( buckets.begin( ),
-			           buckets.end( ),
+			daw::sort( buckets.begin( ), buckets.end( ),
 			           []( auto const &lhs, auto const &rhs ) {
 				           return lhs.items.size( ) > rhs.items.size( );
 			           } );
 
 			daw::array<bool, m_data_size> slots_claimed{ };
 
-			daw::algorithm::find_if(
-			  buckets.cbegin( ), buckets.cend( ), [&]( auto const &bucket ) {
-				  if( bucket.items.empty( ) ) {
-					  return true;
-				  }
-				  find_salt_for_bucket( bucket, slots_claimed );
-				  return false;
-			  } );
+			daw::algorithm::find_if( buckets.cbegin( ), buckets.cend( ),
+			                         [&]( auto const &bucket ) {
+				                         if( bucket.items.empty( ) ) {
+					                         return true;
+				                         }
+				                         find_salt_for_bucket( bucket, slots_claimed );
+				                         return false;
+			                         } );
 		}
 
 		explicit constexpr perfect_hash_table(
@@ -289,16 +285,14 @@ namespace daw {
 				daw::bounded_vector_t<hash_result, m_data_size> slots_this_bucket{ };
 
 				auto const success = daw::algorithm::all_of(
-				  bucket.items.begin( ),
-				  bucket.items.end( ),
+				  bucket.items.begin( ), bucket.items.end( ),
 				  [&]( auto const *const item ) -> bool {
 					  hash_result const slot_wanted =
 					    scale_hash( call_hash( item->first, salt ) );
 					  if( slots_claimed[slot_wanted] or
-					      ( daw::algorithm::find( slots_this_bucket.begin( ),
-					                              slots_this_bucket.end( ),
-					                              slot_wanted ) !=
-					        slots_this_bucket.end( ) ) ) {
+					      ( daw::algorithm::find(
+					          slots_this_bucket.begin( ), slots_this_bucket.end( ),
+					          slot_wanted ) != slots_this_bucket.end( ) ) ) {
 						  return false;
 					  }
 					  slots_this_bucket.push_back( slot_wanted );

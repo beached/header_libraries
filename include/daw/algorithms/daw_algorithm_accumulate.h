@@ -47,7 +47,7 @@ namespace daw::algorithm {
 	/***
 	 * Accumulate values in range
 	 * @tparam InputIterator type of first iterator argument
-	 * @tparam LastType type of sentinal marking end of range
+	 * @tparam LastType type of sentinel marking end of range
 	 * @tparam T initial value to start accumulating at
 	 * @tparam BinaryOperation Callable that takes the current sum and next value
 	 * and returns the new sum

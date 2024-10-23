@@ -24,8 +24,7 @@ namespace daw::algorithm {
 	/// @param last last item in range
 	template<typename ForwardIterator, typename LastType>
 	constexpr void rotate(
-	  ForwardIterator first,
-	  ForwardIterator middle,
+	  ForwardIterator first, ForwardIterator middle,
 	  LastType last ) noexcept( noexcept( daw::cswap( *first, *middle ) ) ) {
 
 		traits::is_forward_access_iterator_test<ForwardIterator>( );
@@ -66,12 +65,10 @@ namespace daw::algorithm {
 
 	template<typename RandomIterator, typename Compare = std::less<>>
 	constexpr void nth_element(
-	  RandomIterator first,
-	  RandomIterator nth,
-	  RandomIterator const last,
-	  Compare comp =
-	    Compare{ } ) noexcept( noexcept( comp( *first, *nth ) )
-	                             && noexcept( daw::cswap( *first, *nth ) ) ) {
+	  RandomIterator first, RandomIterator nth, RandomIterator const last,
+	  Compare comp = Compare{ } ) noexcept( noexcept( comp( *first, *nth ) ) &&
+	                                        noexcept( daw::cswap( *first,
+	                                                              *nth ) ) ) {
 
 		traits::is_random_access_iterator_test<RandomIterator>( );
 		traits::is_inout_iterator_test<RandomIterator>( );

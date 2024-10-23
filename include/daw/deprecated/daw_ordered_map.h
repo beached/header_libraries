@@ -8,11 +8,11 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_algorithm.h"
-#include "daw_check_exceptions.h"
-#include "daw_enable_if.h"
-#include "daw_utility.h"
+#include "daw/ciso646.h"
+#include "daw/daw_algorithm.h"
+#include "daw/daw_check_exceptions.h"
+#include "daw/daw_enable_if.h"
+#include "daw/daw_utility.h"
 
 #include <cstddef>
 #include <memory>
@@ -187,12 +187,12 @@ namespace daw {
 			return m_values.back( );
 		}
 
-		constexpr bool empty( ) const noexcept {
+		[[nodiscard]] constexpr bool empty( ) const noexcept {
 			using namespace daw::ordered_map_impl;
 			return emptyer( m_values );
 		}
 
-		constexpr size_type size( ) const noexcept {
+		[[nodiscard]] constexpr size_type size( ) const noexcept {
 			using namespace daw::ordered_map_impl;
 			return static_cast<size_type>( sizer( m_values ) );
 		}

@@ -99,12 +99,9 @@ namespace daw::filesystem {
 				m_fdata->size = static_cast<size_type>( fsz );
 			}
 			m_fdata->ptr = static_cast<pointer>(
-			  mmap( nullptr,
-			        m_fdata->size,
+			  mmap( nullptr, m_fdata->size,
 			        mode == open_mode::read ? PROT_READ : PROT_READ | PROT_WRITE,
-			        MAP_SHARED,
-			        m_fdata->file,
-			        0 ) );
+			        MAP_SHARED, m_fdata->file, 0 ) );
 
 			if( m_fdata->ptr == MAP_FAILED ) {
 				m_fdata.reset( );
@@ -253,37 +250,29 @@ namespace daw::filesystem {
 
 			m_fdata.emplace( );
 			{
-				HANDLE file_handle =
-				  ::CreateFileA( file.data( ),
-				                 mapfile_impl::CreateFileMode( mode ),
-				                 0,
-				                 nullptr,
-				                 OPEN_EXISTING,
-				                 FILE_ATTRIBUTE_NORMAL,
-				                 nullptr );
+				HANDLE file_handle = ::CreateFileA(
+				  file.data( ), mapfile_impl::CreateFileMode( mode ), 0, nullptr,
+				  OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr );
 				if( file_handle == INVALID_HANDLE_VALUE ) {
 					return false;
 				}
 				LARGE_INTEGER fsz;
-				if( not ::GetFileSizeEx( file_handle, &fsz ) or fsz.QuadPart <= 0 ) {
+				if( not::GetFileSizeEx( file_handle, &fsz ) or fsz.QuadPart <= 0 ) {
 					m_fdata.reset( );
 					return false;
 				}
 				m_fdata->size = static_cast<size_t>( fsz.QuadPart );
-				m_fdata->handle = ::CreateFileMapping( file_handle,
-				                                       nullptr,
-				                                       mapfile_impl::PageMode( mode ),
-				                                       fsz.u.HighPart,
-				                                       fsz.u.LowPart,
-				                                       nullptr );
+				m_fdata->handle = ::CreateFileMapping(
+				  file_handle, nullptr, mapfile_impl::PageMode( mode ), fsz.u.HighPart,
+				  fsz.u.LowPart, nullptr );
 				if( m_fdata->handle == nullptr ) {
 					m_fdata.reset( );
 					return false;
 				}
 				CloseHandle( file_handle );
 			}
-			auto ptr = MapViewOfFile(
-			  m_fdata->handle, mapfile_impl::MapMode( mode ), 0, 0, 0 );
+			auto ptr = MapViewOfFile( m_fdata->handle, mapfile_impl::MapMode( mode ),
+			                          0, 0, 0 );
 			if( ptr == nullptr ) {
 				m_fdata.reset( );
 				return false;
@@ -298,37 +287,29 @@ namespace daw::filesystem {
 		                         open_mode mode = open_mode::read ) noexcept {
 
 			{
-				HANDLE file_handle =
-				  ::CreateFileW( file.data( ),
-				                 mapfile_impl::CreateFileMode( mode ),
-				                 0,
-				                 nullptr,
-				                 OPEN_EXISTING,
-				                 FILE_ATTRIBUTE_NORMAL,
-				                 nullptr );
+				HANDLE file_handle = ::CreateFileW(
+				  file.data( ), mapfile_impl::CreateFileMode( mode ), 0, nullptr,
+				  OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr );
 				if( file_handle == INVALID_HANDLE_VALUE ) {
 					return false;
 				}
 				LARGE_INTEGER fsz;
-				if( not ::GetFileSizeEx( file_handle, &fsz ) or fsz.QuadPart <= 0 ) {
+				if( not::GetFileSizeEx( file_handle, &fsz ) or fsz.QuadPart <= 0 ) {
 					m_fdata.reset( );
 					return false;
 				}
 				m_fdata->size = static_cast<size_t>( fsz.QuadPart );
-				m_fdata->handle = ::CreateFileMapping( file_handle,
-				                                       nullptr,
-				                                       mapfile_impl::PageMode( mode ),
-				                                       fsz.u.HighPart,
-				                                       fsz.u.LowPart,
-				                                       nullptr );
+				m_fdata->handle = ::CreateFileMapping(
+				  file_handle, nullptr, mapfile_impl::PageMode( mode ), fsz.u.HighPart,
+				  fsz.u.LowPart, nullptr );
 				if( m_fdata->handle == nullptr ) {
 					m_fdata.reset( );
 					return false;
 				}
 				CloseHandle( file_handle );
 			}
-			auto ptr = MapViewOfFile(
-			  m_fdata->handle, mapfile_impl::MapMode( mode ), 0, 0, 0 );
+			auto ptr = MapViewOfFile( m_fdata->handle, mapfile_impl::MapMode( mode ),
+			                          0, 0, 0 );
 			if( ptr == nullptr ) {
 				m_fdata.reset( );
 				return false;
