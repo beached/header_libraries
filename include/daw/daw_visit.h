@@ -93,7 +93,7 @@ namespace daw {
 		}
 
     template<typename Variant, std::enable_if_t<not has_variant_npos<Variant>, std::nullptr_t> = nullptr> 
-	  DAW_CONSTEVAL bool is_empty( Variant const & ) {
+	  DAW_ATTRIB_INLINE constexpr bool is_empty( Variant const & ) {
       return false;
 		}
 	  
