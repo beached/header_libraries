@@ -23,6 +23,7 @@ namespace daw {
 		using value_type = T;
 
 		friend Owner;
+
 	private:
 		value_type value{ };
 
@@ -35,12 +36,12 @@ namespace daw {
 		read_only( read_only const & ) = default;
 		read_only( read_only && ) = default;
 
-		constexpr
-		read_only( T const &v ) noexcept( std::is_nothrow_copy_constructible_v<T> )
+		constexpr read_only( T const &v ) noexcept(
+		  std::is_nothrow_copy_constructible_v<T> )
 		  : value( v ) {}
 
-		constexpr
-		read_only( T &&v ) noexcept( std::is_nothrow_move_constructible_v<T> )
+		constexpr read_only( T &&v ) noexcept(
+		  std::is_nothrow_move_constructible_v<T> )
 		  : value( std::move( v ) ) {}
 
 		[[nodiscard]] constexpr operator value_type const &( ) const & noexcept {

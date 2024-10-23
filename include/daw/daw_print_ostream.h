@@ -19,8 +19,8 @@
 
 namespace daw {
 	template<typename... Args>
-	std::ostream &
-	print( std::ostream &os, std::format_string<Args...> fmt, Args &&...args ) {
+	std::ostream &print( std::ostream &os, std::format_string<Args...> fmt,
+	                     Args &&...args ) {
 		static_assert( ( has_std_formatter_specialization_v<Args> and ... ),
 		               "Print requires a std::formatter specialization for each "
 		               "Arg type" );
@@ -30,12 +30,12 @@ namespace daw {
 	}
 
 	template<typename... Args>
-	std::ostream &
-	println( std::ostream &os, std::format_string<Args...> fmt, Args &&...args ) {
+	std::ostream &println( std::ostream &os, std::format_string<Args...> fmt,
+	                       Args &&...args ) {
 		static_assert( ( has_std_formatter_specialization_v<Args> and ... ),
 		               "Print requires a std::formatter specialization for each "
 		               "Arg type" );
-		return daw::print(
-		  os, "{}\n", std::format( std::move( fmt ), DAW_FWD( args )... ) );
+		return daw::print( os, "{}\n",
+		                   std::format( std::move( fmt ), DAW_FWD( args )... ) );
 	}
 } // namespace daw

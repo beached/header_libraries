@@ -13,6 +13,7 @@
 #include "daw_assume.h"
 #include "daw_attributes.h"
 #include "daw_check_exceptions.h"
+#include "daw_consteval.h"
 #include "daw_likely.h"
 #include "daw_move.h"
 #include "daw_traits.h"
@@ -84,6 +85,18 @@ namespace daw {
 			return v.index( );
 		}
 
+	  DAW_MAKE_REQ_TRAIT( has_variant_npos, T::variant_npos );
+	  
+    template<typename Variant, std::enable_if_t<has_variant_npos<Variant>, std::nullptr_t> = nullptr> 
+	  DAW_ATTRIB_FLATINLINE constexpr bool is_empty( Variant const & v ) {
+		  return v.index( ) == Variant::variant_npos;
+		}
+
+    template<typename Variant, std::enable_if_t<not has_variant_npos<Variant>, std::nullptr_t> = nullptr> 
+	  DAW_CONSTEVAL bool is_empty( Variant const & ) {
+      return false;
+		}
+	  
 		template<typename>
 		struct get_var_size;
 
@@ -376,7 +389,8 @@ namespace daw {
 		using result_t = decltype( daw::visit_details::overload(
 		  DAW_FWD( visitors )... )( get_nt<0>( DAW_FWD( var ) ) ) );
 
-		if( DAW_UNLIKELY( var.index( ) < 0 ) ) {
+		if( DAW_UNLIKELY( visit_details::is_empty( var ) ) ) {
+		  DAW_UNLIKELY_BRANCH
 			visit_details::visit_error( );
 		}
 		return daw::visit_details::visit_nt<0, result_t>(

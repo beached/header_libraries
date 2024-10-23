@@ -25,9 +25,8 @@ namespace daw {
 	template<typename T>
 	inline constexpr bool reset_on_take = true;
 
-	template<typename T,
-	         std::enable_if_t<std::is_default_constructible_v<T>,
-	                          std::nullptr_t> = nullptr>
+	template<typename T, std::enable_if_t<std::is_default_constructible_v<T>,
+	                                      std::nullptr_t> = nullptr>
 	constexpr T
 	take( T &value ) noexcept( std::is_nothrow_move_constructible_v<T> and
 	                           std::is_nothrow_default_constructible_v<T> ) {
@@ -65,8 +64,7 @@ namespace daw {
 		}
 
 		template<
-		  typename Arg,
-		  typename... Args,
+		  typename Arg, typename... Args,
 		  std::enable_if_t<not std::is_same_v<take_t, daw::remove_cvref_t<Arg>>,
 		                   std::nullptr_t> = nullptr>
 		constexpr take_t( Arg &&arg, Args &&...args ) noexcept(

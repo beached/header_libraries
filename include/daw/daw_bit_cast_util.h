@@ -18,9 +18,9 @@
 
 namespace daw {
 	template<typename T, typename Iterator, typename Function>
-	void
-	bit_cast_for_each( Iterator first, Iterator last, Function &&func ) noexcept(
-	  noexcept( func( std::declval<T>( ) ) ) ) {
+	void bit_cast_for_each(
+	  Iterator first, Iterator last,
+	  Function &&func ) noexcept( noexcept( func( std::declval<T>( ) ) ) ) {
 
 		while( first != last ) {
 			std::invoke( func, DAW_BIT_CAST( T, *first ) );
@@ -28,15 +28,10 @@ namespace daw {
 		}
 	}
 
-	template<typename T,
-	         typename U = deduced_type,
-	         typename Iterator,
-	         typename OutputIterator,
-	         typename Function>
-	void bit_cast_transform( Iterator first,
-	                         Iterator last,
-	                         OutputIterator first_out,
-	                         Function &&func ) {
+	template<typename T, typename U = deduced_type, typename Iterator,
+	         typename OutputIterator, typename Function>
+	void bit_cast_transform( Iterator first, Iterator last,
+	                         OutputIterator first_out, Function &&func ) {
 
 		using out_t =
 		  conditional_t<std::is_same_v<U, deduced_type>,
@@ -51,11 +46,10 @@ namespace daw {
 		}
 	}
 
-	template<typename T = deduced_type,
-	         typename Iterator,
+	template<typename T = deduced_type, typename Iterator,
 	         typename OutputIterator>
-	void
-	bit_cast_copy( Iterator first, Iterator last, OutputIterator first_out ) {
+	void bit_cast_copy( Iterator first, Iterator last,
+	                    OutputIterator first_out ) {
 		using out_t =
 		  conditional_t<std::is_same_v<T, deduced_type>,
 		                typename std::iterator_traits<OutputIterator>::value_type,

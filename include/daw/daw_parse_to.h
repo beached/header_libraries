@@ -79,21 +79,19 @@ namespace daw {
 			} // namespace helpers
 
 			template<typename T,
-			         std::enable_if_t<all_true_v<not std::is_same_v<T, char>,
-			                                     std::is_integral_v<T>,
-			                                     std::is_signed_v<T>,
-			                                     not std::is_enum_v<T>>,
-			                          std::nullptr_t> = nullptr>
+			         std::enable_if_t<
+			           all_true_v<not std::is_same_v<T, char>, std::is_integral_v<T>,
+			                      std::is_signed_v<T>, not std::is_enum_v<T>>,
+			           std::nullptr_t> = nullptr>
 			constexpr T parse_to_value( daw::string_view str, tag_t<T> ) {
 				daw::exception::precondition_check<empty_input_exception>(
 				  !str.empty( ) );
 				return helpers::parse_int<T>( str );
 			}
 
-			template<typename T,
-			         std::enable_if_t<
-			           all_true_v<std::is_integral_v<T>, std::is_unsigned_v<T>>,
-			           std::nullptr_t> = nullptr>
+			template<typename T, std::enable_if_t<all_true_v<std::is_integral_v<T>,
+			                                                 std::is_unsigned_v<T>>,
+			                                      std::nullptr_t> = nullptr>
 			constexpr T parse_to_value( daw::string_view str, tag_t<T> ) {
 				daw::exception::precondition_check<empty_input_exception>(
 				  not str.empty( ) );
@@ -288,8 +286,7 @@ namespace daw {
 		/// @param str String containing encoded values
 		/// @param splitter Function to split string into arguments
 		/// @return A tuple of values of the types specified in Args
-		template<typename... Args,
-		         typename Splitter,
+		template<typename... Args, typename Splitter,
 		         std::enable_if_t<std::is_invocable_v<Splitter, daw::string_view>,
 		                          std::nullptr_t> = nullptr>
 		constexpr decltype( auto ) parse_to( daw::string_view str,
@@ -329,9 +326,7 @@ namespace daw {
 	/// @param str String containing encoded values
 	/// @param splitter split what string arguments on
 	/// @return A constructed Destination
-	template<typename Destination,
-	         typename... ExpectedArgs,
-	         typename Splitter,
+	template<typename Destination, typename... ExpectedArgs, typename Splitter,
 	         std::enable_if_t<std::is_invocable_v<Splitter, daw::string_view>,
 	                          std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) construct_from( daw::string_view str,
@@ -370,13 +365,11 @@ namespace daw {
 
 	namespace impl {
 		template<typename... Args, typename Callable, typename Splitter>
-		constexpr decltype( auto ) apply_string_impl( std::tuple<Args...>,
-		                                              Callable &&callable,
-		                                              daw::string_view str,
-		                                              Splitter &&splitter ) {
-			return std::apply(
-			  DAW_FWD( callable ),
-			  parser::parse_to<Args...>( str, DAW_FWD( splitter ) ) );
+		constexpr decltype( auto )
+		apply_string_impl( std::tuple<Args...>, Callable &&callable,
+		                   daw::string_view str, Splitter &&splitter ) {
+			return std::apply( DAW_FWD( callable ), parser::parse_to<Args...>(
+			                                          str, DAW_FWD( splitter ) ) );
 		}
 	} // namespace impl
 
@@ -390,8 +383,7 @@ namespace daw {
 	/// @param str String containing encoded values
 	/// @param splitter Function to split string into arguments
 	/// @return The result of callable
-	template<typename Callable,
-	         typename Splitter,
+	template<typename Callable, typename Splitter,
 	         std::enable_if_t<std::is_invocable_v<Splitter, daw::string_view>,
 	                          std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) apply_string2( Callable &&callable,
@@ -399,8 +391,8 @@ namespace daw {
 	                                          Splitter &&splitter ) {
 		using ftraits =
 		  typename daw::function_info<std::decay_t<Callable>>::decayed_args_tuple;
-		return impl::apply_string_impl(
-		  ftraits{ }, DAW_FWD( callable ), str, DAW_FWD( splitter ) );
+		return impl::apply_string_impl( ftraits{ }, DAW_FWD( callable ), str,
+		                                DAW_FWD( splitter ) );
 	}
 
 	/// @brief Apply the reified string as the types deducted from the Callable
@@ -415,8 +407,8 @@ namespace daw {
 	constexpr decltype( auto ) apply_string2( Callable &&callable,
 	                                          daw::string_view str,
 	                                          daw::string_view delemiter ) {
-		return apply_string2<Callable>(
-		  DAW_FWD( callable ), str, parser::default_splitter{ delemiter } );
+		return apply_string2<Callable>( DAW_FWD( callable ), str,
+		                                parser::default_splitter{ delemiter } );
 	}
 
 	/// @brief Apply the reified string as the types specified as Args... to the
@@ -430,9 +422,7 @@ namespace daw {
 	/// @param str String data with string encoded arguments
 	/// @param splitter Function to split string into arguments
 	/// @return result of callable
-	template<typename... Args,
-	         typename Callable,
-	         typename Splitter,
+	template<typename... Args, typename Callable, typename Splitter,
 	         std::enable_if_t<std::is_invocable_v<Splitter, daw::string_view>,
 	                          std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) apply_string( Callable &&callable,
@@ -462,8 +452,8 @@ namespace daw {
 	                                         daw::string_view str,
 	                                         daw::string_view delemiter ) {
 
-		return apply_string<Args...>(
-		  DAW_FWD( callable ), str, parser::default_splitter{ delemiter } );
+		return apply_string<Args...>( DAW_FWD( callable ), str,
+		                              parser::default_splitter{ delemiter } );
 	}
 
 	/// @brief Apply the reified string as the types specified as Arg to the
@@ -484,8 +474,8 @@ namespace daw {
 	constexpr decltype( auto ) apply_string( Callable &&callable,
 	                                         daw::string_view str ) {
 
-		return apply_string<Arg>(
-		  DAW_FWD( callable ), str, parser::default_splitter{ " " } );
+		return apply_string<Arg>( DAW_FWD( callable ), str,
+		                          parser::default_splitter{ " " } );
 	}
 
 	namespace parse_to_impl {
@@ -500,9 +490,7 @@ namespace daw {
 	/// @param stream text stream to extract values from
 	/// @param splitter Function to split string into arguments
 	/// @return A tuple of values of the types specified in Args
-	template<typename... Args,
-	         typename Stream,
-	         typename Splitter,
+	template<typename... Args, typename Stream, typename Splitter,
 	         std::enable_if_t<(not parse_to_impl::has_str_member_v<Stream> and
 	                           std::is_invocable_v<Splitter, daw::string_view>),
 	                          std::nullptr_t> = nullptr>
@@ -523,9 +511,7 @@ namespace daw {
 	/// @param s text stream to extract values from
 	/// @param splitter Function to split string into arguments
 	/// @return A tuple of values of the types specified in Args
-	template<typename... Args,
-	         typename Stream,
-	         typename Splitter,
+	template<typename... Args, typename Stream, typename Splitter,
 	         std::enable_if_t<(parse_to_impl::has_str_member_v<Stream> and
 	                           std::is_invocable_v<Splitter, daw::string_view>),
 	                          std::nullptr_t> = nullptr>

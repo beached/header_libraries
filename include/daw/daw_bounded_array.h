@@ -101,15 +101,15 @@ namespace daw {
 	template<typename T, typename U, size_t N>
 	constexpr bool operator==( array<T, N> const &lhs, array<U, N> const &rhs ) {
 
-		return daw::algorithm::equal(
-		  lhs.cbegin( ), lhs.cend( ), rhs.cbegin( ), rhs.cend( ) );
+		return daw::algorithm::equal( lhs.cbegin( ), lhs.cend( ), rhs.cbegin( ),
+		                              rhs.cend( ) );
 	}
 
 	template<typename T, typename U, size_t N>
 	constexpr bool operator!=( array<T, N> const &lhs, array<U, N> const &rhs ) {
 
-		return not daw::algorithm::equal(
-		  lhs.cbegin( ), lhs.cend( ), rhs.cbegin( ), rhs.cend( ) );
+		return not daw::algorithm::equal( lhs.cbegin( ), lhs.cend( ), rhs.cbegin( ),
+		                                  rhs.cend( ) );
 	}
 
 	template<typename T, size_t N>

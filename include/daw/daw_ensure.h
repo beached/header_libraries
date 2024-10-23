@@ -8,13 +8,13 @@
 
 #pragma once
 
-#include "daw_attributes.h"
 #include "ciso646.h"
+#include "daw_attributes.h"
 
 #include <exception>
 
 namespace daw::ensure {
-	[[noreturn]] DAW_ATTRIB_NOINLINE void do_error( ) {
+	[[noreturn]] DAW_ATTRIB_NOINLINE inline void do_error( ) {
 		std::terminate( );
 	}
 } // namespace daw::ensure

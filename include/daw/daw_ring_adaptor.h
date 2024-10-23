@@ -43,8 +43,7 @@ namespace daw {
 	public:
 		constexpr ring_adaptor( ) = default;
 
-		template<typename Arg,
-		         typename... Args,
+		template<typename Arg, typename... Args,
 		         std::enable_if_t<
 		           not std::is_same_v<ring_adaptor, daw::remove_cvref_t<Arg>>,
 		           std::nullptr_t> = nullptr>

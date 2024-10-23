@@ -141,8 +141,8 @@ namespace daw {
 			}
 
 			template<typename T, typename U, typename V>
-			[[nodiscard]] constexpr T
-			clamp( T val, U const &min_val, V const &max_val ) noexcept {
+			[[nodiscard]] constexpr T clamp( T val, U const &min_val,
+			                                 V const &max_val ) noexcept {
 				if( val < min_val ) {
 					val = min_val;
 				} else if( val > max_val ) {
@@ -151,7 +151,7 @@ namespace daw {
 				return val;
 			}
 		} // namespace math
-	}   // namespace cpp_17_details
+	} // namespace cpp_17_details
 
 	template<typename... Ts>
 	inline constexpr bool disjunction_v =
@@ -164,10 +164,8 @@ namespace daw {
 	using disjunction = disjunction_t<Ts...>;
 
 	namespace cpp_17_details {
-		template<typename From,
-		         typename To,
-		         bool = disjunction_v<std::is_void<From>,
-		                              std::is_function<To>,
+		template<typename From, typename To,
+		         bool = disjunction_v<std::is_void<From>, std::is_function<To>,
 		                              std::is_array<To>>>
 		struct do_is_nothrow_convertible {
 			using type = std::is_void<To>;

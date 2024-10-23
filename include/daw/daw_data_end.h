@@ -19,10 +19,8 @@ namespace daw::utility_details {
 	inline constexpr bool has_data_end_v = false;
 
 	template<typename T>
-	inline constexpr bool
-	  has_data_end_v<T,
-	                 std::void_t<decltype( std::declval<T &>( ).data_end( ) )>> =
-	    true;
+	inline constexpr bool has_data_end_v<
+	  T, std::void_t<decltype( std::declval<T &>( ).data_end( ) )>> = true;
 
 	template<typename T, typename = void>
 	inline constexpr bool has_data_v = false;

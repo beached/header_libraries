@@ -51,21 +51,15 @@ namespace daw {
 	};
 #endif
 	namespace is_detect_details {
-		template<class Default,
-		         class AlwaysVoid,
-		         template<class...>
-		         class Op,
+		template<class Default, class AlwaysVoid, template<class...> class Op,
 		         class... Args>
 		struct detector {
 			using value_t = std::false_type;
 			using type = Default;
 		};
 
-		template<typename /*Default*/,
-		         typename /*AlwaysVoid*/,
-		         template<typename...>
-		         typename /*Op*/,
-		         typename... /*Args*/>
+		template<typename /*Default*/, typename /*AlwaysVoid*/,
+		         template<typename...> typename /*Op*/, typename... /*Args*/>
 		inline constexpr bool detector_v = false;
 
 		template<typename Default, template<class...> class Op, class... Args>
@@ -74,21 +68,21 @@ namespace daw {
 			using type = Op<Args...>;
 		};
 
-		template<typename Default,
-		         template<typename...>
-		         typename Op,
+		template<typename Default, template<typename...> typename Op,
 		         typename... Args>
 		inline constexpr bool
 		  detector_v<Default, std::void_t<Op<Args...>>, Op, Args...> = true;
 	} // namespace is_detect_details
 
 	template<template<typename...> typename Op, typename... Args>
-	using is_detected = typename is_detect_details::
-	  detector<nonesuch<Op, Args...>, void, Op, Args...>::value_t;
+	using is_detected =
+	  typename is_detect_details::detector<nonesuch<Op, Args...>, void, Op,
+	                                       Args...>::value_t;
 
 	template<template<typename...> typename Op, typename... Args>
-	using detected_t = typename is_detect_details::
-	  detector<nonesuch<Op, Args...>, void, Op, Args...>::type;
+	using detected_t =
+	  typename is_detect_details::detector<nonesuch<Op, Args...>, void, Op,
+	                                       Args...>::type;
 
 #ifndef DAW_HAS_CONCEPTS
 	template<template<typename...> typename Op, typename... Args>
@@ -96,28 +90,20 @@ namespace daw {
 	  is_detect_details::detector_v<nonesuch<Op, Args...>, void, Op, Args...>;
 
 #endif
-	template<typename Default,
-	         template<typename...>
-	         typename Op,
+	template<typename Default, template<typename...> typename Op,
 	         typename... Args>
 	using detected_or = is_detect_details::detector<Default, void, Op, Args...>;
 
-	template<typename Default,
-	         template<typename...>
-	         typename Op,
+	template<typename Default, template<typename...> typename Op,
 	         typename... Args>
 	using detected_or_t = typename detected_or<Default, Op, Args...>::type;
 
-	template<typename Expected,
-	         template<typename...>
-	         typename Op,
+	template<typename Expected, template<typename...> typename Op,
 	         typename... Args>
 	inline constexpr bool is_detected_exact_v =
 	  daw::is_same_v<Expected, detected_t<Op, Args...>>;
 
-	template<typename Expected,
-	         template<typename...>
-	         typename Op,
+	template<typename Expected, template<typename...> typename Op,
 	         typename... Args>
 	using is_detected_exact =
 	  std::bool_constant<is_detected_exact_v<Expected, Op, Args...>>;

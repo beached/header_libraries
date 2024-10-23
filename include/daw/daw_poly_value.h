@@ -38,8 +38,7 @@ namespace daw {
 
 	template<typename BaseClass,
 	         typename Deleter = std::default_delete<BaseClass>,
-	         bool AllowDefaultConstruction = true,
-	         bool AllowCopy = true>
+	         bool AllowDefaultConstruction = true, bool AllowCopy = true>
 	class poly_value
 	  : public daw::enable_default_constructor<BaseClass,
 	                                           AllowDefaultConstruction>,
@@ -51,9 +50,8 @@ namespace daw {
 		  m_copier;
 
 	public:
-		template<typename T,
-		         daw::enable_when_t<
-		           std::is_base_of_v<BaseClass, daw::remove_cvref_t<T>>> = nullptr>
+		template<typename T, daw::enable_when_t<std::is_base_of_v<
+		                       BaseClass, daw::remove_cvref_t<T>>> = nullptr>
 		poly_value( T &&value )
 		  : m_ptr( std::make_unique<daw::remove_cvref_t<T>>( DAW_FWD( value ) ) )
 		  , m_copier(
@@ -105,9 +103,8 @@ namespace daw {
 			return *this;
 		}
 
-		template<typename T,
-		         daw::enable_when_t<
-		           std::is_base_of_v<BaseClass, daw::remove_cvref_t<T>>> = nullptr>
+		template<typename T, daw::enable_when_t<std::is_base_of_v<
+		                       BaseClass, daw::remove_cvref_t<T>>> = nullptr>
 		poly_value &operator=( T &&rhs ) {
 			m_ptr = std::make_unique<daw::remove_cvref_t<T>>( DAW_FWD( rhs ) );
 			m_copier =
@@ -121,8 +118,7 @@ namespace daw {
 		  : m_ptr( std::unique_ptr<T>( other ) )
 		  , m_copier( poly_value_impl::make_copier<BaseClass, T>( ) ) {}
 
-		template<typename T,
-		         typename D,
+		template<typename T, typename D,
 		         daw::enable_when_t<std::is_base_of_v<BaseClass, T>> = nullptr>
 		poly_value( T *other, D &&deleter )
 		  : m_ptr( std::unique_ptr<T>( other ), DAW_FWD( deleter ) )
@@ -173,8 +169,7 @@ namespace daw {
 		}
 	};
 
-	template<typename BaseClass,
-	         typename ChildClass = BaseClass,
+	template<typename BaseClass, typename ChildClass = BaseClass,
 	         typename... Args>
 	poly_value<BaseClass> make_poly_value( Args &&...args ) {
 		return { construct_emplace<ChildClass>, DAW_FWD( args )... };

@@ -191,9 +191,8 @@ namespace daw {
 		};
 	} // namespace function_impl
 
-	template<
-	  typename Function,
-	  std::enable_if_t<std::is_function_v<Function>, std::nullptr_t> = nullptr>
+	template<typename Function, std::enable_if_t<std::is_function_v<Function>,
+	                                             std::nullptr_t> = nullptr>
 	constexpr auto make_callable( Function *func ) noexcept {
 		return function_impl::fp_callable_t<Function>{ func };
 	}

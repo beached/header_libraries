@@ -103,8 +103,7 @@ namespace daw {
 	        std::input_iterator_tag,
 	        std::conditional_t<
 	          are_all_same_iterator_tag_v<std::output_iterator_tag, ItCats...>,
-	          std::output_iterator_tag,
-	          void>>>>>;
+	          std::output_iterator_tag, void>>>>>;
 
 	template<typename R>
 	concept Range = requires( R const &r ) {

@@ -20,8 +20,7 @@ namespace daw::algorithm {
 	namespace do_n_details DAW_ATTRIB_HIDDEN {
 		template<typename Function, typename... Args, std::size_t... Is>
 		DAW_ATTRIB_FLATTEN static inline constexpr void
-		do_n( Function &&func,
-		      std::integer_sequence<std::size_t, Is...>,
+		do_n( Function &&func, std::integer_sequence<std::size_t, Is...>,
 		      Args &&...args ) noexcept( noexcept( func( args... ) ) ) {
 			if constexpr( sizeof...( Is ) > 0 ) {
 				(void)( ( func( args... ), Is ) + ... );
@@ -67,9 +66,7 @@ namespace daw::algorithm {
 		}
 	}
 
-	template<std::size_t count,
-	         std::size_t by_n = 1,
-	         typename Function,
+	template<std::size_t count, std::size_t by_n = 1, typename Function,
 	         typename... Args>
 	DAW_ATTRIB_FLATTEN static inline constexpr void
 	do_n_arg( Function &&func ) noexcept(

@@ -121,9 +121,8 @@ namespace daw::math {
 		return static_cast<T>( rnd * rnd_by );
 	}
 
-	template<
-	  typename T,
-	  std::enable_if_t<not std::is_integral_v<T>, std::nullptr_t> = nullptr>
+	template<typename T, std::enable_if_t<not std::is_integral_v<T>,
+	                                      std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr T abs( T t ) noexcept {
 		return t < static_cast<T>( 0 ) ? -t : t;
 	}
@@ -137,8 +136,7 @@ namespace daw::math {
 		return result;
 	}
 
-	template<typename Result = uintmax_t,
-	         typename SignedInteger,
+	template<typename Result = uintmax_t, typename SignedInteger,
 	         std::enable_if_t<all_true_v<std::is_integral_v<SignedInteger>,
 	                                     std::is_signed_v<SignedInteger>>,
 	                          std::nullptr_t> = nullptr>
@@ -242,9 +240,8 @@ namespace daw::math {
 		return value;
 	}
 
-	template<
-	  typename T,
-	  std::enable_if_t<not std::is_floating_point_v<T>, std::nullptr_t> = nullptr>
+	template<typename T, std::enable_if_t<not std::is_floating_point_v<T>,
+	                                      std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr bool nearly_equal( T const &a, T const &b ) noexcept {
 		return a == b;
 	}
@@ -253,11 +250,11 @@ namespace daw::math {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wfloat-equal"
 #endif
-	template<
-	  typename T,
-	  std::enable_if_t<std::is_floating_point_v<T>, std::nullptr_t> = nullptr>
-	[[nodiscard]] constexpr bool nearly_equal(
-	  T a, T b, T epsilon = std::numeric_limits<T>::epsilon( ) ) noexcept {
+	template<typename T, std::enable_if_t<std::is_floating_point_v<T>,
+	                                      std::nullptr_t> = nullptr>
+	[[nodiscard]] constexpr bool
+	nearly_equal( T a, T b,
+	              T epsilon = std::numeric_limits<T>::epsilon( ) ) noexcept {
 		if( a != a ) {
 			if( b != b ) {
 				return true; // both NaN

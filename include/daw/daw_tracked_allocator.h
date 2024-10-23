@@ -46,8 +46,7 @@ namespace daw::memory {
 
 		template<typename U>
 		using rebind = tracked_allocator<
-		  U,
-		  typename std::allocator_traits<Allocator>::template rebind_alloc<U>>;
+		  U, typename std::allocator_traits<Allocator>::template rebind_alloc<U>>;
 
 	private:
 		DAW_NO_UNIQUE_ADDRESS Allocator alloc{ };
@@ -72,8 +71,8 @@ namespace daw::memory {
 		constexpr void construct( pointer &ptr, Args &&...args ) noexcept(
 		  std::is_nothrow_constructible_v<T, Args...> ) {
 			DAW_SAFE_POINTER_ENSURE( ptr );
-			std::allocator_traits<Allocator>::construct(
-			  alloc, ptr.get( ), DAW_FWD( args )... );
+			std::allocator_traits<Allocator>::construct( alloc, ptr.get( ),
+			                                             DAW_FWD( args )... );
 		}
 
 		constexpr void

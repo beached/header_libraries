@@ -72,8 +72,7 @@ namespace daw::func {
 	// functor
 	template<typename F>
 	struct function_traits<
-	  F,
-	  std::void_t<decltype( &std::remove_reference_t<F>::operator( ) )>> {
+	  F, std::void_t<decltype( &std::remove_reference_t<F>::operator( ) )>> {
 	private:
 		using call_type =
 		  function_traits<decltype( &std::remove_reference_t<F>::operator( ) )>;
@@ -91,10 +90,10 @@ namespace daw::func {
 			using plain_type = daw::traits::remove_cvref_t<type>;
 		};
 
-		using params_t = typename func_traits_impl::
-		  make_arg_pack<argument, std::make_index_sequence<arity>>::type;
-		using plain_params_t = typename func_traits_impl::
-		  make_arg_pack<argument, std::make_index_sequence<arity>>::plain_type;
+		using params_t = typename func_traits_impl::make_arg_pack<
+		  argument, std::make_index_sequence<arity>>::type;
+		using plain_params_t = typename func_traits_impl::make_arg_pack<
+		  argument, std::make_index_sequence<arity>>::plain_type;
 	};
 
 	template<typename F, typename = void>

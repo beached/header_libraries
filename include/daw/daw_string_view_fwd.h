@@ -39,9 +39,8 @@ namespace daw {
 		/// @brief The class template basic_string_view describes an object that can
 		/// refer to a constant contiguous sequence of char-like objects with the
 		/// first element of the sequence at position zero.
-		template<typename CharT,
-		         string_view_bounds_type BoundsType =
-		           default_string_view_bounds_type>
+		template<typename CharT, string_view_bounds_type BoundsType =
+		                           default_string_view_bounds_type>
 		struct basic_string_view;
 
 		using string_view = basic_string_view<char>;

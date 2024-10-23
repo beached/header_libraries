@@ -134,16 +134,14 @@ namespace daw::cxmath {
 		  std::is_same_v<unsigned_float_type_t<Real>, UInt>;
 
 		template<
-		  typename Real,
-		  typename UInt,
+		  typename Real, typename UInt,
 		  std::enable_if_t<is_matching_v<Real, UInt>, std::nullptr_t> = nullptr>
 		[[nodiscard]] inline constexpr UInt get_significand_impl( UInt dint ) {
 			return dint & significand_mask_v<Real>;
 		}
 
 		template<
-		  typename Real,
-		  typename UInt,
+		  typename Real, typename UInt,
 		  std::enable_if_t<is_matching_v<Real, UInt>, std::nullptr_t> = nullptr>
 		[[nodiscard]] inline constexpr UInt set_significand_impl( UInt dint,
 		                                                          UInt sig ) {
@@ -154,8 +152,7 @@ namespace daw::cxmath {
 		}
 
 		template<
-		  typename Real,
-		  typename UInt,
+		  typename Real, typename UInt,
 		  std::enable_if_t<is_matching_v<Real, UInt>, std::nullptr_t> = nullptr>
 		[[nodiscard]] inline constexpr UInt get_raw_exponent_impl( UInt dint ) {
 			dint &= exponent_mask_v<Real>;
@@ -163,8 +160,7 @@ namespace daw::cxmath {
 		}
 
 		template<
-		  typename Real,
-		  typename UInt,
+		  typename Real, typename UInt,
 		  std::enable_if_t<is_matching_v<Real, UInt>, std::nullptr_t> = nullptr>
 		[[nodiscard]] inline constexpr UInt set_raw_exponent_impl( UInt dint,
 		                                                           UInt exp ) {
@@ -174,8 +170,7 @@ namespace daw::cxmath {
 		}
 
 		template<
-		  typename Real,
-		  typename UInt,
+		  typename Real, typename UInt,
 		  std::enable_if_t<is_matching_v<Real, UInt>, std::nullptr_t> = nullptr>
 		[[nodiscard]] inline constexpr std::int32_t get_exponent_impl( UInt dint ) {
 			UInt raw_exp = dint & exponent_mask_v<Real>;
@@ -185,8 +180,7 @@ namespace daw::cxmath {
 		}
 
 		template<
-		  typename Real,
-		  typename UInt,
+		  typename Real, typename UInt,
 		  std::enable_if_t<is_matching_v<Real, UInt>, std::nullptr_t> = nullptr>
 		[[nodiscard]] inline constexpr UInt set_exponent_impl( UInt dint,
 		                                                       std::int32_t exp ) {
@@ -201,16 +195,14 @@ namespace daw::cxmath {
 		}
 
 		template<
-		  typename Real,
-		  typename UInt,
+		  typename Real, typename UInt,
 		  std::enable_if_t<is_matching_v<Real, UInt>, std::nullptr_t> = nullptr>
 		[[nodiscard]] inline constexpr UInt get_sign_raw_impl( UInt dint ) {
 			return dint & sign_mask_v<Real>;
 		}
 
 		template<
-		  typename Real,
-		  typename UInt,
+		  typename Real, typename UInt,
 		  std::enable_if_t<is_matching_v<Real, UInt>, std::nullptr_t> = nullptr>
 		[[nodiscard]] inline constexpr UInt set_sign_raw_impl( UInt dint,
 		                                                       UInt sign ) {
@@ -220,16 +212,14 @@ namespace daw::cxmath {
 		}
 
 		template<
-		  typename Real,
-		  typename UInt,
+		  typename Real, typename UInt,
 		  std::enable_if_t<is_matching_v<Real, UInt>, std::nullptr_t> = nullptr>
 		[[nodiscard]] inline constexpr UInt get_sign_impl( UInt dint ) {
 			return ( dint & sign_mask_v<Real> ) >> sign_start_bit_v<Real>;
 		}
 
 		template<
-		  typename Real,
-		  typename UInt,
+		  typename Real, typename UInt,
 		  std::enable_if_t<is_matching_v<Real, UInt>, std::nullptr_t> = nullptr>
 		[[nodiscard]] inline constexpr UInt set_sign_impl( UInt dint, UInt sign ) {
 			sign <<= sign_start_bit_v<Real>;
@@ -237,8 +227,7 @@ namespace daw::cxmath {
 		}
 
 		template<
-		  typename Real,
-		  typename UInt,
+		  typename Real, typename UInt,
 		  std::enable_if_t<is_matching_v<Real, UInt>, std::nullptr_t> = nullptr>
 		inline constexpr bool is_nan_impl( UInt dint ) {
 			bool const exp = (dint & exponent_mask_v<Real>) == exponent_mask_v<Real>;
@@ -246,8 +235,7 @@ namespace daw::cxmath {
 		}
 
 		template<
-		  typename Real,
-		  typename UInt,
+		  typename Real, typename UInt,
 		  std::enable_if_t<is_matching_v<Real, UInt>, std::nullptr_t> = nullptr>
 		inline constexpr bool is_zero_impl( UInt dint ) {
 			return ( not is_nan_impl<Real>( dint ) ) &
@@ -704,9 +692,8 @@ namespace daw::cxmath {
 	}
 #endif
 
-	template<
-	  typename Number,
-	  std::enable_if_t<daw::is_arithmetic_v<Number>, std::nullptr_t> = nullptr>
+	template<typename Number, std::enable_if_t<daw::is_arithmetic_v<Number>,
+	                                           std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr Number pow( Number b, int32_t exp ) noexcept {
 		auto result = Number{ 1 };
 		while( exp < Number{ 0 } ) {
@@ -720,14 +707,13 @@ namespace daw::cxmath {
 		return result;
 	}
 
-	template<typename Real,
-	         std::enable_if_t<
+	template<typename Real, std::enable_if_t<
 #ifdef DAW_CX_BIT_CAST
-	           std::is_floating_point_v<Real>,
+	                          std::is_floating_point_v<Real>,
 #else
-	           std::is_same_v<Real, float>,
+	                          std::is_same_v<Real, float>,
 #endif
-	           std::nullptr_t> = nullptr>
+	                          std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr std::optional<std::int32_t> intxp( Real f ) noexcept {
 #if defined( DAW_CX_BIT_CAST )
 		auto const uint =
@@ -772,9 +758,8 @@ namespace daw::cxmath {
 	static_assert( *intxp( 1024.0f ) == 10 );
 	static_assert( *intxp( 123.45f ) == 6 );
 
-	template<
-	  typename Real,
-	  std::enable_if_t<std::is_floating_point_v<Real>, std::nullptr_t> = nullptr>
+	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+	                                         std::nullptr_t> = nullptr>
 	constexpr Real pow2( std::int32_t exp ) noexcept {
 #if defined( DAW_CX_BIT_CAST )
 		if( exp >= daw::numeric_limits<Real>::max_exponent ) {
@@ -796,9 +781,8 @@ namespace daw::cxmath {
 	static_assert( fpow2( 1 ) == 2.0f );
 	static_assert( fpow2( 2 ) == 4.0f );
 
-	template<
-	  typename Real,
-	  std::enable_if_t<std::is_floating_point_v<Real>, std::nullptr_t> = nullptr>
+	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+	                                         std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr Real set_exponent( Real r,
 	                                           std::int32_t exponent ) noexcept {
 #if defined( DAW_CX_BIT_CAST )
@@ -947,11 +931,10 @@ namespace daw::cxmath {
 #endif
 		}
 
-		template<typename Real,
-		         std::enable_if_t<std::is_floating_point_v<Real>, std::nullptr_t> =
-		           nullptr>
-		[[nodiscard]] constexpr Real
-		fexp3( Real f, std::int32_t exponent, std::int32_t old_exponent ) noexcept {
+		template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+		                                         std::nullptr_t> = nullptr>
+		[[nodiscard]] constexpr Real fexp3( Real f, std::int32_t exponent,
+		                                    std::int32_t old_exponent ) noexcept {
 			std::int32_t const exp_diff = exponent - old_exponent;
 			if( exp_diff > 0 ) {
 				return set_exponent( Real{ 2.0 }, exp_diff ) * f;
@@ -960,17 +943,15 @@ namespace daw::cxmath {
 		}
 	} // namespace cxmath_impl
 
-	template<
-	  typename Real,
-	  std::enable_if_t<std::is_floating_point_v<Real>, std::nullptr_t> = nullptr>
+	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+	                                         std::nullptr_t> = nullptr>
 	[[nodiscard]] inline constexpr fp_classes fp_classify( Real r ) {
 		auto uint = DAW_BIT_CAST( cxmath_impl::unsigned_float_type_t<Real>, r );
 		return cxmath_impl::fp_classify_impl( uint );
 	}
 
-	template<
-	  typename Real,
-	  std::enable_if_t<std::is_floating_point_v<Real>, std::nullptr_t> = nullptr>
+	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+	                                         std::nullptr_t> = nullptr>
 	[[nodiscard]] inline constexpr bool is_nan( Real r ) {
 #if defined( DAW_CX_BIT_CAST )
 		return fp_classify( r ) == fp_classes::nan;
@@ -1014,25 +995,22 @@ namespace daw::cxmath {
 		return cxmath_impl::pow10_t<uintmax_t>::get( exp );
 	}
 
-	template<
-	  typename Integer,
-	  std::enable_if_t<std::is_integral_v<Integer>, std::nullptr_t> = nullptr>
+	template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
+	                                            std::nullptr_t> = nullptr>
 	[[nodiscard]] inline constexpr bool is_odd( Integer i ) noexcept {
 		return ( std::make_unsigned_t<daw::remove_cvref_t<Integer>>( i ) & 1U ) ==
 		       1U;
 	}
 
-	template<
-	  typename Integer,
-	  std::enable_if_t<std::is_integral_v<Integer>, std::nullptr_t> = nullptr>
+	template<typename Integer, std::enable_if_t<std::is_integral_v<Integer>,
+	                                            std::nullptr_t> = nullptr>
 	[[nodiscard]] inline constexpr bool is_even( Integer i ) noexcept {
 		return ( std::make_unsigned_t<daw::remove_cvref_t<Integer>>( i ) & 1U ) ==
 		       1U;
 	}
 
-	template<
-	  typename Real,
-	  std::enable_if_t<std::is_floating_point_v<Real>, std::nullptr_t> = nullptr>
+	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+	                                         std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr Real abs( Real number ) noexcept {
 		if( DAW_IS_CONSTANT_EVALUATED_COMPAT( ) and not daw_has_cx_cmath ) {
 #if defined( DAW_CX_BIT_CAST )
@@ -1056,8 +1034,7 @@ namespace daw::cxmath {
 	namespace cxmath_impl {
 
 		template<
-		  typename Real,
-		  typename UInt,
+		  typename Real, typename UInt,
 		  std::enable_if_t<is_matching_v<Real, UInt>, std::nullptr_t> = nullptr>
 		constexpr Real adjust_exponent_impl( UInt u, std::int32_t exponent ) {
 			auto current_expoent = get_exponent_impl<Real>( u );
@@ -1065,9 +1042,8 @@ namespace daw::cxmath {
 			return set_exponent_impl<Real>( u, current_expoent );
 		}
 	} // namespace cxmath_impl
-	template<
-	  typename Real,
-	  std::enable_if_t<std::is_floating_point_v<Real>, std::nullptr_t> = nullptr>
+	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+	                                         std::nullptr_t> = nullptr>
 	constexpr Real adjust_exponent( Real r, std::int32_t exponent ) {
 		auto result = cxmath_impl::adjust_exponent_impl(
 		  DAW_BIT_CAST( cxmath_impl::unsigned_float_type_t<Real>, r ), exponent );
@@ -1075,9 +1051,8 @@ namespace daw::cxmath {
 	}
 #endif
 
-	template<
-	  typename Real,
-	  std::enable_if_t<std::is_floating_point_v<Real>, std::nullptr_t> = nullptr>
+	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+	                                         std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr Real sqrt_fast( Real r ) {
 		static_assert( not std::is_same_v<Real, long double>,
 		               "Long double not supported" );
@@ -1114,9 +1089,8 @@ namespace daw::cxmath {
 		return y * pow2<Real>( N / 2 );
 	}
 
-	template<
-	  typename Real,
-	  std::enable_if_t<std::is_floating_point_v<Real>, std::nullptr_t> = nullptr>
+	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+	                                         std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr Real sqrt( Real r ) {
 #if defined( DAW_CX_BIT_CAST )
 		switch( fp_classify( r ) ) {
@@ -1146,8 +1120,7 @@ namespace daw::cxmath {
 	static_assert( sqrt<double>( 16.0 ) == 4.0 );
 #endif
 
-	template<typename Number,
-	         typename Number2
+	template<typename Number, typename Number2
 #if defined( DAW_CX_BIT_CAST )
 	         ,
 	         std::enable_if_t<
@@ -1170,9 +1143,8 @@ namespace daw::cxmath {
 	}
 
 #if defined( DAW_CX_BIT_CAST )
-	template<
-	  typename Real,
-	  std::enable_if_t<std::is_floating_point_v<Real>, std::nullptr_t> = nullptr>
+	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+	                                         std::nullptr_t> = nullptr>
 	[[nodiscard]] inline constexpr Real copy_sign( Real number, Real sign ) {
 		auto const inumber =
 		  DAW_BIT_CAST( cxmath_impl::unsigned_float_type_t<Real>, number );
@@ -1198,9 +1170,8 @@ namespace daw::cxmath {
 	}
 
 #if defined( DAW_CX_BIT_CAST )
-	template<
-	  typename Real,
-	  std::enable_if_t<std::is_floating_point_v<Real>, std::nullptr_t> = nullptr>
+	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+	                                         std::nullptr_t> = nullptr>
 	inline constexpr auto get_significand( Real r ) {
 		auto const dint =
 		  DAW_BIT_CAST( cxmath_impl::unsigned_float_type_t<Real>, r );
@@ -1221,9 +1192,8 @@ namespace daw::cxmath {
 		return cxmath_impl::get_exponent_raw_impl( dint );
 	}
 
-	template<
-	  typename Real,
-	  std::enable_if_t<std::is_floating_point_v<Real>, std::nullptr_t> = nullptr>
+	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+	                                         std::nullptr_t> = nullptr>
 	inline constexpr std::int32_t get_exponent( Real r ) {
 		auto const uint =
 		  DAW_BIT_CAST( cxmath_impl::unsigned_float_type_t<Real>, r );
@@ -1250,9 +1220,8 @@ namespace daw::cxmath {
 	}
 #endif
 
-	template<
-	  typename Real,
-	  std::enable_if_t<std::is_floating_point_v<Real>, std::nullptr_t> = nullptr>
+	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+	                                         std::nullptr_t> = nullptr>
 	[[nodiscard]] inline constexpr bool is_inf( Real r ) {
 #if defined( DAW_CX_BIT_CAST )
 		return fp_classify( r ) == fp_classes::infinity;
@@ -1270,9 +1239,8 @@ namespace daw::cxmath {
 	static_assert( is_inf( daw::numeric_limits<float>::infinity( ) ) );
 	static_assert( not is_inf( 5.5f ) );
 
-	template<
-	  typename Real,
-	  std::enable_if_t<std::is_floating_point_v<Real>, std::nullptr_t> = nullptr>
+	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
+	                                         std::nullptr_t> = nullptr>
 	[[nodiscard]] inline constexpr bool is_finite( Real r ) {
 #if defined( DAW_CX_BIT_CAST )
 		switch( fp_classify( r ) ) {
@@ -1367,16 +1335,14 @@ namespace daw::cxmath {
 #endif
 
 	template<
-	  typename...,
-	  typename Integer,
+	  typename..., typename Integer,
 	  std::enable_if_t<std::is_integral_v<Integer>, std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE constexpr auto to_unsigned( Integer value ) {
 		return static_cast<daw::make_unsigned_t<Integer>>( value );
 	}
 
 	template<
-	  typename...,
-	  typename Integer,
+	  typename..., typename Integer,
 	  std::enable_if_t<std::is_integral_v<Integer>, std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE constexpr auto to_signed( Integer value ) {
 		return static_cast<daw::make_signed_t<Integer>>( value );

@@ -76,28 +76,21 @@ namespace daw {
 	template<typename ResultType, typename ClassType, typename... ArgTypes>
 	using pointer_to_member_function_t =
 	  typename utility_details::make_pointer_to_member_function_impl<
-	    ResultType,
-	    ClassType,
-	    ArgTypes...>::type;
+	    ResultType, ClassType, ArgTypes...>::type;
 
 	template<typename ResultType, typename ClassType, typename... ArgTypes>
 	using pointer_to_volatile_member_function_t =
 	  typename utility_details::make_pointer_to_volatile_member_function_impl<
-	    ResultType,
-	    ClassType,
-	    ArgTypes...>::type;
+	    ResultType, ClassType, ArgTypes...>::type;
 
 	template<typename ResultType, typename ClassType, typename... ArgTypes>
 	using pointer_to_const_member_function_t =
 	  typename utility_details::make_pointer_to_const_member_function_impl<
-	    ResultType,
-	    ClassType,
-	    ArgTypes...>::type;
+	    ResultType, ClassType, ArgTypes...>::type;
 
 	template<typename ResultType, typename ClassType, typename... ArgTypes>
 	using pointer_to_const_volatile_member_function_t = typename utility_details::
-	  make_pointer_to_const_volatile_member_function_impl<ResultType,
-	                                                      ClassType,
+	  make_pointer_to_const_volatile_member_function_impl<ResultType, ClassType,
 	                                                      ArgTypes...>::type;
 
 	namespace utility_details {
@@ -115,7 +108,7 @@ namespace daw {
 				return m_value == value;
 			}
 		}; // class EqualToImpl
-	}    // namespace utility_details
+	} // namespace utility_details
 	template<typename T>
 	inline constexpr utility_details::EqualToImpl<T> equal_to( T value ) {
 		return utility_details::EqualToImpl<T>( std::move( value ) );
@@ -153,7 +146,7 @@ namespace daw {
 				return !m_function( DAW_FWD2( Args, args )... );
 			}
 		}; // class NotImpl
-	}    // namespace utility_details
+	} // namespace utility_details
 
 	template<typename Function>
 	[[nodiscard]] inline constexpr utility_details::NotImpl<Function>
@@ -297,8 +290,8 @@ namespace daw {
 
 	template<typename T, typename Pred>
 	[[nodiscard]] auto find_all_where( T const &values, Pred predicate ) {
-		return find_all_where(
-		  std::cbegin( values ), std::cend( values ), predicate );
+		return find_all_where( std::cbegin( values ), std::cend( values ),
+		                       predicate );
 	}
 
 	[[nodiscard]] constexpr char AsciiUpper( char chr ) noexcept {
@@ -320,20 +313,20 @@ namespace daw {
 	template<typename CharType, typename Traits, typename Allocator>
 	[[nodiscard]] constexpr auto
 	AsciiUpper( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
-		daw::algorithm::map(
-		  str.cbegin( ), str.cend( ), str.begin( ), []( CharType c ) noexcept {
-			  return AsciiUpper( c );
-		  } );
+		daw::algorithm::map( str.cbegin( ), str.cend( ), str.begin( ),
+		                     []( CharType c ) noexcept {
+			                     return AsciiUpper( c );
+		                     } );
 		return std::move( str );
 	}
 
 	template<typename CharType, typename Traits, typename Allocator>
 	[[nodiscard]] constexpr auto
 	AsciiLower( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
-		daw::algorithm::map(
-		  str.cbegin( ), str.cend( ), str.begin( ), []( CharType c ) noexcept {
-			  return AsciiLower( c );
-		  } );
+		daw::algorithm::map( str.cbegin( ), str.cend( ), str.begin( ),
+		                     []( CharType c ) noexcept {
+			                     return AsciiLower( c );
+		                     } );
 		return std::move( str );
 	}
 
@@ -392,8 +385,8 @@ namespace daw {
 	template<typename Container, typename Item>
 	[[nodiscard]] constexpr auto index_of( Container const &container,
 	                                       Item const &item ) noexcept {
-		auto const pos = daw::algorithm::find(
-		  std::begin( container ), std::end( container ), item );
+		auto const pos = daw::algorithm::find( std::begin( container ),
+		                                       std::end( container ), item );
 		return std::distance( std::begin( container ), pos );
 	}
 
@@ -512,8 +505,7 @@ namespace daw {
 		return it_out;
 	}
 
-	template<typename T,
-	         typename OutputIterator,
+	template<typename T, typename OutputIterator,
 	         std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr OutputIterator hex( T const &val,
 	                                            OutputIterator it_out ) noexcept {
@@ -524,8 +516,7 @@ namespace daw {
 	}
 
 	template<
-	  typename T,
-	  typename OutputIterator,
+	  typename T, typename OutputIterator,
 	  std::enable_if_t<not std::is_integral_v<T>, std::nullptr_t> = nullptr>
 	[[nodiscard]] OutputIterator hex( T const &val,
 	                                  OutputIterator it_out ) noexcept {
@@ -538,15 +529,13 @@ namespace daw {
 		return it_out;
 	}
 
-	template<typename ForwardIterator1,
-	         typename ForwardIterator2,
+	template<typename ForwardIterator1, typename ForwardIterator2,
 	         typename OutputIterator,
 	         std::enable_if_t<std::is_integral_v<typename std::iterator_traits<
 	                            ForwardIterator1>::value_type>,
 	                          std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr OutputIterator
-	hex( ForwardIterator1 first_in,
-	     ForwardIterator2 const last_in,
+	hex( ForwardIterator1 first_in, ForwardIterator2 const last_in,
 	     OutputIterator first_out ) noexcept {
 		for( ; first_in != last_in; ++first_in ) {
 			auto const val = *first_in;
@@ -571,8 +560,7 @@ namespace daw {
 	}
 
 	template<
-	  typename ForwardIterator1,
-	  typename ForwardIterator2,
+	  typename ForwardIterator1, typename ForwardIterator2,
 	  typename OutputIterator,
 	  std::enable_if_t<not std::is_integral_v<typename std::iterator_traits<
 	                     ForwardIterator1>::value_type>,
@@ -819,8 +807,9 @@ namespace daw {
 	/// Checks if value is in the range [lower, upper)
 	template<typename Value, typename LowerBound, typename UpperBound>
 	[[nodiscard]] constexpr bool
-	in_range( Value &&value, LowerBound &&lower, UpperBound &&upper ) noexcept(
-	  noexcept( lower <= value && value < upper ) ) {
+	in_range( Value &&value, LowerBound &&lower,
+	          UpperBound &&upper ) noexcept( noexcept( lower <= value &&
+	                                                   value < upper ) ) {
 		return DAW_FWD2( LowerBound, lower ) <= value &&
 		       value < DAW_FWD2( UpperBound, upper );
 	}
@@ -901,8 +890,8 @@ namespace daw {
 
 	namespace utility_details {
 		template<size_t pos, typename Function, typename... Args>
-		[[nodiscard]] constexpr auto
-		utility_details( std::size_t, Function &&, Args &&... )
+		[[nodiscard]] constexpr auto utility_details( std::size_t, Function &&,
+		                                              Args &&... )
 		  -> std::enable_if_t<( pos >= sizeof...( Args ) )> {}
 
 		template<size_t pos, typename Function, typename... Args>
@@ -917,16 +906,16 @@ namespace daw {
 					                func )( pack_get<pos>( DAW_FWD2( Args, args )... ) );
 				}
 			} else {
-				utility_details<pos + 1>(
-				  N, DAW_FWD2( Function, func ), DAW_FWD2( Args, args )... );
+				utility_details<pos + 1>( N, DAW_FWD2( Function, func ),
+				                          DAW_FWD2( Args, args )... );
 			}
 		}
 	} // namespace utility_details
 
 	template<typename Function, typename... Args>
 	constexpr void pack_apply( std::size_t N, Function &&func, Args &&...args ) {
-		utility_details::utility_details<0>(
-		  N, DAW_FWD2( Function, func ), DAW_FWD2( Args, args )... );
+		utility_details::utility_details<0>( N, DAW_FWD2( Function, func ),
+		                                     DAW_FWD2( Args, args )... );
 	}
 
 	template<typename T, bool AllowDownSignCast = false, typename U>

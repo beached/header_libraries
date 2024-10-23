@@ -98,8 +98,7 @@ namespace daw {
 	} // namespace cpp_17_details
 
 #if not defined( _MSC_VER ) or defined( __clang__ )
-	template<typename F,
-	         typename... Args,
+	template<typename F, typename... Args,
 	         daw::enable_when_t<std::conjunction_v<
 	           not_trait<is_reference_wrapper<Args>>...>> = nullptr>
 	[[nodiscard]] constexpr decltype( auto )
@@ -153,8 +152,7 @@ namespace daw {
 				return daw::invoke( DAW_FWD( f ) );
 			} else {
 				return cpp_17_details::apply_details(
-				  DAW_FWD( f ),
-				  DAW_FWD( t ),
+				  DAW_FWD( f ), DAW_FWD( t ),
 				  std::make_index_sequence<std::tuple_size_v<std::decay_t<Tuple>>>{ } );
 			}
 		} else {

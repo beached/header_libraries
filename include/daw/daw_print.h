@@ -18,15 +18,15 @@
 
 namespace daw {
 	template<typename... Args>
-	DAW_ATTRIB_NOINLINE void
-	print( FILE *fout, std::format_string<Args...> fmt, Args &&...args ) {
+	DAW_ATTRIB_NOINLINE void print( FILE *fout, std::format_string<Args...> fmt,
+	                                Args &&...args ) {
 		auto const r = std::format( std::move( fmt ), DAW_FWD( args )... );
 		(void)std::fwrite( std::data( r ), 1, r.size( ), fout );
 	}
 
 	template<typename... Args>
-	DAW_ATTRIB_NOINLINE void
-	vprint( FILE *fout, std::string_view fmt, Args &&...args ) {
+	DAW_ATTRIB_NOINLINE void vprint( FILE *fout, std::string_view fmt,
+	                                 Args &&...args ) {
 		auto const r =
 		  std::vformat( fmt, std::make_format_args( DAW_FWD( args )... ) );
 		(void)std::fwrite( std::data( r ), 1, r.size( ), fout );
@@ -44,15 +44,15 @@ namespace daw {
 	}
 
 	template<typename... Args>
-	DAW_ATTRIB_NOINLINE void
-	println( FILE *f, std::format_string<Args...> fmt, Args &&...args ) {
-		daw::print(
-		  f, "{}\n", std::format( std::move( fmt ), DAW_FWD( args )... ) );
+	DAW_ATTRIB_NOINLINE void println( FILE *f, std::format_string<Args...> fmt,
+	                                  Args &&...args ) {
+		daw::print( f, "{}\n",
+		            std::format( std::move( fmt ), DAW_FWD( args )... ) );
 	}
 
 	template<typename... Args>
-	DAW_ATTRIB_NOINLINE void
-	vprintln( FILE *f, std::string fmt, Args &&...args ) {
+	DAW_ATTRIB_NOINLINE void vprintln( FILE *f, std::string fmt,
+	                                   Args &&...args ) {
 		fmt += '\n';
 		daw::print( f, fmt, DAW_FWD( args )... );
 	}
@@ -60,8 +60,8 @@ namespace daw {
 	template<typename... Args>
 	DAW_ATTRIB_NOINLINE void println( std::format_string<Args...> fmt,
 	                                  Args &&...args ) {
-		daw::print(
-		  stdout, "{}\n", std::format( std::move( fmt ), DAW_FWD( args )... ) );
+		daw::print( stdout, "{}\n",
+		            std::format( std::move( fmt ), DAW_FWD( args )... ) );
 	}
 
 	template<typename... Args>

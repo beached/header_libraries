@@ -153,9 +153,8 @@ namespace daw::memory {
 			return reinterpret_cast<Integer>( get( ) );
 		}
 
-		template<typename U,
-		         std::enable_if_t<std::is_constructible_v<U *, pointer>,
-		                          std::nullptr_t> = nullptr>
+		template<typename U, std::enable_if_t<std::is_constructible_v<U *, pointer>,
+		                                      std::nullptr_t> = nullptr>
 		inline explicit operator safe_pointer<U>( ) const {
 			U *p = static_cast<U *>( m_pointer );
 			if constexpr( std::is_same_v<void, std::remove_const_t<U>> ) {
@@ -358,9 +357,8 @@ namespace daw::memory {
 			return reinterpret_cast<Integer>( get( ) );
 		}
 
-		template<typename U,
-		         std::enable_if_t<std::is_constructible_v<U *, pointer>,
-		                          std::nullptr_t> = nullptr>
+		template<typename U, std::enable_if_t<std::is_constructible_v<U *, pointer>,
+		                                      std::nullptr_t> = nullptr>
 		inline explicit operator safe_pointer<U>( ) const {
 			return safe_pointer<U>( static_cast<U *>( m_pointer ) );
 		}

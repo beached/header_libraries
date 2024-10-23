@@ -32,10 +32,8 @@ namespace daw {
 		  : value( c )
 		  , Separator( separator ) {}
 
-		explicit constexpr fmt_tuple( T const &c,
-		                              CharT const *separator,
-		                              CharT const *left,
-		                              CharT const *right )
+		explicit constexpr fmt_tuple( T const &c, CharT const *separator,
+		                              CharT const *left, CharT const *right )
 		  : value( c )
 		  , Separator( separator )
 		  , Left( left )
@@ -57,7 +55,7 @@ namespace std {
 	struct formatter<daw::fmt_tuple<T, CharT>, CharT> {
 		daw::string_view flags = { };
 
-		formatter() = default;
+		formatter( ) = default;
 
 		template<class ParseContext>
 		constexpr ParseContext::iterator parse( ParseContext &ctx ) {
@@ -114,16 +112,14 @@ namespace std {
 				  if( is_first ) {
 					  is_first = false;
 				  } else {
-					  out = std::copy(
-					    std::data( c.Separator ), daw::data_end( c.Separator ), out );
+					  out = std::copy( std::data( c.Separator ),
+					                   daw::data_end( c.Separator ), out );
 				  }
-				  out = std::vformat_to( out,
-				                         std::string_view( flags ),
+				  out = std::vformat_to( out, std::string_view( flags ),
 				                         std::make_format_args( get<Idx>( c.value ) ) );
 			  };
 			[&]<std::size_t... Is>( std::index_sequence<Is...> ) {
-				(void)( write_value( std::integral_constant<std::size_t, Is>{ } ),
-				        ...,
+				(void)( write_value( std::integral_constant<std::size_t, Is>{ } ), ...,
 				        1 );
 			}( std::make_index_sequence<std::tuple_size_v<T>>{ } );
 			out = std::copy( std::data( c.Right ), daw::data_end( c.Right ), out );

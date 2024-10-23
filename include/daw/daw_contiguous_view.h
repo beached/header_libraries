@@ -397,8 +397,8 @@ namespace daw {
 
 		[[nodiscard]] friend constexpr bool operator<( contiguous_view const &x,
 		                                               contiguous_view const &y ) {
-			return std::lexicographical_compare(
-			  x.data( ), x.data_end( ), y.data( ), y.data_end( ) );
+			return std::lexicographical_compare( x.data( ), x.data_end( ), y.data( ),
+			                                     y.data_end( ) );
 		}
 
 		[[nodiscard]] friend constexpr bool operator>( contiguous_view const &x,
@@ -764,8 +764,8 @@ namespace daw {
 
 		[[nodiscard]] friend constexpr bool operator<( contiguous_view const &x,
 		                                               contiguous_view const &y ) {
-			return std::lexicographical_compare(
-			  x.data( ), x.data_end( ), y.data( ), y.data_end( ) );
+			return std::lexicographical_compare( x.data( ), x.data_end( ), y.data( ),
+			                                     y.data_end( ) );
 		}
 
 		[[nodiscard]] friend constexpr bool operator>( contiguous_view const &x,

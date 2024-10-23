@@ -112,13 +112,11 @@ namespace daw::container {
 		std::stable_sort( std::begin( container ), std::end( container ) );
 	}
 
-	template<typename Container,
-	         typename Compare,
+	template<typename Container, typename Compare,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	void stable_sort( Container &container, Compare compare ) noexcept(
-	  noexcept( std::stable_sort( std::begin( container ),
-	                              std::end( container ),
+	  noexcept( std::stable_sort( std::begin( container ), std::end( container ),
 	                              compare ) ) ) {
 
 		using std::begin;
@@ -131,19 +129,17 @@ namespace daw::container {
 		std::stable_sort( begin( container ), end( container ), compare );
 	}
 
-	template<typename Container,
-	         typename Value,
+	template<typename Container, typename Value,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
-	decltype( auto )
-	find( Container &container, Value const &value ) noexcept( noexcept(
-	  std::find( std::begin( container ), std::end( container ), value ) ) ) {
+	decltype( auto ) find( Container &container, Value const &value ) noexcept(
+	  noexcept( std::find( std::begin( container ), std::end( container ),
+	                       value ) ) ) {
 
 		return std::find( std::begin( container ), std::end( container ), value );
 	}
 
-	template<typename Container,
-	         typename Value,
+	template<typename Container, typename Value,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto )
@@ -153,8 +149,7 @@ namespace daw::container {
 		return std::find( std::begin( container ), std::end( container ), value );
 	}
 
-	template<typename Container,
-	         typename UnaryPredicate,
+	template<typename Container, typename UnaryPredicate,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto )
@@ -171,30 +166,28 @@ namespace daw::container {
 		return std::find_if( std::begin( container ), std::end( container ), pred );
 	}
 
-	template<typename Container,
-	         typename Value,
+	template<typename Container, typename Value,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto )
 	erase_remove( Container &container, Value const &value ) noexcept(
-	  noexcept( container.erase(
-	    std::remove( std::begin( container ), std::end( container ), value ),
-	    std::end( container ) ) ) ) {
+	  noexcept( container.erase( std::remove( std::begin( container ),
+	                                          std::end( container ), value ),
+	                             std::end( container ) ) ) ) {
 
 		return container.erase(
 		  std::remove( std::begin( container ), std::end( container ), value ),
 		  std::end( container ) );
 	}
 
-	template<typename Container,
-	         typename UnaryPredicate,
+	template<typename Container, typename UnaryPredicate,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto )
 	erase_remove_if( Container &container, UnaryPredicate pred ) noexcept(
-	  noexcept( container.erase(
-	    std::remove_if( std::begin( container ), std::end( container ), pred ),
-	    std::end( container ) ) ) ) {
+	  noexcept( container.erase( std::remove_if( std::begin( container ),
+	                                             std::end( container ), pred ),
+	                             std::end( container ) ) ) ) {
 
 		static_assert(
 		  traits::is_unary_predicate_v<UnaryPredicate,
@@ -208,8 +201,7 @@ namespace daw::container {
 		  std::end( container ) );
 	}
 
-	template<typename Container,
-	         typename UnaryPredicate,
+	template<typename Container, typename UnaryPredicate,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto )
@@ -223,19 +215,17 @@ namespace daw::container {
 		  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
 		  "information" );
 
-		return std::partition(
-		  std::begin( container ), std::end( container ), pred );
+		return std::partition( std::begin( container ), std::end( container ),
+		                       pred );
 	}
 
-	template<typename Container,
-	         typename UnaryPredicate,
+	template<typename Container, typename UnaryPredicate,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto )
 	stable_partition( Container &container, UnaryPredicate pred ) noexcept(
 	  noexcept( std::stable_partition( std::begin( container ),
-	                                   std::end( container ),
-	                                   pred ) ) ) {
+	                                   std::end( container ), pred ) ) ) {
 
 		static_assert(
 		  traits::is_unary_predicate_v<UnaryPredicate,
@@ -244,82 +234,66 @@ namespace daw::container {
 		  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
 		  "information" );
 
-		return std::stable_partition(
-		  std::begin( container ), std::end( container ), pred );
+		return std::stable_partition( std::begin( container ),
+		                              std::end( container ), pred );
 	}
 
-	template<typename Container,
-	         typename T,
+	template<typename Container, typename T,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto ) accumulate( Container const &container, T &&init ) noexcept(
-	  noexcept( std::accumulate( std::cbegin( container ),
-	                             std::end( container ),
+	  noexcept( std::accumulate( std::cbegin( container ), std::end( container ),
 	                             DAW_FWD( init ) ) ) ) {
 
-		return std::accumulate(
-		  std::cbegin( container ), std::cend( container ), DAW_FWD( init ) );
+		return std::accumulate( std::cbegin( container ), std::cend( container ),
+		                        DAW_FWD( init ) );
 	}
 
-	template<typename Container,
-	         typename T,
-	         typename BinaryOperation,
+	template<typename Container, typename T, typename BinaryOperation,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto ) accumulate(
-	  Container const &container,
-	  T &&init,
+	  Container const &container, T &&init,
 	  BinaryOperation
 	    oper ) noexcept( noexcept( std::accumulate( std::cbegin( container ),
 	                                                std::cend( container ),
-	                                                DAW_FWD( init ),
-	                                                oper ) ) ) {
+	                                                DAW_FWD( init ), oper ) ) ) {
 
-		static_assert( std::is_invocable_v<BinaryOperation,
-		                                   T,
+		static_assert( std::is_invocable_v<BinaryOperation, T,
 		                                   decltype( *std::cbegin( container ) )>,
 		               "Invalid BinaryOperation" );
 
-		return std::accumulate(
-		  std::cbegin( container ), std::cend( container ), DAW_FWD( init ), oper );
+		return std::accumulate( std::cbegin( container ), std::cend( container ),
+		                        DAW_FWD( init ), oper );
 	}
 
-	template<typename Container,
-	         typename UnaryOperator,
+	template<typename Container, typename UnaryOperator,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto )
 	transform( Container &container, UnaryOperator unary_operator ) noexcept(
-	  noexcept( std::transform( std::cbegin( container ),
-	                            std::cend( container ),
-	                            std::begin( container ),
-	                            unary_operator ) ) ) {
+	  noexcept( std::transform( std::cbegin( container ), std::cend( container ),
+	                            std::begin( container ), unary_operator ) ) ) {
 
 		static_assert(
 		  std::is_invocable_v<UnaryOperator, decltype( *std::cbegin( container ) )>,
 		  "UnaryOperator is not callable with the values stored in Container" );
 
-		return std::transform( std::cbegin( container ),
-		                       std::cend( container ),
-		                       std::begin( container ),
-		                       unary_operator );
+		return std::transform( std::cbegin( container ), std::cend( container ),
+		                       std::begin( container ), unary_operator );
 	}
 
-	template<typename Container,
-	         typename OutputIterator,
-	         typename UnaryOperator,
+	template<typename Container, typename OutputIterator, typename UnaryOperator,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto ) transform(
-	  Container const &container,
-	  OutputIterator &first_out,
+	  Container const &container, OutputIterator &first_out,
 	  UnaryOperator
 	    unary_operator ) noexcept( noexcept( std::
 	                                           transform(
 	                                             std::cbegin( container ),
 	                                             std::cend( container ),
-	                                             first_out,
-	                                             unary_operator ) ) ) {
+	                                             first_out, unary_operator ) ) ) {
 
 		static_assert(
 		  std::is_invocable_v<UnaryOperator, decltype( *std::cbegin( container ) )>,
@@ -330,40 +304,31 @@ namespace daw::container {
 		                                     decltype( *first_out )>,
 		               "Output of UnaryOperator cannot be assigned to *first_out" );
 
-		return std::transform( std::cbegin( container ),
-		                       std::cend( container ),
-		                       first_out,
-		                       unary_operator );
+		return std::transform( std::cbegin( container ), std::cend( container ),
+		                       first_out, unary_operator );
 	}
 
-	template<typename Container,
-	         typename OutputIterator,
-	         typename UnaryOperator,
+	template<typename Container, typename OutputIterator, typename UnaryOperator,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto ) transform(
-	  Container const &container,
-	  OutputIterator &&first_out,
+	  Container const &container, OutputIterator &&first_out,
 	  UnaryOperator
 	    unary_operator ) noexcept( noexcept( std::
 	                                           transform(
 	                                             std::cbegin( container ),
 	                                             std::cend( container ),
-	                                             first_out,
-	                                             unary_operator ) ) ) {
+	                                             first_out, unary_operator ) ) ) {
 
 		static_assert(
 		  std::is_invocable_v<UnaryOperator, decltype( *std::cbegin( container ) )>,
 		  "UnaryOperator is not callable with the values stored in Container" );
 
-		std::transform( std::cbegin( container ),
-		                std::cend( container ),
-		                first_out,
+		std::transform( std::cbegin( container ), std::cend( container ), first_out,
 		                unary_operator );
 	}
 
-	template<typename Container,
-	         typename UnaryOperator,
+	template<typename Container, typename UnaryOperator,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) max_element( Container &container ) noexcept(
@@ -374,9 +339,7 @@ namespace daw::container {
 		                                    std::cend( container ) );
 	}
 
-	template<typename Container,
-	         typename OutputIterator,
-	         typename UnaryOperator,
+	template<typename Container, typename OutputIterator, typename UnaryOperator,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	constexpr decltype( auto ) max_element( Container const &container ) noexcept(
@@ -387,15 +350,13 @@ namespace daw::container {
 		                                    std::cend( container ) );
 	}
 
-	template<typename Container,
-	         typename Compare,
+	template<typename Container, typename Compare,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	constexpr decltype( auto )
-	max_element( Container &container, Compare compare ) noexcept(
-	  noexcept( daw::algorithm::max_element( std::begin( container ),
-	                                         std::end( container ),
-	                                         compare ) ) ) {
+	max_element( Container &container, Compare compare ) noexcept( noexcept(
+	  daw::algorithm::max_element( std::begin( container ), std::end( container ),
+	                               compare ) ) ) {
 		using std::begin;
 		using std::end;
 		using value_type = DAW_TYPEOF( *begin( container ) );
@@ -403,19 +364,17 @@ namespace daw::container {
 		static_assert(
 		  traits::is_binary_predicate_v<Compare, value_type, value_type> );
 
-		return daw::algorithm::max_element(
-		  begin( container ), end( container ), compare );
+		return daw::algorithm::max_element( begin( container ), end( container ),
+		                                    compare );
 	}
 
-	template<typename Container,
-	         typename Compare,
+	template<typename Container, typename Compare,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	constexpr decltype( auto )
-	max_element( Container const &container, Compare compare ) noexcept(
-	  noexcept( daw::algorithm::max_element( std::begin( container ),
-	                                         std::end( container ),
-	                                         compare ) ) ) {
+	max_element( Container const &container, Compare compare ) noexcept( noexcept(
+	  daw::algorithm::max_element( std::begin( container ), std::end( container ),
+	                               compare ) ) ) {
 
 		using std::begin;
 		using std::end;
@@ -424,21 +383,18 @@ namespace daw::container {
 		static_assert(
 		  traits::is_binary_predicate_v<Compare, value_type, value_type> );
 
-		return daw::algorithm::max_element(
-		  begin( container ), end( container ), compare );
+		return daw::algorithm::max_element( begin( container ), end( container ),
+		                                    compare );
 	}
 
-	template<typename Container,
-	         typename Value,
+	template<typename Container, typename Value,
 	         std::enable_if_t<
 	           daw::traits::is_container_like_v<Container> &&
 	             !traits::is_unary_predicate_v<
-	               Value,
-	               decltype( *std::cbegin( std::declval<Container>( ) ) )>,
+	               Value, decltype( *std::cbegin( std::declval<Container>( ) ) )>,
 	           std::nullptr_t> = nullptr>
 	constexpr bool contains( Container const &container, Value &&value ) noexcept(
-	  noexcept( std::find( std::cbegin( container ),
-	                       std::cend( container ),
+	  noexcept( std::find( std::cbegin( container ), std::cend( container ),
 	                       value ) != std::cend( container ) ) ) {
 
 		return daw::algorithm::find( std::cbegin( container ),
@@ -446,18 +402,16 @@ namespace daw::container {
 		                             DAW_FWD( value ) ) != std::cend( container );
 	}
 
-	template<typename Container,
-	         typename UnaryPredicate,
-	         std::enable_if_t<
-	           daw::traits::is_container_like_v<Container> &&
-	             traits::is_unary_predicate_v<
-	               UnaryPredicate,
-	               decltype( *std::cbegin( std::declval<Container>( ) ) )>,
-	           std::nullptr_t> = nullptr>
+	template<
+	  typename Container, typename UnaryPredicate,
+	  std::enable_if_t<daw::traits::is_container_like_v<Container> &&
+	                     traits::is_unary_predicate_v<
+	                       UnaryPredicate, decltype( *std::cbegin(
+	                                         std::declval<Container>( ) ) )>,
+	                   std::nullptr_t> = nullptr>
 	constexpr bool
 	contains( Container const &container, UnaryPredicate pred ) noexcept(
-	  noexcept( std::find_if( std::cbegin( container ),
-	                          std::cend( container ),
+	  noexcept( std::find_if( std::cbegin( container ), std::cend( container ),
 	                          pred ) != std::cend( container ) ) ) {
 
 		return daw::algorithm::find_if( std::cbegin( container ),
@@ -465,8 +419,7 @@ namespace daw::container {
 		                                pred ) != std::cend( container );
 	}
 
-	template<typename Container,
-	         typename OutputIterator,
+	template<typename Container, typename OutputIterator,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	constexpr void copy( Container const &source, OutputIterator destination ) {
@@ -480,12 +433,11 @@ namespace daw::container {
 		}
 	}
 
-	template<typename Container,
-	         typename OutputIterator,
+	template<typename Container, typename OutputIterator,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
-	constexpr void
-	copy_n( Container const &source, size_t count, OutputIterator destination ) {
+	constexpr void copy_n( Container const &source, size_t count,
+	                       OutputIterator destination ) {
 		auto src = std::cbegin( source );
 		count = ( daw::min )( count, daw::size( source ) );
 		for( size_t n = 0; n < count; ++n ) {
@@ -495,9 +447,7 @@ namespace daw::container {
 		}
 	}
 
-	template<typename Container,
-	         typename OutputIterator,
-	         typename UnaryPredicate,
+	template<typename Container, typename OutputIterator, typename UnaryPredicate,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	constexpr OutputIterator copy_if( Container const &source,
@@ -523,13 +473,11 @@ namespace daw::container {
 		return destination;
 	}
 
-	template<typename Container,
-	         typename OutputIterator,
-	         typename UnaryPredicate,
+	template<typename Container, typename OutputIterator, typename UnaryPredicate,
 	         std::enable_if_t<daw::traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
-	constexpr void
-	copy_n( Container const &source, size_t count, OutputIterator destination ) {
+	constexpr void copy_n( Container const &source, size_t count,
+	                       OutputIterator destination ) {
 		static_assert(
 		  traits::is_unary_predicate_v<UnaryPredicate,
 		                               decltype( *std::begin( source ) )>,
@@ -554,9 +502,7 @@ namespace daw::container {
 	///
 	template<typename Container, typename Function>
 	constexpr void for_each_with_pos(
-	  Container &container,
-	  size_t const first_inclusive,
-	  size_t last_exclusive,
+	  Container &container, size_t const first_inclusive, size_t last_exclusive,
 	  Function func ) noexcept( noexcept( func( *std::begin( container ),
 	                                            std::declval<size_t>( ) ) ) ) {
 
@@ -598,11 +544,8 @@ namespace daw::container {
 	/// @param func callable to pass container and position too
 	template<typename Container, typename Function>
 	constexpr void for_each_subset(
-	  Container &container,
-	  size_t first,
-	  size_t const last,
-	  Function func ) noexcept( traits::is_nothrow_callable_v<Function,
-	                                                          Container,
+	  Container &container, size_t first, size_t const last,
+	  Function func ) noexcept( traits::is_nothrow_callable_v<Function, Container,
 	                                                          size_t> ) {
 
 		static_assert( traits::has_integer_subscript_v<Container>,
@@ -625,7 +568,7 @@ namespace daw::container {
 	/// @param destination a container to append to
 	template<typename Source, typename Destination>
 	constexpr void append( Source const &source, Destination &destination ) {
-		destination.insert(
-		  std::end( destination ), std::begin( source ), std::end( source ) );
+		destination.insert( std::end( destination ), std::begin( source ),
+		                    std::end( source ) );
 	}
 } // namespace daw::container

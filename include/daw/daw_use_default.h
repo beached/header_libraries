@@ -13,6 +13,4 @@ namespace daw {
 	struct use_default {
 		explicit use_default( ) = default;
 	};
-}
-
-
+} // namespace daw

@@ -19,8 +19,7 @@
 #include <type_traits>
 
 namespace daw {
-	template<typename T,
-	         typename U,
+	template<typename T, typename U,
 	         std::enable_if_t<daw::is_integral_v<T> and daw::is_integral_v<U>,
 	                          std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE constexpr bool cmp_equal( T t, U u ) noexcept {
@@ -35,8 +34,7 @@ namespace daw {
 		}
 	}
 
-	template<typename T,
-	         typename U,
+	template<typename T, typename U,
 	         std::enable_if_t<daw::is_integral_v<T> and daw::is_integral_v<U>,
 	                          std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE constexpr bool cmp_not_equal( T t, U u ) noexcept {
@@ -51,8 +49,7 @@ namespace daw {
 		}
 	}
 
-	template<typename T,
-	         typename U,
+	template<typename T, typename U,
 	         std::enable_if_t<daw::is_integral_v<T> and daw::is_integral_v<U>,
 	                          std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE constexpr bool cmp_less( T t, U u ) noexcept {
@@ -67,32 +64,28 @@ namespace daw {
 		}
 	}
 
-	template<typename T,
-	         typename U,
+	template<typename T, typename U,
 	         std::enable_if_t<daw::is_integral_v<T> and daw::is_integral_v<U>,
 	                          std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE constexpr bool cmp_greater( T t, U u ) noexcept {
 		return cmp_less( u, t );
 	}
 
-	template<typename T,
-	         typename U,
+	template<typename T, typename U,
 	         std::enable_if_t<daw::is_integral_v<T> and daw::is_integral_v<U>,
 	                          std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE constexpr bool cmp_less_equal( T t, U u ) noexcept {
 		return not cmp_less( u, t );
 	}
 
-	template<typename T,
-	         typename U,
+	template<typename T, typename U,
 	         std::enable_if_t<daw::is_integral_v<T> and daw::is_integral_v<U>,
 	                          std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE constexpr bool cmp_greater_equal( T t, U u ) noexcept {
 		return not cmp_less( t, u );
 	}
 
-	template<typename R,
-	         typename T,
+	template<typename R, typename T,
 	         std::enable_if_t<daw::is_integral_v<R> and daw::is_integral_v<T>,
 	                          std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE constexpr bool in_range( T t ) noexcept {

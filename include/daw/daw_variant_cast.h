@@ -25,10 +25,9 @@ namespace daw {
 	namespace impl {
 		template<typename T>
 		struct variant_visitor_t {
-			template<
-			  typename U,
-			  std::enable_if_t<std::is_convertible_v<daw::remove_cvref_t<U>, T>,
-			                   std::nullptr_t> = nullptr>
+			template<typename U, std::enable_if_t<
+			                       std::is_convertible_v<daw::remove_cvref_t<U>, T>,
+			                       std::nullptr_t> = nullptr>
 			constexpr T operator( )( U &&result ) const {
 				return static_cast<T>( DAW_FWD( result ) );
 			}
