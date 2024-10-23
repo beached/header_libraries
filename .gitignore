@@ -85,6 +85,8 @@ bower_components/
 build/
 ClientBin/
 cmake-build-*/
+cmake-build/
+test_data/
 CMakeFiles/
 CMakeSettings.json
 csx/
@@ -103,6 +105,7 @@ ipch/
 nbproject/*
 node_modules/
 obj/
+out/
 publish/
 sql/
 TestResult.xml
