@@ -9,8 +9,8 @@
 #include "daw/daw_visit.h"
 
 #include "daw/daw_benchmark.h"
+#include "daw/daw_ensure.h"
 
-#include <cassert>
 #include <exception>
 #include <optional>
 #include <variant>
@@ -242,24 +242,34 @@ int foofoo( std::variant<T0,
 	  } );
 }
 
+bool visit_test_001( ) {
+	auto v = std::variant<int, double>{ 5 };
+	daw::do_not_optimize( v );
+	auto r = daw::visit( v, []( auto a ) {
+		return static_cast<int>( a );
+	} );
+	return r == 5;
+}
+
 int main( ) {
 	visit_nt_004( );
 	visit_nt_005( );
-	assert( foofoo( foobar( 0 ) ) == 0 );
-	assert( foofoo( foobar( 1 ) ) == 1 );
-	assert( foofoo( foobar( 2 ) ) == 2 );
-	assert( foofoo( foobar( 3 ) ) == 3 );
-	assert( foofoo( foobar( 4 ) ) == 4 );
-	assert( foofoo( foobar( 5 ) ) == 5 );
-	assert( foofoo( foobar( 6 ) ) == 6 );
-	assert( foofoo( foobar( 7 ) ) == 7 );
-	assert( foofoo( foobar( 8 ) ) == 8 );
-	assert( foofoo( foobar( 9 ) ) == 9 );
-	assert( foofoo( foobar( 10 ) ) == 10 );
-	assert( foofoo( foobar( 11 ) ) == 11 );
-	assert( foofoo( foobar( 12 ) ) == 12 );
-	assert( foofoo( foobar( 13 ) ) == 13 );
-	assert( foofoo( foobar( 14 ) ) == 14 );
-	assert( foofoo( foobar( 15 ) ) == 15 );
-	assert( foofoo( foobar( 16 ) ) == 16 );
+	daw_ensure( visit_test_001( ) );
+	daw_ensure( foofoo( foobar( 0 ) ) == 0 );
+	daw_ensure( foofoo( foobar( 1 ) ) == 1 );
+	daw_ensure( foofoo( foobar( 2 ) ) == 2 );
+	daw_ensure( foofoo( foobar( 3 ) ) == 3 );
+	daw_ensure( foofoo( foobar( 4 ) ) == 4 );
+	daw_ensure( foofoo( foobar( 5 ) ) == 5 );
+	daw_ensure( foofoo( foobar( 6 ) ) == 6 );
+	daw_ensure( foofoo( foobar( 7 ) ) == 7 );
+	daw_ensure( foofoo( foobar( 8 ) ) == 8 );
+	daw_ensure( foofoo( foobar( 9 ) ) == 9 );
+	daw_ensure( foofoo( foobar( 10 ) ) == 10 );
+	daw_ensure( foofoo( foobar( 11 ) ) == 11 );
+	daw_ensure( foofoo( foobar( 12 ) ) == 12 );
+	daw_ensure( foofoo( foobar( 13 ) ) == 13 );
+	daw_ensure( foofoo( foobar( 14 ) ) == 14 );
+	daw_ensure( foofoo( foobar( 15 ) ) == 15 );
+	daw_ensure( foofoo( foobar( 16 ) ) == 16 );
 }
