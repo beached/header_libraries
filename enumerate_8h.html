@@ -76,8 +76,8 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="daw__cpp__feature__check_8h_source.html">daw/daw_cpp_feature_check.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw/daw_move.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="iota__view_8h_source.html">iota_view.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="zip__view_8h_source.html">zip_view.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="iota_8h_source.html">iota.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="zip_8h_source.html">zip.h</a>&quot;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;limits&gt;</code><br />
 </div>
@@ -85,15 +85,15 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_enumerate__t.html">daw::pipelines::pimpl::Enumerate_t</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_enumerate__t.html">daw::pipelines::pimpl::Enumerate_t&lt; EnumType &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_enumerate_apply__t.html">daw::pipelines::pimpl::EnumerateApply_t</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_enumerate_apply__t.html">daw::pipelines::pimpl::EnumerateApply_t&lt; EnumType &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
-<tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
+<tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides structs for wrapping function pointers and callable objects to facilitate function overloading and safe invocation. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacedaw_1_1pipelines"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html">daw::pipelines</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -102,10 +102,16 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a67ede6d141ebf51731c42d5e07cfb8cc"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a67ede6d141ebf51731c42d5e07cfb8cc">daw::pipelines::Enumerate</a> = pimpl::Enumerate_t{ }</td></tr>
+<tr class="memitem:a67ede6d141ebf51731c42d5e07cfb8cc"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a67ede6d141ebf51731c42d5e07cfb8cc">daw::pipelines::Enumerate</a> = pimpl::Enumerate_t&lt;&gt;{ }</td></tr>
 <tr class="separator:a67ede6d141ebf51731c42d5e07cfb8cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a234a23d974c624f55b7ffc0bf4d14459"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a234a23d974c624f55b7ffc0bf4d14459">daw::pipelines::EnumerateApply</a> = pimpl::EnumerateApply_t{ }</td></tr>
+<tr class="memitem:a234a23d974c624f55b7ffc0bf4d14459"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a234a23d974c624f55b7ffc0bf4d14459">daw::pipelines::EnumerateApply</a> = pimpl::EnumerateApply_t&lt;&gt;{ }</td></tr>
 <tr class="separator:a234a23d974c624f55b7ffc0bf4d14459"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85c19e40964337a39a6986f6d0feb4eb"><td class="memTemplParams" colspan="2">template&lt;typename EnumType &gt; </td></tr>
+<tr class="memitem:a85c19e40964337a39a6986f6d0feb4eb"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a85c19e40964337a39a6986f6d0feb4eb">daw::pipelines::EnumerateApplyWith</a> = pimpl::EnumerateApply_t&lt;EnumType&gt;{ }</td></tr>
+<tr class="separator:a85c19e40964337a39a6986f6d0feb4eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a574abcc08d9ff5552770eec661d7fc"><td class="memTemplParams" colspan="2">template&lt;typename EnumType &gt; </td></tr>
+<tr class="memitem:a7a574abcc08d9ff5552770eec661d7fc"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a7a574abcc08d9ff5552770eec661d7fc">daw::pipelines::EnumerateWith</a> = pimpl::Enumerate_t&lt;EnumType&gt;{ }</td></tr>
+<tr class="separator:a7a574abcc08d9ff5552770eec661d7fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

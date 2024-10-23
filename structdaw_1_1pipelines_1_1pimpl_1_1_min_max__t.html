@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>DAW Header Libraries: daw::pipelines::pimpl::MinMax_t&lt; Compare &gt; Struct Template Reference</title>
+<title>DAW Header Libraries: daw::pipelines::pimpl::MinMax_t&lt; Compare, Projection &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -71,7 +71,7 @@ $(function() {
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structdaw_1_1pipelines_1_1pimpl_1_1_min_max__t-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">daw::pipelines::pimpl::MinMax_t&lt; Compare &gt; Struct Template Reference</div>  </div>
+<div class="title">daw::pipelines::pimpl::MinMax_t&lt; Compare, Projection &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -79,99 +79,80 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad4046d324498f23639f0a8a10a4bf58e"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="daw__cpp__feature__check_8h.html#afc4642143a3c09e14caf89b1996f9b57">DAW_CPP23_STATIC_CALL_OP</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min_max__t.html#ad4046d324498f23639f0a8a10a4bf58e">operator()</a> (auto &amp;&amp;compare) <a class="el" href="daw__cpp__feature__check_8h.html#aa899c38c96b0233101723af77dd4f7dd">DAW_CPP23_STATIC_CALL_OP_CONST</a></td></tr>
-<tr class="separator:ad4046d324498f23639f0a8a10a4bf58e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a194262626eeddfeda07d3ec0c7458619"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min_max__t.html#a194262626eeddfeda07d3ec0c7458619">operator()</a> (<a class="el" href="namespacedaw.html#adc9100c4fd3f511114b7835dbb7bb768">Range</a> auto &amp;&amp;r) const</td></tr>
-<tr class="separator:a194262626eeddfeda07d3ec0c7458619"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4163480ba8bea855a94553c0afaf401a"><td class="memTemplParams" colspan="2">template&lt;typename C , typename P  = std::identity&gt; </td></tr>
+<tr class="memitem:a4163480ba8bea855a94553c0afaf401a"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min_max__t.html#a4163480ba8bea855a94553c0afaf401a">requires</a> (not <a class="el" href="namespacedaw.html#adc9100c4fd3f511114b7835dbb7bb768">Range</a>&lt; C &gt;) <a class="el" href="daw__cpp__feature__check_8h.html#afc4642143a3c09e14caf89b1996f9b57">DAW_CPP23_STATIC_CALL_OP</a> const expr auto operator()(C &amp;&amp;compare</td></tr>
+<tr class="separator:a4163480ba8bea855a94553c0afaf401a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a2ccd6fa7099f3b259d532d3ba1cf1f74"><td class="memItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#a7fd397a80efcdba7628bb7c8d2c0990c">DAW_NO_UNIQUE_ADDRESS</a> Compare&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min_max__t.html#a2ccd6fa7099f3b259d532d3ba1cf1f74">m_comapre</a> { }</td></tr>
-<tr class="separator:a2ccd6fa7099f3b259d532d3ba1cf1f74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeef82f9d80e38dd315629873d1e8fe87"><td class="memItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#a7fd397a80efcdba7628bb7c8d2c0990c">DAW_NO_UNIQUE_ADDRESS</a> Compare&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min_max__t.html#aeef82f9d80e38dd315629873d1e8fe87">m_compare</a> { }</td></tr>
+<tr class="separator:aeef82f9d80e38dd315629873d1e8fe87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af914fce2088b62ee66e03a43988bcb35"><td class="memItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#a7fd397a80efcdba7628bb7c8d2c0990c">DAW_NO_UNIQUE_ADDRESS</a> <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min_max__t.html#af914fce2088b62ee66e03a43988bcb35">m_projection</a> { }</td></tr>
+<tr class="separator:af914fce2088b62ee66e03a43988bcb35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename Compare&gt;<br />
-struct daw::pipelines::pimpl::MinMax_t&lt; Compare &gt;</h3>
+<div class="textblock"><h3>template&lt;typename Compare = std::less&lt;&gt;, typename Projection = std::identity&gt;<br />
+struct daw::pipelines::pimpl::MinMax_t&lt; Compare, Projection &gt;</h3>
 
 
-<p class="definition">Definition at line <a class="el" href="algorithm_8h_source.html#l00078">78</a> of file <a class="el" href="algorithm_8h_source.html">algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="algorithm_8h_source.html#l00125">125</a> of file <a class="el" href="algorithm_8h_source.html">algorithm.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ad4046d324498f23639f0a8a10a4bf58e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4046d324498f23639f0a8a10a4bf58e">&#9670;&nbsp;</a></span>operator()() <span class="overload">[1/2]</span></h2>
+<a id="a4163480ba8bea855a94553c0afaf401a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4163480ba8bea855a94553c0afaf401a">&#9670;&nbsp;</a></span>requires()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Compare &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="daw__cpp__feature__check_8h.html#afc4642143a3c09e14caf89b1996f9b57">DAW_CPP23_STATIC_CALL_OP</a> auto <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min_max__t.html">daw::pipelines::pimpl::MinMax_t</a>&lt; Compare &gt;::operator() </td>
-          <td>(</td>
-          <td class="paramtype">auto &amp;&amp;&#160;</td>
-          <td class="paramname"><em>compare</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="algorithm_8h_source.html#l00082">82</a> of file <a class="el" href="algorithm_8h_source.html">algorithm.h</a>.</p>
-
-</div>
-</div>
-<a id="a194262626eeddfeda07d3ec0c7458619"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a194262626eeddfeda07d3ec0c7458619">&#9670;&nbsp;</a></span>operator()() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
+template&lt;typename Compare  = std::less&lt;&gt;, typename Projection  = std::identity&gt; </div>
 <div class="memtemplate">
-template&lt;typename Compare &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
+template&lt;typename C , typename P  = std::identity&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min_max__t.html">daw::pipelines::pimpl::MinMax_t</a>&lt; Compare &gt;::operator() </td>
+          <td class="memname"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min_max__t.html">daw::pipelines::pimpl::MinMax_t</a>&lt; Compare, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::requires </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacedaw.html#adc9100c4fd3f511114b7835dbb7bb768">Range</a> auto &amp;&amp;&#160;</td>
-          <td class="paramname"><em>r</em></td><td>)</td>
-          <td> const</td>
+          <td class="paramtype">not <a class="el" href="namespacedaw.html#adc9100c4fd3f511114b7835dbb7bb768">Range</a>&lt; C &gt;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const &amp;&amp;</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="algorithm_8h_source.html#l00086">86</a> of file <a class="el" href="algorithm_8h_source.html">algorithm.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a2ccd6fa7099f3b259d532d3ba1cf1f74"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2ccd6fa7099f3b259d532d3ba1cf1f74">&#9670;&nbsp;</a></span>m_comapre</h2>
+<a id="aeef82f9d80e38dd315629873d1e8fe87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeef82f9d80e38dd315629873d1e8fe87">&#9670;&nbsp;</a></span>m_compare</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Compare &gt; </div>
+template&lt;typename Compare  = std::less&lt;&gt;, typename Projection  = std::identity&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="daw__attributes_8h.html#a7fd397a80efcdba7628bb7c8d2c0990c">DAW_NO_UNIQUE_ADDRESS</a> Compare <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min_max__t.html">daw::pipelines::pimpl::MinMax_t</a>&lt; Compare &gt;::m_comapre { }</td>
+          <td class="memname"><a class="el" href="daw__attributes_8h.html#a7fd397a80efcdba7628bb7c8d2c0990c">DAW_NO_UNIQUE_ADDRESS</a> Compare <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min_max__t.html">daw::pipelines::pimpl::MinMax_t</a>&lt; Compare, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::m_compare { }</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="algorithm_8h_source.html#l00079">79</a> of file <a class="el" href="algorithm_8h_source.html">algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="algorithm_8h_source.html#l00126">126</a> of file <a class="el" href="algorithm_8h_source.html">algorithm.h</a>.</p>
+
+</div>
+</div>
+<a id="af914fce2088b62ee66e03a43988bcb35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af914fce2088b62ee66e03a43988bcb35">&#9670;&nbsp;</a></span>m_projection</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Compare  = std::less&lt;&gt;, typename Projection  = std::identity&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="daw__attributes_8h.html#a7fd397a80efcdba7628bb7c8d2c0990c">DAW_NO_UNIQUE_ADDRESS</a> <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min_max__t.html">daw::pipelines::pimpl::MinMax_t</a>&lt; Compare, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::m_projection { }</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="algorithm_8h_source.html#l00127">127</a> of file <a class="el" href="algorithm_8h_source.html">algorithm.h</a>.</p>
 
 </div>
 </div>

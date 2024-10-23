@@ -121,200 +121,189 @@ $(function() {
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Value&gt;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">static</span> constexpr hash_value_t</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    append_hash_block( hash_value_t current_hash,</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                       Value value,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                       std::size_t count = <span class="keyword">sizeof</span>( Value ) ) noexcept {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      hash_value_t <span class="keyword">const</span> JODY_HASH_CONSTANT = 0x1F5B;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      hash_value_t <span class="keyword">const</span> JODY_HASH_SHIFT = 14;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      <span class="keyword">auto</span> len = count / <span class="keyword">sizeof</span>( hash_value_t );</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="keywordflow">for</span>( ; len &gt; 0; --len ) {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keyword">auto</span> <span class="keyword">const</span> element =</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;          extract_value&lt;hash_value_t&gt;( value, len * <span class="keyword">sizeof</span>( hash_value_t ) );</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        current_hash += element;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        current_hash += JODY_HASH_CONSTANT;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        current_hash =</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;          <span class="keyword">static_cast&lt;</span>hash_value_t<span class="keyword">&gt;</span>( current_hash &lt;&lt; JODY_HASH_SHIFT ) |</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;          current_hash &gt;&gt; ( <span class="keyword">sizeof</span>( hash_value_t ) * 8 - JODY_HASH_SHIFT );</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        current_hash ^= element;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        current_hash =</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;          <span class="keyword">static_cast&lt;</span>hash_value_t<span class="keyword">&gt;</span>( current_hash &lt;&lt; JODY_HASH_SHIFT ) |</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;          current_hash &gt;&gt; ( <span class="keyword">sizeof</span>( hash_value_t ) * 8 - JODY_HASH_SHIFT );</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        current_hash ^= JODY_HASH_CONSTANT;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        current_hash += element;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      <span class="keywordflow">return</span> current_hash;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      <span class="keyword">typename</span> Value,</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      std::enable_if_t&lt;std::is_integral_v&lt;Value&gt;, std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_012_01_4.html#ac3958b0fb9ebfbecbb9740b5bfa532f5">   81</a></span>&#160;    <span class="keyword">static</span> constexpr <a class="code" href="structdaw_1_1generic__hash__t_3_012_01_4.html#a1b61afa2f11166aaf20645e0267e97a7">hash_value_t</a> <a class="code" href="structdaw_1_1generic__hash__t_3_012_01_4.html#ac3958b0fb9ebfbecbb9740b5bfa532f5">append_hash</a>( <a class="code" href="structdaw_1_1generic__hash__t_3_012_01_4.html#a1b61afa2f11166aaf20645e0267e97a7">hash_value_t</a> current_hash,</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                                               Value <span class="keyword">const</span> &amp; ) noexcept {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      <span class="comment">// TODO static_assert( sizeof( Value ) &gt;= sizeof( hash_value_t ), &quot;Value</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      <span class="comment">// must be at least 2 bytes&quot; );</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      <span class="comment">// TODO</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      <span class="keywordflow">return</span> current_hash;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    }</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  };</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_014_01_4.html">   91</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1generic__hash__t.html">generic_hash_t</a>&lt;4&gt; {</div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">   92</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> = std::uint32_t;</div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a6ab94a77ebfef65f7898b302573f22bf">   93</a></span>&#160;    <span class="keyword">static</span> constexpr std::size_t <span class="keyword">const</span> hash_size = 4;</div>
-<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_014_01_4.html#ac928c75772b30ed2348e8e8d7d0b5786">   94</a></span>&#160;    <span class="keyword">static</span> constexpr <a class="code" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> <span class="keyword">const</span> hash_init = 2166136261UL;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      <span class="keyword">typename</span> Value,</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      std::enable_if_t&lt;std::is_integral_v&lt;Value&gt;, std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a6eeffb09cf2350674db96614003da616">   99</a></span>&#160;    <span class="keyword">static</span> constexpr <a class="code" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> <a class="code" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a6eeffb09cf2350674db96614003da616">append_hash</a>( <a class="code" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> current_hash,</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                                               Value <span class="keyword">const</span> &amp;value ) noexcept {</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      <a class="code" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> <span class="keyword">const</span> fnv1a_prime = 16777619UL;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      <span class="keywordflow">for</span>( std::size_t n = 0; n &lt; <span class="keyword">sizeof</span>( Value ); ++n ) {</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        current_hash ^= <span class="keyword">static_cast&lt;</span><a class="code" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a><span class="keyword">&gt;</span>(</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;          ( <span class="keyword">static_cast&lt;</span>uintmax_t<span class="keyword">&gt;</span>( value ) &amp;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            ( <span class="keyword">static_cast&lt;</span>uintmax_t<span class="keyword">&gt;</span>( 0xFF ) &lt;&lt; ( n * 8u ) ) ) &gt;&gt;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;          ( n * 8u ) );</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        current_hash *= fnv1a_prime;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;      }</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;      <span class="keywordflow">return</span> current_hash;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    }</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Iterator1, <span class="keyword">typename</span> Iterator2&gt;</div>
-<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a33e4fe42e025fd8f363c3dd5c510133f">  113</a></span>&#160;    constexpr <a class="code" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> operator( )( Iterator1 first,</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                                        Iterator2 <span class="keyword">const</span> last ) <span class="keyword">const</span> noexcept {</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      <span class="keyword">auto</span> hash = hash_init;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;      <span class="keywordflow">while</span>( first != last ) {</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        hash = append_hash( hash, *first );</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        ++first;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;      }</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;      <span class="keywordflow">return</span> hash;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    }</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;      <span class="keyword">typename</span> Member,</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;      std::size_t N,</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;      std::enable_if_t&lt;std::is_integral_v&lt;Member&gt;, std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    constexpr hash_value_t</div>
-<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aded384289938a4fc6ac5fc8513127a03">  127</a></span>&#160;    operator( )( Member <span class="keyword">const</span> ( &amp;member )[N] ) <span class="keyword">const</span> noexcept {</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;      <a class="code" href="daw__compiler__fixups_8h.html#a36b599f1320cec1a28af5b5c4ae15ce1">DAW_UNSAFE_BUFFER_FUNC_START</a></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;      <span class="keywordflow">return</span> operator( )( member, member + <span class="keyword">static_cast&lt;</span>intmax_t<span class="keyword">&gt;</span>( N ) );</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;      <a class="code" href="daw__compiler__fixups_8h.html#a4c7dc0ab87f2d36a26c75a9840ca71e3">DAW_UNSAFE_BUFFER_FUNC_STOP</a></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    }</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;      <span class="keyword">typename</span> Integral,</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;      std::enable_if_t&lt;std::is_integral_v&lt;Integral&gt;, std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
-<div class="line"><a name="l00136"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a0c381ddecf593de782f5fd043a03cccf">  136</a></span>&#160;    constexpr <a class="code" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> operator( )( Integral <span class="keyword">const</span> value ) <span class="keyword">const</span> noexcept {</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;      <span class="keywordflow">return</span> append_hash( hash_init, value );</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    }</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  };</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00141"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_018_01_4.html">  141</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1generic__hash__t.html">generic_hash_t</a>&lt;8&gt; {</div>
-<div class="line"><a name="l00142"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">  142</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">hash_value_t</a> = std::uint64_t;</div>
-<div class="line"><a name="l00143"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_018_01_4.html#a27e20d70dae7c03f7c9b28f12991641c">  143</a></span>&#160;    <span class="keyword">static</span> constexpr std::size_t <span class="keyword">const</span> hash_size = 8;</div>
-<div class="line"><a name="l00144"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ab5dcac14c10fd9c9cda15ac0767c50b1">  144</a></span>&#160;    <span class="keyword">static</span> constexpr <a class="code" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">hash_value_t</a> <span class="keyword">const</span> hash_init = 14695981039346656037ULL;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;      <span class="keyword">typename</span> Value,</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;      std::enable_if_t&lt;std::is_integral_v&lt;Value&gt;, std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
-<div class="line"><a name="l00149"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_018_01_4.html#a7f2843007ed3653e1c51b456c3767e3a">  149</a></span>&#160;    <span class="keyword">static</span> constexpr <a class="code" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">hash_value_t</a> <a class="code" href="structdaw_1_1generic__hash__t_3_018_01_4.html#a7f2843007ed3653e1c51b456c3767e3a">append_hash</a>( <a class="code" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">hash_value_t</a> current_hash,</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                                               Value <span class="keyword">const</span> &amp;value ) noexcept {</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;      <a class="code" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">hash_value_t</a> <span class="keyword">const</span> fnv1a_prime = 1099511628211ULL;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;      <span class="keywordflow">for</span>( std::size_t n = 0; n &lt; <span class="keyword">sizeof</span>( Value ); ++n ) {</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        current_hash ^= <span class="keyword">static_cast&lt;</span><a class="code" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">hash_value_t</a><span class="keyword">&gt;</span>(</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;          ( <span class="keyword">static_cast&lt;</span>uintmax_t<span class="keyword">&gt;</span>( value ) &amp;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            ( <span class="keyword">static_cast&lt;</span>uintmax_t<span class="keyword">&gt;</span>( 0xFF ) &lt;&lt; ( n * 8u ) ) ) &gt;&gt;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;          ( n * 8u ) );</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        current_hash *= fnv1a_prime;</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;      }</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;      <span class="keywordflow">return</span> current_hash;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    }</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Iterator1, <span class="keyword">typename</span> Iterator2&gt;</div>
-<div class="line"><a name="l00163"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_018_01_4.html#a33b6e94621d0c98a545d270f0ce0ce03">  163</a></span>&#160;    constexpr <a class="code" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">hash_value_t</a> operator( )( Iterator1 first,</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                                        Iterator2 <span class="keyword">const</span> last ) <span class="keyword">const</span> noexcept {</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;      <span class="keyword">auto</span> hash = hash_init;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;      <span class="keywordflow">while</span>( first != last ) {</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        hash = append_hash( hash, *first );</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        ++first;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;      }</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;      <span class="keywordflow">return</span> hash;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    }</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;      <span class="keyword">typename</span> Member,</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;      std::size_t N,</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;      std::enable_if_t&lt;std::is_integral_v&lt;Member&gt;, std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    constexpr hash_value_t</div>
-<div class="line"><a name="l00177"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_018_01_4.html#a5161c6bc04f2b656e930faee73f5c521">  177</a></span>&#160;    operator( )( Member <span class="keyword">const</span> ( &amp;member )[N] ) <span class="keyword">const</span> noexcept {</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;      <a class="code" href="daw__compiler__fixups_8h.html#a36b599f1320cec1a28af5b5c4ae15ce1">DAW_UNSAFE_BUFFER_FUNC_START</a></div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;      <span class="keywordflow">return</span> operator( )( member, member + <span class="keyword">static_cast&lt;</span>intmax_t<span class="keyword">&gt;</span>( N ) );</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;      <a class="code" href="daw__compiler__fixups_8h.html#a4c7dc0ab87f2d36a26c75a9840ca71e3">DAW_UNSAFE_BUFFER_FUNC_STOP</a></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    }</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;      <span class="keyword">typename</span> Integral,</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;      std::enable_if_t&lt;std::is_integral_v&lt;Integral&gt;, std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
-<div class="line"><a name="l00186"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_018_01_4.html#a5d1b2e5db5cabb7af2c437a0b5652431">  186</a></span>&#160;    constexpr <a class="code" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">hash_value_t</a> operator( )( Integral <span class="keyword">const</span> value ) <span class="keyword">const</span> noexcept {</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;      <span class="keywordflow">return</span> append_hash( hash_init, value );</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    }</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00191"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_018_01_4.html#a18247a8d2738cb3f373f9f8213778307">  191</a></span>&#160;    constexpr <a class="code" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">hash_value_t</a> operator( )( T <span class="keyword">const</span> *<span class="keyword">const</span> ptr ) <span class="keyword">const</span> noexcept {</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;      <span class="keyword">auto</span> hash = hash_init;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;      <span class="keyword">auto</span> bptr = <span class="keyword">static_cast&lt;</span>uint8_t <span class="keyword">const </span>*const<span class="keyword">&gt;</span>( ptr );</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;      <span class="keywordflow">for</span>( std::size_t n = 0; n &lt; <span class="keyword">sizeof</span>( T ); ++n ) {</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        append_hash( hash, bptr[n] );</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;      }</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;      <span class="keywordflow">return</span> hash;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    }</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  };</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;  <span class="keyword">template</span>&lt;<span class="keywordtype">size_t</span> HashBytes = <span class="keyword">sizeof</span>( <a class="code" href="namespacedaw.html#a4f4958d75a32b663c2230a78867420d4">genhash_uint_t</a> ),</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;           <span class="keyword">typename</span> T,</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;           <a class="code" href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">std::enable_if_t</a>&lt;std::is_integral_v&lt;T&gt;, std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
-<div class="line"><a name="l00204"></a><span class="lineno"><a class="line" href="namespacedaw.html#a7f35c883ac3c46d437fbaed77e783e7f">  204</a></span>&#160;  constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a7f35c883ac3c46d437fbaed77e783e7f">generic_hash</a>( T <span class="keyword">const</span> value ) noexcept {</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structdaw_1_1generic__hash__t.html">generic_hash_t&lt;HashBytes&gt;</a>{ }( value );</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  }</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;  <span class="keyword">template</span>&lt;<span class="keywordtype">size_t</span> HashBytes = <span class="keyword">sizeof</span>( <a class="code" href="namespacedaw.html#a4f4958d75a32b663c2230a78867420d4">genhash_uint_t</a> ),</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;           <span class="keyword">typename</span> <a class="code" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>,</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;           <span class="keyword">typename</span> IteratorL&gt;</div>
-<div class="line"><a name="l00211"></a><span class="lineno"><a class="line" href="namespacedaw.html#a4c71de295bac0a2df31136d133b7eb02">  211</a></span>&#160;  constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a7f35c883ac3c46d437fbaed77e783e7f">generic_hash</a>( <a class="code" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a> first, IteratorL <span class="keyword">const</span> last ) noexcept {</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="keyword">using</span> hash_t = <a class="code" href="structdaw_1_1generic__hash__t.html">generic_hash_t&lt;HashBytes&gt;</a>;</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keyword">auto</span> hash = hash_t::hash_init;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="keywordflow">while</span>( first != last ) {</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;      hash = hash_t::append_hash( hash, *first );</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;      ++first;</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    }</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="keywordflow">return</span> hash;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;  }</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;  <span class="keyword">template</span>&lt;<span class="keywordtype">size_t</span> HashBytes = sizeof( genhash_u<span class="keywordtype">int</span>_t ), <span class="keyword">typename</span> Iterator&gt;</div>
-<div class="line"><a name="l00222"></a><span class="lineno"><a class="line" href="namespacedaw.html#a085a8a04a4376a75ceca711fd27a54a2">  222</a></span>&#160;  constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a7f35c883ac3c46d437fbaed77e783e7f">generic_hash</a>( <a class="code" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a> first,</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                               std::size_t <span class="keyword">const</span> len ) noexcept {</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="keyword">using</span> hash_t = <a class="code" href="structdaw_1_1generic__hash__t.html">generic_hash_t&lt;HashBytes&gt;</a>;</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <span class="keyword">auto</span> hash = hash_t::hash_init;</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="keywordflow">for</span>( std::size_t n = 0; n &lt; len; ++n ) {</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;      hash = hash_t::append_hash( hash, *first );</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;      ++first;</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    }</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <span class="keywordflow">return</span> hash;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;  }</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;  <span class="keyword">template</span>&lt;<span class="keywordtype">size_t</span> HashBytes = <span class="keyword">sizeof</span>( <a class="code" href="namespacedaw.html#a4f4958d75a32b663c2230a78867420d4">genhash_uint_t</a> ),</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;           <span class="keyword">typename</span> StringViewLike,</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;           <a class="code" href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">std::enable_if_t</a>&lt;traits_is_sv::is_string_view_like_v&lt;StringViewLike&gt;,</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;                            std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
-<div class="line"><a name="l00237"></a><span class="lineno"><a class="line" href="namespacedaw.html#a12d3696681d764c8b09334ddbacdba4c">  237</a></span>&#160;  <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a7f35c883ac3c46d437fbaed77e783e7f">generic_hash</a>( StringViewLike <span class="keyword">const</span> &amp;&amp;sv ) noexcept {</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="keywordflow">return</span> generic_hash&lt;HashBytes&gt;( sv.data( ), sv.size( ) );</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  }</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160; </div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  <span class="keyword">template</span>&lt;<span class="keywordtype">size_t</span> HashBytes = sizeof( genhash_u<span class="keywordtype">int</span>_t ), std::<span class="keywordtype">size_t</span> N&gt;</div>
-<div class="line"><a name="l00242"></a><span class="lineno"><a class="line" href="namespacedaw.html#aaa2b91629050597af2a5665453c172b8">  242</a></span>&#160;  constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a7f35c883ac3c46d437fbaed77e783e7f">generic_hash</a>( <span class="keywordtype">char</span> <span class="keyword">const</span> ( &amp;ptr )[N] ) noexcept {</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="keywordflow">return</span> generic_hash&lt;HashBytes&gt;( ptr, N );</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  }</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;} <span class="comment">// namespace daw</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    append_hash_block( hash_value_t current_hash, Value value,</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                       std::size_t count = <span class="keyword">sizeof</span>( Value ) ) noexcept {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      hash_value_t <span class="keyword">const</span> JODY_HASH_CONSTANT = 0x1F5B;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      hash_value_t <span class="keyword">const</span> JODY_HASH_SHIFT = 14;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      <span class="keyword">auto</span> len = count / <span class="keyword">sizeof</span>( hash_value_t );</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      <span class="keywordflow">for</span>( ; len &gt; 0; --len ) {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keyword">auto</span> <span class="keyword">const</span> element =</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;          extract_value&lt;hash_value_t&gt;( value, len * <span class="keyword">sizeof</span>( hash_value_t ) );</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        current_hash += element;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        current_hash += JODY_HASH_CONSTANT;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        current_hash =</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;          <span class="keyword">static_cast&lt;</span>hash_value_t<span class="keyword">&gt;</span>( current_hash &lt;&lt; JODY_HASH_SHIFT ) |</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;          current_hash &gt;&gt; ( <span class="keyword">sizeof</span>( hash_value_t ) * 8 - JODY_HASH_SHIFT );</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        current_hash ^= element;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        current_hash =</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;          <span class="keyword">static_cast&lt;</span>hash_value_t<span class="keyword">&gt;</span>( current_hash &lt;&lt; JODY_HASH_SHIFT ) |</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;          current_hash &gt;&gt; ( <span class="keyword">sizeof</span>( hash_value_t ) * 8 - JODY_HASH_SHIFT );</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        current_hash ^= JODY_HASH_CONSTANT;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        current_hash += element;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      <span class="keywordflow">return</span> current_hash;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    }</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Value, std::enable_if_t&lt;std::is_<span class="keywordtype">int</span>egral_v&lt;Value&gt;,</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                                              std::<span class="keywordtype">nullptr</span>_t&gt; = <span class="keywordtype">nullptr</span>&gt;</div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_012_01_4.html#ac3958b0fb9ebfbecbb9740b5bfa532f5">   79</a></span>&#160;    <span class="keyword">static</span> constexpr <a class="code" href="structdaw_1_1generic__hash__t_3_012_01_4.html#a1b61afa2f11166aaf20645e0267e97a7">hash_value_t</a> <a class="code" href="structdaw_1_1generic__hash__t_3_012_01_4.html#ac3958b0fb9ebfbecbb9740b5bfa532f5">append_hash</a>( <a class="code" href="structdaw_1_1generic__hash__t_3_012_01_4.html#a1b61afa2f11166aaf20645e0267e97a7">hash_value_t</a> current_hash,</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                                               Value <span class="keyword">const</span> &amp; ) noexcept {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      <span class="comment">// TODO static_assert( sizeof( Value ) &gt;= sizeof( hash_value_t ), &quot;Value</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      <span class="comment">// must be at least 2 bytes&quot; );</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      <span class="comment">// TODO</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      <span class="keywordflow">return</span> current_hash;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  };</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_014_01_4.html">   89</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1generic__hash__t.html">generic_hash_t</a>&lt;4&gt; {</div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">   90</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> = std::uint32_t;</div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a6ab94a77ebfef65f7898b302573f22bf">   91</a></span>&#160;    <span class="keyword">static</span> constexpr std::size_t <span class="keyword">const</span> hash_size = 4;</div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_014_01_4.html#ac928c75772b30ed2348e8e8d7d0b5786">   92</a></span>&#160;    <span class="keyword">static</span> constexpr <a class="code" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> <span class="keyword">const</span> hash_init = 2166136261UL;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Value, std::enable_if_t&lt;std::is_<span class="keywordtype">int</span>egral_v&lt;Value&gt;,</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                                              std::<span class="keywordtype">nullptr</span>_t&gt; = <span class="keywordtype">nullptr</span>&gt;</div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a6eeffb09cf2350674db96614003da616">   96</a></span>&#160;    <span class="keyword">static</span> constexpr <a class="code" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> <a class="code" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a6eeffb09cf2350674db96614003da616">append_hash</a>( <a class="code" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> current_hash,</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                                               Value <span class="keyword">const</span> &amp;value ) noexcept {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      <a class="code" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> <span class="keyword">const</span> fnv1a_prime = 16777619UL;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      <span class="keywordflow">for</span>( std::size_t n = 0; n &lt; <span class="keyword">sizeof</span>( Value ); ++n ) {</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        current_hash ^= <span class="keyword">static_cast&lt;</span><a class="code" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a><span class="keyword">&gt;</span>(</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;          ( <span class="keyword">static_cast&lt;</span>uintmax_t<span class="keyword">&gt;</span>( value ) &amp;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            ( <span class="keyword">static_cast&lt;</span>uintmax_t<span class="keyword">&gt;</span>( 0xFF ) &lt;&lt; ( n * 8u ) ) ) &gt;&gt;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;          ( n * 8u ) );</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        current_hash *= fnv1a_prime;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      }</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      <span class="keywordflow">return</span> current_hash;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Iterator1, <span class="keyword">typename</span> Iterator2&gt;</div>
+<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a33e4fe42e025fd8f363c3dd5c510133f">  110</a></span>&#160;    constexpr <a class="code" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> operator( )( Iterator1 first,</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                                        Iterator2 <span class="keyword">const</span> last ) <span class="keyword">const</span> noexcept {</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;      <span class="keyword">auto</span> hash = hash_init;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;      <span class="keywordflow">while</span>( first != last ) {</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        hash = append_hash( hash, *first );</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        ++first;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;      }</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;      <span class="keywordflow">return</span> hash;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    }</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;      <span class="keyword">typename</span> Member, std::size_t N,</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      std::enable_if_t&lt;std::is_integral_v&lt;Member&gt;, std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    constexpr hash_value_t</div>
+<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aded384289938a4fc6ac5fc8513127a03">  123</a></span>&#160;    operator( )( Member <span class="keyword">const</span> ( &amp;member )[N] ) <span class="keyword">const</span> noexcept {</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;      <a class="code" href="daw__compiler__fixups_8h.html#a36b599f1320cec1a28af5b5c4ae15ce1">DAW_UNSAFE_BUFFER_FUNC_START</a></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;      <span class="keywordflow">return</span> operator( )( member, member + <span class="keyword">static_cast&lt;</span>intmax_t<span class="keyword">&gt;</span>( N ) );</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;      <a class="code" href="daw__compiler__fixups_8h.html#a4c7dc0ab87f2d36a26c75a9840ca71e3">DAW_UNSAFE_BUFFER_FUNC_STOP</a></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    }</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Integral, std::enable_if_t&lt;std::is_<span class="keywordtype">int</span>egral_v&lt;Integral&gt;,</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                                                 std::<span class="keywordtype">nullptr</span>_t&gt; = <span class="keywordtype">nullptr</span>&gt;</div>
+<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_014_01_4.html#a0c381ddecf593de782f5fd043a03cccf">  131</a></span>&#160;    constexpr <a class="code" href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">hash_value_t</a> operator( )( Integral <span class="keyword">const</span> value ) <span class="keyword">const</span> noexcept {</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;      <span class="keywordflow">return</span> append_hash( hash_init, value );</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    }</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  };</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00136"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_018_01_4.html">  136</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structdaw_1_1generic__hash__t.html">generic_hash_t</a>&lt;8&gt; {</div>
+<div class="line"><a name="l00137"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">  137</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">hash_value_t</a> = std::uint64_t;</div>
+<div class="line"><a name="l00138"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_018_01_4.html#a27e20d70dae7c03f7c9b28f12991641c">  138</a></span>&#160;    <span class="keyword">static</span> constexpr std::size_t <span class="keyword">const</span> hash_size = 8;</div>
+<div class="line"><a name="l00139"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ab5dcac14c10fd9c9cda15ac0767c50b1">  139</a></span>&#160;    <span class="keyword">static</span> constexpr <a class="code" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">hash_value_t</a> <span class="keyword">const</span> hash_init = 14695981039346656037ULL;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Value, std::enable_if_t&lt;std::is_<span class="keywordtype">int</span>egral_v&lt;Value&gt;,</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                                              std::<span class="keywordtype">nullptr</span>_t&gt; = <span class="keywordtype">nullptr</span>&gt;</div>
+<div class="line"><a name="l00143"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_018_01_4.html#a7f2843007ed3653e1c51b456c3767e3a">  143</a></span>&#160;    <span class="keyword">static</span> constexpr <a class="code" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">hash_value_t</a> <a class="code" href="structdaw_1_1generic__hash__t_3_018_01_4.html#a7f2843007ed3653e1c51b456c3767e3a">append_hash</a>( <a class="code" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">hash_value_t</a> current_hash,</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                                               Value <span class="keyword">const</span> &amp;value ) noexcept {</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;      <a class="code" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">hash_value_t</a> <span class="keyword">const</span> fnv1a_prime = 1099511628211ULL;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;      <span class="keywordflow">for</span>( std::size_t n = 0; n &lt; <span class="keyword">sizeof</span>( Value ); ++n ) {</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        current_hash ^= <span class="keyword">static_cast&lt;</span><a class="code" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">hash_value_t</a><span class="keyword">&gt;</span>(</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;          ( <span class="keyword">static_cast&lt;</span>uintmax_t<span class="keyword">&gt;</span>( value ) &amp;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            ( <span class="keyword">static_cast&lt;</span>uintmax_t<span class="keyword">&gt;</span>( 0xFF ) &lt;&lt; ( n * 8u ) ) ) &gt;&gt;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;          ( n * 8u ) );</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        current_hash *= fnv1a_prime;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;      }</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;      <span class="keywordflow">return</span> current_hash;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    }</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Iterator1, <span class="keyword">typename</span> Iterator2&gt;</div>
+<div class="line"><a name="l00157"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_018_01_4.html#a33b6e94621d0c98a545d270f0ce0ce03">  157</a></span>&#160;    constexpr <a class="code" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">hash_value_t</a> operator( )( Iterator1 first,</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                                        Iterator2 <span class="keyword">const</span> last ) <span class="keyword">const</span> noexcept {</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;      <span class="keyword">auto</span> hash = hash_init;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;      <span class="keywordflow">while</span>( first != last ) {</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        hash = append_hash( hash, *first );</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        ++first;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;      }</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;      <span class="keywordflow">return</span> hash;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    }</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;      <span class="keyword">typename</span> Member, std::size_t N,</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;      std::enable_if_t&lt;std::is_integral_v&lt;Member&gt;, std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    constexpr hash_value_t</div>
+<div class="line"><a name="l00170"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_018_01_4.html#a5161c6bc04f2b656e930faee73f5c521">  170</a></span>&#160;    operator( )( Member <span class="keyword">const</span> ( &amp;member )[N] ) <span class="keyword">const</span> noexcept {</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;      <a class="code" href="daw__compiler__fixups_8h.html#a36b599f1320cec1a28af5b5c4ae15ce1">DAW_UNSAFE_BUFFER_FUNC_START</a></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;      <span class="keywordflow">return</span> operator( )( member, member + <span class="keyword">static_cast&lt;</span>intmax_t<span class="keyword">&gt;</span>( N ) );</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;      <a class="code" href="daw__compiler__fixups_8h.html#a4c7dc0ab87f2d36a26c75a9840ca71e3">DAW_UNSAFE_BUFFER_FUNC_STOP</a></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    }</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Integral, std::enable_if_t&lt;std::is_<span class="keywordtype">int</span>egral_v&lt;Integral&gt;,</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;                                                 std::<span class="keywordtype">nullptr</span>_t&gt; = <span class="keywordtype">nullptr</span>&gt;</div>
+<div class="line"><a name="l00178"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_018_01_4.html#a5d1b2e5db5cabb7af2c437a0b5652431">  178</a></span>&#160;    constexpr <a class="code" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">hash_value_t</a> operator( )( Integral <span class="keyword">const</span> value ) <span class="keyword">const</span> noexcept {</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;      <span class="keywordflow">return</span> append_hash( hash_init, value );</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    }</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00183"></a><span class="lineno"><a class="line" href="structdaw_1_1generic__hash__t_3_018_01_4.html#a18247a8d2738cb3f373f9f8213778307">  183</a></span>&#160;    constexpr <a class="code" href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">hash_value_t</a> operator( )( T <span class="keyword">const</span> *<span class="keyword">const</span> ptr ) <span class="keyword">const</span> noexcept {</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;      <span class="keyword">auto</span> hash = hash_init;</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;      <span class="keyword">auto</span> bptr = <span class="keyword">static_cast&lt;</span>uint8_t <span class="keyword">const </span>*const<span class="keyword">&gt;</span>( ptr );</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;      <span class="keywordflow">for</span>( std::size_t n = 0; n &lt; <span class="keyword">sizeof</span>( T ); ++n ) {</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        append_hash( hash, bptr[n] );</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;      }</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;      <span class="keywordflow">return</span> hash;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    }</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  };</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;  <span class="keyword">template</span>&lt;<span class="keywordtype">size_t</span> HashBytes = <span class="keyword">sizeof</span>( <a class="code" href="namespacedaw.html#a4f4958d75a32b663c2230a78867420d4">genhash_uint_t</a> ), <span class="keyword">typename</span> T,</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;           <a class="code" href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">std::enable_if_t</a>&lt;std::is_integral_v&lt;T&gt;, std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
+<div class="line"><a name="l00195"></a><span class="lineno"><a class="line" href="namespacedaw.html#a7f35c883ac3c46d437fbaed77e783e7f">  195</a></span>&#160;  constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a7f35c883ac3c46d437fbaed77e783e7f">generic_hash</a>( T <span class="keyword">const</span> value ) noexcept {</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structdaw_1_1generic__hash__t.html">generic_hash_t&lt;HashBytes&gt;</a>{ }( value );</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  }</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160; </div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  <span class="keyword">template</span>&lt;<span class="keywordtype">size_t</span> HashBytes = <span class="keyword">sizeof</span>( <a class="code" href="namespacedaw.html#a4f4958d75a32b663c2230a78867420d4">genhash_uint_t</a> ), <span class="keyword">typename</span> <a class="code" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>,</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;           <span class="keyword">typename</span> IteratorL&gt;</div>
+<div class="line"><a name="l00201"></a><span class="lineno"><a class="line" href="namespacedaw.html#a4c71de295bac0a2df31136d133b7eb02">  201</a></span>&#160;  constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a7f35c883ac3c46d437fbaed77e783e7f">generic_hash</a>( <a class="code" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a> first, IteratorL <span class="keyword">const</span> last ) noexcept {</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keyword">using</span> hash_t = <a class="code" href="structdaw_1_1generic__hash__t.html">generic_hash_t&lt;HashBytes&gt;</a>;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="keyword">auto</span> hash = hash_t::hash_init;</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="keywordflow">while</span>( first != last ) {</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;      hash = hash_t::append_hash( hash, *first );</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;      ++first;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    }</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keywordflow">return</span> hash;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;  }</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;  <span class="keyword">template</span>&lt;<span class="keywordtype">size_t</span> HashBytes = sizeof( genhash_u<span class="keywordtype">int</span>_t ), <span class="keyword">typename</span> Iterator&gt;</div>
+<div class="line"><a name="l00212"></a><span class="lineno"><a class="line" href="namespacedaw.html#a085a8a04a4376a75ceca711fd27a54a2">  212</a></span>&#160;  constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a7f35c883ac3c46d437fbaed77e783e7f">generic_hash</a>( <a class="code" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a> first,</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;                               std::size_t <span class="keyword">const</span> len ) noexcept {</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="keyword">using</span> hash_t = <a class="code" href="structdaw_1_1generic__hash__t.html">generic_hash_t&lt;HashBytes&gt;</a>;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="keyword">auto</span> hash = hash_t::hash_init;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="keywordflow">for</span>( std::size_t n = 0; n &lt; len; ++n ) {</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;      hash = hash_t::append_hash( hash, *first );</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;      ++first;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    }</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keywordflow">return</span> hash;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;  }</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;  <span class="keyword">template</span>&lt;<span class="keywordtype">size_t</span> HashBytes = <span class="keyword">sizeof</span>( <a class="code" href="namespacedaw.html#a4f4958d75a32b663c2230a78867420d4">genhash_uint_t</a> ), <span class="keyword">typename</span> StringViewLike,</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;           <a class="code" href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">std::enable_if_t</a>&lt;traits_is_sv::is_string_view_like_v&lt;StringViewLike&gt;,</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;                            std::nullptr_t&gt; = <span class="keyword">nullptr</span>&gt;</div>
+<div class="line"><a name="l00226"></a><span class="lineno"><a class="line" href="namespacedaw.html#a12d3696681d764c8b09334ddbacdba4c">  226</a></span>&#160;  <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a7f35c883ac3c46d437fbaed77e783e7f">generic_hash</a>( StringViewLike <span class="keyword">const</span> &amp;&amp;sv ) noexcept {</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keywordflow">return</span> generic_hash&lt;HashBytes&gt;( sv.data( ), sv.size( ) );</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  }</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  <span class="keyword">template</span>&lt;<span class="keywordtype">size_t</span> HashBytes = sizeof( genhash_u<span class="keywordtype">int</span>_t ), std::<span class="keywordtype">size_t</span> N&gt;</div>
+<div class="line"><a name="l00231"></a><span class="lineno"><a class="line" href="namespacedaw.html#aaa2b91629050597af2a5665453c172b8">  231</a></span>&#160;  constexpr <span class="keyword">auto</span> <a class="code" href="namespacedaw.html#a7f35c883ac3c46d437fbaed77e783e7f">generic_hash</a>( <span class="keywordtype">char</span> <span class="keyword">const</span> ( &amp;ptr )[N] ) noexcept {</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="keywordflow">return</span> generic_hash&lt;HashBytes&gt;( ptr, N );</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;  }</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;} <span class="comment">// namespace daw</span></div>
 <div class="ttc" id="aciso646_8h_html"><div class="ttname"><a href="ciso646_8h.html">ciso646.h</a></div></div>
 <div class="ttc" id="acpp__17_8h_html"><div class="ttname"><a href="cpp__17_8h.html">cpp_17.h</a></div></div>
 <div class="ttc" id="adaw__compiler__fixups_8h_html"><div class="ttname"><a href="daw__compiler__fixups_8h.html">daw_compiler_fixups.h</a></div></div>
@@ -322,17 +311,17 @@ $(function() {
 <div class="ttc" id="adaw__compiler__fixups_8h_html_a4c7dc0ab87f2d36a26c75a9840ca71e3"><div class="ttname"><a href="daw__compiler__fixups_8h.html#a4c7dc0ab87f2d36a26c75a9840ca71e3">DAW_UNSAFE_BUFFER_FUNC_STOP</a></div><div class="ttdeci">#define DAW_UNSAFE_BUFFER_FUNC_STOP</div><div class="ttdef"><b>Definition:</b> <a href="daw__compiler__fixups_8h_source.html#l00022">daw_compiler_fixups.h:22</a></div></div>
 <div class="ttc" id="adaw__is__string__view__like_8h_html"><div class="ttname"><a href="daw__is__string__view__like_8h.html">daw_is_string_view_like.h</a></div></div>
 <div class="ttc" id="adaw__move_8h_html"><div class="ttname"><a href="daw__move_8h.html">daw_move.h</a></div></div>
-<div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm__accumulate_8h_source.html#l00017">daw_algorithm_accumulate.h:17</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a31455c85bc151e17efc6302fa8a422e6"><div class="ttname"><a href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">daw::Iterator</a></div><div class="ttdeci">concept Iterator</div><div class="ttdef"><b>Definition:</b> <a href="daw__iterator__traits_8h_source.html#l00038">daw_iterator_traits.h:38</a></div></div>
+<div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provides structs for wrapping function pointers and callable objects to facilitate function overloadi...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm__accumulate_8h_source.html#l00017">daw_algorithm_accumulate.h:17</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a31455c85bc151e17efc6302fa8a422e6"><div class="ttname"><a href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">daw::Iterator</a></div><div class="ttdeci">concept Iterator</div><div class="ttdef"><b>Definition:</b> <a href="daw__iterator__traits_8h_source.html#l00040">daw_iterator_traits.h:40</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a4f4958d75a32b663c2230a78867420d4"><div class="ttname"><a href="namespacedaw.html#a4f4958d75a32b663c2230a78867420d4">daw::genhash_uint_t</a></div><div class="ttdeci">std::size_t genhash_uint_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__generic__hash_8h_source.html#l00026">daw_generic_hash.h:26</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a7f35c883ac3c46d437fbaed77e783e7f"><div class="ttname"><a href="namespacedaw.html#a7f35c883ac3c46d437fbaed77e783e7f">daw::generic_hash</a></div><div class="ttdeci">constexpr auto generic_hash(T const value) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__generic__hash_8h_source.html#l00204">daw_generic_hash.h:204</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a7f35c883ac3c46d437fbaed77e783e7f"><div class="ttname"><a href="namespacedaw.html#a7f35c883ac3c46d437fbaed77e783e7f">daw::generic_hash</a></div><div class="ttdeci">constexpr auto generic_hash(T const value) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__generic__hash_8h_source.html#l00195">daw_generic_hash.h:195</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ad8b37b6c283ce451b25949269438de82"><div class="ttname"><a href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">daw::enable_if_t</a></div><div class="ttdeci">std::enable_if_t&lt; B, T &gt; enable_if_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__enable__if_8h_source.html#l00022">daw_enable_if.h:22</a></div></div>
 <div class="ttc" id="astructdaw_1_1generic__hash__t_3_012_01_4_html_a1b61afa2f11166aaf20645e0267e97a7"><div class="ttname"><a href="structdaw_1_1generic__hash__t_3_012_01_4.html#a1b61afa2f11166aaf20645e0267e97a7">daw::generic_hash_t&lt; 2 &gt;::hash_value_t</a></div><div class="ttdeci">std::uint16_t hash_value_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__generic__hash_8h_source.html#l00034">daw_generic_hash.h:34</a></div></div>
-<div class="ttc" id="astructdaw_1_1generic__hash__t_3_012_01_4_html_ac3958b0fb9ebfbecbb9740b5bfa532f5"><div class="ttname"><a href="structdaw_1_1generic__hash__t_3_012_01_4.html#ac3958b0fb9ebfbecbb9740b5bfa532f5">daw::generic_hash_t&lt; 2 &gt;::append_hash</a></div><div class="ttdeci">static constexpr hash_value_t append_hash(hash_value_t current_hash, Value const &amp;) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__generic__hash_8h_source.html#l00081">daw_generic_hash.h:81</a></div></div>
-<div class="ttc" id="astructdaw_1_1generic__hash__t_3_014_01_4_html_a6eeffb09cf2350674db96614003da616"><div class="ttname"><a href="structdaw_1_1generic__hash__t_3_014_01_4.html#a6eeffb09cf2350674db96614003da616">daw::generic_hash_t&lt; 4 &gt;::append_hash</a></div><div class="ttdeci">static constexpr hash_value_t append_hash(hash_value_t current_hash, Value const &amp;value) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__generic__hash_8h_source.html#l00099">daw_generic_hash.h:99</a></div></div>
-<div class="ttc" id="astructdaw_1_1generic__hash__t_3_014_01_4_html_aa6399d49951106f974f3c8d65ba2f628"><div class="ttname"><a href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">daw::generic_hash_t&lt; 4 &gt;::hash_value_t</a></div><div class="ttdeci">std::uint32_t hash_value_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__generic__hash_8h_source.html#l00092">daw_generic_hash.h:92</a></div></div>
-<div class="ttc" id="astructdaw_1_1generic__hash__t_3_018_01_4_html_a7f2843007ed3653e1c51b456c3767e3a"><div class="ttname"><a href="structdaw_1_1generic__hash__t_3_018_01_4.html#a7f2843007ed3653e1c51b456c3767e3a">daw::generic_hash_t&lt; 8 &gt;::append_hash</a></div><div class="ttdeci">static constexpr hash_value_t append_hash(hash_value_t current_hash, Value const &amp;value) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__generic__hash_8h_source.html#l00149">daw_generic_hash.h:149</a></div></div>
-<div class="ttc" id="astructdaw_1_1generic__hash__t_3_018_01_4_html_ac6372780965f8fad2a580d9ddddc7496"><div class="ttname"><a href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">daw::generic_hash_t&lt; 8 &gt;::hash_value_t</a></div><div class="ttdeci">std::uint64_t hash_value_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__generic__hash_8h_source.html#l00142">daw_generic_hash.h:142</a></div></div>
+<div class="ttc" id="astructdaw_1_1generic__hash__t_3_012_01_4_html_ac3958b0fb9ebfbecbb9740b5bfa532f5"><div class="ttname"><a href="structdaw_1_1generic__hash__t_3_012_01_4.html#ac3958b0fb9ebfbecbb9740b5bfa532f5">daw::generic_hash_t&lt; 2 &gt;::append_hash</a></div><div class="ttdeci">static constexpr hash_value_t append_hash(hash_value_t current_hash, Value const &amp;) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__generic__hash_8h_source.html#l00079">daw_generic_hash.h:79</a></div></div>
+<div class="ttc" id="astructdaw_1_1generic__hash__t_3_014_01_4_html_a6eeffb09cf2350674db96614003da616"><div class="ttname"><a href="structdaw_1_1generic__hash__t_3_014_01_4.html#a6eeffb09cf2350674db96614003da616">daw::generic_hash_t&lt; 4 &gt;::append_hash</a></div><div class="ttdeci">static constexpr hash_value_t append_hash(hash_value_t current_hash, Value const &amp;value) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__generic__hash_8h_source.html#l00096">daw_generic_hash.h:96</a></div></div>
+<div class="ttc" id="astructdaw_1_1generic__hash__t_3_014_01_4_html_aa6399d49951106f974f3c8d65ba2f628"><div class="ttname"><a href="structdaw_1_1generic__hash__t_3_014_01_4.html#aa6399d49951106f974f3c8d65ba2f628">daw::generic_hash_t&lt; 4 &gt;::hash_value_t</a></div><div class="ttdeci">std::uint32_t hash_value_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__generic__hash_8h_source.html#l00090">daw_generic_hash.h:90</a></div></div>
+<div class="ttc" id="astructdaw_1_1generic__hash__t_3_018_01_4_html_a7f2843007ed3653e1c51b456c3767e3a"><div class="ttname"><a href="structdaw_1_1generic__hash__t_3_018_01_4.html#a7f2843007ed3653e1c51b456c3767e3a">daw::generic_hash_t&lt; 8 &gt;::append_hash</a></div><div class="ttdeci">static constexpr hash_value_t append_hash(hash_value_t current_hash, Value const &amp;value) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__generic__hash_8h_source.html#l00143">daw_generic_hash.h:143</a></div></div>
+<div class="ttc" id="astructdaw_1_1generic__hash__t_3_018_01_4_html_ac6372780965f8fad2a580d9ddddc7496"><div class="ttname"><a href="structdaw_1_1generic__hash__t_3_018_01_4.html#ac6372780965f8fad2a580d9ddddc7496">daw::generic_hash_t&lt; 8 &gt;::hash_value_t</a></div><div class="ttdeci">std::uint64_t hash_value_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__generic__hash_8h_source.html#l00137">daw_generic_hash.h:137</a></div></div>
 <div class="ttc" id="astructdaw_1_1generic__hash__t_html"><div class="ttname"><a href="structdaw_1_1generic__hash__t.html">daw::generic_hash_t</a></div><div class="ttdef"><b>Definition:</b> <a href="daw__generic__hash_8h_source.html#l00030">daw_generic_hash.h:30</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

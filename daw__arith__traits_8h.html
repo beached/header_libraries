@@ -99,14 +99,14 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
-<tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
+<tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides structs for wrapping function pointers and callable objects to facilitate function overloading and safe invocation. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:aa93b07cdcc4fa3bbd3fc9224a32480df"><td class="memTemplParams" colspan="2">template&lt;std::size_t BitSize&gt; </td></tr>
-<tr class="memitem:aa93b07cdcc4fa3bbd3fc9224a32480df"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa93b07cdcc4fa3bbd3fc9224a32480df">daw::intN_t</a> = conditional_t&lt; is_same_size_v&lt; char, BitSize &gt;, char, conditional_t&lt; is_same_size_v&lt; short, BitSize &gt;, short, conditional_t&lt; is_same_size_v&lt; int, BitSize &gt;, int, conditional_t&lt; is_same_size_v&lt; long, BitSize &gt;, long, conditional_t&lt; is_same_size_v&lt; long long, BitSize &gt;, long long, unsupported_int_size&lt; BitSize &gt; &gt;&gt; &gt;&gt; &gt;</td></tr>
-<tr class="separator:aa93b07cdcc4fa3bbd3fc9224a32480df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adccc87538bcac65a3e8d3effa944b66d"><td class="memTemplParams" colspan="2">template&lt;std::size_t BitSize&gt; </td></tr>
+<tr class="memitem:adccc87538bcac65a3e8d3effa944b66d"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#adccc87538bcac65a3e8d3effa944b66d">daw::intN_t</a> = conditional_t&lt; is_same_size_v&lt; char, BitSize &gt;, char, conditional_t&lt; is_same_size_v&lt; short, BitSize &gt;, short, conditional_t&lt; is_same_size_v&lt; int, BitSize &gt;, int, conditional_t&lt; is_same_size_v&lt; long, BitSize &gt;, long, conditional_t&lt; is_same_size_v&lt; long long, BitSize &gt;, long long, unsupported_int_size&lt; BitSize &gt; &gt;&gt; &gt;&gt; &gt;</td></tr>
+<tr class="separator:adccc87538bcac65a3e8d3effa944b66d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3574ae84b83ccc6a02409ccad76677ac"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a3574ae84b83ccc6a02409ccad76677ac"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3574ae84b83ccc6a02409ccad76677ac">daw::is_arithmetic</a> = std::disjunction&lt; is_number&lt; T &gt;, std::is_enum&lt; T &gt;, conditional_t&lt; <a class="el" href="structdaw_1_1numeric__limits.html">daw::numeric_limits</a>&lt; T &gt;::is_specialized, std::true_type, std::false_type &gt; &gt;</td></tr>
 <tr class="separator:a3574ae84b83ccc6a02409ccad76677ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -134,9 +134,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:aa88d1d77939be042bb671074e68331cd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aa88d1d77939be042bb671074e68331cd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa88d1d77939be042bb671074e68331cd">daw::make_unsigned_t</a> = typename make_unsigned&lt; T &gt;::type</td></tr>
 <tr class="separator:aa88d1d77939be042bb671074e68331cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f8900a47f54d734d73673b813331524"><td class="memTemplParams" colspan="2">template&lt;std::size_t BitSize&gt; </td></tr>
-<tr class="memitem:a1f8900a47f54d734d73673b813331524"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a1f8900a47f54d734d73673b813331524">daw::uintN_t</a> = conditional_t&lt; is_same_size_v&lt; char, BitSize &gt;, unsigned char, conditional_t&lt; is_same_size_v&lt; short, BitSize &gt;, unsigned short, conditional_t&lt; is_same_size_v&lt; int, BitSize &gt;, unsigned int, conditional_t&lt; is_same_size_v&lt; long, BitSize &gt;, unsigned long, conditional_t&lt; is_same_size_v&lt; unsigned long long, BitSize &gt;, long long, unsupported_int_size&lt; BitSize &gt; &gt;&gt; &gt;&gt; &gt;</td></tr>
-<tr class="separator:a1f8900a47f54d734d73673b813331524"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf0bd853db2d9386092cf9329d151059"><td class="memTemplParams" colspan="2">template&lt;std::size_t BitSize&gt; </td></tr>
+<tr class="memitem:acf0bd853db2d9386092cf9329d151059"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#acf0bd853db2d9386092cf9329d151059">daw::uintN_t</a> = conditional_t&lt; is_same_size_v&lt; char, BitSize &gt;, unsigned char, conditional_t&lt; is_same_size_v&lt; short, BitSize &gt;, unsigned short, conditional_t&lt; is_same_size_v&lt; int, BitSize &gt;, unsigned int, conditional_t&lt; is_same_size_v&lt; long, BitSize &gt;, unsigned long, conditional_t&lt; is_same_size_v&lt; unsigned long long, BitSize &gt;, long long, unsupported_int_size&lt; BitSize &gt; &gt;&gt; &gt;&gt; &gt;</td></tr>
+<tr class="separator:acf0bd853db2d9386092cf9329d151059"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>

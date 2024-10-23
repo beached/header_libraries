@@ -75,10 +75,12 @@ $(function() {
 <div class="title">algorithm.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="daw__iterator__traits_8h_source.html">daw/daw_iterator_traits.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="daw__attributes_8h_source.html">daw/daw_attributes.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__iterator__traits_8h_source.html">daw/daw_iterator_traits.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw/daw_move.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="range_8h_source.html">range.h</a>&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;iterator&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
 </div>
@@ -86,19 +88,21 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_max__t.html">daw::pipelines::pimpl::Max_t&lt; Compare &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_contains__t.html">daw::pipelines::pimpl::Contains_t&lt; Needle, Compare, Projection &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min__t.html">daw::pipelines::pimpl::Min_t&lt; Compare &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_max__t.html">daw::pipelines::pimpl::Max_t&lt; Compare, Projection &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min_max__t.html">daw::pipelines::pimpl::MinMax_t&lt; Compare &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min__t.html">daw::pipelines::pimpl::Min_t&lt; Compare, Projection &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_sort__t.html">daw::pipelines::pimpl::Sort_t&lt; Compare &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min_max__t.html">daw::pipelines::pimpl::MinMax_t&lt; Compare, Projection &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_sort__t.html">daw::pipelines::pimpl::Sort_t&lt; Compare, Projection &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
-<tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
+<tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides structs for wrapping function pointers and callable objects to facilitate function overloading and safe invocation. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacedaw_1_1pipelines"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html">daw::pipelines</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -107,26 +111,53 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ac10b0bf9b7dce1e8656f18159914c59b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#ac10b0bf9b7dce1e8656f18159914c59b">daw::pipelines::pimpl::Max_t</a> () -&gt; Max_t&lt; std::less&lt;&gt;&gt;</td></tr>
-<tr class="separator:ac10b0bf9b7dce1e8656f18159914c59b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4de3721245e86ac6a3dfb41a1ab76dbe"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a4de3721245e86ac6a3dfb41a1ab76dbe">daw::pipelines::Contains</a> (auto &amp;&amp;needle)</td></tr>
+<tr class="separator:a4de3721245e86ac6a3dfb41a1ab76dbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c09e9326fb6c14f3f7a3d9ccacf7114"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a7c09e9326fb6c14f3f7a3d9ccacf7114">daw::pipelines::Contains</a> (auto &amp;&amp;needle, auto &amp;&amp;compare)</td></tr>
+<tr class="separator:a7c09e9326fb6c14f3f7a3d9ccacf7114"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80defbf21d94d5cc720e65bd47a89419"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a80defbf21d94d5cc720e65bd47a89419">daw::pipelines::Contains</a> (auto &amp;&amp;needle, auto &amp;&amp;compare, auto &amp;&amp;projection)</td></tr>
+<tr class="separator:a80defbf21d94d5cc720e65bd47a89419"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a118272728f24b70f1e14dfed6c938e3a"><td class="memTemplParams" colspan="2">template&lt;typename Needle &gt; </td></tr>
+<tr class="memitem:a118272728f24b70f1e14dfed6c938e3a"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a118272728f24b70f1e14dfed6c938e3a">daw::pipelines::pimpl::Contains_t</a> (Needle) -&gt; Contains_t&lt; Needle &gt;</td></tr>
+<tr class="separator:a118272728f24b70f1e14dfed6c938e3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac282a1fd15a06e1837bf1fc847b3b0fb"><td class="memTemplParams" colspan="2">template&lt;typename Needle , typename Compare &gt; </td></tr>
+<tr class="memitem:ac282a1fd15a06e1837bf1fc847b3b0fb"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#ac282a1fd15a06e1837bf1fc847b3b0fb">daw::pipelines::pimpl::Contains_t</a> (Needle, Compare) -&gt; Contains_t&lt; Needle, Compare &gt;</td></tr>
+<tr class="separator:ac282a1fd15a06e1837bf1fc847b3b0fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a362e833c11bbc6fe4b56356c8797b3"><td class="memTemplParams" colspan="2">template&lt;typename Needle , typename Compare , typename Projection &gt; </td></tr>
+<tr class="memitem:a6a362e833c11bbc6fe4b56356c8797b3"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a6a362e833c11bbc6fe4b56356c8797b3">daw::pipelines::pimpl::Contains_t</a> (Needle, Compare, Projection) -&gt; Contains_t&lt; Needle, Compare, Projection &gt;</td></tr>
+<tr class="separator:a6a362e833c11bbc6fe4b56356c8797b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeafdaf08992edbd89d327fb50bd2eaf4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#aeafdaf08992edbd89d327fb50bd2eaf4">daw::pipelines::pimpl::Max_t</a> () -&gt; Max_t&lt;&gt;</td></tr>
+<tr class="separator:aeafdaf08992edbd89d327fb50bd2eaf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aecebcacc8f5daef8d8e62dfb90574a38"><td class="memTemplParams" colspan="2">template&lt;typename Compare &gt; </td></tr>
 <tr class="memitem:aecebcacc8f5daef8d8e62dfb90574a38"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#aecebcacc8f5daef8d8e62dfb90574a38">daw::pipelines::pimpl::Max_t</a> (Compare) -&gt; Max_t&lt; Compare &gt;</td></tr>
 <tr class="separator:aecebcacc8f5daef8d8e62dfb90574a38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac34f2429c7b68b3298f146fc69fbe501"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#ac34f2429c7b68b3298f146fc69fbe501">daw::pipelines::pimpl::Min_t</a> () -&gt; Min_t&lt; std::less&lt;&gt;&gt;</td></tr>
-<tr class="separator:ac34f2429c7b68b3298f146fc69fbe501"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8dc63384323857cb42cea4b2fa7345b5"><td class="memTemplParams" colspan="2">template&lt;typename Compare , typename Projection &gt; </td></tr>
+<tr class="memitem:a8dc63384323857cb42cea4b2fa7345b5"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a8dc63384323857cb42cea4b2fa7345b5">daw::pipelines::pimpl::Max_t</a> (Compare, Projection) -&gt; Max_t&lt; Compare, Projection &gt;</td></tr>
+<tr class="separator:a8dc63384323857cb42cea4b2fa7345b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e5a290125f25b6200954972c22f6686"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a3e5a290125f25b6200954972c22f6686">daw::pipelines::pimpl::Min_t</a> () -&gt; Min_t&lt;&gt;</td></tr>
+<tr class="separator:a3e5a290125f25b6200954972c22f6686"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7eae437733f3ed39907340d58e22264a"><td class="memTemplParams" colspan="2">template&lt;typename Compare &gt; </td></tr>
 <tr class="memitem:a7eae437733f3ed39907340d58e22264a"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a7eae437733f3ed39907340d58e22264a">daw::pipelines::pimpl::Min_t</a> (Compare) -&gt; Min_t&lt; Compare &gt;</td></tr>
 <tr class="separator:a7eae437733f3ed39907340d58e22264a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c76ea8260d1671dbd8ce9a8288ca780"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a9c76ea8260d1671dbd8ce9a8288ca780">daw::pipelines::pimpl::MinMax_t</a> () -&gt; MinMax_t&lt; std::less&lt;&gt;&gt;</td></tr>
-<tr class="separator:a9c76ea8260d1671dbd8ce9a8288ca780"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6068086e679c6913358824208d6a11ae"><td class="memTemplParams" colspan="2">template&lt;typename Compare , typename Projection &gt; </td></tr>
+<tr class="memitem:a6068086e679c6913358824208d6a11ae"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a6068086e679c6913358824208d6a11ae">daw::pipelines::pimpl::Min_t</a> (Compare, Projection) -&gt; Min_t&lt; Compare, Projection &gt;</td></tr>
+<tr class="separator:a6068086e679c6913358824208d6a11ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56a940cdb53623242cadcb774b190a97"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a56a940cdb53623242cadcb774b190a97">daw::pipelines::pimpl::MinMax_t</a> () -&gt; MinMax_t&lt;&gt;</td></tr>
+<tr class="separator:a56a940cdb53623242cadcb774b190a97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ddf8517650641cb9f664f742790a6fc"><td class="memTemplParams" colspan="2">template&lt;typename Compare &gt; </td></tr>
 <tr class="memitem:a4ddf8517650641cb9f664f742790a6fc"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a4ddf8517650641cb9f664f742790a6fc">daw::pipelines::pimpl::MinMax_t</a> (Compare) -&gt; MinMax_t&lt; Compare &gt;</td></tr>
 <tr class="separator:a4ddf8517650641cb9f664f742790a6fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae34c54ad345b9b78678488c52b3ecdd1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#ae34c54ad345b9b78678488c52b3ecdd1">daw::pipelines::pimpl::Sort_t</a> () -&gt; Sort_t&lt; std::less&lt;&gt;&gt;</td></tr>
-<tr class="separator:ae34c54ad345b9b78678488c52b3ecdd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1385614feb0571af0b384e3a7b751975"><td class="memTemplParams" colspan="2">template&lt;typename Compare &gt; </td></tr>
-<tr class="memitem:a1385614feb0571af0b384e3a7b751975"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a1385614feb0571af0b384e3a7b751975">daw::pipelines::pimpl::Sort_t</a> (Compare) -&gt; Sort_t&lt; Compare &gt;</td></tr>
-<tr class="separator:a1385614feb0571af0b384e3a7b751975"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cc2e0ecb8bbf6cb56b08584b5ee8eee"><td class="memTemplParams" colspan="2">template&lt;typename Compare , typename Projection &gt; </td></tr>
+<tr class="memitem:a5cc2e0ecb8bbf6cb56b08584b5ee8eee"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a5cc2e0ecb8bbf6cb56b08584b5ee8eee">daw::pipelines::pimpl::MinMax_t</a> (Compare, Projection) -&gt; MinMax_t&lt; Compare, Projection &gt;</td></tr>
+<tr class="separator:a5cc2e0ecb8bbf6cb56b08584b5ee8eee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f999f40b62927b6a8f95d4edbfd4416"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a9f999f40b62927b6a8f95d4edbfd4416">daw::pipelines::pimpl::Sort_t</a> () -&gt; Sort_t&lt; std::less&lt;&gt;, std::identity &gt;</td></tr>
+<tr class="separator:a9f999f40b62927b6a8f95d4edbfd4416"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed4791fdeabe097acb53e862709dc41d"><td class="memTemplParams" colspan="2">template&lt;typename Compare &gt; </td></tr>
+<tr class="memitem:aed4791fdeabe097acb53e862709dc41d"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#aed4791fdeabe097acb53e862709dc41d">daw::pipelines::pimpl::Sort_t</a> (Compare) -&gt; Sort_t&lt; Compare, std::identity &gt;</td></tr>
+<tr class="separator:aed4791fdeabe097acb53e862709dc41d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a4a7a1543bca277fd77fc50dadd7c76"><td class="memTemplParams" colspan="2">template&lt;typename Compare , typename Projection &gt; </td></tr>
+<tr class="memitem:a7a4a7a1543bca277fd77fc50dadd7c76"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a7a4a7a1543bca277fd77fc50dadd7c76">daw::pipelines::pimpl::Sort_t</a> (Compare, Projection) -&gt; Sort_t&lt; Compare, Projection &gt;</td></tr>
+<tr class="separator:a7a4a7a1543bca277fd77fc50dadd7c76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>

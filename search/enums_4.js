@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['open_5fmode_5161',['open_mode',['../namespacedaw_1_1filesystem.html#a3729527b1082d5d13719214f75946447',1,'daw::filesystem']]]
+  ['keep_5fn_5forder_5296',['keep_n_order',['../namespacedaw.html#a2f9e661c7de06c8dc819cb4c73d4ff04',1,'daw']]]
 ];

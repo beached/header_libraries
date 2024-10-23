@@ -69,6 +69,7 @@ $(function() {
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
@@ -112,21 +113,40 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1zip__view.html">zip_view</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a73a923632ccbd563fde7bc4741f021dc"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a73a923632ccbd563fde7bc4741f021dc">AllowPrintInputRange</a> : bool { <a class="el" href="namespacedaw_1_1pipelines.html#a73a923632ccbd563fde7bc4741f021dca21fd8b5eaad13b449b62b8103bb02a2e">Disallow</a>
+, <a class="el" href="namespacedaw_1_1pipelines.html#a73a923632ccbd563fde7bc4741f021dca45f0fb72a0defdfdb01de4b5a5a6876b">Allow</a>
+ }</td></tr>
+<tr class="separator:a73a923632ccbd563fde7bc4741f021dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ad15e9c6619e4890979afa4690805810a"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#ad15e9c6619e4890979afa4690805810a">Chunk</a> (std::size_t chunk_size)</td></tr>
+<tr class="separator:ad15e9c6619e4890979afa4690805810a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acce8beee6d322df69e425004ea317100"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Compare  = std::less&lt;&gt;&gt; </td></tr>
 <tr class="memitem:acce8beee6d322df69e425004ea317100"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#acce8beee6d322df69e425004ea317100">Clamp</a> (T const &amp;lo, std::type_identity_t&lt; T &gt; const &amp;hi, Compare &amp;&amp;compare=Compare{ })</td></tr>
 <tr class="separator:acce8beee6d322df69e425004ea317100"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a348399c654d36400d7038b802781d5d5"><td class="memTemplParams" colspan="2">template&lt;typename... Ranges&gt; </td></tr>
-<tr class="memitem:a348399c654d36400d7038b802781d5d5"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a348399c654d36400d7038b802781d5d5">concat_view</a> (Ranges...) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a>&lt; Ranges... &gt;</td></tr>
-<tr class="separator:a348399c654d36400d7038b802781d5d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cbf0ea227ed96188927b0ff9d7734d5"><td class="memTemplParams" colspan="2">template&lt;typename... Ranges&gt; </td></tr>
+<tr class="memitem:a7cbf0ea227ed96188927b0ff9d7734d5"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a7cbf0ea227ed96188927b0ff9d7734d5">concat_view</a> (Ranges &amp;&amp;...) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a>&lt; Ranges... &gt;</td></tr>
+<tr class="separator:a7cbf0ea227ed96188927b0ff9d7734d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4de3721245e86ac6a3dfb41a1ab76dbe"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a4de3721245e86ac6a3dfb41a1ab76dbe">Contains</a> (auto &amp;&amp;needle)</td></tr>
+<tr class="separator:a4de3721245e86ac6a3dfb41a1ab76dbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c09e9326fb6c14f3f7a3d9ccacf7114"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a7c09e9326fb6c14f3f7a3d9ccacf7114">Contains</a> (auto &amp;&amp;needle, auto &amp;&amp;compare)</td></tr>
+<tr class="separator:a7c09e9326fb6c14f3f7a3d9ccacf7114"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80defbf21d94d5cc720e65bd47a89419"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a80defbf21d94d5cc720e65bd47a89419">Contains</a> (auto &amp;&amp;needle, auto &amp;&amp;compare, auto &amp;&amp;<a class="el" href="namespacedaw_1_1pipelines.html#adf9ab126d358c08be54feede143c0c11">projection</a>)</td></tr>
+<tr class="separator:a80defbf21d94d5cc720e65bd47a89419"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9807bae52a63e88faad556345fd489e"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#ae9807bae52a63e88faad556345fd489e">CountIf</a> (auto &amp;&amp;fn)</td></tr>
 <tr class="separator:ae9807bae52a63e88faad556345fd489e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39643257be0c370b2a63fc0ad4eed920"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a39643257be0c370b2a63fc0ad4eed920">Every</a> (std::size_t select_every)</td></tr>
+<tr class="memdesc:a39643257be0c370b2a63fc0ad4eed920"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a Range, output every Nth element.  <a href="namespacedaw_1_1pipelines.html#a39643257be0c370b2a63fc0ad4eed920">More...</a><br /></td></tr>
+<tr class="separator:a39643257be0c370b2a63fc0ad4eed920"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae13579d4bda58ff28e5a7e8a7cd4836b"><td class="memTemplParams" colspan="2">template&lt;typename Fn &gt; </td></tr>
 <tr class="memitem:ae13579d4bda58ff28e5a7e8a7cd4836b"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#ae13579d4bda58ff28e5a7e8a7cd4836b">Filter</a> (Fn &amp;&amp;fn)</td></tr>
+<tr class="memdesc:ae13579d4bda58ff28e5a7e8a7cd4836b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filter a range with the given predicate function.  <a href="namespacedaw_1_1pipelines.html#ae13579d4bda58ff28e5a7e8a7cd4836b">More...</a><br /></td></tr>
 <tr class="separator:ae13579d4bda58ff28e5a7e8a7cd4836b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30115fdc81190f49a6c0b01b13f24bab"><td class="memTemplParams" colspan="2">template&lt;typename I , typename F &gt; </td></tr>
-<tr class="memitem:a30115fdc81190f49a6c0b01b13f24bab"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a30115fdc81190f49a6c0b01b13f24bab">filter_view</a> (I, I, F) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1filter__view.html">filter_view</a>&lt; I, F &gt;</td></tr>
+<tr class="memitem:a30115fdc81190f49a6c0b01b13f24bab"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a30115fdc81190f49a6c0b01b13f24bab">filter_view</a> (<a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>, <a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a>) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1filter__view.html">filter_view</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a> &gt;</td></tr>
 <tr class="separator:a30115fdc81190f49a6c0b01b13f24bab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a568f1c6b39ec531345a465cfcc39a9bc"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a568f1c6b39ec531345a465cfcc39a9bc">ForEach</a> (auto &amp;&amp;fn)</td></tr>
 <tr class="separator:a568f1c6b39ec531345a465cfcc39a9bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,35 +162,42 @@ Functions</h2></td></tr>
 <tr class="memitem:abddc1eaf80ab15e8a99891c353cebfb3"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:abddc1eaf80ab15e8a99891c353cebfb3"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#abddc1eaf80ab15e8a99891c353cebfb3">iota_view</a> (T, T) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1iota__view.html">iota_view</a>&lt; std::size_t &gt;</td></tr>
 <tr class="separator:abddc1eaf80ab15e8a99891c353cebfb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac640e8217c2e5eb0bb5d2921fd9a644f"><td class="memTemplParams" colspan="2">template&lt;typename Fn &gt; </td></tr>
-<tr class="memitem:ac640e8217c2e5eb0bb5d2921fd9a644f"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#ac640e8217c2e5eb0bb5d2921fd9a644f">Map</a> (Fn &amp;&amp;fn)</td></tr>
-<tr class="separator:ac640e8217c2e5eb0bb5d2921fd9a644f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66991c9f3a554bd7f7cbe33b34be3dd6"><td class="memTemplParams" colspan="2">template&lt;typename Fn , typename Projection  = std::identity&gt; </td></tr>
+<tr class="memitem:a66991c9f3a554bd7f7cbe33b34be3dd6"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a66991c9f3a554bd7f7cbe33b34be3dd6">Map</a> (Fn &amp;&amp;fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &amp;&amp;<a class="el" href="namespacedaw_1_1pipelines.html#adf9ab126d358c08be54feede143c0c11">projection</a>=<a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a>())</td></tr>
+<tr class="separator:a66991c9f3a554bd7f7cbe33b34be3dd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31ad31313ae682d97c6c1457eb7a98af"><td class="memTemplParams" colspan="2">template&lt;Iterator I, typename F &gt; </td></tr>
-<tr class="memitem:a31ad31313ae682d97c6c1457eb7a98af"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a31ad31313ae682d97c6c1457eb7a98af">map_iterator</a> (I, F) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&lt; I, F &gt;</td></tr>
+<tr class="memitem:a31ad31313ae682d97c6c1457eb7a98af"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a31ad31313ae682d97c6c1457eb7a98af">map_iterator</a> (<a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a>) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a> &gt;</td></tr>
 <tr class="separator:a31ad31313ae682d97c6c1457eb7a98af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79de8441e0540506452d734245e34cd3"><td class="memTemplParams" colspan="2">template&lt;typename I , typename F &gt; </td></tr>
-<tr class="memitem:a79de8441e0540506452d734245e34cd3"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a79de8441e0540506452d734245e34cd3">map_view</a> (I, F) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1map__view.html">map_view</a>&lt; I, F &gt;</td></tr>
-<tr class="separator:a79de8441e0540506452d734245e34cd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70516f02194265dfe10f51a6a31af6fb"><td class="memTemplParams" colspan="2">template&lt;typename I , typename F &gt; </td></tr>
-<tr class="memitem:a70516f02194265dfe10f51a6a31af6fb"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a70516f02194265dfe10f51a6a31af6fb">map_view</a> (I, I, F) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1map__view.html">map_view</a>&lt; I, F &gt;</td></tr>
-<tr class="separator:a70516f02194265dfe10f51a6a31af6fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0196a64ef3fe8b0bd399d6c6a28c433"><td class="memTemplParams" colspan="2">template&lt;Iterator I, typename F , typename P &gt; </td></tr>
+<tr class="memitem:aa0196a64ef3fe8b0bd399d6c6a28c433"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#aa0196a64ef3fe8b0bd399d6c6a28c433">map_iterator</a> (<a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a>, P) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a>, P &gt;</td></tr>
+<tr class="separator:aa0196a64ef3fe8b0bd399d6c6a28c433"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a744be75639ccf8fa623f11769e9d4be9"><td class="memTemplParams" colspan="2">template&lt;typename Fn &gt; </td></tr>
 <tr class="memitem:a744be75639ccf8fa623f11769e9d4be9"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a744be75639ccf8fa623f11769e9d4be9">MapApply</a> (Fn &amp;&amp;fn)</td></tr>
 <tr class="separator:a744be75639ccf8fa623f11769e9d4be9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05bc99099075c592ac8edf4826280e7a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a05bc99099075c592ac8edf4826280e7a"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a05bc99099075c592ac8edf4826280e7a">maybe_view</a> (T &amp;&amp;) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1maybe__view.html">maybe_view</a>&lt; T &gt;</td></tr>
 <tr class="separator:a05bc99099075c592ac8edf4826280e7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1c75f604120eb9a360a9b3bbc1202c0"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#aa1c75f604120eb9a360a9b3bbc1202c0">Not</a> (auto &amp;&amp;fn)</td></tr>
-<tr class="separator:aa1c75f604120eb9a360a9b3bbc1202c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1e4e6c19757c200f5230bfba0533a0d"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#af1e4e6c19757c200f5230bfba0533a0d">Not</a> (auto &amp;&amp;fn)</td></tr>
+<tr class="separator:af1e4e6c19757c200f5230bfba0533a0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3a8d5aa9688f4cf1af9c6e12a421453"><td class="memTemplParams" colspan="2">template&lt;Range R, typename... Fns&gt; </td></tr>
-<tr class="memitem:af3a8d5aa9688f4cf1af9c6e12a421453"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#af3a8d5aa9688f4cf1af9c6e12a421453">pipeline</a> (R &amp;&amp;r, Fns &amp;&amp;...<a class="el" href="namespacedaw_1_1pipelines.html#a63252e50fca8537f5fdcef8461926b3d">fns</a>)</td></tr>
+<tr class="memitem:af3a8d5aa9688f4cf1af9c6e12a421453"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#af3a8d5aa9688f4cf1af9c6e12a421453">pipeline</a> (<a class="el" href="namespacedaw_1_1pipelines.html#a3f5089bd47bf475f155e700a4a99aedc">R</a> &amp;&amp;r, Fns &amp;&amp;...<a class="el" href="namespacedaw_1_1pipelines.html#a63252e50fca8537f5fdcef8461926b3d">fns</a>)</td></tr>
 <tr class="separator:af3a8d5aa9688f4cf1af9c6e12a421453"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae62d39d46a89122709acda8f2604a108"><td class="memTemplParams" colspan="2">template&lt;typename I , typename L &gt; </td></tr>
-<tr class="memitem:ae62d39d46a89122709acda8f2604a108"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#ae62d39d46a89122709acda8f2604a108">range_t</a> (I, L) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1range__t.html">range_t</a>&lt; I, L &gt;</td></tr>
+<tr class="memitem:ae62d39d46a89122709acda8f2604a108"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#ae62d39d46a89122709acda8f2604a108">range_t</a> (<a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>, L) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1range__t.html">range_t</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>, L &gt;</td></tr>
 <tr class="separator:ae62d39d46a89122709acda8f2604a108"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fc0521907d075e57e8363f7023be376"><td class="memTemplParams" colspan="2">template&lt;Iterator I, typename F , typename P &gt; </td></tr>
+<tr class="memitem:a1fc0521907d075e57e8363f7023be376"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a1fc0521907d075e57e8363f7023be376">requires</a> (not <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a> &gt; and not <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>&lt; P &gt;) <a class="el" href="structdaw_1_1pipelines_1_1map__view.html">map_view</a>(<a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a></td></tr>
+<tr class="separator:a1fc0521907d075e57e8363f7023be376"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a557c07622d82494a25e7a634df245f4f"><td class="memTemplParams" colspan="2">template&lt;Iterator I, typename F &gt; </td></tr>
+<tr class="memitem:a557c07622d82494a25e7a634df245f4f"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a557c07622d82494a25e7a634df245f4f">requires</a> (not <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a> &gt;) <a class="el" href="structdaw_1_1pipelines_1_1map__view.html">map_view</a>(<a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a></td></tr>
+<tr class="separator:a557c07622d82494a25e7a634df245f4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23ecac82a2ad9b6f5c9927aa37551582"><td class="memTemplParams" colspan="2">template&lt;typename Fn , typename... Fns&gt; </td></tr>
 <tr class="memitem:a23ecac82a2ad9b6f5c9927aa37551582"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a23ecac82a2ad9b6f5c9927aa37551582">requires</a> (not <a class="el" href="namespacedaw.html#adc9100c4fd3f511114b7835dbb7bb768">Range</a>&lt; Fn &gt;) const expr auto <a class="el" href="namespacedaw_1_1pipelines.html#af3a8d5aa9688f4cf1af9c6e12a421453">pipeline</a>(Fn &amp;&amp;fn</td></tr>
 <tr class="separator:a23ecac82a2ad9b6f5c9927aa37551582"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90372d0bae75bae7b553220089f96d13"><td class="memTemplParams" colspan="2">template&lt;std::size_t FindWidth = 1, typename Needle , typename Projection  = std::identity&gt; </td></tr>
+<tr class="memitem:a90372d0bae75bae7b553220089f96d13"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a90372d0bae75bae7b553220089f96d13">requires</a> (not <a class="el" href="namespacedaw.html#adc9100c4fd3f511114b7835dbb7bb768">Range</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#a078d827931061b89ad96c1c594779a01">Needle</a> &gt;) const expr auto FindIf(<a class="el" href="namespacedaw_1_1pipelines.html#a078d827931061b89ad96c1c594779a01">Needle</a> &amp;&amp;needle</td></tr>
+<tr class="memdesc:a90372d0bae75bae7b553220089f96d13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find and Adjacent Find depending on FindWidth When FindWidth == 1, Find - Needle can be a range_value_type or callable When FindWidth &gt; 1, Adjacent Find - Needle must be a callable taking FindWidth parameters of type range_value_type.  <a href="namespacedaw_1_1pipelines.html#a90372d0bae75bae7b553220089f96d13">More...</a><br /></td></tr>
+<tr class="separator:a90372d0bae75bae7b553220089f96d13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2ec8648bc7c152d8977508d71cc5c27"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
 <tr class="memitem:ac2ec8648bc7c152d8977508d71cc5c27"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#ac2ec8648bc7c152d8977508d71cc5c27">requires</a> (not requires(Container c) { <a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a9b80b3b7870f38ea40accb81d785b4aa">pimpl::array_test</a>(c);}) const expr auto <a class="el" href="namespacedaw_1_1pipelines.html#a2e6df84495bfd4acd078606b449c629e">To</a>()</td></tr>
 <tr class="memdesc:ac2ec8648bc7c152d8977508d71cc5c27"><td class="mdescLeft">&#160;</td><td class="mdescRight">For fully qualified names, construct a compatible Container, that isn't std::array, from a Range or a single value.  <a href="namespacedaw_1_1pipelines.html#ac2ec8648bc7c152d8977508d71cc5c27">More...</a><br /></td></tr>
@@ -184,14 +211,20 @@ Functions</h2></td></tr>
 <tr class="separator:a1ee1965a5eb6b340fe3c5edfe3afc04c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af772cecefdc138bf936dfa0fc09300c8"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#af772cecefdc138bf936dfa0fc09300c8">Skip</a> (std::size_t how_many)</td></tr>
 <tr class="separator:af772cecefdc138bf936dfa0fc09300c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebfe6cf702484247466d861b77c0d2ed"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#aebfe6cf702484247466d861b77c0d2ed">Slide</a> (std::size_t slide_size)</td></tr>
+<tr class="separator:aebfe6cf702484247466d861b77c0d2ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a740e0e115f0ea756920059d85ad67847"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a740e0e115f0ea756920059d85ad67847">Take</a> (std::size_t how_many)</td></tr>
 <tr class="separator:a740e0e115f0ea756920059d85ad67847"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3f2b9d8df92bed98c4a6d769907a3d2"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#aa3f2b9d8df92bed98c4a6d769907a3d2">TakeUntil</a> (auto &amp;&amp;fn)</td></tr>
+<tr class="separator:aa3f2b9d8df92bed98c4a6d769907a3d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1b280c928a6dcb4c207345277e3b8ee"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#ad1b280c928a6dcb4c207345277e3b8ee">TakeWhile</a> (auto &amp;&amp;fn)</td></tr>
+<tr class="separator:ad1b280c928a6dcb4c207345277e3b8ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e6df84495bfd4acd078606b449c629e"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename... &gt; typename Container&gt; </td></tr>
 <tr class="memitem:a2e6df84495bfd4acd078606b449c629e"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a2e6df84495bfd4acd078606b449c629e">To</a> ()</td></tr>
 <tr class="memdesc:a2e6df84495bfd4acd078606b449c629e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert Range to a Container that has deduction guides to get the value_type from two iterators or a single value.  <a href="namespacedaw_1_1pipelines.html#a2e6df84495bfd4acd078606b449c629e">More...</a><br /></td></tr>
 <tr class="separator:a2e6df84495bfd4acd078606b449c629e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af04c7e41218412c502a961a5cdea5376"><td class="memTemplParams" colspan="2">template&lt;typename I &gt; </td></tr>
-<tr class="memitem:af04c7e41218412c502a961a5cdea5376"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#af04c7e41218412c502a961a5cdea5376">unique_view</a> (I) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1unique__view.html">unique_view</a>&lt; I &gt;</td></tr>
+<tr class="memitem:af04c7e41218412c502a961a5cdea5376"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#af04c7e41218412c502a961a5cdea5376">unique_view</a> (<a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1unique__view.html">unique_view</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a> &gt;</td></tr>
 <tr class="separator:af04c7e41218412c502a961a5cdea5376"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f5576e6930fa2290a0bb9806c9955b9"><td class="memTemplParams" colspan="2">template&lt;Iterator... Iterators&gt; </td></tr>
 <tr class="memitem:a2f5576e6930fa2290a0bb9806c9955b9"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a2f5576e6930fa2290a0bb9806c9955b9">zip_iterator</a> (Iterators...) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1zip__iterator.html">zip_iterator</a>&lt; Iterators... &gt;</td></tr>
@@ -207,30 +240,57 @@ Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a6ef191a796841537176ed063016aad49"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a6ef191a796841537176ed063016aad49">Concat</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_concat__t.html">pimpl::Concat_t</a>{ }</td></tr>
+<tr class="memdesc:a6ef191a796841537176ed063016aad49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make a Range that is a zip iterator, or who's value is a tuple of Ranges act as if it was one range. e.g tuple&lt;vector&lt;int&gt;, vector&lt;int&gt;&gt;{{1,2,3},{4,5,6}} would output {1,2,3,4,5,6}.  <a href="namespacedaw_1_1pipelines.html#a6ef191a796841537176ed063016aad49">More...</a><br /></td></tr>
 <tr class="separator:a6ef191a796841537176ed063016aad49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad265d11df123bf6f9617f80256b52bc4"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#ad265d11df123bf6f9617f80256b52bc4">Count</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1count__t.html">pimpl::count_t</a>{ }</td></tr>
 <tr class="separator:ad265d11df123bf6f9617f80256b52bc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67ede6d141ebf51731c42d5e07cfb8cc"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a67ede6d141ebf51731c42d5e07cfb8cc">Enumerate</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_enumerate__t.html">pimpl::Enumerate_t</a>{ }</td></tr>
+<tr class="memitem:a67ede6d141ebf51731c42d5e07cfb8cc"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a67ede6d141ebf51731c42d5e07cfb8cc">Enumerate</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_enumerate__t.html">pimpl::Enumerate_t</a>&lt;&gt;{ }</td></tr>
 <tr class="separator:a67ede6d141ebf51731c42d5e07cfb8cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a234a23d974c624f55b7ffc0bf4d14459"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a234a23d974c624f55b7ffc0bf4d14459">EnumerateApply</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_enumerate_apply__t.html">pimpl::EnumerateApply_t</a>{ }</td></tr>
+<tr class="memitem:a234a23d974c624f55b7ffc0bf4d14459"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a234a23d974c624f55b7ffc0bf4d14459">EnumerateApply</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_enumerate_apply__t.html">pimpl::EnumerateApply_t</a>&lt;&gt;{ }</td></tr>
 <tr class="separator:a234a23d974c624f55b7ffc0bf4d14459"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85c19e40964337a39a6986f6d0feb4eb"><td class="memTemplParams" colspan="2">template&lt;typename EnumType &gt; </td></tr>
+<tr class="memitem:a85c19e40964337a39a6986f6d0feb4eb"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a85c19e40964337a39a6986f6d0feb4eb">EnumerateApplyWith</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_enumerate_apply__t.html">pimpl::EnumerateApply_t</a>&lt;<a class="el" href="namespacedaw.html#a11420c31bb05fb56a038c39a5e45a9da">EnumType</a>&gt;{ }</td></tr>
+<tr class="separator:a85c19e40964337a39a6986f6d0feb4eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a574abcc08d9ff5552770eec661d7fc"><td class="memTemplParams" colspan="2">template&lt;typename EnumType &gt; </td></tr>
+<tr class="memitem:a7a574abcc08d9ff5552770eec661d7fc"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a7a574abcc08d9ff5552770eec661d7fc">EnumerateWith</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_enumerate__t.html">pimpl::Enumerate_t</a>&lt;<a class="el" href="namespacedaw.html#a11420c31bb05fb56a038c39a5e45a9da">EnumType</a>&gt;{ }</td></tr>
+<tr class="separator:a7a574abcc08d9ff5552770eec661d7fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ce6879c3ab65e0adc450edf9222c2f6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a></td></tr>
+<tr class="separator:a3ce6879c3ab65e0adc450edf9222c2f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d1482351d2c877702d4f7dea01db5a3"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a0d1482351d2c877702d4f7dea01db5a3">Flatten</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_flatten__t.html">pimpl::Flatten_t</a>{ }</td></tr>
+<tr class="separator:a0d1482351d2c877702d4f7dea01db5a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63252e50fca8537f5fdcef8461926b3d"><td class="memItemLeft" align="right" valign="top">Fns &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a63252e50fca8537f5fdcef8461926b3d">fns</a></td></tr>
 <tr class="separator:a63252e50fca8537f5fdcef8461926b3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbfa124de6b643205b98af814d269377"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a></td></tr>
+<tr class="separator:abbfa124de6b643205b98af814d269377"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19d0d1dd9a86c9d6f2ce518cf48f78b5"><td class="memTemplParams" colspan="2">template&lt;auto... haystack&gt; </td></tr>
 <tr class="memitem:a19d0d1dd9a86c9d6f2ce518cf48f78b5"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a19d0d1dd9a86c9d6f2ce518cf48f78b5">IsOneOf</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1is__one__of__t.html">pimpl::is_one_of_t</a>&lt;haystack...&gt;{ }</td></tr>
 <tr class="separator:a19d0d1dd9a86c9d6f2ce518cf48f78b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf926165549fc5004a1257faee5b5336"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#aaf926165549fc5004a1257faee5b5336">map_view&lt; I, F &gt;</a></td></tr>
+<tr class="separator:aaf926165549fc5004a1257faee5b5336"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa38a3c1137b5d68753885ef20319c0fa"><td class="memItemLeft" align="right" valign="top">P&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#aa38a3c1137b5d68753885ef20319c0fa">map_view&lt; I, F, P &gt;</a></td></tr>
+<tr class="separator:aa38a3c1137b5d68753885ef20319c0fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabaf7cde12353def276e219b90f1f40a"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#aabaf7cde12353def276e219b90f1f40a">Max</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_max__t.html">pimpl::Max_t</a>{ }</td></tr>
 <tr class="separator:aabaf7cde12353def276e219b90f1f40a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07a253715b5576136c583e1822903d95"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a07a253715b5576136c583e1822903d95">Min</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min__t.html">pimpl::Min_t</a>{ }</td></tr>
 <tr class="separator:a07a253715b5576136c583e1822903d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab693e1f16b2f47e0a63771cd0545be31"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#ab693e1f16b2f47e0a63771cd0545be31">MinMax</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min_max__t.html">pimpl::MinMax_t</a>{ }</td></tr>
 <tr class="separator:ab693e1f16b2f47e0a63771cd0545be31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a078d827931061b89ad96c1c594779a01"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> <a class="el" href="namespacedaw.html#adc9100c4fd3f511114b7835dbb7bb768">Range</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a078d827931061b89ad96c1c594779a01">Needle</a></td></tr>
+<tr class="separator:a078d827931061b89ad96c1c594779a01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a589f014cef8a19188865121be8796598"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a589f014cef8a19188865121be8796598">Print</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_print__t.html">pimpl::Print_t</a>{ }</td></tr>
 <tr class="separator:a589f014cef8a19188865121be8796598"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf9ab126d358c08be54feede143c0c11"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#adf9ab126d358c08be54feede143c0c11">projection</a></td></tr>
+<tr class="separator:adf9ab126d358c08be54feede143c0c11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13b891fa85de7daff186fca2bc5d318b"><td class="memItemLeft" align="right" valign="top">Projection&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a></td></tr>
+<tr class="separator:a13b891fa85de7daff186fca2bc5d318b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f5089bd47bf475f155e700a4a99aedc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> <a class="el" href="namespacedaw.html#adc9100c4fd3f511114b7835dbb7bb768">Range</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a3f5089bd47bf475f155e700a4a99aedc">R</a></td></tr>
+<tr class="separator:a3f5089bd47bf475f155e700a4a99aedc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca251a1f1ef2a91ced70f5d174347770"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#aca251a1f1ef2a91ced70f5d174347770">Reverse</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_reverse__t.html">pimpl::Reverse_t</a>{ }</td></tr>
+<tr class="separator:aca251a1f1ef2a91ced70f5d174347770"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e840e16b01d32df674bcd33b484d4a0"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a3e840e16b01d32df674bcd33b484d4a0">Sort</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_sort__t.html">pimpl::Sort_t</a>{ }</td></tr>
 <tr class="separator:a3e840e16b01d32df674bcd33b484d4a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb1b093678b253ce2ba5f78c61cd7e51"><td class="memTemplParams" colspan="2">template&lt;typename R &gt; </td></tr>
-<tr class="memitem:adb1b093678b253ce2ba5f78c61cd7e51"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#adb1b093678b253ce2ba5f78c61cd7e51">Sortable</a> = <a class="el" href="namespacedaw.html#adc9100c4fd3f511114b7835dbb7bb768">Range</a>&lt;R&gt; and <a class="el" href="structdaw_1_1_random_iterator.html">RandomIterator</a>&lt;<a class="el" href="namespacedaw.html#a85959f5d9497c18316b29fdabd756b43">iterator_t</a>&lt;R&gt;&gt;</td></tr>
+<tr class="memitem:adb1b093678b253ce2ba5f78c61cd7e51"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#adb1b093678b253ce2ba5f78c61cd7e51">Sortable</a> = <a class="el" href="namespacedaw.html#adc9100c4fd3f511114b7835dbb7bb768">Range</a>&lt;<a class="el" href="namespacedaw_1_1pipelines.html#a3f5089bd47bf475f155e700a4a99aedc">R</a>&gt; and <a class="el" href="structdaw_1_1_random_iterator.html">RandomIterator</a>&lt;<a class="el" href="namespacedaw.html#a85959f5d9497c18316b29fdabd756b43">iterator_t</a>&lt;<a class="el" href="namespacedaw_1_1pipelines.html#a3f5089bd47bf475f155e700a4a99aedc">R</a>&gt;&gt;</td></tr>
 <tr class="separator:adb1b093678b253ce2ba5f78c61cd7e51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd91046453c0bd8c43dbec389ff911c5"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#abd91046453c0bd8c43dbec389ff911c5">Sum</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1sum__t.html">pimpl::sum_t</a>{ }</td></tr>
 <tr class="separator:abd91046453c0bd8c43dbec389ff911c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -244,7 +304,64 @@ Variables</h2></td></tr>
 <tr class="memitem:ad31317a259fa13e0d76eb7168a51fc3a"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#ad31317a259fa13e0d76eb7168a51fc3a">Unique</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_unique__t.html">pimpl::Unique_t</a>{ }</td></tr>
 <tr class="separator:ad31317a259fa13e0d76eb7168a51fc3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a73a923632ccbd563fde7bc4741f021dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73a923632ccbd563fde7bc4741f021dc">&#9670;&nbsp;</a></span>AllowPrintInputRange</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespacedaw_1_1pipelines.html#a73a923632ccbd563fde7bc4741f021dc">daw::pipelines::AllowPrintInputRange</a> : bool</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a73a923632ccbd563fde7bc4741f021dca21fd8b5eaad13b449b62b8103bb02a2e"></a>Disallow&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a73a923632ccbd563fde7bc4741f021dca45f0fb72a0defdfdb01de4b5a5a6876b"></a>Allow&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00021">21</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ad15e9c6619e4890979afa4690805810a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad15e9c6619e4890979afa4690805810a">&#9670;&nbsp;</a></span>Chunk()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> auto daw::pipelines::Chunk </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>chunk_size</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="chunk_8h_source.html#l00137">137</a> of file <a class="el" href="chunk_8h_source.html">chunk.h</a>.</p>
+
+</div>
+</div>
 <a id="acce8beee6d322df69e425004ea317100"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acce8beee6d322df69e425004ea317100">&#9670;&nbsp;</a></span>Clamp()</h2>
 
@@ -287,12 +404,12 @@ template&lt;typename T , typename Compare  = std::less&lt;&gt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="map__view_8h_source.html#l00290">290</a> of file <a class="el" href="map__view_8h_source.html">map_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="map_8h_source.html#l00333">333</a> of file <a class="el" href="map_8h_source.html">map.h</a>.</p>
 
 </div>
 </div>
-<a id="a348399c654d36400d7038b802781d5d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a348399c654d36400d7038b802781d5d5">&#9670;&nbsp;</a></span>concat_view()</h2>
+<a id="a7cbf0ea227ed96188927b0ff9d7734d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7cbf0ea227ed96188927b0ff9d7734d5">&#9670;&nbsp;</a></span>concat_view()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -302,12 +419,122 @@ template&lt;typename... Ranges&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">daw::pipelines::concat_view</a> </td>
           <td>(</td>
-          <td class="paramtype">Ranges...&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">Ranges &amp;&amp;&#160;</td>
+          <td class="paramname"><em>...</em></td><td>)</td>
           <td> -&gt;  <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a>&lt; Ranges... &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4de3721245e86ac6a3dfb41a1ab76dbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4de3721245e86ac6a3dfb41a1ab76dbe">&#9670;&nbsp;</a></span>Contains() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto daw::pipelines::Contains </td>
+          <td>(</td>
+          <td class="paramtype">auto &amp;&amp;&#160;</td>
+          <td class="paramname"><em>needle</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="algorithm_8h_source.html#l00198">198</a> of file <a class="el" href="algorithm_8h_source.html">algorithm.h</a>.</p>
+
+</div>
+</div>
+<a id="a7c09e9326fb6c14f3f7a3d9ccacf7114"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c09e9326fb6c14f3f7a3d9ccacf7114">&#9670;&nbsp;</a></span>Contains() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto daw::pipelines::Contains </td>
+          <td>(</td>
+          <td class="paramtype">auto &amp;&amp;&#160;</td>
+          <td class="paramname"><em>needle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">auto &amp;&amp;&#160;</td>
+          <td class="paramname"><em>compare</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="algorithm_8h_source.html#l00202">202</a> of file <a class="el" href="algorithm_8h_source.html">algorithm.h</a>.</p>
+
+</div>
+</div>
+<a id="a80defbf21d94d5cc720e65bd47a89419"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80defbf21d94d5cc720e65bd47a89419">&#9670;&nbsp;</a></span>Contains() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto daw::pipelines::Contains </td>
+          <td>(</td>
+          <td class="paramtype">auto &amp;&amp;&#160;</td>
+          <td class="paramname"><em>needle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">auto &amp;&amp;&#160;</td>
+          <td class="paramname"><em>compare</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">auto &amp;&amp;&#160;</td>
+          <td class="paramname"><em>projection</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="algorithm_8h_source.html#l00207">207</a> of file <a class="el" href="algorithm_8h_source.html">algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -339,6 +566,36 @@ template&lt;typename... Ranges&gt; </div>
 
 </div>
 </div>
+<a id="a39643257be0c370b2a63fc0ad4eed920"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39643257be0c370b2a63fc0ad4eed920">&#9670;&nbsp;</a></span>Every()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto daw::pipelines::Every </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>select_every</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Given a Range, output every Nth element. </p>
+
+<p class="definition">Definition at line <a class="el" href="every_8h_source.html#l00040">40</a> of file <a class="el" href="every_8h_source.html">every.h</a>.</p>
+
+</div>
+</div>
 <a id="ae13579d4bda58ff28e5a7e8a7cd4836b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae13579d4bda58ff28e5a7e8a7cd4836b">&#9670;&nbsp;</a></span>Filter()</h2>
 
@@ -365,7 +622,9 @@ template&lt;typename Fn &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="filter__view_8h_source.html#l00146">146</a> of file <a class="el" href="filter__view_8h_source.html">filter_view.h</a>.</p>
+<p>Filter a range with the given predicate function. </p>
+
+<p class="definition">Definition at line <a class="el" href="filter_8h_source.html#l00201">201</a> of file <a class="el" href="filter_8h_source.html">filter.h</a>.</p>
 
 </div>
 </div>
@@ -380,25 +639,25 @@ template&lt;typename I , typename F &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structdaw_1_1pipelines_1_1filter__view.html">daw::pipelines::filter_view</a> </td>
           <td>(</td>
-          <td class="paramtype">I&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">I&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">F&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a>&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt;  <a class="el" href="structdaw_1_1pipelines_1_1filter__view.html">filter_view</a>&lt; I, F &gt;</td>
+          <td></td><td> -&gt;  <a class="el" href="structdaw_1_1pipelines_1_1filter__view.html">filter_view</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a> &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -577,13 +836,13 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ac640e8217c2e5eb0bb5d2921fd9a644f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac640e8217c2e5eb0bb5d2921fd9a644f">&#9670;&nbsp;</a></span>Map()</h2>
+<a id="a66991c9f3a554bd7f7cbe33b34be3dd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66991c9f3a554bd7f7cbe33b34be3dd6">&#9670;&nbsp;</a></span>Map()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Fn &gt; </div>
+template&lt;typename Fn , typename Projection  = std::identity&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -592,8 +851,18 @@ template&lt;typename Fn &gt; </div>
           <td class="memname">constexpr auto daw::pipelines::Map </td>
           <td>(</td>
           <td class="paramtype">Fn &amp;&amp;&#160;</td>
-          <td class="paramname"><em>fn</em></td><td>)</td>
+          <td class="paramname"><em>fn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>projection</em> = <code><a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a>(&#160;)</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -603,12 +872,12 @@ template&lt;typename Fn &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="map__view_8h_source.html#l00280">280</a> of file <a class="el" href="map__view_8h_source.html">map_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="map_8h_source.html#l00322">322</a> of file <a class="el" href="map_8h_source.html">map.h</a>.</p>
 
 </div>
 </div>
 <a id="a31ad31313ae682d97c6c1457eb7a98af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a31ad31313ae682d97c6c1457eb7a98af">&#9670;&nbsp;</a></span>map_iterator()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a31ad31313ae682d97c6c1457eb7a98af">&#9670;&nbsp;</a></span>map_iterator() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -618,85 +887,55 @@ template&lt;Iterator I, typename F &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a> </td>
           <td>(</td>
-          <td class="paramtype">I&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">F&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a>&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt;  <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&lt; I, F &gt;</td>
+          <td></td><td> -&gt;  <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a> &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a79de8441e0540506452d734245e34cd3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a79de8441e0540506452d734245e34cd3">&#9670;&nbsp;</a></span>map_view() <span class="overload">[1/2]</span></h2>
+<a id="aa0196a64ef3fe8b0bd399d6c6a28c433"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0196a64ef3fe8b0bd399d6c6a28c433">&#9670;&nbsp;</a></span>map_iterator() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename I , typename F &gt; </div>
+template&lt;Iterator I, typename F , typename P &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1pipelines_1_1map__view.html">daw::pipelines::map_view</a> </td>
+          <td class="memname"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a> </td>
           <td>(</td>
-          <td class="paramtype">I&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">F&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">P&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt;  <a class="el" href="structdaw_1_1pipelines_1_1map__view.html">map_view</a>&lt; I, F &gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a70516f02194265dfe10f51a6a31af6fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a70516f02194265dfe10f51a6a31af6fb">&#9670;&nbsp;</a></span>map_view() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename I , typename F &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1pipelines_1_1map__view.html">daw::pipelines::map_view</a> </td>
-          <td>(</td>
-          <td class="paramtype">I&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">I&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">F&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> -&gt;  <a class="el" href="structdaw_1_1pipelines_1_1map__view.html">map_view</a>&lt; I, F &gt;</td>
+          <td></td><td> -&gt;  <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a>, P &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -729,7 +968,7 @@ template&lt;typename Fn &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="map__view_8h_source.html#l00285">285</a> of file <a class="el" href="map__view_8h_source.html">map_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="map_8h_source.html#l00328">328</a> of file <a class="el" href="map_8h_source.html">map.h</a>.</p>
 
 </div>
 </div>
@@ -753,8 +992,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="aa1c75f604120eb9a360a9b3bbc1202c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1c75f604120eb9a360a9b3bbc1202c0">&#9670;&nbsp;</a></span>Not()</h2>
+<a id="af1e4e6c19757c200f5230bfba0533a0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1e4e6c19757c200f5230bfba0533a0d">&#9670;&nbsp;</a></span>Not()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -763,7 +1002,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto daw::pipelines::Not </td>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> auto daw::pipelines::Not </td>
           <td>(</td>
           <td class="paramtype">auto &amp;&amp;&#160;</td>
           <td class="paramname"><em>fn</em></td><td>)</td>
@@ -777,7 +1016,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="predicates_8h_source.html#l00045">45</a> of file <a class="el" href="predicates_8h_source.html">predicates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="predicates_8h_source.html#l00046">46</a> of file <a class="el" href="predicates_8h_source.html">predicates.h</a>.</p>
 
 </div>
 </div>
@@ -795,7 +1034,7 @@ template&lt;Range R, typename... Fns&gt; </div>
         <tr>
           <td class="memname">constexpr auto daw::pipelines::pipeline </td>
           <td>(</td>
-          <td class="paramtype">R &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1pipelines.html#a3f5089bd47bf475f155e700a4a99aedc">R</a> &amp;&amp;&#160;</td>
           <td class="paramname"><em>r</em>, </td>
         </tr>
         <tr>
@@ -832,7 +1071,7 @@ template&lt;typename I , typename L &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structdaw_1_1pipelines_1_1range__t.html">daw::pipelines::range_t</a> </td>
           <td>(</td>
-          <td class="paramtype">I&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
@@ -844,7 +1083,47 @@ template&lt;typename I , typename L &gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt;  <a class="el" href="structdaw_1_1pipelines_1_1range__t.html">range_t</a>&lt; I, L &gt;</td>
+          <td></td><td> -&gt;  <a class="el" href="structdaw_1_1pipelines_1_1range__t.html">range_t</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>, L &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1fc0521907d075e57e8363f7023be376"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fc0521907d075e57e8363f7023be376">&#9670;&nbsp;</a></span>requires() <span class="overload">[1/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;Iterator I, typename F , typename P &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">daw::pipelines::requires </td>
+          <td>(</td>
+          <td class="paramtype">not <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a> &gt; and not <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>&lt; P &gt;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a557c07622d82494a25e7a634df245f4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a557c07622d82494a25e7a634df245f4f">&#9670;&nbsp;</a></span>requires() <span class="overload">[2/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;Iterator I, typename F &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">daw::pipelines::requires </td>
+          <td>(</td>
+          <td class="paramtype">not <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a> &gt;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -852,7 +1131,7 @@ template&lt;typename I , typename L &gt; </div>
 </div>
 </div>
 <a id="a23ecac82a2ad9b6f5c9927aa37551582"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a23ecac82a2ad9b6f5c9927aa37551582">&#9670;&nbsp;</a></span>requires() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a23ecac82a2ad9b6f5c9927aa37551582">&#9670;&nbsp;</a></span>requires() <span class="overload">[3/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -871,8 +1150,30 @@ template&lt;typename Fn , typename... Fns&gt; </div>
 
 </div>
 </div>
+<a id="a90372d0bae75bae7b553220089f96d13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90372d0bae75bae7b553220089f96d13">&#9670;&nbsp;</a></span>requires() <span class="overload">[4/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::size_t FindWidth = 1, typename Needle , typename Projection  = std::identity&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">daw::pipelines::requires </td>
+          <td>(</td>
+          <td class="paramtype">not <a class="el" href="namespacedaw.html#adc9100c4fd3f511114b7835dbb7bb768">Range</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#a078d827931061b89ad96c1c594779a01">Needle</a> &gt;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const &amp;&amp;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Find and Adjacent Find depending on FindWidth When FindWidth == 1, Find - Needle can be a range_value_type or callable When FindWidth &gt; 1, Adjacent Find - Needle must be a callable taking FindWidth parameters of type range_value_type. </p>
+
+</div>
+</div>
 <a id="ac2ec8648bc7c152d8977508d71cc5c27"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2ec8648bc7c152d8977508d71cc5c27">&#9670;&nbsp;</a></span>requires() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2ec8648bc7c152d8977508d71cc5c27">&#9670;&nbsp;</a></span>requires() <span class="overload">[5/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -896,7 +1197,7 @@ template&lt;typename Container &gt; </div>
 </div>
 </div>
 <a id="a7ec484c1e59a429dbd1531d4b7bf19d6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ec484c1e59a429dbd1531d4b7bf19d6">&#9670;&nbsp;</a></span>requires() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ec484c1e59a429dbd1531d4b7bf19d6">&#9670;&nbsp;</a></span>requires() <span class="overload">[6/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -993,6 +1294,34 @@ template&lt;typename Distribution  = std::uniform_int_distribution&lt;std::size_
 
 </div>
 </div>
+<a id="aebfe6cf702484247466d861b77c0d2ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebfe6cf702484247466d861b77c0d2ed">&#9670;&nbsp;</a></span>Slide()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> auto daw::pipelines::Slide </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>slide_size</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="slide_8h_source.html#l00138">138</a> of file <a class="el" href="slide_8h_source.html">slide.h</a>.</p>
+
+</div>
+</div>
 <a id="a740e0e115f0ea756920059d85ad67847"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a740e0e115f0ea756920059d85ad67847">&#9670;&nbsp;</a></span>Take()</h2>
 
@@ -1017,7 +1346,63 @@ template&lt;typename Distribution  = std::uniform_int_distribution&lt;std::size_
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="take__view_8h_source.html#l00049">49</a> of file <a class="el" href="take__view_8h_source.html">take_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="take_8h_source.html#l00096">96</a> of file <a class="el" href="take_8h_source.html">take.h</a>.</p>
+
+</div>
+</div>
+<a id="aa3f2b9d8df92bed98c4a6d769907a3d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3f2b9d8df92bed98c4a6d769907a3d2">&#9670;&nbsp;</a></span>TakeUntil()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto daw::pipelines::TakeUntil </td>
+          <td>(</td>
+          <td class="paramtype">auto &amp;&amp;&#160;</td>
+          <td class="paramname"><em>fn</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="take_8h_source.html#l00092">92</a> of file <a class="el" href="take_8h_source.html">take.h</a>.</p>
+
+</div>
+</div>
+<a id="ad1b280c928a6dcb4c207345277e3b8ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1b280c928a6dcb4c207345277e3b8ee">&#9670;&nbsp;</a></span>TakeWhile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto daw::pipelines::TakeWhile </td>
+          <td>(</td>
+          <td class="paramtype">auto &amp;&amp;&#160;</td>
+          <td class="paramname"><em>fn</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="take_8h_source.html#l00088">88</a> of file <a class="el" href="take_8h_source.html">take.h</a>.</p>
 
 </div>
 </div>
@@ -1063,9 +1448,9 @@ template&lt;typename I &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structdaw_1_1pipelines_1_1unique__view.html">daw::pipelines::unique_view</a> </td>
           <td>(</td>
-          <td class="paramtype">I&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>&#160;</td>
           <td class="paramname"></td><td>)</td>
-          <td> -&gt;  <a class="el" href="structdaw_1_1pipelines_1_1unique__view.html">unique_view</a>&lt; I &gt;</td>
+          <td> -&gt;  <a class="el" href="structdaw_1_1pipelines_1_1unique__view.html">unique_view</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a> &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1140,7 +1525,7 @@ template&lt;Range... Ranges&gt; </div>
 
 <p>Zip any number of containers and then the containers in the current pipeline. If the Range passed is a <a class="el" href="structdaw_1_1pipelines_1_1zip__view.html">zip_view</a> or tuple&lt;Ranges&gt; it will merge them. </p>
 
-<p class="definition">Definition at line <a class="el" href="zip__view_8h_source.html#l00258">258</a> of file <a class="el" href="zip__view_8h_source.html">zip_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="zip_8h_source.html#l00258">258</a> of file <a class="el" href="zip_8h_source.html">zip.h</a>.</p>
 
 </div>
 </div>
@@ -1165,7 +1550,9 @@ template&lt;Range... Ranges&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="concat__view_8h_source.html#l00153">153</a> of file <a class="el" href="concat__view_8h_source.html">concat_view.h</a>.</p>
+<p>Make a Range that is a zip iterator, or who's value is a tuple of Ranges act as if it was one range. e.g tuple&lt;vector&lt;int&gt;, vector&lt;int&gt;&gt;{{1,2,3},{4,5,6}} would output {1,2,3,4,5,6}. </p>
+
+<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00157">157</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
 
 </div>
 </div>
@@ -1203,7 +1590,7 @@ template&lt;Range... Ranges&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto daw::pipelines::Enumerate = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_enumerate__t.html">pimpl::Enumerate_t</a>{ }</td>
+          <td class="memname">constexpr auto daw::pipelines::Enumerate = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_enumerate__t.html">pimpl::Enumerate_t</a>&lt;&gt;{ }</td>
         </tr>
       </table>
   </td>
@@ -1213,7 +1600,7 @@ template&lt;Range... Ranges&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="enumerate_8h_source.html#l00043">43</a> of file <a class="el" href="enumerate_8h_source.html">enumerate.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="enumerate_8h_source.html#l00051">51</a> of file <a class="el" href="enumerate_8h_source.html">enumerate.h</a>.</p>
 
 </div>
 </div>
@@ -1227,7 +1614,7 @@ template&lt;Range... Ranges&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto daw::pipelines::EnumerateApply = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_enumerate_apply__t.html">pimpl::EnumerateApply_t</a>{ }</td>
+          <td class="memname">constexpr auto daw::pipelines::EnumerateApply = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_enumerate_apply__t.html">pimpl::EnumerateApply_t</a>&lt;&gt;{ }</td>
         </tr>
       </table>
   </td>
@@ -1237,7 +1624,99 @@ template&lt;Range... Ranges&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="enumerate_8h_source.html#l00044">44</a> of file <a class="el" href="enumerate_8h_source.html">enumerate.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="enumerate_8h_source.html#l00056">56</a> of file <a class="el" href="enumerate_8h_source.html">enumerate.h</a>.</p>
+
+</div>
+</div>
+<a id="a85c19e40964337a39a6986f6d0feb4eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85c19e40964337a39a6986f6d0feb4eb">&#9670;&nbsp;</a></span>EnumerateApplyWith</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename EnumType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto daw::pipelines::EnumerateApplyWith = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_enumerate_apply__t.html">pimpl::EnumerateApply_t</a>&lt;<a class="el" href="namespacedaw.html#a11420c31bb05fb56a038c39a5e45a9da">EnumType</a>&gt;{ }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="enumerate_8h_source.html#l00059">59</a> of file <a class="el" href="enumerate_8h_source.html">enumerate.h</a>.</p>
+
+</div>
+</div>
+<a id="a7a574abcc08d9ff5552770eec661d7fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a574abcc08d9ff5552770eec661d7fc">&#9670;&nbsp;</a></span>EnumerateWith</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename EnumType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto daw::pipelines::EnumerateWith = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_enumerate__t.html">pimpl::Enumerate_t</a>&lt;<a class="el" href="namespacedaw.html#a11420c31bb05fb56a038c39a5e45a9da">EnumType</a>&gt;{ }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="enumerate_8h_source.html#l00054">54</a> of file <a class="el" href="enumerate_8h_source.html">enumerate.h</a>.</p>
+
+</div>
+</div>
+<a id="a3ce6879c3ab65e0adc450edf9222c2f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ce6879c3ab65e0adc450edf9222c2f6">&#9670;&nbsp;</a></span>F</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">daw::pipelines::F</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="map_8h_source.html#l00219">219</a> of file <a class="el" href="map_8h_source.html">map.h</a>.</p>
+
+</div>
+</div>
+<a id="a0d1482351d2c877702d4f7dea01db5a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d1482351d2c877702d4f7dea01db5a3">&#9670;&nbsp;</a></span>Flatten</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto daw::pipelines::Flatten = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_flatten__t.html">pimpl::Flatten_t</a>{ }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="flatten_8h_source.html#l00166">166</a> of file <a class="el" href="flatten_8h_source.html">flatten.h</a>.</p>
 
 </div>
 </div>
@@ -1268,11 +1747,27 @@ template&lt;Range... Ranges&gt; </div>
 <div class="ttc" id="anamespacedaw_1_1pipelines_1_1pimpl_html_aecb78fcc497a481741f2dec7e8481a2a"><div class="ttname"><a href="namespacedaw_1_1pipelines_1_1pimpl.html#aecb78fcc497a481741f2dec7e8481a2a">daw::pipelines::pimpl::fix_range</a></div><div class="ttdeci">constexpr decltype(auto) fix_range(Range auto &amp;&amp;r)</div><div class="ttdef"><b>Definition:</b> <a href="pipeline_8h_source.html#l00065">pipeline.h:65</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1pipelines_html_a63252e50fca8537f5fdcef8461926b3d"><div class="ttname"><a href="namespacedaw_1_1pipelines.html#a63252e50fca8537f5fdcef8461926b3d">daw::pipelines::fns</a></div><div class="ttdeci">Fns &amp;&amp; fns</div><div class="ttdef"><b>Definition:</b> <a href="pipeline_8h_source.html#l00116">pipeline.h:116</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1pipelines_html_af3a8d5aa9688f4cf1af9c6e12a421453"><div class="ttname"><a href="namespacedaw_1_1pipelines.html#af3a8d5aa9688f4cf1af9c6e12a421453">daw::pipelines::pipeline</a></div><div class="ttdeci">constexpr auto pipeline(R &amp;&amp;r, Fns &amp;&amp;...fns)</div><div class="ttdef"><b>Definition:</b> <a href="pipeline_8h_source.html#l00109">pipeline.h:109</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a00ea6294fc0d1208169fdd524268e7eb"><div class="ttname"><a href="namespacedaw.html#a00ea6294fc0d1208169fdd524268e7eb">daw::tuple_size_v</a></div><div class="ttdeci">constexpr size_t tuple_size_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple__helper_8h_source.html#l00539">daw_tuple_helper.h:539</a></div></div>
-<div class="ttc" id="anamespacedaw_html_a94f9b8727d7fac14b2248dfaf671ecb8"><div class="ttname"><a href="namespacedaw.html#a94f9b8727d7fac14b2248dfaf671ecb8">daw::forward_as_tuple</a></div><div class="ttdeci">constexpr tuple&lt; Ts &amp;&amp;... &gt; forward_as_tuple(Ts &amp;&amp;...ts) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple_8h_source.html#l00230">daw_tuple.h:230</a></div></div>
-<div class="ttc" id="anamespacedaw_html_adc9100c4fd3f511114b7835dbb7bb768"><div class="ttname"><a href="namespacedaw.html#adc9100c4fd3f511114b7835dbb7bb768">daw::Range</a></div><div class="ttdeci">concept Range</div><div class="ttdef"><b>Definition:</b> <a href="daw__iterator__traits_8h_source.html#l00108">daw_iterator_traits.h:108</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a00ea6294fc0d1208169fdd524268e7eb"><div class="ttname"><a href="namespacedaw.html#a00ea6294fc0d1208169fdd524268e7eb">daw::tuple_size_v</a></div><div class="ttdeci">constexpr size_t tuple_size_v</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple__helper_8h_source.html#l00502">daw_tuple_helper.h:502</a></div></div>
+<div class="ttc" id="anamespacedaw_html_a94f9b8727d7fac14b2248dfaf671ecb8"><div class="ttname"><a href="namespacedaw.html#a94f9b8727d7fac14b2248dfaf671ecb8">daw::forward_as_tuple</a></div><div class="ttdeci">constexpr tuple&lt; Ts &amp;&amp;... &gt; forward_as_tuple(Ts &amp;&amp;...ts) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__tuple_8h_source.html#l00225">daw_tuple.h:225</a></div></div>
+<div class="ttc" id="anamespacedaw_html_adc9100c4fd3f511114b7835dbb7bb768"><div class="ttname"><a href="namespacedaw.html#adc9100c4fd3f511114b7835dbb7bb768">daw::Range</a></div><div class="ttdeci">concept Range</div><div class="ttdef"><b>Definition:</b> <a href="daw__iterator__traits_8h_source.html#l00109">daw_iterator_traits.h:109</a></div></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00116">116</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
+
+</div>
+</div>
+<a id="abbfa124de6b643205b98af814d269377"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbfa124de6b643205b98af814d269377">&#9670;&nbsp;</a></span>I</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">daw::pipelines::I</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="map_8h_source.html#l00223">223</a> of file <a class="el" href="map_8h_source.html">map.h</a>.</p>
 
 </div>
 </div>
@@ -1298,7 +1793,39 @@ template&lt;auto... haystack&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="predicates_8h_source.html#l00043">43</a> of file <a class="el" href="predicates_8h_source.html">predicates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="predicates_8h_source.html#l00044">44</a> of file <a class="el" href="predicates_8h_source.html">predicates.h</a>.</p>
+
+</div>
+</div>
+<a id="aaf926165549fc5004a1257faee5b5336"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf926165549fc5004a1257faee5b5336">&#9670;&nbsp;</a></span>map_view&lt; I, F &gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a> <a class="el" href="structdaw_1_1pipelines_1_1map__view.html">daw::pipelines::map_view</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a> &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="map_8h_source.html#l00215">215</a> of file <a class="el" href="map_8h_source.html">map.h</a>.</p>
+
+</div>
+</div>
+<a id="aa38a3c1137b5d68753885ef20319c0fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa38a3c1137b5d68753885ef20319c0fa">&#9670;&nbsp;</a></span>map_view&lt; I, F, P &gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">P <a class="el" href="structdaw_1_1pipelines_1_1map__view.html">daw::pipelines::map_view</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a>, P &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="map_8h_source.html#l00219">219</a> of file <a class="el" href="map_8h_source.html">map.h</a>.</p>
 
 </div>
 </div>
@@ -1322,7 +1849,7 @@ template&lt;auto... haystack&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="algorithm_8h_source.html#l00098">98</a> of file <a class="el" href="algorithm_8h_source.html">algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="algorithm_8h_source.html#l00194">194</a> of file <a class="el" href="algorithm_8h_source.html">algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -1346,7 +1873,7 @@ template&lt;auto... haystack&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="algorithm_8h_source.html#l00099">99</a> of file <a class="el" href="algorithm_8h_source.html">algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="algorithm_8h_source.html#l00195">195</a> of file <a class="el" href="algorithm_8h_source.html">algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -1370,7 +1897,23 @@ template&lt;auto... haystack&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="algorithm_8h_source.html#l00100">100</a> of file <a class="el" href="algorithm_8h_source.html">algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="algorithm_8h_source.html#l00196">196</a> of file <a class="el" href="algorithm_8h_source.html">algorithm.h</a>.</p>
+
+</div>
+</div>
+<a id="a078d827931061b89ad96c1c594779a01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a078d827931061b89ad96c1c594779a01">&#9670;&nbsp;</a></span>Needle</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> <a class="el" href="namespacedaw.html#adc9100c4fd3f511114b7835dbb7bb768">Range</a> daw::pipelines::Needle</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="find_8h_source.html#l00127">127</a> of file <a class="el" href="find_8h_source.html">find.h</a>.</p>
 
 </div>
 </div>
@@ -1394,7 +1937,98 @@ template&lt;auto... haystack&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00039">39</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00052">52</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+
+</div>
+</div>
+<a id="adf9ab126d358c08be54feede143c0c11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf9ab126d358c08be54feede143c0c11">&#9670;&nbsp;</a></span>projection</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a>&amp;&amp; daw::pipelines::projection</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a>{ } ) {</div>
+<div class="line">    <span class="keywordflow">return</span> pimpl::FindIf_t&lt;FindWidth, Needle, Projection&gt;(</div>
+<div class="line">      <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( needle ), <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( <a class="code" href="namespacedaw_1_1pipelines.html#adf9ab126d358c08be54feede143c0c11">projection</a> ) );</div>
+<div class="line">  }</div>
+<div class="line"> </div>
+<div class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> <a class="code" href="namespacedaw_1_1pipelines.html#a078d827931061b89ad96c1c594779a01">Needle</a></div>
+<div class="ttc" id="anamespacedaw_1_1pipelines_html_a078d827931061b89ad96c1c594779a01"><div class="ttname"><a href="namespacedaw_1_1pipelines.html#a078d827931061b89ad96c1c594779a01">daw::pipelines::Needle</a></div><div class="ttdeci">Projection Range Needle</div><div class="ttdef"><b>Definition:</b> <a href="find_8h_source.html#l00127">find.h:127</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1pipelines_html_a13b891fa85de7daff186fca2bc5d318b"><div class="ttname"><a href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">daw::pipelines::Projection</a></div><div class="ttdeci">Projection Projection</div><div class="ttdef"><b>Definition:</b> <a href="find_8h_source.html#l00117">find.h:117</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1pipelines_html_adf9ab126d358c08be54feede143c0c11"><div class="ttname"><a href="namespacedaw_1_1pipelines.html#adf9ab126d358c08be54feede143c0c11">daw::pipelines::projection</a></div><div class="ttdeci">Projection &amp;&amp; projection</div><div class="ttdef"><b>Definition:</b> <a href="find_8h_source.html#l00112">find.h:112</a></div></div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="find_8h_source.html#l00112">112</a> of file <a class="el" href="find_8h_source.html">find.h</a>.</p>
+
+</div>
+</div>
+<a id="a13b891fa85de7daff186fca2bc5d318b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13b891fa85de7daff186fca2bc5d318b">&#9670;&nbsp;</a></span>Projection</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Projection <a class="el" href="namespacedaw.html#adc9100c4fd3f511114b7835dbb7bb768">Range</a> daw::pipelines::Projection</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= std::identity&gt;</div>
+<div class="line">  <a class="code" href="namespacedaw_1_1pipelines.html#a90372d0bae75bae7b553220089f96d13">requires</a>( not Range&lt;Needle&gt; ) </div>
+<div class="line">     constexpr <span class="keyword">auto</span> Find(</div>
+<div class="line">      <a class="code" href="namespacedaw_1_1pipelines.html#a078d827931061b89ad96c1c594779a01">Needle</a> &amp;&amp;needle, <a class="code" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &amp;&amp;<a class="code" href="namespacedaw_1_1pipelines.html#adf9ab126d358c08be54feede143c0c11">projection</a> = <a class="code" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a>{ } ) {</div>
+<div class="line">    <span class="keywordflow">return</span> pimpl::FindValue_t&lt;Needle, Projection&gt;( <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( needle ),</div>
+<div class="line">                                                   <a class="code" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( <a class="code" href="namespacedaw_1_1pipelines.html#adf9ab126d358c08be54feede143c0c11">projection</a> ) );</div>
+<div class="line">  }</div>
+<div class="line"> </div>
+<div class="line">  <span class="keyword">template</span>&lt;std::size_t FindWidth = 1</div>
+<div class="ttc" id="anamespacedaw_1_1pipelines_html_a90372d0bae75bae7b553220089f96d13"><div class="ttname"><a href="namespacedaw_1_1pipelines.html#a90372d0bae75bae7b553220089f96d13">daw::pipelines::requires</a></div><div class="ttdeci">requires(not Range&lt; Needle &gt;) const expr auto FindIf(Needle &amp;&amp;needle</div><div class="ttdoc">Find and Adjacent Find depending on FindWidth When FindWidth == 1, Find - Needle can be a range_value...</div></div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="find_8h_source.html#l00117">117</a> of file <a class="el" href="find_8h_source.html">find.h</a>.</p>
+
+</div>
+</div>
+<a id="a3f5089bd47bf475f155e700a4a99aedc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f5089bd47bf475f155e700a4a99aedc">&#9670;&nbsp;</a></span>R</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> <a class="el" href="namespacedaw.html#adc9100c4fd3f511114b7835dbb7bb768">Range</a> daw::pipelines::R</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="find_8h_source.html#l00126">126</a> of file <a class="el" href="find_8h_source.html">find.h</a>.</p>
+
+</div>
+</div>
+<a id="aca251a1f1ef2a91ced70f5d174347770"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca251a1f1ef2a91ced70f5d174347770">&#9670;&nbsp;</a></span>Reverse</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto daw::pipelines::Reverse = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_reverse__t.html">pimpl::Reverse_t</a>{ }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="reverse_8h_source.html#l00034">34</a> of file <a class="el" href="reverse_8h_source.html">reverse.h</a>.</p>
 
 </div>
 </div>
@@ -1418,7 +2052,7 @@ template&lt;auto... haystack&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="algorithm_8h_source.html#l00097">97</a> of file <a class="el" href="algorithm_8h_source.html">algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="algorithm_8h_source.html#l00193">193</a> of file <a class="el" href="algorithm_8h_source.html">algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -1431,12 +2065,12 @@ template&lt;auto... haystack&gt; </div>
 template&lt;typename R &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">concept daw::pipelines::Sortable = <a class="el" href="namespacedaw.html#adc9100c4fd3f511114b7835dbb7bb768">Range</a>&lt;R&gt; and <a class="el" href="structdaw_1_1_random_iterator.html">RandomIterator</a>&lt;<a class="el" href="namespacedaw.html#a85959f5d9497c18316b29fdabd756b43">iterator_t</a>&lt;R&gt;&gt;</td>
+          <td class="memname">concept daw::pipelines::Sortable = <a class="el" href="namespacedaw.html#adc9100c4fd3f511114b7835dbb7bb768">Range</a>&lt;<a class="el" href="namespacedaw_1_1pipelines.html#a3f5089bd47bf475f155e700a4a99aedc">R</a>&gt; and <a class="el" href="structdaw_1_1_random_iterator.html">RandomIterator</a>&lt;<a class="el" href="namespacedaw.html#a85959f5d9497c18316b29fdabd756b43">iterator_t</a>&lt;<a class="el" href="namespacedaw_1_1pipelines.html#a3f5089bd47bf475f155e700a4a99aedc">R</a>&gt;&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="algorithm_8h_source.html#l00021">21</a> of file <a class="el" href="algorithm_8h_source.html">algorithm.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="algorithm_8h_source.html#l00023">23</a> of file <a class="el" href="algorithm_8h_source.html">algorithm.h</a>.</p>
 
 </div>
 </div>
@@ -1536,12 +2170,13 @@ template&lt;std::size_t... Indices&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= []&lt;<a class="code" href="namespacedaw.html#aa15143615eafa17e2f67743ec70cfca3">Integer</a> I&gt;( I last ) {</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= []&lt;<a class="code" href="namespacedaw.html#aa15143615eafa17e2f67743ec70cfca3">Integer</a> <a class="code" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a>&gt;( <a class="code" href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">I</a> last ) {</div>
 <div class="line">    <span class="keywordflow">return</span> iota_view&lt;I&gt;{ 0, last };</div>
 <div class="line">  }</div>
+<div class="ttc" id="anamespacedaw_1_1pipelines_html_abbfa124de6b643205b98af814d269377"><div class="ttname"><a href="namespacedaw_1_1pipelines.html#abbfa124de6b643205b98af814d269377">daw::pipelines::I</a></div><div class="ttdeci">I</div><div class="ttdef"><b>Definition:</b> <a href="map_8h_source.html#l00223">map.h:223</a></div></div>
 <div class="ttc" id="anamespacedaw_html_aa15143615eafa17e2f67743ec70cfca3"><div class="ttname"><a href="namespacedaw.html#aa15143615eafa17e2f67743ec70cfca3">daw::Integer</a></div><div class="ttdeci">concept Integer</div><div class="ttdef"><b>Definition:</b> <a href="daw__concepts_8h_source.html#l00401">daw_concepts.h:401</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="iota__view_8h_source.html#l00177">177</a> of file <a class="el" href="iota__view_8h_source.html">iota_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="iota_8h_source.html#l00177">177</a> of file <a class="el" href="iota_8h_source.html">iota.h</a>.</p>
 
 </div>
 </div>
@@ -1565,7 +2200,7 @@ template&lt;std::size_t... Indices&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="unique__view_8h_source.html#l00112">112</a> of file <a class="el" href="unique__view_8h_source.html">unique_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unique_8h_source.html#l00112">112</a> of file <a class="el" href="unique_8h_source.html">unique.h</a>.</p>
 
 </div>
 </div>

@@ -137,10 +137,13 @@ $(function() {
 , <a class="el" href="structdaw_1_1ordered__map.html#a8e9695157cdad498becd9c06b168e696">daw::ordered_map&lt; Key, Value, Compare, Allocator, Container &gt;</a>
 , <a class="el" href="structdaw_1_1perfect__hash__table.html#a785482538e93d919b20f3232c689d0ae">daw::perfect_hash_table&lt; N, Key, Value, Hasher, KeyEqual &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#a44c220cd0736b122ed350eee5cdf786d">daw::pipelines::concat_view&lt; Ranges &gt;</a>
-, <a class="el" href="structdaw_1_1pipelines_1_1filter__view.html#a68bdf2714e6e3b1ad7b3028ced086dd2">daw::pipelines::filter_view&lt; Iterator, Filter &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1filter__view.html#a6151cb9b97e9fe3ae3803a409f31cd58">daw::pipelines::filter_view&lt; Iterator, Filter, Projection &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1iota__iterator.html#a56d540668a2b9b391741e381505649d1">daw::pipelines::iota_iterator&lt; T &gt;</a>
-, <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#ac788c5f63a12d135dc3e0ceb6ed3b73f">daw::pipelines::map_iterator&lt; Iterator, Function &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a9e0bafef45c15c761396584b5cbfd03c">daw::pipelines::map_iterator&lt; Iterator, Fn, Projection &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1maybe__view.html#a3789ff1a0a74ad82de7d544b881c6d09">daw::pipelines::maybe_view&lt; T &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1chunk__view.html#a8fd0d195cda5cadfe4df10072a041e55">daw::pipelines::pimpl::chunk_view&lt; R &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1flatten__view.html#ae85a21d969d4e2aa6b038ad7b3208bfd">daw::pipelines::pimpl::flatten_view&lt; R &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1slide__view.html#a9b21a578e9b53eb1afc9b3dc7fc5f4de">daw::pipelines::pimpl::slide_view&lt; R &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1sized__iterator_3_01_iterator_01_4.html#a7f638ca74f07f814c5f9bfc884659a22">daw::pipelines::sized_iterator&lt; Iterator &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1unique__view.html#a30abc723d02e3fa9a5f914acdd801802">daw::pipelines::unique_view&lt; Iterator &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1zip__iterator.html#adb34314817898295663be694f880d4e2">daw::pipelines::zip_iterator&lt; Iterators &gt;</a>
@@ -172,8 +175,8 @@ $(function() {
 , <a class="el" href="structdaw_1_1unique__ptr.html#a3f7f34600a3605a49f3dff40b0c046ef">daw::unique_ptr&lt; T, Deleter &gt;</a>
 , <a class="el" href="structdaw_1_1unique__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#abd95b7ab3ce120b467030f3048788c98">daw::unique_ptr&lt; T[], Deleter &gt;</a>
 , <a class="el" href="structdaw_1_1value__ptr.html#a931df11e046f5d85822a80ea1bc4a57b">daw::value_ptr&lt; T, Compare &gt;</a>
-, <a class="el" href="structdaw_1_1vector.html#a4236664ca2ba1e4d95a9ff2148402815">daw::vector&lt; T, Allocator &gt;</a>
 , <a class="el" href="structdaw_1_1_vector.html#a6e2f0ab709e069ce9d72f530ab251841">daw::Vector&lt; T, Alloc &gt;</a>
+, <a class="el" href="structdaw_1_1vector.html#a4236664ca2ba1e4d95a9ff2148402815">daw::vector&lt; T, Allocator &gt;</a>
 , <a class="el" href="structdaw_1_1view.html#a3016a4e05fb7f318411d38e81d88cfbc">daw::view&lt; BidirectionalIterator &gt;</a>
 , <a class="el" href="classdaw_1_1wrap__iter.html#ae17ef1f97a9bf923b042083fc2e21c20">daw::wrap_iter&lt; Iterator, Tag &gt;</a>
 , <a class="el" href="structdaw_1_1zip__iterator.html#a8507d7d1968079357f3596ac38e09cda">daw::zip_iterator&lt; Iterators &gt;</a>
@@ -184,7 +187,7 @@ $(function() {
 , <a class="el" href="structdaw_1_1function__view__table__storage_3_01void_00_01_args_8_8_8_01_4.html#a6b99a6c8071b3c94d3f96b198bccebbd">daw::function_view_table_storage&lt; void, Args... &gt;</a>
 </li>
 <li>result_t
-: <a class="el" href="structdaw_1_1func_1_1function__traits.html#abfa1e838ac50c958efe5042e6fb5716d">daw::func::function_traits&lt; F &gt;</a>
+: <a class="el" href="structdaw_1_1func_1_1function__traits_3_01_f_00_01std_1_1void__t_3_01decltype_07_6std_1_1remove_f4585e1df601a0882a11df4146629641.html#af4e7633bd56cd806ed807ab7680e20c6">daw::func::function_traits&lt; F, std::void_t&lt; decltype(&amp;std::remove_reference_t&lt; F &gt;::operator())&gt; &gt;</a>
 , <a class="el" href="structdaw_1_1func_1_1function__traits_3_01_r_07_args_8_8_8_08_4.html#a69f6000097e219b1645f5dc29bed576d">daw::func::function_traits&lt; R(Args...)&gt;</a>
 </li>
 <li>result_type

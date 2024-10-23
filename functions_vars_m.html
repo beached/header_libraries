@@ -65,13 +65,12 @@ $(function() {
 &#160;
 
 <h3><a id="index_m"></a>- m -</h3><ul>
-<li>m_comapre
-: <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min_max__t.html#a2ccd6fa7099f3b259d532d3ba1cf1f74">daw::pipelines::pimpl::MinMax_t&lt; Compare &gt;</a>
-</li>
 <li>m_compare
-: <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_max__t.html#a7cb69e01872b36cd54836ed07ac80dbd">daw::pipelines::pimpl::Max_t&lt; Compare &gt;</a>
-, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min__t.html#ae8541beaeb7ea3b170f966ed074c6d24">daw::pipelines::pimpl::Min_t&lt; Compare &gt;</a>
-, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_sort__t.html#ab45219be3508b6cbb00a0554ae3c034c">daw::pipelines::pimpl::Sort_t&lt; Compare &gt;</a>
+: <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_contains__t.html#ab4c485f5e4cb423c3d3f29d6346327d0">daw::pipelines::pimpl::Contains_t&lt; Needle, Compare, Projection &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_max__t.html#aee8eda1aea26cdea9e3fd524dad1713e">daw::pipelines::pimpl::Max_t&lt; Compare, Projection &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min__t.html#a8ce139a6b58c6add9303a2e374552c0f">daw::pipelines::pimpl::Min_t&lt; Compare, Projection &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min_max__t.html#aeef82f9d80e38dd315629873d1e8fe87">daw::pipelines::pimpl::MinMax_t&lt; Compare, Projection &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_sort__t.html#afc200d82fde9af64b0a54f04c12a389e">daw::pipelines::pimpl::Sort_t&lt; Compare, Projection &gt;</a>
 </li>
 <li>m_data
 : <a class="el" href="structdaw_1_1array.html#aec7162af44f4610555e74c50a40bfb33">daw::array&lt; T, N &gt;</a>
@@ -93,14 +92,18 @@ $(function() {
 </li>
 <li>m_first
 : <a class="el" href="structdaw_1_1algorithm_1_1iota__op.html#a4910593b81f6d01fa4e7b8e36ea7d86b">daw::algorithm::iota_op&lt; T, Comp &gt;</a>
-, <a class="el" href="structdaw_1_1pipelines_1_1map__view.html#a37b515bb3ba863a58c8e33786cb81bbc">daw::pipelines::map_view&lt; Iterator, Fn &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1map__view.html#ae0d96c1982b0b9968bd0a4b39829f018">daw::pipelines::map_view&lt; First, Fn, Projection &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1zip__view.html#afdea45aaba0d572af160a0973843236c">daw::pipelines::zip_view&lt; Ranges &gt;</a>
 , <a class="el" href="structdaw_1_1splitter__range__t.html#a6b6e73cc4d1bb5f1f8c35296f08b9f2f">daw::splitter_range_t&lt; Iterator &gt;</a>
 </li>
 <li>m_func
-: <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_generate_n__t.html#a3ae19af26af26177f96481302b1ff903">daw::pipelines::pimpl::GenerateN_t&lt; Fn &gt;</a>
-, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_map__t.html#a88573237d06b0a29f1f553b100a16c2c">daw::pipelines::pimpl::Map_t&lt; Fn &gt;</a>
-, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_map_apply__t.html#a4cdb847f54ca89a0d1e623ab24206c38">daw::pipelines::pimpl::MapApply_t&lt; Fn &gt;</a>
+: <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1filter__t.html#a7f96f26126a56a45a429b319d243b3de">daw::pipelines::pimpl::filter_t&lt; Fn, Projection &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_generate_n__t.html#a3ae19af26af26177f96481302b1ff903">daw::pipelines::pimpl::GenerateN_t&lt; Fn &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_map__t.html#af1b59ea1815d4c766fd05bd5572c440d">daw::pipelines::pimpl::Map_t&lt; Fn, Projection &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_map_apply__t.html#a19a9d8a27da9f2b98f3f18dc83e58517">daw::pipelines::pimpl::MapApply_t&lt; Fn &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1not__fn__t.html#a1f44251da643457604fb241e8bdb1ada">daw::pipelines::pimpl::not_fn_t&lt; Fn &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_take_until__t.html#a4b8066a1c3730331b9abf7ffdb8a4060">daw::pipelines::pimpl::TakeUntil_t&lt; Fn &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_take_while__t.html#ab6c6e2a7226f04858ea4cb3ae92b429b">daw::pipelines::pimpl::TakeWhile_t&lt; Fn &gt;</a>
 </li>
 <li>m_iter
 : <a class="el" href="structdaw_1_1bidirectional__counting__iterator.html#a38e9dd202d7592b87e4bee07ef3c9edb">daw::bidirectional_counting_iterator&lt; BiDirectionalIterator &gt;</a>
@@ -110,9 +113,12 @@ $(function() {
 : <a class="el" href="structdaw_1_1bit__iterator.html#ae9b316e95167f3b216ecdc3cc60b6940">daw::bit_iterator&lt; Iterator &gt;</a>
 </li>
 <li>m_last
-: <a class="el" href="structdaw_1_1pipelines_1_1map__view.html#a59b6a5d04cfadbf267a04db1c6f722f3">daw::pipelines::map_view&lt; Iterator, Fn &gt;</a>
+: <a class="el" href="structdaw_1_1pipelines_1_1map__view.html#a01998f84be858dcaf28cea9f2bb7fa6f">daw::pipelines::map_view&lt; First, Fn, Projection &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1zip__view.html#aac67eb5b479989c62c2ccdb0e6a0bac6">daw::pipelines::zip_view&lt; Ranges &gt;</a>
 , <a class="el" href="structdaw_1_1splitter__range__t.html#ac0568238350012ba00c589f1533901b3">daw::splitter_range_t&lt; Iterator &gt;</a>
+</li>
+<li>m_needle
+: <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_contains__t.html#ac1e0af8ec70f3dff34340970e5568381">daw::pipelines::pimpl::Contains_t&lt; Needle, Compare, Projection &gt;</a>
 </li>
 <li>m_number_to_keep
 : <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_sample__t.html#aa6521dc599ebf5a950d79720a2a60cb7">daw::pipelines::pimpl::Sample_t&lt; RandomEngine, Distribution &gt;</a>
@@ -127,10 +133,20 @@ $(function() {
 : <a class="el" href="structdaw_1_1integers_1_1signed__integer.html#a9e34c49c5c270b97c3776b8ecc064a6e">daw::integers::signed_integer&lt; Bits &gt;</a>
 </li>
 <li>m_projection
-: <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_sum_kahan_babushka_neumaier__t.html#a81af7a48a0530ba5173c775a9e581f26">daw::pipelines::pimpl::SumKahanBabushkaNeumaier_t&lt; Projection &gt;</a>
+: <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_contains__t.html#ad28f519809688e6f5778a14c018be892">daw::pipelines::pimpl::Contains_t&lt; Needle, Compare, Projection &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1filter__t.html#a55ad7b4075d4ca2a3534ecda4144eef1">daw::pipelines::pimpl::filter_t&lt; Fn, Projection &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_map__t.html#ac60730500d77458021ccd0568fe0d022">daw::pipelines::pimpl::Map_t&lt; Fn, Projection &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_max__t.html#a6a346bd10600d947fccd3b51ed11f15a">daw::pipelines::pimpl::Max_t&lt; Compare, Projection &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min__t.html#a5a793d22436ff25573d6afeb2562202e">daw::pipelines::pimpl::Min_t&lt; Compare, Projection &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_min_max__t.html#af914fce2088b62ee66e03a43988bcb35">daw::pipelines::pimpl::MinMax_t&lt; Compare, Projection &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_sort__t.html#ae3a7b1de56149119b0e5cb5028948829">daw::pipelines::pimpl::Sort_t&lt; Compare, Projection &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_sum_kahan_babushka_neumaier__t.html#a81af7a48a0530ba5173c775a9e581f26">daw::pipelines::pimpl::SumKahanBabushkaNeumaier_t&lt; Projection &gt;</a>
 </li>
 <li>m_sample_size
 : <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_sample__t.html#aea4ab2d38944130393fdd21d91ea0051">daw::pipelines::pimpl::Sample_t&lt; RandomEngine, Distribution &gt;</a>
+</li>
+<li>m_select_every
+: <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_every__t.html#abff84348b63fad9236dcc7e4fd62e21e">daw::pipelines::pimpl::Every_t</a>
 </li>
 <li>m_step
 : <a class="el" href="structdaw_1_1algorithm_1_1iota__op.html#ab148241a1f6b8029f4446585d4aeb956">daw::algorithm::iota_op&lt; T, Comp &gt;</a>
@@ -138,6 +154,10 @@ $(function() {
 <li>m_thunk
 : <a class="el" href="structdaw_1_1function__ref_3_01_result_07_params_8_8_8_08_4.html#a4e4cc415e7cd746e46df32e3dc221420">daw::function_ref&lt; Result(Params...)&gt;</a>
 , <a class="el" href="structdaw_1_1function__ref_3_01void_07_params_8_8_8_08_4.html#ae5002d7c26debf07623dce9f7dbd6cff">daw::function_ref&lt; void(Params...)&gt;</a>
+</li>
+<li>m_trigger
+: <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_take_until__t.html#af8b3f805e77d60406ddd7fee96dc3394">daw::pipelines::pimpl::TakeUntil_t&lt; Fn &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_take_while__t.html#acf0999372c5fa0336e3bd1dbfe845f9f">daw::pipelines::pimpl::TakeWhile_t&lt; Fn &gt;</a>
 </li>
 <li>m_value
 : <a class="el" href="structdaw_1_1heap__value.html#a2f4bdf3b9415241db6743ccfdd13add3">daw::heap_value&lt; T &gt;</a>

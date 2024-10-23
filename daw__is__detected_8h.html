@@ -84,45 +84,45 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1nonesuch.html">daw::nonesuch&lt; class,... &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1nonesuch.html">daw::nonesuch&lt; typename,... &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
-<tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
+<tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides structs for wrapping function pointers and callable objects to facilitate function overloading and safe invocation. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ae2b3d98c692dfbe097abd6f162629a5f"><td class="memTemplParams" colspan="2">template&lt;class Default , template&lt; class... &gt; class Op, class... Args&gt; </td></tr>
+<tr class="memitem:ae2b3d98c692dfbe097abd6f162629a5f"><td class="memTemplParams" colspan="2">template&lt;typename Default , template&lt; typename... &gt; typename Op, typename... Args&gt; </td></tr>
 <tr class="memitem:ae2b3d98c692dfbe097abd6f162629a5f"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ae2b3d98c692dfbe097abd6f162629a5f">daw::detected_or</a> = is_detect_details::detector&lt; Default, void, Op, Args... &gt;</td></tr>
 <tr class="separator:ae2b3d98c692dfbe097abd6f162629a5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae96033a1c1bee88deb36b5dca10e191d"><td class="memTemplParams" colspan="2">template&lt;class Default , template&lt; class... &gt; class Op, class... Args&gt; </td></tr>
+<tr class="memitem:ae96033a1c1bee88deb36b5dca10e191d"><td class="memTemplParams" colspan="2">template&lt;typename Default , template&lt; typename... &gt; typename Op, typename... Args&gt; </td></tr>
 <tr class="memitem:ae96033a1c1bee88deb36b5dca10e191d"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ae96033a1c1bee88deb36b5dca10e191d">daw::detected_or_t</a> = typename detected_or&lt; Default, Op, Args... &gt;::type</td></tr>
 <tr class="separator:ae96033a1c1bee88deb36b5dca10e191d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adef50384484e2b57efcd50cf8d1df13b"><td class="memTemplParams" colspan="2">template&lt;template&lt; class... &gt; class Op, class... Args&gt; </td></tr>
-<tr class="memitem:adef50384484e2b57efcd50cf8d1df13b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#adef50384484e2b57efcd50cf8d1df13b">daw::detected_t</a> = typename is_detect_details::detector&lt; nonesuch&lt; Op, Args... &gt;, void, Op, Args... &gt;::type</td></tr>
-<tr class="separator:adef50384484e2b57efcd50cf8d1df13b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa9b02793e7937520d0cda0633484cbc"><td class="memTemplParams" colspan="2">template&lt;template&lt; class... &gt; class Op, class... Args&gt; </td></tr>
-<tr class="memitem:aaa9b02793e7937520d0cda0633484cbc"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aaa9b02793e7937520d0cda0633484cbc">daw::is_detected</a> = typename is_detect_details::detector&lt; nonesuch&lt; Op, Args... &gt;, void, Op, Args... &gt;::value_t</td></tr>
-<tr class="separator:aaa9b02793e7937520d0cda0633484cbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34ddbdd4d019cf55aa2ff68e0178709f"><td class="memTemplParams" colspan="2">template&lt;class To , template&lt; class... &gt; class Op, class... Args&gt; </td></tr>
+<tr class="memitem:a6d3da684840d02fdfbef9cab8f3217d3"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename... &gt; typename Op, typename... Args&gt; </td></tr>
+<tr class="memitem:a6d3da684840d02fdfbef9cab8f3217d3"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6d3da684840d02fdfbef9cab8f3217d3">daw::detected_t</a> = typename is_detect_details::detector&lt; nonesuch&lt; Op, Args... &gt;, void, Op, Args... &gt;::type</td></tr>
+<tr class="separator:a6d3da684840d02fdfbef9cab8f3217d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5493ae8f0454a78a2541dedb1177ddc"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename... &gt; typename Op, typename... Args&gt; </td></tr>
+<tr class="memitem:aa5493ae8f0454a78a2541dedb1177ddc"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa5493ae8f0454a78a2541dedb1177ddc">daw::is_detected</a> = typename is_detect_details::detector&lt; nonesuch&lt; Op, Args... &gt;, void, Op, Args... &gt;::value_t</td></tr>
+<tr class="separator:aa5493ae8f0454a78a2541dedb1177ddc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34ddbdd4d019cf55aa2ff68e0178709f"><td class="memTemplParams" colspan="2">template&lt;typename To , template&lt; typename... &gt; typename Op, typename... Args&gt; </td></tr>
 <tr class="memitem:a34ddbdd4d019cf55aa2ff68e0178709f"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a34ddbdd4d019cf55aa2ff68e0178709f">daw::is_detected_convertible</a> = std::is_convertible&lt; detected_t&lt; Op, Args... &gt;, To &gt;</td></tr>
 <tr class="separator:a34ddbdd4d019cf55aa2ff68e0178709f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7b45b2d2224d7ec3e0eb2bd522ab8be"><td class="memTemplParams" colspan="2">template&lt;class Expected , template&lt; class... &gt; class Op, class... Args&gt; </td></tr>
+<tr class="memitem:aa7b45b2d2224d7ec3e0eb2bd522ab8be"><td class="memTemplParams" colspan="2">template&lt;typename Expected , template&lt; typename... &gt; typename Op, typename... Args&gt; </td></tr>
 <tr class="memitem:aa7b45b2d2224d7ec3e0eb2bd522ab8be"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa7b45b2d2224d7ec3e0eb2bd522ab8be">daw::is_detected_exact</a> = std::bool_constant&lt; is_detected_exact_v&lt; Expected, Op, Args... &gt; &gt;</td></tr>
 <tr class="separator:aa7b45b2d2224d7ec3e0eb2bd522ab8be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:aca15c2fd76569c6b23122c8304641c49"><td class="memTemplParams" colspan="2">template&lt;class To , template&lt; class... &gt; class Op, class... Args&gt; </td></tr>
+<tr class="memitem:aca15c2fd76569c6b23122c8304641c49"><td class="memTemplParams" colspan="2">template&lt;typename To , template&lt; typename... &gt; typename Op, typename... Args&gt; </td></tr>
 <tr class="memitem:aca15c2fd76569c6b23122c8304641c49"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aca15c2fd76569c6b23122c8304641c49">daw::is_detected_convertible_v</a></td></tr>
 <tr class="separator:aca15c2fd76569c6b23122c8304641c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae83300977e536ffa843ef68b2cd4c80"><td class="memTemplParams" colspan="2">template&lt;class Expected , template&lt; class... &gt; class Op, class... Args&gt; </td></tr>
+<tr class="memitem:aae83300977e536ffa843ef68b2cd4c80"><td class="memTemplParams" colspan="2">template&lt;typename Expected , template&lt; typename... &gt; typename Op, typename... Args&gt; </td></tr>
 <tr class="memitem:aae83300977e536ffa843ef68b2cd4c80"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aae83300977e536ffa843ef68b2cd4c80">daw::is_detected_exact_v</a></td></tr>
 <tr class="separator:aae83300977e536ffa843ef68b2cd4c80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05cb5775a1268bd66ef632bcfd4e4bd7"><td class="memTemplParams" colspan="2">template&lt;template&lt; class... &gt; class Op, class... Args&gt; </td></tr>
+<tr class="memitem:a05cb5775a1268bd66ef632bcfd4e4bd7"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename... &gt; typename Op, typename... Args&gt; </td></tr>
 <tr class="memitem:a05cb5775a1268bd66ef632bcfd4e4bd7"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a05cb5775a1268bd66ef632bcfd4e4bd7">daw::is_detected_v</a></td></tr>
 <tr class="separator:a05cb5775a1268bd66ef632bcfd4e4bd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7f1ece4943991d28fdaac997dace871"><td class="memTemplParams" colspan="2">template&lt;typename &gt; </td></tr>

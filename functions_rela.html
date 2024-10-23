@@ -119,9 +119,9 @@ $(function() {
 , <a class="el" href="structdaw_1_1integer__range__iterator.html#afbe550b137e3219983497313704159f2">daw::integer_range_iterator&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1iota__iterator.html#a897b3de6a0a06ff15709ad947771651e">daw::iota_iterator&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1iter__view.html#a4f56dd38d1252146a918a2dc46f7e28c">daw::iter_view&lt; ForwardIterator, Last, ExplicitConv &gt;</a>
-, <a class="el" href="structdaw_1_1pipelines_1_1filter__view.html#af577eb31a4924d91f77d7f58c9f875d5">daw::pipelines::filter_view&lt; Iterator, Filter &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1filter__view.html#af577eb31a4924d91f77d7f58c9f875d5">daw::pipelines::filter_view&lt; Iterator, Filter, Projection &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1iota__iterator.html#a01752105c74bfd071ef803669dc95095">daw::pipelines::iota_iterator&lt; T &gt;</a>
-, <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a5869478d1109963e364ff9661130220f">daw::pipelines::map_iterator&lt; Iterator, Function &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a5869478d1109963e364ff9661130220f">daw::pipelines::map_iterator&lt; Iterator, Fn, Projection &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1unique__view.html#a8fe0c019be6340d52fd7e054953dd843">daw::pipelines::unique_view&lt; Iterator &gt;</a>
 , <a class="el" href="structdaw_1_1pointer__iterator.html#ae0002164dfa2814d7ed1dc72c6293ba5">daw::pointer_iterator&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1prop__const__ptr.html#a0bc71179203adcf6c7bb019444ce3c45">daw::prop_const_ptr&lt; T &gt;</a>
@@ -161,11 +161,10 @@ $(function() {
 , <a class="el" href="structdaw_1_1iota__iterator.html#a90a72667076a9a9fc2ff02ef7d15c7a6">daw::iota_iterator&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1iter__view.html#adf69efb587bf877b9864bc5b0c6c6bb6">daw::iter_view&lt; ForwardIterator, Last, ExplicitConv &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1iota__iterator.html#a704b77e925a0bc031f27065eac086751">daw::pipelines::iota_iterator&lt; T &gt;</a>
-, <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a80ce2fdbeaae6defd688bec31f39a1f7">daw::pipelines::map_iterator&lt; Iterator, Function &gt;</a>
 , <a class="el" href="structdaw_1_1pointer__iterator.html#a4038f5867e96d364ecb4277e38a1f990">daw::pointer_iterator&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1prop__const__ptr.html#ad707d08eeb2b25e27d5983533d6c4f9d">daw::prop_const_ptr&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1_random_iterator.html#ac95fb249a4947aced3f3b4e1e9905e21">daw::RandomIterator&lt; T &gt;</a>
-, <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#af69125f900909ca1c029ef777741aeb6">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
+, <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a833c5b164f9ea21243d0a9d3ed184f52">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 , <a class="el" href="classdaw_1_1topological__sorted__iterator.html#a286de0aaa9b9caa9f8885c7bd6a89a58">daw::topological_sorted_iterator&lt; Graph, Compare &gt;</a>
 , <a class="el" href="structdaw_1_1vector.html#a4760ecec0fa429640303ff96432896c3">daw::vector&lt; T, Allocator &gt;</a>
 </li>
@@ -176,13 +175,15 @@ $(function() {
 , <a class="el" href="structdaw_1_1iota__iterator.html#a1f452e6a3d8883088bd959fc96247fce">daw::iota_iterator&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1iter__view.html#a65f23cb853378b72b6d0a9f2244e8351">daw::iter_view&lt; ForwardIterator, Last, ExplicitConv &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1iota__iterator.html#a4d18e64c754d057f7fdc12c0e0d71f57">daw::pipelines::iota_iterator&lt; T &gt;</a>
-, <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a5c15344d43a62401a53819c32f1c027b">daw::pipelines::map_iterator&lt; Iterator, Function &gt;</a>
 , <a class="el" href="structdaw_1_1pointer__iterator.html#a44067274606e487a06857d01c23f831e">daw::pointer_iterator&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1prop__const__ptr.html#a2f9b92c7a405881a9463509fc00eb06b">daw::prop_const_ptr&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1_random_iterator.html#a7e3548fc9150ca48fcd6fb5a5510670c">daw::RandomIterator&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a800f976e38a6e74196fea62adc87af11">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 , <a class="el" href="classdaw_1_1topological__sorted__iterator.html#acf25c02b52e905e35263d1d36ab5aa06">daw::topological_sorted_iterator&lt; Graph, Compare &gt;</a>
 , <a class="el" href="structdaw_1_1vector.html#a9aa9a460987892ba9e86e666aae38217">daw::vector&lt; T, Allocator &gt;</a>
+</li>
+<li>operator&lt;=&gt;
+: <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a6c90adfc571f40aeb9b1db4c78741099">daw::pipelines::map_iterator&lt; Iterator, Fn, Projection &gt;</a>
 </li>
 <li>operator==
 : <a class="el" href="structdaw_1_1bidirectional__counting__iterator.html#a8e2b5264183a08b997dc517bd18606da">daw::bidirectional_counting_iterator&lt; BiDirectionalIterator &gt;</a>
@@ -200,14 +201,14 @@ $(function() {
 , <a class="el" href="structdaw_1_1integer__range__iterator.html#ae1c1cb93de1e02aa8bac0cb783d25c5b">daw::integer_range_iterator&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1iota__iterator.html#aa37b62375e1d23492c33a1d46d771c9c">daw::iota_iterator&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1iter__view.html#a65a6b2187f84ac9da28ea2399679deea">daw::iter_view&lt; ForwardIterator, Last, ExplicitConv &gt;</a>
-, <a class="el" href="structdaw_1_1pipelines_1_1filter__view.html#aa1753906b99fc7319ed5f3c2046a29be">daw::pipelines::filter_view&lt; Iterator, Filter &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1filter__view.html#aa1753906b99fc7319ed5f3c2046a29be">daw::pipelines::filter_view&lt; Iterator, Filter, Projection &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1iota__iterator.html#a67c5144175f13a5c660ab85fde4b0bf7">daw::pipelines::iota_iterator&lt; T &gt;</a>
-, <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#abbecf74418819f8c24995b37096b19f7">daw::pipelines::map_iterator&lt; Iterator, Function &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#abbecf74418819f8c24995b37096b19f7">daw::pipelines::map_iterator&lt; Iterator, Fn, Projection &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1unique__view.html#ab42ef5e629c48099732f373e8167476e">daw::pipelines::unique_view&lt; Iterator &gt;</a>
 , <a class="el" href="structdaw_1_1pointer__iterator.html#a965268ff5026dc53df89dbf733d78916">daw::pointer_iterator&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1prop__const__ptr.html#af4d62edd4074639a00064a046d20e01c">daw::prop_const_ptr&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1_random_iterator.html#a078552506c04876646d0fb51496b586d">daw::RandomIterator&lt; T &gt;</a>
-, <a class="el" href="structdaw_1_1split__it_3_01_iterator_00_01_splitter_00_01std_1_1enable__if__t_3_01not_01std_1_1i83ef1c274e841821b76a21b35cadacb3.html#a6d7309969209cece0375f4da5576bbe6">daw::split_it&lt; Iterator, Splitter, std::enable_if_t&lt; not std::is_same_v&lt; char, typename std::iterator_traits&lt; Iterator &gt;::value_type &gt; &gt; &gt;</a>
+, <a class="el" href="structdaw_1_1split__it_3_01_iterator_00_01_splitter_00_01std_1_1enable__if__t_3_01not_01std_1_1i83ef1c274e841821b76a21b35cadacb3.html#afa3f56e66233a66b0f95aad268a9ea16">daw::split_it&lt; Iterator, Splitter, std::enable_if_t&lt; not std::is_same_v&lt; char, typename std::iterator_traits&lt; Iterator &gt;::value_type &gt; &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1split__it_3_01_iterator_00_01_splitter_00_01std_1_1enable__if__t_3_01std_1_1is__sam4dd9370386b1046dd9dd5722f16dbe95.html#afa3f56e66233a66b0f95aad268a9ea16">daw::split_it&lt; Iterator, Splitter, std::enable_if_t&lt; std::is_same_v&lt; char, typename std::iterator_traits&lt; Iterator &gt;::value_type &gt; &gt; &gt;</a>
 , <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a7d071a6d4fd358e746e5a7727aa361a9">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 , <a class="el" href="classdaw_1_1topological__sorted__iterator.html#a56befcee19927306d634c650afd51762">daw::topological_sorted_iterator&lt; Graph, Compare &gt;</a>
@@ -221,7 +222,6 @@ $(function() {
 , <a class="el" href="structdaw_1_1iota__iterator.html#ad2376887124ab2b61ccf4c8a09dd68b7">daw::iota_iterator&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1iter__view.html#ac7538cba2d8a2569c9b87f286953c7cc">daw::iter_view&lt; ForwardIterator, Last, ExplicitConv &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1iota__iterator.html#a44ab1e89c38cc365f5766ac41a591894">daw::pipelines::iota_iterator&lt; T &gt;</a>
-, <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a1552d2031fd9d758f6f8c402925a0298">daw::pipelines::map_iterator&lt; Iterator, Function &gt;</a>
 , <a class="el" href="structdaw_1_1pointer__iterator.html#a8b1fa59e855261eebe18947dc08eb6d9">daw::pointer_iterator&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1prop__const__ptr.html#a34d207831a126932f2e4eeacf474719e">daw::prop_const_ptr&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1_random_iterator.html#aeedecf6ee4c7dc29684f626edd4c3614">daw::RandomIterator&lt; T &gt;</a>
@@ -236,11 +236,10 @@ $(function() {
 , <a class="el" href="structdaw_1_1iota__iterator.html#a5bccb13ff4f6a9521f757aedd5890b7a">daw::iota_iterator&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1iter__view.html#affee5f2afe3f68ff71358294aa0bde0b">daw::iter_view&lt; ForwardIterator, Last, ExplicitConv &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1iota__iterator.html#a0b0f710637d6ee1f544006d698c3a92c">daw::pipelines::iota_iterator&lt; T &gt;</a>
-, <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a53f14c8a0f35b08df899cdac060432e6">daw::pipelines::map_iterator&lt; Iterator, Function &gt;</a>
 , <a class="el" href="structdaw_1_1pointer__iterator.html#ac5cd8d5af0c317a9d288aef786810cd7">daw::pointer_iterator&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1prop__const__ptr.html#a5a30c0c949dfa3a15ea55f3dfaa62446">daw::prop_const_ptr&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1_random_iterator.html#a2a21b906540d9616372776130efa1879">daw::RandomIterator&lt; T &gt;</a>
-, <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a88fb595323059583039224b9ff6cd8af">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
+, <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a533257d6668da1839b20dd6459d00b70">daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</a>
 , <a class="el" href="classdaw_1_1topological__sorted__iterator.html#a42a2f6640240f7b42970082cbda32971">daw::topological_sorted_iterator&lt; Graph, Compare &gt;</a>
 , <a class="el" href="structdaw_1_1vector.html#af39d4b77492517150777e8c45cd91fb1">daw::vector&lt; T, Allocator &gt;</a>
 </li>

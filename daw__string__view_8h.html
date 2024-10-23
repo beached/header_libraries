@@ -117,7 +117,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
-<tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a class to validate a type T after construction Validator must return true if the value is valid, false otherwise. <br /></td></tr>
+<tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides structs for wrapping function pointers and callable objects to facilitate function overloading and safe invocation. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacedaw_1_1sv2"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html">daw::sv2</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -140,7 +140,7 @@ Macros</h2></td></tr>
 <tr class="memitem:a346e45313282713a9f93b4a27f3e93b8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__string__view_8h.html#a346e45313282713a9f93b4a27f3e93b8">DAW_REQ_UNARY_PRED</a>(Pred,  Type)</td></tr>
 <tr class="memdesc:a346e45313282713a9f93b4a27f3e93b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Require Pred to be a Unary Predicate.  <a href="daw__string__view_8h.html#a346e45313282713a9f93b4a27f3e93b8">More...</a><br /></td></tr>
 <tr class="separator:a346e45313282713a9f93b4a27f3e93b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c80b2fcee6529c6ae9f46d65ab7d843"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__string__view_8h.html#a3c80b2fcee6529c6ae9f46d65ab7d843">DAW_STRING_VIEW_DBG_RNG_CHECK</a>(Bool, ...)&#160;&#160;&#160;<a class="el" href="daw__assume_8h.html#af826633a286b2074a6fc3485dac504da">DAW_ASSUME</a>( Bool )</td></tr>
+<tr class="memitem:a3c80b2fcee6529c6ae9f46d65ab7d843"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__string__view_8h.html#a3c80b2fcee6529c6ae9f46d65ab7d843">DAW_STRING_VIEW_DBG_RNG_CHECK</a>(Bool, ...)</td></tr>
 <tr class="separator:a3c80b2fcee6529c6ae9f46d65ab7d843"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac929a634b2237194c681494185937fc6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__string__view_8h.html#ac929a634b2237194c681494185937fc6">DAW_STRING_VIEW_PRECOND_CHECK</a>(Bool, ...)</td></tr>
 <tr class="separator:ac929a634b2237194c681494185937fc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -158,7 +158,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a934bc4e64eed73a765eaa56538d3761a"><td class="memTemplParams" colspan="2">template&lt;typename CharT &gt; </td></tr>
 <tr class="memitem:a934bc4e64eed73a765eaa56538d3761a"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#a934bc4e64eed73a765eaa56538d3761a">daw::sv2::basic_string_view</a> (CharT const *, std::size_t count) -&gt; basic_string_view&lt; CharT &gt;</td></tr>
 <tr class="separator:a934bc4e64eed73a765eaa56538d3761a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb6b9e7ee896cb9c20f95d7d0da067af"><td class="memTemplParams" colspan="2">template&lt;typename StringView , typename CharT  = std::decay_t&lt;		           DAW_TYPEOF( std::data( std::declval&lt;StringView&gt;( ) ) )&gt;&gt; </td></tr>
+<tr class="memitem:aeb6b9e7ee896cb9c20f95d7d0da067af"><td class="memTemplParams" colspan="2">template&lt;typename StringView , typename CharT  = std::decay_t&lt;DAW_TYPEOF(		                                std::data( std::declval&lt;StringView&gt;( ) ) )&gt;&gt; </td></tr>
 <tr class="memitem:aeb6b9e7ee896cb9c20f95d7d0da067af"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#aeb6b9e7ee896cb9c20f95d7d0da067af">daw::sv2::basic_string_view</a> (StringView &amp;&amp;) -&gt; basic_string_view&lt; CharT &gt;</td></tr>
 <tr class="separator:aeb6b9e7ee896cb9c20f95d7d0da067af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef6d89e08248bc522b34de1c7b5dbd20"><td class="memItemLeft" align="right" valign="top">constexpr string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2_1_1string__view__literals.html#aef6d89e08248bc522b34de1c7b5dbd20">daw::sv2::string_view_literals::operator&quot;&quot;_sv</a> (char const *str, std::size_t len) noexcept</td></tr>
@@ -213,7 +213,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00098">98</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00100">100</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -255,7 +255,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00091">91</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00093">93</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -286,7 +286,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00106">106</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00108">108</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -327,7 +327,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00084">84</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00086">86</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -352,11 +352,13 @@ Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;<a class="el" href="daw__assume_8h.html#af826633a286b2074a6fc3485dac504da">DAW_ASSUME</a>( Bool )</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">do</span> {                                             \</div>
+<div class="line">  } <span class="keywordflow">while</span>( <span class="keyword">false</span> )</div>
+</div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00054">54</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
@@ -389,7 +391,7 @@ Functions</h2></td></tr>
 <b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">do</span> {                                             \</div>
 <div class="line">  } <span class="keywordflow">while</span>( <span class="keyword">false</span> )</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00072">72</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00074">74</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -421,7 +423,7 @@ Functions</h2></td></tr>
 <b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">do</span> {                                         \</div>
 <div class="line">  } <span class="keywordflow">while</span>( <span class="keyword">false</span> )</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00076">76</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00078">78</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>

@@ -81,12 +81,12 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac8bfc7364a0c77e75b9f9eb7b5a08ac7"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
-<tr class="memitem:ac8bfc7364a0c77e75b9f9eb7b5a08ac7"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1construct__a__t.html#ac8bfc7364a0c77e75b9f9eb7b5a08ac7">operator()</a> (Args &amp;&amp;...args) const noexcept(std::is_nothrow_constructible_v&lt; T, Args... &gt;) -&gt; std::enable_if_t&lt; std::is_constructible_v&lt; T, Args... &gt;, T &gt;</td></tr>
-<tr class="separator:ac8bfc7364a0c77e75b9f9eb7b5a08ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b2ee2b54ed868215f7d80cc95e21e06"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
-<tr class="memitem:a1b2ee2b54ed868215f7d80cc95e21e06"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1construct__a__t.html#a1b2ee2b54ed868215f7d80cc95e21e06">operator()</a> (Args &amp;&amp;...args) const noexcept(<a class="el" href="namespacedaw_1_1traits.html#af3bb521531e9c94ba15b60da8e1da7c1">traits::is_nothrow_list_constructible_v</a>&lt; T, Args... &gt;) -&gt; std::enable_if_t&lt; std::conjunction_v&lt; <a class="el" href="namespacedaw_1_1traits.html#a987ef2b3090b503f3959d9b9ad59f2f3">traits::static_not</a>&lt; std::is_constructible&lt; T, Args... &gt;&gt;, <a class="el" href="namespacedaw_1_1traits.html#a13f55020573268fae18e42a436c10d24">traits::is_list_constructible</a>&lt; T, Args... &gt;&gt;, T &gt;</td></tr>
-<tr class="separator:a1b2ee2b54ed868215f7d80cc95e21e06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa86be77cdbdf9a42821363bf024de269"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
+<tr class="memitem:aa86be77cdbdf9a42821363bf024de269"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> constexpr <a class="el" href="daw__cpp__feature__check_8h.html#afc4642143a3c09e14caf89b1996f9b57">DAW_CPP23_STATIC_CALL_OP</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1construct__a__t.html#aa86be77cdbdf9a42821363bf024de269">operator()</a> (Args &amp;&amp;...args) <a class="el" href="daw__cpp__feature__check_8h.html#aa899c38c96b0233101723af77dd4f7dd">DAW_CPP23_STATIC_CALL_OP_CONST</a> noexcept(std::is_nothrow_constructible_v&lt; T, Args... &gt;) -&gt; std::enable_if_t&lt; std::is_constructible_v&lt; T, Args... &gt;, T &gt;</td></tr>
+<tr class="separator:aa86be77cdbdf9a42821363bf024de269"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad21684b53482a59717a431f2f6f39f3b"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
+<tr class="memitem:ad21684b53482a59717a431f2f6f39f3b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> constexpr <a class="el" href="daw__cpp__feature__check_8h.html#afc4642143a3c09e14caf89b1996f9b57">DAW_CPP23_STATIC_CALL_OP</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1construct__a__t.html#ad21684b53482a59717a431f2f6f39f3b">operator()</a> (Args &amp;&amp;...args) <a class="el" href="daw__cpp__feature__check_8h.html#aa899c38c96b0233101723af77dd4f7dd">DAW_CPP23_STATIC_CALL_OP_CONST</a> noexcept(<a class="el" href="namespacedaw_1_1traits.html#af3bb521531e9c94ba15b60da8e1da7c1">traits::is_nothrow_list_constructible_v</a>&lt; T, Args... &gt;) -&gt; std::enable_if_t&lt; std::conjunction_v&lt; <a class="el" href="namespacedaw_1_1traits.html#a987ef2b3090b503f3959d9b9ad59f2f3">traits::static_not</a>&lt; std::is_constructible&lt; T, Args... &gt;&gt;, <a class="el" href="namespacedaw_1_1traits.html#a13f55020573268fae18e42a436c10d24">traits::is_list_constructible</a>&lt; T, Args... &gt;&gt;, T &gt;</td></tr>
+<tr class="separator:ad21684b53482a59717a431f2f6f39f3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T&gt;<br />
@@ -100,10 +100,10 @@ struct daw::construct_a_t&lt; T &gt;</h3>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__construct__a_8h_source.html#l00041">41</a> of file <a class="el" href="daw__construct__a_8h_source.html">daw_construct_a.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__construct__a_8h_source.html#l00043">43</a> of file <a class="el" href="daw__construct__a_8h_source.html">daw_construct_a.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac8bfc7364a0c77e75b9f9eb7b5a08ac7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac8bfc7364a0c77e75b9f9eb7b5a08ac7">&#9670;&nbsp;</a></span>operator()() <span class="overload">[1/2]</span></h2>
+<a id="aa86be77cdbdf9a42821363bf024de269"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa86be77cdbdf9a42821363bf024de269">&#9670;&nbsp;</a></span>operator()() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -116,11 +116,11 @@ template&lt;typename... Args&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto <a class="el" href="structdaw_1_1construct__a__t.html">daw::construct_a_t</a>&lt; T &gt;::operator() </td>
+          <td class="memname"><a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> constexpr <a class="el" href="daw__cpp__feature__check_8h.html#afc4642143a3c09e14caf89b1996f9b57">DAW_CPP23_STATIC_CALL_OP</a> auto <a class="el" href="structdaw_1_1construct__a__t.html">daw::construct_a_t</a>&lt; T &gt;::operator() </td>
           <td>(</td>
           <td class="paramtype">Args &amp;&amp;...&#160;</td>
           <td class="paramname"><em>args</em></td><td>)</td>
-          <td> const -&gt; std::enable_if_t&lt;std::is_constructible_v&lt;T, Args...&gt;, T&gt; </td>
+          <td> -&gt; std::enable_if_t&lt;std::is_constructible_v&lt;T, Args...&gt;, T&gt; </td>
         </tr>
       </table>
   </td>
@@ -130,12 +130,12 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__construct__a_8h_source.html#l00043">43</a> of file <a class="el" href="daw__construct__a_8h_source.html">daw_construct_a.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__construct__a_8h_source.html#l00046">46</a> of file <a class="el" href="daw__construct__a_8h_source.html">daw_construct_a.h</a>.</p>
 
 </div>
 </div>
-<a id="a1b2ee2b54ed868215f7d80cc95e21e06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b2ee2b54ed868215f7d80cc95e21e06">&#9670;&nbsp;</a></span>operator()() <span class="overload">[2/2]</span></h2>
+<a id="ad21684b53482a59717a431f2f6f39f3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad21684b53482a59717a431f2f6f39f3b">&#9670;&nbsp;</a></span>operator()() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -148,11 +148,11 @@ template&lt;typename... Args&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto <a class="el" href="structdaw_1_1construct__a__t.html">daw::construct_a_t</a>&lt; T &gt;::operator() </td>
+          <td class="memname"><a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> constexpr <a class="el" href="daw__cpp__feature__check_8h.html#afc4642143a3c09e14caf89b1996f9b57">DAW_CPP23_STATIC_CALL_OP</a> auto <a class="el" href="structdaw_1_1construct__a__t.html">daw::construct_a_t</a>&lt; T &gt;::operator() </td>
           <td>(</td>
           <td class="paramtype">Args &amp;&amp;...&#160;</td>
           <td class="paramname"><em>args</em></td><td>)</td>
-          <td> const -&gt; std::enable_if_t&lt;
+          <td> -&gt; std::enable_if_t&lt;
 		      std::conjunction_v&lt;
 		        <a class="el" href="namespacedaw_1_1traits.html#a987ef2b3090b503f3959d9b9ad59f2f3">traits::static_not</a>&lt;std::is_constructible&lt;T, Args...&gt;&gt;,
 		        <a class="el" href="namespacedaw_1_1traits.html#a13f55020573268fae18e42a436c10d24">traits::is_list_constructible</a>&lt;T, Args...&gt;&gt;,
@@ -166,7 +166,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__construct__a_8h_source.html#l00054">54</a> of file <a class="el" href="daw__construct__a_8h_source.html">daw_construct_a.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__construct__a_8h_source.html#l00058">58</a> of file <a class="el" href="daw__construct__a_8h_source.html">daw_construct_a.h</a>.</p>
 
 </div>
 </div>

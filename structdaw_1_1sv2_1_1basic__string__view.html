@@ -464,8 +464,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a72169be2091451fb31c09653439244a3"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">basic_string_view</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a72169be2091451fb31c09653439244a3">pop_front_until</a> (UnaryPredicate pred, <a class="el" href="structdaw_1_1nodiscard__t.html">nodiscard_t</a>)</td></tr>
 <tr class="memdesc:a72169be2091451fb31c09653439244a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment data until the predicate is true or the string_view is empty. Return a new string_view formed from the range of the previous value of <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> and the position where predicate was true.  <a href="structdaw_1_1sv2_1_1basic__string__view.html#a72169be2091451fb31c09653439244a3">More...</a><br /></td></tr>
 <tr class="separator:a72169be2091451fb31c09653439244a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f64d3bbab98b313185830efdfd979e4"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">basic_string_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a3f64d3bbab98b313185830efdfd979e4">pop_front_while</a> (<a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">basic_string_view</a> where)</td></tr>
+<tr class="memdesc:a3f64d3bbab98b313185830efdfd979e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Searches for the first non match of where, returns substring between front and where not, then pops off the substring.  <a href="structdaw_1_1sv2_1_1basic__string__view.html#a3f64d3bbab98b313185830efdfd979e4">More...</a><br /></td></tr>
+<tr class="separator:a3f64d3bbab98b313185830efdfd979e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab844b543c8692e2a9eda68ae391e88f7"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">basic_string_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#ab844b543c8692e2a9eda68ae391e88f7">pop_front_while</a> (CharT where)</td></tr>
-<tr class="memdesc:ab844b543c8692e2a9eda68ae391e88f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Searches for the first non match of where, returns substring between front and where, then pops off the substring.  <a href="structdaw_1_1sv2_1_1basic__string__view.html#ab844b543c8692e2a9eda68ae391e88f7">More...</a><br /></td></tr>
+<tr class="memdesc:ab844b543c8692e2a9eda68ae391e88f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Searches for the first non match of where, returns substring between front and where not, then pops off the substring.  <a href="structdaw_1_1sv2_1_1basic__string__view.html#ab844b543c8692e2a9eda68ae391e88f7">More...</a><br /></td></tr>
 <tr class="separator:ab844b543c8692e2a9eda68ae391e88f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9147467fc16cbd3df5760faf1fac49f6"><td class="memTemplParams" colspan="2">template&lt;typename UnaryPredicate , DAW_REQ_UNARY_PRED(UnaryPredicate, CharT) &gt; </td></tr>
 <tr class="memitem:a9147467fc16cbd3df5760faf1fac49f6"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">basic_string_view</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a9147467fc16cbd3df5760faf1fac49f6">pop_front_while</a> (UnaryPredicate pred)</td></tr>
@@ -708,7 +711,7 @@ struct daw::sv2::basic_string_view&lt; CharT, BoundsType &gt;</h3>
 
 <p>The class template <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html" title="The class template basic_string_view describes an object that can refer to a constant contiguous sequ...">basic_string_view</a> describes an object that can refer to a constant contiguous sequence of char-like objects with the first element of the sequence at position zero. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00393">393</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00380">380</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="ad50240265a3236e8e84ab9cfd297e99a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad50240265a3236e8e84ab9cfd297e99a">&#9670;&nbsp;</a></span>const_iterator</h2>
@@ -724,7 +727,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00401">401</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00388">388</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -742,7 +745,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00397">397</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00384">384</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -760,7 +763,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00399">399</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00386">386</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -778,7 +781,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00404">404</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00391">391</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -796,7 +799,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00406">406</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00393">393</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -816,7 +819,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 
 <p>A tag type for detecting string_view. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00409">409</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00396">396</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -834,7 +837,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00402">402</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00389">389</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -852,7 +855,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00396">396</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00383">383</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -870,7 +873,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00398">398</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00385">385</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -888,7 +891,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00403">403</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00390">390</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -906,7 +909,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00405">405</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00392">392</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -924,7 +927,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00395">395</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00382">382</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -992,7 +995,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <dd>
 <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> == 0 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00528">528</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00514">514</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1034,7 +1037,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 
 <p>Prevents nullptr literals and a size_type to construct a string_view. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00534">534</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00520">520</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1086,7 +1089,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <dd>
 <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> == count </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00547">547</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00533">533</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1130,7 +1133,7 @@ template&lt;typename CharPtr , DAW_REQ_CHAR_PTR(CharPtr, CharT) &gt; </div>
 <dd>
 <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> == strlen( s ) or CharT{} if s == nullptr </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00559">559</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00545">545</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1173,7 +1176,7 @@ template&lt;typename StringView , DAW_REQ_CONTIG_CHAR_RANGE(StringView, CharT) &
 <dd>
 <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> == std::size( sv ) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00571">571</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00557">557</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1227,7 +1230,7 @@ template&lt;typename StringView , DAW_REQ_CONTIG_CHAR_RANGE(StringView, CharT) &
 <dd>
 <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> == min( count, <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">sv.size( )</a> ) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00584">584</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00570">570</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1288,7 +1291,7 @@ template&lt;typename StringView , DAW_REQ_CONTIG_CHAR_RANGE(StringView, CharT) &
 <dd>
 <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> == min( count, <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">sv.size( )</a> ) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00600">600</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00586">586</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1331,7 +1334,7 @@ template&lt;std::size_t N&gt; </div>
 <dd>
 <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> == std::size( string_literal ) - 1 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00616">616</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00602">602</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1386,7 +1389,7 @@ template&lt;typename CharPtr1 , typename CharPtr2 , DAW_REQ_CHAR_PTR(CharPtr1, C
 <dd>
 <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> == last - first </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00633">633</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00618">618</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1432,7 +1435,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a>[pos] </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00777">777</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00762">762</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1466,7 +1469,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <dd>
 <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> &gt; 0 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00798">798</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00783">783</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1498,7 +1501,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Returns an iterator to the first character of the view. </p>
 <dl class="section return"><dt>Returns</dt><dd>const_iterator to the first character </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00655">655</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00640">640</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1530,7 +1533,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Returns an iterator to the first character of the view. </p>
 <dl class="section return"><dt>Returns</dt><dd>const_iterator to the first character </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00661">661</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00646">646</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1562,7 +1565,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Returns an iterator to the character following the last character of the view. This character acts as a placeholder, attempting to access it results in undefined behavior. </p>
 <dl class="section return"><dt>Returns</dt><dd>const_iterator to the character following the last character. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00693">693</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00678">678</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1594,7 +1597,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Empty the range. </p>
 <dl class="section post"><dt>Postcondition</dt><dd><a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> == 0 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00810">810</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00795">795</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1636,7 +1639,7 @@ template&lt;typename Compare  = sv2_details::less, string_view_bounds_type B&gt;
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01646">1646</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01639">1639</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1684,7 +1687,7 @@ template&lt;typename Compare  = sv2_details::less, string_view_bounds_type BL, s
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01610">1610</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01605">1605</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1726,7 +1729,7 @@ template&lt;typename Compare  = sv2_details::less, std::size_t N&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01662">1662</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01654">1654</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1780,7 +1783,7 @@ template&lt;typename Compare  = sv2_details::less&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01668">1668</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01660">1660</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1846,7 +1849,7 @@ template&lt;typename Compare  = sv2_details::less, string_view_bounds_type Bound
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01677">1677</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01668">1668</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1900,7 +1903,7 @@ template&lt;typename Compare  = sv2_details::less&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01687">1687</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01676">1676</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -1960,7 +1963,7 @@ template&lt;typename Compare  = sv2_details::less&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01697">1697</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01684">1684</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2002,7 +2005,7 @@ template&lt;typename Compare  = sv2_details::less, typename StringView , DAW_REQ
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01655">1655</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01647">1647</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2036,7 +2039,7 @@ template&lt;string_view_bounds_type Bounds&gt; </div>
 
 <p>Test if the string_view contains the supplied pattern. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01791">1791</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01776">1776</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2068,7 +2071,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 
 <p>Test if the string_view contains the supplied pattern. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01801">1801</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01786">1786</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2110,7 +2113,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 
 <p>Test if the string_view contains the supplied pattern. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01796">1796</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01781">1781</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2142,7 +2145,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 
 <p>Test if the string_view contains the supplied pattern. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01818">1818</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01803">1803</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2184,7 +2187,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 
 <p>Test if the string_view contains the supplied pattern. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01812">1812</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01797">1797</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2232,7 +2235,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 
 <p>Test if the string_view contains the supplied pattern. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01807">1807</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01791">1791</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2272,7 +2275,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01546">1546</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01542">1542</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2330,7 +2333,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <dl class="section pre"><dt>Precondition</dt><dd>pos &lt;= <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>number of characters copied </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01532">1532</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01527">1527</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2362,7 +2365,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Returns a reverse iterator to the first character of the reversed view. It corresponds to the last character of the non-reversed view. </p>
 <dl class="section return"><dt>Returns</dt><dd>const_reverse_iterator to the first character </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00677">677</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00662">662</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2394,7 +2397,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Returns a reverse iterator to the character following the last character of the reversed view. It corresponds to the character preceding the first character of the non-reversed view. This character acts as a placeholder, attempting to access it results in undefined behavior. </p>
 <dl class="section return"><dt>Returns</dt><dd>const_reverse_iterator to the character following the last character. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00715">715</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00700">700</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2426,7 +2429,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Returns a pointer to the underlying character range corresponding to the values of the view. </p>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to the underlying character range </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00748">748</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00733">733</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2458,7 +2461,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Returns a pointer to the character following the last character of the view. This character acts as a placeholder, attempting to access it may result in undefined behavior. </p>
 <dl class="section return"><dt>Returns</dt><dd>pointer to the character following the last character. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00756">756</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00741">741</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2490,7 +2493,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Checks if the view has no characters. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if the view is empty, false otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00737">737</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00722">722</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2522,7 +2525,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Returns an iterator to the character following the last character of the view. This character acts as a placeholder, attempting to access it results in undefined behavior. </p>
 <dl class="section return"><dt>Returns</dt><dd>const_iterator to the character following the last character. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00685">685</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00670">670</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2554,7 +2557,7 @@ template&lt;string_view_bounds_type Bounds&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02397">2397</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02379">2379</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2584,7 +2587,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02388">2388</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02370">2370</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2614,7 +2617,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02412">2412</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02394">2394</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2646,7 +2649,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Decrement the <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> pointer by 1. </p>
 <dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> != null and <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> - 1 is a valid object </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02609">2609</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02590">2590</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2679,7 +2682,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Decrement the <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> pointer by n. </p>
 <dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> != null and <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> - n is a valid object </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02617">2617</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02598">2598</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2711,7 +2714,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Increment the <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> by 1. </p>
 <dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> != null and <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> + <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> + 1 is a valid object </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02625">2625</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02606">2606</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2744,7 +2747,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Increment the <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> by n. </p>
 <dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> != null and <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> + <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> + n is a valid object </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02633">2633</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02614">2614</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2776,7 +2779,7 @@ template&lt;string_view_bounds_type Bounds&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01749">1749</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01734">1734</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2818,7 +2821,7 @@ template&lt;string_view_bounds_type Bounds&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01709">1709</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01694">1694</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2848,7 +2851,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01768">1768</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01753">1753</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2888,7 +2891,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01753">1753</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01738">1738</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2918,7 +2921,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01784">1784</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01769">1769</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -2958,7 +2961,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01778">1778</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01763">1763</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3004,7 +3007,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01773">1773</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01757">1757</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3046,7 +3049,7 @@ template&lt;string_view_bounds_type Bounds&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01824">1824</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01809">1809</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3076,7 +3079,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01742">1742</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01727">1727</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3116,7 +3119,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01726">1726</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01711">1711</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3148,7 +3151,7 @@ template&lt;string_view_bounds_type Bounds&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02225">2225</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02205">2205</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3190,7 +3193,7 @@ template&lt;string_view_bounds_type Bounds&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02200">2200</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02182">2182</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3220,7 +3223,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02236">2236</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02216">2216</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3260,7 +3263,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02230">2230</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02210">2210</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3292,7 +3295,7 @@ template&lt;size_type N&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02268">2268</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02249">2249</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3334,7 +3337,7 @@ template&lt;size_type N&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02255">2255</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02236">2236</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3364,7 +3367,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02261">2261</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02242">2242</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3404,7 +3407,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02248">2248</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02229">2229</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3450,7 +3453,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02241">2241</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02222">2222</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3482,7 +3485,7 @@ template&lt;typename UnaryPredicate , DAW_REQ_UNARY_PRED(UnaryPredicate, CharT) 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02083">2083</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02065">2065</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3524,7 +3527,7 @@ template&lt;typename UnaryPredicate , DAW_REQ_UNARY_PRED(UnaryPredicate, CharT) 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02064">2064</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02046">2046</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3565,7 +3568,7 @@ template&lt;string_view_bounds_type Bounds&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>position of first item in v or npos </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01959">1959</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01941">1941</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3617,7 +3620,7 @@ template&lt;string_view_bounds_type Bounds&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>position of first item in v or npos </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01937">1937</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01922">1922</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3647,7 +3650,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02094">2094</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02076">2076</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3687,7 +3690,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02087">2087</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02069">2069</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3733,7 +3736,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02100">2100</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02082">2082</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3763,7 +3766,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01970">1970</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01952">1952</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3803,7 +3806,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01963">1963</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01945">1945</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3835,7 +3838,7 @@ template&lt;typename UnaryPredicate , DAW_REQ_UNARY_PRED(UnaryPredicate, CharT) 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02057">2057</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02039">2039</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3877,7 +3880,7 @@ template&lt;typename UnaryPredicate , DAW_REQ_UNARY_PRED(UnaryPredicate, CharT) 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02039">2039</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02021">2021</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3909,7 +3912,7 @@ template&lt;string_view_bounds_type Bounds&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02325">2325</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02306">2306</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3951,7 +3954,7 @@ template&lt;string_view_bounds_type Bounds&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02302">2302</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02283">2283</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -3981,7 +3984,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02336">2336</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02317">2317</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4021,7 +4024,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02330">2330</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02311">2311</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4051,7 +4054,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02353">2353</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02335">2335</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4091,7 +4094,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02347">2347</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02329">2329</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4137,7 +4140,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02340">2340</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02322">2322</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4169,7 +4172,7 @@ template&lt;typename UnaryPredicate , DAW_REQ_UNARY_PRED(UnaryPredicate, CharT) 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02296">2296</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02277">2277</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4211,7 +4214,7 @@ template&lt;typename UnaryPredicate , DAW_REQ_UNARY_PRED(UnaryPredicate, CharT) 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02276">2276</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02257">2257</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4243,7 +4246,7 @@ template&lt;string_view_bounds_type Bounds&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02136">2136</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02118">2118</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4285,7 +4288,7 @@ template&lt;string_view_bounds_type Bounds&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02119">2119</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02101">2101</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4315,7 +4318,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02145">2145</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02127">2127</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4355,7 +4358,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02140">2140</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02122">2122</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4387,7 +4390,7 @@ template&lt;size_type N&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02158">2158</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02140">2140</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4429,7 +4432,7 @@ template&lt;size_type N&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02151">2151</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02133">2133</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4459,7 +4462,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02174">2174</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02156">2156</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4499,7 +4502,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02169">2169</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02151">2151</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4545,7 +4548,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02164">2164</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02146">2146</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4577,7 +4580,7 @@ template&lt;typename UnaryPredicate , DAW_REQ_UNARY_PRED(UnaryPredicate, CharT) 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02194">2194</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02176">2176</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4619,7 +4622,7 @@ template&lt;typename UnaryPredicate , DAW_REQ_UNARY_PRED(UnaryPredicate, CharT) 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02180">2180</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02162">2162</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4653,7 +4656,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <dd>
 <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> &gt; 0 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00788">788</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00773">773</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4685,7 +4688,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Returns the number of CharT elements in the view. </p>
 <dl class="section return"><dt>Returns</dt><dd>The number of CharT elements in the view. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00731">731</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00716">716</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4719,7 +4722,7 @@ template&lt;typename T , DAW_REQ_CONTIG_CHAR_RANGE_CTOR(T) &gt; </div>
 <p>Convert to a contiguous range type. </p>
 <dl class="section pre"><dt>Precondition</dt><dd>T{ <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a>, <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> } is valid </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00644">644</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00629">629</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4749,7 +4752,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02435">2435</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02417">2417</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4779,7 +4782,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02461">2461</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02443">2443</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4809,7 +4812,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02478">2478</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02460">2460</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4839,7 +4842,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02417">2417</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02399">2399</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4869,7 +4872,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02496">2496</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02478">2478</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4899,7 +4902,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02514">2514</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02496">2496</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4941,7 +4944,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> != nullptr </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a>[pos] </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00766">766</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00751">751</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -4972,7 +4975,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 
 <p>Return the last character and decrement the size by 1 unless empty. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01059">1059</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01055">1055</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5005,7 +5008,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Return the last character and decrement the size by 1. </p>
 <dl class="section pre"><dt>Precondition</dt><dd>not <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a25303e1794c9e8c4bdb0c7b80639a426" title="Checks if the view has no characters.">empty( )</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01067">1067</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01063">1063</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5044,7 +5047,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a substr of size count ending at end of string_view </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01080">1080</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01076">1076</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5094,7 +5097,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <dl class="section pre"><dt>Precondition</dt><dd>count &lt;= <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>a substr of size count ending at end of string_view </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01093">1093</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01089">1089</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5133,7 +5136,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring from end of where string to end of string </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01142">1142</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01138">1138</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5182,7 +5185,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring from end of where string to end of string </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01107">1107</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01103">1103</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5221,7 +5224,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring from end of where string to end of string </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01159">1159</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01155">1155</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5270,7 +5273,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring from end of where string to end of string </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01123">1123</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01119">1119</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5317,7 +5320,7 @@ template&lt;typename UnaryPredicate , DAW_REQ_UNARY_PRED(UnaryPredicate, CharT) 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring from last position marked by predicate to end </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01182">1182</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01178">1178</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5374,7 +5377,7 @@ template&lt;typename UnaryPredicate , DAW_REQ_UNARY_PRED(UnaryPredicate, CharT) 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring from last position marked by predicate to end </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01206">1206</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01202">1202</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5406,7 +5409,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Increment the <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> pointer by 1. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a9e330ca5222ad51f947b49da321a9503" title="Access the first element in range.">front( )</a> prior to increment </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00897">897</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00882">882</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5439,7 +5442,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Increment the <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> pointer by 1. Does not check bounds. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a9e330ca5222ad51f947b49da321a9503" title="Access the first element in range.">front( )</a> prior to increment </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00905">905</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00890">890</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5478,7 +5481,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a new string_view of size count. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00918">918</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00903">903</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5527,7 +5530,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a new string_view of size count. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00930">930</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00915">915</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5566,7 +5569,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring from beginning to where string </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00979">979</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00975">975</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5615,7 +5618,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If where is found, a new string_view from the old <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> position up to the position of the leading character in where. If where is not found, a copy of the string_view is made </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00947">947</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00932">932</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5654,7 +5657,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring from beginning to where string </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00990">990</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00986">986</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5703,7 +5706,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring from beginning to where string </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00957">957</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00942">942</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5751,7 +5754,7 @@ template&lt;typename UnaryPredicate , DAW_REQ_UNARY_PRED(UnaryPredicate, CharT) 
 <dl class="section return"><dt>Returns</dt><dd>substring from beginning to position marked by predicate </dd></dl>
 <dl class="section post"><dt>Postcondition</dt><dd><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> is set to one past position where the predicate was true, or one past the end of the range </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01048">1048</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01044">1044</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5809,12 +5812,51 @@ template&lt;typename UnaryPredicate , DAW_REQ_UNARY_PRED(UnaryPredicate, CharT) 
 <dl class="section return"><dt>Returns</dt><dd>substring from beginning to position marked by predicate </dd></dl>
 <dl class="section post"><dt>Postcondition</dt><dd><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> is set to position where the predicate was true, or one past the end of the range </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01010">1010</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01006">1006</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+
+</div>
+</div>
+<a id="a3f64d3bbab98b313185830efdfd979e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f64d3bbab98b313185830efdfd979e4">&#9670;&nbsp;</a></span>pop_front_while() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">basic_string_view</a> <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">daw::sv2::basic_string_view</a>&lt; CharT, BoundsType &gt;::pop_front_while </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">basic_string_view</a>&lt; CharT, BoundsType &gt;&#160;</td>
+          <td class="paramname"><em>where</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Searches for the first non match of where, returns substring between front and where not, then pops off the substring. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">where</td><td>The pattern to extract </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>substring from beginning to first non-match of where string </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00964">964</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
 <a id="ab844b543c8692e2a9eda68ae391e88f7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab844b543c8692e2a9eda68ae391e88f7">&#9670;&nbsp;</a></span>pop_front_while() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab844b543c8692e2a9eda68ae391e88f7">&#9670;&nbsp;</a></span>pop_front_while() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5839,7 +5881,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Searches for the first non match of where, returns substring between front and where, then pops off the substring. </p>
+<p>Searches for the first non match of where, returns substring between front and where not, then pops off the substring. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">where</td><td>The pattern to extract </td></tr>
@@ -5848,12 +5890,12 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring from beginning to first non-match of where string </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00968">968</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00953">953</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
 <a id="a9147467fc16cbd3df5760faf1fac49f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9147467fc16cbd3df5760faf1fac49f6">&#9670;&nbsp;</a></span>pop_front_while() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9147467fc16cbd3df5760faf1fac49f6">&#9670;&nbsp;</a></span>pop_front_while() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5896,7 +5938,7 @@ template&lt;typename UnaryPredicate , DAW_REQ_UNARY_PRED(UnaryPredicate, CharT) 
 <dl class="section return"><dt>Returns</dt><dd>substring from beginning to position marked by predicate </dd></dl>
 <dl class="section post"><dt>Postcondition</dt><dd><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> is set to position where the predicate was false, or one past the end of the range </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01029">1029</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01025">1025</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5928,7 +5970,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Returns a reverse iterator to the first character of the reversed view. It corresponds to the last character of the non-reversed view. </p>
 <dl class="section return"><dt>Returns</dt><dd>const_reverse_iterator to the first character </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00669">669</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00654">654</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5959,7 +6001,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 
 <p>Increment the <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> pointer by 1. If string_view is empty, it does nothing. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00844">844</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00829">829</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -5992,7 +6034,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Increment the <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> pointer by 1. </p>
 <dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> &gt;= 1 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00852">852</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00837">837</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6024,7 +6066,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 
 <p>Increment the <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> pointer by n. If string_view is empty, it does nothing. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00825">825</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00810">810</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6067,7 +6109,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Increment the <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> pointer by n. If string_view is empty, it does nothing. </p>
 <dl class="section pre"><dt>Precondition</dt><dd>n &lt;= <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00834">834</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00819">819</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6106,7 +6148,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring with everything up until the end of where removed </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01466">1466</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01462">1462</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6155,7 +6197,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring with everything up until the start of where removed </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01479">1479</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01475">1475</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6194,7 +6236,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring with everything up until the end of where removed </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01442">1442</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01438">1438</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6243,7 +6285,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring with everything up until where removed </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01454">1454</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01450">1450</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6290,7 +6332,7 @@ template&lt;typename UnaryPredicate , DAW_REQ_UNARY_PRED(UnaryPredicate, CharT) 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A reference to the current string_view object </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01493">1493</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01489">1489</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6341,7 +6383,7 @@ template&lt;typename UnaryPredicate , DAW_REQ_UNARY_PRED(UnaryPredicate, CharT) 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring with everything up until predicate is removed </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01507">1507</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01503">1503</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6371,7 +6413,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02553">2553</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02532">2532</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6403,7 +6445,7 @@ template&lt;typename UnaryPred , DAW_REQ_UNARY_PRED(UnaryPred, CharT) &gt; </div
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02546">2546</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02525">2525</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6434,7 +6476,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 
 <p>Decrement the <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> by 1 if <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> &gt; 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00880">880</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00865">865</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6467,7 +6509,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Decrement the <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> by 1. </p>
 <dl class="section pre"><dt>Precondition</dt><dd>not <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a25303e1794c9e8c4bdb0c7b80639a426" title="Checks if the view has no characters.">empty( )</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00888">888</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00873">873</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6499,7 +6541,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 
 <p>Decrement the <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> by n. If string_view is empty, it does nothing. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00863">863</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00848">848</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6542,7 +6584,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Decrement the <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> by n. </p>
 <dl class="section pre"><dt>Precondition</dt><dd>n &lt;= <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00871">871</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00856">856</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6572,7 +6614,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02579">2579</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02559">2559</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6604,7 +6646,7 @@ template&lt;typename UnaryPred , DAW_REQ_UNARY_PRED(UnaryPred, CharT) &gt; </div
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02572">2572</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02552">2552</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6636,7 +6678,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Returns a reverse iterator to the character following the last character of the reversed view. It corresponds to the character preceding the first character of the non-reversed view. This character acts as a placeholder, attempting to access it results in undefined behavior. </p>
 <dl class="section return"><dt>Returns</dt><dd>const_reverse_iterator to the character following the last character. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00704">704</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00689">689</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6670,7 +6712,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <dd>
 <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> == 0 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00817">817</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00802">802</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6710,7 +6752,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> &gt;= new_size </dd></dl>
 <dl class="section post"><dt>Postcondition</dt><dd><a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> == new_size </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01517">1517</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01513">1513</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6751,7 +6793,7 @@ template&lt;string_view_bounds_type Bounds&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>starting position of substring or npos if not found </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01887">1887</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01872">1872</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6803,7 +6845,7 @@ template&lt;string_view_bounds_type Bounds&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>starting position of substring or npos if not found </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01847">1847</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01832">1832</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6842,7 +6884,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>position of found character or npos </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01905">1905</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01890">1890</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6895,7 +6937,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01896">1896</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01881">1881</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6935,7 +6977,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <dl class="section pre"><dt>Precondition</dt><dd>s is zero terminated </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>position of found character or npos </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01927">1927</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01912">1912</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -6989,7 +7031,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01917">1917</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01902">1902</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7046,7 +7088,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>starting position of substring or npos if not found </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01877">1877</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01861">1861</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7078,7 +7120,7 @@ template&lt;string_view_bounds_type Bounds&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01990">1990</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01972">1972</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7120,7 +7162,7 @@ template&lt;string_view_bounds_type Bounds&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01976">1976</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01958">1958</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7150,7 +7192,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01999">1999</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01981">1981</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7190,7 +7232,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01994">1994</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01976">1976</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7222,7 +7264,7 @@ template&lt;string_view_bounds_type Bounds&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02023">2023</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02005">2005</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7264,7 +7306,7 @@ template&lt;string_view_bounds_type Bounds&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02005">2005</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01987">1987</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7294,7 +7336,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02032">2032</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02014">2014</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7334,7 +7376,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02027">2027</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02009">2009</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7366,7 +7408,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <p>Returns the number of CharT elements in the view. </p>
 <dl class="section return"><dt>Returns</dt><dd>The number of CharT elements in the view. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00725">725</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00710">710</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7398,7 +7440,7 @@ template&lt;string_view_bounds_type Bounds&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02367">2367</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02349">2349</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7428,7 +7470,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02358">2358</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02340">2340</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7458,7 +7500,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02384">2384</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02366">2366</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7489,7 +7531,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 
 <p>Return a copy of the string_view. </p>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01580">1580</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01576">1576</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7532,7 +7574,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01589">1589</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01585">1585</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7585,7 +7627,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01599">1599</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01595">1595</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7636,7 +7678,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <dl class="section pre"><dt>Precondition</dt><dd>pos &lt;= <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>a new <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html" title="The class template basic_string_view describes an object that can refer to a constant contiguous sequ...">basic_string_view</a> of the sub-range </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01557">1557</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01553">1553</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7693,7 +7735,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>a new <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html" title="The class template basic_string_view describes an object that can refer to a constant contiguous sequ...">basic_string_view</a> of the sub-range </dd></dl>
 <dl class="section pre"><dt>Precondition</dt><dd>pos + count &lt;= <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01572">1572</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01568">1568</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7722,7 +7764,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02596">2596</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02577">2577</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7751,7 +7793,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02601">2601</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02582">2582</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7780,7 +7822,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02559">2559</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02538">2538</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7809,7 +7851,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02564">2564</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02544">2544</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7838,7 +7880,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02585">2585</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02565">2565</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7867,7 +7909,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02590">2590</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02571">2571</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7906,7 +7948,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring from end of where string to end of string </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01333">1333</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01329">1329</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7955,7 +7997,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring from end of where string to end of string </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01349">1349</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01345">1345</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -7994,7 +8036,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring from end of where string to end of string </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01381">1381</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01377">1377</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8043,7 +8085,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring from end of where string to end of string </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01365">1365</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01361">1361</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8090,7 +8132,7 @@ template&lt;typename UnaryPredicate , DAW_REQ_UNARY_PRED(UnaryPredicate, CharT) 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring from last position marked by predicate to end </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01403">1403</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01399">1399</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8147,7 +8189,7 @@ template&lt;typename UnaryPredicate , DAW_REQ_UNARY_PRED(UnaryPredicate, CharT) 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring from last position marked by predicate to end </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01425">1425</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01421">1421</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8186,7 +8228,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring from beginning to where string </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01225">1225</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01221">1221</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8235,7 +8277,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If where is found, a new string_view from the old <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> position up to the position of the leading character in where. If where is not found, a copy of the string_view is made </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01243">1243</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01239">1239</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8274,7 +8316,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring from beginning to where string </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01273">1273</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01269">1269</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8323,7 +8365,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>substring from beginning to where string </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01258">1258</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01254">1254</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8371,7 +8413,7 @@ template&lt;typename UnaryPredicate , DAW_REQ_UNARY_PRED(UnaryPredicate, CharT) 
 <dl class="section return"><dt>Returns</dt><dd>substring from beginning to position marked by predicate </dd></dl>
 <dl class="section post"><dt>Postcondition</dt><dd><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> is set to one past position where the predicate was true, or one past the end of the range </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01320">1320</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01316">1316</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8429,7 +8471,7 @@ template&lt;typename UnaryPredicate , DAW_REQ_UNARY_PRED(UnaryPredicate, CharT) 
 <dl class="section return"><dt>Returns</dt><dd>substring from beginning to position marked by predicate </dd></dl>
 <dl class="section post"><dt>Postcondition</dt><dd><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html#a20c3e6302a0249eeb4a801f1ecf59415" title="Returns a pointer to the underlying character range corresponding to the values of the view.">data( )</a> is set to position where the predicate was true, or one past the end of the range </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01297">1297</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l01293">1293</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8470,7 +8512,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02440">2440</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02422">2422</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8512,7 +8554,7 @@ template&lt;typename StringView , DAW_REQ_CONTIG_CHAR_RANGE(StringView, CharT) &
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02447">2447</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02429">2429</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8552,7 +8594,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02465">2465</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02447">2447</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8594,7 +8636,7 @@ template&lt;typename StringView , DAW_REQ_CONTIG_CHAR_RANGE(StringView, CharT) &
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02472">2472</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02454">2454</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8634,7 +8676,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02483">2483</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02465">2465</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8676,7 +8718,7 @@ template&lt;typename StringView , DAW_REQ_CONTIG_CHAR_RANGE(StringView, CharT) &
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02490">2490</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02472">2472</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8716,7 +8758,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02430">2430</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02412">2412</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8758,7 +8800,7 @@ template&lt;typename StringView , DAW_REQ_CONTIG_CHAR_RANGE(StringView, CharT) &
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02424">2424</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02406">2406</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8798,7 +8840,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02501">2501</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02483">2483</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8840,7 +8882,7 @@ template&lt;typename StringView , DAW_REQ_CONTIG_CHAR_RANGE(StringView, CharT) &
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02508">2508</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02490">2490</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8880,7 +8922,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02519">2519</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02501">2501</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8922,7 +8964,7 @@ template&lt;typename StringView , DAW_REQ_CONTIG_CHAR_RANGE(StringView, CharT) &
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02526">2526</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02508">2508</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -8949,7 +8991,7 @@ template&lt;typename CharT , string_view_bounds_type BoundsType&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00514">514</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00500">500</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>

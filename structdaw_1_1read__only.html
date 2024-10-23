@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>DAW Header Libraries: daw::read_only&lt; T &gt; Struct Template Reference</title>
+<title>DAW Header Libraries: daw::read_only&lt; T, Owner &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -69,9 +69,10 @@ $(function() {
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structdaw_1_1read__only-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">daw::read_only&lt; T &gt; Struct Template Reference</div>  </div>
+<div class="title">daw::read_only&lt; T, Owner &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -79,160 +80,76 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a2baf5e382f3148c25e993edb64bbfe5f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#a2baf5e382f3148c25e993edb64bbfe5f">value_type</a> = T</td></tr>
-<tr class="separator:a2baf5e382f3148c25e993edb64bbfe5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21ab561834f533be684c21dc243c8ed5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#a21ab561834f533be684c21dc243c8ed5">value_type</a> = T</td></tr>
+<tr class="separator:a21ab561834f533be684c21dc243c8ed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7c2790209ac685aa00658b8698cdcb97"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#a7c2790209ac685aa00658b8698cdcb97">read_only</a> ()=default</td></tr>
-<tr class="separator:a7c2790209ac685aa00658b8698cdcb97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af97c9ca9185193fc4810a06b7b457cb6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#af97c9ca9185193fc4810a06b7b457cb6">read_only</a> (<a class="el" href="structdaw_1_1read__only.html">read_only</a> &amp;&amp;) noexcept(std::is_nothrow_move_constructible_v&lt; T &gt;)=default</td></tr>
-<tr class="separator:af97c9ca9185193fc4810a06b7b457cb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70a8a9357089aa1630119da8f87abf16"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#a70a8a9357089aa1630119da8f87abf16">read_only</a> (<a class="el" href="structdaw_1_1read__only.html">read_only</a> const &amp;) noexcept(std::is_nothrow_copy_constructible_v&lt; T &gt;)=default</td></tr>
-<tr class="separator:a70a8a9357089aa1630119da8f87abf16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f2991754c42d69c455702397b0d538e"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#a7f2991754c42d69c455702397b0d538e">read_only</a> (T &amp;&amp;value) noexcept(std::is_nothrow_move_constructible_v&lt; T &gt;)</td></tr>
-<tr class="separator:a7f2991754c42d69c455702397b0d538e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a088e07eff4a21faf4605fff84c15cb1d"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#a088e07eff4a21faf4605fff84c15cb1d">read_only</a> (T const &amp;value) noexcept(std::is_nothrow_copy_constructible_v&lt; T &gt;)</td></tr>
-<tr class="separator:a088e07eff4a21faf4605fff84c15cb1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5de0422ce605bccafbe8c554b6c9132"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#ac5de0422ce605bccafbe8c554b6c9132">~read_only</a> ()=default</td></tr>
-<tr class="separator:ac5de0422ce605bccafbe8c554b6c9132"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad39731fe7e34bc79be65cb0eb128b8be"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1read__only.html#a2baf5e382f3148c25e993edb64bbfe5f">value_type</a> const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#ad39731fe7e34bc79be65cb0eb128b8be">get</a> () const noexcept</td></tr>
-<tr class="separator:ad39731fe7e34bc79be65cb0eb128b8be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a748258234be516023c7d8d39304de281"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1read__only.html#a2baf5e382f3148c25e993edb64bbfe5f">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#a748258234be516023c7d8d39304de281">move_out</a> () noexcept(std::is_nothrow_move_constructible_v&lt; T &gt;)</td></tr>
-<tr class="separator:a748258234be516023c7d8d39304de281"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49a544b8a01d2e57444519f5c36e42eb"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#a49a544b8a01d2e57444519f5c36e42eb">operator value_type const &amp;</a> () const noexcept</td></tr>
-<tr class="separator:a49a544b8a01d2e57444519f5c36e42eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf9742815b6f0b82162fd57aaeb0b255"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1read__only.html#a2baf5e382f3148c25e993edb64bbfe5f">value_type</a> const  *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#acf9742815b6f0b82162fd57aaeb0b255">operator-&gt;</a> () const noexcept</td></tr>
-<tr class="separator:acf9742815b6f0b82162fd57aaeb0b255"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeed1ef1ef3b5e62f488443d83857a4bf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1read__only.html">read_only</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#aeed1ef1ef3b5e62f488443d83857a4bf">operator=</a> (<a class="el" href="structdaw_1_1read__only.html">read_only</a> &amp;&amp;) noexcept(std::is_nothrow_move_constructible_v&lt; T &gt;)=default</td></tr>
-<tr class="separator:aeed1ef1ef3b5e62f488443d83857a4bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f01773c4b31a9f4899078b31d03e47c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1read__only.html">read_only</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#a2f01773c4b31a9f4899078b31d03e47c">operator=</a> (<a class="el" href="structdaw_1_1read__only.html">read_only</a> const &amp;) noexcept(std::is_nothrow_copy_constructible_v&lt; T &gt;)=default</td></tr>
-<tr class="separator:a2f01773c4b31a9f4899078b31d03e47c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d1233a1044113c5777d689fd902b01e"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1read__only.html#a2baf5e382f3148c25e993edb64bbfe5f">value_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#a6d1233a1044113c5777d689fd902b01e">read_write</a> () noexcept</td></tr>
-<tr class="separator:a6d1233a1044113c5777d689fd902b01e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a22de6e8bd3f8adcd25dea353aa6f01"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#a3a22de6e8bd3f8adcd25dea353aa6f01">read_only</a> ()=default</td></tr>
+<tr class="separator:a3a22de6e8bd3f8adcd25dea353aa6f01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71dafffb0c1ba74b23f41a75a47e9a68"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#a71dafffb0c1ba74b23f41a75a47e9a68">read_only</a> (<a class="el" href="structdaw_1_1read__only.html">read_only</a> &amp;&amp;)=default</td></tr>
+<tr class="separator:a71dafffb0c1ba74b23f41a75a47e9a68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a935e7372029370561d04efeb7adbbf07"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#a935e7372029370561d04efeb7adbbf07">read_only</a> (<a class="el" href="structdaw_1_1read__only.html">read_only</a> const &amp;)=default</td></tr>
+<tr class="separator:a935e7372029370561d04efeb7adbbf07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6075bf70a6be99c832a06e07311bb0ec"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#a6075bf70a6be99c832a06e07311bb0ec">read_only</a> (T &amp;&amp;v) noexcept(std::is_nothrow_move_constructible_v&lt; T &gt;)</td></tr>
+<tr class="separator:a6075bf70a6be99c832a06e07311bb0ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a277ff9fd8f52f7c5fd1b07d5a0a899ea"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#a277ff9fd8f52f7c5fd1b07d5a0a899ea">read_only</a> (T const &amp;v) noexcept(std::is_nothrow_copy_constructible_v&lt; T &gt;)</td></tr>
+<tr class="separator:a277ff9fd8f52f7c5fd1b07d5a0a899ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a307b088aea77024bc4faadd7d67dd8b4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#a307b088aea77024bc4faadd7d67dd8b4">~read_only</a> ()=default</td></tr>
+<tr class="separator:a307b088aea77024bc4faadd7d67dd8b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9db6116b8105dfb822855ec4393792e3"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1read__only.html#a21ab561834f533be684c21dc243c8ed5">value_type</a> const  &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#a9db6116b8105dfb822855ec4393792e3">get</a> () const &amp;&amp;noexcept</td></tr>
+<tr class="separator:a9db6116b8105dfb822855ec4393792e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8bfce3df0e17aaf2eacff4610543c8b"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1read__only.html#a21ab561834f533be684c21dc243c8ed5">value_type</a> const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#ae8bfce3df0e17aaf2eacff4610543c8b">get</a> () const &amp;noexcept</td></tr>
+<tr class="separator:ae8bfce3df0e17aaf2eacff4610543c8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad27984512db4a01ec29785cbf37d0d40"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#ad27984512db4a01ec29785cbf37d0d40">operator value_type const &amp;</a> () const &amp;noexcept</td></tr>
+<tr class="separator:ad27984512db4a01ec29785cbf37d0d40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe32d68354375737436d3bc13c9b7580"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#afe32d68354375737436d3bc13c9b7580">operator value_type const &amp;&amp;</a> () const &amp;&amp;noexcept</td></tr>
+<tr class="separator:afe32d68354375737436d3bc13c9b7580"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a6db4b17108293b4afbc669da9b5ca033"><td class="memItemLeft" align="right" valign="top">friend&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1read__only.html#a6db4b17108293b4afbc669da9b5ca033">Owner</a></td></tr>
+<tr class="separator:a6db4b17108293b4afbc669da9b5ca033"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename T&gt;<br />
-struct daw::read_only&lt; T &gt;</h3>
+<div class="textblock"><h3>template&lt;typename T, typename Owner = daw::use_default&gt;<br />
+struct daw::read_only&lt; T, Owner &gt;</h3>
 
 
-<p class="definition">Definition at line <a class="el" href="daw__read__only_8h_source.html#l00018">18</a> of file <a class="el" href="daw__read__only_8h_source.html">daw_read_only.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__read__only_8h_source.html#l00019">19</a> of file <a class="el" href="daw__read__only_8h_source.html">daw_read_only.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a2baf5e382f3148c25e993edb64bbfe5f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2baf5e382f3148c25e993edb64bbfe5f">&#9670;&nbsp;</a></span>value_type</h2>
+<a id="a21ab561834f533be684c21dc243c8ed5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21ab561834f533be684c21dc243c8ed5">&#9670;&nbsp;</a></span>value_type</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;typename T , typename Owner  = daw::use_default&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T &gt;::<a class="el" href="structdaw_1_1read__only.html#a2baf5e382f3148c25e993edb64bbfe5f">value_type</a> =  T</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T, <a class="el" href="structdaw_1_1read__only.html#a6db4b17108293b4afbc669da9b5ca033">Owner</a> &gt;::<a class="el" href="structdaw_1_1read__only.html#a21ab561834f533be684c21dc243c8ed5">value_type</a> =  T</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__read__only_8h_source.html#l00022">22</a> of file <a class="el" href="daw__read__only_8h_source.html">daw_read_only.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__read__only_8h_source.html#l00023">23</a> of file <a class="el" href="daw__read__only_8h_source.html">daw_read_only.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a7c2790209ac685aa00658b8698cdcb97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7c2790209ac685aa00658b8698cdcb97">&#9670;&nbsp;</a></span>read_only() <span class="overload">[1/5]</span></h2>
+<a id="a3a22de6e8bd3f8adcd25dea353aa6f01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a22de6e8bd3f8adcd25dea353aa6f01">&#9670;&nbsp;</a></span>read_only() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;typename T , typename Owner  = daw::use_default&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T &gt;::<a class="el" href="structdaw_1_1read__only.html">read_only</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">explicit</span><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a70a8a9357089aa1630119da8f87abf16"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a70a8a9357089aa1630119da8f87abf16">&#9670;&nbsp;</a></span>read_only() <span class="overload">[2/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T &gt;::<a class="el" href="structdaw_1_1read__only.html">read_only</a> </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1read__only.html">read_only</a>&lt; T &gt; const &amp;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="af97c9ca9185193fc4810a06b7b457cb6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af97c9ca9185193fc4810a06b7b457cb6">&#9670;&nbsp;</a></span>read_only() <span class="overload">[3/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T &gt;::<a class="el" href="structdaw_1_1read__only.html">read_only</a> </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1read__only.html">read_only</a>&lt; T &gt; &amp;&amp;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ac5de0422ce605bccafbe8c554b6c9132"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5de0422ce605bccafbe8c554b6c9132">&#9670;&nbsp;</a></span>~read_only()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T &gt;::~<a class="el" href="structdaw_1_1read__only.html">read_only</a> </td>
+          <td class="memname"><a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T, <a class="el" href="structdaw_1_1read__only.html#a6db4b17108293b4afbc669da9b5ca033">Owner</a> &gt;::<a class="el" href="structdaw_1_1read__only.html">read_only</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -247,28 +164,111 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a088e07eff4a21faf4605fff84c15cb1d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a088e07eff4a21faf4605fff84c15cb1d">&#9670;&nbsp;</a></span>read_only() <span class="overload">[4/5]</span></h2>
+<a id="a307b088aea77024bc4faadd7d67dd8b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a307b088aea77024bc4faadd7d67dd8b4">&#9670;&nbsp;</a></span>~read_only()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;typename T , typename Owner  = daw::use_default&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T &gt;::<a class="el" href="structdaw_1_1read__only.html">read_only</a> </td>
+          <td class="memname"><a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T, <a class="el" href="structdaw_1_1read__only.html#a6db4b17108293b4afbc669da9b5ca033">Owner</a> &gt;::~<a class="el" href="structdaw_1_1read__only.html">read_only</a> </td>
           <td>(</td>
-          <td class="paramtype">T const &amp;&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a935e7372029370561d04efeb7adbbf07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a935e7372029370561d04efeb7adbbf07">&#9670;&nbsp;</a></span>read_only() <span class="overload">[2/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Owner  = daw::use_default&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T, <a class="el" href="structdaw_1_1read__only.html#a6db4b17108293b4afbc669da9b5ca033">Owner</a> &gt;::<a class="el" href="structdaw_1_1read__only.html">read_only</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1read__only.html">read_only</a>&lt; T, <a class="el" href="structdaw_1_1read__only.html#a6db4b17108293b4afbc669da9b5ca033">Owner</a> &gt; const &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a71dafffb0c1ba74b23f41a75a47e9a68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71dafffb0c1ba74b23f41a75a47e9a68">&#9670;&nbsp;</a></span>read_only() <span class="overload">[3/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Owner  = daw::use_default&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T, <a class="el" href="structdaw_1_1read__only.html#a6db4b17108293b4afbc669da9b5ca033">Owner</a> &gt;::<a class="el" href="structdaw_1_1read__only.html">read_only</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1read__only.html">read_only</a>&lt; T, <a class="el" href="structdaw_1_1read__only.html#a6db4b17108293b4afbc669da9b5ca033">Owner</a> &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a277ff9fd8f52f7c5fd1b07d5a0a899ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a277ff9fd8f52f7c5fd1b07d5a0a899ea">&#9670;&nbsp;</a></span>read_only() <span class="overload">[4/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Owner  = daw::use_default&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T, <a class="el" href="structdaw_1_1read__only.html#a6db4b17108293b4afbc669da9b5ca033">Owner</a> &gt;::<a class="el" href="structdaw_1_1read__only.html">read_only</a> </td>
+          <td>(</td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -277,53 +277,53 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a7f2991754c42d69c455702397b0d538e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f2991754c42d69c455702397b0d538e">&#9670;&nbsp;</a></span>read_only() <span class="overload">[5/5]</span></h2>
+<a id="a6075bf70a6be99c832a06e07311bb0ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6075bf70a6be99c832a06e07311bb0ec">&#9670;&nbsp;</a></span>read_only() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;typename T , typename Owner  = daw::use_default&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T &gt;::<a class="el" href="structdaw_1_1read__only.html">read_only</a> </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T, <a class="el" href="structdaw_1_1read__only.html#a6db4b17108293b4afbc669da9b5ca033">Owner</a> &gt;::<a class="el" href="structdaw_1_1read__only.html">read_only</a> </td>
           <td>(</td>
           <td class="paramtype">T &amp;&amp;&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__read__only_8h_source.html#l00042">42</a> of file <a class="el" href="daw__read__only_8h_source.html">daw_read_only.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__read__only_8h_source.html#l00043">43</a> of file <a class="el" href="daw__read__only_8h_source.html">daw_read_only.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ad39731fe7e34bc79be65cb0eb128b8be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad39731fe7e34bc79be65cb0eb128b8be">&#9670;&nbsp;</a></span>get()</h2>
+<a id="a9db6116b8105dfb822855ec4393792e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9db6116b8105dfb822855ec4393792e3">&#9670;&nbsp;</a></span>get() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;typename T , typename Owner  = daw::use_default&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1read__only.html#a2baf5e382f3148c25e993edb64bbfe5f">value_type</a> const&amp; <a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T &gt;::get </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1read__only.html#a21ab561834f533be684c21dc243c8ed5">value_type</a> const&amp;&amp; <a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T, <a class="el" href="structdaw_1_1read__only.html#a6db4b17108293b4afbc669da9b5ca033">Owner</a> &gt;::get </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td> const &amp;&amp;</td>
         </tr>
       </table>
   </td>
@@ -333,26 +333,26 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__read__only_8h_source.html#l00050">50</a> of file <a class="el" href="daw__read__only_8h_source.html">daw_read_only.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__read__only_8h_source.html#l00059">59</a> of file <a class="el" href="daw__read__only_8h_source.html">daw_read_only.h</a>.</p>
 
 </div>
 </div>
-<a id="a748258234be516023c7d8d39304de281"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a748258234be516023c7d8d39304de281">&#9670;&nbsp;</a></span>move_out()</h2>
+<a id="ae8bfce3df0e17aaf2eacff4610543c8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8bfce3df0e17aaf2eacff4610543c8b">&#9670;&nbsp;</a></span>get() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;typename T , typename Owner  = daw::use_default&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1read__only.html#a2baf5e382f3148c25e993edb64bbfe5f">value_type</a> <a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T &gt;::move_out </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1read__only.html#a21ab561834f533be684c21dc243c8ed5">value_type</a> const&amp; <a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T, <a class="el" href="structdaw_1_1read__only.html#a6db4b17108293b4afbc669da9b5ca033">Owner</a> &gt;::get </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const &amp;</td>
         </tr>
       </table>
   </td>
@@ -362,26 +362,26 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__read__only_8h_source.html#l00063">63</a> of file <a class="el" href="daw__read__only_8h_source.html">daw_read_only.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__read__only_8h_source.html#l00055">55</a> of file <a class="el" href="daw__read__only_8h_source.html">daw_read_only.h</a>.</p>
 
 </div>
 </div>
-<a id="a49a544b8a01d2e57444519f5c36e42eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a49a544b8a01d2e57444519f5c36e42eb">&#9670;&nbsp;</a></span>operator value_type const &amp;()</h2>
+<a id="ad27984512db4a01ec29785cbf37d0d40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad27984512db4a01ec29785cbf37d0d40">&#9670;&nbsp;</a></span>operator value_type const &amp;()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;typename T , typename Owner  = daw::use_default&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T &gt;::operator <a class="el" href="structdaw_1_1read__only.html#a2baf5e382f3148c25e993edb64bbfe5f">value_type</a> const &amp; </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T, <a class="el" href="structdaw_1_1read__only.html#a6db4b17108293b4afbc669da9b5ca033">Owner</a> &gt;::operator <a class="el" href="structdaw_1_1read__only.html#a21ab561834f533be684c21dc243c8ed5">value_type</a> const &amp; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td> const &amp;</td>
         </tr>
       </table>
   </td>
@@ -391,26 +391,26 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__read__only_8h_source.html#l00046">46</a> of file <a class="el" href="daw__read__only_8h_source.html">daw_read_only.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__read__only_8h_source.html#l00047">47</a> of file <a class="el" href="daw__read__only_8h_source.html">daw_read_only.h</a>.</p>
 
 </div>
 </div>
-<a id="acf9742815b6f0b82162fd57aaeb0b255"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acf9742815b6f0b82162fd57aaeb0b255">&#9670;&nbsp;</a></span>operator-&gt;()</h2>
+<a id="afe32d68354375737436d3bc13c9b7580"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe32d68354375737436d3bc13c9b7580">&#9670;&nbsp;</a></span>operator value_type const &amp;&amp;()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;typename T , typename Owner  = daw::use_default&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1read__only.html#a2baf5e382f3148c25e993edb64bbfe5f">value_type</a> const* <a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T &gt;::operator-&gt; </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T, <a class="el" href="structdaw_1_1read__only.html#a6db4b17108293b4afbc669da9b5ca033">Owner</a> &gt;::operator <a class="el" href="structdaw_1_1read__only.html#a21ab561834f533be684c21dc243c8ed5">value_type</a> const &amp;&amp; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td> const &amp;&amp;</td>
         </tr>
       </table>
   </td>
@@ -420,92 +420,26 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__read__only_8h_source.html#l00058">58</a> of file <a class="el" href="daw__read__only_8h_source.html">daw_read_only.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__read__only_8h_source.html#l00051">51</a> of file <a class="el" href="daw__read__only_8h_source.html">daw_read_only.h</a>.</p>
 
 </div>
 </div>
-<a id="aeed1ef1ef3b5e62f488443d83857a4bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeed1ef1ef3b5e62f488443d83857a4bf">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a6db4b17108293b4afbc669da9b5ca033"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6db4b17108293b4afbc669da9b5ca033">&#9670;&nbsp;</a></span>Owner</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
+template&lt;typename T , typename Owner  = daw::use_default&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1read__only.html">read_only</a>&amp; <a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T &gt;::operator= </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1read__only.html">read_only</a>&lt; T &gt; &amp;&amp;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td class="memname">friend <a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T, Owner &gt;::Owner</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="a2f01773c4b31a9f4899078b31d03e47c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f01773c4b31a9f4899078b31d03e47c">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1read__only.html">read_only</a>&amp; <a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T &gt;::operator= </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1read__only.html">read_only</a>&lt; T &gt; const &amp;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a6d1233a1044113c5777d689fd902b01e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d1233a1044113c5777d689fd902b01e">&#9670;&nbsp;</a></span>read_write()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1read__only.html#a2baf5e382f3148c25e993edb64bbfe5f">value_type</a>&amp; <a class="el" href="structdaw_1_1read__only.html">daw::read_only</a>&lt; T &gt;::read_write </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="daw__read__only_8h_source.html#l00054">54</a> of file <a class="el" href="daw__read__only_8h_source.html">daw_read_only.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__read__only_8h_source.html#l00025">25</a> of file <a class="el" href="daw__read__only_8h_source.html">daw_read_only.h</a>.</p>
 
 </div>
 </div>

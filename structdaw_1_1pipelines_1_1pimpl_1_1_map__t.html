@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>DAW Header Libraries: daw::pipelines::pimpl::Map_t&lt; Fn &gt; Struct Template Reference</title>
+<title>DAW Header Libraries: daw::pipelines::pimpl::Map_t&lt; Fn, Projection &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -71,42 +71,44 @@ $(function() {
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structdaw_1_1pipelines_1_1pimpl_1_1_map__t-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">daw::pipelines::pimpl::Map_t&lt; Fn &gt; Struct Template Reference</div>  </div>
+<div class="title">daw::pipelines::pimpl::Map_t&lt; Fn, Projection &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="map__view_8h_source.html">map_view.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="map_8h_source.html">map.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa9a37656fcaba1ececfa801740c785d3"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_map__t.html#aa9a37656fcaba1ececfa801740c785d3">operator()</a> (auto &amp;&amp;r) const</td></tr>
-<tr class="separator:aa9a37656fcaba1ececfa801740c785d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac864bc4b48949c5af2d51739d0e0c160"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_map__t.html#ac864bc4b48949c5af2d51739d0e0c160">operator()</a> (auto &amp;&amp;r) const</td></tr>
+<tr class="separator:ac864bc4b48949c5af2d51739d0e0c160"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a88573237d06b0a29f1f553b100a16c2c"><td class="memItemLeft" align="right" valign="top">Fn&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_map__t.html#a88573237d06b0a29f1f553b100a16c2c">m_func</a></td></tr>
-<tr class="separator:a88573237d06b0a29f1f553b100a16c2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1b59ea1815d4c766fd05bd5572c440d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#a7fd397a80efcdba7628bb7c8d2c0990c">DAW_NO_UNIQUE_ADDRESS</a> Fn&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_map__t.html#af1b59ea1815d4c766fd05bd5572c440d">m_func</a></td></tr>
+<tr class="separator:af1b59ea1815d4c766fd05bd5572c440d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac60730500d77458021ccd0568fe0d022"><td class="memItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#a7fd397a80efcdba7628bb7c8d2c0990c">DAW_NO_UNIQUE_ADDRESS</a> <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_map__t.html#ac60730500d77458021ccd0568fe0d022">m_projection</a> = <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a>{ }</td></tr>
+<tr class="separator:ac60730500d77458021ccd0568fe0d022"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename Fn&gt;<br />
-struct daw::pipelines::pimpl::Map_t&lt; Fn &gt;</h3>
+<div class="textblock"><h3>template&lt;typename Fn, typename Projection = std::identity&gt;<br />
+struct daw::pipelines::pimpl::Map_t&lt; Fn, Projection &gt;</h3>
 
 
-<p class="definition">Definition at line <a class="el" href="map__view_8h_source.html#l00204">204</a> of file <a class="el" href="map__view_8h_source.html">map_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="map_8h_source.html#l00231">231</a> of file <a class="el" href="map_8h_source.html">map.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa9a37656fcaba1ececfa801740c785d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9a37656fcaba1ececfa801740c785d3">&#9670;&nbsp;</a></span>operator()()</h2>
+<a id="ac864bc4b48949c5af2d51739d0e0c160"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac864bc4b48949c5af2d51739d0e0c160">&#9670;&nbsp;</a></span>operator()()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Fn &gt; </div>
+template&lt;typename Fn , typename Projection  = std::identity&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_map__t.html">daw::pipelines::pimpl::Map_t</a>&lt; Fn &gt;::operator() </td>
+          <td class="memname">constexpr auto <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_map__t.html">daw::pipelines::pimpl::Map_t</a>&lt; Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator() </td>
           <td>(</td>
           <td class="paramtype">auto &amp;&amp;&#160;</td>
           <td class="paramname"><em>r</em></td><td>)</td>
@@ -120,24 +122,24 @@ template&lt;typename Fn &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="map__view_8h_source.html#l00207">207</a> of file <a class="el" href="map__view_8h_source.html">map_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="map_8h_source.html#l00235">235</a> of file <a class="el" href="map_8h_source.html">map.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a88573237d06b0a29f1f553b100a16c2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a88573237d06b0a29f1f553b100a16c2c">&#9670;&nbsp;</a></span>m_func</h2>
+<a id="af1b59ea1815d4c766fd05bd5572c440d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1b59ea1815d4c766fd05bd5572c440d">&#9670;&nbsp;</a></span>m_func</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Fn &gt; </div>
+template&lt;typename Fn , typename Projection  = std::identity&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Fn <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_map__t.html">daw::pipelines::pimpl::Map_t</a>&lt; Fn &gt;::m_func</td>
+          <td class="memname"><a class="el" href="daw__attributes_8h.html#a7fd397a80efcdba7628bb7c8d2c0990c">DAW_NO_UNIQUE_ADDRESS</a> Fn <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_map__t.html">daw::pipelines::pimpl::Map_t</a>&lt; Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::m_func</td>
         </tr>
       </table>
   </td>
@@ -147,12 +149,30 @@ template&lt;typename Fn &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="map__view_8h_source.html#l00205">205</a> of file <a class="el" href="map__view_8h_source.html">map_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="map_8h_source.html#l00232">232</a> of file <a class="el" href="map_8h_source.html">map.h</a>.</p>
+
+</div>
+</div>
+<a id="ac60730500d77458021ccd0568fe0d022"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac60730500d77458021ccd0568fe0d022">&#9670;&nbsp;</a></span>m_projection</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Fn , typename Projection  = std::identity&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="daw__attributes_8h.html#a7fd397a80efcdba7628bb7c8d2c0990c">DAW_NO_UNIQUE_ADDRESS</a> <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_map__t.html">daw::pipelines::pimpl::Map_t</a>&lt; Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::m_projection = <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a>{ }</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="map_8h_source.html#l00233">233</a> of file <a class="el" href="map_8h_source.html">map.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="map__view_8h_source.html">map_view.h</a></li>
+<li><a class="el" href="map_8h_source.html">map.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

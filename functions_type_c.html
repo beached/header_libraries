@@ -96,6 +96,8 @@ $(function() {
 , <a class="el" href="classdaw_1_1keep__n.html#ad1ff4a27b3ee50c1700d93a9f201ba11">daw::keep_n&lt; T, MaxItems, Order, Predicate &gt;</a>
 , <a class="el" href="structdaw_1_1mixins_1_1_container_proxy.html#ab372aa6d86b80e5339f57b742565468d">daw::mixins::ContainerProxy&lt; Derived, ContainerType &gt;</a>
 , <a class="el" href="structdaw_1_1ordered__map.html#ae3d896f3ba38c50e21c10e4db80620e5">daw::ordered_map&lt; Key, Value, Compare, Allocator, Container &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1chunk__view.html#ab38b4ccb949ef7b311aa98747333a8bb">daw::pipelines::pimpl::chunk_view&lt; R &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1slide__view.html#a4e9d7d76dbc57cfe01b080e1be463fb0">daw::pipelines::pimpl::slide_view&lt; R &gt;</a>
 , <a class="el" href="structdaw_1_1range_1_1_collection_range.html#a77cf1831225b45bef2c5bcc4491a00c1">daw::range::CollectionRange&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1range_1_1_range.html#a163c7bb0ffae58fb0c0ee8b73e60ee7e">daw::range::Range&lt; Iterator &gt;</a>
 , <a class="el" href="classdaw_1_1range_1_1_reference_range.html#a50fd9d95eaa4e6cb1d0c7c9ecc724a44">daw::range::ReferenceRange&lt; Iterator &gt;</a>
@@ -163,8 +165,8 @@ $(function() {
 , <a class="el" href="structdaw_1_1unique__array__t.html#a969d990b3403e1c70d4e6bde00e4e100">daw::unique_array_t&lt; T &gt;</a>
 , <a class="el" href="structdaw_1_1validated.html#af7344ace683d445172aae3c96e347a1b">daw::validated&lt; T, Validator &gt;</a>
 , <a class="el" href="structdaw_1_1value__ptr.html#aebbd2485ea0eee3d86e3978cbc315c33">daw::value_ptr&lt; T, Compare &gt;</a>
-, <a class="el" href="structdaw_1_1vector.html#aa114294c6c1430b98af8cd71b22846b7">daw::vector&lt; T, Allocator &gt;</a>
 , <a class="el" href="structdaw_1_1_vector.html#ac856d19eee2dfe403a9197763df3449e">daw::Vector&lt; T, Alloc &gt;</a>
+, <a class="el" href="structdaw_1_1vector.html#aa114294c6c1430b98af8cd71b22846b7">daw::vector&lt; T, Allocator &gt;</a>
 , <a class="el" href="structdaw_1_1view.html#a60ed1ce418c684c9634413c4ab67e2c0">daw::view&lt; BidirectionalIterator &gt;</a>
 , <a class="el" href="structdaw_1_1zip__iterator.html#ad828354cb13489f4d2baeadc564b3c29">daw::zip_iterator&lt; Iterators &gt;</a>
 </li>
@@ -213,9 +215,12 @@ $(function() {
 , <a class="el" href="structdaw_1_1ordered__map.html#a165f6687ee68f536f5cc7036a4e16d0a">daw::ordered_map&lt; Key, Value, Compare, Allocator, Container &gt;</a>
 , <a class="el" href="structdaw_1_1perfect__hash__table.html#a71597f826f62254f2252230bfcb15534">daw::perfect_hash_table&lt; N, Key, Value, Hasher, KeyEqual &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#a5fa89fd17fb028735190574bab5136b6">daw::pipelines::concat_view&lt; Ranges &gt;</a>
-, <a class="el" href="structdaw_1_1pipelines_1_1filter__view.html#af13eb3e5fdfdf27423a1f64120906a33">daw::pipelines::filter_view&lt; Iterator, Filter &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1filter__view.html#a2199d44cdbb40d1f3adc118d5ef71b88">daw::pipelines::filter_view&lt; Iterator, Filter, Projection &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1iota__iterator.html#a5a10fdfd77bb8c6952f9e7a83449604a">daw::pipelines::iota_iterator&lt; T &gt;</a>
-, <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a778e390f59433b1477b51b0a3cbf399b">daw::pipelines::map_iterator&lt; Iterator, Function &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a00529b81ec26f9df0659f0d9462dcd44">daw::pipelines::map_iterator&lt; Iterator, Fn, Projection &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1chunk__view.html#ab4e4b078a85f41710cb277346f007475">daw::pipelines::pimpl::chunk_view&lt; R &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1flatten__view.html#a05d500e2e2608a16ae2c56aff422d36f">daw::pipelines::pimpl::flatten_view&lt; R &gt;</a>
+, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1slide__view.html#a68aee94421f7efaf53a8b9149bdb6dac">daw::pipelines::pimpl::slide_view&lt; R &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1sized__iterator_3_01_iterator_01_4.html#a8a77d1ae532557203fd7976dd5059ee9">daw::pipelines::sized_iterator&lt; Iterator &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1unique__view.html#a86c6b1d0d4f547e792733f027cd6f16d">daw::pipelines::unique_view&lt; Iterator &gt;</a>
 , <a class="el" href="structdaw_1_1pipelines_1_1zip__iterator.html#afff6ad76a97d511a6475ae0e0cb6fd27">daw::pipelines::zip_iterator&lt; Iterators &gt;</a>

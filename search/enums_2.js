@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hash_5fsentinals_5159',['hash_sentinals',['../structdaw_1_1static__hash__t.html#a5ff9cc0a10146ca6e474596bfcaf9810',1,'daw::static_hash_t']]]
+  ['fp_5fclasses_5294',['fp_classes',['../namespacedaw_1_1cxmath.html#a1fbf2614ecb56c28c2e46b2b682dd778',1,'daw::cxmath']]]
 ];

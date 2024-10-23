@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>DAW Header Libraries: daw::func::function_traits&lt; F &gt; Struct Template Reference</title>
+<title>DAW Header Libraries: daw::func::function_traits&lt; typename, typename &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -66,146 +66,17 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
-  <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#pub-types">Public Types</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="structdaw_1_1func_1_1function__traits-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">daw::func::function_traits&lt; F &gt; Struct Template Reference</div>  </div>
+<div class="title">daw::func::function_traits&lt; typename, typename &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p><code>#include &lt;<a class="el" href="daw__function__traits_8h_source.html">daw_function_traits.h</a>&gt;</code></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1func_1_1function__traits_1_1argument.html">argument</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:a5dc0bccc26e5d2a0b966f7322bb7e99b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1func_1_1function__traits.html#a5dc0bccc26e5d2a0b966f7322bb7e99b">params_t</a> = typename func_traits_impl::make_arg_pack&lt; <a class="el" href="structdaw_1_1func_1_1function__traits_1_1argument.html">argument</a>, std::make_index_sequence&lt; <a class="el" href="structdaw_1_1func_1_1function__traits.html#a2de460437c7e33c523e2d1d30e2c2085">arity</a> &gt; &gt;::type</td></tr>
-<tr class="separator:a5dc0bccc26e5d2a0b966f7322bb7e99b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa41327dc69d1932a99dcf8951eb2ec7b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1func_1_1function__traits.html#aa41327dc69d1932a99dcf8951eb2ec7b">plain_params_t</a> = typename func_traits_impl::make_arg_pack&lt; <a class="el" href="structdaw_1_1func_1_1function__traits_1_1argument.html">argument</a>, std::make_index_sequence&lt; <a class="el" href="structdaw_1_1func_1_1function__traits.html#a2de460437c7e33c523e2d1d30e2c2085">arity</a> &gt; &gt;::plain_type</td></tr>
-<tr class="separator:aa41327dc69d1932a99dcf8951eb2ec7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa177d01c761d162875ebbeaec97ccba"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1func_1_1function__traits.html#afa177d01c761d162875ebbeaec97ccba">plain_result_t</a> = <a class="el" href="namespacedaw_1_1traits.html#afa1db36e43191c99831fcea5a0d2a91d">daw::traits::remove_cvref_t</a>&lt; <a class="el" href="structdaw_1_1func_1_1function__traits.html#abfa1e838ac50c958efe5042e6fb5716d">result_t</a> &gt;</td></tr>
-<tr class="separator:afa177d01c761d162875ebbeaec97ccba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfa1e838ac50c958efe5042e6fb5716d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1func_1_1function__traits.html#abfa1e838ac50c958efe5042e6fb5716d">result_t</a> = typename <a class="el" href="structdaw_1_1func_1_1function__traits.html#abfa1e838ac50c958efe5042e6fb5716d">call_type::result_t</a></td></tr>
-<tr class="separator:abfa1e838ac50c958efe5042e6fb5716d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:a2de460437c7e33c523e2d1d30e2c2085"><td class="memItemLeft" align="right" valign="top">static constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1func_1_1function__traits.html#a2de460437c7e33c523e2d1d30e2c2085">arity</a> = call_type::arity - 1</td></tr>
-<tr class="separator:a2de460437c7e33c523e2d1d30e2c2085"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;class F&gt;<br />
-struct daw::func::function_traits&lt; F &gt;</h3>
+<div class="textblock"><h3>template&lt;typename, typename = void&gt;<br />
+struct daw::func::function_traits&lt; typename, typename &gt;</h3>
 
 
-<p class="definition">Definition at line <a class="el" href="daw__function__traits_8h_source.html#l00074">74</a> of file <a class="el" href="daw__function__traits_8h_source.html">daw_function_traits.h</a>.</p>
-</div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a5dc0bccc26e5d2a0b966f7322bb7e99b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5dc0bccc26e5d2a0b966f7322bb7e99b">&#9670;&nbsp;</a></span>params_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class F &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1func_1_1function__traits.html">daw::func::function_traits</a>&lt; F &gt;::<a class="el" href="structdaw_1_1func_1_1function__traits.html#a5dc0bccc26e5d2a0b966f7322bb7e99b">params_t</a> =  typename func_traits_impl:: make_arg_pack&lt;<a class="el" href="structdaw_1_1func_1_1function__traits_1_1argument.html">argument</a>, std::make_index_sequence&lt;<a class="el" href="structdaw_1_1func_1_1function__traits.html#a2de460437c7e33c523e2d1d30e2c2085">arity</a>&gt; &gt;::type</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="daw__function__traits_8h_source.html#l00092">92</a> of file <a class="el" href="daw__function__traits_8h_source.html">daw_function_traits.h</a>.</p>
-
-</div>
-</div>
-<a id="aa41327dc69d1932a99dcf8951eb2ec7b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa41327dc69d1932a99dcf8951eb2ec7b">&#9670;&nbsp;</a></span>plain_params_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class F &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1func_1_1function__traits.html">daw::func::function_traits</a>&lt; F &gt;::<a class="el" href="structdaw_1_1func_1_1function__traits.html#aa41327dc69d1932a99dcf8951eb2ec7b">plain_params_t</a> =  typename func_traits_impl:: make_arg_pack&lt;<a class="el" href="structdaw_1_1func_1_1function__traits_1_1argument.html">argument</a>, std::make_index_sequence&lt;<a class="el" href="structdaw_1_1func_1_1function__traits.html#a2de460437c7e33c523e2d1d30e2c2085">arity</a>&gt; &gt;::plain_type</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="daw__function__traits_8h_source.html#l00094">94</a> of file <a class="el" href="daw__function__traits_8h_source.html">daw_function_traits.h</a>.</p>
-
-</div>
-</div>
-<a id="afa177d01c761d162875ebbeaec97ccba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa177d01c761d162875ebbeaec97ccba">&#9670;&nbsp;</a></span>plain_result_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class F &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1func_1_1function__traits.html">daw::func::function_traits</a>&lt; F &gt;::<a class="el" href="structdaw_1_1func_1_1function__traits.html#afa177d01c761d162875ebbeaec97ccba">plain_result_t</a> =  <a class="el" href="namespacedaw_1_1traits.html#afa1db36e43191c99831fcea5a0d2a91d">daw::traits::remove_cvref_t</a>&lt;<a class="el" href="structdaw_1_1func_1_1function__traits.html#abfa1e838ac50c958efe5042e6fb5716d">result_t</a>&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="daw__function__traits_8h_source.html#l00081">81</a> of file <a class="el" href="daw__function__traits_8h_source.html">daw_function_traits.h</a>.</p>
-
-</div>
-</div>
-<a id="abfa1e838ac50c958efe5042e6fb5716d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abfa1e838ac50c958efe5042e6fb5716d">&#9670;&nbsp;</a></span>result_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class F &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1func_1_1function__traits.html">daw::func::function_traits</a>&lt; F &gt;::<a class="el" href="structdaw_1_1func_1_1function__traits.html#abfa1e838ac50c958efe5042e6fb5716d">result_t</a> =  typename <a class="el" href="structdaw_1_1func_1_1function__traits.html#abfa1e838ac50c958efe5042e6fb5716d">call_type::result_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="daw__function__traits_8h_source.html#l00080">80</a> of file <a class="el" href="daw__function__traits_8h_source.html">daw_function_traits.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a2de460437c7e33c523e2d1d30e2c2085"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2de460437c7e33c523e2d1d30e2c2085">&#9670;&nbsp;</a></span>arity</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class F &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr std::size_t <a class="el" href="structdaw_1_1func_1_1function__traits.html">daw::func::function_traits</a>&lt; F &gt;::arity = call_type::arity - 1</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="daw__function__traits_8h_source.html#l00083">83</a> of file <a class="el" href="daw__function__traits_8h_source.html">daw_function_traits.h</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<p class="definition">Definition at line <a class="el" href="daw__function__traits_8h_source.html#l00034">34</a> of file <a class="el" href="daw__function__traits_8h_source.html">daw_function_traits.h</a>.</p>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="daw__function__traits_8h_source.html">daw_function_traits.h</a></li>
 </ul>
 </div><!-- contents -->

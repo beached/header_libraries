@@ -157,18 +157,18 @@ $(function() {
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    }</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
 <div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="structdaw_1_1_random_iterator.html#ac05bb0bd5c5064aa929ddd153d9017af">   87</a></span>&#160;    constexpr <a class="code" href="structdaw_1_1_random_iterator.html">RandomIterator</a> <a class="code" href="structdaw_1_1_random_iterator.html#ac05bb0bd5c5064aa929ddd153d9017af">operator+</a>( std::ptrdiff_t <span class="keyword">const</span> &amp;n ) noexcept {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      <span class="keyword">auto</span> old = this-&gt;m_ptr;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      this-&gt;m_ptr += n;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      <span class="keyword">auto</span> old = this-&gt;m_pointer;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      this-&gt;m_pointer += n;</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      <span class="keyword">auto</span> temp{ *<span class="keyword">this</span> };</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      this-&gt;m_ptr = old;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      this-&gt;m_pointer = old;</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;      <span class="keywordflow">return</span> temp;</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    }</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
 <div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="structdaw_1_1_random_iterator.html#affb080411d99096cde84183e4c8535cb">   95</a></span>&#160;    constexpr <a class="code" href="structdaw_1_1_random_iterator.html">RandomIterator</a> <a class="code" href="structdaw_1_1_random_iterator.html#affb080411d99096cde84183e4c8535cb">operator-</a>( std::ptrdiff_t <span class="keyword">const</span> &amp;n ) noexcept {</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      <span class="keyword">auto</span> old = this-&gt;m_ptr;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      this-&gt;m_ptr -= n;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      <span class="keyword">auto</span> old = this-&gt;m_pointer;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      this-&gt;m_pointer -= n;</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      <span class="keyword">auto</span> temp{ *<span class="keyword">this</span> };</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      this-&gt;m_ptr = old;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      this-&gt;m_pointer = old;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      <span class="keywordflow">return</span> temp;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    }</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
@@ -220,7 +220,7 @@ $(function() {
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  }</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;} <span class="comment">// namespace daw</span></div>
 <div class="ttc" id="aciso646_8h_html"><div class="ttname"><a href="ciso646_8h.html">ciso646.h</a></div></div>
-<div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm__accumulate_8h_source.html#l00017">daw_algorithm_accumulate.h:17</a></div></div>
+<div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provides structs for wrapping function pointers and callable objects to facilitate function overloadi...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm__accumulate_8h_source.html#l00017">daw_algorithm_accumulate.h:17</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ac7ddb704af08b18d876f7b0c4dcd34a3"><div class="ttname"><a href="namespacedaw.html#ac7ddb704af08b18d876f7b0c4dcd34a3">daw::make_random_iterator</a></div><div class="ttdeci">constexpr auto make_random_iterator(T *const ptr) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__random__iterator_8h_source.html#l00140">daw_random_iterator.h:140</a></div></div>
 <div class="ttc" id="anamespacedaw_html_acd5426b69715c87fc200a39548cd24b3"><div class="ttname"><a href="namespacedaw.html#acd5426b69715c87fc200a39548cd24b3">daw::make_const_random_iterator</a></div><div class="ttdeci">constexpr auto make_const_random_iterator(T *const ptr) noexcept</div><div class="ttdef"><b>Definition:</b> <a href="daw__random__iterator_8h_source.html#l00146">daw_random_iterator.h:146</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ad8a64a646f74d139a882242dceee804e"><div class="ttname"><a href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">daw::nodiscard</a></div><div class="ttdeci">constexpr auto nodiscard</div><div class="ttdef"><b>Definition:</b> <a href="daw__view__tags_8h_source.html#l00015">daw_view_tags.h:15</a></div></div>

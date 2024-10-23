@@ -94,7 +94,7 @@ $(function() {
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">template</span>&lt;&gt;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">struct </span>select&lt;false&gt; {</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;      <span class="keyword">template</span>&lt;<span class="keyword">typename</span>, <span class="keyword">typename</span> F&gt;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;      <span class="keyword">using</span> type = F;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;      <span class="keyword">using</span> type = <a class="code" href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">F</a>;</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    };</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  } <span class="comment">// namespace traits_details</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
@@ -102,7 +102,8 @@ $(function() {
 <div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">   30</a></span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a> =</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">typename</span> traits_details::select&lt;B&gt;::template type&lt;TrueType, FalseType&gt;;</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;} <span class="comment">// namespace daw</span></div>
-<div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provide a class to validate a type T after construction Validator must return true if the value is va...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm__accumulate_8h_source.html#l00017">daw_algorithm_accumulate.h:17</a></div></div>
+<div class="ttc" id="anamespacedaw_1_1pipelines_html_a3ce6879c3ab65e0adc450edf9222c2f6"><div class="ttname"><a href="namespacedaw_1_1pipelines.html#a3ce6879c3ab65e0adc450edf9222c2f6">daw::pipelines::F</a></div><div class="ttdeci">F</div><div class="ttdef"><b>Definition:</b> <a href="map_8h_source.html#l00219">map.h:219</a></div></div>
+<div class="ttc" id="anamespacedaw_html"><div class="ttname"><a href="namespacedaw.html">daw</a></div><div class="ttdoc">Provides structs for wrapping function pointers and callable objects to facilitate function overloadi...</div><div class="ttdef"><b>Definition:</b> <a href="daw__algorithm__accumulate_8h_source.html#l00017">daw_algorithm_accumulate.h:17</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ad0ba831f2a45892800d8f98fe6105f35"><div class="ttname"><a href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">daw::conditional_t</a></div><div class="ttdeci">typename traits_details::select&lt; B &gt;::template type&lt; TrueType, FalseType &gt; conditional_t</div><div class="ttdef"><b>Definition:</b> <a href="daw__traits__conditional_8h_source.html#l00030">daw_traits_conditional.h:31</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
