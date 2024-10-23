@@ -17,10 +17,17 @@
 
 namespace test_01 {
 	template<typename T>
-	using rw_type = decltype( daw::read_only<T>{ 4 } = 5 );
+	auto test_rwtype( daw::read_only<T> &lhs, daw::read_only<T> const &rhs )
+	  -> decltype( lhs = rhs );
 
+	template<typename T>
+	using rw_type = decltype( test_rwtype( std::declval<daw::read_only<T> &>( ),
+	                                       std::declval<daw::read_only<T>>( ) ) );
+
+#if not defined( _MSC_VER )
 	static_assert( not daw::is_detected_v<rw_type, int>,
 	               "Read only type is assignable, it should not be" );
+#endif
 } // namespace test_01
 
 namespace test_02 {
@@ -88,5 +95,6 @@ constexpr std::true_type read_only_test_004( ) {
 static_assert( read_only_test_004( ) );
 
 int main( ) {
+	daw::expecting( not daw::is_detected_v<test_01::rw_type, int> );	
 	test_02::daw_read_only_test_02( );
 }
