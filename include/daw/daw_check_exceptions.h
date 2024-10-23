@@ -48,7 +48,7 @@ namespace daw::check_except_detail {
 		}
 
 		template<typename>
-		[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE void terminate_error( ) {
+		[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE inline void terminate_error( ) {
 			std::terminate( );
 		}
 	} // namespace
@@ -61,7 +61,7 @@ namespace daw::check_except_detail {
 	::daw::check_except_detail::throw_error( ExceptionType{ } )
 #else
 #define DAW_THROW_OR_TERMINATE( ExceptionType, ... ) \
-	::daw::check_except_detail::terminate_error<ExceptionType>( )
+	::daw::check_except_detail::terminate_error( )
 #define DAW_THROW_OR_TERMINATE_NA( ExceptionType ) \
-	::daw::check_except_detail::terminate_error<ExceptionType>( )
+	::daw::check_except_detail::terminate_error( )
 #endif

@@ -10,6 +10,8 @@
 
 #include "daw/daw_arith_traits.h"
 #include "daw/daw_attributes.h"
+#include "daw/daw_check_exceptions.h"
+#include "daw/daw_cpp_feature_check.h"
 
 #include <exception>
 #include <memory>
@@ -34,7 +36,7 @@ namespace daw::integers {
 
 	namespace sint_impl {
 		inline auto &get_signed_integer_overflow_handler( ) {
-			static struct handler_t {
+			static DAW_CONSTINIT struct handler_t {
 				signed_int_error_handler_t cb = nullptr;
 				void *data = nullptr;
 			} handler{ };
@@ -42,7 +44,7 @@ namespace daw::integers {
 		}
 
 		inline auto &get_signed_integer_div_by_zero_handler( ) {
-			static struct handler_t {
+			static DAW_CONSTINIT struct handler_t {
 				signed_int_error_handler_t cb = nullptr;
 				void *data = nullptr;
 			} handler{ };
@@ -50,6 +52,8 @@ namespace daw::integers {
 		}
 	} // namespace sint_impl
 
+	/// Caller is responsible for ensuring that this is called in a context that
+	/// protects against multiple threads accessing/writing at the same time
 	DAW_ATTRIB_NOINLINE inline void register_signed_overflow_handler(
 	  signed_int_error_handler_t handler = nullptr,
 	  void *data = nullptr ) noexcept {
@@ -57,6 +61,8 @@ namespace daw::integers {
 		sint_impl::get_signed_integer_overflow_handler( ).data = data;
 	}
 
+	/// Caller is responsible for ensuring that this is called in a context that
+	/// protects against multiple threads accessing/writing at the same time
 	template<typename Func,
 	         std::enable_if_t<std::is_class_v<Func> and
 	                            std::is_invocable_v<Func, SignedIntegerErrorType>,
@@ -79,6 +85,8 @@ namespace daw::integers {
 		}
 	}
 
+	/// Caller is responsible for ensuring that this is called in a context that
+	/// protects against multiple threads accessing/writing at the same time
 	DAW_ATTRIB_NOINLINE inline void register_signed_div_by_zero_handler(
 	  signed_int_error_handler_t handler = nullptr,
 	  void *data = nullptr ) noexcept {
@@ -86,6 +94,8 @@ namespace daw::integers {
 		sint_impl::get_signed_integer_div_by_zero_handler( ).data = data;
 	}
 
+	/// Caller is responsible for ensuring that this is called in a context that
+	/// protects against multiple threads accessing/writing at the same time
 	template<typename Func,
 	         std::enable_if_t<std::is_class_v<Func> and
 	                            std::is_invocable_v<Func, SignedIntegerErrorType>,
@@ -117,7 +127,7 @@ namespace daw::integers {
 			handler.cb( handler.data, SignedIntegerErrorType::Overflow );
 			return;
 		}
-		throw signed_integer_overflow_exception( );
+		DAW_THROW_OR_TERMINATE_NA( signed_integer_overflow_exception );
 	}
 
 	DAW_ATTRIB_NOINLINE inline void on_signed_integer_div_by_zero( ) {
@@ -126,6 +136,6 @@ namespace daw::integers {
 			handler.cb( handler.data, SignedIntegerErrorType::DivideByZero );
 			return;
 		}
-		throw signed_integer_div_by_zero_exception( );
+		DAW_THROW_OR_TERMINATE_NA( signed_integer_div_by_zero_exception );
 	}
 } // namespace daw::integers

@@ -160,3 +160,14 @@ inline constexpr bool daw_has_cx_cmath = false;
 #define DAW_HAS_CPP_CONSTEVAL
 #endif
 #endif
+
+#if defined( __cpp_constinit )
+#if __cpp_constinit >= 201907L
+#define DAW_HAS_CPP_CONSTINIT
+#define DAW_CONSTINIT constinit
+#endif
+#endif
+
+#if not defined( DAW_CONSTINIT )
+#define DAW_CONSTINIT
+#endif
