@@ -17,7 +17,9 @@ namespace daw::pipelines::pimpl {
 
 		template<typename R>
 		[[nodiscard]] constexpr auto operator( )( R &&r ) const {
-			if constexpr( Range<R> ) {
+				static_assert( Range<R>,
+				               "Every requires the previous algorithm in the pipeline "
+				               "to return a range" );
 				return filter_view{ std::begin( DAW_FWD( r ) ),
 				                    std::end( DAW_FWD( r ) ),
 				                    [select_every = m_select_every,
@@ -26,14 +28,9 @@ namespace daw::pipelines::pimpl {
 						                    n = 1;
 						                    return true;
 					                    }
-					                    ++n;
+		   			                  ++n;
 					                    return false;
 				                    } };
-			} else {
-				static_assert( Range<R>,
-				               "Every requires the previous algorithm in the pipeline "
-				               "to return a range" );
-			}
 		}
 	};
 } // namespace daw::pipelines::pimpl
