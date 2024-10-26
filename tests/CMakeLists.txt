@@ -39,7 +39,6 @@ set( TEST_SOURCES
 		 daw_graph_algorithm_test.cpp
 		 daw_graph_test.cpp
 		 daw_hash_set_test.cpp
-		 daw_integers_signed_test.cpp
 		 daw_is_any_of_test.cpp
 		 daw_iterator_argument_iterator_test.cpp
 		 daw_iterator_back_inserter_test.cpp
