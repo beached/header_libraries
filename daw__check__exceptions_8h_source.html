@@ -120,7 +120,7 @@ $(function() {
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    }</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span>&gt;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    [[noreturn, maybe_unused]] <a class="code" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> <span class="keywordtype">void</span> terminate_error( ) {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    [[noreturn, maybe_unused]] <a class="code" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> <span class="keyword">inline</span> <span class="keywordtype">void</span> terminate_error( ) {</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      std::terminate( );</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  } <span class="comment">// namespace</span></div>
@@ -133,9 +133,9 @@ $(function() {
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">  ::daw::check_except_detail::throw_error( ExceptionType{ } )</span></div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#else</span></div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#define DAW_THROW_OR_TERMINATE( ExceptionType, ... ) \</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">  ::daw::check_except_detail::terminate_error&lt;ExceptionType&gt;( )</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">  ::daw::check_except_detail::terminate_error( )</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#define DAW_THROW_OR_TERMINATE_NA( ExceptionType ) \</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">  ::daw::check_except_detail::terminate_error&lt;ExceptionType&gt;( )</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">  ::daw::check_except_detail::terminate_error( )</span></div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aciso646_8h_html"><div class="ttname"><a href="ciso646_8h.html">ciso646.h</a></div></div>
 <div class="ttc" id="adaw__attributes_8h_html"><div class="ttname"><a href="daw__attributes_8h.html">daw_attributes.h</a></div></div>
