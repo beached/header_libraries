@@ -6,12 +6,12 @@
 
 #pragma once
 
-#include "compressed_pair.h"
-#include "daw_check_exceptions.h"
-#include "daw_concepts.h"
-#include "daw_exception.h"
-#include "daw_exchange.h"
-#include "daw_move.h"
+#include "daw/compressed_pair.h"
+#include "daw/daw_check_exceptions.h"
+#include "daw/daw_concepts.h"
+#include "daw/daw_exception.h"
+#include "daw/daw_exchange.h"
+#include "daw/daw_move.h"
 
 #include <algorithm>
 #include <type_traits>

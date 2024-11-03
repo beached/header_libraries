@@ -14,7 +14,7 @@
 #include "algorithms/daw_algorithm_find.h"
 #include "ciso646.h"
 #include "daw_assume.h"
-#include "daw_check_exceptions.h"
+#include "daw/daw_check_exceptions.h"
 #include "daw_compiler_fixups.h"
 #include "daw_consteval.h"
 #include "daw_cpp_feature_check.h"
