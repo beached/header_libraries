@@ -36,22 +36,20 @@
 #endif
 
 namespace daw::check_except_detail {
-	namespace {
-		template<typename Exception>
-		[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE void
-		throw_error( Exception &&except ) {
+	template<typename Exception>
+	[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE void
+	throw_error( Exception &&except ) {
 #if defined( DAW_USE_EXCEPTIONS )
-			throw DAW_FWD( except );
+		throw DAW_FWD( except );
 #else
-			(void)except;
+		(void)except;
 #endif
-		}
+	}
 
-		template<typename>
-		[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE inline void terminate_error( ) {
-			std::terminate( );
-		}
-	} // namespace
+	[[noreturn, maybe_unused]] DAW_ATTRIB_NOINLINE inline void
+	terminate_error( ) {
+		std::terminate( );
+	}
 } // namespace daw::check_except_detail
 
 #if defined( DAW_USE_EXCEPTIONS )
