@@ -72,9 +72,7 @@ $(function() {
 <div class="title">daw_assume.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>&quot;</code><br />
-<code>#include &lt;cassert&gt;</code><br />
-<code>#include &lt;exception&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="daw__unreachable_8h_source.html">daw_unreachable.h</a>&quot;</code><br />
 </div>
 <p><a href="daw__assume_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -101,11 +99,11 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">do</span> {                             \</div>
 <div class="line">    if( not( ( __VA_ARGS__ ) ) ) { \</div>
-<div class="line">      std::terminate( );           \</div>
+<div class="line">      DAW_UNREACHABLE( );          \</div>
 <div class="line">    }                              \</div>
 <div class="line">  } <span class="keywordflow">while</span>( <span class="keyword">false</span> )</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__assume_8h_source.html#l00035">35</a> of file <a class="el" href="daw__assume_8h_source.html">daw_assume.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__assume_8h_source.html#l00023">23</a> of file <a class="el" href="daw__assume_8h_source.html">daw_assume.h</a>.</p>
 
 </div>
 </div>

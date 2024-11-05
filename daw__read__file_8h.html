@@ -76,15 +76,15 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="ciso646_8h_source.html">ciso646.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw_move.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__attributes_8h_source.html">daw_attributes.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__typeof_8h_source.html">daw_typeof.h</a>&quot;</code><br />
+<code>#include &lt;cstdio&gt;</code><br />
 <code>#include &lt;exception&gt;</code><br />
-<code>#include &lt;fstream&gt;</code><br />
+<code>#include &lt;filesystem&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
-<code>#include &lt;iterator&gt;</code><br />
 <code>#include &lt;optional&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 </div>
 <p><a href="daw__read__file_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -101,12 +101,11 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a07e376e725c2f74dd89e0a4611d3ee09"><td class="memTemplParams" colspan="2">template&lt;typename String &gt; </td></tr>
-<tr class="memitem:a07e376e725c2f74dd89e0a4611d3ee09"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::string &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a07e376e725c2f74dd89e0a4611d3ee09">daw::read_file</a> (String &amp;&amp;path)</td></tr>
-<tr class="separator:a07e376e725c2f74dd89e0a4611d3ee09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5c40b1b9ee1785cae50718c0e5fb72c"><td class="memTemplParams" colspan="2">template&lt;typename String &gt; </td></tr>
-<tr class="memitem:aa5c40b1b9ee1785cae50718c0e5fb72c"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa5c40b1b9ee1785cae50718c0e5fb72c">daw::read_file</a> (String &amp;&amp;path, terminate_on_read_file_error_t)</td></tr>
-<tr class="separator:aa5c40b1b9ee1785cae50718c0e5fb72c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22dcd895417ba4185b3cd5e7a7f95a7e"><td class="memTemplParams" colspan="2">template&lt;typename CharT  = char&gt; </td></tr>
+<tr class="memitem:a22dcd895417ba4185b3cd5e7a7f95a7e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> std::optional&lt; std::basic_string&lt; CharT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a22dcd895417ba4185b3cd5e7a7f95a7e">daw::read_file</a> (std::string const &amp;path) noexcept</td></tr>
+<tr class="separator:a22dcd895417ba4185b3cd5e7a7f95a7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68a6ce93c2c8974d284352e82bd88780"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a68a6ce93c2c8974d284352e82bd88780">daw::read_file</a> (std::string const &amp;path, terminate_on_read_file_error_t) noexcept</td></tr>
+<tr class="separator:a68a6ce93c2c8974d284352e82bd88780"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>

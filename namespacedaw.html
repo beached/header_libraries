@@ -3862,12 +3862,11 @@ Functions</h2></td></tr>
 <tr class="separator:ad8c666f317b261fe086de920780e71b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82daacb90f394bcef7b324482214e9af"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structdaw_1_1reverse__iterator.html">reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a82daacb90f394bcef7b324482214e9af">rbegin</a> () noexcept</td></tr>
 <tr class="separator:a82daacb90f394bcef7b324482214e9af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07e376e725c2f74dd89e0a4611d3ee09"><td class="memTemplParams" colspan="2">template&lt;typename String &gt; </td></tr>
-<tr class="memitem:a07e376e725c2f74dd89e0a4611d3ee09"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::string &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a07e376e725c2f74dd89e0a4611d3ee09">read_file</a> (<a class="el" href="namespacedaw.html#a8cf6cf09ea1d790653ac648d7ae5470f">String</a> &amp;&amp;path)</td></tr>
-<tr class="separator:a07e376e725c2f74dd89e0a4611d3ee09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5c40b1b9ee1785cae50718c0e5fb72c"><td class="memTemplParams" colspan="2">template&lt;typename String &gt; </td></tr>
-<tr class="memitem:aa5c40b1b9ee1785cae50718c0e5fb72c"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa5c40b1b9ee1785cae50718c0e5fb72c">read_file</a> (<a class="el" href="namespacedaw.html#a8cf6cf09ea1d790653ac648d7ae5470f">String</a> &amp;&amp;path, <a class="el" href="structdaw_1_1terminate__on__read__file__error__t.html">terminate_on_read_file_error_t</a>)</td></tr>
-<tr class="separator:aa5c40b1b9ee1785cae50718c0e5fb72c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22dcd895417ba4185b3cd5e7a7f95a7e"><td class="memTemplParams" colspan="2">template&lt;typename CharT  = char&gt; </td></tr>
+<tr class="memitem:a22dcd895417ba4185b3cd5e7a7f95a7e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> std::optional&lt; std::basic_string&lt; CharT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a22dcd895417ba4185b3cd5e7a7f95a7e">read_file</a> (std::string const &amp;path) noexcept</td></tr>
+<tr class="separator:a22dcd895417ba4185b3cd5e7a7f95a7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68a6ce93c2c8974d284352e82bd88780"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a68a6ce93c2c8974d284352e82bd88780">read_file</a> (std::string const &amp;path, <a class="el" href="structdaw_1_1terminate__on__read__file__error__t.html">terminate_on_read_file_error_t</a>) noexcept</td></tr>
+<tr class="separator:a68a6ce93c2c8974d284352e82bd88780"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef4a29ab0bcfdbca27fe67ed7ae5be9d"><td class="memTemplParams" colspan="2">template&lt;typename T , typename  = void&gt; </td></tr>
 <tr class="memitem:aef4a29ab0bcfdbca27fe67ed7ae5be9d"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aef4a29ab0bcfdbca27fe67ed7ae5be9d">ref</a> (T const &amp;value)</td></tr>
 <tr class="separator:aef4a29ab0bcfdbca27fe67ed7ae5be9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -12268,7 +12267,7 @@ template&lt;typename Result , typename Function , typename... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00397">397</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00405">405</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -12300,7 +12299,7 @@ template&lt;typename Function , typename... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00409">409</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00417">417</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -12321,7 +12320,7 @@ template&lt;typename Result &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00417">417</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00425">425</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -12343,7 +12342,7 @@ template&lt;typename Result &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00423">423</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__expected_8h_source.html#l00431">431</a> of file <a class="el" href="daw__expected_8h_source.html">daw_expected.h</a>.</p>
 
 </div>
 </div>
@@ -46846,40 +46845,49 @@ template&lt;typename IntType , typename ItValueType  = IntType, typename Forward
 
 </div>
 </div>
-<a id="a07e376e725c2f74dd89e0a4611d3ee09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07e376e725c2f74dd89e0a4611d3ee09">&#9670;&nbsp;</a></span>read_file() <span class="overload">[1/2]</span></h2>
+<a id="a22dcd895417ba4185b3cd5e7a7f95a7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22dcd895417ba4185b3cd5e7a7f95a7e">&#9670;&nbsp;</a></span>read_file() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename String &gt; </div>
+template&lt;typename CharT  = char&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt;std::string&gt; daw::read_file </td>
+          <td class="memname"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> std::optional&lt;std::basic_string&lt;CharT&gt; &gt; daw::read_file </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacedaw.html#a8cf6cf09ea1d790653ac648d7ae5470f">String</a> &amp;&amp;&#160;</td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
           <td class="paramname"><em>path</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__read__file_8h_source.html#l00025">25</a> of file <a class="el" href="daw__read__file_8h_source.html">daw_read_file.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__read__file_8h_source.html#l00026">26</a> of file <a class="el" href="daw__read__file_8h_source.html">daw_read_file.h</a>.</p>
 
 </div>
 </div>
-<a id="aa5c40b1b9ee1785cae50718c0e5fb72c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa5c40b1b9ee1785cae50718c0e5fb72c">&#9670;&nbsp;</a></span>read_file() <span class="overload">[2/2]</span></h2>
+<a id="a68a6ce93c2c8974d284352e82bd88780"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68a6ce93c2c8974d284352e82bd88780">&#9670;&nbsp;</a></span>read_file() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename String &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::string daw::read_file </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacedaw.html#a8cf6cf09ea1d790653ac648d7ae5470f">String</a> &amp;&amp;&#160;</td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
           <td class="paramname"><em>path</em>, </td>
         </tr>
         <tr>
@@ -46894,9 +46902,14 @@ template&lt;typename String &gt; </div>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__read__file_8h_source.html#l00049">49</a> of file <a class="el" href="daw__read__file_8h_source.html">daw_read_file.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__read__file_8h_source.html#l00047">47</a> of file <a class="el" href="daw__read__file_8h_source.html">daw_read_file.h</a>.</p>
 
 </div>
 </div>
@@ -56783,7 +56796,7 @@ template&lt;auto... vals&gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    terminate_on_read_file_error_t{ }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__read__file_8h_source.html#l00045">45</a> of file <a class="el" href="daw__read__file_8h_source.html">daw_read_file.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__read__file_8h_source.html#l00044">44</a> of file <a class="el" href="daw__read__file_8h_source.html">daw_read_file.h</a>.</p>
 
 </div>
 </div>
