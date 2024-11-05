@@ -79,7 +79,7 @@ namespace daw {
 	            terminate_on_read_file_error_t ) noexcept {
 		auto result = read_wfile( path );
 		if( not result ) {
-			std::cerr << "Error: could not open file '" << path << "'\n";
+			std::wcerr << L"Error: could not open file '" << path << L'\n';
 			std::terminate( );
 		}
 		return *result;
