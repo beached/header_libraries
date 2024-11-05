@@ -115,3 +115,9 @@
 #else
 #define DAW_PREF_NAME( ... )
 #endif
+
+#if defined( DAW_HAS_GCC_LIKE )
+#define DAW_ATTRIB_RETNOTNULL [[gnu::returns_nonnull]]
+#else
+#define DAW_ATTRIB_RETNOTNULL
+#endif

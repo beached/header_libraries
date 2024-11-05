@@ -8,35 +8,22 @@
 
 #pragma once
 
-#include "daw_cpp_feature_check.h"
-
-#include <cassert>
+#include "daw_unreachable.h"
 
 #if defined( DEBUG )
-
-#define DAW_ASSUME( ... ) assert( ( __VA_ARGS__ ) )
-
-#elif DAW_HAS_BUILTIN( __builtin_unreachable ) or \
-  ( defined( __GNUC__ ) and not defined( __ICC ) ) or defined( __clang__ )
-
+#include <cassert>
 #define DAW_ASSUME( ... )          \
 	do {                             \
 		if( not( ( __VA_ARGS__ ) ) ) { \
-			__builtin_unreachable( );    \
+			assert( ( __VA_ARGS__ ) );   \
+			DAW_UNREACHABLE( );          \
 		}                              \
 	} while( false )
-
-#elif defined( _MSC_VER ) or defined( __ICC )
-#define DAW_ASSUME( ... ) __assume( !!( ( __VA_ARGS__ ) ) )
-
 #else
-
-#include <exception>
 #define DAW_ASSUME( ... )          \
 	do {                             \
 		if( not( ( __VA_ARGS__ ) ) ) { \
-			std::terminate( );           \
+			DAW_UNREACHABLE( );          \
 		}                              \
 	} while( false )
-
 #endif

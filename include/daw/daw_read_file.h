@@ -9,45 +9,44 @@
 #pragma once
 
 #include "ciso646.h"
-#include "daw_move.h"
+#include "daw_attributes.h"
 #include "daw_traits.h"
-#include "daw_typeof.h"
 
+#include <cstdio>
 #include <exception>
-#include <fstream>
+#include <filesystem>
 #include <iostream>
-#include <iterator>
 #include <optional>
 #include <string>
+#include <utility>
 
 namespace daw {
-	template<typename String>
-	std::optional<std::string> read_file( String &&path ) {
-		using CharT = char;
-		using result_t = std::optional<std::string>;
-		CharT const *ptr = [&] {
-			if constexpr( std::is_pointer_v<DAW_TYPEOF( path )> ) {
-				return path;
-			} else {
-				return std::data( path );
-			}
-		}( );
-		auto in_file = std::basic_ifstream<CharT>( ptr );
-		if( not in_file ) {
-			return result_t{ };
+	template<typename CharT = char>
+	DAW_ATTRIB_NOINLINE std::optional<std::basic_string<CharT>>
+	read_file( std::string const &path ) noexcept {
+		auto const fsize = std::filesystem::file_size( path );
+		if( fsize == 0 ) {
+			return std::basic_string<CharT>{ };
 		}
-		auto first = std::istreambuf_iterator<CharT>( in_file );
-		auto last = std::istreambuf_iterator<CharT>( );
-		return result_t( std::in_place, first, last );
+		auto result = std::basic_string<CharT>( fsize, CharT{ } );
+		auto *f = fopen( path.c_str( ), "rb" );
+		if( not f ) {
+			return std::nullopt;
+		}
+		auto num_read = fread( result.data( ), sizeof( CharT ), result.size( ), f );
+		if( num_read != ( result.size( ) / sizeof( CharT ) ) ) {
+			return std::nullopt;
+		}
+		return result;
 	}
 
 	struct terminate_on_read_file_error_t {};
 	inline constexpr auto terminate_on_read_file_error =
 	  terminate_on_read_file_error_t{ };
 
-	template<typename String>
-	std::string read_file( String &&path, terminate_on_read_file_error_t ) {
-		auto result = read_file( DAW_FWD( path ) );
+	inline std::string read_file( std::string const &path,
+	                              terminate_on_read_file_error_t ) noexcept {
+		auto result = read_file( path );
 		if( not result ) {
 			std::cerr << "Error: could not open file '" << path << "'\n";
 			std::terminate( );
@@ -56,29 +55,29 @@ namespace daw {
 	}
 
 #if defined( _MSC_VER )
-	template<typename String>
-	std::optional<std::wstring> read_wfile( String &&path ) {
+	DAW_ATTRIB_NOINLINE inline std::optional<std::wstring>
+	read_wfile( std::wstring path ) noexcept {
 		using CharT = wchar_t;
-		using result_t = std::optional<std::wstring>;
-		CharT const *ptr = [&] {
-			if constexpr( std::is_pointer_v<DAW_TYPEOF( path )> ) {
-				return path;
-			} else {
-				return std::data( path );
-			}
-		}( );
-		auto in_file = std::basic_ifstream<CharT>( ptr );
-		if( not in_file ) {
-			return result_t{ };
+		auto const fsize = std::filesystem::file_size( path );
+		if( fsize == 0 ) {
+			return std::basic_string<CharT>{ };
 		}
-		auto first = std::istreambuf_iterator<CharT>( in_file );
-		auto last = std::istreambuf_iterator<CharT>( );
-		return result_t( std::in_place, first, last );
+		auto result = std::basic_string<CharT>( fsize, CharT{ } );
+		auto *f = _wfopen( path.c_str( ), "rb" );
+		if( not f ) {
+			return std::nullopt;
+		}
+		auto num_read = fread( result.data( ), sizeof( CharT ), result.size( ), f );
+		if( num_read != ( result.size( ) / sizeof( CharT ) ) ) {
+			return std::nullopt;
+		}
+		return result;
 	}
 
-	template<typename String>
-	std::wstring read_wfile( String &&path, terminate_on_read_file_error_t ) {
-		auto result = read_wfile( DAW_FWD( path ) );
+	DAW_ATTRIB_NOINLINE inline std::wstring
+	read_wfile( std::wstring const &path,
+	            terminate_on_read_file_error_t ) noexcept {
+		auto result = read_wfile( path );
 		if( not result ) {
 			std::cerr << "Error: could not open file '" << path << "'\n";
 			std::terminate( );
