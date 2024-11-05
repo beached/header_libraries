@@ -10,7 +10,7 @@
 
 #include "daw_cpp_feature_check.h"
 
-#if DAW_HAS_CPP23_UNREACHABLE
+#if defined( DAW_HAS_CPP23_UNREACHABLE )
 #include <utility>
 #define DAW_UNREACHABLE_IMPL( ) std::unreachable( )
 #elif DAW_HAS_BUILTIN( __builtin_unreachable )
