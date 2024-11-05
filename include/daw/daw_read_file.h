@@ -63,7 +63,7 @@ namespace daw {
 			return std::basic_string<CharT>{ };
 		}
 		auto result = std::basic_string<CharT>( fsize, CharT{ } );
-		auto *f = _wfopen( path.c_str( ), "rb" );
+		auto *f = _wfopen( path.c_str( ), L"rb" );
 		if( not f ) {
 			return std::nullopt;
 		}
