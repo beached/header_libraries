@@ -20,6 +20,7 @@ set( TEST_SOURCES
 		 daw_algorithm_test.cpp
 		 daw_arith_traits_test.cpp
 		 daw_array_test.cpp
+		 daw_assume_test.cpp
 		 daw_benchmark_test.cpp
 		 daw_bounded_vector_test.cpp
 		 daw_constant_test.cpp
