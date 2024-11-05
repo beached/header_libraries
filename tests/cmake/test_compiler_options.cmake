@@ -174,7 +174,10 @@ elseif( ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" )
     endif()
     set( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -DDEBUG" )
     set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -g -DDEBUG" )
-
+		if( CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 12.0.0 )
+			set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wnull-dereference" )
+		endif()
+		
     if( DAW_HEADERLIBS_USE_SANITIZERS )
         message( STATUS "Using sanitizers" )
         #UBSAN makes constexpr code paths not constexpr	on gcc9-11

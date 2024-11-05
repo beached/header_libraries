@@ -9,6 +9,8 @@
 #pragma once
 
 #include "ciso646.h"
+#include "daw_assume.h"
+#include "daw_attributes.h"
 #include "daw_move.h"
 #include "impl/daw_traits_impl.h"
 #include "traits/daw_traits_concepts.h"
@@ -179,36 +181,42 @@ namespace daw {
 			std::rethrow_exception( *std::get_if<std::exception_ptr>( &m_value ) );
 		}
 
-		[[nodiscard]] reference get( ) & {
+	private:
+		[[nodiscard]] DAW_ATTRIB_RETNOTNULL auto *get_ptr( ) {
 			if( empty( ) ) {
 				std::terminate( );
 			}
 			throw_if_exception( );
-			return *std::get_if<value_type>( &m_value );
+			auto *ptr = std::get_if<value_type>( &m_value );
+			DAW_ASSUME( ptr );
+			return ptr;
+		}
+
+		[[nodiscard]] DAW_ATTRIB_RETNOTNULL auto const *get_ptr( ) const {
+			if( empty( ) ) {
+				std::terminate( );
+			}
+			throw_if_exception( );
+			auto *ptr = std::get_if<value_type>( &m_value );
+			DAW_ASSUME( ptr );
+			return ptr;
+		}
+
+	public:
+		[[nodiscard]] reference get( ) & {
+			return *get_ptr( );
 		}
 
 		[[nodiscard]] const_reference get( ) const & {
-			if( empty( ) ) {
-				std::terminate( );
-			}
-			throw_if_exception( );
-			return *std::get_if<value_type>( &m_value );
+			return *get_ptr( );
 		}
 
 		[[nodiscard]] value_type get( ) && {
-			if( empty( ) ) {
-				std::terminate( );
-			}
-			throw_if_exception( );
-			return std::move( *std::get_if<value_type>( &m_value ) );
+			return std::move( *get_ptr( ) );
 		}
 
 		[[nodiscard]] const_reference get( ) const && {
-			if( empty( ) ) {
-				std::terminate( );
-			}
-			throw_if_exception( );
-			return *std::get_if<value_type>( &m_value );
+			return *get_ptr( );
 		}
 
 		[[nodiscard]] reference operator*( ) {
