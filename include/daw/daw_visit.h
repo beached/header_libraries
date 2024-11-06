@@ -356,7 +356,6 @@ namespace daw {
 			} else {
 				return DAW_FWD( vis )( get_nt<0 + N>( DAW_FWD( var ) ) );
 			}
-			DAW_UNREACHABLE( );
 		}
 
 #undef DAW_VISIT_CASE
