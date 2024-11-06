@@ -12,6 +12,7 @@
 #include "daw_attributes.h"
 #include "daw_traits.h"
 
+#include <cstddef>
 #include <cstdio>
 #include <exception>
 #include <filesystem>
@@ -28,7 +29,13 @@ namespace daw {
 		if( fsize == 0 ) {
 			return std::basic_string<CharT>{ };
 		}
-		auto result = std::basic_string<CharT>( fsize, CharT{ } );
+		if( static_cast<std::uintmax_t>( std::basic_string<CharT>{ }.max_size( ) ) <
+		    fsize ) {
+			// File is too big to fit into string(WIN32)
+			return std::nullopt;
+		}
+		auto result =
+		  std::basic_string<CharT>( static_cast<std::size_t>( fsize ), CharT{ } );
 		auto *f = fopen( path.c_str( ), "rb" );
 		if( not f ) {
 			return std::nullopt;
@@ -62,7 +69,13 @@ namespace daw {
 		if( fsize == 0 ) {
 			return std::basic_string<CharT>{ };
 		}
-		auto result = std::basic_string<CharT>( fsize, CharT{ } );
+		if( static_cast<std::uintmax_t>( std::basic_string<CharT>{ }.max_size( ) ) <
+		    fsize ) {
+			// File is too big to fit into string(WIN32)
+			return std::nullopt;
+		}
+		auto result =
+		  std::basic_string<CharT>( static_cast<std::size_t>( fsize ), CharT{ } );
 		auto *f = _wfopen( path.c_str( ), L"rb" );
 		if( not f ) {
 			return std::nullopt;
