@@ -27,9 +27,7 @@
 
 #if defined( DEBUG )
 #include <exception>
-#define DAW_UNREACHABLE( ) \
-  std::terminate( ); \
-  DAW_UNREACHABLE_IMPL( )
+#define DAW_UNREACHABLE( ) std::terminate( )
 #else
 #define DAW_UNREACHABLE( ) DAW_UNREACHABLE_IMPL( )
 #endif
