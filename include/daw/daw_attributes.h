@@ -123,9 +123,9 @@
 #endif
 
 #if defined( DAW_HAS_GCC_LIKE )
-#define DAW_ATTRIB_NONNULL _Nonnull
+#define DAW_ATTRIB_NONNULL(...) [[gnu::nonnull __VA_ARGS__]]
 #define DAW_ATTRIB_RET_NONNULL [[gnu::returns_nonnull]]
 #else
-#define DAW_ATTRIB_NONNULL
+#define DAW_ATTRIB_NONNULL(...)
 #define DAW_ATTRIB_RET_NONNULL
 #endif
