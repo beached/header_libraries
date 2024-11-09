@@ -121,3 +121,9 @@
 #else
 #define DAW_ATTRIB_RETNOTNULL
 #endif
+
+#if defined( DAW_HAS_GCC_LIKE )
+#define DAW_ATTRIB_NONNULL _NonNull 
+#else
+#define DAW_ATTRIB_NONNULL
+#endif
