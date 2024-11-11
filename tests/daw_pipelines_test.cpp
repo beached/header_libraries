@@ -83,7 +83,8 @@ namespace tests {
 		  ")\n{}",
 		  daw::fmt_range( m3 ) );
 
-		for( auto vec = std::vector{1,2,3}; auto [index, value] : EnumerateWith<int>( vec ) ) {
+		for( auto vec = std::vector{ 1, 2, 3 };
+		     auto [index, value] : EnumerateWith<int>( vec ) ) {
 			daw::dump( index * value );
 		}
 	}
@@ -486,6 +487,22 @@ namespace tests {
 		daw::dump( 1, 2, 3, 4 );
 	}
 
+	DAW_ATTRIB_NOINLINE void test029( ) {
+		constexpr auto pm3 =
+		  pipeline( Map( to_letter ), EnumerateFrom( 2 ), To<std::map> );
+		auto const m3 = pm3( iota_view( 0, 26 ) );
+		daw::println(
+		  "\ntest029: pipeline( Map( to_letter ), EnumerateFrom( 2 ), "
+		  "To<std::map> "
+		  ")\n{}",
+		  daw::fmt_range( m3 ) );
+
+		for( auto vec = std::vector{ 1, 2, 3 };
+		     auto [index, value] : EnumerateFrom( 2 )( vec ) ) {
+			daw::dump( index * value );
+		}
+	}
+
 } // namespace tests
 
 int main( ) {
@@ -517,6 +534,7 @@ int main( ) {
 	tests::test026( );
 	tests::test027( );
 	tests::test028( );
+	tests::test029( );
 
 	daw::println( "Done" );
 }
