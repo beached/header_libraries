@@ -92,16 +92,16 @@ Public Types</h2></td></tr>
 <tr class="separator:a9e0bafef45c15c761396584b5cbfd03c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a5e056803e8078723370b133e3986b6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a8a5e056803e8078723370b133e3986b6">size_type</a> = std::size_t</td></tr>
 <tr class="separator:a8a5e056803e8078723370b133e3986b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3448efe3b227d6c61182b7a1938129d0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a3448efe3b227d6c61182b7a1938129d0">value_type</a> = <a class="el" href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">daw::remove_cvref_t</a>&lt; std::invoke_result_t&lt; Fn, <a class="el" href="namespacedaw.html#a19cb6644d2ee0f8bbcb1d95555ae4fd7">daw::iter_value_t</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a> &gt; &gt;&gt;</td></tr>
+<tr class="memitem:a3448efe3b227d6c61182b7a1938129d0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a3448efe3b227d6c61182b7a1938129d0">value_type</a> = <a class="el" href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">daw::remove_cvref_t</a>&lt; std::invoke_result_t&lt; <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw.html#a19cb6644d2ee0f8bbcb1d95555ae4fd7">daw::iter_value_t</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a> &gt; &gt;&gt;</td></tr>
 <tr class="separator:a3448efe3b227d6c61182b7a1938129d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a2a4859a839aa705f45a72ec567cf19ac"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a2a4859a839aa705f45a72ec567cf19ac">map_iterator</a> ()=default</td></tr>
 <tr class="separator:a2a4859a839aa705f45a72ec567cf19ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a324c813aa59d2cc903c1117b446fd5ee"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a324c813aa59d2cc903c1117b446fd5ee">map_iterator</a> (<a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a> it, Fn f)</td></tr>
+<tr class="memitem:a324c813aa59d2cc903c1117b446fd5ee"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a324c813aa59d2cc903c1117b446fd5ee">map_iterator</a> (<a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a> it, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a> f)</td></tr>
 <tr class="separator:a324c813aa59d2cc903c1117b446fd5ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5384e9b8b3861b1b2d360b6d5ddc4cc1"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a5384e9b8b3861b1b2d360b6d5ddc4cc1">map_iterator</a> (<a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a> it, Fn f, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> <a class="el" href="namespacedaw_1_1pipelines.html#adf9ab126d358c08be54feede143c0c11">projection</a>)</td></tr>
+<tr class="memitem:a5384e9b8b3861b1b2d360b6d5ddc4cc1"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a5384e9b8b3861b1b2d360b6d5ddc4cc1">map_iterator</a> (<a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a> it, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a> f, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> <a class="el" href="namespacedaw_1_1pipelines.html#adf9ab126d358c08be54feede143c0c11">projection</a>)</td></tr>
 <tr class="separator:a5384e9b8b3861b1b2d360b6d5ddc4cc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b5262ba5c169af1e9c6927fe30cbc20"><td class="memItemLeft" align="right" valign="top">constexpr auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a0b5262ba5c169af1e9c6927fe30cbc20">base</a> ()</td></tr>
 <tr class="separator:a0b5262ba5c169af1e9c6927fe30cbc20"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,7 +161,7 @@ struct daw::pipelines::map_iterator&lt; Iterator, Fn, Projection &gt;</h3>
 template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identity&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a00529b81ec26f9df0659f0d9462dcd44">const_reference</a> =  <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a3448efe3b227d6c61182b7a1938129d0">value_type</a></td>
+          <td class="memname">using <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a00529b81ec26f9df0659f0d9462dcd44">const_reference</a> =  <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a3448efe3b227d6c61182b7a1938129d0">value_type</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -179,7 +179,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
 template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identity&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a132638a59138318178660a1c52c36107">difference_type</a> =  std::ptrdiff_t</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a132638a59138318178660a1c52c36107">difference_type</a> =  std::ptrdiff_t</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -197,7 +197,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
 template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identity&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#afab6eda0a75b1fdea4ce1fef20462562">iterator_category</a> =  typename Iterator::iterator_category</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#afab6eda0a75b1fdea4ce1fef20462562">iterator_category</a> =  typename Iterator::iterator_category</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -215,7 +215,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
 template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identity&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a4b785c4f5fc033c25187214ea776d398">pointer</a> =  <a class="el" href="structdaw_1_1arrow__proxy.html">arrow_proxy</a>&lt;<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a3448efe3b227d6c61182b7a1938129d0">value_type</a>&gt;</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a4b785c4f5fc033c25187214ea776d398">pointer</a> =  <a class="el" href="structdaw_1_1arrow__proxy.html">arrow_proxy</a>&lt;<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a3448efe3b227d6c61182b7a1938129d0">value_type</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -233,7 +233,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
 template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identity&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a9e0bafef45c15c761396584b5cbfd03c">reference</a> =  <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a3448efe3b227d6c61182b7a1938129d0">value_type</a></td>
+          <td class="memname">using <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a9e0bafef45c15c761396584b5cbfd03c">reference</a> =  <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a3448efe3b227d6c61182b7a1938129d0">value_type</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -251,7 +251,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
 template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identity&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a8a5e056803e8078723370b133e3986b6">size_type</a> =  std::size_t</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a8a5e056803e8078723370b133e3986b6">size_type</a> =  std::size_t</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -269,7 +269,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
 template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identity&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a3448efe3b227d6c61182b7a1938129d0">value_type</a> =  <a class="el" href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">daw::remove_cvref_t</a>&lt; std::invoke_result_t&lt;Fn, <a class="el" href="namespacedaw.html#a19cb6644d2ee0f8bbcb1d95555ae4fd7">daw::iter_value_t</a>&lt;<a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>&gt; &gt;&gt;</td>
+          <td class="memname">using <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a3448efe3b227d6c61182b7a1938129d0">value_type</a> =  <a class="el" href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">daw::remove_cvref_t</a>&lt; std::invoke_result_t&lt;<a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw.html#a19cb6644d2ee0f8bbcb1d95555ae4fd7">daw::iter_value_t</a>&lt;<a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>&gt; &gt;&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -291,7 +291,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a> </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -318,7 +318,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a> </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a> </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>&#160;</td>
           <td class="paramname"><em>it</em>, </td>
@@ -326,7 +326,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Fn&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>&#160;</td>
           <td class="paramname"><em>f</em>&#160;</td>
         </tr>
         <tr>
@@ -358,7 +358,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a> </td>
+          <td class="memname">constexpr <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::<a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a> </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>&#160;</td>
           <td class="paramname"><em>it</em>, </td>
@@ -366,7 +366,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Fn&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>&#160;</td>
           <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
@@ -405,7 +405,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto&amp; <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::base </td>
+          <td class="memname">constexpr auto&amp; <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::base </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -434,7 +434,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto const&amp; <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::base </td>
+          <td class="memname">constexpr auto const&amp; <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::base </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -463,7 +463,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a3448efe3b227d6c61182b7a1938129d0">value_type</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator* </td>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a3448efe3b227d6c61182b7a1938129d0">value_type</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator* </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -492,7 +492,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a3448efe3b227d6c61182b7a1938129d0">value_type</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator* </td>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a3448efe3b227d6c61182b7a1938129d0">value_type</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator* </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -521,7 +521,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator+ </td>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator+ </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a132638a59138318178660a1c52c36107">difference_type</a>&#160;</td>
           <td class="paramname"><em>n</em></td><td>)</td>
@@ -551,7 +551,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&amp; <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator++ </td>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&amp; <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator++ </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -580,7 +580,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator++ </td>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator++ </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -610,7 +610,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&amp; <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator+= </td>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&amp; <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator+= </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a132638a59138318178660a1c52c36107">difference_type</a>&#160;</td>
           <td class="paramname"><em>n</em></td><td>)</td>
@@ -640,7 +640,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator- </td>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator- </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a132638a59138318178660a1c52c36107">difference_type</a>&#160;</td>
           <td class="paramname"><em>n</em></td><td>)</td>
@@ -670,9 +670,9 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a132638a59138318178660a1c52c36107">difference_type</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator- </td>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a132638a59138318178660a1c52c36107">difference_type</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator- </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt; const &amp;&#160;</td>
           <td class="paramname"><em>rhs</em></td><td>)</td>
           <td></td>
         </tr>
@@ -700,7 +700,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&amp; <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator-- </td>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&amp; <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator-- </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -729,7 +729,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator-- </td>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator-- </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -759,7 +759,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&amp; <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator-= </td>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&amp; <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator-= </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a132638a59138318178660a1c52c36107">difference_type</a>&#160;</td>
           <td class="paramname"><em>n</em></td><td>)</td>
@@ -789,7 +789,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a4b785c4f5fc033c25187214ea776d398">pointer</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator-&gt; </td>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a4b785c4f5fc033c25187214ea776d398">pointer</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator-&gt; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -818,7 +818,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a4b785c4f5fc033c25187214ea776d398">pointer</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator-&gt; </td>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a4b785c4f5fc033c25187214ea776d398">pointer</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator-&gt; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -847,7 +847,7 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a3448efe3b227d6c61182b7a1938129d0">value_type</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator[] </td>
+          <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a3448efe3b227d6c61182b7a1938129d0">value_type</a> <a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">daw::pipelines::map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt;::operator[] </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html#a8a5e056803e8078723370b133e3986b6">size_type</a>&#160;</td>
           <td class="paramname"><em>n</em></td><td>)</td>
@@ -880,13 +880,13 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
         <tr>
           <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> friend bool <a class="el" href="namespacedaw.html#a4b5346b91ffce4d929d08bf93694afec">operator!</a>= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt; const &amp;&#160;</td>
           <td class="paramname"><em>lhs</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt; const &amp;&#160;</td>
           <td class="paramname"><em>rhs</em>&#160;</td>
         </tr>
         <tr>
@@ -920,13 +920,13 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
         <tr>
           <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> friend auto operator&lt;=&gt; </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt; const &amp;&#160;</td>
           <td class="paramname"><em>lhs</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt; const &amp;&#160;</td>
           <td class="paramname"><em>rhs</em>&#160;</td>
         </tr>
         <tr>
@@ -960,13 +960,13 @@ template&lt;Iterator Iterator, typename Fn , typename Projection  = std::identit
         <tr>
           <td class="memname">constexpr <a class="el" href="daw__attributes_8h.html#ad428cd4a346617e3cd9a9f23240c92b3">DAW_ATTRIB_INLINE</a> friend bool operator== </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt; const &amp;&#160;</td>
           <td class="paramname"><em>lhs</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, Fn, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdaw_1_1pipelines_1_1map__iterator.html">map_iterator</a>&lt; <a class="el" href="namespacedaw.html#a31455c85bc151e17efc6302fa8a422e6">Iterator</a>, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>, <a class="el" href="namespacedaw_1_1pipelines.html#a13b891fa85de7daff186fca2bc5d318b">Projection</a> &gt; const &amp;&#160;</td>
           <td class="paramname"><em>rhs</em>&#160;</td>
         </tr>
         <tr>

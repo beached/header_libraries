@@ -193,6 +193,14 @@ $(function() {
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="preprocessor">#else</span></div>
 <div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="daw__attributes_8h.html#aff731fc0810deb88fffe87705d7ea4fc">  122</a></span>&#160;<span class="preprocessor">#define DAW_ATTRIB_RETNOTNULL</span></div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor">#if defined( DAW_HAS_GCC_LIKE )</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#define DAW_ATTRIB_NONNULL(...) [[gnu::nonnull __VA_ARGS__]]</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="preprocessor">#define DAW_ATTRIB_RET_NONNULL [[gnu::returns_nonnull]]</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno"><a class="line" href="daw__attributes_8h.html#a6f629014a811e98f4e57ab045331bb06">  129</a></span>&#160;<span class="preprocessor">#define DAW_ATTRIB_NONNULL(...)</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="daw__attributes_8h.html#af5d1ff8d599e2a23b7f08a624cbfc5ee">  130</a></span>&#160;<span class="preprocessor">#define DAW_ATTRIB_RET_NONNULL</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aciso646_8h_html"><div class="ttname"><a href="ciso646_8h.html">ciso646.h</a></div></div>
 <div class="ttc" id="adaw__cpp__feature__check_8h_html"><div class="ttname"><a href="daw__cpp__feature__check_8h.html">daw_cpp_feature_check.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

@@ -1094,6 +1094,10 @@ Enumerations</h2></td></tr>
 <tr class="separator:a6df1567073d79619c8174c1b7fb2b752"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a56e39437a0db585579565481e1885b"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3a56e39437a0db585579565481e1885b">UInt8</a> : std::uint8_t </td></tr>
 <tr class="separator:a3a56e39437a0db585579565481e1885b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0bd8a5b0376156a51f0c9241a5a05da"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05da">wait_status</a> { <a class="el" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05daa6cfe61694ee1bb13ae719d47c2f80b7a">found</a>
+, <a class="el" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05daa90272dda245ae1fb3cf197e91a8689dc">timeout</a>
+ }</td></tr>
+<tr class="separator:ac0bd8a5b0376156a51f0c9241a5a05da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -1196,6 +1200,30 @@ Functions</h2></td></tr>
 <tr class="separator:add9aa1142205efa63ad36470e9787381"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0495648e67b8a7dc039e5228e2c62192"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacedaw.html#a9895025657dc55bef6b08bccf644b776">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0495648e67b8a7dc039e5228e2c62192">at</a> (<a class="el" href="namespacedaw.html#a39110b6c5c052459b2b3a5c31749a238">size_type</a> index)</td></tr>
 <tr class="separator:a0495648e67b8a7dc039e5228e2c62192"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ca5ec33c915e504217e7428450d6970"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Rep , typename Period &gt; </td></tr>
+<tr class="memitem:a6ca5ec33c915e504217e7428450d6970"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05da">wait_status</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6ca5ec33c915e504217e7428450d6970">atomic_wait_for</a> (std::atomic&lt; T &gt; const *object, T const &amp;old, std::chrono::duration&lt; Rep, Period &gt; const &amp;rel_time, std::memory_order order=std::memory_order_acquire)</td></tr>
+<tr class="separator:a6ca5ec33c915e504217e7428450d6970"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad929461ed85c2427a72c632e6013a4f1"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ad929461ed85c2427a72c632e6013a4f1"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad929461ed85c2427a72c632e6013a4f1">atomic_wait_if</a> (std::atomic&lt; T &gt; const *object, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>&lt; bool(T)&gt; auto &amp;&amp;predicate, std::memory_order order=std::memory_order_acquire)</td></tr>
+<tr class="separator:ad929461ed85c2427a72c632e6013a4f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0c24c4a448508a0d9395e92211f8743"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Rep , typename Period &gt; </td></tr>
+<tr class="memitem:aa0c24c4a448508a0d9395e92211f8743"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05da">wait_status</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa0c24c4a448508a0d9395e92211f8743">atomic_wait_if_for</a> (std::atomic&lt; T &gt; const *object, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>&lt; bool(T)&gt; auto &amp;&amp;predicate, std::chrono::duration&lt; Rep, Period &gt; const &amp;rel_time, std::memory_order order=std::memory_order_acquire)</td></tr>
+<tr class="separator:aa0c24c4a448508a0d9395e92211f8743"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a103f69acccdd79136a6d687f52b910"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Clock , typename Duration &gt; </td></tr>
+<tr class="memitem:a3a103f69acccdd79136a6d687f52b910"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05da">wait_status</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3a103f69acccdd79136a6d687f52b910">atomic_wait_if_until</a> (std::atomic&lt; T &gt; const *object, <a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>&lt; bool(T)&gt; auto &amp;&amp;predicate, std::chrono::time_point&lt; Clock, Duration &gt; const &amp;timeout_time, std::memory_order order=std::memory_order_acquire)</td></tr>
+<tr class="separator:a3a103f69acccdd79136a6d687f52b910"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9be0a423df7e75c826dd7c9063a0736c"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Clock , typename Duration &gt; </td></tr>
+<tr class="memitem:a9be0a423df7e75c826dd7c9063a0736c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05da">wait_status</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9be0a423df7e75c826dd7c9063a0736c">atomic_wait_until</a> (std::atomic&lt; T &gt; const *object, T const &amp;old, std::chrono::time_point&lt; Clock, Duration &gt; const &amp;timeout_time, std::memory_order order=std::memory_order_acquire)</td></tr>
+<tr class="separator:a9be0a423df7e75c826dd7c9063a0736c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9f9e6551f60477d084c34164af4cb9f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ac9f9e6551f60477d084c34164af4cb9f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ac9f9e6551f60477d084c34164af4cb9f">atomic_wait_value_equal</a> (std::atomic&lt; T &gt; const *object, T const &amp;desired_value, std::memory_order order=std::memory_order_acquire)</td></tr>
+<tr class="separator:ac9f9e6551f60477d084c34164af4cb9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41d822af498174677f5e907ddf4b7989"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Rep , typename Period &gt; </td></tr>
+<tr class="memitem:a41d822af498174677f5e907ddf4b7989"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05da">wait_status</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a41d822af498174677f5e907ddf4b7989">atomic_wait_value_equal_for</a> (std::atomic&lt; T &gt; const *object, T const &amp;desired_value, std::chrono::duration&lt; Rep, Period &gt; const &amp;rel_time, std::memory_order order=std::memory_order_acquire)</td></tr>
+<tr class="separator:a41d822af498174677f5e907ddf4b7989"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa262062ffd54c38658628a0e53135124"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Clock , typename Duration &gt; </td></tr>
+<tr class="memitem:aa262062ffd54c38658628a0e53135124"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05da">wait_status</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa262062ffd54c38658628a0e53135124">atomic_wait_value_equal_until</a> (std::atomic&lt; T &gt; const *object, T const &amp;desired_value, std::chrono::time_point&lt; Clock, Duration &gt; const &amp;timeout_time, std::memory_order order=std::memory_order_acquire)</td></tr>
+<tr class="separator:aa262062ffd54c38658628a0e53135124"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2a11a12fb00494cd550763d5412ce58"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacedaw.html#a9895025657dc55bef6b08bccf644b776">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad2a11a12fb00494cd550763d5412ce58">back</a> () noexcept</td></tr>
 <tr class="separator:ad2a11a12fb00494cd550763d5412ce58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32b8992ea1e269392916a7bba3c63209"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
@@ -4514,6 +4542,9 @@ Variables</h2></td></tr>
 <tr class="separator:a3734eb458260d07f6cbfbac0c03e50b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ce05a48c324aaeab836cc3800df6af4"><td class="memItemLeft" align="right" valign="top">constexpr bitset_impl::fmt_hex_t const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6ce05a48c324aaeab836cc3800df6af4">fmt_hex</a> { }</td></tr>
 <tr class="separator:a6ce05a48c324aaeab836cc3800df6af4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d48590b6462a2584828d4985d03bd22"><td class="memTemplParams" colspan="2">template&lt;typename F , typename ExpectedF &gt; </td></tr>
+<tr class="memitem:a0d48590b6462a2584828d4985d03bd22"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a> = concepts_details::Fn_v&lt;F, ExpectedF&gt;</td></tr>
+<tr class="separator:a0d48590b6462a2584828d4985d03bd22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1a9d3c5067a3eaf1b6043365b5d4bc3"><td class="memTemplParams" colspan="2">template&lt;typename I &gt; </td></tr>
 <tr class="memitem:ae1a9d3c5067a3eaf1b6043365b5d4bc3"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ae1a9d3c5067a3eaf1b6043365b5d4bc3">forward_iterator</a></td></tr>
 <tr class="separator:ae1a9d3c5067a3eaf1b6043365b5d4bc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -7361,6 +7392,34 @@ template&lt;typename... &gt; </div>
 
 </div>
 </div>
+<a id="ac0bd8a5b0376156a51f0c9241a5a05da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0bd8a5b0376156a51f0c9241a5a05da">&#9670;&nbsp;</a></span>wait_status</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05da">daw::wait_status</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ac0bd8a5b0376156a51f0c9241a5a05daa6cfe61694ee1bb13ae719d47c2f80b7a"></a>found&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac0bd8a5b0376156a51f0c9241a5a05daa90272dda245ae1fb3cf197e91a8689dc"></a>timeout&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="daw__atomic__wait_8h_source.html#l00020">20</a> of file <a class="el" href="daw__atomic__wait_8h_source.html">daw_atomic_wait.h</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="afdfa28711a665ca6b7e1ccf89d6e6ecc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afdfa28711a665ca6b7e1ccf89d6e6ecc">&#9670;&nbsp;</a></span>add_prefix() <span class="overload">[1/2]</span></h2>
@@ -8658,6 +8717,501 @@ template&lt;typename CharType , typename Traits , typename Allocator &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__contiguous__view_8h_source.html#l00214">214</a> of file <a class="el" href="daw__contiguous__view_8h_source.html">daw_contiguous_view.h</a>.</p>
+
+</div>
+</div>
+<a id="a6ca5ec33c915e504217e7428450d6970"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ca5ec33c915e504217e7428450d6970">&#9670;&nbsp;</a></span>atomic_wait_for()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Rep , typename Period &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05da">wait_status</a> daw::atomic_wait_for </td>
+          <td>(</td>
+          <td class="paramtype">std::atomic&lt; T &gt; const *&#160;</td>
+          <td class="paramname"><em>object</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>old</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::duration&lt; Rep, Period &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>rel_time</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::memory_order&#160;</td>
+          <td class="paramname"><em>order</em> = <code>std::memory_order_acquire</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Waits for the atomic object to change from the old value or until the timeout expires.</p>
+<p>This function blocks the calling thread, periodically polling the atomic object, and returns as soon as the atomic value differs from the specified old value or the relative timeout period elapses.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The type of the atomic object. </td></tr>
+    <tr><td class="paramname">Rep</td><td>The representation type of the relative time duration. </td></tr>
+    <tr><td class="paramname">Period</td><td>The tick period type of the relative time duration.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">object</td><td>Pointer to the atomic object to wait on. </td></tr>
+    <tr><td class="paramname">old</td><td>The value that the atomic object is expected to differ from. </td></tr>
+    <tr><td class="paramname">rel_time</td><td>The maximum duration to wait before timing out. </td></tr>
+    <tr><td class="paramname">order</td><td>The memory order to use for atomic load operations. Defaults to <code>std::memory_order_acquire</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A wait_status indicating whether the atomic value changed or the timeout expired. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="daw__atomic__wait_8h_source.html#l00092">92</a> of file <a class="el" href="daw__atomic__wait_8h_source.html">daw_atomic_wait.h</a>.</p>
+
+</div>
+</div>
+<a id="ad929461ed85c2427a72c632e6013a4f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad929461ed85c2427a72c632e6013a4f1">&#9670;&nbsp;</a></span>atomic_wait_if()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void daw::atomic_wait_if </td>
+          <td>(</td>
+          <td class="paramtype">std::atomic&lt; T &gt; const *&#160;</td>
+          <td class="paramname"><em>object</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>&lt; bool(T)&gt; auto &amp;&amp;&#160;</td>
+          <td class="paramname"><em>predicate</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::memory_order&#160;</td>
+          <td class="paramname"><em>order</em> = <code>std::memory_order_acquire</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Waits until the atomic object satisfies the given predicate.</p>
+<p>This function blocks the calling thread until the value of the atomic object pointed to by <code>object</code> satisfies the provided <code>predicate</code>.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The type of the atomic object. </td></tr>
+    <tr><td class="paramname">Fn</td><td>A templated function type that takes a value of type T and returns bool.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">object</td><td>Pointer to the atomic object to wait on. </td></tr>
+    <tr><td class="paramname">predicate</td><td>A callable object (such as a lambda or function object) that takes a value of type T and returns a boolean indicating whether the condition is met. </td></tr>
+    <tr><td class="paramname">order</td><td>The memory order to use. Defaults to <code>std::memory_order_acquire</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="daw__atomic__wait_8h_source.html#l00171">171</a> of file <a class="el" href="daw__atomic__wait_8h_source.html">daw_atomic_wait.h</a>.</p>
+
+</div>
+</div>
+<a id="aa0c24c4a448508a0d9395e92211f8743"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0c24c4a448508a0d9395e92211f8743">&#9670;&nbsp;</a></span>atomic_wait_if_for()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Rep , typename Period &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05da">wait_status</a> daw::atomic_wait_if_for </td>
+          <td>(</td>
+          <td class="paramtype">std::atomic&lt; T &gt; const *&#160;</td>
+          <td class="paramname"><em>object</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>&lt; bool(T)&gt; auto &amp;&amp;&#160;</td>
+          <td class="paramname"><em>predicate</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::duration&lt; Rep, Period &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>rel_time</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::memory_order&#160;</td>
+          <td class="paramname"><em>order</em> = <code>std::memory_order_acquire</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Waits for an atomic object to satisfy a predicate within a specified time duration.</p>
+<p>This function blocks the calling thread until the predicate applied to the atomic object evaluates to true or the specified timeout period elapses.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The type of the atomic object. </td></tr>
+    <tr><td class="paramname">Fn</td><td>A callable type that returns a boolean value when applied to an object of type T. </td></tr>
+    <tr><td class="paramname">Rep</td><td>A type representing the number of ticks of the time duration. </td></tr>
+    <tr><td class="paramname">Period</td><td>A std::ratio type representing the tick period of the time duration.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">object</td><td>Pointer to the atomic object to wait on. </td></tr>
+    <tr><td class="paramname">predicate</td><td>Predicate function to apply to the atomic object's value. </td></tr>
+    <tr><td class="paramname">rel_time</td><td>The relative time duration to wait for the predicate to become true. </td></tr>
+    <tr><td class="paramname">order</td><td>The memory order to use for atomic operations. Defaults to <code>std::memory_order_acquire</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns <a class="el" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05daa6cfe61694ee1bb13ae719d47c2f80b7a">wait_status::found</a> if the predicate evaluates to true before the timeout, and <a class="el" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05daa90272dda245ae1fb3cf197e91a8689dc">wait_status::timeout</a> otherwise. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="daw__atomic__wait_8h_source.html#l00210">210</a> of file <a class="el" href="daw__atomic__wait_8h_source.html">daw_atomic_wait.h</a>.</p>
+
+</div>
+</div>
+<a id="a3a103f69acccdd79136a6d687f52b910"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a103f69acccdd79136a6d687f52b910">&#9670;&nbsp;</a></span>atomic_wait_if_until()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Clock , typename Duration &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05da">wait_status</a> daw::atomic_wait_if_until </td>
+          <td>(</td>
+          <td class="paramtype">std::atomic&lt; T &gt; const *&#160;</td>
+          <td class="paramname"><em>object</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacedaw.html#a0d48590b6462a2584828d4985d03bd22">Fn</a>&lt; bool(T)&gt; auto &amp;&amp;&#160;</td>
+          <td class="paramname"><em>predicate</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::time_point&lt; Clock, Duration &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>timeout_time</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::memory_order&#160;</td>
+          <td class="paramname"><em>order</em> = <code>std::memory_order_acquire</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Waits until the atomic object satisfies the given predicate or the absolute timeout time is reached.</p>
+<p>This function blocks the calling thread until the atomic value pointed to by <code>object</code> satisfies the <code>predicate</code> function or the specified timeout time <code>timeout_time</code> is reached.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The type of the atomic object. </td></tr>
+    <tr><td class="paramname">Clock</td><td>The clock used for the timeout. </td></tr>
+    <tr><td class="paramname">Duration</td><td>The duration type used by the clock. </td></tr>
+    <tr><td class="paramname">Fn</td><td>A callable type that takes a value of type T and returns a bool.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">object</td><td>Pointer to the atomic object to wait on. </td></tr>
+    <tr><td class="paramname">predicate</td><td>A callable that takes the atomic object's value and returns whether it satisfies the condition. </td></tr>
+    <tr><td class="paramname">timeout_time</td><td>The absolute time point by which the wait operation should be aborted if the predicate is not satisfied. </td></tr>
+    <tr><td class="paramname">order</td><td>The memory order to use. Defaults to std::memory_order_acquire.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <code>wait_status</code> enum indicating whether the predicate was satisfied or a timeout occurred. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="daw__atomic__wait_8h_source.html#l00267">267</a> of file <a class="el" href="daw__atomic__wait_8h_source.html">daw_atomic_wait.h</a>.</p>
+
+</div>
+</div>
+<a id="a9be0a423df7e75c826dd7c9063a0736c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9be0a423df7e75c826dd7c9063a0736c">&#9670;&nbsp;</a></span>atomic_wait_until()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Clock , typename Duration &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05da">wait_status</a> daw::atomic_wait_until </td>
+          <td>(</td>
+          <td class="paramtype">std::atomic&lt; T &gt; const *&#160;</td>
+          <td class="paramname"><em>object</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>old</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::time_point&lt; Clock, Duration &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>timeout_time</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::memory_order&#160;</td>
+          <td class="paramname"><em>order</em> = <code>std::memory_order_acquire</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Waits until the atomic object changes from the specified value or the timeout time is reached.</p>
+<p>This function blocks the calling thread until the atomic value pointed to by <code>object</code> is not equal to <code>old</code> or until the specified <code>timeout_time</code> is reached.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The type of the atomic object. </td></tr>
+    <tr><td class="paramname">Clock</td><td>The clock type used to measure the timeout. </td></tr>
+    <tr><td class="paramname">Duration</td><td>The duration type used to represent the timeout.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">object</td><td>Pointer to the atomic object to wait on. </td></tr>
+    <tr><td class="paramname">old</td><td>The value that the atomic object is expected to change from </td></tr>
+    <tr><td class="paramname">timeout_time</td><td>The time point at which the wait is aborted if the value has not been reached. </td></tr>
+    <tr><td class="paramname">order</td><td>The memory order to use. Defaults to <code>std::memory_order_acquire</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <code>wait_status</code> indicating whether the wait was successful or if it timed out. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="daw__atomic__wait_8h_source.html#l00144">144</a> of file <a class="el" href="daw__atomic__wait_8h_source.html">daw_atomic_wait.h</a>.</p>
+
+</div>
+</div>
+<a id="ac9f9e6551f60477d084c34164af4cb9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9f9e6551f60477d084c34164af4cb9f">&#9670;&nbsp;</a></span>atomic_wait_value_equal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void daw::atomic_wait_value_equal </td>
+          <td>(</td>
+          <td class="paramtype">std::atomic&lt; T &gt; const *&#160;</td>
+          <td class="paramname"><em>object</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>desired_value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::memory_order&#160;</td>
+          <td class="paramname"><em>order</em> = <code>std::memory_order_acquire</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Waits until the atomic object reaches the desired value.</p>
+<p>This function blocks the calling thread until the atomic value pointed to by <code>object</code> equals <code>desired_value</code>.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The type of the atomic object.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">object</td><td>Pointer to the atomic object to wait on. </td></tr>
+    <tr><td class="paramname">desired_value</td><td>The value that the atomic object is expected to reach. </td></tr>
+    <tr><td class="paramname">order</td><td>The memory order to use. Defaults to <code>std::memory_order_acquire</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="daw__atomic__wait_8h_source.html#l00289">289</a> of file <a class="el" href="daw__atomic__wait_8h_source.html">daw_atomic_wait.h</a>.</p>
+
+</div>
+</div>
+<a id="a41d822af498174677f5e907ddf4b7989"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41d822af498174677f5e907ddf4b7989">&#9670;&nbsp;</a></span>atomic_wait_value_equal_for()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Rep , typename Period &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05da">wait_status</a> daw::atomic_wait_value_equal_for </td>
+          <td>(</td>
+          <td class="paramtype">std::atomic&lt; T &gt; const *&#160;</td>
+          <td class="paramname"><em>object</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>desired_value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::duration&lt; Rep, Period &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>rel_time</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::memory_order&#160;</td>
+          <td class="paramname"><em>order</em> = <code>std::memory_order_acquire</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Waits until the atomic object reaches the desired value or the relative time duration has elapsed.</p>
+<p>This function blocks the calling thread until the atomic value pointed to by <code>object</code> equals <code>desired_value</code> or the specified relative time duration <code>rel_time</code> has elapsed.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The type of the atomic object. </td></tr>
+    <tr><td class="paramname">Rep</td><td>The type representing the number of ticks. </td></tr>
+    <tr><td class="paramname">Period</td><td>The type representing the tick period.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">object</td><td>Pointer to the atomic object to wait on. </td></tr>
+    <tr><td class="paramname">desired_value</td><td>The value that the atomic object is expected to reach. </td></tr>
+    <tr><td class="paramname">rel_time</td><td>The maximum duration to wait for the atomic object to reach the desired value. </td></tr>
+    <tr><td class="paramname">order</td><td>The memory order to use. Defaults to <code>std::memory_order_acquire</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <code>wait_status</code> enum indicating whether the desired value was found or a timeout occurred. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="daw__atomic__wait_8h_source.html#l00323">323</a> of file <a class="el" href="daw__atomic__wait_8h_source.html">daw_atomic_wait.h</a>.</p>
+
+</div>
+</div>
+<a id="aa262062ffd54c38658628a0e53135124"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa262062ffd54c38658628a0e53135124">&#9670;&nbsp;</a></span>atomic_wait_value_equal_until()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Clock , typename Duration &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05da">wait_status</a> daw::atomic_wait_value_equal_until </td>
+          <td>(</td>
+          <td class="paramtype">std::atomic&lt; T &gt; const *&#160;</td>
+          <td class="paramname"><em>object</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>desired_value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::time_point&lt; Clock, Duration &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>timeout_time</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::memory_order&#160;</td>
+          <td class="paramname"><em>order</em> = <code>std::memory_order_acquire</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Waits until the specified object reaches the desired value or the timeout is reached.</p>
+<p>This function blocks the calling thread until the atomic value pointed to by <code>object</code> equals <code>desired_value</code> or the specified timeout time <code>timeout_time</code> is reached.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The type of the atomic object. </td></tr>
+    <tr><td class="paramname">Clock</td><td>The clock used for the timeout. </td></tr>
+    <tr><td class="paramname">Duration</td><td>The duration type used by the clock.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">object</td><td>Pointer to the atomic object to wait on. </td></tr>
+    <tr><td class="paramname">desired_value</td><td>The value that the atomic object is expected to reach. </td></tr>
+    <tr><td class="paramname">timeout_time</td><td>The absolute time point by which the wait operation should be aborted if the desired value is not reached. </td></tr>
+    <tr><td class="paramname">order</td><td>The memory order to use. Defaults to <code>std::memory_order_acquire</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <code>wait_status</code> enum indicating whether the desired value was found or a timeout occurred. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="daw__atomic__wait_8h_source.html#l00358">358</a> of file <a class="el" href="daw__atomic__wait_8h_source.html">daw_atomic_wait.h</a>.</p>
 
 </div>
 </div>
@@ -54069,6 +54623,24 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__static__bitset_8h_source.html#l00103">103</a> of file <a class="el" href="daw__static__bitset_8h_source.html">daw_static_bitset.h</a>.</p>
+
+</div>
+</div>
+<a id="a0d48590b6462a2584828d4985d03bd22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d48590b6462a2584828d4985d03bd22">&#9670;&nbsp;</a></span>Fn</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename F , typename ExpectedF &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">concept daw::Fn = concepts_details::Fn_v&lt;F, ExpectedF&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__concepts_8h_source.html#l00427">427</a> of file <a class="el" href="daw__concepts_8h_source.html">daw_concepts.h</a>.</p>
 
 </div>
 </div>

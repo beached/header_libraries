@@ -165,15 +165,15 @@ $(function() {
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">auto</span> it = result.first;</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keyword">auto</span> last_it = it;</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    ++it;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordtype">bool</span> found = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05daa6cfe61694ee1bb13ae719d47c2f80b7a">found</a> = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordflow">while</span>( it != last ) {</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      <span class="keywordflow">if</span>( ( found = <a class="code" href="namespacedaw_1_1parser.html#a946d2848d5878ab74ed80113bbc7c53b">is_a</a>( *it, quote_char ) ) and !<a class="code" href="namespacedaw_1_1parser.html#ab544f940627bcbaf2789dc7d3330a897">is_escape</a>( *last_it ) ) {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      <span class="keywordflow">if</span>( ( <a class="code" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05daa6cfe61694ee1bb13ae719d47c2f80b7a">found</a> = <a class="code" href="namespacedaw_1_1parser.html#a946d2848d5878ab74ed80113bbc7c53b">is_a</a>( *it, quote_char ) ) and !<a class="code" href="namespacedaw_1_1parser.html#ab544f940627bcbaf2789dc7d3330a897">is_escape</a>( *last_it ) ) {</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      }</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      last_it = it;</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      ++it;</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    }</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    daw::exception::precondition_check&lt;ParserException&gt;( found );</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    daw::exception::precondition_check&lt;ParserException&gt;( <a class="code" href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05daa6cfe61694ee1bb13ae719d47c2f80b7a">found</a> );</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    ++result.first; <span class="comment">// trim quote</span></div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    result.last = it;</div>
@@ -200,6 +200,7 @@ $(function() {
 <div class="ttc" id="anamespacedaw_1_1parser_html_adfec40fe06fbfd0cc3ba9471a3ecabd2"><div class="ttname"><a href="namespacedaw_1_1parser.html#adfec40fe06fbfd0cc3ba9471a3ecabd2">daw::parser::parse_int</a></div><div class="ttdeci">constexpr void parse_int(ForwardIterator first, ForwardIterator last, Result &amp;result)</div><div class="ttdef"><b>Definition:</b> <a href="daw__parser__addons_8h_source.html#l00059">daw_parser_addons.h:59</a></div></div>
 <div class="ttc" id="anamespacedaw_1_1parser_html_aec95c0fa7ba4cd5eca28151118b75a69"><div class="ttname"><a href="namespacedaw_1_1parser.html#aec95c0fa7ba4cd5eca28151118b75a69">daw::parser::from_to_pred</a></div><div class="ttdeci">constexpr auto from_to_pred(ForwardIterator first, ForwardIterator last, IsFirstPredicate is_first, IsLastPredicate is_last, bool throw_if_end_reached=false)</div><div class="ttdef"><b>Definition:</b> <a href="daw__parser__helper_8h_source.html#l00370">daw_parser_helper.h:370</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a33bde176dbe56752560f71c62982c8ec"><div class="ttname"><a href="namespacedaw.html#a33bde176dbe56752560f71c62982c8ec">daw::is_signed</a></div><div class="ttdeci">std::conjunction&lt; is_number&lt; T &gt;, arith_traits_details::limits_is_signed&lt; T &gt; &gt; is_signed</div><div class="ttdef"><b>Definition:</b> <a href="daw__arith__traits_8h_source.html#l00242">daw_arith_traits.h:243</a></div></div>
+<div class="ttc" id="anamespacedaw_html_ac0bd8a5b0376156a51f0c9241a5a05daa6cfe61694ee1bb13ae719d47c2f80b7a"><div class="ttname"><a href="namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05daa6cfe61694ee1bb13ae719d47c2f80b7a">daw::wait_status::found</a></div><div class="ttdeci">@ found</div></div>
 <div class="ttc" id="anamespacedaw_html_acfae94168f3aa191915c869eeac74b7c"><div class="ttname"><a href="namespacedaw.html#acfae94168f3aa191915c869eeac74b7c">daw::ForwardIterator</a></div><div class="ttdeci">concept ForwardIterator</div><div class="ttdef"><b>Definition:</b> <a href="daw__iterator__traits_8h_source.html#l00065">daw_iterator_traits.h:65</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

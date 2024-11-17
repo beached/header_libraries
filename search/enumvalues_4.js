@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['infinity_5167',['infinity',['../namespacedaw_1_1cxmath.html#a1fbf2614ecb56c28c2e46b2b682dd778af2fdee93271556e428dd9507b3da7235',1,'daw::cxmath']]]
+  ['found_5196',['found',['../namespacedaw.html#ac0bd8a5b0376156a51f0c9241a5a05daa6cfe61694ee1bb13ae719d47c2f80b7a',1,'daw']]]
 ];
