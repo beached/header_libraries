@@ -138,6 +138,7 @@ set( DEPRECATED_TEST_SOURCES
 		 )
 
 set( CPP20_TEST_SOURCES
+		 daw_atomic_wait_test.cpp
 		 daw_concepts_test.cpp
 		 daw_contiguous_view_test.cpp
 		 daw_formatters_test.cpp
