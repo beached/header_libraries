@@ -18,7 +18,7 @@ using namespace std::chrono_literals;
 
 DAW_ATTRIB_NOINLINE void test_atomic_wait_value_until_timeout( ) {
 	auto value = std::atomic<int>{ };
-	auto result = daw::atomic_wait_value_until(
+	auto result = daw::atomic_wait_value_equal_until(
 	  &value, 42, std::chrono::system_clock::now( ) + 30ms );
 	daw_ensure( result == daw::wait_status::timeout );
 	daw_ensure( value == 0 );
@@ -32,7 +32,7 @@ DAW_ATTRIB_NOINLINE void test_atomic_wait_value_until_no_timeout( ) {
 		value = 42;
 		std::atomic_notify_one( &value );
 	} );
-	auto const result = daw::atomic_wait_value_until(
+	auto const result = daw::atomic_wait_value_equal_until(
 	  &value, 42, std::chrono::system_clock::now( ) + 1min );
 	th.join( );
 	daw_ensure( result == daw::wait_status::found );
@@ -41,7 +41,7 @@ DAW_ATTRIB_NOINLINE void test_atomic_wait_value_until_no_timeout( ) {
 
 DAW_ATTRIB_NOINLINE void test_atomic_wait_value_for_timeout( ) {
 	auto value = std::atomic<int>{ };
-	auto result = daw::atomic_wait_value_for( &value, 42, 30ms );
+	auto result = daw::atomic_wait_value_equal_for( &value, 42, 30ms );
 	daw_ensure( result == daw::wait_status::timeout );
 	daw_ensure( value == 0 );
 }
@@ -54,7 +54,7 @@ DAW_ATTRIB_NOINLINE void test_atomic_wait_value_for_no_timeout( ) {
 		value = 42;
 		std::atomic_notify_one( &value );
 	} );
-	auto const result = daw::atomic_wait_value_for( &value, 42, 1min );
+	auto const result = daw::atomic_wait_value_equal_for( &value, 42, 1min );
 	th.join( );
 	daw_ensure( result == daw::wait_status::found );
 	daw_ensure( value == 42 );
@@ -62,7 +62,7 @@ DAW_ATTRIB_NOINLINE void test_atomic_wait_value_for_no_timeout( ) {
 
 DAW_ATTRIB_NOINLINE void test_atomic_wait_value_already_set( ) {
 	auto value = std::atomic<int>{ 42 };
-	daw::atomic_wait_value( &value, 42 );
+	daw::atomic_wait_value_equal( &value, 42 );
 	daw_ensure( value == 42 );
 }
 
@@ -75,7 +75,7 @@ DAW_ATTRIB_NOINLINE void test_atomic_wait_value( ) {
 	};
 	auto ths = std::array<std::thread, 4>{ std::thread( fn ), std::thread( fn ),
 	                                       std::thread( fn ), std::thread( fn ) };
-	daw::atomic_wait_value( &value, 0 );
+	daw::atomic_wait_value_equal( &value, 0 );
 	for( auto &th : ths ) {
 		th.join( );
 	}

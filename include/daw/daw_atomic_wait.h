@@ -286,9 +286,9 @@ namespace daw {
 	 * @param order The memory order to use. Defaults to
 	 * `std::memory_order_acquire`.
 	 */
-	void
-	atomic_wait_value( std::atomic<T> const *object, T const &desired_value,
-	                   std::memory_order order = std::memory_order_acquire ) {
+	void atomic_wait_value_equal(
+	  std::atomic<T> const *object, T const &desired_value,
+	  std::memory_order order = std::memory_order_acquire ) {
 		atomic_wait_if(
 		  object,
 		  [&desired_value]( T const &current_value ) {
@@ -320,10 +320,10 @@ namespace daw {
 	 * or a timeout occurred.
 	 */
 	template<typename T, typename Rep, typename Period>
-	[[nodiscard]] wait_status
-	atomic_wait_value_for( std::atomic<T> const *object, T const &desired_value,
-	                       std::chrono::duration<Rep, Period> const &rel_time,
-	                       std::memory_order order = std::memory_order_acquire ) {
+	[[nodiscard]] wait_status atomic_wait_value_equal_for(
+	  std::atomic<T> const *object, T const &desired_value,
+	  std::chrono::duration<Rep, Period> const &rel_time,
+	  std::memory_order order = std::memory_order_acquire ) {
 		return atomic_wait_if_for(
 		  object,
 		  [&desired_value]( T const &current_value ) {
@@ -355,7 +355,7 @@ namespace daw {
 	 * or a timeout occurred.
 	 */
 	template<typename T, typename Clock, typename Duration>
-	[[nodiscard]] wait_status atomic_wait_value_until(
+	[[nodiscard]] wait_status atomic_wait_value_equal_until(
 	  std::atomic<T> const *object, T const &desired_value,
 	  std::chrono::time_point<Clock, Duration> const &timeout_time,
 	  std::memory_order order = std::memory_order_acquire ) {
