@@ -8,6 +8,18 @@
 
 #include <daw/daw_concepts.h>
 
+#include <type_traits>
+
 static_assert( daw::same_as<int, int> );
+
+inline constexpr auto foo = []( daw::Fn<void()> auto && ) {};
+inline constexpr auto foo_t0 = []( ) {};
+inline constexpr auto foo_t1 = []( ) { return 42; };
+inline constexpr auto foo_t2 = []( int ) { return 42; };
+
+static_assert( std::is_invocable_v<decltype(foo), decltype(foo_t0)> );
+static_assert( std::is_invocable_v<decltype(foo), decltype(foo_t1)> );
+static_assert( not std::is_invocable_v<decltype(foo), decltype(foo_t2)> );
+
 
 int main( ) {}

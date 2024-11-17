@@ -413,4 +413,16 @@ namespace daw {
 
 	template<typename From, typename To>
 	concept constructible_to = constructible_from<To, From>;
+
+	namespace concepts_details {
+		template<typename, typename>
+		inline constexpr bool Fn_v = false;
+
+		template<typename F, typename R, typename... Args>
+		inline constexpr bool Fn_v<F, R( Args... )> =
+		  std::is_invocable_r_v<R, F, Args...>;
+	} // namespace concepts_details
+
+	template<typename F, typename ExpectedF>
+	concept Fn = concepts_details::Fn_v<F, ExpectedF>;
 } // namespace daw
