@@ -13,8 +13,8 @@
 #include "algorithms/daw_algorithm_copy.h"
 #include "algorithms/daw_algorithm_find.h"
 #include "ciso646.h"
-#include "daw_assume.h"
 #include "daw/daw_check_exceptions.h"
+#include "daw_assume.h"
 #include "daw_compiler_fixups.h"
 #include "daw_consteval.h"
 #include "daw_cpp_feature_check.h"
@@ -266,7 +266,7 @@ namespace daw {
 				return static_cast<SizeT>( pos - str );
 			}
 
-			template<class ForwardIt1, class ForwardIt2>
+			template<typename ForwardIt1, typename ForwardIt2>
 			[[nodiscard]] constexpr ForwardIt1
 			search( ForwardIt1 first, ForwardIt1 last, ForwardIt2 s_first,
 			        ForwardIt2 s_last ) {
@@ -571,7 +571,7 @@ namespace daw {
 			                                               size_type count ) noexcept
 			  : m_first( std::data( sv ) )
 			  , m_last( make_last<BoundsType>(
-			      m_first, ( std::min )( { std::size( sv ), count } ) ) ) {}
+			      m_first, (std::min)( { std::size( sv ), count } ) ) ) {}
 
 			/// @brief Construct a string_view from a type that forms a
 			/// contiguous range of characters. Does not clip count to sv's bounds
@@ -637,13 +637,14 @@ namespace daw {
 
 			/// @brief Returns an iterator to the first character of the view.
 			/// @return const_iterator to the first character
-			[[nodiscard]] constexpr const_iterator begin( ) const {
+			[[nodiscard]] constexpr const_iterator begin( ) const DAW_LIFETIME_BOUND {
 				return m_first;
 			}
 
 			/// @brief Returns an iterator to the first character of the view.
 			/// @return const_iterator to the first character
-			[[nodiscard]] constexpr const_iterator cbegin( ) const {
+			[[nodiscard]] constexpr const_iterator
+			cbegin( ) const DAW_LIFETIME_BOUND {
 				return m_first;
 			}
 
@@ -651,7 +652,8 @@ namespace daw {
 			/// reversed view. It corresponds to the last character of the
 			/// non-reversed view.
 			/// @return const_reverse_iterator to the first character
-			[[nodiscard]] constexpr reverse_iterator rbegin( ) const {
+			[[nodiscard]] constexpr reverse_iterator
+			rbegin( ) const DAW_LIFETIME_BOUND {
 				return const_reverse_iterator( end( ) );
 			}
 
@@ -659,7 +661,8 @@ namespace daw {
 			/// reversed view. It corresponds to the last character of the
 			/// non-reversed view.
 			/// @return const_reverse_iterator to the first character
-			[[nodiscard]] constexpr const_reverse_iterator crbegin( ) const {
+			[[nodiscard]] constexpr const_reverse_iterator
+			crbegin( ) const DAW_LIFETIME_BOUND {
 				return const_reverse_iterator( cend( ) );
 			}
 
@@ -667,7 +670,7 @@ namespace daw {
 			/// character of the view. This character acts as a placeholder,
 			/// attempting to access it results in undefined behavior
 			/// @return const_iterator to the character following the last character.
-			[[nodiscard]] constexpr const_iterator end( ) const {
+			[[nodiscard]] constexpr const_iterator end( ) const DAW_LIFETIME_BOUND {
 				return last_pointer<BoundsType>( );
 			}
 
@@ -675,7 +678,7 @@ namespace daw {
 			/// character of the view. This character acts as a placeholder,
 			/// attempting to access it results in undefined behavior
 			/// @return const_iterator to the character following the last character.
-			[[nodiscard]] constexpr const_iterator cend( ) const {
+			[[nodiscard]] constexpr const_iterator cend( ) const DAW_LIFETIME_BOUND {
 				return last_pointer<BoundsType>( );
 			}
 
@@ -686,7 +689,8 @@ namespace daw {
 			/// behavior.
 			/// @return const_reverse_iterator to the character following the last
 			/// character.
-			[[nodiscard]] constexpr reverse_iterator rend( ) const {
+			[[nodiscard]] constexpr reverse_iterator
+			rend( ) const DAW_LIFETIME_BOUND {
 				return const_reverse_iterator( begin( ) );
 			}
 
@@ -697,7 +701,8 @@ namespace daw {
 			/// behavior.
 			/// @return const_reverse_iterator to the character following the last
 			/// character.
-			[[nodiscard]] constexpr const_reverse_iterator crend( ) const {
+			[[nodiscard]] constexpr const_reverse_iterator
+			crend( ) const DAW_LIFETIME_BOUND {
 				return const_reverse_iterator( cbegin( ) );
 			}
 
@@ -748,7 +753,7 @@ namespace daw {
 			/// @pre data( ) != nullptr
 			/// @return data( )[pos]
 			[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_reference
-			operator[]( size_type pos ) const {
+			operator[]( size_type pos ) const DAW_LIFETIME_BOUND {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos < size( ), "Attempt to access basic_string_view past end" );
 
@@ -759,7 +764,8 @@ namespace daw {
 			/// @param pos Position in range
 			/// @throws std::out_of_range when pos >= size( )
 			/// @return data( )[pos]
-			[[nodiscard]] constexpr const_reference at( size_type pos ) const {
+			[[nodiscard]] constexpr const_reference
+			at( size_type pos ) const DAW_LIFETIME_BOUND {
 				if( DAW_UNLIKELY( not( pos < size( ) ) ) ) {
 					DAW_THROW_OR_TERMINATE(
 					  std::out_of_range, "Attempt to access basic_string_view past end" );
@@ -808,7 +814,7 @@ namespace daw {
 			/// empty, it does nothing.
 			DAW_ATTRIB_INLINE constexpr basic_string_view &
 			remove_prefix( size_type n ) {
-				dec_front<BoundsType>( ( std::min )( { n, size( ) } ) );
+				dec_front<BoundsType>( (std::min)( { n, size( ) } ) );
 				return *this;
 			}
 
@@ -827,7 +833,7 @@ namespace daw {
 			/// @brief Increment the data( ) pointer by 1. If string_view is
 			/// empty, it does nothing.
 			DAW_ATTRIB_INLINE constexpr basic_string_view &remove_prefix( ) {
-				dec_front<BoundsType>( ( std::min )( { size_type{ 1U }, size( ) } ) );
+				dec_front<BoundsType>( (std::min)( { size_type{ 1U }, size( ) } ) );
 				return *this;
 			}
 
@@ -846,7 +852,7 @@ namespace daw {
 			/// does nothing.
 			DAW_ATTRIB_INLINE constexpr basic_string_view &
 			remove_suffix( size_type n ) {
-				dec_back<BoundsType>( ( std::min )( { n, size( ) } ) );
+				dec_back<BoundsType>( (std::min)( { n, size( ) } ) );
 				return *this;
 			}
 
@@ -863,7 +869,7 @@ namespace daw {
 
 			/// @brief Decrement the size( ) by 1 if size( ) > 0
 			DAW_ATTRIB_INLINE constexpr basic_string_view &remove_suffix( ) {
-				dec_back<BoundsType>( ( std::min )( { size_type{ 1U }, size( ) } ) );
+				dec_back<BoundsType>( (std::min)( { size_type{ 1U }, size( ) } ) );
 				return *this;
 			}
 
@@ -1074,7 +1080,7 @@ namespace daw {
 			/// @param count number of characters to remove and return
 			/// @return a substr of size count ending at end of string_view
 			[[nodiscard]] constexpr basic_string_view pop_back( size_type count ) {
-				count = ( std::min )( { count, size( ) } );
+				count = (std::min)( { count, size( ) } );
 				basic_string_view result = substr( size( ) - count, npos );
 				remove_suffix( count );
 				return result;
@@ -1502,7 +1508,7 @@ namespace daw {
 			DAW_ATTRIB_INLINE constexpr basic_string_view &
 			remove_prefix_until( UnaryPredicate pred, nodiscard_t ) {
 				auto pos = find_if( pred );
-				dec_front<BoundsType>( ( std::min )( { size( ), pos } ) );
+				dec_front<BoundsType>( (std::min)( { size( ), pos } ) );
 				return *this;
 			}
 
@@ -1529,7 +1535,7 @@ namespace daw {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos <= size( ), "Attempt to access basic_string_view past end" );
 
-				size_type const rlen = ( std::min )( { count, size( ) - pos } );
+				size_type const rlen = (std::min)( { count, size( ) - pos } );
 				if( rlen > 0 ) {
 					auto const f =
 					  std::next( begin( ), static_cast<difference_type>( pos ) );
@@ -1554,7 +1560,7 @@ namespace daw {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos <= size( ), "Attempt to access basic_string_view past end" );
 				auto const rcount =
-				  static_cast<size_type>( ( std::min )( { count, size( ) - pos } ) );
+				  static_cast<size_type>( (std::min)( { count, size( ) - pos } ) );
 				return { m_first + pos, m_first + pos + rcount };
 			}
 
@@ -1623,7 +1629,7 @@ namespace daw {
 
 				int const ret =
 				  str_compare( lhs.data( ), rhs.data( ),
-				               ( std::min )( { lhs.size( ), rhs.size( ) } ), cmp );
+				               (std::min)( { lhs.size( ), rhs.size( ) } ), cmp );
 				if( ret == 0 ) {
 					if( lhs.size( ) < rhs.size( ) ) {
 						return -1;
@@ -1834,7 +1840,7 @@ namespace daw {
 				if( size( ) < v.size( ) ) {
 					return npos;
 				}
-				pos = ( std::min )( { pos, size( ) - v.size( ) } );
+				pos = (std::min)( { pos, size( ) - v.size( ) } );
 				if( v.empty( ) ) {
 					return pos;
 				}

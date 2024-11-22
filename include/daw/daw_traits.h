@@ -422,8 +422,16 @@ namespace daw::traits {
 	template<typename T>
 	inline constexpr bool is_character_v = is_one_of_v<T, char, wchar_t>;
 
+#if defined( DAW_HAS_CLANG )
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcomma"
+#endif
 	template<typename... Args>
-	using last_type_t = typename decltype( ( identity<Args>{ }, ... ) )::type;
+	DAW_CPP20_REQUIRES( sizeof...( Args ) > 0 )
+	using last_type_t = typename decltype( ( ( identity<Args>{ } ), ... ) )::type;
+#if defined( DAW_HAS_CLANG )
+#pragma clang diagnostic pop
+#endif
 
 	namespace traits_details::pack_index_of {
 		template<int Index, typename A, typename B, typename... C>

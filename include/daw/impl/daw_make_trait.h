@@ -11,6 +11,12 @@
 #include "daw/daw_cpp_feature_check.h"
 
 #if defined( __cpp_lib_concepts )
+#define DAW_CPP20_REQUIRES( ... ) requires( __VA_ARGS__ )
+#else
+#define DAW_CPP20_REQUIRES( ... )
+#endif
+#if defined( __cpp_lib_concepts )
+
 #define DAW_MAKE_REQ_TRAIT( Name, /*ReqExpression*/... ) \
 	template<typename T>                                   \
 	inline constexpr bool Name = requires {                \

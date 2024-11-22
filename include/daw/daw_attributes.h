@@ -123,9 +123,21 @@
 #endif
 
 #if defined( DAW_HAS_GCC_LIKE )
-#define DAW_ATTRIB_NONNULL(...) [[gnu::nonnull __VA_ARGS__]]
+#define DAW_ATTRIB_NONNULL( ... ) [[gnu::nonnull __VA_ARGS__]]
 #define DAW_ATTRIB_RET_NONNULL [[gnu::returns_nonnull]]
 #else
-#define DAW_ATTRIB_NONNULL(...)
+#define DAW_ATTRIB_NONNULL( ... )
 #define DAW_ATTRIB_RET_NONNULL
+#endif
+
+#if not defined( __has_cpp_attribute )
+#define DAW_LIFETIME_BOUND
+#elif __has_cpp_attribute( clang::lifetimebound )
+#define DAW_LIFETIME_BOUND [[clang::lifetimebound]]
+#elif __has_cpp_attribute( msvc::lifetimebound )
+#define DAW_LIFETIME_BOUND [[msvc::lifetimebound]]
+#elif __has_cpp_attribute( lifetimebound )
+#define DAW_LIFETIME_BOUND [[lifetimebound]]
+#else
+#define DAW_LIFETIME_BOUND
 #endif
