@@ -23,7 +23,7 @@ namespace daw {
 	public:
 		observer_ptr( ) = default;
 		constexpr observer_ptr( std::nullptr_t ) {}
-		constexpr observer_ptr( pointer p ): m_ptr( p ) {}
+		constexpr explicit observer_ptr( pointer p ): m_ptr( p ) {}
 		
 		template<typename U>
 		requires( not std::same_as<T, U> and std::convertible_to<U *, T *> )
@@ -52,8 +52,8 @@ namespace daw {
 		constexpr pointer operator->( ) const {
 			return m_ptr;
 		}
-		
-		constexpr explicit operator pointer( ) const {
+	
+		constexpr operator pointer( ) const {
 			return m_ptr;
 		}
 		

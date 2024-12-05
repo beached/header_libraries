@@ -9,7 +9,13 @@
 #include <daw/daw_observer_ptr.h>
 #include <daw/daw_ensure.h>
 
+struct Base {};
+struct Child : Base {};
+
 int main( int, char**argv ) {
 	auto p = daw::observer_ptr( argv[0] );	
 	daw_ensure( p == argv[0] );	
+	auto ch = Child{};
+	auto c = daw::observer_ptr( &ch ); 
+	Base * b = c;
 }
