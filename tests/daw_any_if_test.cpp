@@ -10,6 +10,7 @@
 
 static_assert( daw::any_if([]{ return true;}, []{ return true; }));
 static_assert( not daw::any_if([]{ return true;}, []{ return false; }));
+static_assert( daw::any_if( true, []{ return true; } ) );
 
 int main( ) {
 	

@@ -9,11 +9,19 @@
 #pragma once
 
 #include "daw_concepts.h"
+#include "daw_move.h"
 
 namespace daw {
-	constexpr bool any_if(  Fn<bool( )> auto && ...predicates ) {
-		return (predicates( ) and ...);
+	template<typename...Predicates>
+	requires( (Fn<Predicates, bool()> or std::convertible_to<Predicates, bool>) and ...)
+	constexpr bool any_if(  Predicates && ...predicates ) {
+		constexpr auto const do_test = []( auto && p ) -> bool {
+			if constexpr( Fn<DAW_TYPEOF( p ), bool()> ) {
+				return p( );
+			} else {
+				return static_cast<bool>( p );
+			}
+		};
+		return (do_test( DAW_FWD( predicates ) ) and ...);
 	}
 }
-
-
