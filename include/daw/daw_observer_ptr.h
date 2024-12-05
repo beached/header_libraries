@@ -10,7 +10,6 @@
 
 #include <concepts>
 #include <memory>
-#include <type_traits>
 
 namespace daw {
 	template<typename T>
