@@ -146,6 +146,7 @@ set( CPP20_TEST_SOURCES
 		 daw_iter_view_test.cpp
 		 daw_move_only_test.cpp
 		 daw_named_params_test.cpp
+		 daw_observer_ptr_test.cpp
 		 daw_pipelines_test.cpp
 		 vector_test.cpp
 		 )
