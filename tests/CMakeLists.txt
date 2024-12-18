@@ -72,6 +72,7 @@ set( TEST_SOURCES
 		 daw_optional_test.cpp
 		 daw_ordered_map_test.cpp
 		 daw_overload_test.cpp
+		 daw_parse_args_test.cpp
 		 daw_parse_to_test.cpp
 		 daw_parser_helper_sv_test.cpp
 		 daw_poly_value_test.cpp
