@@ -19,6 +19,8 @@ int main( ) {
 		daw_ensure( parsed_args.size( ) == 1 );
 		daw_ensure( parsed_args[0].name == "config" );
 		daw_ensure( parsed_args[0].value == "/home/foo/config.json" );
+		daw_ensure( parsed_args["config"] );
+		daw_ensure( *parsed_args["config"] == "/home/foo/config.json" );
 	}
 
 	{

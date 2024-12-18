@@ -108,6 +108,15 @@ namespace daw {
 			return m_arguments[idx];
 		}
 
+		DAW_CPP20_CX_ALLOC std::optional<daw::string_view>
+		operator[]( daw::string_view name ) const {
+			auto pos = find_argument_position( name );
+			if( pos ) {
+				return m_arguments[*pos].value;
+			}
+			return std::nullopt;
+		}
+
 		DAW_CPP20_CX_ALLOC std::optional<size_type>
 		find_argument_position( daw::string_view name ) const {
 			auto pos = std::find_if( begin( ), end( ), [name]( Argument const &arg ) {
