@@ -211,7 +211,7 @@ namespace daw {
 #pragma GCC diagnostic ignored "-Wnonnull-compare"
 #pragma GCC diagnostic ignored "-Waddress"
 #endif
-				if( not static_cast<bool>( f ) ) {
+				if( not f  ) {
 					return { empty_child( ) };
 				}
 #if defined( __GNUC__ ) && !defined( __clang__ )
