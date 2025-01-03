@@ -18,4 +18,5 @@ int main( int, char**argv ) {
 	auto ch = Child{};
 	auto c = daw::observer_ptr( &ch ); 
 	Base * b = c;
+	(void)b;
 }

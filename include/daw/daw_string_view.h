@@ -391,6 +391,7 @@ namespace daw {
 			using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 			using size_type = std::size_t;
 			using difference_type = std::ptrdiff_t;
+			static inline constexpr string_view_bounds_type bounds_type = BoundsType;
 
 			/// @brief A tag type for detecting string_view
 			using i_am_a_daw_string_view2 = void;
