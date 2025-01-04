@@ -104,7 +104,7 @@ namespace std {
 		}
 
 		template<typename Ctx>
-		typename Ctx::iterator format( daw::fmt_range<R, CharT> c,
+		constexpr typename Ctx::iterator format( daw::fmt_range<R, CharT> c,
 		                               Ctx &ctx ) const {
 			using value_t = daw::range_value_t<R>;
 			if constexpr( std::is_same_v<daw::formatter_impl::DefaultCharT,
