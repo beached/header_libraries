@@ -1367,6 +1367,13 @@ namespace daw {
 		auto pos_sv = sv.find( "" );
 		daw_expecting( 0U, pos_sv );
 	}
+
+	void daw_find_test_004( ) {
+		daw::sv2::wstring_view const sv = L"This is a string";
+		auto pos_sv = sv.find( L"" );
+		daw_expecting( 0U, pos_sv );
+	}
+
 	namespace url_test {
 		struct authority_t {
 			daw::sv2::string_view host;
@@ -1797,6 +1804,7 @@ int main( )
 	daw::daw_find_test_001( );
 	daw::daw_find_test_002( );
 	daw::daw_find_test_003( );
+	daw::daw_find_test_004( );
 	daw::daw_test_any_char_001( );
 	daw::daw_remove_prefix_num_test_001( );
 	daw::daw_remove_prefix_num_test_002( );
