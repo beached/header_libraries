@@ -1734,18 +1734,16 @@ namespace daw {
 #if defined( DAW_IS_CONSTANT_EVALUATED )
 				if( not DAW_IS_CONSTANT_EVALUATED( ) ) {
 					if constexpr( sizeof( CharT ) == 1 ) {
-						void const *r =
-						  std::memchr( reinterpret_cast<char const *>( first ),
-						               static_cast<char>( c ), sz );
+						void const *r = std::memchr( static_cast<void const *>( first ),
+						                             static_cast<char>( c ), sz );
 						if( r == nullptr ) {
 							return npos;
 						}
 						return static_cast<std::size_t>( static_cast<CharT const *>( r ) -
 						                                 first );
 					} else if constexpr( sizeof( CharT ) == 2 ) {
-						void const *r =
-						  ::wmemchr( reinterpet_cast<wchar_t const *>( first ),
-						             static_cast<wchar_t>( c ), sz );
+						wchar_t *r = ::wmemchr( reinterpret_cast<wchar_t const *>( first ),
+						                        static_cast<wchar_t>( c ), sz );
 						if( r == nullptr ) {
 							return npos;
 						}
