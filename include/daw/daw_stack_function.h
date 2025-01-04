@@ -8,15 +8,16 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_aligned_storage.h"
-#include "daw_compiler_fixups.h"
-#include "daw_exception.h"
-#include "daw_move.h"
-#include "daw_traits.h"
-#include "daw_utility.h"
-#include "daw_virtual_base.h"
-#include "impl/daw_make_trait.h"
+#include "daw/ciso646.h"
+#include "daw/daw_aligned_storage.h"
+#include "daw/daw_compiler_fixups.h"
+#include "daw/daw_exception.h"
+#include "daw/daw_move.h"
+#include "daw/daw_traits.h"
+#include "daw/daw_utility.h"
+#include "daw/daw_virtual_base.h"
+#include "daw/impl/daw_make_trait.h"
+#include "daw/traits/daw_traits_remove_cvref.h"
 
 #include <cstddef>
 #include <functional>
@@ -211,7 +212,7 @@ namespace daw {
 #pragma GCC diagnostic ignored "-Wnonnull-compare"
 #pragma GCC diagnostic ignored "-Waddress"
 #endif
-				if constexpr( not std::is_function_v<std::remove_cvref_t<Func>> ) {
+				if constexpr( not std::is_function_v<daw::remove_cvref_t<Func>> ) {
 					if( not f ) {
 						return { empty_child( ) };
 					}
