@@ -1400,7 +1400,8 @@ namespace daw {
 
 			inline explicit query_t(
 			  std::initializer_list<
-			    std::pair<daw::sv2::string_view, daw::sv2::string_view>> qparts )
+			    std::pair<daw::sv2::string_view, daw::sv2::string_view>>
+			    qparts )
 			  : items( qparts.begin( ), qparts.end( ) ) {}
 
 			inline bool operator==( query_t const &rhs ) const {
@@ -1669,11 +1670,10 @@ int main( )
 	/*
 	 * Ensure that daw::sv2::string_view s = { "a", "b" }; doesn't work
 	 */
-	static_assert( not std::is_constructible_v<daw::sv2::string_view,
-	                                           char const( & )[4],
-	                                           char const( & )[4]> );
-	static_assert( std::is_constructible_v<daw::sv2::string_view,
-	                                       char const *,
+	static_assert(
+	  not std::is_constructible_v<daw::sv2::string_view, char const( & )[4],
+	                              char const( & )[4]> );
+	static_assert( std::is_constructible_v<daw::sv2::string_view, char const *,
 	                                       char const *> );
 	static_assert(
 	  std::is_convertible_v<char const( & )[4], daw::sv2::string_view> );

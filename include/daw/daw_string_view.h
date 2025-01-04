@@ -10,26 +10,30 @@
 
 #include "daw_string_view_fwd.h"
 
-#include "algorithms/daw_algorithm_copy.h"
-#include "algorithms/daw_algorithm_find.h"
-#include "ciso646.h"
+#include "daw/algorithms/daw_algorithm_copy.h"
+#include "daw/algorithms/daw_algorithm_find.h"
+#include "daw/ciso646.h"
+#include "daw/daw_assume.h"
+#include "daw/daw_bitset.h"
 #include "daw/daw_check_exceptions.h"
-#include "daw_assume.h"
-#include "daw_compiler_fixups.h"
-#include "daw_consteval.h"
-#include "daw_cpp_feature_check.h"
-#include "daw_data_end.h"
-#include "daw_fnv1a_hash.h"
-#include "daw_likely.h"
-#include "daw_logic.h"
-#include "daw_move.h"
-#include "daw_typeof.h"
-#include "impl/daw_view_tags.h"
-#include "traits/daw_traits_conditional.h"
-#include "traits/daw_traits_is_ostream_like.h"
+#include "daw/daw_compiler_fixups.h"
+#include "daw/daw_consteval.h"
+#include "daw/daw_cpp_feature_check.h"
+#include "daw/daw_data_end.h"
+#include "daw/daw_fnv1a_hash.h"
+#include "daw/daw_is_constant_evaluated.h"
+#include "daw/daw_likely.h"
+#include "daw/daw_logic.h"
+#include "daw/daw_move.h"
+#include "daw/daw_typeof.h"
+#include "daw/impl/daw_view_tags.h"
+#include "daw/traits/daw_traits_conditional.h"
+#include "daw/traits/daw_traits_is_ostream_like.h"
 
 #include <cstddef>
 #include <cstdlib>
+#include <cstring>
+#include <cwchar>
 #include <daw/stdinc/data_access.h>
 #include <daw/stdinc/hash.h>
 #include <daw/stdinc/iterator_traits.h>
@@ -117,7 +121,6 @@ namespace daw {
 	inline
 #endif
 	  namespace sv2 {
-
 		namespace sv2_details {
 			struct less {
 				template<typename T, typename U>
@@ -142,27 +145,49 @@ namespace daw {
 #endif
 			};
 
-			template<typename InputIt, typename ForwardIt, typename BinaryPredicate>
-			[[nodiscard]] constexpr InputIt
-			find_first_of( InputIt first, InputIt last, ForwardIt s_first,
-			               ForwardIt s_last, BinaryPredicate p ) {
+			template<typename ForwardItH, typename ForwardItN,
+			         typename BinaryPredicate>
+			[[nodiscard]] constexpr ForwardItH
+			find_first_of( ForwardItH haystack_first, std::size_t haystack_size,
+			               ForwardItN needle_first, std::size_t needle_size,
+			               BinaryPredicate p ) {
 				static_assert(
 				  traits::is_binary_predicate_v<
 				    BinaryPredicate,
-				    typename std::iterator_traits<InputIt>::value_type>,
+				    typename std::iterator_traits<ForwardItH>::value_type>,
 				  "BinaryPredicate p does not fullfill the requires of a binary "
 				  "predicate concept.  See "
 				  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate" );
-
-				for( ; first != last; ++first ) {
-					for( ForwardIt it = s_first; it != s_last; ++it ) {
-						if( p( *first, *it ) ) {
-							return first;
+				if constexpr( std::is_same_v<DAW_TYPEOF( *needle_first ), char> ) {
+					// On strings of char lets use a bitset to minimize memory and get
+					// O(N+M) instead of O(N*M)
+					auto needle_array = daw::bitset<256>{ };
+					for( std::size_t n = 0; n < needle_size; ++n ) {
+						needle_array.set( static_cast<unsigned char>( needle_first[n] ) );
+					}
+					for( std::size_t hs_pos = 0; hs_pos < haystack_size; ++hs_pos ) {
+						if( needle_array.test(
+						      static_cast<unsigned char>( haystack_first[hs_pos] ) ) ) {
+							return std::next( haystack_first,
+							                  static_cast<std::ptrdiff_t>( hs_pos ) );
+						}
+					}
+				} else {
+					static_assert( std::is_same_v<DAW_TYPEOF( *needle_first ), char> );
+					for( std::size_t haystack_pos = 0; haystack_pos < haystack_size;
+					     ++haystack_pos ) {
+						for( std::size_t needle_pos = 0; needle_pos < needle_size;
+						     ++needle_pos ) {
+							if( p( haystack_first[haystack_pos],
+							       needle_first[needle_pos] ) ) {
+								return std::next( haystack_first,
+								                  static_cast<std::ptrdiff_t>( haystack_pos ) );
+							}
 						}
 					}
 				}
-
-				return last;
+				return std::next( haystack_first,
+				                  static_cast<std::ptrdiff_t>( haystack_size ) );
 			}
 
 			template<typename InputIt, typename UnaryPredicate>
@@ -236,19 +261,15 @@ namespace daw {
 
 			template<typename CharT>
 			[[nodiscard]] constexpr int
-			compare( CharT const *l_ptr, CharT const *r_ptr, std::size_t sz ) {
-				auto const last = l_ptr + static_cast<std::ptrdiff_t>( sz );
-				while( l_ptr != last ) {
-					auto const diff = *l_ptr - *r_ptr;
+			compare( CharT const *l_ptr, CharT const *r_ptr, std::size_t const sz ) {
+				for( std::size_t n = 0; n < sz; ++n ) {
+					auto const diff = l_ptr[n] - r_ptr[n];
 					if( diff < 0 ) {
 						return -1;
 					}
 					if( diff > 0 ) {
 						return 1;
 					}
-
-					++l_ptr;
-					++r_ptr;
 				}
 				return 0;
 			}
@@ -260,7 +281,6 @@ namespace daw {
 				}
 				auto pos = str;
 				while( *( pos ) != 0 ) {
-
 					++pos;
 				}
 				return static_cast<SizeT>( pos - str );
@@ -422,9 +442,7 @@ namespace daw {
 					}
 				} else {
 					if constexpr( is_last_a_pointer<Bounds>::value ) {
-
 						return f + static_cast<difference_type>( l );
-
 					} else {
 						(void)f;
 						return static_cast<size_type>( l );
@@ -446,9 +464,7 @@ namespace daw {
 			[[nodiscard]] DAW_ATTRIB_INLINE static constexpr size_type
 			size( const_pointer f, last_type l ) {
 				if constexpr( is_last_a_pointer<Bounds>::value ) {
-
 					return static_cast<size_type>( l - f );
-
 				} else {
 					(void)f;
 					return l;
@@ -457,7 +473,6 @@ namespace daw {
 
 			template<string_view_bounds_type Bounds>
 			DAW_ATTRIB_INLINE constexpr void dec_front( size_type n ) {
-
 				m_first += static_cast<difference_type>( n );
 
 				if constexpr( not is_last_a_pointer<Bounds>::value ) {
@@ -467,7 +482,6 @@ namespace daw {
 
 			template<string_view_bounds_type Bounds>
 			DAW_ATTRIB_INLINE constexpr void dec_back( size_type n ) {
-
 				if constexpr( is_last_a_pointer<Bounds>::value ) {
 					m_last -= static_cast<difference_type>( n );
 				} else {
@@ -477,7 +491,6 @@ namespace daw {
 
 			template<string_view_bounds_type Bounds>
 			DAW_ATTRIB_INLINE constexpr void inc_front( size_type n ) {
-
 				m_first -= static_cast<difference_type>( n );
 				if constexpr( not is_last_a_pointer<Bounds>::value ) {
 					m_last += n;
@@ -486,7 +499,6 @@ namespace daw {
 
 			template<string_view_bounds_type Bounds>
 			DAW_ATTRIB_INLINE constexpr void inc_back( size_type n ) {
-
 				if constexpr( is_last_a_pointer<Bounds>::value ) {
 					m_last += static_cast<difference_type>( n );
 				} else {
@@ -572,7 +584,7 @@ namespace daw {
 			                                               size_type count ) noexcept
 			  : m_first( std::data( sv ) )
 			  , m_last( make_last<BoundsType>(
-			      m_first, (std::min)( { std::size( sv ), count } ) ) ) {}
+			      m_first, ( std::min )( { std::size( sv ), count } ) ) ) {}
 
 			/// @brief Construct a string_view from a type that forms a
 			/// contiguous range of characters. Does not clip count to sv's bounds
@@ -793,6 +805,7 @@ namespace daw {
 				  "Attempt to reference an element of an empty basic_string_view" );
 				return *std::prev( end( ) );
 			}
+
 			//******************************
 			// Modifiers
 			//******************************
@@ -815,7 +828,7 @@ namespace daw {
 			/// empty, it does nothing.
 			DAW_ATTRIB_INLINE constexpr basic_string_view &
 			remove_prefix( size_type n ) {
-				dec_front<BoundsType>( (std::min)( { n, size( ) } ) );
+				dec_front<BoundsType>( ( std::min )( { n, size( ) } ) );
 				return *this;
 			}
 
@@ -834,7 +847,7 @@ namespace daw {
 			/// @brief Increment the data( ) pointer by 1. If string_view is
 			/// empty, it does nothing.
 			DAW_ATTRIB_INLINE constexpr basic_string_view &remove_prefix( ) {
-				dec_front<BoundsType>( (std::min)( { size_type{ 1U }, size( ) } ) );
+				dec_front<BoundsType>( ( std::min )( { size_type{ 1U }, size( ) } ) );
 				return *this;
 			}
 
@@ -853,7 +866,7 @@ namespace daw {
 			/// does nothing.
 			DAW_ATTRIB_INLINE constexpr basic_string_view &
 			remove_suffix( size_type n ) {
-				dec_back<BoundsType>( (std::min)( { n, size( ) } ) );
+				dec_back<BoundsType>( ( std::min )( { n, size( ) } ) );
 				return *this;
 			}
 
@@ -870,7 +883,7 @@ namespace daw {
 
 			/// @brief Decrement the size( ) by 1 if size( ) > 0
 			DAW_ATTRIB_INLINE constexpr basic_string_view &remove_suffix( ) {
-				dec_back<BoundsType>( (std::min)( { size_type{ 1U }, size( ) } ) );
+				dec_back<BoundsType>( ( std::min )( { size_type{ 1U }, size( ) } ) );
 				return *this;
 			}
 
@@ -1011,7 +1024,6 @@ namespace daw {
 			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
 			[[nodiscard]] constexpr basic_string_view
 			pop_front_until( UnaryPredicate pred, nodiscard_t ) {
-
 				auto pos = find_first_of_if( std::move( pred ) );
 				return pop_front( pos );
 			}
@@ -1030,7 +1042,6 @@ namespace daw {
 			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
 			[[nodiscard]] constexpr basic_string_view
 			pop_front_while( UnaryPredicate pred ) {
-
 				auto pos = find_first_not_of_if( std::move( pred ) );
 				return pop_front( pos );
 			}
@@ -1053,6 +1064,7 @@ namespace daw {
 				remove_prefix( sv2_details::find_predicate_result_size( pred ) );
 				return result;
 			}
+
 			//*****************************************************************************
 			//*****************************************************************************
 			//*****************************************************************************
@@ -1081,7 +1093,7 @@ namespace daw {
 			/// @param count number of characters to remove and return
 			/// @return a substr of size count ending at end of string_view
 			[[nodiscard]] constexpr basic_string_view pop_back( size_type count ) {
-				count = (std::min)( { count, size( ) } );
+				count = ( std::min )( { count, size( ) } );
 				basic_string_view result = substr( size( ) - count, npos );
 				remove_suffix( count );
 				return result;
@@ -1183,7 +1195,6 @@ namespace daw {
 			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
 			[[nodiscard]] constexpr basic_string_view
 			pop_back_until( UnaryPredicate pred ) {
-
 				auto pos = find_last_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					auto result = *this;
@@ -1195,6 +1206,7 @@ namespace daw {
 				remove_suffix( size( ) - pos );
 				return result;
 			}
+
 			/// @brief searches for last position UnaryPredicate would be
 			/// true, returns substring between pred and end, then pops off
 			/// the substring and the pred specified string
@@ -1207,7 +1219,6 @@ namespace daw {
 			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
 			[[nodiscard]] constexpr basic_string_view
 			pop_back_until( UnaryPredicate pred, nodiscard_t ) {
-
 				auto pos = find_last_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					auto result = *this;
@@ -1298,7 +1309,6 @@ namespace daw {
 			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
 			[[nodiscard]] constexpr basic_string_view
 			try_pop_front_until( UnaryPredicate pred, nodiscard_t ) {
-
 				auto pos = find_first_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					return basic_string_view<CharT, BoundsType>( );
@@ -1404,7 +1414,6 @@ namespace daw {
 			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
 			[[nodiscard]] constexpr basic_string_view
 			try_pop_back_until( UnaryPredicate pred ) {
-
 				auto pos = find_last_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					return basic_string_view<CharT, BoundsType>( );
@@ -1426,7 +1435,6 @@ namespace daw {
 			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
 			[[nodiscard]] constexpr basic_string_view
 			try_pop_back_until( UnaryPredicate pred, nodiscard_t ) {
-
 				auto pos = find_last_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					return basic_string_view<CharT, BoundsType>( );
@@ -1509,7 +1517,7 @@ namespace daw {
 			DAW_ATTRIB_INLINE constexpr basic_string_view &
 			remove_prefix_until( UnaryPredicate pred, nodiscard_t ) {
 				auto pos = find_if( pred );
-				dec_front<BoundsType>( (std::min)( { size( ), pos } ) );
+				dec_front<BoundsType>( ( std::min )( { size( ), pos } ) );
 				return *this;
 			}
 
@@ -1536,7 +1544,7 @@ namespace daw {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos <= size( ), "Attempt to access basic_string_view past end" );
 
-				size_type const rlen = (std::min)( { count, size( ) - pos } );
+				size_type const rlen = ( std::min )( { count, size( ) - pos } );
 				if( rlen > 0 ) {
 					auto const f =
 					  std::next( begin( ), static_cast<difference_type>( pos ) );
@@ -1561,7 +1569,7 @@ namespace daw {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos <= size( ), "Attempt to access basic_string_view past end" );
 				auto const rcount =
-				  static_cast<size_type>( (std::min)( { count, size( ) - pos } ) );
+				  static_cast<size_type>( ( std::min )( { count, size( ) - pos } ) );
 				return { m_first + pos, m_first + pos + rcount };
 			}
 
@@ -1630,7 +1638,7 @@ namespace daw {
 
 				int const ret =
 				  str_compare( lhs.data( ), rhs.data( ),
-				               (std::min)( { lhs.size( ), rhs.size( ) } ), cmp );
+				               ( std::min )( { lhs.size( ), rhs.size( ) } ), cmp );
 				if( ret == 0 ) {
 					if( lhs.size( ) < rhs.size( ) ) {
 						return -1;
@@ -1696,28 +1704,9 @@ namespace daw {
 				                cmp );
 			}
 
-			template<string_view_bounds_type Bounds>
-			[[nodiscard]] constexpr size_type
-			find( basic_string_view<CharT, Bounds> v, size_type pos ) const {
-
-				if( size( ) < v.size( ) ) {
-					return npos;
-				}
-				if( v.empty( ) ) {
-					return pos;
-				}
-				auto result =
-				  sv2_details::search( begin( ) + pos, end( ), v.begin( ), v.end( ) );
-				if( end( ) == result ) {
-					return npos;
-				}
-				return static_cast<size_type>( result - begin( ) );
-			}
-
 			[[nodiscard]] constexpr size_type
 			find_first_match( std::initializer_list<basic_string_view> needles,
 			                  size_type pos ) const {
-
 				for( auto needle : needles ) {
 					if( needle.empty( ) ) {
 						return pos;
@@ -1736,45 +1725,46 @@ namespace daw {
 				return find_first_match( needles, 0 );
 			}
 
-			template<string_view_bounds_type Bounds>
-			[[nodiscard]] constexpr size_type
-			find( basic_string_view<CharT, Bounds> v ) const {
-				return find( v, 0 );
-			}
-
-			[[nodiscard]] constexpr size_type find( CharT c, size_type pos ) const {
+			[[nodiscard]] constexpr size_type find( CharT c,
+			                                        size_type pos = 0 ) const {
 				assert( pos <= size( ) );
 				auto first = data( ) + pos;
 				auto const sz = static_cast<std::size_t>( data_end( ) - first );
 				for( std::size_t n = pos; n < sz; ++n ) {
-
-					char const test_c = first[n];
-
-					if( test_c == c ) {
+					if( first[n] == c ) {
 						return n;
 					}
 				}
 				return npos;
 			}
 
-			[[nodiscard]] constexpr size_type find( CharT c ) const {
-				return find( c, 0 );
-			}
-
-			[[nodiscard]] constexpr size_type find( const_pointer s, size_type pos,
-			                                        size_type count ) const {
+			[[nodiscard]] DAW_ATTRIB_FLATTEN constexpr size_type
+			find( const_pointer s, size_type pos, size_type count ) const {
 				assert( pos <= size( ) );
 				return find( basic_string_view<CharT, BoundsType>( s, count ), pos );
 			}
 
-			[[nodiscard]] constexpr size_type find( const_pointer s,
-			                                        size_type pos ) const {
+			[[nodiscard]] DAW_ATTRIB_FLATTEN constexpr size_type
+			find( const_pointer s, size_type pos = 0 ) const {
 				assert( pos <= size( ) );
 				return find( basic_string_view<CharT, BoundsType>( s ), pos );
 			}
 
-			[[nodiscard]] constexpr size_type find( const_pointer s ) const {
-				return find( basic_string_view<CharT, BoundsType>( s ), 0 );
+			template<string_view_bounds_type Bounds>
+			[[nodiscard]] constexpr size_type
+			find( basic_string_view<CharT, Bounds> v, size_type pos = 0 ) const {
+				if( size( ) < v.size( ) ) {
+					return npos;
+				}
+				if( v.empty( ) ) {
+					return pos;
+				}
+				auto result =
+				  sv2_details::search( begin( ) + pos, end( ), v.begin( ), v.end( ) );
+				if( end( ) == result ) {
+					return npos;
+				}
+				return static_cast<size_type>( result - begin( ) );
 			}
 
 			/// @brief Test if the string_view contains the supplied pattern
@@ -1785,13 +1775,9 @@ namespace daw {
 			}
 
 			/// @brief Test if the string_view contains the supplied pattern
-			[[nodiscard]] constexpr bool contains( CharT c, size_type pos ) const {
+			[[nodiscard]] constexpr bool contains( CharT c,
+			                                       size_type pos = 0 ) const {
 				return find( c, pos ) != npos;
-			}
-
-			/// @brief Test if the string_view contains the supplied pattern
-			[[nodiscard]] constexpr bool contains( CharT c ) const {
-				return find( c, 0 );
 			}
 
 			/// @brief Test if the string_view contains the supplied pattern
@@ -1815,7 +1801,6 @@ namespace daw {
 			[[nodiscard]] constexpr size_type
 			find_first_match( basic_string_view<CharT, Bounds> v,
 			                  size_type pos ) const {
-
 				if( size( ) < v.size( ) ) {
 					return npos;
 				}
@@ -1836,27 +1821,22 @@ namespace daw {
 			/// @returns starting position of substring or npos if not found
 			template<string_view_bounds_type Bounds>
 			[[nodiscard]] constexpr size_type
-			rfind( basic_string_view<CharT, Bounds> v, size_type pos ) const {
-
+			rfind( basic_string_view<CharT, Bounds> v, size_type pos = npos ) const {
 				if( size( ) < v.size( ) ) {
 					return npos;
 				}
-				pos = (std::min)( { pos, size( ) - v.size( ) } );
+				pos = ( std::min )( { pos, size( ) - v.size( ) } );
 				if( v.empty( ) ) {
 					return pos;
 				}
-				const_iterator cur =
-				  std::next( begin( ), static_cast<difference_type>( pos ) );
-				while( true ) {
-					if( sv2_details::compare( cur, v.begin( ), v.size( ) ) == 0 ) {
-						return static_cast<size_type>( cur - begin( ) );
+				do {
+					if( sv2_details::compare( m_first +
+					                            static_cast<std::ptrdiff_t>( pos ),
+					                          v.begin( ), v.size( ) ) == 0 ) {
+						return pos;
 					}
-					if( cur == begin( ) ) {
-						return npos;
-					}
-
-					--cur;
-				}
+				} while( pos-- > 0 );
+				return npos;
 			}
 
 			/// @brief Find the position of the last substring equal to [s, s + count)
@@ -1870,34 +1850,15 @@ namespace daw {
 				return rfind( basic_string_view<CharT, BoundsType>( s, count ), pos );
 			}
 
-			/// @brief Find the position of the last substring in [data( ), data( ) +
-			/// size( ) )
-			/// @param v substring to search for
-			/// @returns starting position of substring or npos if not found
-			template<string_view_bounds_type Bounds>
-			[[nodiscard]] constexpr size_type
-			rfind( basic_string_view<CharT, Bounds> v ) const {
-				return rfind( v, npos );
-			}
-
 			/// @brief find the last position of character in [data( ) + pos, data( )
 			/// + size( ))
 			/// @param c Character to search for
 			/// @param pos starting position
 			/// @returns position of found character or npos
-			[[nodiscard]] constexpr size_type rfind( CharT c, size_type pos ) const {
+			[[nodiscard]] constexpr size_type rfind( CharT c,
+			                                         size_type pos = npos ) const {
 				return rfind(
 				  basic_string_view<CharT, BoundsType>( std::addressof( c ), 1 ), pos );
-			}
-
-			/// @brief find the last position of character in [data( ), data( ) +
-			/// size( ))
-			/// @param c Character to search for
-			/// @returns position of found character or npos
-			[[nodiscard]] constexpr size_type rfind( CharT c ) const {
-				return rfind(
-				  basic_string_view<CharT, BoundsType>( std::addressof( c ), 1 ),
-				  npos );
 			}
 
 			/// @brief find the last position of character in [data( ) + pos, data( )
@@ -1907,17 +1868,8 @@ namespace daw {
 			/// @pre s is zero terminated
 			/// @returns position of found character or npos
 			[[nodiscard]] constexpr size_type rfind( const_pointer s,
-			                                         size_type pos ) const {
+			                                         size_type pos = npos ) const {
 				return rfind( basic_string_view<CharT, BoundsType>( s ), pos );
-			}
-
-			/// @brief find the last position of character in [data( ), data( ) +
-			/// size( ))
-			/// @param s substring to search for
-			/// @pre s is zero terminated
-			/// @returns position of found character or npos
-			[[nodiscard]] constexpr size_type rfind( const_pointer s ) const {
-				return rfind( basic_string_view<CharT, BoundsType>( s ), npos );
 			}
 
 			/// Find the first item in v that is in string from pos
@@ -1926,27 +1878,19 @@ namespace daw {
 			/// \return position of first item in v or npos
 			template<string_view_bounds_type Bounds>
 			[[nodiscard]] constexpr size_type
-			find_first_of( basic_string_view<CharT, Bounds> v, size_type pos ) const {
+			find_first_of( basic_string_view<CharT, Bounds> v,
+			               size_type pos = 0 ) const {
 				if( pos >= size( ) or v.empty( ) ) {
 					return npos;
 				}
 				auto const iter =
-				  sv2_details::find_first_of( begin( ) + pos, end( ), v.begin( ),
-				                              v.end( ), sv2_details::bp_eq<CharT> );
+				  sv2_details::find_first_of( begin( ) + pos, size( ) - pos, v.begin( ),
+				                              v.size( ), sv2_details::bp_eq<CharT> );
 
 				if( end( ) == iter ) {
 					return npos;
 				}
 				return static_cast<size_type>( std::distance( begin( ), iter ) );
-			}
-
-			/// Find the first item in v that is in string from beginning
-			/// \param v A range of characters to look for
-			/// \return position of first item in v or npos
-			template<string_view_bounds_type Bounds>
-			[[nodiscard]] constexpr size_type
-			find_first_of( basic_string_view<CharT, Bounds> v ) const {
-				return find_first_of( v, 0 );
 			}
 
 			[[nodiscard]] constexpr size_type find_first_of( const_pointer str,
@@ -2026,7 +1970,6 @@ namespace daw {
 			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
 			[[nodiscard]] constexpr size_type
 			find_first_of_if( UnaryPredicate pred, size_type pos ) const {
-
 				(void)traits::is_unary_predicate_test<UnaryPredicate, CharT>( );
 
 				if( pos >= size( ) ) {
@@ -2051,7 +1994,6 @@ namespace daw {
 			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
 			[[nodiscard]] constexpr size_type
 			find_first_not_of_if( UnaryPredicate pred, size_type pos ) const {
-
 				traits::is_unary_predicate_test<UnaryPredicate, CharT>( );
 
 				if( pos >= size( ) ) {
@@ -2073,16 +2015,11 @@ namespace daw {
 				return find_first_not_of_if( pred, 0 );
 			}
 
-			[[nodiscard]] constexpr size_type find_first_of( CharT c,
-			                                                 size_type pos ) const {
+			[[nodiscard]] constexpr size_type
+			find_first_of( CharT c, size_type pos = 0 ) const {
 				return find_first_of(
 				  basic_string_view<CharT, BoundsType>( std::addressof( c ), 1U ),
 				  pos );
-			}
-
-			[[nodiscard]] constexpr size_type find_first_of( CharT c ) const {
-				return find_first_of(
-				  basic_string_view<CharT, BoundsType>( std::addressof( c ), 1U ), 0 );
 			}
 
 			[[nodiscard]] constexpr size_type
@@ -2105,7 +2042,8 @@ namespace daw {
 		public:
 			template<string_view_bounds_type Bounds>
 			[[nodiscard]] constexpr size_type
-			find_last_of( basic_string_view<CharT, Bounds> s, size_type pos ) const {
+			find_last_of( basic_string_view<CharT, Bounds> s,
+			              size_type pos = npos ) const {
 				if( s.empty( ) ) {
 					return npos;
 				}
@@ -2115,38 +2053,35 @@ namespace daw {
 					pos = size( ) - ( pos + 1U );
 				}
 				auto haystack = substr( pos );
-				auto iter = daw::algorithm::find_first_of(
-				  haystack.rbegin( ), haystack.rend( ), s.rbegin( ), s.rend( ) );
-				return iter == rend( ) ? npos : reverse_distance( rbegin( ), iter );
+				if constexpr( sizeof( CharT ) == 1 ) {
+					auto needle_array = daw::bitset<256>{ };
+					for( auto const c : s ) {
+						needle_array.set( static_cast<unsigned char>( c ) );
+					}
+					for( std::size_t n = size( ); n > 0; --n ) {
+						if( needle_array.test(
+						      static_cast<unsigned char>( m_first[n - 1] ) ) ) {
+							return n - 1;
+						}
+					}
+					return npos;
+				} else {
+					auto iter = daw::algorithm::find_first_of(
+					  haystack.rbegin( ), haystack.rend( ), s.rbegin( ), s.rend( ) );
+					return iter == rend( ) ? npos : reverse_distance( rbegin( ), iter );
+				}
 			}
 
-			template<string_view_bounds_type Bounds>
 			[[nodiscard]] constexpr size_type
-			find_last_of( basic_string_view<CharT, Bounds> s ) const {
-				return find_last_of( s, npos );
-			}
-
-			[[nodiscard]] constexpr size_type find_last_of( CharT c,
-			                                                size_type pos ) const {
+			find_last_of( CharT c, size_type pos = npos ) const {
 				return find_last_of( basic_string_view( std::addressof( c ), 1 ), pos );
-			}
-
-			[[nodiscard]] constexpr size_type find_last_of( CharT c ) const {
-				return find_last_of( basic_string_view( std::addressof( c ), 1 ),
-				                     npos );
 			}
 
 			template<size_type N>
 			[[nodiscard]] constexpr size_type find_last_of( CharT const ( &s )[N],
-			                                                size_type pos ) {
+			                                                size_type pos = npos ) {
 				return find_last_of( basic_string_view<CharT, BoundsType>( s, N - 1 ),
 				                     pos );
-			}
-
-			template<size_type N>
-			[[nodiscard]] constexpr size_type find_last_of( CharT const ( &s )[N] ) {
-				return find_last_of( basic_string_view<CharT, BoundsType>( s, N - 1 ),
-				                     npos );
 			}
 
 			[[nodiscard]] constexpr size_type
@@ -2155,20 +2090,15 @@ namespace daw {
 				                     pos );
 			}
 
-			[[nodiscard]] constexpr size_type find_last_of( const_pointer s,
-			                                                size_type pos ) const {
+			[[nodiscard]] constexpr size_type
+			find_last_of( const_pointer s, size_type pos = npos ) const {
 				return find_last_of( basic_string_view<CharT, BoundsType>( s ), pos );
-			}
-
-			[[nodiscard]] constexpr size_type find_last_of( const_pointer s ) const {
-				return find_last_of( basic_string_view<CharT, BoundsType>( s ), npos );
 			}
 
 			template<typename UnaryPredicate,
 			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
 			[[nodiscard]] constexpr size_type find_last_of_if( UnaryPredicate pred,
 			                                                   size_type pos ) const {
-
 				(void)traits::is_unary_predicate_test<UnaryPredicate, CharT>( );
 
 				auto haystack = substr( 0, pos );
@@ -2262,7 +2192,6 @@ namespace daw {
 			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
 			[[nodiscard]] constexpr size_type
 			find_last_not_of_if( UnaryPredicate pred, size_type pos ) const {
-
 				if( empty( ) ) {
 					return npos;
 				}
@@ -2270,7 +2199,6 @@ namespace daw {
 					pos = size( ) - 1;
 				}
 				for( auto n = static_cast<difference_type>( pos ); n >= 0; --n ) {
-
 					if( not pred( m_first[n] ) ) {
 						return static_cast<size_type>( n );
 					}
@@ -2289,7 +2217,6 @@ namespace daw {
 			[[nodiscard]] constexpr size_type
 			find_last_not_of( basic_string_view<CharT, Bounds> v,
 			                  size_type pos ) const {
-
 				if( empty( ) ) {
 					return npos;
 				}
@@ -2300,7 +2227,6 @@ namespace daw {
 					return pos;
 				}
 				for( auto n = static_cast<difference_type>( pos ); n >= 0; --n ) {
-
 					if( v.find( m_first[n] ) == npos ) {
 						return static_cast<size_type>( n );
 					}
@@ -2517,6 +2443,7 @@ namespace daw {
 				         .compare( rhs ) >= 0;
 			}
 #endif
+
 		private:
 			struct is_space {
 				inline constexpr bool operator( )( CharT c ) const noexcept {
@@ -2634,12 +2561,12 @@ namespace daw {
 		basic_string_view( CharT const * ) -> basic_string_view<CharT>;
 
 		template<typename CharT>
-		basic_string_view( CharT const *, std::size_t count )
-		  -> basic_string_view<CharT>;
+		basic_string_view( CharT const *,
+		                   std::size_t count ) -> basic_string_view<CharT>;
 
 		template<typename CharT>
-		basic_string_view( CharT const *, CharT const * )
-		  -> basic_string_view<CharT>;
+		basic_string_view( CharT const *,
+		                   CharT const * ) -> basic_string_view<CharT>;
 
 		namespace string_view_literals {
 			[[nodiscard]] constexpr string_view
