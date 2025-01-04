@@ -320,6 +320,7 @@ namespace daw {
 						}
 					}
 				}
+				return last;
 			}
 
 			template<typename CharT, string_view_bounds_type Bounds,
@@ -1730,6 +1731,28 @@ namespace daw {
 				assert( pos <= size( ) );
 				auto first = data( ) + pos;
 				auto const sz = static_cast<std::size_t>( data_end( ) - first );
+#if defined( DAW_IS_CONSTANT_EVALUATED )
+				if( not DAW_IS_CONSTANT_EVALUATED( ) ) {
+					if constexpr( sizeof( CharT ) == 1 ) {
+						void const *r =
+						  std::memchr( reinterpret_cast<char const *>( first ),
+						               static_cast<char>( c ), sz );
+						if( r == nullptr ) {
+							return npos;
+						}
+						return static_cast<std::size_t>( static_cast<CharT const *>( r ) -
+						                                 first );
+					} else if constexpr( sizeof( CharT ) == 2 ) {
+						void const *r = std::wmemchr( const_cast<wchar_t const *>( first ),
+						                              static_cast<wchar_t>( c ), sz );
+						if( r == nullptr ) {
+							return npos;
+						}
+						return static_cast<std::size_t>( static_cast<CharT const *>( r ) -
+						                                 first );
+					}
+				}
+#endif
 				for( std::size_t n = pos; n < sz; ++n ) {
 					if( first[n] == c ) {
 						return n;
