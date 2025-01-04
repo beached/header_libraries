@@ -148,11 +148,11 @@ set(CPP20_TEST_SOURCES
         daw_move_only_test.cpp
         daw_named_params_test.cpp
         daw_observer_ptr_test.cpp
-        vector_test.cpp
 )
 
 set(CPP20_NOT_MSVC_TEST_SOURCES
         daw_pipelines_test.cpp
+        vector_test.cpp
 )
 #NOT COMPLETED daw_iterator_split_iterator_test.cpp
 #NOT COMPLETED daw_static_bitset_test.cpp

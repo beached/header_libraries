@@ -211,8 +211,10 @@ namespace daw {
 #pragma GCC diagnostic ignored "-Wnonnull-compare"
 #pragma GCC diagnostic ignored "-Waddress"
 #endif
-				if( not f  ) {
-					return { empty_child( ) };
+				if constexpr( not std::is_function_v<std::remove_cvref_t<Func>> ) {
+					if( not f ) {
+						return { empty_child( ) };
+					}
 				}
 #if defined( __GNUC__ ) && !defined( __clang__ )
 #pragma GCC diagnostic pop
