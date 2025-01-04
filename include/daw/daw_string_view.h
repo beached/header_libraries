@@ -1744,13 +1744,13 @@ namespace daw {
 						                                 first );
 					} else if constexpr( sizeof( CharT ) == 2 ) {
 						void const *r =
-						  std::wmemchr( reinterpet_cast<wchar_t const *>( first ),
-						                static_cast<wchar_t>( c ), sz );
+						  ::wmemchr( reinterpet_cast<wchar_t const *>( first ),
+						             static_cast<wchar_t>( c ), sz );
 						if( r == nullptr ) {
 							return npos;
 						}
-						return static_cast<std::size_t>( static_cast<CharT const *>( r ) -
-						                                 first );
+						return static_cast<std::size_t>(
+						  reinterpret_cast<CharT const *>( r ) - first );
 					}
 				}
 #endif
