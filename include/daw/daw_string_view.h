@@ -1743,8 +1743,9 @@ namespace daw {
 						return static_cast<std::size_t>( static_cast<CharT const *>( r ) -
 						                                 first );
 					} else if constexpr( sizeof( CharT ) == 2 ) {
-						void const *r = std::wmemchr( const_cast<wchar_t const *>( first ),
-						                              static_cast<wchar_t>( c ), sz );
+						void const *r =
+						  std::wmemchr( reinterpet_cast<wchar_t const *>( first ),
+						                static_cast<wchar_t>( c ), sz );
 						if( r == nullptr ) {
 							return npos;
 						}
@@ -1852,10 +1853,11 @@ namespace daw {
 				if( v.empty( ) ) {
 					return pos;
 				}
+
 				do {
-					if( sv2_details::compare( m_first +
-					                            static_cast<std::ptrdiff_t>( pos ),
-					                          v.begin( ), v.size( ) ) == 0 ) {
+					if( sv2_details::compare(
+					      std::next( m_first, static_cast<std::ptrdiff_t>( pos ) ),
+					      v.begin( ), v.size( ) ) == 0 ) {
 						return pos;
 					}
 				} while( pos-- > 0 );
@@ -1868,8 +1870,8 @@ namespace daw {
 			/// @param pos starting position
 			/// @param count size of substring
 			/// @returns starting position of substring or npos if not found
-			[[nodiscard]] constexpr size_type rfind( const_pointer s, size_type pos,
-			                                         size_type count ) const {
+			[[nodiscard]] DAW_ATTRIB_FLATTEN constexpr size_type
+			rfind( const_pointer s, size_type pos, size_type count ) const {
 				return rfind( basic_string_view<CharT, BoundsType>( s, count ), pos );
 			}
 
@@ -1880,8 +1882,29 @@ namespace daw {
 			/// @returns position of found character or npos
 			[[nodiscard]] constexpr size_type rfind( CharT c,
 			                                         size_type pos = npos ) const {
-				return rfind(
-				  basic_string_view<CharT, BoundsType>( std::addressof( c ), 1 ), pos );
+				if( empty( ) ) {
+					return npos;
+				}
+				pos = ( std::min )( { pos, size( ) - 1 } );
+#if defined( _GNU_SOURCE ) and defined( DAW_HAS_CONSTEVAL )
+				if constexpr( sizeof( CharT ) == 1 ) {
+					if( not DAW_IS_CONSTANT_EVALUATED( ) ) {
+						void const *r = memrchr( m_first, static_cast<char>( c ), pos );
+						if( r == nullptr ) {
+							return npos;
+						}
+						return static_cast<size_type>( static_cast<CharT const *>( r ) -
+						                               m_first );
+					}
+				}
+#endif
+
+				do {
+					if( m_first[static_cast<std::ptrdiff_t>( pos )] == c ) {
+						return pos;
+					}
+				} while( pos-- > 0 );
+				return npos;
 			}
 
 			/// @brief find the last position of character in [data( ) + pos, data( )

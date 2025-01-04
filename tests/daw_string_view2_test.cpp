@@ -1344,6 +1344,12 @@ namespace daw {
 		daw_expecting( 16U, pos_sv );
 	}
 
+	void daw_rfind_test_004( ) {
+		daw::sv2::string_view const sv = "This is a string";
+		auto pos_sv = sv.rfind( 's' );
+		daw_expecting( 10U, pos_sv );
+	}
+
 	void daw_find_test_001( ) {
 		daw::sv2::string_view const sv = "This is a string";
 		auto pos_sv = sv.find( "is" );
@@ -1787,6 +1793,7 @@ int main( )
 	daw::daw_rfind_test_001( );
 	daw::daw_rfind_test_002( );
 	daw::daw_rfind_test_003( );
+	daw::daw_rfind_test_004( );
 	daw::daw_find_test_001( );
 	daw::daw_find_test_002( );
 	daw::daw_find_test_003( );
