@@ -145,20 +145,19 @@ namespace daw {
 #endif
 			};
 
-			template<typename ForwardItH, typename ForwardItN,
-			         typename BinaryPredicate>
-			[[nodiscard]] constexpr ForwardItH
-			find_first_of( ForwardItH haystack_first, std::size_t haystack_size,
-			               ForwardItN needle_first, std::size_t needle_size,
+			template<typename CharT, typename BinaryPredicate>
+			[[nodiscard]] constexpr CharT const *
+			find_first_of( CharT const *haystack_first, std::size_t haystack_size,
+			               CharT const *needle_first, std::size_t needle_size,
 			               BinaryPredicate p ) {
 				static_assert(
 				  traits::is_binary_predicate_v<
 				    BinaryPredicate,
-				    typename std::iterator_traits<ForwardItH>::value_type>,
+				    typename std::iterator_traits<CharT const *>::value_type>,
 				  "BinaryPredicate p does not fullfill the requires of a binary "
 				  "predicate concept.  See "
 				  "http://en.cppreference.com/w/cpp/concept/BinaryPredicate" );
-				if constexpr( std::is_same_v<DAW_TYPEOF( *needle_first ), char> ) {
+				if constexpr( sizeof( CharT ) == 1 ) {
 					// On strings of char lets use a bitset to minimize memory and get
 					// O(N+M) instead of O(N*M)
 					auto needle_array = daw::bitset<256>{ };
@@ -173,7 +172,6 @@ namespace daw {
 						}
 					}
 				} else {
-					static_assert( std::is_same_v<DAW_TYPEOF( *needle_first ), char> );
 					for( std::size_t haystack_pos = 0; haystack_pos < haystack_size;
 					     ++haystack_pos ) {
 						for( std::size_t needle_pos = 0; needle_pos < needle_size;
@@ -1923,7 +1921,7 @@ namespace daw {
 			/// \param pos Starting position to start searching
 			/// \return position of first item in v or npos
 			template<string_view_bounds_type Bounds>
-			[[nodiscard]] constexpr size_type
+			[[nodiscard]] DAW_ATTRIB_FLATTEN constexpr size_type
 			find_first_of( basic_string_view<CharT, Bounds> v,
 			               size_type pos = 0 ) const {
 				if( pos >= size( ) or v.empty( ) ) {
