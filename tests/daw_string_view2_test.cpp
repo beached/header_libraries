@@ -422,6 +422,7 @@ namespace daw {
 	void tc002( ) {
 		std::string str = "Hello world";
 		daw::sv2::string_view view = str;
+		daw_expecting( view.is_zero_terminated( ), daw::ZeroTerminated::Yes );
 
 		puts( "Constructs a non-empty string" );
 		{ daw_expecting( view.empty( ), false ); }

@@ -420,8 +420,7 @@ namespace daw {
 		};
 		inline constexpr not_zero_terminated_t not_zero_terminated{ };
 
-		template<typename>
-		inline constexpr bool is_zero_terminated_v = false;
+		DAW_MAKE_REQ_TRAIT( is_zero_terminated_v, std::declval<T>( ).c_str( ) );
 
 		/// @brief The class template basic_string_view describes an object that can
 		/// refer to a constant contiguous sequence of char-like objects with the
