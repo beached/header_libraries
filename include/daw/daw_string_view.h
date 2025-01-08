@@ -520,20 +520,24 @@ namespace daw {
 			}
 
 			template<string_view_bounds_type Bounds>
-			DAW_ATTRIB_INLINE static constexpr void
-			set_zero_terminated( const_pointer f, last_type &l ) {
+			[[nodiscard]] DAW_ATTRIB_INLINE static constexpr last_type
+			set_zero_terminated( const_pointer f, last_type l ) {
 				if constexpr( not is_last_a_pointer<Bounds>::value ) {
 					DAW_STRING_VIEW_DBG_ZERO_CHECK( );
-					l += zt_offset;
+					return l + zt_offset;
+				} else {
+					return l;
 				}
 			}
 
 			template<string_view_bounds_type Bounds>
-			DAW_ATTRIB_INLINE static constexpr void
-			unset_zero_terminated( last_type &l ) {
+			[[nodiscard]] DAW_ATTRIB_INLINE static constexpr last_type
+			unset_zero_terminated( last_type l ) {
 				if constexpr( not is_last_a_pointer<Bounds>::value ) {
 					// Gcc will not generate a bitwise and for the if/else version
-					l &= ( zt_offset - 1 );
+					return l & ( zt_offset - 1 );
+				} else {
+					return l;
 				}
 			}
 
@@ -552,7 +556,7 @@ namespace daw {
 					m_last -= static_cast<difference_type>( n );
 				} else {
 					m_last -= n;
-					unset_zero_terminated<Bounds>( m_last );
+					m_last = unset_zero_terminated<Bounds>( m_last );
 				}
 			}
 
@@ -570,7 +574,7 @@ namespace daw {
 					m_last += static_cast<difference_type>( n );
 				} else {
 					m_last += n;
-					unset_zero_terminated<Bounds>( m_last );
+					m_last = unset_zero_terminated<Bounds>( m_last );
 				}
 			}
 
@@ -618,7 +622,7 @@ namespace daw {
 
 			DAW_ATTRIB_INLINE constexpr void set_zero_terminated( ) {
 				if( not is_zero_terminated( ) ) {
-					set_zero_terminated<BoundsType>( m_first, m_last );
+					m_last = set_zero_terminated<BoundsType>( m_first, m_last );
 				}
 			}
 
@@ -633,7 +637,7 @@ namespace daw {
 			  : m_first( s )
 			  , m_last(
 			      make_last<BoundsType>( s, sv2_details::strlen<size_type>( s ) ) ) {
-				set_zero_terminated<BoundsType>( m_first, m_last );
+				m_last = set_zero_terminated<BoundsType>( m_first, m_last );
 			}
 
 			/// @brief Construct a string_view from a type that forms a
@@ -647,7 +651,7 @@ namespace daw {
 			  : m_first( std::data( sv ) )
 			  , m_last( make_last<BoundsType>( m_first, std::size( sv ) ) ) {
 				if constexpr( is_zero_terminated_v<daw::remove_cvref_t<StringView>> ) {
-					set_zero_terminated<BoundsType>( m_first, m_last );
+					m_last = set_zero_terminated<BoundsType>( m_first, m_last );
 				}
 			}
 
@@ -667,7 +671,7 @@ namespace daw {
 			      m_first, (std::min)( { std::size( sv ), count } ) ) ) {
 				if constexpr( is_zero_terminated_v<daw::remove_cvref_t<StringView>> ) {
 					if( std::size( sv ) == count ) {
-						set_zero_terminated<BoundsType>( m_first, m_last );
+						m_last = set_zero_terminated<BoundsType>( m_first, m_last );
 					}
 				}
 			}
@@ -691,7 +695,7 @@ namespace daw {
 				  "Attempt to pop back more elements that are available" );
 				if constexpr( is_zero_terminated_v<daw::remove_cvref_t<StringView>> ) {
 					if( std::size( sv ) == count ) {
-						set_zero_terminated<BoundsType>( m_first, m_last );
+						m_last = set_zero_terminated<BoundsType>( m_first, m_last );
 					}
 				}
 			}
@@ -709,7 +713,7 @@ namespace daw {
 			  , m_last( make_last<BoundsType>(
 			      string_literal, string_literal[N - 1] == CharT{ } ? N - 1 : N ) ) {
 
-				set_zero_terminated<BoundsType>( m_first, m_last );
+				m_last = set_zero_terminated<BoundsType>( m_first, m_last );
 			}
 
 			/// @brief Construct a string_view from an array of characters
@@ -752,7 +756,7 @@ namespace daw {
 			  : m_first( first )
 			  , m_last( make_last<BoundsType>( first, last ) ) {
 
-				set_zero_terminated<BoundsType>( m_first, m_last );
+				m_last = set_zero_terminated<BoundsType>( m_first, m_last );
 			}
 
 			//******************************
