@@ -40,6 +40,7 @@
 #include <daw/stdinc/min_and_max.h>
 #include <daw/stdinc/reverse_iterator.h>
 #include <exception>
+#include <limits>
 #include <stdexcept>
 #include <type_traits>
 
@@ -57,6 +58,18 @@
 #else
 #define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... ) \
 	do {                                             \
+	} while( false )
+#endif
+
+#if not defined( NDEBUG ) or defined( DEBUG )
+#define DAW_STRING_VIEW_DBG_ZERO_CHECK( )                        \
+	if( DAW_UNLIKELY( *( f + static_cast<std::ptrdiff_t>( l ) ) != \
+	                  CharT{ } ) ) {                               \
+		DAW_THROW_OR_TERMINATE_NA( std::exception );                 \
+	}
+#else
+#define DAW_STRING_VIEW_DBG_ZERO_CHECK( ) \
+	do {                                    \
 	} while( false )
 #endif
 
@@ -395,6 +408,21 @@ namespace daw {
 			inline constexpr auto bp_eq = equal_t<CharT>( 42 );
 		} // namespace sv2_details
 
+		enum class ZeroTerminated { No, Yes, Unknown };
+
+		struct zero_terminated_t {
+			explicit zero_terminated_t( ) = default;
+		};
+		inline constexpr zero_terminated_t zero_terminated{ };
+
+		struct not_zero_terminated_t {
+			explicit not_zero_terminated_t( ) = default;
+		};
+		inline constexpr not_zero_terminated_t not_zero_terminated{ };
+
+		template<typename>
+		inline constexpr bool is_zero_terminated_v = false;
+
 		/// @brief The class template basic_string_view describes an object that can
 		/// refer to a constant contiguous sequence of char-like objects with the
 		/// first element of the sequence at position zero.
@@ -458,9 +486,12 @@ namespace daw {
 				if constexpr( is_last_a_pointer<Bounds>::value ) {
 					return m_last;
 				} else {
-					return m_first + static_cast<difference_type>( m_last );
+					return m_first + static_cast<last_difference_type>( size( ) );
 				}
 			}
+
+			static constexpr auto zt_offset =
+			  static_cast<size_type>( std::numeric_limits<difference_type>::min( ) );
 
 			template<string_view_bounds_type Bounds>
 			[[nodiscard]] DAW_ATTRIB_INLINE static constexpr size_type
@@ -469,7 +500,41 @@ namespace daw {
 					return static_cast<size_type>( l - f );
 				} else {
 					(void)f;
+					if( is_zero_terminated<Bounds>( l ) == ZeroTerminated::Yes ) {
+						return l - zt_offset;
+					}
 					return l;
+				}
+			}
+
+			template<string_view_bounds_type Bounds>
+			[[nodiscard]] DAW_ATTRIB_INLINE static constexpr ZeroTerminated
+			is_zero_terminated( last_type l ) {
+				if constexpr( is_last_a_pointer<Bounds>::value ) {
+					return ZeroTerminated::Unknown;
+				} else {
+					if( l < zt_offset ) {
+						return ZeroTerminated::No;
+					}
+					return ZeroTerminated::Yes;
+				}
+			}
+
+			template<string_view_bounds_type Bounds>
+			DAW_ATTRIB_INLINE static constexpr void
+			set_zero_terminated( const_pointer f, last_type &l ) {
+				if constexpr( not is_last_a_pointer<Bounds>::value ) {
+					DAW_STRING_VIEW_DBG_ZERO_CHECK( );
+					l += zt_offset;
+				}
+			}
+
+			template<string_view_bounds_type Bounds>
+			DAW_ATTRIB_INLINE static constexpr void
+			unset_zero_terminated( last_type &l ) {
+				if constexpr( not is_last_a_pointer<Bounds>::value ) {
+					// Gcc will not generate a bitwise and for the if/else version
+					l &= ( zt_offset - 1 );
 				}
 			}
 
@@ -488,6 +553,7 @@ namespace daw {
 					m_last -= static_cast<difference_type>( n );
 				} else {
 					m_last -= n;
+					unset_zero_terminated<Bounds>( m_last );
 				}
 			}
 
@@ -505,6 +571,7 @@ namespace daw {
 					m_last += static_cast<difference_type>( n );
 				} else {
 					m_last += n;
+					unset_zero_terminated<Bounds>( m_last );
 				}
 			}
 
@@ -550,6 +617,12 @@ namespace daw {
 			  : m_first( s )
 			  , m_last( make_last<BoundsType>( s, count ) ) {}
 
+			DAW_ATTRIB_INLINE constexpr void set_zero_terminated( ) {
+				if( not is_zero_terminated( ) ) {
+					set_zero_terminated<BoundsType>( m_first, m_last );
+				}
+			}
+
 			/// @brief Construct a string_view with a range starting with s
 			/// @param s Start of character range
 			/// @pre s == nullptr, or s beings a valid character range that
@@ -560,7 +633,9 @@ namespace daw {
 			constexpr basic_string_view( CharPtr s ) noexcept
 			  : m_first( s )
 			  , m_last(
-			      make_last<BoundsType>( s, sv2_details::strlen<size_type>( s ) ) ) {}
+			      make_last<BoundsType>( s, sv2_details::strlen<size_type>( s ) ) ) {
+				set_zero_terminated<BoundsType>( m_first, m_last );
+			}
 
 			/// @brief Construct a string_view from a type that forms a
 			/// contiguous range of characters
@@ -571,7 +646,11 @@ namespace daw {
 			         DAW_REQ_CONTIG_CHAR_RANGE( StringView, CharT )>
 			DAW_ATTRIB_INLINE constexpr basic_string_view( StringView &&sv ) noexcept
 			  : m_first( std::data( sv ) )
-			  , m_last( make_last<BoundsType>( m_first, std::size( sv ) ) ) {}
+			  , m_last( make_last<BoundsType>( m_first, std::size( sv ) ) ) {
+				if constexpr( is_zero_terminated_v<daw::remove_cvref_t<StringView>> ) {
+					set_zero_terminated<BoundsType>( m_first, m_last );
+				}
+			}
 
 			/// @brief Construct a string_view from a type that forms a
 			/// contiguous range of characters
@@ -586,7 +665,13 @@ namespace daw {
 			                                               size_type count ) noexcept
 			  : m_first( std::data( sv ) )
 			  , m_last( make_last<BoundsType>(
-			      m_first, (std::min)( { std::size( sv ), count } ) ) ) {}
+			      m_first, (std::min)( { std::size( sv ), count } ) ) ) {
+				if constexpr( is_zero_terminated_v<daw::remove_cvref_t<StringView>> ) {
+					if( std::size( sv ) == count ) {
+						set_zero_terminated<BoundsType>( m_first, m_last );
+					}
+				}
+			}
 
 			/// @brief Construct a string_view from a type that forms a
 			/// contiguous range of characters. Does not clip count to sv's bounds
@@ -605,17 +690,36 @@ namespace daw {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  std::size( sv ) >= count,
 				  "Attempt to pop back more elements that are available" );
+				if constexpr( is_zero_terminated_v<daw::remove_cvref_t<StringView>> ) {
+					if( std::size( sv ) == count ) {
+						set_zero_terminated<BoundsType>( m_first, m_last );
+					}
+				}
 			}
 
 			/// @brief Construct a string_view from a character array. Assumes
 			/// a string literal like array with last element having a value
-			/// of CharT{}
+			/// of CharT{} and zero terminated.
 			/// @param string_literal A valid contiguous character range
 			/// @post data( ) == std::data( string_literal )
 			/// @post size( ) == std::size( string_literal ) - 1
 			template<std::size_t N>
 			DAW_ATTRIB_INLINE constexpr basic_string_view(
 			  CharT const ( &string_literal )[N] ) noexcept
+			  : m_first( string_literal )
+			  , m_last( make_last<BoundsType>(
+			      string_literal, string_literal[N - 1] == CharT{ } ? N - 1 : N ) ) {
+
+				set_zero_terminated<BoundsType>( m_first, m_last );
+			}
+
+			/// @brief Construct a string_view from an array of characters
+			/// @param string_literal A valid contiguous character range
+			/// @post data( ) == std::data( string_literal )
+			/// @post size( ) == std::size( string_literal ) - 1
+			template<std::size_t N>
+			DAW_ATTRIB_INLINE constexpr basic_string_view(
+			  CharT const ( &string_literal )[N], not_zero_terminated_t ) noexcept
 			  : m_first( string_literal )
 			  , m_last( make_last<BoundsType>(
 			      string_literal, string_literal[N - 1] == CharT{ } ? N - 1 : N ) ) {}
@@ -633,6 +737,24 @@ namespace daw {
 			constexpr basic_string_view( CharPtr1 &&first, CharPtr2 &&last ) noexcept
 			  : m_first( first )
 			  , m_last( make_last<BoundsType>( first, last ) ) {}
+
+			/// @brief Construct a zero-terminated string_view from a range formed
+			/// by two character pointers
+			/// @param first Start of character range
+			/// @param last One past last element in range
+			/// @pre [first, last) form a valid character range
+			/// @post data( ) == first
+			/// @post size( ) == last - first
+			template<typename CharPtr1, typename CharPtr2,
+			         DAW_REQ_CHAR_PTR( CharPtr1, CharT ),
+			         DAW_REQ_CHAR_PTR( CharPtr2, CharT )>
+			constexpr basic_string_view( CharPtr1 &&first, CharPtr2 &&last,
+			                             zero_terminated_t ) noexcept
+			  : m_first( first )
+			  , m_last( make_last<BoundsType>( first, last ) ) {
+
+				set_zero_terminated<BoundsType>( m_first, m_last );
+			}
 
 			//******************************
 			// Conversions
@@ -684,7 +806,8 @@ namespace daw {
 			/// @brief Returns an iterator to the character following the last
 			/// character of the view. This character acts as a placeholder,
 			/// attempting to access it results in undefined behavior
-			/// @return const_iterator to the character following the last character.
+			/// @return const_iterator to the character following the last
+			/// character.
 			[[nodiscard]] constexpr const_iterator end( ) const DAW_LIFETIME_BOUND {
 				return last_pointer<BoundsType>( );
 			}
@@ -692,16 +815,17 @@ namespace daw {
 			/// @brief Returns an iterator to the character following the last
 			/// character of the view. This character acts as a placeholder,
 			/// attempting to access it results in undefined behavior
-			/// @return const_iterator to the character following the last character.
+			/// @return const_iterator to the character following the last
+			/// character.
 			[[nodiscard]] constexpr const_iterator cend( ) const DAW_LIFETIME_BOUND {
 				return last_pointer<BoundsType>( );
 			}
 
-			/// @brief Returns a reverse iterator to the character following the last
-			/// character of the reversed view. It corresponds to the character
-			/// preceding the first character of the non-reversed view. This character
-			/// acts as a placeholder, attempting to access it results in undefined
-			/// behavior.
+			/// @brief Returns a reverse iterator to the character following the
+			/// last character of the reversed view. It corresponds to the character
+			/// preceding the first character of the non-reversed view. This
+			/// character acts as a placeholder, attempting to access it results in
+			/// undefined behavior.
 			/// @return const_reverse_iterator to the character following the last
 			/// character.
 			[[nodiscard]] constexpr reverse_iterator
@@ -709,11 +833,11 @@ namespace daw {
 				return const_reverse_iterator( begin( ) );
 			}
 
-			/// @brief Returns a reverse iterator to the character following the last
-			/// character of the reversed view. It corresponds to the character
-			/// preceding the first character of the non-reversed view. This character
-			/// acts as a placeholder, attempting to access it results in undefined
-			/// behavior.
+			/// @brief Returns a reverse iterator to the character following the
+			/// last character of the reversed view. It corresponds to the character
+			/// preceding the first character of the non-reversed view. This
+			/// character acts as a placeholder, attempting to access it results in
+			/// undefined behavior.
 			/// @return const_reverse_iterator to the character following the last
 			/// character.
 			[[nodiscard]] constexpr const_reverse_iterator
@@ -724,6 +848,11 @@ namespace daw {
 			//******************************
 			// Capacity
 			//******************************
+
+			[[nodiscard]] DAW_ATTRIB_INLINE constexpr ZeroTerminated
+			is_zero_terminated( ) const {
+				return is_zero_terminated<BoundsType>( m_last );
+			}
 
 			/// @brief Returns the number of CharT elements in the view
 			/// @return The number of CharT elements in the view.
@@ -839,9 +968,9 @@ namespace daw {
 			/// @pre n <= size( )
 			DAW_ATTRIB_INLINE constexpr basic_string_view &
 			remove_prefix( size_type n, dont_clip_to_bounds_t ) {
-				DAW_STRING_VIEW_DBG_RNG_CHECK(
-				  size( ) >= n,
-				  "Attempt to remove prefix too many elements in a basic_string_view" );
+				DAW_STRING_VIEW_DBG_RNG_CHECK( size( ) >= n,
+				                               "Attempt to remove prefix too many "
+				                               "elements in a basic_string_view" );
 				dec_front<BoundsType>( n );
 				return *this;
 			}
@@ -857,9 +986,9 @@ namespace daw {
 			/// @pre size( ) >= 1
 			DAW_ATTRIB_INLINE constexpr basic_string_view &
 			remove_prefix( dont_clip_to_bounds_t ) {
-				DAW_STRING_VIEW_DBG_RNG_CHECK(
-				  size( ) >= 1,
-				  "Attempt to remove prefix too many elements in a basic_string_view" );
+				DAW_STRING_VIEW_DBG_RNG_CHECK( size( ) >= 1,
+				                               "Attempt to remove prefix too many "
+				                               "elements in a basic_string_view" );
 				dec_front<BoundsType>( size_type{ 1U } );
 				return *this;
 			}
@@ -876,9 +1005,9 @@ namespace daw {
 			/// @pre n <= size( )
 			DAW_ATTRIB_INLINE constexpr basic_string_view &
 			remove_suffix( size_type n, dont_clip_to_bounds_t ) {
-				DAW_STRING_VIEW_DBG_RNG_CHECK(
-				  size( ) >= n,
-				  "Attempt to remove suffix too many elements in a basic_string_view" );
+				DAW_STRING_VIEW_DBG_RNG_CHECK( size( ) >= n,
+				                               "Attempt to remove suffix too many "
+				                               "elements in a basic_string_view" );
 				dec_back<BoundsType>( n );
 				return *this;
 			}
@@ -943,9 +1072,9 @@ namespace daw {
 				return result;
 			}
 
-			/// @brief Increment data( ) until the substring where is found and return
-			/// a new string_view that would be formed formed from the previous and
-			/// current data( ) pointer values.
+			/// @brief Increment data( ) until the substring where is found and
+			/// return a new string_view that would be formed formed from the
+			/// previous and current data( ) pointer values.
 			/// @param where substring to search for
 			/// @return If where is found, a new string_view from the old data( )
 			/// position up to the position of the leading character in where.  If
@@ -1015,13 +1144,14 @@ namespace daw {
 			/// @brief Increment data until the predicate is true or the string_view
 			/// is empty.  Return a new string_view formed from the range of the
 			/// previous value of data( ) and the position where predicate was true.
-			/// @tparam UnaryPredicate A predicate taking a single CharT as parameter
+			/// @tparam UnaryPredicate A predicate taking a single CharT as
+			/// parameter
 			/// @param pred A predicate that returns true at the end of the newly
 			/// created range.
 			/// @return substring from beginning to position marked by
 			/// predicate
-			/// @post data( ) is set to position where the predicate was true, or one
-			/// past the end of the range
+			/// @post data( ) is set to position where the predicate was true, or
+			/// one past the end of the range
 			template<typename UnaryPredicate,
 			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
 			[[nodiscard]] constexpr basic_string_view
@@ -1030,16 +1160,18 @@ namespace daw {
 				return pop_front( pos );
 			}
 
-			/// @brief Increment data until the predicate is false or the string_view
-			/// is empty.  Return a new string_view formed from the range of the
-			/// previous value of data( ) and the position where predicate was false.
-			/// @tparam UnaryPredicate A predicate taking a single CharT as parameter
+			/// @brief Increment data until the predicate is false or the
+			/// string_view is empty.  Return a new string_view formed from the
+			/// range of the previous value of data( ) and the position where
+			/// predicate was false.
+			/// @tparam UnaryPredicate A predicate taking a single CharT as
+			/// parameter
 			/// @param pred A predicate that returns false at the end of the newly
 			/// created range.
 			/// @return substring from beginning to position marked by
 			/// predicate
-			/// @post data( ) is set to position where the predicate was false, or one
-			/// past the end of the range
+			/// @post data( ) is set to position where the predicate was false, or
+			/// one past the end of the range
 			template<typename UnaryPredicate,
 			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
 			[[nodiscard]] constexpr basic_string_view
@@ -1051,7 +1183,8 @@ namespace daw {
 			/// @brief Increment data until the predicate is true or the string_view
 			/// is empty.  Return a new string_view formed from the range of the
 			/// previous value of data( ) and the position where predicate was true.
-			/// @tparam UnaryPredicate A predicate taking a single CharT as parameter
+			/// @tparam UnaryPredicate A predicate taking a single CharT as
+			/// parameter
 			/// @param pred A predicate that returns true at the end of the newly
 			/// created range.
 			/// @return substring from beginning to position marked by
@@ -1248,9 +1381,10 @@ namespace daw {
 				return result;
 			}
 
-			/// @brief Increment data( ) until the substring where is found and return
-			/// a new string_view that would be formed formed from the previous and
-			/// current data( ) pointer values. Does nothing if where is not found
+			/// @brief Increment data( ) until the substring where is found and
+			/// return a new string_view that would be formed formed from the
+			/// previous and current data( ) pointer values. Does nothing if where
+			/// is not found
 			/// @param where substring to search for
 			/// @return If where is found, a new string_view from the old data( )
 			/// position up to the position of the leading character in where.  If
@@ -1281,8 +1415,8 @@ namespace daw {
 			}
 
 			/// @brief Searches for where, returns substring between front and
-			/// where, then pops off the substring and the where char. Does nothing if
-			/// where is not found
+			/// where, then pops off the substring and the where char. Does nothing
+			/// if where is not found
 			/// @param where string to split on and remove from front
 			/// @return substring from beginning to where string
 			[[nodiscard]] constexpr basic_string_view
@@ -1300,13 +1434,14 @@ namespace daw {
 			/// is empty.  Return a new string_view formed from the range of the
 			/// previous value of data( ) and the position where predicate was true.
 			/// Does nothing if predicate is not found
-			/// @tparam UnaryPredicate A predicate taking a single CharT as parameter
+			/// @tparam UnaryPredicate A predicate taking a single CharT as
+			/// parameter
 			/// @param pred A predicate that returns true at the end of the newly
 			/// created range.
 			/// @return substring from beginning to position marked by
 			/// predicate
-			/// @post data( ) is set to position where the predicate was true, or one
-			/// past the end of the range
+			/// @post data( ) is set to position where the predicate was true, or
+			/// one past the end of the range
 			template<typename UnaryPredicate,
 			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
 			[[nodiscard]] constexpr basic_string_view
@@ -1322,7 +1457,8 @@ namespace daw {
 			/// is empty.  Return a new string_view formed from the range of the
 			/// previous value of data( ) and the position where predicate was true.
 			/// Does nothing if predicate is not found
-			/// @tparam UnaryPredicate A predicate taking a single CharT as parameter
+			/// @tparam UnaryPredicate A predicate taking a single CharT as
+			/// parameter
 			/// @param pred A predicate that returns true at the end of the newly
 			/// created range.
 			/// @return substring from beginning to position marked by
@@ -1405,8 +1541,8 @@ namespace daw {
 
 			/// @brief searches for last position UnaryPredicate would be
 			/// true, returns substring between pred and end, then pops off
-			/// the substring and the pred specified string. Does nothing if predicate
-			/// is not found
+			/// the substring and the pred specified string. Does nothing if
+			/// predicate is not found
 			/// @tparam UnaryPredicate a unary predicate type that accepts a
 			/// char and indicates with true when to stop
 			/// @param pred predicate to determine where to split
@@ -1496,8 +1632,8 @@ namespace daw {
 			}
 
 			/// @brief Removes all elements until pred is true or end reached
-			/// @tparam UnaryPredicate a unary predicate type that accepts a char and
-			/// indicates with true when to stop
+			/// @tparam UnaryPredicate a unary predicate type that accepts a char
+			/// and indicates with true when to stop
 			/// @param pred Predicate object
 			/// @return A reference to the current string_view object
 			template<typename UnaryPredicate,
@@ -1528,14 +1664,18 @@ namespace daw {
 			/// @pre size( ) >= new_size
 			/// @post size( ) == new_size
 			constexpr void resize( size_type new_size ) {
-				DAW_STRING_VIEW_DBG_RNG_CHECK( new_size <= size( ),
-				                               "newsize is larger than size( )" );
-				m_last = make_last<BoundsType>(
-				  m_first,
-				  std::next( m_first, static_cast<difference_type>( new_size ) ) );
+				if( new_size != size( ) ) {
+					DAW_STRING_VIEW_DBG_RNG_CHECK( new_size <= size( ),
+					                               "newsize is larger than size( )" );
+					m_last = make_last<BoundsType>(
+					  m_first,
+					  std::next( m_first, static_cast<difference_type>( new_size ) ) );
+					return;
+				}
 			}
 
-			/// @brief Copy the character range [data( ) + pos, data( ) + pos + count)
+			/// @brief Copy the character range [data( ) + pos, data( ) + pos +
+			/// count)
 			/// @param dest pointer to buffer
 			/// @param count maximum number of elements to copy
 			/// @param pos starting position
@@ -1560,8 +1700,8 @@ namespace daw {
 				return copy( dest, count, 0 );
 			}
 
-			/// @brief Create a new sub-range basic_string_view [data( ) + pos, data(
-			/// ) + min( size( ), pos + count) )
+			/// @brief Create a new sub-range basic_string_view [data( ) + pos,
+			/// data( ) + min( size( ), pos + count) )
 			/// @param pos Starting position
 			/// @param count Maximum number of characters to copy
 			/// @pre pos <= size( )
@@ -1575,8 +1715,8 @@ namespace daw {
 				return { m_first + pos, m_first + pos + rcount };
 			}
 
-			/// @brief Create a new sub-range basic_string_view [data( ) + pos, data(
-			/// ) + min( size( ), pos + count) )
+			/// @brief Create a new sub-range basic_string_view [data( ) + pos,
+			/// data( ) + min( size( ), pos + count) )
 			/// @param pos Starting position
 			/// @param count Maximum number of characters to copy
 			/// @returns a new basic_string_view of the sub-range
@@ -1586,7 +1726,12 @@ namespace daw {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos + count <= size( ),
 				  "Attempt to access basic_string_view past end" );
-				return { m_first + pos, m_first + pos + count };
+				if( pos + count == size( ) ) {
+					return basic_string_view( m_first + pos, m_first + pos + count,
+					                          zero_terminated );
+				} else {
+					return basic_string_view( m_first + pos, m_first + pos + count );
+				}
 			}
 
 			/// @brief Return a copy of the string_view
@@ -1594,7 +1739,8 @@ namespace daw {
 				return substr( 0, size( ), dont_clip_to_bounds );
 			}
 
-			/// @brief Create a new sub-range basic_string_view [data( ) + pos, data()
+			/// @brief Create a new sub-range basic_string_view [data( ) + pos,
+			/// data()
 			/// + (size( ) - pos)
 			/// @param pos Starting position
 			/// @returns a new basic_string_view of the sub-range
@@ -1603,7 +1749,8 @@ namespace daw {
 				return substr( pos, npos );
 			}
 
-			/// @brief Create a new sub-range basic_string_view [data( ) + pos, data()
+			/// @brief Create a new sub-range basic_string_view [data( ) + pos,
+			/// data()
 			/// + (size( ) - pos). Does not check bounds
 			/// @param pos Starting position
 			/// @returns a new basic_string_view of the sub-range
@@ -1842,7 +1989,8 @@ namespace daw {
 				return static_cast<size_type>( result - begin( ) );
 			}
 
-			/// @brief Reverse find substring v in [data( ) + pos, data( ) + size( ) )
+			/// @brief Reverse find substring v in [data( ) + pos, data( ) + size( )
+			/// )
 			/// @param v substring to search for
 			/// @param pos starting position
 			/// @returns starting position of substring or npos if not found
@@ -1866,8 +2014,8 @@ namespace daw {
 				return npos;
 			}
 
-			/// @brief Find the position of the last substring equal to [s, s + count)
-			/// in [data( ) + pos, data( ) + size( ) )
+			/// @brief Find the position of the last substring equal to [s, s +
+			/// count) in [data( ) + pos, data( ) + size( ) )
 			/// @param s start of substring to search for
 			/// @param pos starting position
 			/// @param count size of substring
@@ -1877,7 +2025,8 @@ namespace daw {
 				return rfind( basic_string_view<CharT, BoundsType>( s, count ), pos );
 			}
 
-			/// @brief find the last position of character in [data( ) + pos, data( )
+			/// @brief find the last position of character in [data( ) + pos, data(
+			/// )
 			/// + size( ))
 			/// @param c Character to search for
 			/// @param pos starting position
@@ -1888,7 +2037,8 @@ namespace daw {
 				  basic_string_view<CharT, BoundsType>( std::addressof( c ), 1 ), pos );
 			}
 
-			/// @brief find the last position of character in [data( ) + pos, data( )
+			/// @brief find the last position of character in [data( ) + pos, data(
+			/// )
 			/// + size( ))
 			/// @param s substring to search for
 			/// @param pos starting position

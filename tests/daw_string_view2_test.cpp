@@ -1260,6 +1260,8 @@ namespace daw {
 
 	constexpr bool ensure_same_at_ct( ) {
 		constexpr daw::sv2::string_view sv_cx = "a";
+		static_assert( ( sv_cx.is_zero_terminated( ) == ZeroTerminated::Yes ) or
+		               ( sv_cx.is_zero_terminated( ) == ZeroTerminated::Unknown ) );
 		static_assert( sv_cx.size( ) == 1 );
 		static_assert( not sv_cx.empty( ) );
 		static_assert( *( sv_cx.data( ) +

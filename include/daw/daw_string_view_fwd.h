@@ -33,7 +33,11 @@ namespace daw {
 		  string_view_bounds_type::size;
 #else
 		inline constexpr string_view_bounds_type default_string_view_bounds_type =
-		  string_view_bounds_type::pointer;
+		  // string_view_bounds_type::pointer;
+		  string_view_bounds_type::size;
+		// Defaulting all to using size and removing parameter in next major release
+		// This allows us to us the MSB of the size to store if the string is
+		// zero-terminated
 #endif
 
 		/// @brief The class template basic_string_view describes an object that can
