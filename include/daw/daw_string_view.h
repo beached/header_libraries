@@ -500,10 +500,9 @@ namespace daw {
 					return static_cast<size_type>( l - f );
 				} else {
 					(void)f;
-					if( is_zero_terminated<Bounds>( l ) == ZeroTerminated::Yes ) {
-						return l - zt_offset;
-					}
-					return l;
+					// gcc will not elide the branch and use a bitwise and.  Using more
+					// complicated bitwise version
+					return l & ( zt_offset - 1 );
 				}
 			}
 
