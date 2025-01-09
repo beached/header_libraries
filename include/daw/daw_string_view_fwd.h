@@ -26,9 +26,8 @@ namespace daw {
 		template<typename CharT>
 		struct basic_string_view;
 
-		DAW_MAKE_REQ_TRAIT(
-		  is_daw_string_view,
-		  typename daw::remove_cvref_t<T>::i_am_a_daw_string_view2 );
+		DAW_MAKE_REQ_TRAIT_TYPE( is_daw_string_view,
+		                         daw::remove_cvref_t<T>::i_am_a_daw_string_view2 );
 
 		using string_view = basic_string_view<char>;
 		using wstring_view = basic_string_view<wchar_t>;
