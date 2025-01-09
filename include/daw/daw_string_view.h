@@ -139,25 +139,11 @@ namespace daw {
 		namespace sv2_details {
 			struct less {
 				template<typename T, typename U>
-#if defined( DAW_HAS_CPP23_STATIC_CALL_OP )
-#if DAW_HAS_CLANG_VER_GTE( 17, 0 )
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wc++23-extensions"
-#endif
-				DAW_ATTRIB_INLINE static constexpr bool
-				operator( )( T const &lhs, U const &rhs ) noexcept {
+				DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr bool
+				operator( )( T const &lhs,
+				             U const &rhs ) DAW_CPP23_STATIC_CALL_OP_CONST noexcept {
 					return lhs < rhs;
 				}
-
-#if DAW_HAS_CLANG_VER_GTE( 17, 0 )
-#pragma clang diagnostic pop
-#endif
-#else
-				DAW_ATTRIB_INLINE constexpr bool
-				operator( )( T const &lhs, U const &rhs ) const noexcept {
-					return lhs < rhs;
-				}
-#endif
 			};
 
 			template<typename CharT, typename BinaryPredicate>
@@ -1772,8 +1758,8 @@ namespace daw {
 			[[nodiscard]] static constexpr int
 			compare( basic_string_view<CharT, BL> lhs,
 			         basic_string_view<CharT, BR> rhs, Compare cmp = Compare{ } ) {
-				constexpr auto const str_compare = []( CharT const *p0, CharT const *p1,
-				                                       size_type len, Compare &c ) {
+				constexpr auto str_compare = []( CharT const *p0, CharT const *p1,
+				                                 size_type len, Compare &c ) {
 					auto const last = p0 + len;
 					while( p0 != last ) {
 						if( c( *p0, *p1 ) ) {
