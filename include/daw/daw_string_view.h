@@ -658,7 +658,7 @@ namespace daw {
 			                                               size_type count ) noexcept
 			  : m_first( std::data( sv ) )
 			  , m_last( make_last<BoundsType>(
-			      m_first, (std::min)( { std::size( sv ), count } ) ) ) {
+			      m_first, ( std::min )( { std::size( sv ), count } ) ) ) {
 				if constexpr( is_zero_terminated_v<daw::remove_cvref_t<StringView>> ) {
 					if( std::size( sv ) == count ) {
 						m_last = set_zero_terminated<BoundsType>( m_first, m_last );
@@ -952,7 +952,7 @@ namespace daw {
 			/// empty, it does nothing.
 			DAW_ATTRIB_INLINE constexpr basic_string_view &
 			remove_prefix( size_type n ) {
-				dec_front<BoundsType>( (std::min)( { n, size( ) } ) );
+				dec_front<BoundsType>( ( std::min )( { n, size( ) } ) );
 				return *this;
 			}
 
@@ -971,7 +971,7 @@ namespace daw {
 			/// @brief Increment the data( ) pointer by 1. If string_view is
 			/// empty, it does nothing.
 			DAW_ATTRIB_INLINE constexpr basic_string_view &remove_prefix( ) {
-				dec_front<BoundsType>( (std::min)( { size_type{ 1U }, size( ) } ) );
+				dec_front<BoundsType>( ( std::min )( { size_type{ 1U }, size( ) } ) );
 				return *this;
 			}
 
@@ -990,7 +990,7 @@ namespace daw {
 			/// does nothing.
 			DAW_ATTRIB_INLINE constexpr basic_string_view &
 			remove_suffix( size_type n ) {
-				dec_back<BoundsType>( (std::min)( { n, size( ) } ) );
+				dec_back<BoundsType>( ( std::min )( { n, size( ) } ) );
 				return *this;
 			}
 
@@ -1007,7 +1007,7 @@ namespace daw {
 
 			/// @brief Decrement the size( ) by 1 if size( ) > 0
 			DAW_ATTRIB_INLINE constexpr basic_string_view &remove_suffix( ) {
-				dec_back<BoundsType>( (std::min)( { size_type{ 1U }, size( ) } ) );
+				dec_back<BoundsType>( ( std::min )( { size_type{ 1U }, size( ) } ) );
 				return *this;
 			}
 
@@ -1221,7 +1221,7 @@ namespace daw {
 			/// @param count number of characters to remove and return
 			/// @return a substr of size count ending at end of string_view
 			[[nodiscard]] constexpr basic_string_view pop_back( size_type count ) {
-				count = (std::min)( { count, size( ) } );
+				count = ( std::min )( { count, size( ) } );
 				basic_string_view result = substr( size( ) - count, npos );
 				remove_suffix( count );
 				return result;
@@ -1648,7 +1648,7 @@ namespace daw {
 			DAW_ATTRIB_INLINE constexpr basic_string_view &
 			remove_prefix_until( UnaryPredicate pred, nodiscard_t ) {
 				auto pos = find_if( pred );
-				dec_front<BoundsType>( (std::min)( { size( ), pos } ) );
+				dec_front<BoundsType>( ( std::min )( { size( ), pos } ) );
 				return *this;
 			}
 
@@ -1679,7 +1679,7 @@ namespace daw {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos <= size( ), "Attempt to access basic_string_view past end" );
 
-				size_type const rlen = (std::min)( { count, size( ) - pos } );
+				size_type const rlen = ( std::min )( { count, size( ) - pos } );
 				if( rlen > 0 ) {
 					auto const f =
 					  std::next( begin( ), static_cast<difference_type>( pos ) );
@@ -1704,7 +1704,7 @@ namespace daw {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos <= size( ), "Attempt to access basic_string_view past end" );
 				auto const rcount =
-				  static_cast<size_type>( (std::min)( { count, size( ) - pos } ) );
+				  static_cast<size_type>( ( std::min )( { count, size( ) - pos } ) );
 				return { m_first + pos, m_first + pos + rcount };
 			}
 
@@ -1780,7 +1780,7 @@ namespace daw {
 
 				int const ret =
 				  str_compare( lhs.data( ), rhs.data( ),
-				               (std::min)( { lhs.size( ), rhs.size( ) } ), cmp );
+				               ( std::min )( { lhs.size( ), rhs.size( ) } ), cmp );
 				if( ret == 0 ) {
 					if( lhs.size( ) < rhs.size( ) ) {
 						return -1;
@@ -1795,8 +1795,8 @@ namespace daw {
 			template<typename Compare = sv2_details::less, string_view_bounds_type B>
 			[[nodiscard]] constexpr int compare( basic_string_view<CharT, B> rhs,
 			                                     Compare cmp = Compare{ } ) const {
-				return compare(
-				  *this, basic_string_view( std::data( rhs ), std::size( rhs ) ), cmp );
+				return compare( *this, basic_string_view( rhs.data( ), rhs.size( ) ),
+				                cmp );
 			}
 
 			template<typename Compare = sv2_details::less, typename StringView,
@@ -1993,7 +1993,7 @@ namespace daw {
 				if( size( ) < v.size( ) ) {
 					return npos;
 				}
-				pos = (std::min)( { pos, size( ) - v.size( ) } );
+				pos = ( std::min )( { pos, size( ) - v.size( ) } );
 				if( v.empty( ) ) {
 					return pos;
 				}
@@ -2699,12 +2699,12 @@ namespace daw {
 		basic_string_view( CharT const * ) -> basic_string_view<CharT>;
 
 		template<typename CharT>
-		basic_string_view( CharT const *, std::size_t count )
-		  -> basic_string_view<CharT>;
+		basic_string_view( CharT const *,
+		                   std::size_t count ) -> basic_string_view<CharT>;
 
 		template<typename CharT>
-		basic_string_view( CharT const *, CharT const * )
-		  -> basic_string_view<CharT>;
+		basic_string_view( CharT const *,
+		                   CharT const * ) -> basic_string_view<CharT>;
 
 		namespace string_view_literals {
 			[[nodiscard]] constexpr string_view
