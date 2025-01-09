@@ -66,7 +66,9 @@
 	if( DAW_UNLIKELY( *( f + static_cast<std::ptrdiff_t>( l ) ) != \
 	                  CharT{ } ) ) {                               \
 		DAW_THROW_OR_TERMINATE_NA( std::exception );                 \
-	}
+	}                                                              \
+	do {                                                           \
+	} while( false )
 #else
 #define DAW_STRING_VIEW_DBG_ZERO_CHECK( ) \
 	do {                                    \
@@ -137,25 +139,11 @@ namespace daw {
 		namespace sv2_details {
 			struct less {
 				template<typename T, typename U>
-#if defined( DAW_HAS_CPP23_STATIC_CALL_OP )
-#if DAW_HAS_CLANG_VER_GTE( 17, 0 )
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wc++23-extensions"
-#endif
-				DAW_ATTRIB_INLINE static constexpr bool
-				operator( )( T const &lhs, U const &rhs ) noexcept {
+				DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr bool
+				operator( )( T const &lhs,
+				             U const &rhs ) DAW_CPP23_STATIC_CALL_OP_CONST noexcept {
 					return lhs < rhs;
 				}
-
-#if DAW_HAS_CLANG_VER_GTE( 17, 0 )
-#pragma clang diagnostic pop
-#endif
-#else
-				DAW_ATTRIB_INLINE constexpr bool
-				operator( )( T const &lhs, U const &rhs ) const noexcept {
-					return lhs < rhs;
-				}
-#endif
 			};
 
 			template<typename CharT, typename BinaryPredicate>
@@ -670,7 +658,7 @@ namespace daw {
 			                                               size_type count ) noexcept
 			  : m_first( std::data( sv ) )
 			  , m_last( make_last<BoundsType>(
-			      m_first, (std::min)( { std::size( sv ), count } ) ) ) {
+			      m_first, ( std::min )( { std::size( sv ), count } ) ) ) {
 				if constexpr( is_zero_terminated_v<daw::remove_cvref_t<StringView>> ) {
 					if( std::size( sv ) == count ) {
 						m_last = set_zero_terminated<BoundsType>( m_first, m_last );
@@ -964,7 +952,7 @@ namespace daw {
 			/// empty, it does nothing.
 			DAW_ATTRIB_INLINE constexpr basic_string_view &
 			remove_prefix( size_type n ) {
-				dec_front<BoundsType>( (std::min)( { n, size( ) } ) );
+				dec_front<BoundsType>( ( std::min )( { n, size( ) } ) );
 				return *this;
 			}
 
@@ -983,7 +971,7 @@ namespace daw {
 			/// @brief Increment the data( ) pointer by 1. If string_view is
 			/// empty, it does nothing.
 			DAW_ATTRIB_INLINE constexpr basic_string_view &remove_prefix( ) {
-				dec_front<BoundsType>( (std::min)( { size_type{ 1U }, size( ) } ) );
+				dec_front<BoundsType>( ( std::min )( { size_type{ 1U }, size( ) } ) );
 				return *this;
 			}
 
@@ -1002,7 +990,7 @@ namespace daw {
 			/// does nothing.
 			DAW_ATTRIB_INLINE constexpr basic_string_view &
 			remove_suffix( size_type n ) {
-				dec_back<BoundsType>( (std::min)( { n, size( ) } ) );
+				dec_back<BoundsType>( ( std::min )( { n, size( ) } ) );
 				return *this;
 			}
 
@@ -1019,7 +1007,7 @@ namespace daw {
 
 			/// @brief Decrement the size( ) by 1 if size( ) > 0
 			DAW_ATTRIB_INLINE constexpr basic_string_view &remove_suffix( ) {
-				dec_back<BoundsType>( (std::min)( { size_type{ 1U }, size( ) } ) );
+				dec_back<BoundsType>( ( std::min )( { size_type{ 1U }, size( ) } ) );
 				return *this;
 			}
 
@@ -1233,7 +1221,7 @@ namespace daw {
 			/// @param count number of characters to remove and return
 			/// @return a substr of size count ending at end of string_view
 			[[nodiscard]] constexpr basic_string_view pop_back( size_type count ) {
-				count = (std::min)( { count, size( ) } );
+				count = ( std::min )( { count, size( ) } );
 				basic_string_view result = substr( size( ) - count, npos );
 				remove_suffix( count );
 				return result;
@@ -1660,7 +1648,7 @@ namespace daw {
 			DAW_ATTRIB_INLINE constexpr basic_string_view &
 			remove_prefix_until( UnaryPredicate pred, nodiscard_t ) {
 				auto pos = find_if( pred );
-				dec_front<BoundsType>( (std::min)( { size( ), pos } ) );
+				dec_front<BoundsType>( ( std::min )( { size( ), pos } ) );
 				return *this;
 			}
 
@@ -1691,7 +1679,7 @@ namespace daw {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos <= size( ), "Attempt to access basic_string_view past end" );
 
-				size_type const rlen = (std::min)( { count, size( ) - pos } );
+				size_type const rlen = ( std::min )( { count, size( ) - pos } );
 				if( rlen > 0 ) {
 					auto const f =
 					  std::next( begin( ), static_cast<difference_type>( pos ) );
@@ -1716,7 +1704,7 @@ namespace daw {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos <= size( ), "Attempt to access basic_string_view past end" );
 				auto const rcount =
-				  static_cast<size_type>( (std::min)( { count, size( ) - pos } ) );
+				  static_cast<size_type>( ( std::min )( { count, size( ) - pos } ) );
 				return { m_first + pos, m_first + pos + rcount };
 			}
 
@@ -1773,8 +1761,8 @@ namespace daw {
 			[[nodiscard]] static constexpr int
 			compare( basic_string_view<CharT, BL> lhs,
 			         basic_string_view<CharT, BR> rhs, Compare cmp = Compare{ } ) {
-				constexpr auto const str_compare = []( CharT const *p0, CharT const *p1,
-				                                       size_type len, Compare &c ) {
+				constexpr auto str_compare = []( CharT const *p0, CharT const *p1,
+				                                 size_type len, Compare &c ) {
 					auto const last = p0 + len;
 					while( p0 != last ) {
 						if( c( *p0, *p1 ) ) {
@@ -1792,7 +1780,7 @@ namespace daw {
 
 				int const ret =
 				  str_compare( lhs.data( ), rhs.data( ),
-				               (std::min)( { lhs.size( ), rhs.size( ) } ), cmp );
+				               ( std::min )( { lhs.size( ), rhs.size( ) } ), cmp );
 				if( ret == 0 ) {
 					if( lhs.size( ) < rhs.size( ) ) {
 						return -1;
@@ -2005,7 +1993,7 @@ namespace daw {
 				if( size( ) < v.size( ) ) {
 					return npos;
 				}
-				pos = (std::min)( { pos, size( ) - v.size( ) } );
+				pos = ( std::min )( { pos, size( ) - v.size( ) } );
 				if( v.empty( ) ) {
 					return pos;
 				}
@@ -2711,12 +2699,12 @@ namespace daw {
 		basic_string_view( CharT const * ) -> basic_string_view<CharT>;
 
 		template<typename CharT>
-		basic_string_view( CharT const *, std::size_t count )
-		  -> basic_string_view<CharT>;
+		basic_string_view( CharT const *,
+		                   std::size_t count ) -> basic_string_view<CharT>;
 
 		template<typename CharT>
-		basic_string_view( CharT const *, CharT const * )
-		  -> basic_string_view<CharT>;
+		basic_string_view( CharT const *,
+		                   CharT const * ) -> basic_string_view<CharT>;
 
 		namespace string_view_literals {
 			[[nodiscard]] constexpr string_view
