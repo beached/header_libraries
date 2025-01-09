@@ -14,12 +14,12 @@
 #include <string_view>
 
 namespace std {
-	template<typename CharT, daw::string_view_bounds_type Bounds>
-	struct formatter<daw::sv2::basic_string_view<CharT, Bounds>, CharT>
+	template<typename CharT>
+	struct formatter<daw::sv2::basic_string_view<CharT>, CharT>
 	  : std::formatter<std::basic_string_view<CharT>, CharT> {
 		using base = std::formatter<std::basic_string_view<CharT>, CharT>;
 
-		auto format( daw::basic_string_view<CharT, Bounds> const &sv,
+		auto format( daw::basic_string_view<CharT> const &sv,
 		             std::format_context &ctx ) const {
 			return base::format(
 			  std::basic_string_view<CharT>( sv.data( ), sv.size( ) ), ctx );

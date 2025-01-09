@@ -1279,21 +1279,6 @@ namespace daw {
 		return true;
 	}
 
-	void daw_diff_assignment_001( ) {
-#if not defined( _MSC_VER ) or defined( __clang__ )
-		daw::sv2::basic_string_view<char, daw::sv2::string_view_bounds_type::size>
-		  a = "This is a test";
-		daw::sv2::basic_string_view<char,
-		                            daw::sv2::string_view_bounds_type::pointer>
-		  b = "Hello";
-		daw_expecting_message( a != b, "Expected equal" );
-		static_assert( not std::is_same_v<decltype( a ), decltype( b )> );
-		// Should have different types
-		b = a;
-		daw_expecting_message( a == b, "Expected equal" );
-#endif
-	}
-
 	void daw_literal_test_001( ) {
 		constexpr auto sv_char = "Hello"_sv;
 		static_assert(
@@ -1804,7 +1789,6 @@ int main( )
 	daw::daw_try_pop_back_until_sv_test_002( );
 	daw::daw_try_pop_front_until_sv_test_001( );
 	daw::daw_try_pop_front_until_sv_test_002( );
-	daw::daw_diff_assignment_001( );
 	daw::daw_literal_test_001( );
 	daw::daw_stdhash_test_001( );
 	daw::daw_rfind_test_001( );
