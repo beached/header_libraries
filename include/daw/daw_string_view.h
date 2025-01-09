@@ -522,6 +522,9 @@ namespace daw {
 			[[nodiscard]] DAW_ATTRIB_INLINE static constexpr last_type
 			set_zero_terminated( const_pointer f, last_type l ) {
 				if constexpr( not is_last_a_pointer<Bounds>::value ) {
+					if( not f ) {
+						return l;
+					}
 					DAW_STRING_VIEW_DBG_ZERO_CHECK( );
 					return l + zt_offset;
 				} else {

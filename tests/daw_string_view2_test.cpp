@@ -1676,6 +1676,13 @@ namespace daw {
 		daw_expecting( cmp, std::strong_ordering::greater );
 	}
 #endif
+
+	void test_null_001( ) {
+		constexpr char const *p = nullptr;
+		constexpr auto sv = daw::sv2::string_view( p, 0 );
+		static_assert( sv.is_zero_terminated( ) != ZeroTerminated::Yes );
+		static_assert( sv.empty( ) );
+	}
 } // namespace daw
 
 int main( )
@@ -1842,6 +1849,7 @@ int main( )
 #if defined( DAW_HAS_CPP20_3WAY_COMPARE )
 	daw::daw_3way_compare_test_001( );
 #endif
+	daw::test_null_001( );
 }
 #if defined( DAW_USE_EXCEPTIONS )
 catch( std::exception const &ex ) {
