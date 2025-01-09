@@ -109,10 +109,12 @@
 /// @brief Require a contiguous character range
 /// @param Range contiguous range
 /// @param CharT character type of range elements
-#define DAW_REQ_CONTIG_CHAR_RANGE( Range, CharT )                        \
-	std::enable_if_t<(sv2_details::is_string_view_like_v<Range, CharT> and \
-	                  not std::is_convertible_v<Range, char const *>),     \
-	                 std::nullptr_t> = nullptr
+#define DAW_REQ_CONTIG_CHAR_RANGE( Range, CharT )                          \
+	std::enable_if_t<                                                        \
+	  (not std::is_same_v<daw::remove_cvref_t<Range>, basic_string_view> and \
+	   sv2_details::is_string_view_like_v<Range, CharT> and                  \
+	   not std::is_convertible_v<Range, char const *>),                      \
+	  std::nullptr_t> = nullptr
 
 /// @brief Require a character pointer
 /// @param Pointer a const_pointer
@@ -2466,9 +2468,9 @@ namespace daw {
 				return ends_with( basic_string_view<CharT, BoundsType>( s ) );
 			}
 
-			[[nodiscard]] constexpr bool
-			operator==( basic_string_view rhs ) noexcept {
-				return compare( rhs ) == 0;
+			[[nodiscard]] friend constexpr bool
+			operator==( basic_string_view lhs, basic_string_view rhs ) noexcept {
+				return lhs.compare( rhs ) == 0;
 			}
 
 			template<typename StringView,
@@ -2484,9 +2486,9 @@ namespace daw {
 				return basic_string_view( lhs ).compare( rhs ) == 0;
 			}
 
-			[[nodiscard]] constexpr bool
-			operator!=( basic_string_view rhs ) noexcept {
-				return compare( rhs ) != 0;
+			[[nodiscard]] friend constexpr bool
+			operator!=( basic_string_view lhs, basic_string_view rhs ) noexcept {
+				return lhs.compare( rhs ) != 0;
 			}
 
 			[[nodiscard]] friend constexpr bool
@@ -2511,8 +2513,9 @@ namespace daw {
 			// clang-format on
 #else
 
-			[[nodiscard]] constexpr bool operator<( basic_string_view rhs ) noexcept {
-				return compare( rhs ) < 0;
+			[[nodiscard]] friend constexpr bool
+			operator<( basic_string_view lhs, basic_string_view rhs ) noexcept {
+				return lhs.compare( rhs ) < 0;
 			}
 
 			[[nodiscard]] friend constexpr bool
@@ -2528,9 +2531,9 @@ namespace daw {
 				         .compare( rhs ) < 0;
 			}
 
-			[[nodiscard]] constexpr bool
-			operator<=( basic_string_view rhs ) noexcept {
-				return compare( rhs ) <= 0;
+			[[nodiscard]] friend constexpr bool
+			operator<=( basic_string_view lhs, basic_string_view rhs ) noexcept {
+				return lhs.compare( rhs ) <= 0;
 			}
 
 			[[nodiscard]] friend constexpr bool
@@ -2546,8 +2549,9 @@ namespace daw {
 				         .compare( rhs ) <= 0;
 			}
 
-			[[nodiscard]] constexpr bool operator>( basic_string_view rhs ) noexcept {
-				return compare( rhs ) > 0;
+			[[nodiscard]] friend constexpr bool
+			operator>( basic_string_view lhs, basic_string_view rhs ) noexcept {
+				return lhs.compare( rhs ) > 0;
 			}
 
 			[[nodiscard]] friend constexpr bool
@@ -2563,9 +2567,9 @@ namespace daw {
 				         .compare( rhs ) > 0;
 			}
 
-			[[nodiscard]] constexpr bool
-			operator>=( basic_string_view rhs ) noexcept {
-				return compare( rhs ) >= 0;
+			[[nodiscard]] friend constexpr bool
+			operator>=( basic_string_view lhs, basic_string_view rhs ) noexcept {
+				return lhs.compare( rhs ) >= 0;
 			}
 
 			[[nodiscard]] friend constexpr bool
@@ -2584,7 +2588,7 @@ namespace daw {
 
 		private:
 			struct is_space {
-				inline constexpr bool operator( )( CharT c ) const noexcept {
+				constexpr bool operator( )( CharT c ) const noexcept {
 					return daw::nsc_or( c == CharT( ' ' ), c == CharT( '\t' ),
 					                    c == CharT( '\n' ), c == CharT( '\v' ),
 					                    c == CharT( '\f' ), c == CharT( '\r' ) );
