@@ -2596,6 +2596,17 @@ namespace daw {
 				  data( ), "Attempt to expand a null basic_string_view" );
 				inc_back( n );
 			}
+
+			/// @brief Call the visitor with a zero terminated string_view.
+			// If the string_view isn't zero terminated, pass the Fallback
+			// type with the current buffer.
+			template<typename FallbackType, typename Visitor>
+			constexpr decltype( auto ) visit_fallback_to( Visitor &&v ) const {
+				if( is_zero_terminated( ) ) {
+					return DAW_FWD( v )( *this );
+				}
+				return DAW_FWD( v )( static_cast<FallbackType>( *this ) );
+			}
 		}; // basic_string_view
 
 		// CTAD

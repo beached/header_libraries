@@ -6,8 +6,8 @@
 // Official repository: https://github.com/beached/string_view
 //
 
+#include <daw/daw_ensure.h>
 #include <daw/daw_string_view.h>
-
 #include <daw/daw_utility.h>
 
 #include <cctype>
@@ -1665,8 +1665,28 @@ namespace daw {
 	void test_null_001( ) {
 		constexpr char const *p = nullptr;
 		constexpr auto sv = daw::sv2::string_view( p, 0 );
-		static_assert( sv.is_zero_terminated( ) != ZeroTerminated::Yes );
+		static_assert( not sv.is_zero_terminated( ) );
 		static_assert( sv.empty( ) );
+	}
+
+	void test_visit_fallback_to_001( ) {
+		constexpr daw::string_view sv = "Hello World";
+		static_assert( sv.is_zero_terminated( ) );
+		constexpr auto sv2 = sv.substr( 0, 5 );
+		static_assert( not sv2.is_zero_terminated( ) );
+		auto const visitor = []( auto s ) {
+			if constexpr( std::is_same_v<decltype( s ), std::string> ) {
+				daw_ensure( s == "Hello" );
+				return false;
+			} else {
+				daw_ensure( s == "Hello World" );
+				return true;
+			}
+		};
+		bool const is_zt = sv.visit_fallback_to<std::string>( visitor );
+		daw_ensure( is_zt );
+		bool const is_zt2 = sv2.visit_fallback_to<std::string>( visitor );
+		daw_ensure( not is_zt2 );
 	}
 } // namespace daw
 
@@ -1834,6 +1854,7 @@ int main( )
 	daw::daw_3way_compare_test_001( );
 #endif
 	daw::test_null_001( );
+	daw::test_visit_fallback_to_001( );
 }
 #if defined( DAW_USE_EXCEPTIONS )
 catch( std::exception const &ex ) {
