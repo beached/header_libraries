@@ -408,7 +408,7 @@ namespace daw {
 			explicit ZeroTerminated( ) = default;
 
 			explicit constexpr operator bool( ) const {
-				return value == Yes;
+				return value == values_t::Yes;
 			}
 
 			friend constexpr bool operator==( ZeroTerminated lhs,
