@@ -405,8 +405,6 @@ namespace daw {
 			static const ZeroTerminated Yes;
 			static const ZeroTerminated Unknown;
 
-			explicit ZeroTerminated( ) = default;
-
 			explicit constexpr operator bool( ) const {
 				return value == values_t::Yes;
 			}
