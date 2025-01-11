@@ -15,6 +15,8 @@
 #include <memory>
 
 struct Base {
+	int x = 55;
+	Base( ) = default;
 	virtual ~Base( ) = default;
 };
 

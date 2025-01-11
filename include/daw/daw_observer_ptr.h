@@ -8,6 +8,10 @@
 
 #pragma once
 
+#include "daw/daw_apply.h"
+#include "daw/daw_attributes.h"
+#include "daw/daw_monadic_pointer_ops.h"
+
 #include <compare>
 #include <concepts>
 #include <memory>
@@ -54,6 +58,10 @@ namespace daw {
 			return *m_ptr;
 		}
 
+		constexpr reference value( ) const {
+			return *m_ptr;
+		}
+
 		constexpr pointer operator->( ) const {
 			return m_ptr;
 		}
@@ -66,6 +74,16 @@ namespace daw {
 		// clang-format off
 		constexpr std::strong_ordering operator<=>( observer_ptr const &other ) const = default;
 		// clang-format on
+
+		template<typename F>
+		constexpr auto and_then( F &&f ) const {
+			return monadic_ptr::and_then( *this, DAW_FWD( f ) );
+		}
+
+		template<typename F>
+		constexpr auto or_else( F &&f ) const {
+			return monadic_ptr::or_else( *this, DAW_FWD( f ) );
+		}
 	};
 
 	template<typename P>
