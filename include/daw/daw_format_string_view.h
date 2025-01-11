@@ -19,6 +19,8 @@ namespace std {
 	  : std::formatter<std::basic_string_view<CharT>, CharT> {
 		using base = std::formatter<std::basic_string_view<CharT>, CharT>;
 
+		formatter( ) = default;
+
 		template<typename Ctx>
 		constexpr auto format( daw::basic_string_view<CharT> const &sv,
 		                       Ctx &ctx ) const {
