@@ -2601,7 +2601,7 @@ namespace daw {
 			// If the string_view isn't zero terminated, pass the Fallback
 			// type with the current buffer.
 			template<typename FallbackType, typename Visitor>
-			constexpr decltype( auto ) visit_fallback_to( Visitor &&v ) const {
+			constexpr decltype( auto ) c_str_visit( Visitor &&v ) const {
 				if( is_zero_terminated( ) ) {
 					return DAW_FWD( v )( *this );
 				}

@@ -1669,7 +1669,7 @@ namespace daw {
 		static_assert( sv.empty( ) );
 	}
 
-	void test_visit_fallback_to_001( ) {
+	void test_c_str_visit_001( ) {
 		constexpr daw::string_view sv = "Hello World";
 		static_assert( sv.is_zero_terminated( ) );
 		constexpr auto sv2 = sv.substr( 0, 5 );
@@ -1683,9 +1683,9 @@ namespace daw {
 				return true;
 			}
 		};
-		bool const is_zt = sv.visit_fallback_to<std::string>( visitor );
+		bool const is_zt = sv.c_str_visit<std::string>( visitor );
 		daw_ensure( is_zt );
-		bool const is_zt2 = sv2.visit_fallback_to<std::string>( visitor );
+		bool const is_zt2 = sv2.c_str_visit<std::string>( visitor );
 		daw_ensure( not is_zt2 );
 	}
 } // namespace daw
@@ -1854,7 +1854,7 @@ int main( )
 	daw::daw_3way_compare_test_001( );
 #endif
 	daw::test_null_001( );
-	daw::test_visit_fallback_to_001( );
+	daw::test_c_str_visit_001( );
 }
 #if defined( DAW_USE_EXCEPTIONS )
 catch( std::exception const &ex ) {
