@@ -564,6 +564,18 @@ namespace daw {
 			  : m_first( s )
 			  , m_last( count ) {}
 
+			/// @brief Construct a zero terminated string_view
+			/// @param s Pointer to start of character range
+			/// @param count Size of character range
+			/// @post data( ) == s
+			/// @post size( ) == count
+			DAW_ATTRIB_INLINE constexpr basic_string_view(
+			  const_pointer s, size_type count, zero_terminated_t ) noexcept
+			  : m_first( s )
+			  , m_last( count ) {
+				m_last = set_zero_terminated( m_first, m_last );
+			}
+
 			DAW_ATTRIB_INLINE constexpr void set_zero_terminated( ) {
 				if( not is_zero_terminated( ) ) {
 					m_last = set_zero_terminated( m_first, m_last );
@@ -654,7 +666,9 @@ namespace daw {
 			  : m_first( string_literal )
 			  , m_last( string_literal[N - 1] == CharT{ } ? N - 1 : N ) {
 
-				m_last = set_zero_terminated( m_first, m_last );
+				if( string_literal[N - 1] == CharT{ } ) {
+					m_last = set_zero_terminated( m_first, m_last );
+				}
 			}
 
 			/// @brief Construct a string_view from an array of characters
@@ -665,7 +679,7 @@ namespace daw {
 			DAW_ATTRIB_INLINE constexpr basic_string_view(
 			  CharT const ( &string_literal )[N], not_zero_terminated_t ) noexcept
 			  : m_first( string_literal )
-			  , m_last( string_literal[N - 1] == CharT{ } ? N - 1 : N ) {}
+			  , m_last( N ) {}
 
 			/// @brief Construct a string_view from a range formed by two
 			/// character pointers
