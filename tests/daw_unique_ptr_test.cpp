@@ -68,20 +68,19 @@ int main( ) {
 		return p;
 	} );
 	assert( x == my_base->x );
-	auto my_child = my_base.and_then( []( auto &mb ) {
-		return daw::make_unique<Child>( mb->x );
+	my_base = std::move( my_base ).and_then( []( auto p ) {
+		return daw::make_unique<Child>( p->x );
 	} );
-	assert( my_child->x == my_base->x );
 	daw::unique_ptr<Child> my_child2 = nullptr;
-	auto x2 = my_child2
-	            .or_else( []( daw::unique_ptr<Child> const & ) {
-		            return daw::make_unique<Base>( 55 );
+	auto x2 = std::move( my_child2 )
+	            .or_else( []( ) {
+		            return daw::make_unique<Child>( 55 );
 	            } )
-	            .and_then( []( daw::unique_ptr<Base> ) {
-		            return daw::make_unique<Child>( 42 );
+	            .and_then( []( daw::unique_ptr<Base> p ) {
+		            return daw::make_unique<Child>( 42 + p->x );
 	            } )
-	            .and_then( []( auto const &p ) {
+	            .transform( []( auto const &p ) {
 		            return p->x;
 	            } );
-	assert( x2 == 42 );
+	assert( x2 == 97 );
 }

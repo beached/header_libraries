@@ -22,12 +22,12 @@ int main( int, char **argv ) {
 	Base *b = c;
 	(void)b;
 
-	auto x = c.and_then( []( daw::observer_ptr<Child> o ) {
+	auto x = c.and_then( []( auto o ) {
 		          o->x = 42;
 		          return o;
 	          } )
-	           .or_else( []( daw::observer_ptr<Child> o ) {
-		           return o;
+	           .or_else( [&] {
+		           return daw::observer_ptr( &ch );
 	           } );
 	daw_ensure( x->x == 42 );
 }

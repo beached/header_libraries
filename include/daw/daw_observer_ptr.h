@@ -84,6 +84,16 @@ namespace daw {
 		constexpr auto or_else( F &&f ) const {
 			return monadic_ptr::or_else( *this, DAW_FWD( f ) );
 		}
+
+		template<typename F>
+		constexpr auto transform( F &&f ) {
+			return monadic_ptr::transform( *this, DAW_FWD( f ) );
+		}
+
+		template<typename F>
+		constexpr auto transform( F &&f ) const {
+			return monadic_ptr::transform( *this, DAW_FWD( f ) );
+		}
 	};
 
 	template<typename P>
