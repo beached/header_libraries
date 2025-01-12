@@ -17,8 +17,11 @@
 
 namespace daw::monadic_ptr {
 	template<typename Pointer, typename F>
-	DAW_ATTRIB_FLATINLINE constexpr auto and_then( Pointer &&p, F &&f )
-	  -> daw::remove_cvref_t<std::invoke_result_t<F, Pointer>> {
+	DAW_ATTRIB_FLATINLINE constexpr auto and_then( Pointer &&p, F &&f ) {
+		static_assert(
+		  std::is_invocable_v<F, Pointer>,
+		  "The function passed to and_then is not callable with the current object "
+		  "passed.  Does the pointer object need to be moved?" );
 		if( p ) {
 			return daw::invoke( DAW_FWD( f ), DAW_FWD( p ) );
 		}
@@ -26,11 +29,14 @@ namespace daw::monadic_ptr {
 	}
 
 	template<typename Pointer, typename F>
-	DAW_ATTRIB_FLATINLINE constexpr auto or_else( Pointer &&p, F &&f )
-	  -> daw::remove_cvref_t<Pointer> {
+	DAW_ATTRIB_FLATINLINE constexpr auto or_else( Pointer &&p, F &&f ) {
+		static_assert(
+		  std::is_invocable_v<F, Pointer>,
+		  "The function passed to or_else is not callable with the current object "
+		  "passed.  Does the pointer object need to be moved?" );
 		if( not p ) {
-			return daw::invoke( DAW_FWD( f ) );
+			return daw::invoke( DAW_FWD( f ), ( DAW_FWD( p ) ) );
 		}
-		return p;
+		return daw::remove_cvref_t<std::invoke_result_t<F, Pointer>>{ };
 	}
 } // namespace daw::monadic_ptr

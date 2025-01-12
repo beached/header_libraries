@@ -11,6 +11,7 @@
 #include "cpp_20.h"
 #include "daw_cpp_feature_check.h"
 #include "daw_exchange.h"
+#include "daw_monadic_pointer_ops.h"
 #include "daw_move.h"
 
 #include <cstddef>
@@ -210,6 +211,45 @@ namespace daw {
 			using std::swap;
 			swap( m_ptr, other.m_ptr );
 		}
+
+		template<typename F>
+		constexpr auto and_then( F &&func ) & {
+			return monadic_ptr::and_then( *this, DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto and_then( F &&func ) const & {
+			return monadic_ptr::and_then( *this, DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto and_then( F &&func ) && {
+			return monadic_ptr::and_then( std::move( *this ), DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto and_then( F &&func ) const && {
+			return monadic_ptr::and_then( *this, DAW_FWD( func ) );
+		}
+		template<typename F>
+		constexpr auto or_else( F &&func ) & {
+			return monadic_ptr::or_else( *this, DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto or_else( F &&func ) const & {
+			return monadic_ptr::or_else( *this, DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto or_else( F &&func ) && {
+			return monadic_ptr::or_else( std::move( *this ), DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto or_else( F &&func ) const && {
+			return monadic_ptr::or_else( *this, DAW_FWD( func ) );
+		}
 	};
 
 	template<typename T, typename Deleter>
@@ -321,6 +361,45 @@ namespace daw {
 
 		constexpr reference operator[]( std::size_t index ) const noexcept {
 			return m_ptr[index];
+		}
+
+		template<typename F>
+		constexpr auto and_then( F &&func ) & {
+			return monadic_ptr::and_then( *this, DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto and_then( F &&func ) const & {
+			return monadic_ptr::and_then( *this, DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto and_then( F &&func ) && {
+			return monadic_ptr::and_then( std::move( *this ), DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto and_then( F &&func ) const && {
+			return monadic_ptr::and_then( *this, DAW_FWD( func ) );
+		}
+		template<typename F>
+		constexpr auto or_else( F &&func ) & {
+			return monadic_ptr::or_else( *this, DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto or_else( F &&func ) const & {
+			return monadic_ptr::or_else( *this, DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto or_else( F &&func ) && {
+			return monadic_ptr::or_else( std::move( *this ), DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto or_else( F &&func ) const && {
+			return monadic_ptr::or_else( *this, DAW_FWD( func ) );
 		}
 	};
 
