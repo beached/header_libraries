@@ -79,6 +79,9 @@ int main( ) {
 	            .and_then( []( daw::unique_ptr<Base> p ) {
 		            return daw::make_unique<Child>( 42 + p->x );
 	            } )
+	            .or_else( []( ) {
+		            return daw::make_unique<Child>( 23 );
+	            } )
 	            .transform( []( auto const &p ) {
 		            return p->x;
 	            } );
