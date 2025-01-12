@@ -34,7 +34,7 @@ namespace daw::monadic_ptr {
 		if( not p ) {
 			return daw::invoke( DAW_FWD( f ) );
 		}
-		return std::move( p );
+		return DAW_FWD( p );
 	}
 
 	template<typename Pointer, typename F>
