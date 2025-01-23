@@ -9,9 +9,10 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_cpp_feature_check.h"
-#include "traits/daw_traits_conditional.h"
+#include "daw/ciso646.h"
+#include "daw/daw_cpp_feature_check.h"
+#include "daw/impl/daw_msvc_int128.h"
+#include "daw/traits/daw_traits_conditional.h"
 
 #include <climits>
 #include <cstdint>
@@ -27,7 +28,7 @@
 #if ( defined( __clang__ ) and not defined( _WIN32 ) ) or    \
   ( defined( __CUDACC__ ) and __CUDACC_VER_MAJOR__ >= 9 ) or \
   ( defined( __GNUC__ ) and not defined( __clang__ ) and     \
-    !defined( __CUDACC__ ) )
+    not defined( __CUDACC__ ) )
 #define DAW_HAS_INT128
 #elif defined( __CUDACC__ )
 // __CUDACC_VER__ is a full version number before CUDA 9, and is defined to a
@@ -36,8 +37,8 @@
 // NOTE: `__CUDACC__` could be undefined while `__CUDACC_VER__` is defined.
 #if __CUDACC_VER__ >= 70000
 #define DAW_HAS_INT128
-#endif // __CUDACC_VER__ >= 70000
-#endif // defined(__CUDACC__)
+#endif
+#endif
 #endif
 
 namespace daw {
@@ -278,83 +279,83 @@ namespace daw {
 
 #if defined( DAW_HAS_INT128 )
 	template<>
-	struct make_unsigned<__uint128_t> {
-		using type = __uint128_t;
+	struct make_unsigned<uint128_t> {
+		using type = uint128_t;
 	};
 
 	template<>
-	struct make_unsigned<__uint128_t const> {
-		using type = __uint128_t const;
+	struct make_unsigned<uint128_t const> {
+		using type = uint128_t const;
 	};
 
 	template<>
-	struct make_unsigned<__uint128_t volatile> {
-		using type = __uint128_t volatile;
+	struct make_unsigned<uint128_t volatile> {
+		using type = uint128_t volatile;
 	};
 
 	template<>
-	struct make_unsigned<__uint128_t const volatile> {
-		using type = __uint128_t const volatile;
+	struct make_unsigned<uint128_t const volatile> {
+		using type = uint128_t const volatile;
 	};
 
 	template<>
-	struct make_unsigned<__int128_t> {
-		using type = __uint128_t;
+	struct make_unsigned<int128_t> {
+		using type = uint128_t;
 	};
 
 	template<>
-	struct make_unsigned<__int128_t const> {
-		using type = __uint128_t const;
+	struct make_unsigned<int128_t const> {
+		using type = uint128_t const;
 	};
 
 	template<>
-	struct make_unsigned<__int128_t volatile> {
-		using type = __uint128_t volatile;
+	struct make_unsigned<int128_t volatile> {
+		using type = uint128_t volatile;
 	};
 
 	template<>
-	struct make_unsigned<__int128_t const volatile> {
-		using type = __uint128_t const volatile;
+	struct make_unsigned<int128_t const volatile> {
+		using type = uint128_t const volatile;
 	};
 
 	template<>
-	struct make_signed<__uint128_t> {
-		using type = __int128_t;
+	struct make_signed<uint128_t> {
+		using type = int128_t;
 	};
 
 	template<>
-	struct make_signed<__uint128_t const> {
-		using type = __int128_t const;
+	struct make_signed<uint128_t const> {
+		using type = int128_t const;
 	};
 
 	template<>
-	struct make_signed<__uint128_t volatile> {
-		using type = __int128_t volatile;
+	struct make_signed<uint128_t volatile> {
+		using type = int128_t volatile;
 	};
 
 	template<>
-	struct make_signed<__uint128_t const volatile> {
-		using type = __int128_t const volatile;
+	struct make_signed<uint128_t const volatile> {
+		using type = int128_t const volatile;
 	};
 
 	template<>
-	struct make_signed<__int128_t> {
-		using type = __int128_t;
+	struct make_signed<int128_t> {
+		using type = int128_t;
 	};
 
 	template<>
-	struct make_signed<__int128_t const> {
-		using type = __int128_t const;
+	struct make_signed<int128_t const> {
+		using type = int128_t const;
 	};
 
 	template<>
-	struct make_signed<__int128_t volatile> {
-		using type = __int128_t volatile;
+	struct make_signed<int128_t volatile> {
+		using type = int128_t volatile;
 	};
 
 	template<>
-	struct make_signed<__int128_t const volatile> {
-		using type = __int128_t const volatile;
+	struct make_signed<int128_t const volatile> {
+		using type = int128_t const volatile;
 	};
 #endif
 
@@ -369,10 +370,10 @@ namespace daw {
 
 #if defined( DAW_HAS_INT128 )
 	template<>
-	struct is_system_integral<__uint128_t> : std::true_type {};
+	struct is_system_integral<uint128_t> : std::true_type {};
 
 	template<>
-	struct is_system_integral<__int128_t> : std::true_type {};
+	struct is_system_integral<int128_t> : std::true_type {};
 #endif
 	template<typename T>
 	inline constexpr bool is_system_integral_v = is_system_integral<T>::value;
