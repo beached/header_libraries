@@ -16,7 +16,7 @@
 #include <limits>
 
 #if defined( __cpp_lib_span ) and not defined( DAW_HAS_CPP20_SPAN )
-#if __cpp_lib_span >= 202002L and DAW_HAS_INCLUDE( <span> )
+#if __cpp_lib_span >= 202002L and __has_include( <span> )
 #define DAW_HAS_CPP20_SPAN
 #endif
 #endif

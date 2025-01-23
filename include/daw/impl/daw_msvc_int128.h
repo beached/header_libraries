@@ -8,13 +8,17 @@
 
 #pragma once
 
+#include "daw/ciso646.h"
 #include "daw/daw_cpp_feature_check.h"
+#include "daw/impl/daw_int128_check.h"
 
+#if not defined( DAW_NO_INT128 )
 #if DAW_CPP_VERSION >= 202002L and DAW_HAS_MSVC_VER_GTE( 1932 )
 // Earlier versions only supported C++20
 #define DAW_HAS_MSVC_INT128
 #elif DAW_HAS_MSVC_VER_GTE( 1934 )
 #define DAW_HAS_MSVC_INT128
+#endif
 #endif
 
 #if defined( DAW_HAS_MSVC_INT128 )

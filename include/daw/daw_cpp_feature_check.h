@@ -10,16 +10,11 @@
 
 #include "ciso646.h"
 
-#if defined( __has_include )
-#define DAW_HAS_INCLUDE( ... ) (__has_include( __VA_ARGS__ ))
 #if __has_include( <version> )
 #include <version>
 #else
 // Ensure we can get the _LIBCPP_VERSION/__GLIBCXX__ defines
 #include <cstddef>
-#endif
-#else
-#define DAW_HAS_INCLUDE( ... ) ( false )
 #endif
 
 #if defined( __clang__ )
@@ -176,4 +171,11 @@ inline constexpr bool daw_has_cx_cmath = false;
 #if __cpp_lib_unreachable >= 202202L
 #define DAW_HAS_CPP23_UNREACHABLE
 #endif
+#endif
+
+#if defined( __cpp_lib_three_way_comparison )
+#if __cpp_lib_three_way_comparison >= 201907L
+#define DAW_HAS_CPP20_3WAY
+#endif
+#define DAW_HAS_CPP20_3WAY
 #endif
