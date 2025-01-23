@@ -45,7 +45,7 @@ namespace daw {
 	template<typename T>
 	struct numeric_limits : std::numeric_limits<T> {};
 
-#if defined( DAW_HAS_INT128 )
+#if defined( DAW_HAS_INT128 ) and not defined( DAW_HAS_MSVC )
 #if defined( DAW_HAS_GCC_LIKE )
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpedantic"
