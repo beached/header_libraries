@@ -12,6 +12,7 @@
 #include "daw/impl/daw_int128_check.h"
 #include "daw/impl/daw_numeric_limits.h"
 
+#include <climits>
 #include <limits>
 
 #if defined( DAW_HAS_INT128 ) and not defined( DAW_HAS_MSVC )
