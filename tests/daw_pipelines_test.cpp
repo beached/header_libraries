@@ -534,16 +534,13 @@ namespace tests {
 		static constexpr auto data =
 		  std::array{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 42, 42, 42, 42, 42, 42 };
 
-		auto parts = splitter( daw::contiguous_view( data.data( ), 9U ) );
+		static constexpr auto parts = splitter( daw::contiguous_view( data.data( ), 9U ) );
 
 		daw::println(
 		  "test031: pipeline( Split( {{3,4}} ), Map( nums_to_string ) ) with [1, "
 		  "2, 3, 4, 5, 6, 7, 8, 9]" );
 
-		for( auto part : parts ) {
-			daw::print( "'{}'\t", part );
-		}
-		daw::println( );
+		daw::println( "{}", daw::fmt_range( parts ) );
 	}
 } // namespace tests
 
