@@ -30,6 +30,7 @@
 #include "pipelines/sample.h"
 #include "pipelines/skip.h"
 #include "pipelines/slide.h"
+#include "pipelines/split.h"
 #include "pipelines/swizzle.h"
 #include "pipelines/take.h"
 #include "pipelines/to.h"

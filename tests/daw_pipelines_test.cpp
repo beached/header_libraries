@@ -9,10 +9,13 @@
 #include <daw/daw_pipelines.h>
 
 #include <daw/daw_constant.h>
+#include <daw/daw_contiguous_view.h>
 #include <daw/daw_do_not_optimize.h>
 #include <daw/daw_ensure.h>
+#include <daw/daw_formatters.h>
 #include <daw/daw_print.h>
 #include <daw/daw_random.h>
+#include <daw/daw_string_view.h>
 
 #include <array>
 #include <iterator>
@@ -24,6 +27,7 @@
 
 using namespace daw::pipelines;
 
+using namespace daw::string_view_literals;
 struct AlwaysTrue_t {
 	std::true_type constexpr operator( )( auto const &... ) {
 		return { };
@@ -470,7 +474,6 @@ namespace tests {
 	}
 
 	DAW_ATTRIB_NOINLINE void test027( ) {
-		using namespace daw::string_view_literals;
 		static constexpr std::array ids = {
 		  "597216680271282192"_sv, "155149108183695360"_sv, "843841057833877588"_sv,
 		  "1013956772245020774"_sv, "1013960757127422113"_sv };
@@ -503,6 +506,45 @@ namespace tests {
 		}
 	}
 
+	DAW_ATTRIB_NOINLINE void test030( ) {
+		constexpr auto comma_splitter =
+		  pipeline( Split( ',' ), Map( []( daw::Range auto r ) {
+			            return daw::string_view( r ).trim( );
+		            } ) );
+		constexpr auto values = "1a, 2b,3c, 4d ,5e"_sv;
+
+		constexpr auto parts = comma_splitter( values );
+		daw::println(
+		  "test030: pipeline( Split( ',' ), \"1a, 2b, 3c, 4d, 5e\" )\n{}",
+		  daw::fmt_range{ parts, "|" } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test031( ) {
+		static constexpr auto nums_to_string =
+		  pipeline( Map( []( int n ) {
+			            assert( n >= 0 and n <= 9 );
+			            return static_cast<char>( n + '0' );
+		            } ),
+		            To<std::string> );
+
+		static constexpr auto delim = std::array{ 3, 4 };
+		static constexpr auto splitter =
+		  pipeline( Split( range_t{ delim.data( ), daw::data_end( delim ) } ),
+		            Map( nums_to_string ) );
+		static constexpr auto data =
+		  std::array{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 42, 42, 42, 42, 42, 42 };
+
+		auto parts = splitter( daw::contiguous_view( data.data( ), 9U ) );
+
+		daw::println(
+		  "test031: pipeline( Split( {{3,4}} ), Map( nums_to_string ) ) with [1, "
+		  "2, 3, 4, 5, 6, 7, 8, 9]" );
+
+		for( auto part : parts ) {
+			daw::print( "'{}'\t", part );
+		}
+		daw::println( );
+	}
 } // namespace tests
 
 int main( ) {
@@ -535,6 +577,8 @@ int main( ) {
 	tests::test027( );
 	tests::test028( );
 	tests::test029( );
+	tests::test030( );
+	tests::test031( );
 
 	daw::println( "Done" );
 }

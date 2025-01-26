@@ -12,7 +12,8 @@
 #include "daw/daw_move.h"
 #include "daw/daw_typeof.h"
 #include "daw/iterator/daw_arrow_proxy.h"
-#include "pipeline_traits.h"
+#include "daw/pipelines/pipeline_traits.h"
+#include "daw/pipelines/range_base.h"
 
 #include <cstddef>
 #include <functional>
@@ -23,9 +24,9 @@
 namespace daw::pipelines {
 	template<Iterator Iterator, typename Fn, typename Projection = std::identity>
 	struct map_iterator {
-		using iterator_category = typename Iterator::iterator_category;
-		using value_type = daw::remove_cvref_t<
-		  std::invoke_result_t<Fn, daw::iter_value_t<Iterator>>>;
+		using iterator_category = daw::iter_category_t<Iterator>;
+		using value_type = daw::remove_cvref_t<std::invoke_result_t<
+		  Fn, std::invoke_result_t<Projection, daw::iter_value_t<Iterator>>>>;
 		using reference = value_type;
 		using const_reference = value_type;
 		using pointer = arrow_proxy<value_type>;
@@ -33,7 +34,7 @@ namespace daw::pipelines {
 		using size_type = std::size_t;
 
 	private:
-		Iterator m_iter{};
+		Iterator m_iter{ };
 		DAW_NO_UNIQUE_ADDRESS mutable Fn m_func = Fn{ };
 		DAW_NO_UNIQUE_ADDRESS Projection m_projection = Projection{ };
 
@@ -42,6 +43,7 @@ namespace daw::pipelines {
 		explicit constexpr map_iterator( Iterator it, Fn f )
 		  : m_iter( it )
 		  , m_func( f ) {}
+
 		explicit constexpr map_iterator( Iterator it, Fn f, Projection projection )
 		  : m_iter( it )
 		  , m_func( f )
@@ -81,11 +83,11 @@ namespace daw::pipelines {
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer operator->( ) {
-			return poiner( std::invoke( m_func, *m_iter ) );
+			return pointer( std::invoke( m_func, *m_iter ) );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer operator->( ) const {
-			return poiner( std::invoke( m_func, *m_iter ) );
+			return pointer( std::invoke( m_func, *m_iter ) );
 		}
 
 		DAW_ATTRIB_INLINE constexpr map_iterator &operator++( ) {
@@ -170,12 +172,15 @@ namespace daw::pipelines {
 	map_iterator( I, F, P ) -> map_iterator<I, F, P>;
 
 	template<Iterator First, typename Fn, typename Projection = std::identity>
-	struct map_view {
-		using value_type = daw::iter_value_t<map_iterator<First, Fn, Projection>>;
-		using iterator = map_iterator<First, Fn, Projection>;
+	struct map_view : range_base_t<map_iterator<First, Fn, Projection>> {
+		using daw_range_base_t = range_base_t<map_iterator<First, Fn, Projection>>;
+		using typename daw_range_base_t::iterator_first_t;
+		using typename daw_range_base_t::iterator_last_t;
 
-		iterator m_first = iterator{ };
-		iterator m_last = iterator{ };
+		using value_type = daw::iter_value_t<map_iterator<First, Fn, Projection>>;
+
+		iterator_first_t m_first = iterator_first_t{ };
+		iterator_last_t m_last = iterator_last_t{ };
 
 		explicit map_view( ) = default;
 
@@ -183,8 +188,7 @@ namespace daw::pipelines {
 		  requires( not Iterator<Fn> )
 		  : m_first( first, fn ) {}
 
-		explicit constexpr map_view( First first,
-		                             Fn const &fn,
+		explicit constexpr map_view( First first, Fn const &fn,
 		                             Projection const &projection )
 		  requires( not Iterator<Fn> and not Iterator<Projection> )
 		  : m_first( first, fn, projection ) {}
@@ -194,19 +198,17 @@ namespace daw::pipelines {
 		  : m_first( first, fn )
 		  , m_last( last, fn ) {}
 
-		explicit constexpr map_view( First first,
-		                             First last,
-		                             Fn const &fn,
+		explicit constexpr map_view( First first, First last, Fn const &fn,
 		                             Projection const &projection )
 		  requires( not Iterator<Fn> and not Iterator<Projection> )
 		  : m_first( first, fn, projection )
 		  , m_last( last, fn, projection ) {}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr iterator begin( ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr iterator_first_t begin( ) const {
 			return m_first;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr iterator end( ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr iterator_last_t end( ) const {
 			return m_last;
 		}
 	};
@@ -247,9 +249,7 @@ namespace daw::pipelines {
 					static_assert( traits::NoVoidResults<Fn, projected_t>,
 					               "Map requires the result to not be void" );
 					return map_view<iterator_t<R>, Fn, Projection>(
-					  std::begin( DAW_FWD( r ) ),
-					  std::end( DAW_FWD( r ) ),
-					  m_func,
+					  std::begin( DAW_FWD( r ) ), std::end( DAW_FWD( r ) ), m_func,
 					  m_projection );
 				} else {
 					static_assert( std::invocable<Fn, projected_t>,
@@ -302,10 +302,10 @@ namespace daw::pipelines {
 					static_assert( std::convertible_to<T, value_type>,
 					               "Clamp requires a lo/hi values convertible to the "
 					               "range value type" );
-					return map_view(
-					  std::begin( r ), std::end( r ), [=]( value_type const &v ) {
-						  return std::clamp( v, l, h, c );
-					  } );
+					return map_view( std::begin( r ), std::end( r ),
+					                 [=]( value_type const &v ) {
+						                 return std::clamp( v, l, h, c );
+					                 } );
 				} else {
 					static_assert(
 					  std::convertible_to<T, daw::remove_cvref_t<R>>,
@@ -333,7 +333,7 @@ namespace daw::pipelines {
 	[[nodiscard]] constexpr auto Clamp( T const &lo,
 	                                    std::type_identity_t<T> const &hi,
 	                                    Compare &&compare = Compare{ } ) {
-		return pimpl::Clamp_t{
-		  std::move( lo ), std::move( hi ), DAW_FWD( compare ) };
+		return pimpl::Clamp_t{ std::move( lo ), std::move( hi ),
+		                       DAW_FWD( compare ) };
 	}
 } // namespace daw::pipelines

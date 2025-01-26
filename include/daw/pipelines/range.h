@@ -8,11 +8,18 @@
 
 #pragma once
 
+#include "daw/daw_iterator_traits.h"
+#include "daw/daw_move.h"
+
+#include <cstddef>
+#include <daw/stdinc/tuple_traits.h>
 #include <iterator>
+#include <type_traits>
 
 namespace daw::pipelines {
 	template<Iterator First, Iterator Last = First>
 	struct range_t {
+		using i_am_a_daw_pipelines_range_t = void;
 		using iterator_category =
 		  common_iterator_category_t<iter_category_t<First>, iter_category_t<Last>>;
 		using reference = iter_reference_t<First>;
@@ -24,6 +31,16 @@ namespace daw::pipelines {
 
 		First first;
 		Last last;
+
+		range_t( ) = default;
+		constexpr range_t( First f, Last l )
+		  : first( std::move( f ) )
+		  , last( std::move( l ) ) {}
+
+		template<Range R>
+		constexpr range_t( R &&r )
+		  : first( std::begin( r ) )
+		  , last( std::end( r ) ) {}
 
 		[[nodiscard]] constexpr First begin( ) {
 			return first;
@@ -145,4 +162,7 @@ namespace daw::pipelines {
 	};
 	template<typename I, typename L>
 	range_t( I, L ) -> range_t<I, L>;
+
+	template<Range R>
+	range_t( R && ) -> range_t<iterator_t<R>, iterator_end_t<R>>;
 } // namespace daw::pipelines
