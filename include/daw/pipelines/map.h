@@ -35,7 +35,7 @@ namespace daw::pipelines {
 
 	private:
 		Iterator m_iter{ };
-		DAW_NO_UNIQUE_ADDRESS mutable Fn m_func = Fn{ };
+		DAW_NO_UNIQUE_ADDRESS Fn m_func = Fn{ };
 		DAW_NO_UNIQUE_ADDRESS Projection m_projection = Projection{ };
 
 	public:
@@ -231,7 +231,7 @@ namespace daw::pipelines {
 	namespace pimpl {
 		template<typename Fn, typename Projection = std::identity>
 		struct Map_t {
-			DAW_NO_UNIQUE_ADDRESS mutable Fn m_func;
+			DAW_NO_UNIQUE_ADDRESS Fn m_func;
 			DAW_NO_UNIQUE_ADDRESS Projection m_projection = Projection{ };
 
 			[[nodiscard]] constexpr auto operator( )( auto &&r ) const {
@@ -270,7 +270,7 @@ namespace daw::pipelines {
 
 		template<typename Fn>
 		struct MapApply_t {
-			DAW_NO_UNIQUE_ADDRESS mutable Fn m_func;
+			DAW_NO_UNIQUE_ADDRESS Fn m_func;
 
 			[[nodiscard]] constexpr auto operator( )( auto &&r ) const {
 				using R = DAW_TYPEOF( r );
