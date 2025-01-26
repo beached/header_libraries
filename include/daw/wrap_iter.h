@@ -52,9 +52,7 @@ namespace daw {
 		}
 
 		constexpr wrap_iter &operator++( ) noexcept {
-			DAW_UNSAFE_BUFFER_FUNC_START
-			++i;
-			DAW_UNSAFE_BUFFER_FUNC_STOP
+			i = std::next( i );
 			return *this;
 		}
 
@@ -65,9 +63,7 @@ namespace daw {
 		}
 
 		constexpr wrap_iter &operator--( ) noexcept {
-			DAW_UNSAFE_BUFFER_FUNC_START
-			--i;
-			DAW_UNSAFE_BUFFER_FUNC_STOP
+			i = std::prev( i );
 			return *this;
 		}
 
@@ -106,7 +102,7 @@ namespace daw {
 		}
 
 		// clang-format off
-		constexpr auto operator<=> ( wrap_iter const &rhs ) const noexcept {
+		constexpr auto operator<=>( wrap_iter const &rhs ) const noexcept {
 			return base( ) <=> rhs.base( );
 		}
 		// clang-format on
@@ -121,7 +117,7 @@ namespace daw {
 	};
 
 	template<typename Iterator1, class Iterator2, typename Tag>
-	constexpr bool operator-( wrap_iter<Iterator1, Tag> const &x,
+	constexpr auto operator-( wrap_iter<Iterator1, Tag> const &x,
 	                          wrap_iter<Iterator2, Tag> const &y ) noexcept {
 		return x.base( ) - y.base( );
 	}
