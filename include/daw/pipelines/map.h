@@ -10,6 +10,7 @@
 
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
+#include "daw/daw_tuple_forward.h"
 #include "daw/daw_typeof.h"
 #include "daw/iterator/daw_arrow_proxy.h"
 #include "daw/pipelines/pipeline_traits.h"
@@ -321,19 +322,21 @@ namespace daw::pipelines {
 	template<typename Fn, typename Projection = std::identity>
 	[[nodiscard]] constexpr auto Map( Fn &&fn,
 	                                  Projection &&projection = Projection( ) ) {
-		return pimpl::Map_t{ DAW_FWD( fn ), DAW_FWD( projection ) };
+		return pimpl::Map_t<daw::remove_rvalue_ref_t<Fn>,
+		                    daw::remove_rvalue_ref_t<Projection>>{
+		  DAW_FWD( fn ), DAW_FWD( projection ) };
 	};
 
 	template<typename Fn>
 	[[nodiscard]] constexpr auto MapApply( Fn &&fn ) {
-		return pimpl::MapApply_t{ DAW_FWD( fn ) };
+		return pimpl::MapApply_t<daw::remove_rvalue_ref_t<Fn>>{ DAW_FWD( fn ) };
 	}
 
 	template<typename T, typename Compare = std::less<>>
-	[[nodiscard]] constexpr auto Clamp( T const &lo,
-	                                    std::type_identity_t<T> const &hi,
+	[[nodiscard]] constexpr auto Clamp( T &&lo, std::type_identity_t<T> hi,
 	                                    Compare &&compare = Compare{ } ) {
-		return pimpl::Clamp_t{ std::move( lo ), std::move( hi ),
-		                       DAW_FWD( compare ) };
+		return pimpl::Clamp_t<daw::remove_rvalue_ref_t<T>,
+		                      daw::remove_rvalue_ref_t<Compare>>{
+		  DAW_FWD( lo ), DAW_FWD( hi ), DAW_FWD( compare ) };
 	}
 } // namespace daw::pipelines

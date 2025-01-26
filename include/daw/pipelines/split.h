@@ -230,6 +230,8 @@ namespace daw::pipelines {
 	template<typename Delimiter, typename Projection = std::identity>
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
 	Split( Delimiter &&d, Projection &&p = Projection{ } ) {
-		return pimpl::split_t{ DAW_FWD( d ), DAW_FWD( p ) };
+		return pimpl::split_t<daw::remove_rvalue_ref_t<Delimiter>,
+		                      daw::remove_rvalue_ref_t<Projection>>{ DAW_FWD( d ),
+		                                                             DAW_FWD( p ) };
 	}
 } // namespace daw::pipelines

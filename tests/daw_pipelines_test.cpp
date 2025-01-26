@@ -525,16 +525,18 @@ namespace tests {
 			            assert( n >= 0 and n <= 9 );
 			            return static_cast<char>( n + '0' );
 		            } ),
-		            To<std::string> );
+		            []( auto r ) {
+			            return std::format( "\"{}\"", daw::fmt_range( r, "" ) );
+		            } );
 
 		static constexpr auto delim = std::array{ 3, 4 };
 		static constexpr auto splitter =
-		  pipeline( Split( range_t{ delim.data( ), daw::data_end( delim ) } ),
-		            Map( nums_to_string ) );
+		  pipeline( Split( delim ), Map( nums_to_string ) );
 		static constexpr auto data =
 		  std::array{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 42, 42, 42, 42, 42, 42 };
 
-		static constexpr auto parts = splitter( daw::contiguous_view( data.data( ), 9U ) );
+		static constexpr auto parts =
+		  splitter( daw::contiguous_view( data.data( ), 9U ) );
 
 		daw::println(
 		  "test031: pipeline( Split( {{3,4}} ), Map( nums_to_string ) ) with [1, "
