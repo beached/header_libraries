@@ -10,6 +10,7 @@
 
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
+#include "daw/pipelines/range_base.h"
 
 #include <cstddef>
 #include <daw/stdinc/tuple_traits.h>
@@ -18,7 +19,7 @@
 
 namespace daw::pipelines {
 	template<Iterator First, Iterator Last = First>
-	struct range_t {
+	struct range_t : range_base_t<First, Last> {
 		using i_am_a_daw_pipelines_range_t = void;
 		using iterator_category =
 		  common_iterator_category_t<iter_category_t<First>, iter_category_t<Last>>;

@@ -12,13 +12,13 @@
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
 #include "daw/daw_remove_cvref.h"
-#include "range.h"
+#include "daw/pipelines/range.h"
 
 #include <cstddef>
 
 namespace daw::pipelines::pimpl {
 	template<ForwardRange R>
-	struct chunk_view {
+	struct chunk_view : range_base_t<chunk_view<R>> {
 		using iterator = daw::iterator_t<R>;
 		using const_iterator = daw::iterator_t<std::add_const_t<R>>;
 		using iterator_category = daw::range_category_t<R>;

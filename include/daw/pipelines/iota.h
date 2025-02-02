@@ -11,6 +11,7 @@
 #include "daw/daw_concepts.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/iterator/daw_arrow_proxy.h"
+#include "daw/pipelines/range_base.h"
 
 #include <cstddef>
 #include <iterator>
@@ -141,7 +142,7 @@ namespace daw::pipelines {
 	};
 
 	template<typename T>
-	struct iota_view {
+	struct iota_view : range_base_t<iota_iterator<T>> {
 		using value_type = daw::iter_value_t<iota_iterator<T>>;
 		using iterator = iota_iterator<T>;
 

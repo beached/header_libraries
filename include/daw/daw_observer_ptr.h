@@ -12,6 +12,7 @@
 #include "daw/daw_attributes.h"
 #include "daw/daw_monadic_pointer_ops.h"
 
+#include <cassert>
 #include <compare>
 #include <concepts>
 #include <memory>
@@ -55,14 +56,17 @@ namespace daw {
 		}
 
 		constexpr reference operator*( ) const {
+			assert( m_ptr );
 			return *m_ptr;
 		}
 
 		constexpr reference value( ) const {
+			assert( m_ptr );
 			return *m_ptr;
 		}
 
 		constexpr pointer operator->( ) const {
+			assert( m_ptr );
 			return m_ptr;
 		}
 

@@ -15,7 +15,7 @@
 #include <daw/stdinc/tuple_traits.h>
 
 namespace daw::pipelines {
-	template<daw::Iterator First, daw::Iterator Last = First>
+	template<typename First, typename Last = First>
 	struct range_base_t {
 		using i_am_a_daw_pipelines_range_base_t = void;
 		using iterator_first_t = First;

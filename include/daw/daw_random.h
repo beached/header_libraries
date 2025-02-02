@@ -174,16 +174,24 @@ namespace daw {
 
 	private:
 		using engine_t = Engine;
-		engine_t m_engine =
-		  engine_t( static_cast<result_type>( std::random_device{ }( ) ) );
 		using distribution_type = std::uniform_int_distribution<Integer>;
 		using param_type = typename distribution_type::param_type;
+
+		engine_t m_engine = engine_t( get_default_random( ) );
 		distribution_type m_dist = distribution_type( );
+
+		static inline auto get_default_random( ) {
+			using r_type = typename Engine::result_type;
+			return static_cast<r_type>( std::random_device{ }( ) );
+		}
 
 	public:
 		explicit RandomInteger( ) = default;
-		explicit constexpr RandomInteger( result_type seed )
-		  : m_engine( seed ) {}
+
+		template<typename R, std::enable_if_t<std::is_convertible_v<R, result_type>,
+		                                      std::nullptr_t> = nullptr>
+		explicit constexpr RandomInteger( R seed )
+		  : m_engine( static_cast<result_type>( seed ) ) {}
 
 		constexpr result_type
 		operator( )( Integer MaxInclusive = std::numeric_limits<Integer>::max( ),

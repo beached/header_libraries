@@ -11,7 +11,7 @@
 #include "daw/daw_attributes.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
-#include "range.h"
+#include "daw/pipelines/range.h"
 
 #include <algorithm>
 #include <functional>
@@ -36,8 +36,7 @@ namespace daw::pipelines {
 
 			[[nodiscard]] constexpr decltype( auto )
 			operator( )( Sortable auto &&r ) const {
-				std::sort( std::begin( r ),
-				           std::end( r ),
+				std::sort( std::begin( r ), std::end( r ),
 				           [&]( auto const &lhs, auto const &rhs ) {
 					           return std::invoke( m_compare,
 					                               std::invoke( m_projection, lhs ),
@@ -69,14 +68,12 @@ namespace daw::pipelines {
 			}
 
 			[[nodiscard]] constexpr auto operator( )( Range auto &&r ) const {
-				return std::max_element( std::begin( r ),
-				                         std::end( r ),
-				                         [&]( auto const &lhs, auto const &rhs ) {
-					                         return std::invoke(
-					                           m_compare,
-					                           std::invoke( m_projection, lhs ),
-					                           std::invoke( m_projection, rhs ) );
-				                         } );
+				return std::max_element(
+				  std::begin( r ), std::end( r ),
+				  [&]( auto const &lhs, auto const &rhs ) {
+					  return std::invoke( m_compare, std::invoke( m_projection, lhs ),
+					                      std::invoke( m_projection, rhs ) );
+				  } );
 			}
 		};
 		Max_t( ) -> Max_t<>;
@@ -102,14 +99,12 @@ namespace daw::pipelines {
 			}
 
 			[[nodiscard]] constexpr auto operator( )( Range auto &&r ) const {
-				return std::min_element( std::begin( r ),
-				                         std::end( r ),
-				                         [&]( auto const &lhs, auto const &rhs ) {
-					                         return std::invoke(
-					                           m_compare,
-					                           std::invoke( m_projection, lhs ),
-					                           std::invoke( m_projection, rhs ) );
-				                         } );
+				return std::min_element(
+				  std::begin( r ), std::end( r ),
+				  [&]( auto const &lhs, auto const &rhs ) {
+					  return std::invoke( m_compare, std::invoke( m_projection, lhs ),
+					                      std::invoke( m_projection, rhs ) );
+				  } );
 			}
 		};
 		Min_t( ) -> Min_t<>;
@@ -136,11 +131,9 @@ namespace daw::pipelines {
 
 			[[nodiscard]] constexpr auto operator( )( Range auto &&r ) const {
 				auto result = std::minmax_element(
-				  std::begin( r ),
-				  std::end( r ),
+				  std::begin( r ), std::end( r ),
 				  [&]( auto const &lhs, auto const &rhs ) {
-					  return std::invoke( m_compare,
-					                      std::invoke( m_projection, lhs ),
+					  return std::invoke( m_compare, std::invoke( m_projection, lhs ),
 					                      std::invoke( m_projection, rhs ) );
 				  } );
 				return std::tuple{ result.first, result.second };
@@ -154,8 +147,7 @@ namespace daw::pipelines {
 		template<typename Compare, typename Projection>
 		MinMax_t( Compare, Projection ) -> MinMax_t<Compare, Projection>;
 
-		template<typename Needle,
-		         typename Compare = std::equal_to<>,
+		template<typename Needle, typename Compare = std::equal_to<>,
 		         typename Projection = std::identity>
 		struct Contains_t {
 			DAW_NO_UNIQUE_ADDRESS Needle m_needle;
@@ -184,9 +176,8 @@ namespace daw::pipelines {
 		Contains_t( Needle, Compare ) -> Contains_t<Needle, Compare>;
 
 		template<typename Needle, typename Compare, typename Projection>
-		Contains_t( Needle,
-		            Compare,
-		            Projection ) -> Contains_t<Needle, Compare, Projection>;
+		Contains_t( Needle, Compare, Projection )
+		  -> Contains_t<Needle, Compare, Projection>;
 
 	} // namespace pimpl
 
@@ -203,11 +194,10 @@ namespace daw::pipelines {
 		return pimpl::Contains_t{ DAW_FWD( needle ), DAW_FWD( compare ) };
 	}
 
-	[[nodiscard]] constexpr auto
-	Contains( auto &&needle, auto &&compare, auto &&projection ) {
+	[[nodiscard]] constexpr auto Contains( auto &&needle, auto &&compare,
+	                                       auto &&projection ) {
 		return pimpl::Contains_t{
-		  DAW_FWD( needle ),
-		  DAW_FWD( compare ),
+		  DAW_FWD( needle ), DAW_FWD( compare ),
 		  DAW_FWD( projection ) }; // namespace daw::pipelines
 	}
 } // namespace daw::pipelines
