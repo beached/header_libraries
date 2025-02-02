@@ -23,8 +23,11 @@ namespace daw {
 	struct never_null_t {};
 	inline constexpr never_null_t never_null = never_null_t{ };
 
-	template<typename Pointer>
-	inline constexpr Pointer not_null_null_value = Pointer{ };
+	template<typename T>
+	inline constexpr T not_null_null_value = T{ };
+
+	template<typename T>
+	inline constexpr T *not_null_null_pointer<T *> = nullptr;
 
 	template<typename Pointer>
 	struct not_null_value_type {
