@@ -427,39 +427,39 @@ namespace daw {
 		  new value_type[sizeof...( Elements )]{ DAW_FWD( elements )... } );
 	}
 
-	template<typename T>
-	constexpr bool operator==( unique_ptr<T> const &lhs,
-	                           unique_ptr<T> const &rhs ) noexcept {
+	template<typename T, typename D0, typename D1 = D0>
+	constexpr bool operator==( unique_ptr<T, D0> const &lhs,
+	                           unique_ptr<T, D1> const &rhs ) noexcept {
 		return lhs.get( ) == rhs.get( );
 	}
 
-	template<typename T>
-	constexpr bool operator!=( unique_ptr<T> const &lhs,
-	                           unique_ptr<T> const &rhs ) noexcept {
+	template<typename T, typename D0, typename D1 = D0>
+	constexpr bool operator!=( unique_ptr<T, D0> const &lhs,
+	                           unique_ptr<T, D1> const &rhs ) noexcept {
 		return lhs.get( ) != rhs.get( );
 	}
 
-	template<typename T>
-	constexpr bool operator<( unique_ptr<T> const &lhs,
-	                          unique_ptr<T> const &rhs ) noexcept {
+	template<typename T, typename D0, typename D1 = D0>
+	constexpr bool operator<( unique_ptr<T, D0> const &lhs,
+	                          unique_ptr<T, D1> const &rhs ) noexcept {
 		return std::less<void>{ }( lhs.get( ), rhs.get( ) );
 	}
 
-	template<typename T>
-	constexpr bool operator<=( unique_ptr<T> const &lhs,
-	                           unique_ptr<T> const &rhs ) noexcept {
+	template<typename T, typename D0, typename D1 = D0>
+	constexpr bool operator<=( unique_ptr<T, D0> const &lhs,
+	                           unique_ptr<T, D1> const &rhs ) noexcept {
 		return not( lhs < rhs );
 	}
 
-	template<typename T>
-	constexpr bool operator>( unique_ptr<T> const &lhs,
-	                          unique_ptr<T> const &rhs ) noexcept {
+	template<typename T, typename D0, typename D1 = D0>
+	constexpr bool operator>( unique_ptr<T, D0> const &lhs,
+	                          unique_ptr<T, D1> const &rhs ) noexcept {
 		return rhs < lhs;
 	}
 
-	template<typename T>
-	constexpr bool operator>=( unique_ptr<T> const &lhs,
-	                           unique_ptr<T> const &rhs ) noexcept {
+	template<typename T, typename D0, typename D1 = D0>
+	constexpr bool operator>=( unique_ptr<T, D0> const &lhs,
+	                           unique_ptr<T, D1> const &rhs ) noexcept {
 		return not( lhs < rhs );
 	}
 } // namespace daw
