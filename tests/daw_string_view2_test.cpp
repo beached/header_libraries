@@ -1669,24 +1669,19 @@ namespace daw {
 		static_assert( sv.empty( ) );
 	}
 
-	void test_c_str_visit_001( ) {
+	void test_get_c_str_001( ) {
 		constexpr daw::string_view sv = "Hello World";
 		static_assert( sv.is_zero_terminated( ) );
 		constexpr auto sv2 = sv.substr( 0, 5 );
 		static_assert( not sv2.is_zero_terminated( ) );
-		auto const visitor = []( auto s ) {
-			if constexpr( std::is_same_v<decltype( s ), std::string> ) {
-				daw_ensure( s == "Hello" );
-				return false;
-			} else {
-				daw_ensure( s == "Hello World" );
-				return true;
-			}
-		};
-		bool const is_zt = sv.c_str_visit<std::string>( visitor );
-		daw_ensure( is_zt );
-		bool const is_zt2 = sv2.c_str_visit<std::string>( visitor );
-		daw_ensure( not is_zt2 );
+
+		auto const zview = sv.get_c_str( );
+		daw_ensure( strlen( zview ) == sv.size( ) );
+		daw_ensure( daw::string_view( zview ) == sv );
+
+		auto const zview2 = sv2.get_c_str( );
+		daw_ensure( strlen( zview2 ) == sv2.size( ) );
+		daw_ensure( daw::string_view( zview2 ) == sv2 );
 	}
 } // namespace daw
 
@@ -1854,7 +1849,7 @@ int main( )
 	daw::daw_3way_compare_test_001( );
 #endif
 	daw::test_null_001( );
-	daw::test_c_str_visit_001( );
+	daw::test_get_c_str_001( );
 }
 #if defined( DAW_USE_EXCEPTIONS )
 catch( std::exception const &ex ) {

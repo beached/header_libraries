@@ -27,6 +27,7 @@
 #include "daw/daw_logic.h"
 #include "daw/daw_move.h"
 #include "daw/daw_typeof.h"
+#include "daw/daw_visit.h"
 #include "daw/impl/daw_view_tags.h"
 #include "daw/traits/daw_traits_conditional.h"
 #include "daw/traits/daw_traits_is_ostream_like.h"
@@ -44,6 +45,7 @@
 #include <exception>
 #include <limits>
 #include <stdexcept>
+#include <string>
 #include <type_traits>
 
 #if defined( DAW_NO_STRING_VIEW_DBG_CHECK )
@@ -443,6 +445,59 @@ namespace daw {
 		inline constexpr not_zero_terminated_t not_zero_terminated{ };
 
 		DAW_MAKE_REQ_TRAIT( is_zero_terminated_v, std::declval<T>( ).c_str( ) );
+
+		template<typename CharT>
+		class c_str_proxy {
+			struct buff_t {
+				CharT const *m_data;
+				std::size_t m_size;
+
+				constexpr CharT const *data( ) const {
+					return m_data;
+				}
+
+				constexpr std::size_t size( ) const {
+					return m_size;
+				}
+			};
+			std::variant<buff_t, std::basic_string<CharT>> m_str{ };
+
+			friend class basic_string_view<CharT>;
+
+			DAW_CPP20_CX_ALLOC c_str_proxy( CharT const *str, std::size_t N,
+			                                zero_terminated_t ) noexcept
+			  : m_str{ buff_t{ str, N } } {}
+
+			DAW_CPP20_CX_ALLOC c_str_proxy( CharT const *str, std::size_t N ) noexcept
+			  : m_str{ std::basic_string( str, N ) } {}
+
+		public:
+			DAW_CPP20_CX_ALLOC CharT const *c_str( ) const noexcept {
+				return daw::visit_nt( m_str, []( auto const &s ) {
+					return s.data( );
+				} );
+			}
+
+			DAW_CPP20_CX_ALLOC CharT const *data( ) const noexcept {
+				return c_str( );
+			}
+
+			DAW_CPP20_CX_ALLOC operator CharT const *( ) const noexcept {
+				return c_str( );
+			}
+
+			DAW_CPP20_CX_ALLOC std::size_t size( ) const noexcept {
+				return daw::visit_nt( m_str, []( auto const &s ) {
+					return s.size( );
+				} );
+			}
+
+			template<typename T, DAW_REQ_CONTIG_CHAR_RANGE_CTOR( T )>
+			explicit constexpr operator T( ) const
+			  noexcept( std::is_nothrow_constructible_v<T, CharT *, std::size_t> ) {
+				return T{ data( ), size( ) };
+			}
+		};
 
 		/// @brief The class template basic_string_view describes an object that can
 		/// refer to a constant contiguous sequence of char-like objects with the
@@ -2611,15 +2666,11 @@ namespace daw {
 				inc_back( n );
 			}
 
-			/// @brief Call the visitor with a zero terminated string_view.
-			// If the string_view isn't zero terminated, pass the Fallback
-			// type with the current buffer.
-			template<typename FallbackType, typename Visitor>
-			constexpr decltype( auto ) c_str_visit( Visitor &&v ) const {
+			DAW_CPP20_CX_ALLOC c_str_proxy<CharT> get_c_str( ) const {
 				if( is_zero_terminated( ) ) {
-					return DAW_FWD( v )( *this );
+					return c_str_proxy<CharT>( data( ), size( ), zero_terminated );
 				}
-				return DAW_FWD( v )( static_cast<FallbackType>( *this ) );
+				return c_str_proxy<CharT>( data( ), size( ) );
 			}
 		}; // basic_string_view
 
