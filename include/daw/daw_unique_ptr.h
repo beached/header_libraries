@@ -191,6 +191,11 @@ namespace daw {
 			}
 		}
 
+		constexpr void reset( pointer p ) noexcept {
+			reset( );
+			m_ptr = std::move( p );
+		}
+
 		constexpr pointer get( ) const {
 			return m_ptr;
 		}
