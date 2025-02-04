@@ -472,7 +472,7 @@ namespace daw {
 			  : m_str{ std::basic_string( str, N ) } {}
 
 			template<typename Str>
-			static DAW_CPP20_CX_ALLOC basic_string_view<CharT>
+			static DAW_CPP20_CX_ALLOC std::basic_string<CharT>
 			private_to_string( Str &&s ) {
 				if( s.m_str.index( ) == 0 ) {
 					auto const &b = std::get<0>( s.m_str );
@@ -508,19 +508,19 @@ namespace daw {
 				return T{ data( ), size( ) };
 			}
 
-			DAW_CPP20_CX_ALLOC basic_string_view<CharT> string( ) & {
+			DAW_CPP20_CX_ALLOC std::basic_string<CharT> string( ) & {
 				return private_to_string( *this );
 			}
 
-			DAW_CPP20_CX_ALLOC basic_string_view<CharT> string( ) const & {
+			DAW_CPP20_CX_ALLOC std::basic_string<CharT> string( ) const & {
 				return private_to_string( *this );
 			}
 
-			DAW_CPP20_CX_ALLOC basic_string_view<CharT> string( ) && {
+			DAW_CPP20_CX_ALLOC std::basic_string<CharT> string( ) && {
 				return private_to_string( *this );
 			}
 
-			DAW_CPP20_CX_ALLOC basic_string_view<CharT> string( ) const && {
+			DAW_CPP20_CX_ALLOC std::basic_string<CharT> string( ) const && {
 				return private_to_string( *this );
 			}
 		};
