@@ -471,6 +471,16 @@ namespace daw {
 			DAW_CPP20_CX_ALLOC c_str_proxy( CharT const *str, std::size_t N ) noexcept
 			  : m_str{ std::basic_string( str, N ) } {}
 
+			template<typename Str>
+			static DAW_CPP20_CX_ALLOC basic_string_view<CharT>
+			private_to_string( Str &&s ) {
+				if( s.m_str.index( ) == 0 ) {
+					auto const &b = std::get<0>( s.m_str );
+					return std::basic_string<CharT>( b.c_str( ), b.size( ) );
+				}
+				return std::get<1>( DAW_FWD( s.m_str ) );
+			}
+
 		public:
 			DAW_CPP20_CX_ALLOC CharT const *c_str( ) const noexcept {
 				return daw::visit_nt( m_str, []( auto const &s ) {
@@ -493,9 +503,25 @@ namespace daw {
 			}
 
 			template<typename T, DAW_REQ_CONTIG_CHAR_RANGE_CTOR( T )>
-			explicit constexpr operator T( ) const
+			explicit DAW_CPP20_CX_ALLOC operator T( ) const
 			  noexcept( std::is_nothrow_constructible_v<T, CharT *, std::size_t> ) {
 				return T{ data( ), size( ) };
+			}
+
+			DAW_CPP20_CX_ALLOC basic_string_view<CharT> string( ) & {
+				return private_to_string( *this );
+			}
+
+			DAW_CPP20_CX_ALLOC basic_string_view<CharT> string( ) const & {
+				return private_to_string( *this );
+			}
+
+			DAW_CPP20_CX_ALLOC basic_string_view<CharT> string( ) && {
+				return private_to_string( *this );
+			}
+
+			DAW_CPP20_CX_ALLOC basic_string_view<CharT> string( ) const && {
+				return private_to_string( *this );
 			}
 		};
 
