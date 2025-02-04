@@ -476,7 +476,7 @@ namespace daw {
 			private_to_string( Str &&s ) {
 				if( s.m_str.index( ) == 0 ) {
 					auto const &b = std::get<0>( s.m_str );
-					return std::basic_string<CharT>( b.c_str( ), b.size( ) );
+					return std::basic_string<CharT>( b.data( ), b.size( ) );
 				}
 				return std::get<1>( DAW_FWD( s.m_str ) );
 			}
