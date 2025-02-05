@@ -482,6 +482,12 @@ namespace daw {
 			}
 
 		public:
+			~c_str_proxy( ) = default;
+			c_str_proxy( c_str_proxy const & ) = delete;
+			c_str_proxy( c_str_proxy && ) = delete;
+			c_str_proxy &operator=( c_str_proxy const & ) = delete;
+			c_str_proxy &operator=( c_str_proxy && ) = delete;
+
 			DAW_CPP20_CX_ALLOC CharT const *c_str( ) const noexcept {
 				return daw::visit_nt( m_str, []( auto const &s ) {
 					return s.data( );
