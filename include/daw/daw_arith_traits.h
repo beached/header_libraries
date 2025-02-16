@@ -24,78 +24,65 @@
 
 namespace daw {
 	template<typename T>
-	using is_integral = std::bool_constant<daw::numeric_limits<T>::is_integer>;
+	inline constexpr bool is_integral_v = daw::numeric_limits<T>::is_integer;
 
 	template<typename T>
-	inline constexpr bool is_integral_v = is_integral<T>::value;
+	using is_integral = std::bool_constant<is_integral_v<T>>;
 
 	static_assert( is_integral_v<int> );
 	static_assert( not is_integral_v<float> );
 
-	namespace arith_traits_details {
-		template<typename T>
-		using limits_is_signed =
-		  std::bool_constant<daw::numeric_limits<T>::is_signed>;
-
-		template<typename T>
-		using limits_is_exact =
-		  std::bool_constant<daw::numeric_limits<T>::is_exact>;
-
-	} // namespace arith_traits_details
+	template<typename T>
+	inline constexpr bool is_floating_point_v =
+	  not is_integral_v<T> and daw::numeric_limits<T>::is_signed and
+	  not daw::numeric_limits<T>::is_exact;
 
 	template<typename T>
-	using is_floating_point =
-	  std::conjunction<std::negation<is_integral<T>>,
-	                   arith_traits_details::limits_is_signed<T>,
-	                   std::negation<arith_traits_details::limits_is_exact<T>>>;
-
-	template<typename T>
-	inline constexpr bool is_floating_point_v = is_floating_point<T>::value;
+	using is_floating_point = std::bool_constant<is_floating_point_v<T>>;
 
 	static_assert( is_floating_point_v<float> );
 	static_assert( not is_floating_point_v<int> );
 
 	template<typename T>
-	using is_number = std::disjunction<is_integral<T>, is_floating_point<T>>;
+	inline constexpr bool is_number_v =
+	  is_integral_v<T> or is_floating_point_v<T>;
 
 	template<typename T>
-	inline constexpr bool is_number_v = is_number<T>::value;
+	using is_number = std::bool_constant<is_number_v<T>>;
 
 	static_assert( is_number_v<float> );
 	static_assert( is_number_v<int> );
 	static_assert( not is_number_v<is_integral<int>> );
 
 	template<typename T>
-	using is_signed =
-	  std::conjunction<is_number<T>, arith_traits_details::limits_is_signed<T>>;
+	inline constexpr bool is_signed_v =
+	  is_number_v<T> and daw::numeric_limits<T>::is_signed;
 
 	template<typename T>
-	inline constexpr bool is_signed_v = is_signed<T>::value;
+	using is_signed = std::bool_constant<is_signed_v<T>>;
 
 	static_assert( is_signed_v<int> );
 	static_assert( is_signed_v<float> );
 	static_assert( not is_signed_v<unsigned> );
 
 	template<typename T>
-	using is_unsigned =
-	  std::conjunction<is_integral<T>,
-	                   std::negation<arith_traits_details::limits_is_signed<T>>>;
+	inline constexpr bool is_unsigned_v =
+	  is_integral_v<T> and not daw::numeric_limits<T>::is_signed;
 
 	template<typename T>
-	inline constexpr bool is_unsigned_v = is_unsigned<T>::value;
+	using is_unsigned = std::bool_constant<is_unsigned_v<T>>;
 
 	static_assert( not is_unsigned_v<int> );
 	static_assert( not is_unsigned_v<float> );
 	static_assert( is_unsigned_v<unsigned> );
 
 	template<typename T>
-	using is_arithmetic =
-	  std::disjunction<is_number<T>, std::is_enum<T>,
-	                   conditional_t<daw::numeric_limits<T>::is_specialized,
-	                                 std::true_type, std::false_type>>;
+	inline constexpr bool is_arithmetic_v =
+	  is_number_v<T> or std::is_enum_v<T> or
+	  daw::numeric_limits<T>::is_specialized;
 
 	template<typename T>
-	inline constexpr bool is_arithmetic_v = is_arithmetic<T>::value;
+	using is_arithmetic = std::bool_constant<is_arithmetic_v<T>>;
 
 	template<typename T>
 	struct make_unsigned : std::make_unsigned<T> {};
