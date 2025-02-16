@@ -462,7 +462,7 @@ namespace daw {
 			};
 			std::variant<buff_t, std::basic_string<CharT>> m_str{ };
 
-			friend class basic_string_view<CharT>;
+			friend struct basic_string_view<CharT>;
 
 			DAW_CPP20_CX_ALLOC c_str_proxy( CharT const *str, std::size_t N,
 			                                zero_terminated_t ) noexcept
