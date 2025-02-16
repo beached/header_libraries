@@ -985,9 +985,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:adccc87538bcac65a3e8d3effa944b66d" id="r_adccc87538bcac65a3e8d3effa944b66d"><td class="memTemplParams" colspan="2">template&lt;std::size_t BitSize&gt; </td></tr>
 <tr class="memitem:adccc87538bcac65a3e8d3effa944b66d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#adccc87538bcac65a3e8d3effa944b66d">intN_t</a> = <a class="el" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt; <a class="el" href="namespacedaw.html#a8163e87ed99593ab4f8b6a171515df95">is_same_size_v</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">char</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">BitSize</a> &gt;, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">char</a>, <a class="el" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt; <a class="el" href="namespacedaw.html#a8163e87ed99593ab4f8b6a171515df95">is_same_size_v</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">short</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">BitSize</a> &gt;, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">short</a>, <a class="el" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt; <a class="el" href="namespacedaw.html#a8163e87ed99593ab4f8b6a171515df95">is_same_size_v</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">int</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">BitSize</a> &gt;, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">int</a>, <a class="el" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt; <a class="el" href="namespacedaw.html#a8163e87ed99593ab4f8b6a171515df95">is_same_size_v</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">long</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">BitSize</a> &gt;, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">long</a>, <a class="el" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt; <a class="el" href="namespacedaw.html#a8163e87ed99593ab4f8b6a171515df95">is_same_size_v</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">long</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">long</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">BitSize</a> &gt;, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">long</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">long</a>, <a class="el" href="structdaw_1_1unsupported__int__size.html">unsupported_int_size</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">BitSize</a> &gt; &gt; &gt; &gt; &gt; &gt;</td></tr>
 <tr class="separator:adccc87538bcac65a3e8d3effa944b66d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3574ae84b83ccc6a02409ccad76677ac" id="r_a3574ae84b83ccc6a02409ccad76677ac"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
-<tr class="memitem:a3574ae84b83ccc6a02409ccad76677ac"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3574ae84b83ccc6a02409ccad76677ac">is_arithmetic</a> = std::disjunction&lt; <a class="el" href="namespacedaw.html#aef880af0ef99dea29e0a859d5c1e420b">is_number</a>&lt; T &gt;, std::is_enum&lt; T &gt;, <a class="el" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt; <a class="el" href="structdaw_1_1numeric__limits.html">daw::numeric_limits</a>&lt; T &gt;::is_specialized, std::true_type, std::false_type &gt; &gt;</td></tr>
-<tr class="separator:a3574ae84b83ccc6a02409ccad76677ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ee466fcb2041075c5682b81ef397478" id="r_a0ee466fcb2041075c5682b81ef397478"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
+<tr class="memitem:a0ee466fcb2041075c5682b81ef397478"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0ee466fcb2041075c5682b81ef397478">is_arithmetic</a> = std::bool_constant&lt; <a class="el" href="namespacedaw.html#a9ebe50422eeaa960cf1e0558c25275a6">is_arithmetic_v</a>&lt; T &gt; &gt;</td></tr>
+<tr class="separator:a0ee466fcb2041075c5682b81ef397478"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23cbbbaff48be1d7e0989352292b49ef" id="r_a23cbbbaff48be1d7e0989352292b49ef"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
 <tr class="memitem:a23cbbbaff48be1d7e0989352292b49ef"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a23cbbbaff48be1d7e0989352292b49ef">is_complete_type</a> = std::bool_constant&lt; <a class="el" href="namespacedaw.html#ad4274a233e8e7af9e7217b9cbcbd45b4">is_complete_type_v</a>&lt; T &gt; &gt;</td></tr>
 <tr class="separator:a23cbbbaff48be1d7e0989352292b49ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1000,15 +1000,15 @@ Typedefs</h2></td></tr>
 <tr class="memitem:aa7b45b2d2224d7ec3e0eb2bd522ab8be" id="r_aa7b45b2d2224d7ec3e0eb2bd522ab8be"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Expected</a> , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">template</a>&lt; typename... &gt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> Op, typename... Args&gt; </td></tr>
 <tr class="memitem:aa7b45b2d2224d7ec3e0eb2bd522ab8be"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa7b45b2d2224d7ec3e0eb2bd522ab8be">is_detected_exact</a> = std::bool_constant&lt; <a class="el" href="namespacedaw.html#aae83300977e536ffa843ef68b2cd4c80">is_detected_exact_v</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Expected</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Op</a>, Args... &gt; &gt;</td></tr>
 <tr class="separator:aa7b45b2d2224d7ec3e0eb2bd522ab8be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a882215882ffcb4de6d10c129338593e7" id="r_a882215882ffcb4de6d10c129338593e7"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
-<tr class="memitem:a882215882ffcb4de6d10c129338593e7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a882215882ffcb4de6d10c129338593e7">is_floating_point</a> = std::conjunction&lt; std::negation&lt; <a class="el" href="namespacedaw.html#a0a6a232e926db38d6074e30789149088">is_integral</a>&lt; T &gt; &gt;, arith_traits_details::limits_is_signed&lt; T &gt;, std::negation&lt; arith_traits_details::limits_is_exact&lt; T &gt; &gt; &gt;</td></tr>
-<tr class="separator:a882215882ffcb4de6d10c129338593e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a6a232e926db38d6074e30789149088" id="r_a0a6a232e926db38d6074e30789149088"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
-<tr class="memitem:a0a6a232e926db38d6074e30789149088"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0a6a232e926db38d6074e30789149088">is_integral</a> = std::bool_constant&lt; <a class="el" href="structdaw_1_1numeric__limits.html">daw::numeric_limits</a>&lt; T &gt;::is_integer &gt;</td></tr>
-<tr class="separator:a0a6a232e926db38d6074e30789149088"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef880af0ef99dea29e0a859d5c1e420b" id="r_aef880af0ef99dea29e0a859d5c1e420b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
-<tr class="memitem:aef880af0ef99dea29e0a859d5c1e420b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aef880af0ef99dea29e0a859d5c1e420b">is_number</a> = std::disjunction&lt; <a class="el" href="namespacedaw.html#a0a6a232e926db38d6074e30789149088">is_integral</a>&lt; T &gt;, <a class="el" href="namespacedaw.html#a882215882ffcb4de6d10c129338593e7">is_floating_point</a>&lt; T &gt; &gt;</td></tr>
-<tr class="separator:aef880af0ef99dea29e0a859d5c1e420b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ab5769d3d9796bef45748db66f694a8" id="r_a2ab5769d3d9796bef45748db66f694a8"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
+<tr class="memitem:a2ab5769d3d9796bef45748db66f694a8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a2ab5769d3d9796bef45748db66f694a8">is_floating_point</a> = std::bool_constant&lt; <a class="el" href="namespacedaw.html#a13079bfba0cfaaf579de00c945c7425a">is_floating_point_v</a>&lt; T &gt; &gt;</td></tr>
+<tr class="separator:a2ab5769d3d9796bef45748db66f694a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa089b80ae90ae99154e2e793c5cd4852" id="r_aa089b80ae90ae99154e2e793c5cd4852"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
+<tr class="memitem:aa089b80ae90ae99154e2e793c5cd4852"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa089b80ae90ae99154e2e793c5cd4852">is_integral</a> = std::bool_constant&lt; <a class="el" href="namespacedaw.html#a6817d377e10f6ce514c49e8abd957bc5">is_integral_v</a>&lt; T &gt; &gt;</td></tr>
+<tr class="separator:aa089b80ae90ae99154e2e793c5cd4852"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cfcef834c21da7eb48a081aa1af05d2" id="r_a5cfcef834c21da7eb48a081aa1af05d2"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
+<tr class="memitem:a5cfcef834c21da7eb48a081aa1af05d2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5cfcef834c21da7eb48a081aa1af05d2">is_number</a> = std::bool_constant&lt; <a class="el" href="namespacedaw.html#aa1b67176374705d67ec1ba51413b02bf">is_number_v</a>&lt; T &gt; &gt;</td></tr>
+<tr class="separator:a5cfcef834c21da7eb48a081aa1af05d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50a1ea621891b5e00a024787161c769c" id="r_a50a1ea621891b5e00a024787161c769c"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
 <tr class="memitem:a50a1ea621891b5e00a024787161c769c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a50a1ea621891b5e00a024787161c769c">is_reference_wrapper</a> = std::bool_constant&lt; <a class="el" href="namespacedaw.html#abd66a67dc21af2b8b1a817bbbdaa594a">is_reference_wrapper_v</a>&lt; T &gt; &gt;</td></tr>
 <tr class="separator:a50a1ea621891b5e00a024787161c769c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1021,9 +1021,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a1414b42a0676a83e37fb2ceecd7bc31d" id="r_a1414b42a0676a83e37fb2ceecd7bc31d"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">U</a> &gt; </td></tr>
 <tr class="memitem:a1414b42a0676a83e37fb2ceecd7bc31d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a1414b42a0676a83e37fb2ceecd7bc31d">is_same_t</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> std::bool_constant&lt; <a class="el" href="namespacedaw.html#acb5e8e7aae63bd8ce856c22236d80412">is_same_v</a>&lt; T, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">U</a> &gt; &gt;::type</td></tr>
 <tr class="separator:a1414b42a0676a83e37fb2ceecd7bc31d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33bde176dbe56752560f71c62982c8ec" id="r_a33bde176dbe56752560f71c62982c8ec"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
-<tr class="memitem:a33bde176dbe56752560f71c62982c8ec"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a33bde176dbe56752560f71c62982c8ec">is_signed</a> = std::conjunction&lt; <a class="el" href="namespacedaw.html#aef880af0ef99dea29e0a859d5c1e420b">is_number</a>&lt; T &gt;, arith_traits_details::limits_is_signed&lt; T &gt; &gt;</td></tr>
-<tr class="separator:a33bde176dbe56752560f71c62982c8ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f75a68978911c719e9ef52a39aaf651" id="r_a3f75a68978911c719e9ef52a39aaf651"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
+<tr class="memitem:a3f75a68978911c719e9ef52a39aaf651"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a3f75a68978911c719e9ef52a39aaf651">is_signed</a> = std::bool_constant&lt; <a class="el" href="namespacedaw.html#a5a2631053bcba86f99c5b58e05e0c721">is_signed_v</a>&lt; T &gt; &gt;</td></tr>
+<tr class="separator:a3f75a68978911c719e9ef52a39aaf651"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02643d84e87ea1d5787f6047380d2f28" id="r_a02643d84e87ea1d5787f6047380d2f28"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">template</a>&lt; typename... &gt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> Primary, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
 <tr class="memitem:a02643d84e87ea1d5787f6047380d2f28"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a02643d84e87ea1d5787f6047380d2f28">is_specialization_of</a> = std::bool_constant&lt; <a class="el" href="namespacedaw.html#a628a5e747e73c4a762806f010c3ad2e3">is_specialization_of_v</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Primary</a>, T &gt; &gt;</td></tr>
 <tr class="separator:a02643d84e87ea1d5787f6047380d2f28"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1033,9 +1033,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a0de141d68c9f16a7b1049e527113a570" id="r_a0de141d68c9f16a7b1049e527113a570"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
 <tr class="memitem:a0de141d68c9f16a7b1049e527113a570"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a0de141d68c9f16a7b1049e527113a570">is_unbounded_array</a> = std::bool_constant&lt; <a class="el" href="namespacedaw.html#ad9828c948ec2a577b6369adf8683f2dd">is_unbounded_array_v</a>&lt; T &gt; &gt;</td></tr>
 <tr class="separator:a0de141d68c9f16a7b1049e527113a570"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a214d465f63cd9ada4a5c7c473cb814cb" id="r_a214d465f63cd9ada4a5c7c473cb814cb"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
-<tr class="memitem:a214d465f63cd9ada4a5c7c473cb814cb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a214d465f63cd9ada4a5c7c473cb814cb">is_unsigned</a> = std::conjunction&lt; <a class="el" href="namespacedaw.html#a0a6a232e926db38d6074e30789149088">is_integral</a>&lt; T &gt;, std::negation&lt; arith_traits_details::limits_is_signed&lt; T &gt; &gt; &gt;</td></tr>
-<tr class="separator:a214d465f63cd9ada4a5c7c473cb814cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa790d2463c6fa1b46527aaf39779cd50" id="r_aa790d2463c6fa1b46527aaf39779cd50"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
+<tr class="memitem:aa790d2463c6fa1b46527aaf39779cd50"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa790d2463c6fa1b46527aaf39779cd50">is_unsigned</a> = std::bool_constant&lt; <a class="el" href="namespacedaw.html#a8bf218c78227ebd73155aeb469aa0812">is_unsigned_v</a>&lt; T &gt; &gt;</td></tr>
+<tr class="separator:aa790d2463c6fa1b46527aaf39779cd50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8151ffe58093b7adfda51d1f55e6e249" id="r_a8151ffe58093b7adfda51d1f55e6e249"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">It</a> &gt; </td></tr>
 <tr class="memitem:a8151ffe58093b7adfda51d1f55e6e249"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a8151ffe58093b7adfda51d1f55e6e249">iter_category_t</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> std::iterator_traits&lt; <a class="el" href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">daw::remove_cvref_t</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">It</a> &gt; &gt;::iterator_category</td></tr>
 <tr class="separator:a8151ffe58093b7adfda51d1f55e6e249"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4496,7 +4496,7 @@ Variables</h2></td></tr>
 <tr class="memitem:ac1a3a549d4954dc963889a479a954b4e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ac1a3a549d4954dc963889a479a954b4e">is_any_of_v</a> = ( ( <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Needle</a> == <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Haystack</a> ) <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">or</a> ... )</td></tr>
 <tr class="separator:ac1a3a549d4954dc963889a479a954b4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ebe50422eeaa960cf1e0558c25275a6" id="r_a9ebe50422eeaa960cf1e0558c25275a6"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
-<tr class="memitem:a9ebe50422eeaa960cf1e0558c25275a6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9ebe50422eeaa960cf1e0558c25275a6">is_arithmetic_v</a> = <a class="el" href="namespacedaw.html#a3574ae84b83ccc6a02409ccad76677ac">is_arithmetic</a>&lt;T&gt;::value</td></tr>
+<tr class="memitem:a9ebe50422eeaa960cf1e0558c25275a6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a9ebe50422eeaa960cf1e0558c25275a6">is_arithmetic_v</a></td></tr>
 <tr class="separator:a9ebe50422eeaa960cf1e0558c25275a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a920b844505bea592fc545d568eb4fb27" id="r_a920b844505bea592fc545d568eb4fb27"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
 <tr class="memitem:a920b844505bea592fc545d568eb4fb27"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a920b844505bea592fc545d568eb4fb27">is_bounded_graph_node_v</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">false</a></td></tr>
@@ -4532,7 +4532,7 @@ Variables</h2></td></tr>
 <tr class="memitem:a32ff295a2e02b1e3cf3ec9b271bbc538"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a32ff295a2e02b1e3cf3ec9b271bbc538">is_empty_tuple_v</a> = ( <a class="el" href="namespacedaw.html#a00ea6294fc0d1208169fdd524268e7eb">tuple_size_v</a>&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Tuple</a>&gt; == 0 )</td></tr>
 <tr class="separator:a32ff295a2e02b1e3cf3ec9b271bbc538"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13079bfba0cfaaf579de00c945c7425a" id="r_a13079bfba0cfaaf579de00c945c7425a"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
-<tr class="memitem:a13079bfba0cfaaf579de00c945c7425a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a13079bfba0cfaaf579de00c945c7425a">is_floating_point_v</a> = <a class="el" href="namespacedaw.html#a882215882ffcb4de6d10c129338593e7">is_floating_point</a>&lt;T&gt;::value</td></tr>
+<tr class="memitem:a13079bfba0cfaaf579de00c945c7425a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a13079bfba0cfaaf579de00c945c7425a">is_floating_point_v</a></td></tr>
 <tr class="separator:a13079bfba0cfaaf579de00c945c7425a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e0ecf3508bf837772871ff509cf5aa8" id="r_a2e0ecf3508bf837772871ff509cf5aa8"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> &gt; </td></tr>
 <tr class="memitem:a2e0ecf3508bf837772871ff509cf5aa8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a2e0ecf3508bf837772871ff509cf5aa8">is_graph_node_v</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">false</a></td></tr>
@@ -4544,7 +4544,7 @@ Variables</h2></td></tr>
 <tr class="memitem:a079ed20bc7343458d6f0ad18f1f90c26"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a079ed20bc7343458d6f0ad18f1f90c26">is_graph_node_v&lt; graph_node_t&lt; T &gt; &gt;</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">true</a></td></tr>
 <tr class="separator:a079ed20bc7343458d6f0ad18f1f90c26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6817d377e10f6ce514c49e8abd957bc5" id="r_a6817d377e10f6ce514c49e8abd957bc5"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
-<tr class="memitem:a6817d377e10f6ce514c49e8abd957bc5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6817d377e10f6ce514c49e8abd957bc5">is_integral_v</a> = <a class="el" href="namespacedaw.html#a0a6a232e926db38d6074e30789149088">is_integral</a>&lt;T&gt;::value</td></tr>
+<tr class="memitem:a6817d377e10f6ce514c49e8abd957bc5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a6817d377e10f6ce514c49e8abd957bc5">is_integral_v</a> = <a class="el" href="structdaw_1_1numeric__limits.html">daw::numeric_limits</a>&lt;T&gt;::is_integer</td></tr>
 <tr class="separator:a6817d377e10f6ce514c49e8abd957bc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab93354c41131c1d5c79f5ebadfa3c3dc" id="r_ab93354c41131c1d5c79f5ebadfa3c3dc"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Alloc</a> , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a>  = void&gt; </td></tr>
 <tr class="memitem:ab93354c41131c1d5c79f5ebadfa3c3dc"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ab93354c41131c1d5c79f5ebadfa3c3dc">is_move_insertable_v</a></td></tr>
@@ -4562,7 +4562,7 @@ Variables</h2></td></tr>
 <tr class="memitem:adcbcb3bf1260cedde99c6a856bbd31f0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#adcbcb3bf1260cedde99c6a856bbd31f0">is_nothrow_convertible_v</a></td></tr>
 <tr class="separator:adcbcb3bf1260cedde99c6a856bbd31f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1b67176374705d67ec1ba51413b02bf" id="r_aa1b67176374705d67ec1ba51413b02bf"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
-<tr class="memitem:aa1b67176374705d67ec1ba51413b02bf"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa1b67176374705d67ec1ba51413b02bf">is_number_v</a> = <a class="el" href="namespacedaw.html#aef880af0ef99dea29e0a859d5c1e420b">is_number</a>&lt;T&gt;::value</td></tr>
+<tr class="memitem:aa1b67176374705d67ec1ba51413b02bf"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa1b67176374705d67ec1ba51413b02bf">is_number_v</a></td></tr>
 <tr class="separator:aa1b67176374705d67ec1ba51413b02bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd66a67dc21af2b8b1a817bbbdaa594a" id="r_abd66a67dc21af2b8b1a817bbbdaa594a"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> &gt; </td></tr>
 <tr class="memitem:abd66a67dc21af2b8b1a817bbbdaa594a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#abd66a67dc21af2b8b1a817bbbdaa594a">is_reference_wrapper_v</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">false</a></td></tr>
@@ -4577,7 +4577,7 @@ Variables</h2></td></tr>
 <tr class="memitem:a42f23b3d3a8e0fe1f3e182e0289094f5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a42f23b3d3a8e0fe1f3e182e0289094f5">is_same_v&lt; T, T &gt;</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">true</a></td></tr>
 <tr class="separator:a42f23b3d3a8e0fe1f3e182e0289094f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a2631053bcba86f99c5b58e05e0c721" id="r_a5a2631053bcba86f99c5b58e05e0c721"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
-<tr class="memitem:a5a2631053bcba86f99c5b58e05e0c721"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5a2631053bcba86f99c5b58e05e0c721">is_signed_v</a> = <a class="el" href="namespacedaw.html#a33bde176dbe56752560f71c62982c8ec">is_signed</a>&lt;T&gt;::value</td></tr>
+<tr class="memitem:a5a2631053bcba86f99c5b58e05e0c721"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a5a2631053bcba86f99c5b58e05e0c721">is_signed_v</a></td></tr>
 <tr class="separator:a5a2631053bcba86f99c5b58e05e0c721"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a628a5e747e73c4a762806f010c3ad2e3" id="r_a628a5e747e73c4a762806f010c3ad2e3"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">template</a>&lt; typename... &gt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> Primary, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
 <tr class="memitem:a628a5e747e73c4a762806f010c3ad2e3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a628a5e747e73c4a762806f010c3ad2e3">is_specialization_of_v</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">false</a></td></tr>
@@ -4610,7 +4610,7 @@ Variables</h2></td></tr>
 <tr class="memitem:a86f6ab0d795de6e69f1c4f483fae3d34"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a86f6ab0d795de6e69f1c4f483fae3d34">is_unbounded_array_v&lt; T[]&gt;</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">true</a></td></tr>
 <tr class="separator:a86f6ab0d795de6e69f1c4f483fae3d34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bf218c78227ebd73155aeb469aa0812" id="r_a8bf218c78227ebd73155aeb469aa0812"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
-<tr class="memitem:a8bf218c78227ebd73155aeb469aa0812"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a8bf218c78227ebd73155aeb469aa0812">is_unsigned_v</a> = <a class="el" href="namespacedaw.html#a214d465f63cd9ada4a5c7c473cb814cb">is_unsigned</a>&lt;T&gt;::value</td></tr>
+<tr class="memitem:a8bf218c78227ebd73155aeb469aa0812"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a8bf218c78227ebd73155aeb469aa0812">is_unsigned_v</a></td></tr>
 <tr class="separator:a8bf218c78227ebd73155aeb469aa0812"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72c4cf895e7b86bbecf78211b287820a" id="r_a72c4cf895e7b86bbecf78211b287820a"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Value</a> , typename... Visitors&gt; </td></tr>
 <tr class="memitem:a72c4cf895e7b86bbecf78211b287820a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a72c4cf895e7b86bbecf78211b287820a">is_visitable_v</a></td></tr>
@@ -5550,12 +5550,12 @@ template&lt;std::size_t BitSize&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00218">218</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00205">205</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
-<a id="a3574ae84b83ccc6a02409ccad76677ac" name="a3574ae84b83ccc6a02409ccad76677ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3574ae84b83ccc6a02409ccad76677ac">&#9670;&#160;</a></span>is_arithmetic</h2>
+<a id="a0ee466fcb2041075c5682b81ef397478" name="a0ee466fcb2041075c5682b81ef397478"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ee466fcb2041075c5682b81ef397478">&#9670;&#160;</a></span>is_arithmetic</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5563,12 +5563,12 @@ template&lt;std::size_t BitSize&gt; </div>
 template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="namespacedaw.html#a3574ae84b83ccc6a02409ccad76677ac">daw::is_arithmetic</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typedef</a> std::disjunction&lt;<a class="el" href="namespacedaw.html#aef880af0ef99dea29e0a859d5c1e420b">is_number</a>&lt;T&gt;, std::is_enum&lt;T&gt;, <a class="el" href="namespacedaw.html#ad0ba831f2a45892800d8f98fe6105f35">conditional_t</a>&lt;<a class="el" href="structdaw_1_1numeric__limits.html">daw::numeric_limits</a>&lt;T&gt;::is_specialized, std::true_type, std::false_type&gt; &gt;</td>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="namespacedaw.html#a0ee466fcb2041075c5682b81ef397478">daw::is_arithmetic</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typedef</a> std::bool_constant&lt;<a class="el" href="namespacedaw.html#a9ebe50422eeaa960cf1e0558c25275a6">is_arithmetic_v</a>&lt;T&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00092">92</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00085">85</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
@@ -5644,8 +5644,8 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 
 </div>
 </div>
-<a id="a882215882ffcb4de6d10c129338593e7" name="a882215882ffcb4de6d10c129338593e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a882215882ffcb4de6d10c129338593e7">&#9670;&#160;</a></span>is_floating_point</h2>
+<a id="a2ab5769d3d9796bef45748db66f694a8" name="a2ab5769d3d9796bef45748db66f694a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ab5769d3d9796bef45748db66f694a8">&#9670;&#160;</a></span>is_floating_point</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5653,17 +5653,17 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="namespacedaw.html#a882215882ffcb4de6d10c129338593e7">daw::is_floating_point</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typedef</a> std::conjunction&lt;std::negation&lt;<a class="el" href="namespacedaw.html#a0a6a232e926db38d6074e30789149088">is_integral</a>&lt;T&gt; &gt;, arith_traits_details::limits_is_signed&lt;T&gt;, std::negation&lt;arith_traits_details::limits_is_exact&lt;T&gt; &gt;&gt;</td>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="namespacedaw.html#a2ab5769d3d9796bef45748db66f694a8">daw::is_floating_point</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typedef</a> std::bool_constant&lt;<a class="el" href="namespacedaw.html#a13079bfba0cfaaf579de00c945c7425a">is_floating_point_v</a>&lt;T&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00047">47</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00041">41</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
-<a id="a0a6a232e926db38d6074e30789149088" name="a0a6a232e926db38d6074e30789149088"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a6a232e926db38d6074e30789149088">&#9670;&#160;</a></span>is_integral</h2>
+<a id="aa089b80ae90ae99154e2e793c5cd4852" name="aa089b80ae90ae99154e2e793c5cd4852"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa089b80ae90ae99154e2e793c5cd4852">&#9670;&#160;</a></span>is_integral</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5671,17 +5671,17 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="namespacedaw.html#a0a6a232e926db38d6074e30789149088">daw::is_integral</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typedef</a> std::bool_constant&lt;<a class="el" href="structdaw_1_1numeric__limits.html">daw::numeric_limits</a>&lt;T&gt;::is_integer&gt;</td>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="namespacedaw.html#aa089b80ae90ae99154e2e793c5cd4852">daw::is_integral</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typedef</a> std::bool_constant&lt;<a class="el" href="namespacedaw.html#a6817d377e10f6ce514c49e8abd957bc5">is_integral_v</a>&lt;T&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00027">27</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00030">30</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
-<a id="aef880af0ef99dea29e0a859d5c1e420b" name="aef880af0ef99dea29e0a859d5c1e420b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aef880af0ef99dea29e0a859d5c1e420b">&#9670;&#160;</a></span>is_number</h2>
+<a id="a5cfcef834c21da7eb48a081aa1af05d2" name="a5cfcef834c21da7eb48a081aa1af05d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cfcef834c21da7eb48a081aa1af05d2">&#9670;&#160;</a></span>is_number</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5689,12 +5689,12 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="namespacedaw.html#aef880af0ef99dea29e0a859d5c1e420b">daw::is_number</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typedef</a> std::disjunction&lt;<a class="el" href="namespacedaw.html#a0a6a232e926db38d6074e30789149088">is_integral</a>&lt;T&gt;, <a class="el" href="namespacedaw.html#a882215882ffcb4de6d10c129338593e7">is_floating_point</a>&lt;T&gt; &gt;</td>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="namespacedaw.html#a5cfcef834c21da7eb48a081aa1af05d2">daw::is_number</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typedef</a> std::bool_constant&lt;<a class="el" href="namespacedaw.html#aa1b67176374705d67ec1ba51413b02bf">is_number_v</a>&lt;T&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00059">59</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00051">51</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
@@ -5748,7 +5748,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00209">209</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00196">196</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
@@ -5770,8 +5770,8 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 
 </div>
 </div>
-<a id="a33bde176dbe56752560f71c62982c8ec" name="a33bde176dbe56752560f71c62982c8ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33bde176dbe56752560f71c62982c8ec">&#9670;&#160;</a></span>is_signed</h2>
+<a id="a3f75a68978911c719e9ef52a39aaf651" name="a3f75a68978911c719e9ef52a39aaf651"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f75a68978911c719e9ef52a39aaf651">&#9670;&#160;</a></span>is_signed</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5779,12 +5779,12 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="namespacedaw.html#a33bde176dbe56752560f71c62982c8ec">daw::is_signed</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typedef</a> std::conjunction&lt;<a class="el" href="namespacedaw.html#aef880af0ef99dea29e0a859d5c1e420b">is_number</a>&lt;T&gt;, arith_traits_details::limits_is_signed&lt;T&gt; &gt;</td>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="namespacedaw.html#a3f75a68978911c719e9ef52a39aaf651">daw::is_signed</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typedef</a> std::bool_constant&lt;<a class="el" href="namespacedaw.html#a5a2631053bcba86f99c5b58e05e0c721">is_signed_v</a>&lt;T&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00069">69</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00062">62</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
@@ -5842,8 +5842,8 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 
 </div>
 </div>
-<a id="a214d465f63cd9ada4a5c7c473cb814cb" name="a214d465f63cd9ada4a5c7c473cb814cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a214d465f63cd9ada4a5c7c473cb814cb">&#9670;&#160;</a></span>is_unsigned</h2>
+<a id="aa790d2463c6fa1b46527aaf39779cd50" name="aa790d2463c6fa1b46527aaf39779cd50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa790d2463c6fa1b46527aaf39779cd50">&#9670;&#160;</a></span>is_unsigned</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5851,12 +5851,12 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="namespacedaw.html#a214d465f63cd9ada4a5c7c473cb814cb">daw::is_unsigned</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typedef</a> std::conjunction&lt;<a class="el" href="namespacedaw.html#a0a6a232e926db38d6074e30789149088">is_integral</a>&lt;T&gt;, std::negation&lt;arith_traits_details::limits_is_signed&lt;T&gt; &gt;&gt;</td>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="namespacedaw.html#aa790d2463c6fa1b46527aaf39779cd50">daw::is_unsigned</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typedef</a> std::bool_constant&lt;<a class="el" href="namespacedaw.html#a8bf218c78227ebd73155aeb469aa0812">is_unsigned_v</a>&lt;T&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00080">80</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00073">73</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
@@ -6072,7 +6072,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00192">192</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00179">179</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
@@ -6090,7 +6090,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00189">189</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00176">176</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
@@ -6874,7 +6874,7 @@ template&lt;std::size_t BitSize&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00229">229</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00216">216</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
@@ -52424,7 +52424,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a> daw::is_arithmetic_v = <a class="el" href="namespacedaw.html#a3574ae84b83ccc6a02409ccad76677ac">is_arithmetic</a>&lt;T&gt;::value</td>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a> daw::is_arithmetic_v</td>
         </tr>
       </table>
   </td>
@@ -52433,8 +52433,12 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00098">98</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">    is_number_v&lt;T&gt; or std::is_enum_v&lt;T&gt; or</div>
+<div class="line">    <a class="code hl_struct" href="structdaw_1_1numeric__limits.html">daw::numeric_limits&lt;T&gt;::is_specialized</a></div>
+<div class="ttc" id="astructdaw_1_1numeric__limits_html"><div class="ttname"><a href="structdaw_1_1numeric__limits.html">daw::numeric_limits</a></div><div class="ttdef"><b>Definition</b> <a href="daw__numeric__limits_8h_source.html#l00015">daw_numeric_limits.h:15</a></div></div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00080">80</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
@@ -52752,7 +52756,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a> daw::is_floating_point_v = <a class="el" href="namespacedaw.html#a882215882ffcb4de6d10c129338593e7">is_floating_point</a>&lt;T&gt;::value</td>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a> daw::is_floating_point_v</td>
         </tr>
       </table>
   </td>
@@ -52761,8 +52765,11 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00053">53</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">    not is_integral_v&lt;T&gt; and <a class="code hl_struct" href="structdaw_1_1numeric__limits.html">daw::numeric_limits&lt;T&gt;::is_signed</a> and</div>
+<div class="line">    not <a class="code hl_struct" href="structdaw_1_1numeric__limits.html">daw::numeric_limits&lt;T&gt;::is_exact</a></div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00036">36</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
@@ -52856,7 +52863,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a> daw::is_integral_v = <a class="el" href="namespacedaw.html#a0a6a232e926db38d6074e30789149088">is_integral</a>&lt;T&gt;::value</td>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a> daw::is_integral_v = <a class="el" href="structdaw_1_1numeric__limits.html">daw::numeric_limits</a>&lt;T&gt;::is_integer</td>
         </tr>
       </table>
   </td>
@@ -52866,7 +52873,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00030">30</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00027">27</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
@@ -53024,7 +53031,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a> daw::is_number_v = <a class="el" href="namespacedaw.html#aef880af0ef99dea29e0a859d5c1e420b">is_number</a>&lt;T&gt;::value</td>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a> daw::is_number_v</td>
         </tr>
       </table>
   </td>
@@ -53033,8 +53040,10 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00062">62</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">    is_integral_v&lt;T&gt; or is_floating_point_v&lt;T&gt;</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00047">47</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
@@ -53086,7 +53095,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00212">212</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00199">199</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
@@ -53154,7 +53163,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a> daw::is_signed_v = <a class="el" href="namespacedaw.html#a33bde176dbe56752560f71c62982c8ec">is_signed</a>&lt;T&gt;::value</td>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a> daw::is_signed_v</td>
         </tr>
       </table>
   </td>
@@ -53163,8 +53172,10 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00073">73</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">    is_number_v&lt;T&gt; and <a class="code hl_struct" href="structdaw_1_1numeric__limits.html">daw::numeric_limits&lt;T&gt;::is_signed</a></div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00058">58</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
@@ -53270,7 +53281,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00206">206</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00193">193</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
@@ -53442,7 +53453,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a> daw::is_unsigned_v = <a class="el" href="namespacedaw.html#a214d465f63cd9ada4a5c7c473cb814cb">is_unsigned</a>&lt;T&gt;::value</td>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a> daw::is_unsigned_v</td>
         </tr>
       </table>
   </td>
@@ -53451,8 +53462,10 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00085">85</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">    is_integral_v&lt;T&gt; and not <a class="code hl_struct" href="structdaw_1_1numeric__limits.html">daw::numeric_limits&lt;T&gt;::is_signed</a></div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00069">69</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
@@ -53534,7 +53547,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00247">247</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00234">234</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
@@ -53704,7 +53717,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00241">241</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00228">228</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
@@ -53730,7 +53743,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00244">244</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__arith__traits_8h_source.html#l00231">231</a> of file <a class="el" href="daw__arith__traits_8h_source.html">daw_arith_traits.h</a>.</p>
 
 </div>
 </div>
