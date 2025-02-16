@@ -143,7 +143,7 @@ namespace daw {
 
 			template<typename... Args>
 			[[nodiscard]] inline constexpr bool operator( )( Args &&...args ) {
-				return !m_function( DAW_FWD2( Args, args )... );
+				return !m_function( DAW_FWD( args )... );
 			}
 		}; // class NotImpl
 	} // namespace utility_details
@@ -208,7 +208,7 @@ namespace daw {
 	template<typename ReturnType, typename... Args, class T>
 	[[nodiscard]] auto make_function( T &&t ) -> std::function<
 	  decltype( ReturnType( t( std::declval<Args>( )... ) ) )( Args... )> {
-		return { DAW_FWD2( T, t ) };
+		return { DAW_FWD( t ) };
 	}
 
 	// handles explicit overloads
@@ -231,7 +231,7 @@ namespace daw {
 	[[nodiscard]] auto make_root_function( T &&t )
 	  -> std::function<decltype( daw::traits::root_type_t<ReturnType>(
 	    t( std::declval<daw::traits::root_type_t<Args>>( )... ) ) )( Args... )> {
-		return { DAW_FWD2( T, t ) };
+		return { DAW_FWD( t ) };
 	}
 
 	// handles explicit overloads
@@ -365,8 +365,7 @@ namespace daw {
 
 	template<typename Arg, typename... Args>
 	[[nodiscard]] auto make_initializer_list( Arg &&arg, Args &&...args ) {
-		return std::initializer_list<Arg>{ DAW_FWD2( Arg, arg ),
-		                                   DAW_FWD2( Args, args )... };
+		return std::initializer_list<Arg>{ DAW_FWD( arg ), DAW_FWD( args )... };
 	}
 
 	template<typename Container, typename... Args>
@@ -810,8 +809,7 @@ namespace daw {
 	in_range( Value &&value, LowerBound &&lower,
 	          UpperBound &&upper ) noexcept( noexcept( lower <= value &&
 	                                                   value < upper ) ) {
-		return DAW_FWD2( LowerBound, lower ) <= value &&
-		       value < DAW_FWD2( UpperBound, upper );
+		return DAW_FWD( lower ) <= value && value < DAW_FWD( upper );
 	}
 
 	namespace utility_details {
@@ -824,7 +822,7 @@ namespace daw {
 	  -> daw::utility_details::value_is_utility_details<
 	    std::remove_reference_t<decltype( value )>> {
 
-		return { DAW_FWD2( T, value ) };
+		return { DAW_FWD( value ) };
 	}
 
 	namespace utility_details {
@@ -882,9 +880,9 @@ namespace daw {
 	[[nodiscard]] constexpr decltype( auto ) pack_get( Arg &&arg,
 	                                                   Args &&...args ) noexcept {
 		if constexpr( pos == N ) {
-			return DAW_FWD2( Arg, arg );
+			return DAW_FWD( arg );
 		} else {
-			return pack_get<N, pos + 1>( DAW_FWD2( Args, args )... );
+			return pack_get<N, pos + 1>( DAW_FWD( args )... );
 		}
 	}
 
@@ -901,21 +899,19 @@ namespace daw {
 			if( N == pos ) {
 				if constexpr( std::is_invocable_v<Function,
 				                                  decltype( pack_get<pos>(
-				                                    DAW_FWD2( Args, args )... ) )> ) {
-					(void)DAW_FWD2( Function,
-					                func )( pack_get<pos>( DAW_FWD2( Args, args )... ) );
+				                                    DAW_FWD( args )... ) )> ) {
+					(void)DAW_FWD( func )( pack_get<pos>( DAW_FWD( args )... ) );
 				}
 			} else {
-				utility_details<pos + 1>( N, DAW_FWD2( Function, func ),
-				                          DAW_FWD2( Args, args )... );
+				utility_details<pos + 1>( N, DAW_FWD( func ), DAW_FWD( args )... );
 			}
 		}
 	} // namespace utility_details
 
 	template<typename Function, typename... Args>
 	constexpr void pack_apply( std::size_t N, Function &&func, Args &&...args ) {
-		utility_details::utility_details<0>( N, DAW_FWD2( Function, func ),
-		                                     DAW_FWD2( Args, args )... );
+		utility_details::utility_details<0>( N, DAW_FWD( func ),
+		                                     DAW_FWD( args )... );
 	}
 
 	template<typename T, bool AllowDownSignCast = false, typename U>
@@ -929,7 +925,7 @@ namespace daw {
 			  sizeof( T ) >= sizeof( U ),
 			  "Cannot downcast, use static_cast if this is intentional" );
 		}
-		return static_cast<T>( DAW_FWD2( U, v ) );
+		return static_cast<T>( DAW_FWD( v ) );
 	}
 
 	template<bool Bool_, typename If_, typename Then_>

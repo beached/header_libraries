@@ -120,8 +120,8 @@ namespace daw {
 
 		template<typename Func>
 		constexpr function_view( Func &&f )
-		  : function_view_table( function_view_table_storage<void, Args...>::make(
-		      DAW_FWD2( Func, f ) ) ) {}
+		  : function_view_table(
+		      function_view_table_storage<void, Args...>::make( DAW_FWD( f ) ) ) {}
 
 		constexpr void operator( )( Args... args ) const {
 			function_view_table.call_ptr( function_view_table.data,

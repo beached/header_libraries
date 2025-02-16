@@ -577,9 +577,9 @@ namespace daw {
 		template<typename... Args>
 		constexpr reference emplace_back( Args &&...args ) {
 			if( m_end < endcap( ) ) {
-				construct_one_at_end( DAW_FWD2( Args, args )... );
+				construct_one_at_end( DAW_FWD( args )... );
 			} else {
-				emplace_back_slow_path( DAW_FWD2( Args, args )... );
+				emplace_back_slow_path( DAW_FWD( args )... );
 			}
 			return back( );
 		}
@@ -665,8 +665,8 @@ namespace daw {
 				if( p == m_end ) {
 					construct_one_at_end( DAW_FWD( args )... );
 				} else {
-					auto tmp = temp_value<value_type, Allocator>(
-					  alloc( ), DAW_FWD2( Args, args )... );
+					auto tmp =
+					  temp_value<value_type, Allocator>( alloc( ), DAW_FWD( args )... );
 					move_range( p, m_end, p + 1 );
 					*p = std::move( tmp.get( ) );
 				}
@@ -675,7 +675,7 @@ namespace daw {
 				auto v = split_buffer<value_type, allocator_type &>(
 				  recommend( size( ) + 1 ), p - m_begin, a );
 
-				v.emplace_back( DAW_FWD2( Args, args )... );
+				v.emplace_back( DAW_FWD( args )... );
 				p = swap_out_circular_buffer( v, p );
 			}
 			return make_iter( p );
@@ -1124,7 +1124,7 @@ namespace daw {
 			auto v = split_buffer<value_type, allocator_type &>(
 			  recommend( size( ) + 1 ), size( ), a );
 			// v.push_back(DAW_FWD(x));
-			alloc_traits::construct( a, std::to_address( v.end_ ), DAW_FWD2( U, x ) );
+			alloc_traits::construct( a, std::to_address( v.end_ ), DAW_FWD( x ) );
 			DAW_UNSAFE_BUFFER_FUNC_START
 			++v.end_;
 			DAW_UNSAFE_BUFFER_FUNC_STOP
@@ -1138,7 +1138,7 @@ namespace daw {
 			  recommend( size( ) + 1 ), size( ), a );
 			//    v.emplace_back(DAW_FWD(args)...);
 			alloc_traits::construct( a, std::to_address( v.end_ ),
-			                         DAW_FWD2( Args, args )... );
+			                         DAW_FWD( args )... );
 			DAW_UNSAFE_BUFFER_FUNC_START
 			++v.end_;
 			DAW_UNSAFE_BUFFER_FUNC_STOP
@@ -1169,7 +1169,7 @@ namespace daw {
 		constexpr void construct_one_at_end( Args &&...args ) {
 			ConstructTransaction tx( *this, 1 );
 			alloc_traits::construct( alloc( ), std::to_address( tx.pos ),
-			                         DAW_FWD2( Args, args )... );
+			                         DAW_FWD( args )... );
 			DAW_UNSAFE_BUFFER_FUNC_START
 			++tx.pos;
 			DAW_UNSAFE_BUFFER_FUNC_STOP

@@ -34,7 +34,7 @@ namespace daw {
 	DAW_ATTRIB_NOINLINE double benchmark( F &&func ) {
 		static_assert( std::is_invocable_v<F>, "func must accept no arguments" );
 		auto start = std::chrono::steady_clock::now( );
-		(void)DAW_FWD2( F, func )( );
+		(void)DAW_FWD( func )( );
 		auto finish = std::chrono::steady_clock::now( );
 		benchmark_impl::second_duration duration = finish - start;
 		return duration.count( );
@@ -116,7 +116,7 @@ namespace daw {
 	show_benchmark( size_t data_size_bytes, std::string const &title, Func &&func,
 	                size_t data_prec = 1, size_t time_prec = 0,
 	                size_t item_count = 1 ) {
-		double const t = benchmark( DAW_FWD2( Func, func ) );
+		double const t = benchmark( DAW_FWD( func ) );
 		double const t_per_item = t / static_cast<double>( item_count );
 		std::cout << title << ": took " << utility::format_seconds( t, time_prec )
 		          << ' ';
@@ -661,11 +661,11 @@ namespace daw {
 #if defined( DAW_USE_EXCEPTIONS )
 		try {
 #endif
-			(void)DAW_FWD2( Expression, expression )( );
+			(void)DAW_FWD( expression )( );
 			(void)pred;
 #if defined( DAW_USE_EXCEPTIONS )
 		} catch( Exception const &ex ) {
-			if( DAW_FWD2( Predicate, pred )( ex ) ) {
+			if( DAW_FWD( pred )( ex ) ) {
 				return;
 			}
 			std::cerr << "Failed predicate\n";

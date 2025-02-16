@@ -169,13 +169,13 @@ namespace daw::parser {
 
 		template<typename T>
 		[[nodiscard]] bool operator( )( T &&value ) const {
-			return value_in( DAW_FWD2( T, value ), m_args );
+			return value_in( DAW_FWD( value ), m_args );
 		}
 	}; // one_of
 
 	template<typename... Arg>
 	[[nodiscard]] auto one_of( Arg &&...args ) {
-		return one_of_t<Arg...>{ DAW_FWD2( Arg, args )... };
+		return one_of_t<Arg...>{ DAW_FWD( args )... };
 	}
 
 	template<typename ForwardIterator, typename Value, typename... Values>
@@ -184,8 +184,7 @@ namespace daw::parser {
 	             Values &&...values ) {
 		auto result = make_find_result( first, last );
 		for( auto it = first; it != last; ++it ) {
-			if( is_a( *it, DAW_FWD2( Value, value ),
-			          DAW_FWD2( Values, values )... ) ) {
+			if( is_a( *it, DAW_FWD( value ), DAW_FWD( values )... ) ) {
 				result.last = it;
 				result.found = true;
 				break;
@@ -254,15 +253,13 @@ namespace daw::parser {
 	template<typename T, typename Predicate, typename... Predicates>
 	[[nodiscard]] constexpr bool is_true( T &&value, Predicate &&predicate,
 	                                      Predicates &&...predicates ) {
-		return is_true( DAW_FWD2( Predicate, predicate ), DAW_FWD2( T, value ) ) or
-		       is_true( DAW_FWD2( T, value ),
-		                DAW_FWD2( Predicates, predicates )... );
+		return is_true( DAW_FWD( predicate ), DAW_FWD( value ) ) or
+		       is_true( DAW_FWD( value ), DAW_FWD( predicates )... );
 	}
 
 	template<typename T, typename U, typename... Args>
 	constexpr void expect( T &&value, U &&check, Args &&...args ) {
-		if( not is_a( DAW_FWD2( T, value ), DAW_FWD2( U, check ),
-		              DAW_FWD2( Args, args )... ) ) {
+		if( not is_a( DAW_FWD( value ), DAW_FWD( check ), DAW_FWD( args )... ) ) {
 
 			daw::exception::daw_throw<ParserException>( );
 		}
@@ -271,8 +268,8 @@ namespace daw::parser {
 	template<typename T, typename Predicate, typename... Predicates>
 	constexpr void expect_true( T &&value, Predicate &&predicate,
 	                            Predicates &&...predicates ) {
-		if( not is_true( DAW_FWD2( T, value ), DAW_FWD2( Predicate, predicate ),
-		                 DAW_FWD2( Predicates, predicates )... ) ) {
+		if( not is_true( DAW_FWD( value ), DAW_FWD( predicate ),
+		                 DAW_FWD( predicates )... ) ) {
 
 			daw::exception::daw_throw<ParserException>( );
 		}
@@ -310,8 +307,7 @@ namespace daw::parser {
 
 	template<typename T>
 	[[nodiscard]] constexpr bool is_alphanumeric( T &&value ) noexcept {
-		return is_alpha( DAW_FWD2( T, value ) ) or
-		       is_number( DAW_FWD2( T, value ) );
+		return is_alpha( DAW_FWD( value ) ) or is_number( DAW_FWD( value ) );
 	}
 
 	template<typename T, typename U>
@@ -349,12 +345,11 @@ namespace daw::parser {
 	      traits::is_comparable_v<decltype( *first ), GoUntil>,
 	    find_result_t<ForwardIterator>> {
 
-		auto start = until_value( first, last, DAW_FWD2( StartFrom, start_from ) );
+		auto start = until_value( first, last, DAW_FWD( start_from ) );
 
 		daw::exception::precondition_check<ParserException>( start );
 
-		auto finish =
-		  until_value( start.last, last, DAW_FWD2( GoUntil, go_until ) );
+		auto finish = until_value( start.last, last, DAW_FWD( go_until ) );
 
 		daw::exception::precondition_check<ParserException>(
 		  not( throw_if_end_reached and not finish ) );
@@ -389,12 +384,12 @@ namespace daw::parser {
 	[[nodiscard]] auto split_on( ForwardIterator first, ForwardIterator last,
 	                             Divider &&divider, Dividers &&...dividers ) {
 		std::vector<ForwardIterator> endings;
-		auto result = until_value( first, last, DAW_FWD2( Divider, divider ),
-		                           DAW_FWD2( Dividers, dividers )... );
+		auto result =
+		  until_value( first, last, DAW_FWD( divider ), DAW_FWD( dividers )... );
 		while( result ) {
 			endings.push_back( result.last );
-			result = until_value( result.last, last, DAW_FWD2( Divider, divider ),
-			                      DAW_FWD2( Dividers, dividers )... );
+			result = until_value( result.last, last, DAW_FWD( divider ),
+			                      DAW_FWD( dividers )... );
 		}
 		if( result.first != result.last ) {
 			endings.push_back( result.last );
@@ -585,12 +580,12 @@ namespace daw::parser {
 
 			template<typename... Args>
 			[[nodiscard]] constexpr bool operator( )( Args &&...args ) const {
-				return not predicate( DAW_FWD2( Args, args )... );
+				return not predicate( DAW_FWD( args )... );
 			}
 
 			template<typename... Args>
 			[[nodiscard]] constexpr bool operator( )( Args &&...args ) {
-				return not predicate( DAW_FWD2( Args, args )... );
+				return not predicate( DAW_FWD( args )... );
 			}
 		}; // negate_t
 	} // namespace impl

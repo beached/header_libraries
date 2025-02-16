@@ -44,7 +44,7 @@ namespace daw {
 		explicit constexpr compressed_pair_elem( std::piecewise_construct_t,
 		                                         std::tuple<Args...> args,
 		                                         std::index_sequence<Indexes...> )
-		  : m_value( DAW_FWD2( Args, std::get<Indexes>( args ) )... ) {}
+		  : m_value( DAW_FWD( std::get<Indexes>( args ) )... ) {}
 
 		constexpr reference get( ) noexcept {
 			return m_value;
@@ -76,7 +76,7 @@ namespace daw {
 		explicit constexpr compressed_pair_elem( std::piecewise_construct_t,
 		                                         std::tuple<Args...> args,
 		                                         std::index_sequence<Indexes...> )
-		  : value_type( DAW_FWD2( Args, std::get<Indexes>( args ) )... ) {}
+		  : value_type( DAW_FWD( std::get<Indexes>( args ) )... ) {}
 
 		constexpr reference get( ) noexcept {
 			return *this;
@@ -113,8 +113,8 @@ namespace daw {
 
 		template<typename U1, typename U2>
 		explicit constexpr compressed_pair( U1 &&t1, U2 &&t2 )
-		  : Base1( DAW_FWD2( U1, t1 ) )
-		  , Base2( DAW_FWD2( U2, t2 ) ) {}
+		  : Base1( DAW_FWD( t1 ) )
+		  , Base2( DAW_FWD( t2 ) ) {}
 
 		template<class... Args1, class... Args2>
 		explicit constexpr compressed_pair( std::piecewise_construct_t pc,

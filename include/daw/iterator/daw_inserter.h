@@ -37,7 +37,7 @@ namespace daw {
 		         daw::enable_when_t<!std::is_same_v<daw::remove_cvref_t<T>,
 		                                            inserter_iterator>> = nullptr>
 		constexpr inserter_iterator &operator=( T &&val ) {
-			m_container->insert( DAW_FWD2( T, val ) );
+			m_container->insert( DAW_FWD( val ) );
 			return *this;
 		}
 

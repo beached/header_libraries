@@ -56,7 +56,7 @@ namespace daw {
 	                                              std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE void do_not_optimize( Values &&...values ) {
 		if constexpr( sizeof...( Values ) > 0 ) {
-			(void)( ( do_not_optimize( DAW_FWD2( Values, values ) ), 1 ) | ... );
+			(void)( ( do_not_optimize( DAW_FWD( values ) ), 1 ) | ... );
 		}
 	}
 } // namespace daw

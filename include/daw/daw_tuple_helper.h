@@ -42,10 +42,10 @@ namespace daw {
 			           std::nullptr_t> = nullptr>
 			constexpr Result get_impl( Tuple &&tp, size_t index ) noexcept {
 				if( index != Tpos ) {
-					return get_impl<Tpos + 1, Result>( DAW_FWD2( Tuple, tp ), index );
+					return get_impl<Tpos + 1, Result>( DAW_FWD( tp ), index );
 				}
 				return daw::construct_a<Result>(
-				  std::ref( std::get<Tpos>( DAW_FWD2( Tuple, tp ) ) ) );
+				  std::ref( std::get<Tpos>( DAW_FWD( tp ) ) ) );
 			}
 		} // namespace tuple_details
 	} // namespace tuple
@@ -68,14 +68,13 @@ namespace daw {
 		namespace tuple_details {
 			template<typename T1, typename F>
 			constexpr bool for_each( T1 &&t1, F &&f ) {
-				::Unused( ( daw::invoke( DAW_FWD2( F, f ), DAW_FWD2( T1, t1 ) ), 0 ) );
+				::Unused( ( daw::invoke( DAW_FWD( f ), DAW_FWD( t1 ) ), 0 ) );
 				return true;
 			}
 
 			template<typename T1, typename F, size_t... Is>
 			constexpr void for_each( T1 &&t1, F &&f, std::index_sequence<Is...> ) {
-				::Unused(
-				  ( for_each( std::get<Is>( DAW_FWD2( T1, t1 ) ), f ) && ... ) );
+				::Unused( ( for_each( std::get<Is>( DAW_FWD( t1 ) ), f ) && ... ) );
 			}
 
 			struct min_t {
@@ -136,13 +135,13 @@ namespace daw {
 
 		template<typename... Ts, typename F>
 		constexpr void for_each( std::tuple<Ts...> const &t1, F &&f ) {
-			tuple_details::for_each( t1, DAW_FWD2( F, f ),
+			tuple_details::for_each( t1, DAW_FWD( f ),
 			                         std::index_sequence_for<Ts...>{ } );
 		}
 
 		template<typename... Ts, typename F>
 		constexpr void apply( std::tuple<Ts...> &t1, F &&f ) {
-			tuple_details::for_each( t1, DAW_FWD2( F, f ),
+			tuple_details::for_each( t1, DAW_FWD( f ),
 			                         std::index_sequence_for<Ts...>{ } );
 		}
 
@@ -152,7 +151,7 @@ namespace daw {
 				         typename F>
 				constexpr bool apply_tuple( Result &&result, T1 &&op1, T2 &&op2,
 				                            F &&f ) {
-					::Unused( ( daw::invoke( DAW_FWD2( F, f ), std::get<I>( result ),
+					::Unused( ( daw::invoke( DAW_FWD( f ), std::get<I>( result ),
 					                         std::get<I>( op1 ), std::get<I>( op2 ) ),
 					            0 ) );
 					return true;
@@ -186,7 +185,7 @@ namespace daw {
 				template<size_t I, typename Result, typename T1, typename T, typename F>
 				constexpr bool apply_value2( Result &&result, T1 &&op1, T &&op2,
 				                             F &&f ) {
-					::Unused( ( daw::invoke( DAW_FWD2( F, f ), std::get<I>( result ), op1,
+					::Unused( ( daw::invoke( DAW_FWD( f ), std::get<I>( result ), op1,
 					                         std::get<I>( op2 ) ),
 					            0 ) );
 					return true;
@@ -395,7 +394,7 @@ namespace daw {
 			  std::is_nothrow_invocable_v<Func, Arg> ) {
 
 				if constexpr( std::is_invocable_v<Func, Arg> ) {
-					(void)daw::invoke( DAW_FWD2( Func, func ), DAW_FWD2( Arg, arg ) );
+					(void)daw::invoke( DAW_FWD( func ), DAW_FWD( arg ) );
 				}
 			}
 
@@ -407,7 +406,7 @@ namespace daw {
 				                                        std::nullptr_t> = nullptr>
 				constexpr void
 				operator( )( Arg &&value ) noexcept( noexcept( func( value ) ) ) {
-					func( DAW_FWD2( Arg, value ) );
+					func( DAW_FWD( value ) );
 				}
 
 				constexpr void operator( )( ... ) noexcept {}
@@ -415,16 +414,15 @@ namespace daw {
 
 			template<typename Func>
 			constexpr call_func<Func> make_call_func( Func &&func ) noexcept {
-				return call_func<Func>{ DAW_FWD2( Func, func ) };
+				return call_func<Func>{ DAW_FWD( func ) };
 			}
 
 			template<size_t N, typename Func, typename Arg>
 			constexpr bool apply_func( size_t idx, Func func, Arg &&arg ) noexcept(
-			  noexcept( apply_func_impl( std::move( func ),
-			                             DAW_FWD2( Arg, arg ) ) ) ) {
+			  noexcept( apply_func_impl( std::move( func ), DAW_FWD( arg ) ) ) ) {
 
 				if( N == idx ) {
-					apply_func_impl( std::move( func ), DAW_FWD2( Arg, arg ) );
+					apply_func_impl( std::move( func ), DAW_FWD( arg ) );
 				}
 				return true;
 			}
@@ -432,46 +430,46 @@ namespace daw {
 			template<typename Tuple, typename Func, size_t... Is>
 			constexpr void apply_at_impl( Tuple &&tp, size_t index, Func &&func,
 			                              std::index_sequence<Is...> ) {
-				Unused( ( apply_func<Is>( index, func,
-				                          std::get<Is>( DAW_FWD2( Tuple, tp ) ) ) and
-				          ... ) );
+				Unused(
+				  ( apply_func<Is>( index, func, std::get<Is>( DAW_FWD( tp ) ) ) and
+				    ... ) );
 			}
 		} // namespace tuple_details
 
 		template<typename... Args, typename... Funcs>
 		constexpr void apply_at( std::tuple<Args...> const &tp, size_t index,
 		                         Funcs &&...funcs ) {
-			tuple_details::apply_at_impl(
-			  tp, index, daw::overload( DAW_FWD2( Funcs, funcs )... ),
-			  std::index_sequence_for<Args...>{ } );
+			tuple_details::apply_at_impl( tp, index,
+			                              daw::overload( DAW_FWD( funcs )... ),
+			                              std::index_sequence_for<Args...>{ } );
 		}
 
 		template<typename... Args, typename... Funcs>
 		constexpr void apply_at( std::tuple<Args...> &tp, size_t index,
 		                         Funcs &&...funcs ) {
-			tuple_details::apply_at_impl(
-			  tp, index, daw::overload( DAW_FWD2( Funcs, funcs )... ),
-			  std::index_sequence_for<Args...>{ } );
+			tuple_details::apply_at_impl( tp, index,
+			                              daw::overload( DAW_FWD( funcs )... ),
+			                              std::index_sequence_for<Args...>{ } );
 		}
 
 		template<typename... Args, typename... Funcs>
 		constexpr void apply_at( std::tuple<Args...> &&tp, size_t index,
 		                         Funcs &&...funcs ) {
-			tuple_details::apply_at_impl(
-			  std::move( tp ), index, daw::overload( DAW_FWD2( Funcs, funcs )... ) );
+			tuple_details::apply_at_impl( std::move( tp ), index,
+			                              daw::overload( DAW_FWD( funcs )... ) );
 		}
 
 		namespace tuple_details {
 			template<class T, class Tuple, std::size_t... I>
 			constexpr T make_from_tuple_impl( Tuple &&t, std::index_sequence<I...>,
 			                                  std::true_type ) {
-				return T{ std::get<I>( DAW_FWD2( Tuple, t ) )... };
+				return T{ std::get<I>( DAW_FWD( t ) )... };
 			}
 
 			template<class T, class Tuple, std::size_t... I>
 			constexpr T make_from_tuple_impl( Tuple &&t, std::index_sequence<I...>,
 			                                  std::false_type ) {
-				return T( std::get<I>( DAW_FWD2( Tuple, t ) )... );
+				return T( std::get<I>( DAW_FWD( t ) )... );
 			}
 
 			template<typename... Args>
@@ -492,7 +490,7 @@ namespace daw {
 	template<class T, class Tuple>
 	constexpr T make_from_tuple2( Tuple &&t ) {
 		return tuple::tuple_details::make_from_tuple_impl<T>(
-		  DAW_FWD2( Tuple, t ),
+		  DAW_FWD( t ),
 		  std::make_index_sequence<
 		    std::tuple_size_v<std::remove_reference_t<Tuple>>>{ },
 		  std::is_aggregate<T>{ } );
