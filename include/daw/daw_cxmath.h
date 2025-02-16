@@ -29,7 +29,7 @@
 #include <type_traits>
 
 #if defined( __cpp_lib_bitops )
-#if __cpp_lib_bitops >= 201907L and DAW_HAS_INCLUDE( <bit> )
+#if __cpp_lib_bitops >= 201907L and __has_include( <bit> )
 #include <bit>
 #define DAW_HAS_CPP20_BITOPS
 #endif

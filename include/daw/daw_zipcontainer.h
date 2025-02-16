@@ -60,6 +60,6 @@ namespace daw {
 
 	template<typename... Containers>
 	zip_container<Containers...> make_zipcontainer( Containers &&...args ) {
-		return zip_container<Containers...>( DAW_FWD2( Containers, args )... );
+		return zip_container<Containers...>( DAW_FWD( args )... );
 	}
 } // namespace daw

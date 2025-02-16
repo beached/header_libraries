@@ -14,8 +14,8 @@
 #include "daw/daw_move.h"
 #include "daw/daw_remove_cvref.h"
 #include "daw/daw_traits.h"
-#include "pipeline_traits.h"
-#include "range.h"
+#include "daw/pipelines/pipeline_traits.h"
+#include "daw/pipelines/range.h"
 
 #include <cassert>
 #include <cstddef>
@@ -23,13 +23,23 @@
 
 namespace daw::pipelines::pimpl {
 	template<ForwardRange R>
-	struct flatten_view {
+	struct flatten_view_end_t {
 		using iterator_t = daw::iterator_t<R>;
 		using sub_iterator_t = daw::iterator_t<daw::iter_value_t<iterator_t>>;
-		using iterator_category =
-		  std::forward_iterator_tag; /*
-common_iterator_category_t<daw::iter_category_t<iterator_t>,
-		     daw::iter_category_t<underlying_iterator_t>>; */
+		using iterator_category = std::forward_iterator_tag;
+		using value_type = daw::iter_value_t<sub_iterator_t>;
+		using reference = daw::iter_reference_t<sub_iterator_t>;
+		using const_reference = daw::iter_const_reference_t<sub_iterator_t>;
+		using difference_type = std::ptrdiff_t;
+
+		iterator_t m_range_first{ };
+	};
+
+	template<ForwardRange R>
+	struct flatten_view : range_base_t<flatten_view<R>, flatten_view_end_t<R>> {
+		using iterator_t = daw::iterator_t<R>;
+		using sub_iterator_t = daw::iterator_t<daw::iter_value_t<iterator_t>>;
+		using iterator_category = std::forward_iterator_tag;
 		using value_type = daw::iter_value_t<sub_iterator_t>;
 		using reference = daw::iter_reference_t<sub_iterator_t>;
 		using const_reference = daw::iter_const_reference_t<sub_iterator_t>;
@@ -37,17 +47,7 @@ common_iterator_category_t<daw::iter_category_t<iterator_t>,
 		using i_am_a_daw_flatten_view_class = void;
 
 	private:
-		struct end_t {
-			using iterator_t = daw::iterator_t<R>;
-			using sub_iterator_t = daw::iterator_t<daw::iter_value_t<iterator_t>>;
-			using iterator_category = std::forward_iterator_tag;
-			using value_type = daw::iter_value_t<sub_iterator_t>;
-			using reference = daw::iter_reference_t<sub_iterator_t>;
-			using const_reference = daw::iter_const_reference_t<sub_iterator_t>;
-			using difference_type = std::ptrdiff_t;
-
-			iterator_t m_range_first{ };
-		};
+		using end_t = flatten_view_end_t<R>;
 
 		using m_range_t = daw::remove_cvrvref_t<R>;
 		m_range_t m_range;
@@ -62,11 +62,11 @@ common_iterator_category_t<daw::iter_category_t<iterator_t>,
 			return std::begin( m_range );
 		}
 
-		[[nodiscard]] constexpr auto raend( ) {
+		[[nodiscard]] constexpr iterator_end_t<R> raend( ) {
 			return std::end( m_range );
 		}
 
-		[[nodiscard]] constexpr auto raend( ) const {
+		[[nodiscard]] constexpr iterator_end_t<R> raend( ) const {
 			return std::end( m_range );
 		}
 
@@ -104,7 +104,7 @@ common_iterator_category_t<daw::iter_category_t<iterator_t>,
 			return *this;
 		}
 
-		[[nodiscard]] constexpr auto end( ) const {
+		[[nodiscard]] constexpr end_t end( ) const {
 			return end_t{ raend( ) };
 		}
 

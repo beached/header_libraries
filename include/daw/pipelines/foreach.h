@@ -10,7 +10,7 @@
 
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
-#include "pipeline_traits.h"
+#include "daw/pipelines/pipeline_traits.h"
 
 #include <functional>
 

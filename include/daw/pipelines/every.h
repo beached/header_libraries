@@ -6,8 +6,8 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include "filter.h"
-#include "range.h"
+#include "daw/pipelines/filter.h"
+#include "daw/pipelines/range.h"
 
 #include <cstddef>
 
@@ -17,20 +17,19 @@ namespace daw::pipelines::pimpl {
 
 		template<typename R>
 		[[nodiscard]] constexpr auto operator( )( R &&r ) const {
-				static_assert( Range<R>,
-				               "Every requires the previous algorithm in the pipeline "
-				               "to return a range" );
-				return filter_view{ std::begin( DAW_FWD( r ) ),
-				                    std::end( DAW_FWD( r ) ),
-				                    [select_every = m_select_every,
-				                     n = m_select_every]( auto const & ) mutable {
-					                    if( n >= select_every ) {
-						                    n = 1;
-						                    return true;
-					                    }
-		   			                  ++n;
-					                    return false;
-				                    } };
+			static_assert( Range<R>,
+			               "Every requires the previous algorithm in the pipeline "
+			               "to return a range" );
+			return filter_view{ std::begin( DAW_FWD( r ) ), std::end( DAW_FWD( r ) ),
+			                    [select_every = m_select_every,
+			                     n = m_select_every]( auto const & ) mutable {
+				                    if( n >= select_every ) {
+					                    n = 1;
+					                    return true;
+				                    }
+				                    ++n;
+				                    return false;
+			                    } };
 		}
 	};
 } // namespace daw::pipelines::pimpl

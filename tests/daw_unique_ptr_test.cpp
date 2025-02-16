@@ -15,10 +15,18 @@
 #include <memory>
 
 struct Base {
+	int x = 55;
+	Base( ) = default;
+	Base( int v )
+	  : x( v ) {}
 	virtual ~Base( ) = default;
 };
 
-struct Child : Base {};
+struct Child : Base {
+	Child( ) = default;
+	Child( int v )
+	  : Base( v ) {}
+};
 
 int main( ) {
 	auto a1 = daw::make_unique<int>( 5 );
@@ -54,4 +62,28 @@ int main( ) {
 
 	std::default_delete<int>{ };
 	daw::unique_ptr<Base> my_base = daw::make_unique<Child>( );
+	int x = -1;
+	my_base = std::move( my_base ).and_then( [&]( auto p ) {
+		x = p->x;
+		return p;
+	} );
+	assert( x == my_base->x );
+	my_base = std::move( my_base ).and_then( []( auto p ) {
+		return daw::make_unique<Child>( p->x );
+	} );
+	daw::unique_ptr<Child> my_child2 = nullptr;
+	auto x2 = std::move( my_child2 )
+	            .or_else( []( ) {
+		            return daw::make_unique<Child>( 55 );
+	            } )
+	            .and_then( []( daw::unique_ptr<Base> p ) {
+		            return daw::make_unique<Child>( 42 + p->x );
+	            } )
+	            .or_else( []( ) {
+		            return daw::make_unique<Child>( 23 );
+	            } )
+	            .transform( []( auto const &p ) {
+		            return p->x;
+	            } );
+	assert( x2 == 97 );
 }

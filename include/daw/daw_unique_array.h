@@ -60,7 +60,7 @@ namespace daw {
 
 		constexpr unique_array_t( unique_array_t &&other ) noexcept
 		  : m_data( daw::exchange( other.m_data, nullptr ) )
-		  , m_size( daw::exchange( other.m_size, 0 ) ) {}
+		  , m_size( daw::exchange( other.m_size, 0U ) ) {}
 
 		constexpr unique_array_t &operator=( unique_array_t &&rhs ) noexcept {
 			if( this == &rhs ) {
@@ -71,7 +71,7 @@ namespace daw {
 				return *this;
 			}
 			m_data = daw::exchange( rhs.m_data, nullptr );
-			m_size = daw::exchange( rhs.m_size, 0 );
+			m_size = daw::exchange( rhs.m_size, 0U );
 			return *this;
 		}
 

@@ -105,7 +105,7 @@ namespace daw {
 
 		template<typename ExceptionType>
 		expected_t( exception_tag, ExceptionType &&ex ) noexcept
-		  : m_value( std::make_exception_ptr( DAW_FWD2( ExceptionType, ex ) ) ) {}
+		  : m_value( std::make_exception_ptr( DAW_FWD( ex ) ) ) {}
 
 		explicit expected_t( exception_tag ) noexcept
 		  : m_value( std::current_exception( ) ) {}
@@ -309,7 +309,7 @@ namespace daw {
 
 		template<typename ExceptionType>
 		expected_t( exception_tag, ExceptionType &&ex ) noexcept
-		  : m_value( std::make_exception_ptr( DAW_FWD2( ExceptionType, ex ) ) ) {}
+		  : m_value( std::make_exception_ptr( DAW_FWD( ex ) ) ) {}
 
 		explicit expected_t( exception_tag ) noexcept
 		  : m_value( std::current_exception( ) ) {}

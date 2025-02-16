@@ -13,6 +13,7 @@
 
 #include <iterator>
 #include <type_traits>
+#include <version>
 
 namespace daw::pipelines::pimpl {
 	template<typename T, std::size_t N>
@@ -45,7 +46,23 @@ namespace daw::pipelines::pimpl {
 		template<Range R>
 		[[nodiscard]] DAW_ATTRIB_NOINLINE DAW_CPP23_STATIC_CALL_OP constexpr auto
 		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
-			return Container( std::begin( DAW_FWD( r ) ), std::end( DAW_FWD( r ) ) );
+#if defined( __cpp_lib_containers_ranges )
+#if __cpp_lib_containers_ranges >= 202202L
+			if constexpr( requires {
+				              Container( std::fromt_range, DAW_FWD( r ) );
+			              } ) {
+				return Container( std::from_range, DAW_FWD( r ) );
+			} else {
+#endif
+#endif
+				return Container( std::begin( DAW_FWD( r ) ),
+				                  std::end( DAW_FWD( r ) ) );
+
+#if defined( __cpp_lib_containers_ranges )
+#if __cpp_lib_containers_ranges >= 202202L
+			}
+#endif
+#endif
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr auto

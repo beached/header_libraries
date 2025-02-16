@@ -31,8 +31,8 @@ namespace daw {
 
 		template<typename K, typename V>
 		constexpr key_value_t( K &&k, V &&v )
-		  : key( DAW_FWD2( K, k ) )
-		  , value( DAW_FWD2( V, v ) ) {}
+		  : key( DAW_FWD( k ) )
+		  , value( DAW_FWD( v ) ) {}
 	};
 
 	template<typename Key, typename Value>
@@ -52,7 +52,7 @@ namespace daw {
 
 		template<typename K, typename V>
 		constexpr bounded_hash_map_item_t( K &&k, V &&v )
-		  : kv( DAW_FWD2( K, k ), DAW_FWD2( V, v ) )
+		  : kv( DAW_FWD( k ), DAW_FWD( v ) )
 		  , has_value( true ) {}
 
 		explicit constexpr operator bool( ) const {
@@ -299,9 +299,7 @@ namespace daw {
 		return lhs.compare( rhs ) != 0;
 	}
 
-	template<typename Key,
-	         typename Value,
-	         size_t N,
+	template<typename Key, typename Value, size_t N,
 	         typename Hash = std::hash<Key>,
 	         typename KeyEqual = std::equal_to<Key>>
 	struct bounded_hash_map {
@@ -376,8 +374,7 @@ namespace daw {
 			}
 		}
 
-		template<typename K,
-		         typename V,
+		template<typename K, typename V,
 		         std::enable_if_t<
 		           daw::all_true_v<std::is_same_v<Key, daw::remove_cvref_t<K>>,
 		                           std::is_same_v<Value, daw::remove_cvref_t<V>>>,
@@ -385,7 +382,7 @@ namespace daw {
 		constexpr void insert( K &&key, V &&value ) {
 			auto const index = find_index( key );
 			m_data[*index] =
-			  bounded_hash_map_item_t( DAW_FWD2( K, key ), DAW_FWD2( V, value ) );
+			  bounded_hash_map_item_t( DAW_FWD( key ), DAW_FWD( value ) );
 		}
 
 		constexpr void insert( std::pair<Key const, Value> const &item ) {
@@ -457,16 +454,14 @@ namespace daw {
 		[[nodiscard]] constexpr size_type size( ) const {
 			using std::cbegin;
 			using std::cend;
-			return daw::algorithm::accumulate( cbegin( m_data ),
-			                                   cend( m_data ),
-			                                   size_type{ 0 },
-			                                   []( auto &&init, auto &&v ) {
-				                                   if( v ) {
-					                                   return DAW_FWD( init ) +
-					                                          size_type{ 1 };
-				                                   }
-				                                   return DAW_FWD( init );
-			                                   } );
+			return daw::algorithm::accumulate(
+			  cbegin( m_data ), cend( m_data ), size_type{ 0 },
+			  []( auto &&init, auto &&v ) {
+				  if( v ) {
+					  return DAW_FWD( init ) + size_type{ 1 };
+				  }
+				  return DAW_FWD( init );
+			  } );
 		}
 
 		[[nodiscard]] constexpr size_type empty( ) const {
@@ -505,20 +500,17 @@ namespace daw {
 		}
 
 		constexpr iterator end( ) {
-			return { std::data( m_data ),
-			         std::data( m_data ) + capacity( ),
+			return { std::data( m_data ), std::data( m_data ) + capacity( ),
 			         std::data( m_data ) + capacity( ) };
 		}
 
 		constexpr const_iterator end( ) const {
-			return { std::data( m_data ),
-			         std::data( m_data ) + capacity( ),
+			return { std::data( m_data ), std::data( m_data ) + capacity( ),
 			         std::data( m_data ) + capacity( ) };
 		}
 
 		constexpr const_iterator cend( ) const {
-			return { std::data( m_data ),
-			         std::data( m_data ) + capacity( ),
+			return { std::data( m_data ), std::data( m_data ) + capacity( ),
 			         std::data( m_data ) + capacity( ) };
 		}
 
@@ -527,8 +519,8 @@ namespace daw {
 			if( not idx ) {
 				return end( );
 			}
-			return {
-			  std::data( m_data ), std::data( m_data ) + capacity( ), m_data + *idx };
+			return { std::data( m_data ), std::data( m_data ) + capacity( ),
+			         m_data + *idx };
 		}
 
 		constexpr const_iterator find( Key const &key ) const {
@@ -536,8 +528,8 @@ namespace daw {
 			if( not idx ) {
 				return end( );
 			}
-			return {
-			  std::data( m_data ), std::data( m_data ) + capacity( ), m_data + *idx };
+			return { std::data( m_data ), std::data( m_data ) + capacity( ),
+			         m_data + *idx };
 		}
 
 		constexpr void erase( Key const &key ) {
@@ -547,16 +539,12 @@ namespace daw {
 			}
 		}
 	};
-	template<typename Key,
-	         typename Value,
-	         typename Hash = std::hash<Key>,
+	template<typename Key, typename Value, typename Hash = std::hash<Key>,
 	         size_t N>
 	bounded_hash_map( std::pair<Key, Value> const ( &&items )[N] )
 	  -> bounded_hash_map<Key, Value, N, Hash>;
 
-	template<typename Key,
-	         typename Value,
-	         typename Hash = std::hash<Key>,
+	template<typename Key, typename Value, typename Hash = std::hash<Key>,
 	         size_t N>
 	DAW_CONSTEVAL auto
 	make_bounded_hash_map( std::pair<Key, Value> const ( &items )[N] ) {

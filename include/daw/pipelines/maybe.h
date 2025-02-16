@@ -10,12 +10,13 @@
 
 #include "daw/daw_move.h"
 #include "daw/daw_remove_cvref.h"
+#include "daw/pipelines/range_base.h"
 
 #include <memory>
 
 namespace daw::pipelines {
 	template<typename T>
-	struct maybe_view {
+	struct maybe_view : range_base_t<std::remove_reference_t<T> *> {
 		using value_type = std::remove_reference_t<T>;
 		using reference = T &;
 		using pointer = value_type *;

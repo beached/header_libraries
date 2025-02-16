@@ -422,8 +422,16 @@ namespace daw::traits {
 	template<typename T>
 	inline constexpr bool is_character_v = is_one_of_v<T, char, wchar_t>;
 
+#if defined( DAW_HAS_CLANG )
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcomma"
+#endif
 	template<typename... Args>
-	using last_type_t = typename decltype( ( identity<Args>{ }, ... ) )::type;
+	DAW_CPP20_REQUIRES( sizeof...( Args ) > 0 )
+	using last_type_t = typename decltype( ( ( identity<Args>{ } ), ... ) )::type;
+#if defined( DAW_HAS_CLANG )
+#pragma clang diagnostic pop
+#endif
 
 	namespace traits_details::pack_index_of {
 		template<int Index, typename A, typename B, typename... C>
@@ -486,7 +494,7 @@ namespace daw::traits {
 		F fp;
 
 		constexpr R operator( )( Args... args ) const noexcept( IsNoExcept ) {
-			return fp( DAW_FWD2( Args, args )... );
+			return fp( DAW_FWD( args )... );
 		}
 	};
 
@@ -508,7 +516,7 @@ namespace daw::traits {
 		template<typename Func>
 		static constexpr lifted_t<Func, is_noexcept, R, Args...>
 		lift( Func &&f ) noexcept {
-			return { DAW_FWD2( Func, f ) };
+			return { DAW_FWD( f ) };
 		}
 	};
 
@@ -527,7 +535,7 @@ namespace daw::traits {
 		template<typename Func>
 		static constexpr lifted_t<Func, is_noexcept, R, Args...>
 		lift( Func &&f ) noexcept {
-			return { DAW_FWD2( Func, f ) };
+			return { DAW_FWD( f ) };
 		}
 	};
 
@@ -557,9 +565,9 @@ namespace daw::traits {
 			using func_t = func_traits<F>;
 			static_assert( func_t::arity == 1,
 			               "Only single argument overloads are supported" );
-			return func_t::lift( DAW_FWD2( F, f ) );
+			return func_t::lift( DAW_FWD( f ) );
 		} else {
-			return DAW_FWD2( F, f );
+			return DAW_FWD( f );
 		}
 	}
 

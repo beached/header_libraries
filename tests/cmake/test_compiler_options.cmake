@@ -158,6 +158,7 @@ elseif( ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" )
                          -Wold-style-cast
                          -Wshadow
                          -Wzero-as-null-pointer-constant
+												 -Wconversion
     )
     #-Wno-deprecated-declarations
     if( DAW_WERROR )

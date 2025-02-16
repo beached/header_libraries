@@ -159,7 +159,7 @@ namespace daw {
 	 */
 	template<typename Func, typename... Args>
 	concept invocable = requires( Func && f, Args &&...args ) {
-		std::invoke( DAW_FWD2( Func, f ), DAW_FWD2( Args, args )... );
+		std::invoke( DAW_FWD( f ), DAW_FWD( args )... );
 	};
 
 	/// @brief Specifies that an expression of the type and value category
@@ -171,7 +171,7 @@ namespace daw {
 	  std::assignable_from<LHS, RHS>;
 #else
 	  std::is_lvalue_reference_v<LHS> and requires( LHS lhs, RHS &&rhs ) {
-		{ lhs = DAW_FWD2( RHS, rhs ) } -> std::same_as<LHS>;
+		{ lhs = DAW_FWD( rhs ) } -> std::same_as<LHS>;
 	};
 #endif
 
@@ -283,7 +283,7 @@ namespace daw {
 #else
 	  input_or_output_iterator<I> and indirectly_writable<I, T> and
 	  requires( I i, T &&t ) {
-		*i++ = DAW_FWD2( T, t ); // not required to be equality-preserving
+		*i++ = DAW_FWD( t ); // not required to be equality-preserving
 	};
 #endif
 

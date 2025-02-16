@@ -6,13 +6,13 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include "daw/cpp_17.h"
+#include "daw/cpp_20.h"
+#include "daw/daw_benchmark.h"
+#include "daw/daw_string_view.h"
 #include "daw/daw_traits.h"
 #include "daw/impl/daw_traits_impl.h"
 #include "daw/traits/daw_traits_is_a_type.h"
-
-#include "daw/cpp_17.h"
-#include "daw/daw_benchmark.h"
-#include "daw/daw_string_view.h"
 
 #include <array>
 #include <cstddef>
@@ -78,14 +78,9 @@ namespace daw_traits_is_regular {
 } // namespace daw_traits_is_regular
 
 namespace daw_traits_max_sizeof {
-	static_assert( daw::traits::max_sizeof<int8_t,
-	                                       int16_t,
-	                                       uint8_t,
-	                                       int,
-	                                       int32_t,
-	                                       int64_t,
-	                                       uint64_t,
-	                                       size_t>::value == sizeof( size_t ),
+	static_assert( daw::traits::max_sizeof<int8_t, int16_t, uint8_t, int, int32_t,
+	                                       int64_t, uint64_t, size_t>::value ==
+	                 sizeof( size_t ),
 	               "1. Max sizeof did not report the size of the largest item" );
 }
 
@@ -144,9 +139,8 @@ bool enable_if_any_func_test( std::string const &, ... ) {
 	return false;
 }
 
-template<typename... Args,
-         typename = typename daw::traits::
-           enable_if_any<bool, std::is_same<bool, Args>::value...>::type>
+template<typename... Args, typename = typename daw::traits::enable_if_any<
+                             bool, std::is_same<bool, Args>::value...>::type>
 constexpr bool enable_if_any_func_test( Args... ) {
 	return true;
 }
@@ -155,9 +149,8 @@ constexpr bool enable_if_all_func_test( bool ) {
 	return false;
 }
 
-template<typename... Args,
-         typename = typename daw::traits::
-           enable_if_all<bool, std::is_same<bool, Args>::value...>::type>
+template<typename... Args, typename = typename daw::traits::enable_if_all<
+                             bool, std::is_same<bool, Args>::value...>::type>
 constexpr bool enable_if_all_func_test( Args... ) {
 	return true;
 }
@@ -175,17 +168,13 @@ namespace daw_traits_enable_if_all {
 } // namespace daw_traits_enable_if_all
 
 namespace daw_traits_is_one_of {
-	static_assert( daw::traits::is_one_of_v<std::string,
-	                                        std::string,
-	                                        std::string,
-	                                        int,
-	                                        std::vector<std::string>>,
+	static_assert( daw::traits::is_one_of_v<std::string, std::string, std::string,
+	                                        int, std::vector<std::string>>,
 	               "1. Is one of should report true when at least one matches" );
 
-	static_assert(
-	  not daw::traits::
-	    is_one_of_v<std::string, int, int, double, std::vector<std::string>>,
-	  "2. Is one of should report false when none matches" );
+	static_assert( not daw::traits::is_one_of_v<std::string, int, int, double,
+	                                            std::vector<std::string>>,
+	               "2. Is one of should report false when none matches" );
 
 	static_assert(
 	  daw::traits::is_one_of_v<std::string, std::string>,
@@ -566,9 +555,8 @@ namespace are_convertible_to_v_001 {
 }
 
 namespace are_convertible_to_v_002 {
-	static_assert(
-	  not daw::traits::
-	    are_convertible_to_v<int, char, short, unsigned, std::string> );
+	static_assert( not daw::traits::are_convertible_to_v<int, char, short,
+	                                                     unsigned, std::string> );
 }
 
 namespace type_n_t_test_001 {
@@ -688,45 +676,20 @@ namespace is_tuple_test_004 {
 }
 
 namespace all_true_001 {
-	static_assert( not daw::all_true_v<true,
-	                                   false,
-	                                   true,
-	                                   true,
-	                                   true,
-	                                   true,
-	                                   true,
-	                                   true,
-	                                   true,
-	                                   true,
-	                                   true,
-	                                   true,
-	                                   true,
-	                                   true> );
-	static_assert( daw::all_true_v<true,
-	                               true,
-	                               true,
-	                               true,
-	                               true,
-	                               true,
-	                               true,
-	                               true,
-	                               true,
-	                               true,
-	                               true,
-	                               true,
-	                               true,
-	                               true> );
+	static_assert(
+	  not daw::all_true_v<true, false, true, true, true, true, true, true, true,
+	                      true, true, true, true, true> );
+	static_assert( daw::all_true_v<true, true, true, true, true, true, true, true,
+	                               true, true, true, true, true, true> );
 } // namespace all_true_001
 
 namespace is_init_list_constructible_001 {
-	static_assert(
-	  daw::traits::
-	    is_init_list_constructible_v<std::vector<int>, int, int, int, int>,
-	  "a vector<int> should be initializer_list constructible" );
-	static_assert(
-	  not daw::traits::
-	    is_init_list_constructible_v<std::array<int, 4>, int, int, int, int>,
-	  "a vector<int> should be initializer_list constructible" );
+	static_assert( daw::traits::is_init_list_constructible_v<std::vector<int>,
+	                                                         int, int, int, int>,
+	               "a vector<int> should be initializer_list constructible" );
+	static_assert( not daw::traits::is_init_list_constructible_v<
+	                 std::array<int, 4>, int, int, int, int>,
+	               "a vector<int> should be initializer_list constructible" );
 } // namespace is_init_list_constructible_001
 
 namespace is_nothrow_callable_001 {
@@ -748,8 +711,8 @@ void daw_traits_enable_if_any( ) {
 		                        "only with a std::string value" );
 	} // namespace daw_traits_enable_if_any)
 	{
-		auto const result = enable_if_any_func_test(
-		  std::string( ), true, 134, std::string( "dfd" ) );
+		auto const result = enable_if_any_func_test( std::string( ), true, 134,
+		                                             std::string( "dfd" ) );
 		daw::expecting_message(
 		  result,
 		  "2. Enable if any should have ran templated version "

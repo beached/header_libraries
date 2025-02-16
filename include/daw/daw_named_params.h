@@ -56,7 +56,7 @@ namespace daw::nparam {
 	                                                     Opts &&...vals ) {
 		if constexpr( sizeof...( Opts ) == 0 ) {
 			// No replacements found
-			return DAW_FWD2( Option, def_value ).value;
+			return DAW_FWD( def_value ).value;
 		} else if constexpr( std::is_same_v<std::remove_cvref_t<Option>,
 		                                    std::remove_cvref_t<
 		                                      daw::traits::first_type<Opts...>>> ) {
@@ -64,14 +64,13 @@ namespace daw::nparam {
 			constexpr auto first_val = []( auto &&v, auto &&... ) {
 				return DAW_FWD( v );
 			};
-			return first_val( DAW_FWD2( Opts, vals )... ).value;
+			return first_val( DAW_FWD( vals )... ).value;
 		} else {
 			// Pop off first option and try next
 			constexpr auto pop_front = []( auto &&def, auto &&, auto &&...vs ) {
 				return get_opt<Option>( DAW_FWD( def ), DAW_FWD( vs )... );
 			};
-			return pop_front( DAW_FWD2( Option, def_value ),
-			                  DAW_FWD2( Opts, vals )... );
+			return pop_front( DAW_FWD( def_value ), DAW_FWD( vals )... );
 		}
 	}
 	namespace details {

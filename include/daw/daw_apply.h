@@ -99,23 +99,24 @@ namespace daw {
 
 #if not defined( _MSC_VER ) or defined( __clang__ )
 	template<typename F, typename... Args,
-	         daw::enable_when_t<std::conjunction_v<
-	           not_trait<is_reference_wrapper<Args>>...>> = nullptr>
+	         std::enable_if_t<sizeof...( Args ) != 1 or
+	                            ( ( not is_reference_wrapper_v<Args> ) and ... ),
+	                          std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr decltype( auto )
 	invoke( F &&f,
 	        Args &&...args ) noexcept( std::is_nothrow_invocable_v<F, Args...> ) {
 
-		return cpp_17_details::INVOKE( DAW_FWD2( F, f ),
-		                               DAW_FWD2( Args, args )... );
+		return cpp_17_details::INVOKE( DAW_FWD( f ), DAW_FWD( args )... );
 	}
 
-	template<typename F, typename... Args>
-	[[nodiscard]] constexpr decltype( auto )
-	invoke( F &&f, std::reference_wrapper<Args>... args ) noexcept(
-	  std::is_nothrow_invocable_v<F, Args...> ) {
+	template<typename F, typename Arg, typename... Args>
+	[[nodiscard]] constexpr decltype( auto ) invoke(
+	  F &&f, std::reference_wrapper<Arg> arg,
+	  std::reference_wrapper<
+	    Args>... args ) noexcept( std::is_nothrow_invocable_v<F, Args...> ) {
 
-		return cpp_17_details::INVOKE( DAW_FWD2( F, f ),
-		                               DAW_FWD2( Args, args )... );
+		return cpp_17_details::INVOKE( DAW_FWD( f ), DAW_FWD( arg ),
+		                               DAW_FWD( args )... );
 	}
 #else
 	template<typename F, typename... Args>
@@ -123,7 +124,7 @@ namespace daw {
 	invoke( F &&f,
 	        Args &&...args ) noexcept( std::is_nothrow_invocable_v<F, Args...> ) {
 
-		return DAW_FWD2( F, f )( DAW_FWD2( Args, args )... );
+		return DAW_FWD( f )( DAW_FWD( args )... );
 	}
 #endif
 

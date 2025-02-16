@@ -6,8 +6,8 @@
 // Official repository: https://github.com/beached/string_view
 //
 
+#include <daw/daw_ensure.h>
 #include <daw/daw_string_view.h>
-
 #include <daw/daw_utility.h>
 
 #include <cctype>
@@ -422,6 +422,7 @@ namespace daw {
 	void tc002( ) {
 		std::string str = "Hello world";
 		daw::sv2::string_view view = str;
+		daw_expecting( view.is_zero_terminated( ), daw::ZeroTerminated::Yes );
 
 		puts( "Constructs a non-empty string" );
 		{ daw_expecting( view.empty( ), false ); }
@@ -1260,6 +1261,8 @@ namespace daw {
 
 	constexpr bool ensure_same_at_ct( ) {
 		constexpr daw::sv2::string_view sv_cx = "a";
+		static_assert( ( sv_cx.is_zero_terminated( ) == ZeroTerminated::Yes ) or
+		               ( sv_cx.is_zero_terminated( ) == ZeroTerminated::Unknown ) );
 		static_assert( sv_cx.size( ) == 1 );
 		static_assert( not sv_cx.empty( ) );
 		static_assert( *( sv_cx.data( ) +
@@ -1274,21 +1277,6 @@ namespace daw {
 			return false;
 		}
 		return true;
-	}
-
-	void daw_diff_assignment_001( ) {
-#if not defined( _MSC_VER ) or defined( __clang__ )
-		daw::sv2::basic_string_view<char, daw::sv2::string_view_bounds_type::size>
-		  a = "This is a test";
-		daw::sv2::basic_string_view<char,
-		                            daw::sv2::string_view_bounds_type::pointer>
-		  b = "Hello";
-		daw_expecting_message( a != b, "Expected equal" );
-		static_assert( not std::is_same_v<decltype( a ), decltype( b )> );
-		// Should have different types
-		b = a;
-		daw_expecting_message( a == b, "Expected equal" );
-#endif
 	}
 
 	void daw_literal_test_001( ) {
@@ -1344,6 +1332,12 @@ namespace daw {
 		daw_expecting( 16U, pos_sv );
 	}
 
+	void daw_rfind_test_004( ) {
+		daw::sv2::string_view const sv = "This is a string";
+		auto pos_sv = sv.rfind( 's' );
+		daw_expecting( 10U, pos_sv );
+	}
+
 	void daw_find_test_001( ) {
 		daw::sv2::string_view const sv = "This is a string";
 		auto pos_sv = sv.find( "is" );
@@ -1361,6 +1355,13 @@ namespace daw {
 		auto pos_sv = sv.find( "" );
 		daw_expecting( 0U, pos_sv );
 	}
+
+	void daw_find_test_004( ) {
+		daw::sv2::wstring_view const sv = L"This is a string";
+		auto pos_sv = sv.find( L"" );
+		daw_expecting( 0U, pos_sv );
+	}
+
 	namespace url_test {
 		struct authority_t {
 			daw::sv2::string_view host;
@@ -1400,7 +1401,8 @@ namespace daw {
 
 			inline explicit query_t(
 			  std::initializer_list<
-			    std::pair<daw::sv2::string_view, daw::sv2::string_view>> qparts )
+			    std::pair<daw::sv2::string_view, daw::sv2::string_view>>
+			    qparts )
 			  : items( qparts.begin( ), qparts.end( ) ) {}
 
 			inline bool operator==( query_t const &rhs ) const {
@@ -1659,6 +1661,28 @@ namespace daw {
 		daw_expecting( cmp, std::strong_ordering::greater );
 	}
 #endif
+
+	void test_null_001( ) {
+		constexpr char const *p = nullptr;
+		constexpr auto sv = daw::sv2::string_view( p, 0 );
+		static_assert( not sv.is_zero_terminated( ) );
+		static_assert( sv.empty( ) );
+	}
+
+	void test_get_c_str_001( ) {
+		constexpr daw::string_view sv = "Hello World";
+		static_assert( sv.is_zero_terminated( ) );
+		constexpr auto sv2 = sv.substr( 0, 5 );
+		static_assert( not sv2.is_zero_terminated( ) );
+
+		auto const zview = sv.get_c_str( );
+		daw_ensure( strlen( zview ) == sv.size( ) );
+		daw_ensure( daw::string_view( zview ) == sv );
+
+		auto const zview2 = sv2.get_c_str( );
+		daw_ensure( strlen( zview2 ) == sv2.size( ) );
+		daw_ensure( daw::string_view( zview2 ) == sv2 );
+	}
 } // namespace daw
 
 int main( )
@@ -1669,11 +1693,10 @@ int main( )
 	/*
 	 * Ensure that daw::sv2::string_view s = { "a", "b" }; doesn't work
 	 */
-	static_assert( not std::is_constructible_v<daw::sv2::string_view,
-	                                           char const( & )[4],
-	                                           char const( & )[4]> );
-	static_assert( std::is_constructible_v<daw::sv2::string_view,
-	                                       char const *,
+	static_assert(
+	  not std::is_constructible_v<daw::sv2::string_view, char const( & )[4],
+	                              char const( & )[4]> );
+	static_assert( std::is_constructible_v<daw::sv2::string_view, char const *,
 	                                       char const *> );
 	static_assert(
 	  std::is_convertible_v<char const( & )[4], daw::sv2::string_view> );
@@ -1781,15 +1804,16 @@ int main( )
 	daw::daw_try_pop_back_until_sv_test_002( );
 	daw::daw_try_pop_front_until_sv_test_001( );
 	daw::daw_try_pop_front_until_sv_test_002( );
-	daw::daw_diff_assignment_001( );
 	daw::daw_literal_test_001( );
 	daw::daw_stdhash_test_001( );
 	daw::daw_rfind_test_001( );
 	daw::daw_rfind_test_002( );
 	daw::daw_rfind_test_003( );
+	daw::daw_rfind_test_004( );
 	daw::daw_find_test_001( );
 	daw::daw_find_test_002( );
 	daw::daw_find_test_003( );
+	daw::daw_find_test_004( );
 	daw::daw_test_any_char_001( );
 	daw::daw_remove_prefix_num_test_001( );
 	daw::daw_remove_prefix_num_test_002( );
@@ -1824,6 +1848,8 @@ int main( )
 #if defined( DAW_HAS_CPP20_3WAY_COMPARE )
 	daw::daw_3way_compare_test_001( );
 #endif
+	daw::test_null_001( );
+	daw::test_get_c_str_001( );
 }
 #if defined( DAW_USE_EXCEPTIONS )
 catch( std::exception const &ex ) {

@@ -8,40 +8,26 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_string_view_version.h"
+#include "daw/ciso646.h"
+#include "daw/daw_remove_cvref.h"
+#include "daw/daw_string_view_version.h"
+#include "daw/impl/daw_make_trait.h"
+
+#include <type_traits>
 
 namespace daw {
 #if DAW_STRINGVIEW_VERSION == 2
 	inline
 #endif
 	  namespace sv2 {
-		/// @brief How is the end of range stored in string_view
-		enum class string_view_bounds_type {
-			/// @brief Store the end of range as a pointer. This is optimal for code
-			/// where calls to methods like remove_prefix dominate
-			pointer,
-			/// @brief Store the end of range as a size_type.  This is optimal for
-			/// where calls to size( ) or remove_suffix like calls dominate
-			size
-		};
-
-#if defined( _MSC_VER ) or defined( DAW_SV_USE_PTRSIZE )
-		// MSVC has issues with pointers to the trailing zero in a string literal at
-		// compile time
-		inline constexpr string_view_bounds_type default_string_view_bounds_type =
-		  string_view_bounds_type::size;
-#else
-		inline constexpr string_view_bounds_type default_string_view_bounds_type =
-		  string_view_bounds_type::pointer;
-#endif
-
 		/// @brief The class template basic_string_view describes an object that can
 		/// refer to a constant contiguous sequence of char-like objects with the
 		/// first element of the sequence at position zero.
-		template<typename CharT, string_view_bounds_type BoundsType =
-		                           default_string_view_bounds_type>
+		template<typename CharT>
 		struct basic_string_view;
+
+		DAW_MAKE_REQ_TRAIT_TYPE( is_daw_string_view,
+		                         daw::remove_cvref_t<T>::i_am_a_daw_string_view2 );
 
 		using string_view = basic_string_view<char>;
 		using wstring_view = basic_string_view<wchar_t>;

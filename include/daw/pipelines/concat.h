@@ -12,8 +12,8 @@
 #include "daw/daw_move.h"
 #include "daw/daw_traits.h"
 #include "daw/daw_visit.h"
-#include "pipeline_traits.h"
-#include "range.h"
+#include "daw/pipelines/pipeline_traits.h"
+#include "daw/pipelines/range.h"
 
 #include <array>
 #include <tuple>
@@ -22,14 +22,12 @@
 #include <variant>
 
 namespace daw::pipelines {
-	template<Range... Ranges>
-	struct concat_view {
+	template<ForwardRange... Ranges>
+	struct concat_view : range_base_t<concat_view<Ranges...>> {
 		static_assert( sizeof...( Ranges ) > 0,
 		               "concat_view requires at least one iterator specified" );
 		using iterator_category =
-		  common_iterator_category_t<std::forward_iterator_tag,
-		                             range_category_t<Ranges>...>;
-		static_assert( not std::same_as<void, iterator_category> );
+		  common_iterator_category_t<range_category_t<Ranges>...>;
 		using types_t = std::tuple<daw::remove_cvrvref_t<Ranges>...>;
 		using value_type = std::common_type_t<range_value_t<Ranges>...>;
 		using reference = std::common_reference_t<range_reference_t<Ranges>...>;

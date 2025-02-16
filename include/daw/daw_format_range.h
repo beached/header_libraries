@@ -27,6 +27,9 @@ namespace daw {
 		daw::basic_string_view<CharT> Left = formatter_impl::DefaultLeft<CharT>;
 		daw::basic_string_view<CharT> Right = formatter_impl::DefaultRight<CharT>;
 
+		explicit fmt_range( R const &,
+		                    CharT ) = delete /* Must pass separator as string */;
+
 		explicit constexpr fmt_range( R const &c )
 		  : container( c ) {}
 
@@ -104,8 +107,8 @@ namespace std {
 		}
 
 		template<typename Ctx>
-		typename Ctx::iterator format( daw::fmt_range<R, CharT> c,
-		                               Ctx &ctx ) const {
+		constexpr typename Ctx::iterator format( daw::fmt_range<R, CharT> c,
+		                                         Ctx &ctx ) const {
 			using value_t = daw::range_value_t<R>;
 			if constexpr( std::is_same_v<daw::formatter_impl::DefaultCharT,
 			                             value_t> ) {

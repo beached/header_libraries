@@ -11,6 +11,7 @@
 #include "cpp_20.h"
 #include "daw_cpp_feature_check.h"
 #include "daw_exchange.h"
+#include "daw_monadic_pointer_ops.h"
 #include "daw_move.h"
 
 #include <cstddef>
@@ -190,6 +191,11 @@ namespace daw {
 			}
 		}
 
+		constexpr void reset( pointer p ) noexcept {
+			reset( );
+			m_ptr = std::move( p );
+		}
+
 		constexpr pointer get( ) const {
 			return m_ptr;
 		}
@@ -209,6 +215,36 @@ namespace daw {
 		constexpr void swap( unique_ptr &other ) noexcept {
 			using std::swap;
 			swap( m_ptr, other.m_ptr );
+		}
+
+		template<typename F>
+		constexpr auto and_then( F &&func ) && {
+			return monadic_ptr::and_then( std::move( *this ), DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto or_else( F &&func ) && {
+			return monadic_ptr::or_else( std::move( *this ), DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto transform( F &&func ) & {
+			return monadic_ptr::transform( *this, DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto transform( F &&func ) const & {
+			return monadic_ptr::transform( *this, DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto transform( F &&func ) && {
+			return monadic_ptr::transform( std::move( *this ), DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto transform( F &&func ) const && {
+			return monadic_ptr::transform( std::move( *this ), DAW_FWD( func ) );
 		}
 	};
 
@@ -322,6 +358,36 @@ namespace daw {
 		constexpr reference operator[]( std::size_t index ) const noexcept {
 			return m_ptr[index];
 		}
+
+		template<typename F>
+		constexpr auto and_then( F &&func ) && {
+			return monadic_ptr::and_then( std::move( *this ), DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto or_else( F &&func ) && {
+			return monadic_ptr::or_else( std::move( *this ), DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto transform( F &&func ) & {
+			return monadic_ptr::transform( *this, DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto transform( F &&func ) const & {
+			return monadic_ptr::transform( *this, DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto transform( F &&func ) && {
+			return monadic_ptr::transform( std::move( *this ), DAW_FWD( func ) );
+		}
+
+		template<typename F>
+		constexpr auto transform( F &&func ) const && {
+			return monadic_ptr::transform( std::move( *this ), DAW_FWD( func ) );
+		}
 	};
 
 	template<typename T, typename... Args>
@@ -361,39 +427,39 @@ namespace daw {
 		  new value_type[sizeof...( Elements )]{ DAW_FWD( elements )... } );
 	}
 
-	template<typename T>
-	constexpr bool operator==( unique_ptr<T> const &lhs,
-	                           unique_ptr<T> const &rhs ) noexcept {
+	template<typename T, typename D0, typename D1 = D0>
+	constexpr bool operator==( unique_ptr<T, D0> const &lhs,
+	                           unique_ptr<T, D1> const &rhs ) noexcept {
 		return lhs.get( ) == rhs.get( );
 	}
 
-	template<typename T>
-	constexpr bool operator!=( unique_ptr<T> const &lhs,
-	                           unique_ptr<T> const &rhs ) noexcept {
+	template<typename T, typename D0, typename D1 = D0>
+	constexpr bool operator!=( unique_ptr<T, D0> const &lhs,
+	                           unique_ptr<T, D1> const &rhs ) noexcept {
 		return lhs.get( ) != rhs.get( );
 	}
 
-	template<typename T>
-	constexpr bool operator<( unique_ptr<T> const &lhs,
-	                          unique_ptr<T> const &rhs ) noexcept {
+	template<typename T, typename D0, typename D1 = D0>
+	constexpr bool operator<( unique_ptr<T, D0> const &lhs,
+	                          unique_ptr<T, D1> const &rhs ) noexcept {
 		return std::less<void>{ }( lhs.get( ), rhs.get( ) );
 	}
 
-	template<typename T>
-	constexpr bool operator<=( unique_ptr<T> const &lhs,
-	                           unique_ptr<T> const &rhs ) noexcept {
+	template<typename T, typename D0, typename D1 = D0>
+	constexpr bool operator<=( unique_ptr<T, D0> const &lhs,
+	                           unique_ptr<T, D1> const &rhs ) noexcept {
 		return not( lhs < rhs );
 	}
 
-	template<typename T>
-	constexpr bool operator>( unique_ptr<T> const &lhs,
-	                          unique_ptr<T> const &rhs ) noexcept {
+	template<typename T, typename D0, typename D1 = D0>
+	constexpr bool operator>( unique_ptr<T, D0> const &lhs,
+	                          unique_ptr<T, D1> const &rhs ) noexcept {
 		return rhs < lhs;
 	}
 
-	template<typename T>
-	constexpr bool operator>=( unique_ptr<T> const &lhs,
-	                           unique_ptr<T> const &rhs ) noexcept {
+	template<typename T, typename D0, typename D1 = D0>
+	constexpr bool operator>=( unique_ptr<T, D0> const &lhs,
+	                           unique_ptr<T, D1> const &rhs ) noexcept {
 		return not( lhs < rhs );
 	}
 } // namespace daw

@@ -29,7 +29,7 @@ namespace daw::overload_details {
 		         std::enable_if_t<std::is_invocable_v<decltype( fp ), Args...>,
 		                          std::nullptr_t> = nullptr>
 		inline constexpr ReturnType operator( )( Args &&...args ) const {
-			return fp( DAW_FWD2( Args, args )... );
+			return fp( DAW_FWD( args )... );
 		}
 	};
 
@@ -41,7 +41,7 @@ namespace daw::overload_details {
 		         std::enable_if_t<std::is_invocable_v<decltype( fp ), Args...>,
 		                          std::nullptr_t> = nullptr>
 		inline constexpr ReturnType operator( )( Args &&...args ) const {
-			return fp( DAW_FWD2( Args, args )... );
+			return fp( DAW_FWD( args )... );
 		}
 	};
 
@@ -59,8 +59,8 @@ namespace daw::overload_details {
 		         std::enable_if_t<std::is_invocable_v<decltype( fp ), Args...>,
 		                          std::nullptr_t> = nullptr>
 		inline constexpr ReturnType operator( )( Args &&...args ) const
-		  noexcept( noexcept( fp( DAW_FWD2( Args, args )... ) ) ) {
-			return fp( DAW_FWD2( Args, args )... );
+		  noexcept( noexcept( fp( DAW_FWD( args )... ) ) ) {
+			return fp( DAW_FWD( args )... );
 		}
 	};
 

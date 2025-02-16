@@ -33,9 +33,14 @@ namespace daw {
 	         bool ExplicitConv = false>
 	struct iter_view {
 		using iterator = ForwardIterator;
+		using last_iterator = Last;
+		using iterator_category =
+		  common_iterator_category_t<std::forward_iterator_tag,
+		                             iter_category_t<iterator>,
+		                             iter_category_t<last_iterator>>;
 		using const_iterator = iterator;
-		using value_type = typename std::iterator_traits<iterator>::value_type;
-		using reference = typename std::iterator_traits<iterator>::reference;
+		using value_type = iter_value_t<iterator>;
+		using reference = iter_reference_t<iterator>;
 		using const_reference =
 		  conditional_t<std::is_rvalue_reference_v<reference>,
 		                std::add_rvalue_reference_t<
@@ -43,8 +48,7 @@ namespace daw {
 		                std::add_lvalue_reference_t<
 		                  std::add_const_t<std::remove_reference_t<reference>>>>;
 		using size_type = std::size_t;
-		using difference_type = std::ptrdiff_t;
-		using last_iterator = Last;
+		using difference_type = iter_difference_t<iterator>;
 		using reverse_iterator = std::reverse_iterator<iterator>;
 		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
@@ -197,7 +201,7 @@ namespace daw {
 		}
 
 		constexpr void remove_prefix( size_type count ) {
-			count = ( std::min )( count, size( ) );
+			count = (std::min)( count, size( ) );
 			std::advance( m_first, count );
 			m_size -= count;
 		}

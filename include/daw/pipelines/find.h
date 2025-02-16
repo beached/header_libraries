@@ -22,13 +22,10 @@
 #include <utility>
 
 namespace daw::pipelines::pimpl {
-	template<std::size_t C,
-	         typename Needle,
-	         typename Projection,
+	template<std::size_t C, typename Needle, typename Projection,
 	         typename... ProjectedValues>
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
-	finder( Needle const &needle,
-	        Projection const &projection,
+	finder( Needle const &needle, Projection const &projection,
 	        ForwardIterator auto it_current,
 	        ProjectedValues &&...projected_values )
 	  requires( not InputIterator<Needle> and not InputIterator<Projection> ) //
@@ -43,9 +40,7 @@ namespace daw::pipelines::pimpl {
 			static_assert( std::invocable<Projection, decltype( *next )>,
 			               "Could not project iterators value_type" );
 			++it_current;
-			return finder<C - 1>( needle,
-			                      projection,
-			                      std::move( it_current ),
+			return finder<C - 1>( needle, projection, std::move( it_current ),
 			                      DAW_FWD( projected_values )...,
 			                      std::invoke( projection, *std::move( next ) ) );
 		}
@@ -70,8 +65,7 @@ namespace daw::pipelines::pimpl {
 		}
 	};
 
-	template<std::size_t FindWidth,
-	         typename Needle,
+	template<std::size_t FindWidth, typename Needle,
 	         typename Projection = std::identity>
 	requires( FindWidth > 0 ) //
 	  struct FindIf_t {
@@ -104,34 +98,31 @@ namespace daw::pipelines {
 	/// When FindWidth == 1, Find - Needle can be a range_value_type or callable
 	/// When FindWidth > 1, Adjacent Find - Needle must be a callable taking
 	/// FindWidth parameters of type range_value_type
-	template<std::size_t FindWidth = 1,
-	         typename Needle,
+	template<std::size_t FindWidth = 1, typename Needle,
 	         typename Projection = std::identity>
 	requires( not Range<Needle> ) //
 	  [[nodiscard]] constexpr auto FindIf(
 	    Needle &&needle, Projection &&projection = Projection{ } ) {
-		return pimpl::FindIf_t<FindWidth, Needle, Projection>(
-		  DAW_FWD( needle ), DAW_FWD( projection ) );
+		return pimpl::FindIf_t<FindWidth, Needle, Projection>{
+		  DAW_FWD( needle ), DAW_FWD( projection ) };
 	}
 
 	template<typename Needle, typename Projection = std::identity>
 	requires( not Range<Needle> ) //
 	  [[nodiscard]] constexpr auto Find(
 	    Needle &&needle, Projection &&projection = Projection{ } ) {
-		return pimpl::FindValue_t<Needle, Projection>( DAW_FWD( needle ),
-		                                               DAW_FWD( projection ) );
+		return pimpl::FindValue_t<Needle, Projection>{ DAW_FWD( needle ),
+		                                               DAW_FWD( projection ) };
 	}
 
-	template<std::size_t FindWidth = 1,
-	         Range R,
-	         typename Needle,
+	template<std::size_t FindWidth = 1, Range R, typename Needle,
 	         typename Projection = std::identity>
 	requires( std::invocable<Projection, daw::range_reference_t<R>> ) //
 	  [[nodiscard]] constexpr auto FindIf(
 	    R &&r, Needle &&needle, Projection &&projection = Projection{ } ) {
 
-		return pimpl::FindIf_t<FindWidth, Needle, Projection>(
-		  DAW_FWD( needle ), DAW_FWD( projection ) )( DAW_FWD( r ) );
+		return pimpl::FindIf_t<FindWidth, Needle, Projection>{
+		  DAW_FWD( needle ), DAW_FWD( projection ) }( DAW_FWD( r ) );
 	}
 
 	template<Range R, typename Needle, typename Projection = std::identity>
@@ -139,7 +130,7 @@ namespace daw::pipelines {
 	  [[nodiscard]] constexpr auto Find(
 	    R &&r, Needle &&needle, Projection &&projection = Projection{ } ) {
 
-		return pimpl::FindValue_t( DAW_FWD( needle ),
-		                           DAW_FWD( projection ) )( DAW_FWD( r ) );
+		return pimpl::FindValue_t<Needle, Projection>{
+		  DAW_FWD( needle ), DAW_FWD( projection ) }( DAW_FWD( r ) );
 	}
 } // namespace daw::pipelines

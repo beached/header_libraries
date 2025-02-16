@@ -17,7 +17,7 @@
 #include <type_traits>
 
 #if not defined( DAW_HAS_CPP20_BIT_CAST ) and \
-  defined( __cpp_lib_bit_cast ) and DAW_HAS_INCLUDE( <bit> )
+  defined( __cpp_lib_bit_cast ) and __has_include( <bit> )
 #if __cpp_lib_bit_cast >= 201806L
 #define DAW_HAS_CPP20_BIT_CAST
 #endif
