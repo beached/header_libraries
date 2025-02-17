@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classdaw_1_1basic__bit__queue-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">daw::basic_bit_queue&lt; queue_type, value_type, BitQueueLSB &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -91,8 +92,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad0c26f6bc2b5f8246cfa1adc57c21cdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec4360dbb116b2e68e5e71d1338f060f" id="r_aec4360dbb116b2e68e5e71d1338f060f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1basic__bit__queue.html#aec4360dbb116b2e68e5e71d1338f060f">can_pop</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">size_t</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> bits) <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> noexcept</td></tr>
 <tr class="separator:aec4360dbb116b2e68e5e71d1338f060f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e04992c1f47ea7fd215150254375ef1" id="r_a2e04992c1f47ea7fd215150254375ef1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1basic__bit__queue.html#a2e04992c1f47ea7fd215150254375ef1">capacity</a> () <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> noexcept</td></tr>
-<tr class="separator:a2e04992c1f47ea7fd215150254375ef1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b8fe83838f99a56c4ec7a6bd9ae8729" id="r_a2b8fe83838f99a56c4ec7a6bd9ae8729"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1basic__bit__queue.html#a2b8fe83838f99a56c4ec7a6bd9ae8729">clear</a> () noexcept</td></tr>
 <tr class="separator:a2b8fe83838f99a56c4ec7a6bd9ae8729"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d77143cb76b6ebd9e966134690a154f" id="r_a8d77143cb76b6ebd9e966134690a154f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1basic__bit__queue.html#a8d77143cb76b6ebd9e966134690a154f">empty</a> () <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> noexcept</td></tr>
@@ -105,17 +104,22 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:abdfcab3e32288e0e090ea67cf6a7b6da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aedcd5ea2005e2383ed44460c3d1c113e" id="r_aedcd5ea2005e2383ed44460c3d1c113e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> value_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1basic__bit__queue.html#aedcd5ea2005e2383ed44460c3d1c113e">pop_front</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">size_t</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> bits) noexcept</td></tr>
 <tr class="separator:aedcd5ea2005e2383ed44460c3d1c113e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae92d95028638888b3b579d17b5d266aa" id="r_ae92d95028638888b3b579d17b5d266aa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1basic__bit__queue.html#ae92d95028638888b3b579d17b5d266aa">push_back</a> (value_type <a class="el" href="classdaw_1_1basic__bit__queue.html#a6dd1236945f05c89f2801b5ab4ac2ffb">value</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">size_t</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> bits=<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">sizeof</a>(value_type) *8)</td></tr>
-<tr class="separator:ae92d95028638888b3b579d17b5d266aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a724624de3a87cf962a7178224e482fb9" id="r_a724624de3a87cf962a7178224e482fb9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1basic__bit__queue.html#a724624de3a87cf962a7178224e482fb9">push_back</a> (value_type <a class="el" href="classdaw_1_1basic__bit__queue.html#a6dd1236945f05c89f2801b5ab4ac2ffb">value</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">size_t</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> bits=<a class="el" href="namespacedaw.html#a500f270ab5b7213169b717f2ace36d48">bit_count_v</a>&lt; value_type &gt;)</td></tr>
+<tr class="separator:a724624de3a87cf962a7178224e482fb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3be3d6fbe41d949f8522eceaddf28457" id="r_a3be3d6fbe41d949f8522eceaddf28457"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1basic__bit__queue.html#a3be3d6fbe41d949f8522eceaddf28457">size</a> () <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> noexcept</td></tr>
 <tr class="separator:a3be3d6fbe41d949f8522eceaddf28457"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6dd1236945f05c89f2801b5ab4ac2ffb" id="r_a6dd1236945f05c89f2801b5ab4ac2ffb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">queue_type</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1basic__bit__queue.html#a6dd1236945f05c89f2801b5ab4ac2ffb">value</a> () <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> noexcept</td></tr>
 <tr class="separator:a6dd1236945f05c89f2801b5ab4ac2ffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:afcbf5413f446ff285e9934e85dec4d23" id="r_afcbf5413f446ff285e9934e85dec4d23"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">static</a> <a class="el" href="daw__consteval_8h.html#ab9e8028f305516c43a6b23d820386407">DAW_CONSTEVAL</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1basic__bit__queue.html#afcbf5413f446ff285e9934e85dec4d23">capacity</a> ()</td></tr>
+<tr class="separator:afcbf5413f446ff285e9934e85dec4d23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">queue_type</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> value_type = uint8_t, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">BitQueueLSB</a> = bit_queue_source_native_endian&gt;<br />
 class daw::basic_bit_queue&lt; queue_type, value_type, BitQueueLSB &gt;</div>
-<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00031">31</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00033">33</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a673b69905d9a3594b29c5fdac38ec396" name="a673b69905d9a3594b29c5fdac38ec396"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a673b69905d9a3594b29c5fdac38ec396">&#9670;&#160;</a></span>basic_bit_queue() <span class="overload">[1/2]</span></h2>
@@ -170,7 +174,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00041">41</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00043">43</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
 
 </div>
 </div>
@@ -201,12 +205,12 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00049">49</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00051">51</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
 
 </div>
 </div>
-<a id="a2e04992c1f47ea7fd215150254375ef1" name="a2e04992c1f47ea7fd215150254375ef1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e04992c1f47ea7fd215150254375ef1">&#9670;&#160;</a></span>capacity()</h2>
+<a id="afcbf5413f446ff285e9934e85dec4d23" name="afcbf5413f446ff285e9934e85dec4d23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcbf5413f446ff285e9934e85dec4d23">&#9670;&#160;</a></span>capacity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -217,20 +221,20 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">size_t</a> <a class="el" href="classdaw_1_1basic__bit__queue.html">daw::basic_bit_queue</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">queue_type</a>, value_type, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">BitQueueLSB</a> &gt;::capacity </td>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">static</a> <a class="el" href="daw__consteval_8h.html#ab9e8028f305516c43a6b23d820386407">DAW_CONSTEVAL</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">size_t</a> <a class="el" href="classdaw_1_1basic__bit__queue.html">daw::basic_bit_queue</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">queue_type</a>, value_type, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">BitQueueLSB</a> &gt;::capacity </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00057">57</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00059">59</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
 
 </div>
 </div>
@@ -259,7 +263,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00117">117</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00119">119</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
 
 </div>
 </div>
@@ -288,7 +292,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00053">53</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00055">55</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
 
 </div>
 </div>
@@ -317,7 +321,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00061">61</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00063">63</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
 
 </div>
 </div>
@@ -346,7 +350,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00122">122</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00124">124</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
 
 </div>
 </div>
@@ -376,7 +380,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00105">105</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00107">107</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
 
 </div>
 </div>
@@ -406,12 +410,12 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00094">94</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00096">96</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
 
 </div>
 </div>
-<a id="ae92d95028638888b3b579d17b5d266aa" name="ae92d95028638888b3b579d17b5d266aa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae92d95028638888b3b579d17b5d266aa">&#9670;&#160;</a></span>push_back()</h2>
+<a id="a724624de3a87cf962a7178224e482fb9" name="a724624de3a87cf962a7178224e482fb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a724624de3a87cf962a7178224e482fb9">&#9670;&#160;</a></span>push_back()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -431,7 +435,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">size_t</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a>&#160;</td>
-          <td class="paramname"><em>bits</em> = <code><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">sizeof</a>(&#160;value_type&#160;)&#160;*&#160;8</code>&#160;</td>
+          <td class="paramname"><em>bits</em> = <code><a class="el" href="namespacedaw.html#a500f270ab5b7213169b717f2ace36d48">bit_count_v</a>&lt;value_type&gt;</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -446,7 +450,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00080">80</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00082">82</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
 
 </div>
 </div>
@@ -475,7 +479,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00045">45</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00047">47</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
 
 </div>
 </div>
@@ -504,7 +508,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00128">128</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__bit__queues_8h_source.html#l00130">130</a> of file <a class="el" href="daw__bit__queues_8h_source.html">daw_bit_queues.h</a>.</p>
 
 </div>
 </div>
