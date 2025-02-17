@@ -307,7 +307,7 @@ namespace daw::cxmath {
 			if( exp > 0 ) {
 				result *= static_cast<Float>( 1ULL << static_cast<size_t>( exp ) );
 			}
-			if( is_neg && result != 0.0 ) {
+			if( is_neg and result != 0.0 ) {
 				result = static_cast<Float>( 1.0 ) / result;
 			}
 			return result;
@@ -344,7 +344,7 @@ namespace daw::cxmath {
 			if( exp > 0 ) {
 				result *= static_cast<Float>( pow10_impl( exp ) );
 			}
-			if( is_neg && result != 0.0 ) {
+			if( is_neg and result != 0.0 ) {
 				result = static_cast<Float>( 1.0 ) / result;
 			}
 			return result;
