@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/ciso646.h"
+#include "daw/daw_bit_count.h"
 #include "daw/impl/daw_int128_check.h"
 #include "daw/impl/daw_numeric_limits.h"
 
@@ -42,7 +43,7 @@ namespace daw {
 		// Cannot reasonably guess as it's imp defined for signed
 		// static constexpr bool is_modulo = true;
 		static constexpr int digits =
-		  static_cast<int>( sizeof( __int128 ) * CHAR_BIT - is_signed );
+		  static_cast<int>( bit_count_v<__int128> - is_signed );
 		static constexpr int digits10 = digits * 3 / 10;
 		static constexpr int max_digits10 = 0;
 		static constexpr int radix = 2;
@@ -112,7 +113,7 @@ namespace daw {
 		static constexpr bool is_bounded = true;
 		static constexpr bool is_modulo = true;
 		static constexpr int digits =
-		  static_cast<int>( sizeof( __uint128_t ) * CHAR_BIT - is_signed );
+		  static_cast<int>( bit_count_v<__uint128_t> - is_signed );
 		static constexpr int digits10 = digits * 3 / 10;
 		static constexpr int max_digits10 = 0;
 		static constexpr int radix = 2;
