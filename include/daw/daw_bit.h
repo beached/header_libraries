@@ -9,9 +9,10 @@
 #pragma once
 
 #include "daw/ciso646.h"
+#include "daw/daw_arith_traits.h"
+#include "daw/daw_bit_count.h"
 #include "daw/daw_traits.h"
 #include "daw/daw_utility.h"
-#include "daw/daw_bit_count.h"
 
 #include <cstddef>
 #include <limits>
@@ -21,8 +22,7 @@ namespace daw {
 	template<typename T>
 	[[deprecated( "Use mask_msb" )]] constexpr T
 	get_left_mask( size_t left_zero_bits ) noexcept {
-		return static_cast<T>( ( std::numeric_limits<T>::max )( ) >>
-		                       left_zero_bits );
+		return static_cast<T>( max_value<T> >> left_zero_bits );
 	}
 
 	template<typename T>
@@ -30,14 +30,13 @@ namespace daw {
 		if( bit_count >= daw::bsizeof<T> ) {
 			return static_cast<T>( 0 );
 		}
-		return static_cast<T>( ( std::numeric_limits<T>::max )( ) >> bit_count );
+		return static_cast<T>( max_value<T> >> bit_count );
 	}
 
 	template<typename T>
 	[[deprecated( "Use mask_lsb" )]] constexpr T
 	get_right_mask( size_t right_zero_bits ) noexcept {
-		return static_cast<T>( ( std::numeric_limits<T>::max )( )
-		                       << right_zero_bits );
+		return static_cast<T>( max_value<T> << right_zero_bits );
 	}
 
 	template<typename T>
@@ -45,7 +44,7 @@ namespace daw {
 		if( bit_count >= daw::bsizeof<T> ) {
 			return static_cast<T>( 0 );
 		}
-		return static_cast<T>( ( std::numeric_limits<T>::max )( ) << bit_count );
+		return static_cast<T>( max_value<T> << bit_count );
 	}
 
 	template<typename Bit, typename... Bits>

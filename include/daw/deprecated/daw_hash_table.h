@@ -8,6 +8,7 @@
 #pragma once
 
 #include "daw/ciso646.h"
+#include "daw/daw_arith_traits.h"
 #include "daw/daw_exception.h"
 #include "daw/daw_exchange.h"
 #include "daw/daw_fnv1a_hash.h"
@@ -15,7 +16,7 @@
 #include "daw/daw_swap.h"
 #include "daw/daw_traits.h"
 #include "daw/daw_utility.h"
-#include "daw_heap_array.h"
+#include "daw/deprecated/daw_heap_array.h"
 
 #include <algorithm>
 #include <functional>
@@ -106,8 +107,7 @@ namespace daw {
 	struct hash_table_item_iterator
 	  : public std::iterator<
 	      std::bidirectional_iterator_tag,
-	      typename impl::hash_table_item<ValueType>::value_type,
-	      std::ptrdiff_t,
+	      typename impl::hash_table_item<ValueType>::value_type, std::ptrdiff_t,
 	      impl::hash_table_item<ValueType> *,
 	      typename impl::hash_table_item<ValueType>::value_type &> {
 		using pointer = impl::hash_table_item<ValueType> *;
@@ -330,8 +330,7 @@ namespace daw {
 		}
 
 	public:
-		hash_table( size_t start_size,
-		            double resize_ratio = 2.0,
+		hash_table( size_t start_size, double resize_ratio = 2.0,
 		            size_t max_load_percent = 70 )
 		  : m_resize_ratio{ resize_ratio }
 		  , m_load{ 0 }
@@ -381,7 +380,7 @@ namespace daw {
 			static const auto s_hash = []( auto &&k ) {
 				size_t result =
 				  ( daw::fnv1a_hash( DAW_FWD( k ) ) %
-				    ( ( std::numeric_limits<std::size_t>::max )( ) -
+				    ( max_value<std::size_t> -
 				      impl::hash_table_item<value_type>::SentinalsSize ) ) +
 				  impl::hash_table_item<value_type>::SentinalsSize; // Guarantee we
 				                                                    // cannot be zero
@@ -426,8 +425,7 @@ namespace daw {
 			return load;
 		}
 
-		static auto find_item_by_hash( size_t hash,
-		                               values_type const &tbl,
+		static auto find_item_by_hash( size_t hash, values_type const &tbl,
 		                               bool skip_removed = true ) {
 			auto const scaled_hash =
 			  static_cast<ptrdiff_t>( scale_hash( hash, tbl.size( ) ) );
@@ -504,8 +502,7 @@ namespace daw {
 
 	public:
 		static size_t max_size( ) {
-			return static_cast<size_t>(
-			  ( std::numeric_limits<std::ptrdiff_t>::max )( ) - 1 );
+			return static_cast<size_t>( max_value<std::ptrdiff_t> - 1 );
 		}
 
 		template<typename Key>

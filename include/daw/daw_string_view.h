@@ -14,6 +14,7 @@
 #include "daw/algorithms/daw_algorithm_find.h"
 #include "daw/ciso646.h"
 #include "daw/cpp_20.h"
+#include "daw/daw_arith_traits.h"
 #include "daw/daw_assume.h"
 #include "daw/daw_bitset.h"
 #include "daw/daw_check_exceptions.h"
@@ -560,7 +561,7 @@ namespace daw {
 			}
 
 			static constexpr auto zt_offset =
-			  static_cast<size_type>( std::numeric_limits<difference_type>::min( ) );
+			  static_cast<size_type>( lowest_value<difference_type> );
 
 			[[nodiscard]] DAW_ATTRIB_INLINE static constexpr size_type
 			size( const_pointer, size_type l ) {

@@ -8,14 +8,14 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_arith_traits.h"
-#include "daw_exception.h"
-#include "daw_fnv1a_hash.h"
-#include "daw_swap.h"
-#include "daw_traits.h"
-#include "daw_utility.h"
-#include "traits/daw_traits_conditional.h"
+#include "daw/ciso646.h"
+#include "daw/daw_arith_traits.h"
+#include "daw/daw_exception.h"
+#include "daw/daw_fnv1a_hash.h"
+#include "daw/daw_swap.h"
+#include "daw/daw_traits.h"
+#include "daw/daw_utility.h"
+#include "daw/traits/daw_traits_conditional.h"
 
 #include <iterator>
 #include <limits>
@@ -46,8 +46,7 @@ namespace daw {
 
 	template<typename IntType>
 	inline IntType randint( ) {
-		return randint<IntType>( ( std::numeric_limits<IntType>::min )( ),
-		                         ( std::numeric_limits<IntType>::max )( ) );
+		return randint<IntType>( lowest_value<IntType>, max_value<IntType> );
 	}
 
 	inline void reseed( ) {
@@ -92,10 +91,9 @@ namespace daw {
 	 * @return container with values
 	 */
 	template<typename IntType, typename Result = std::vector<IntType>>
-	inline Result
-	make_random_data( size_t count,
-	                  IntType a = ( std::numeric_limits<IntType>::min )( ),
-	                  IntType b = ( std::numeric_limits<IntType>::max )( ) ) {
+	inline Result make_random_data( std::size_t count,
+	                                IntType a = lowest_value<IntType>,
+	                                IntType b = max_value<IntType> ) {
 
 		static_assert( std::is_integral_v<IntType>,
 		               "IntType must be a valid integral type" );
@@ -111,8 +109,8 @@ namespace daw {
 
 	namespace cxrand_impl {
 #ifdef USE_CXSEED
-		constexpr size_t generate_seed( char const *first,
-		                                size_t seed = 0 ) noexcept {
+		constexpr std::size_t generate_seed( char const *first,
+		                                     std::size_t seed = 0 ) noexcept {
 			// Use djb2 to hash the string to generate seed
 			size_t result = seed == 0 ? 5381U : seed;
 			while( first and *first != 0 ) {
@@ -122,7 +120,7 @@ namespace daw {
 			return result;
 		}
 
-		constexpr size_t generate_seed( ) noexcept {
+		constexpr std::size_t generate_seed( ) noexcept {
 			size_t result = generate_seed( __FILE__ );
 			result = generate_seed( __DATE__, result );
 			result = generate_seed( __TIME__, result );
@@ -131,12 +129,12 @@ namespace daw {
 		}
 #endif
 		template<size_t N, std::enable_if_t<( N == 4 ), std::nullptr_t> = nullptr>
-		constexpr size_t rand_lcg( size_t x_prev ) noexcept {
+		constexpr std::size_t rand_lcg( std::size_t x_prev ) noexcept {
 			return x_prev * 1664525UL + 1013904223UL;
 		}
 
 		template<size_t N, std::enable_if_t<( N == 8 ), std::nullptr_t> = nullptr>
-		constexpr size_t rand_lcg( size_t x_prev ) noexcept {
+		constexpr std::size_t rand_lcg( std::size_t x_prev ) noexcept {
 			return x_prev * 2862933555777941757ULL + 3037000493ULL;
 		}
 	} // namespace cxrand_impl
@@ -148,7 +146,7 @@ namespace daw {
 
 	private:
 #ifdef USE_CXSEED
-		size_t m_state = cxrand_impl::rand_lcg<sizeof( size_t )>( m_seed );
+		size_t m_state = cxrand_impl::rand_lcg<sizeof( std::size_t )>( m_seed );
 #else
 		size_t m_state;
 #endif
@@ -157,11 +155,11 @@ namespace daw {
 #ifdef USE_CXSEED
 		static_random( ) = default;
 #endif
-		constexpr static_random( size_t seed ) noexcept
-		  : m_state( cxrand_impl::rand_lcg<sizeof( size_t )>( seed ) ) {}
+		constexpr static_random( std::size_t seed ) noexcept
+		  : m_state( cxrand_impl::rand_lcg<sizeof( std::size_t )>( seed ) ) {}
 
-		constexpr size_t operator( )( ) noexcept {
-			m_state = cxrand_impl::rand_lcg<sizeof( size_t )>( m_state );
+		constexpr std::size_t operator( )( ) noexcept {
+			m_state = cxrand_impl::rand_lcg<sizeof( std::size_t )>( m_state );
 			return daw::fnv1a_hash( m_state );
 		}
 	};
@@ -194,8 +192,8 @@ namespace daw {
 		  : m_engine( static_cast<result_type>( seed ) ) {}
 
 		constexpr result_type
-		operator( )( Integer MaxInclusive = std::numeric_limits<Integer>::max( ),
-		             Integer MinInclusive = std::numeric_limits<Integer>::min( ) ) {
+		operator( )( Integer MaxInclusive = max_value<Integer>,
+		             Integer MinInclusive = lowest_value<Integer> ) {
 			daw::exception::daw_throw_on_false(
 			  MinInclusive < MaxInclusive,
 			  "MinInclusive < MaxInclusive must be true" );

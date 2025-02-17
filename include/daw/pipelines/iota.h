@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw/daw_arith_traits.h"
 #include "daw/daw_concepts.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/iterator/daw_arrow_proxy.h"
@@ -31,7 +32,7 @@ namespace daw::pipelines {
 		using size_type = std::size_t;
 
 	private:
-		T value = std::numeric_limits<T>::max( );
+		T value = max_value<T>;
 
 	public:
 		explicit iota_iterator( ) = default;

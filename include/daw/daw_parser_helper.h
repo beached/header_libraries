@@ -287,11 +287,11 @@ namespace daw::parser {
 	}
 
 	template<typename T, typename Min, typename Max>
-	[[nodiscard]] constexpr bool in_range( T value, Min min_value,
-	                                       Max max_value ) noexcept {
+	[[nodiscard]] constexpr bool in_range( T value, Min minimum_value,
+	                                       Max maximum_value ) noexcept {
 		using val_t = typename daw::traits::max_sizeof<T, Min, Max>::type;
-		return static_cast<val_t>( min_value ) <= static_cast<val_t>( value ) &&
-		       static_cast<val_t>( value ) <= static_cast<val_t>( max_value );
+		return static_cast<val_t>( minimum_value ) <= static_cast<val_t>( value ) &&
+		       static_cast<val_t>( value ) <= static_cast<val_t>( maximum_value );
 	}
 
 	template<typename T>

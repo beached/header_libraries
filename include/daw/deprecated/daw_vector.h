@@ -560,8 +560,7 @@ namespace daw {
 		}
 
 		[[nodiscard]] static size_type max_size( ) {
-			return static_cast<size_type>(
-			  std::numeric_limits<difference_type>::max( ) );
+			return static_cast<size_type>( max_value<difference_type> );
 		}
 
 		[[nodiscard]] constexpr bool empty( ) const {

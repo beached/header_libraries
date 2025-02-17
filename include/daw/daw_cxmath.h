@@ -300,8 +300,8 @@ namespace daw::cxmath {
 			              bit_count_v<std::size_t> );
 			Float result = 1.0;
 
-			while( static_cast<size_t>( exp ) >= max_shft ) {
-				result *= static_cast<Float>( ( daw::numeric_limits<size_t>::max )( ) );
+			while( static_cast<std::size_t>( exp ) >= max_shft ) {
+				result *= static_cast<Float>( max_value<std::size_t> );
 				exp -= max_shft;
 			}
 			if( exp > 0 ) {
@@ -314,7 +314,7 @@ namespace daw::cxmath {
 		}
 
 		[[nodiscard]] constexpr size_t pow10_impl( intmax_t exp ) noexcept {
-			// exp is < floor( log10( numeric_limits<size_t>::max( ) ) )
+			// exp is < floor( log10( max_value<std::size_t> ) )
 			size_t result = 1ULL;
 			while( exp-- > 0 ) {
 				result *= 10ULL;
@@ -725,11 +725,11 @@ namespace daw::cxmath {
 		if( f == 0.0f ) {
 			return static_cast<std::int32_t>( 0 );
 		}
-		if( f > ( daw::numeric_limits<Real>::max )( ) ) {
+		if( f > max_value<Real> ) {
 			// inf
 			return std::nullopt;
 		}
-		if( f < -( daw::numeric_limits<Real>::max )( ) ) {
+		if( f < -max_value<Real> ) {
 			// -inf
 			return std::nullopt;
 		}
@@ -896,10 +896,10 @@ namespace daw::cxmath {
 			// Once c++20 use bit_cast
 			if( f == 0.0f ) {
 				return { 0, f }; // also matches -0.0f and gives wrong result
-			} else if( f > ( daw::numeric_limits<float>::max )( ) ) {
+			} else if( f > max_value<float> ) {
 				// infinity
 				return { 0x7f80'0000, f };
-			} else if( f < -( daw::numeric_limits<float>::max )( ) ) {
+			} else if( f < lowest_value<float> ) {
 				// negative infinity
 				return { 0xff800000, f };
 			} else if( f != f ) {

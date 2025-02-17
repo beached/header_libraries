@@ -11,8 +11,8 @@
 
 #pragma once
 
-#include "daw_arith_traits.h"
-#include "daw_attributes.h"
+#include "daw/daw_arith_traits.h"
+#include "daw/daw_attributes.h"
 
 #include <cstddef>
 #include <limits>
@@ -92,8 +92,8 @@ namespace daw {
 		if constexpr( std::is_same_v<R, T> ) {
 			return true;
 		} else {
-			return cmp_greater_equal( t, daw::numeric_limits<R>::min( ) ) and
-			       cmp_less_equal( t, daw::numeric_limits<R>::max( ) );
+			return cmp_greater_equal( t, lowest_value<R> ) and
+			       cmp_less_equal( t, max_value<R> );
 		}
 	}
 

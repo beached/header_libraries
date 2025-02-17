@@ -8,12 +8,13 @@
 
 #pragma once
 
-#include "daw_concepts.h"
-#include "daw_consteval.h"
-#include "daw_utility.h"
-#include "impl/daw_view_tags.h"
-#include "traits/daw_traits_conditional.h"
-#include "wrap_iter.h"
+#include "daw/daw_arith_traits.h"
+#include "daw/daw_concepts.h"
+#include "daw/daw_consteval.h"
+#include "daw/daw_utility.h"
+#include "daw/impl/daw_view_tags.h"
+#include "daw/traits/daw_traits_conditional.h"
+#include "daw/wrap_iter.h"
 
 #include <algorithm>
 #include <cassert>
@@ -105,8 +106,7 @@ namespace daw {
 		  , m_last( std::end( c ) ) {}
 
 		constexpr iter_view
-		subspan( size_type offset,
-		         size_type count = std::numeric_limits<size_type>::max( ) ) const {
+		subspan( size_type offset, size_type count = max_value<size_type> ) const {
 			auto const sz = std::min( count, size( ) - std::min( size( ), offset ) );
 			return iter_view( std::next( begin( ), offset ),
 			                  std::next( begin( ), sz ) );

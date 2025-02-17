@@ -10,14 +10,15 @@
 
 #include "daw/ciso646.h"
 #include "daw/daw_algorithm.h"
+#include "daw/daw_arith_traits.h"
+#include "daw/daw_bounded_vector.h"
 #include "daw/daw_exception.h"
 #include "daw/daw_fnv1a_hash.h"
 #include "daw/daw_move.h"
 #include "daw/daw_utility.h"
+#include "daw/deprecated/daw_bounded_hash_map.h"
+#include "daw/deprecated/daw_bounded_hash_set.h"
 #include "daw/iterator/daw_back_inserter.h"
-#include "daw_bounded_hash_map.h"
-#include "daw_bounded_hash_set.h"
-#include "daw_bounded_vector.h"
 
 #include <cstddef>
 #include <functional>
@@ -32,12 +33,11 @@ namespace daw {
 	struct bounded_graph_t;
 
 	class node_id_t {
-		static inline constexpr size_t const NO_ID =
-		  ( std::numeric_limits<size_t>::max )( );
+		static constexpr auto const NO_ID = max_value<std::size_t>;
 
 		size_t m_value = NO_ID;
 
-		constexpr size_t value( ) const noexcept {
+		constexpr std::size_t value( ) const noexcept {
 			daw::exception::dbg_precondition_check( m_value != NO_ID );
 			return m_value;
 		}
@@ -105,8 +105,7 @@ namespace daw {
 			using value_type = T;
 			using reference = value_type &;
 			using const_reference = value_type const &;
-			using edges_t = daw::bounded_hash_set_t<node_id_t,
-			                                        MaxVerticesPerNode,
+			using edges_t = daw::bounded_hash_set_t<node_id_t, MaxVerticesPerNode,
 			                                        std::hash<daw::node_id_t>>;
 
 		private:

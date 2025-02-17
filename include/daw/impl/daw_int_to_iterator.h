@@ -9,9 +9,10 @@
 #pragma once
 
 #include "daw/ciso646.h"
-#include "daw/deprecated/daw_bounded_string.h"
+#include "daw/daw_arith_traits.h"
 #include "daw/daw_exception.h"
 #include "daw/daw_traits.h"
+#include "daw/deprecated/daw_bounded_string.h"
 
 #include <limits>
 
@@ -33,8 +34,7 @@ namespace daw {
 		}
 
 		template<
-		  typename Result,
-		  typename Integer,
+		  typename Result, typename Integer,
 		  std::enable_if_t<std::is_integral_v<Result>, std::nullptr_t> = nullptr>
 		constexpr Result pow10( Integer n ) noexcept {
 			uint64_t const vals[10] = { 1ULL,
@@ -164,8 +164,7 @@ namespace daw {
 			}
 		};
 		template<
-		  typename Result,
-		  typename Number,
+		  typename Result, typename Number,
 		  std::enable_if_t<std::is_arithmetic_v<Number>, std::nullptr_t> = nullptr>
 		constexpr uint16_t whole_log10( Number positive_value ) noexcept {
 			Result result = 0;
@@ -176,9 +175,7 @@ namespace daw {
 			return result;
 		}
 		// Integer numbers
-		template<typename CharT,
-		         typename OutputIterator,
-		         typename Integer,
+		template<typename CharT, typename OutputIterator, typename Integer,
 		         typename Traits = daw::impl::char_traits<CharT>,
 		         std::enable_if_t<
 		           daw::all_true_v<
@@ -187,11 +184,11 @@ namespace daw {
 		             not std::is_floating_point_v<daw::remove_cvref_t<Integer>>,
 		             not daw::traits::is_character_v<Integer>>,
 		           std::nullptr_t> = nullptr>
-		constexpr OutputIterator
-		to_os_string( OutputIterator it, Integer value, daw::tag_t<int> ) {
+		constexpr OutputIterator to_os_string( OutputIterator it, Integer value,
+		                                       daw::tag_t<int> ) {
 
 			if( value < 0 ) {
-				if( value == ( std::numeric_limits<Integer>::min )( ) ) {
+				if( value == lowest_value<Integer> ) {
 					constexpr auto m = min_strings::get(
 					  CharT{ }, std::integral_constant<size_t, sizeof( Integer )>{ } );
 					return daw::algorithm::copy( m.begin( ), m.end( ), it );
@@ -201,8 +198,7 @@ namespace daw {
 				value = -value;
 			}
 			for( auto p10 = pow10<Integer>( whole_log10<uint16_t>( value ) );
-			     p10 >= 1;
-			     p10 /= static_cast<Integer>( 10 ) ) {
+			     p10 >= 1; p10 /= static_cast<Integer>( 10 ) ) {
 
 				auto const tmp = value / p10;
 
@@ -226,9 +222,7 @@ namespace daw {
 	                  not daw::traits::is_character_v<Integer>>;
 
 	template<
-	  typename CharT,
-	  typename OutputIterator,
-	  typename Integer,
+	  typename CharT, typename OutputIterator, typename Integer,
 	  typename Traits = daw::impl::char_traits<CharT>,
 	  std::enable_if_t<can_to_os_string_int_v<daw::remove_cvref_t<Integer>>,
 	                   std::nullptr_t> = nullptr>

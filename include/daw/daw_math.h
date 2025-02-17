@@ -8,11 +8,11 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "cpp_17.h"
-#include "daw_traits.h"
-// #include "daw_utility.h"
-#include "impl/daw_math_impl.h"
+#include "daw/ciso646.h"
+#include "daw/cpp_17.h"
+#include "daw/daw_arith_traits.h"
+#include "daw/daw_traits.h"
+#include "daw/impl/daw_math_impl.h"
 
 #include <cassert>
 #include <cfenv>
@@ -142,8 +142,7 @@ namespace daw::math {
 	                          std::nullptr_t> = nullptr>
 	[[nodiscard]] constexpr Result abs( SignedInteger v ) noexcept {
 		// This accounts for when negating the number is out of range
-		if( static_cast<intmax_t>( v ) ==
-		    ( std::numeric_limits<intmax_t>::min )( ) ) {
+		if( static_cast<intmax_t>( v ) == lowest_value<intmax_t> ) {
 			return pow2<Result>( bsizeof<intmax_t> - 1 );
 		}
 		if( v < 0 ) {
@@ -233,9 +232,9 @@ namespace daw::math {
 	///
 	template<typename T, typename U>
 	[[nodiscard]] constexpr auto value_or_min( T const &value,
-	                                           U const &min_value ) noexcept {
-		if( min_value > value ) {
-			return min_value;
+	                                           U const &minimum_value ) noexcept {
+		if( minimum_value > value ) {
+			return minimum_value;
 		}
 		return value;
 	}
@@ -282,9 +281,7 @@ namespace daw::math {
 			return diff < ( epsilon * std::numeric_limits<T>::min_exponent );
 		}
 		// use relative error
-		return diff / ( daw::min )( ( absA + absB ),
-		                            ( std::numeric_limits<T>::max )( ) ) <
-		       epsilon;
+		return diff / (daw::min)(( absA + absB ), max_value<T>) < epsilon;
 	}
 #ifdef __clang__
 #pragma clang diagnostic pop

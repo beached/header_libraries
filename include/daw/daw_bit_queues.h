@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/ciso646.h"
+#include "daw/daw_arith_traits.h"
 #include "daw/daw_bit.h"
 #include "daw/daw_bit_count.h"
 #include "daw/daw_endian.h"

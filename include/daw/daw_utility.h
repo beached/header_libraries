@@ -8,21 +8,22 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "cpp_17.h"
-#include "daw_algorithm.h"
-#include "daw_can_constant_evaluate.h"
-#include "daw_construct_a.h"
-#include "daw_empty.h"
-#include "daw_exception.h"
-#include "daw_int_cmp.h"
-#include "daw_likely.h"
-#include "daw_move.h"
-#include "daw_remove_cvref.h"
-#include "daw_traits.h"
-#include "daw_typeof.h"
-#include "daw_unused.h"
-#include "impl/daw_make_trait.h"
+#include "daw/ciso646.h"
+#include "daw/cpp_17.h"
+#include "daw/daw_algorithm.h"
+#include "daw/daw_arith_traits.h"
+#include "daw/daw_can_constant_evaluate.h"
+#include "daw/daw_construct_a.h"
+#include "daw/daw_empty.h"
+#include "daw/daw_exception.h"
+#include "daw/daw_int_cmp.h"
+#include "daw/daw_likely.h"
+#include "daw/daw_move.h"
+#include "daw/daw_remove_cvref.h"
+#include "daw/daw_traits.h"
+#include "daw/daw_typeof.h"
+#include "daw/daw_unused.h"
+#include "daw/impl/daw_make_trait.h"
 
 #include <cmath>
 #include <cstddef>
@@ -427,9 +428,9 @@ namespace daw {
 		static_assert( std::is_integral_v<IntegerSource>,
 		               "Must supply an integral type" );
 		if( value >= 0 ) {
-			return value <= ( std::numeric_limits<IntegerDest>::max )( );
-		} else if( std::numeric_limits<IntegerDest>::is_signed ) {
-			return value >= ( std::numeric_limits<IntegerDest>::min )( );
+			return value <= max_value<IntegerDest>;
+		} else if( is_signed_v<IntegerDest> ) {
+			return value >= lowest_value<IntegerDest>;
 		} else {
 			return false;
 		}

@@ -8,10 +8,11 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_algorithm.h"
-#include "daw_fnv1a_hash.h"
-#include "daw_move.h"
+#include "daw/ciso646.h"
+#include "daw/daw_algorithm.h"
+#include "daw/daw_arith_traits.h"
+#include "daw/daw_fnv1a_hash.h"
+#include "daw/daw_move.h"
 
 #include <limits>
 
@@ -50,23 +51,23 @@ namespace daw {
 		template<typename K>
 		[[nodiscard]] static constexpr size_t hash_fn( K const &key ) {
 			return ( daw::fnv1a_hash( key ) %
-			         ( ( std::numeric_limits<std::size_t>::max )( ) -
-			           static_cast<size_t>( hash_sentinals::Size ) ) ) +
-			       static_cast<size_t>( hash_sentinals::Size );
+			         ( max_value<std::size_t> -
+			           static_cast<std::size_t>( hash_sentinals::Size ) ) ) +
+			       static_cast<std::size_t>( hash_sentinals::Size );
 		}
 
 		[[nodiscard]] static constexpr size_t hash_fn( char const *const key ) {
 			return ( daw::fnv1a_hash( key ) %
-			         ( ( std::numeric_limits<std::size_t>::max )( ) -
-			           static_cast<size_t>( hash_sentinals::Size ) ) ) +
-			       static_cast<size_t>( hash_sentinals::Size );
+			         ( max_value<std::size_t> -
+			           static_cast<std::size_t>( hash_sentinals::Size ) ) ) +
+			       static_cast<std::size_t>( hash_sentinals::Size );
 		}
 
 		[[nodiscard]] constexpr size_t find_impl( size_t const hash ) const {
 			auto const scaled_hash = scale_hash( hash );
 			for( size_t n = scaled_hash; n < Capacity; ++n ) {
 				if( m_values[n].hash_value ==
-				    static_cast<size_t>( hash_sentinals::empty ) ) {
+				    static_cast<std::size_t>( hash_sentinals::empty ) ) {
 					return n;
 				} else if( m_values[n].hash_value == hash ) {
 					return n;
@@ -74,7 +75,7 @@ namespace daw {
 			}
 			for( size_t n = 0; n < scaled_hash; ++n ) {
 				if( m_values[n].hash_value ==
-				    static_cast<size_t>( hash_sentinals::empty ) ) {
+				    static_cast<std::size_t>( hash_sentinals::empty ) ) {
 					return n;
 				} else if( m_values[n].hash_value == hash ) {
 					return n;
@@ -86,13 +87,13 @@ namespace daw {
 		[[nodiscard]] constexpr size_t find_next_empty( size_t const pos ) const {
 			for( size_t n = pos; n < Capacity; ++n ) {
 				if( m_values[n].hash_value ==
-				    static_cast<size_t>( hash_sentinals::empty ) ) {
+				    static_cast<std::size_t>( hash_sentinals::empty ) ) {
 					return n;
 				}
 			}
 			for( size_t n = 0; n < pos; ++n ) {
 				if( m_values[n].hash_value ==
-				    static_cast<size_t>( hash_sentinals::empty ) ) {
+				    static_cast<std::size_t>( hash_sentinals::empty ) ) {
 					return n;
 				}
 			}
