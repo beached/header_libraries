@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw/daw_arith_traits.h"
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_move.h"
 #include "daw/pipelines/iota.h"
@@ -24,8 +25,7 @@ namespace daw::pipelines::pimpl {
 		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
 			static_assert( Range<R> );
 			return zip_view<iota_view<EnumType>, daw::remove_cvref_t<R>>(
-			  iota_view<EnumType>( 0, std::numeric_limits<EnumType>::max( ) ),
-			  DAW_FWD( r ) );
+			  iota_view<EnumType>( 0, max_value<EnumType> ), DAW_FWD( r ) );
 		}
 	};
 
@@ -36,8 +36,7 @@ namespace daw::pipelines::pimpl {
 		[[nodiscard]] constexpr auto operator( )( R &&r ) const {
 			static_assert( Range<R> );
 			return zip_view<iota_view<EnumType>, daw::remove_cvref_t<R>>(
-			  iota_view<EnumType>( offset, std::numeric_limits<EnumType>::max( ) ),
-			  DAW_FWD( r ) );
+			  iota_view<EnumType>( offset, max_value<EnumType> ), DAW_FWD( r ) );
 		}
 	};
 
@@ -51,8 +50,7 @@ namespace daw::pipelines::pimpl {
 				  std::distance( std::begin( r ), std::end( r ) ) );
 				return ZipMore( iota_view<EnumType>( EnumType{ }, sz ), DAW_FWD( r ) );
 			} else {
-				return ZipMore( iota_view<EnumType>(
-				                  EnumType{ }, std::numeric_limits<EnumType>::max( ) ),
+				return ZipMore( iota_view<EnumType>( EnumType{ }, max_value<EnumType> ),
 				                DAW_FWD( r ) );
 			}
 		}
@@ -69,9 +67,8 @@ namespace daw::pipelines::pimpl {
 				return ZipMore( iota_view<EnumType>( offset, offset + sz ),
 				                DAW_FWD( r ) );
 			} else {
-				return ZipMore(
-				  iota_view<EnumType>( offset, std::numeric_limits<EnumType>::max( ) ),
-				  DAW_FWD( r ) );
+				return ZipMore( iota_view<EnumType>( offset, max_value<EnumType> ),
+				                DAW_FWD( r ) );
 			}
 		}
 	};

@@ -29,8 +29,7 @@ namespace daw {
 	struct graph_t;
 
 	class node_id_t {
-		static inline constexpr size_t const NO_ID =
-		  ( std::numeric_limits<size_t>::max )( );
+		static inline constexpr size_t const NO_ID = max_value<std::size_t>;
 		size_t m_value = NO_ID;
 
 		constexpr size_t value( ) const noexcept {

@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/ciso646.h"
+#include "daw/daw_arith_traits.h"
 #include "daw/daw_exception.h"
 #include "daw/daw_generic_hash.h"
 #include "daw/daw_move.h"
@@ -60,7 +61,7 @@ namespace daw {
 		using value_t = daw::traits::root_type_t<Value>;
 		using hash_value_t = typename daw::generic_hash_t<HashSize>::hash_value_t;
 		static_assert(
-		  N <= ( std::numeric_limits<hash_value_t>::max )( ),
+		  N <= max_value<hash_value_t>,
 		  "Cannot allocate more values than can be addressed by hash value" );
 
 		using reference = value_t &;
@@ -90,7 +91,7 @@ namespace daw {
 		static constexpr hash_value_t hash_fn( KeyType &&key ) noexcept {
 			auto const hash = daw::generic_hash<HashSize>( DAW_FWD( key ) );
 			auto const divisor =
-			  ( std::numeric_limits<hash_value_t>::max )( ) -
+			  max_value<hash_value_t> -
 			  impl::fixed_lookup_sentinals::fixed_lookup_sentinals_size;
 			return ( hash % divisor ) +
 			       impl::fixed_lookup_sentinals::fixed_lookup_sentinals_size;

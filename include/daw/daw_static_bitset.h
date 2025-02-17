@@ -8,14 +8,15 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_bit.h"
-#include "daw_bounded_array.h"
+#include "daw/ciso646.h"
+#include "daw/daw_bit.h"
+#include "daw/daw_bit_count.h"
+#include "daw/daw_bounded_array.h"
 #include "daw/daw_check_exceptions.h"
-#include "daw_string_view.h"
-#include "daw_traits.h"
-#include "daw_utility.h"
-#include "traits/daw_traits_conditional.h"
+#include "daw/daw_string_view.h"
+#include "daw/daw_traits.h"
+#include "daw/daw_utility.h"
+#include "daw/traits/daw_traits_conditional.h"
 
 #include <array>
 #include <cstdint>
@@ -94,7 +95,7 @@ namespace daw {
 				bw = bsizeof<value_t> - bw;
 			}
 			if( bw == 0 ) {
-				return ( std::numeric_limits<value_t>::max )( );
+				return max_value<value_t>;
 			}
 			return daw::mask_msb<value_t>( bw );
 		}
@@ -345,7 +346,7 @@ namespace daw {
 		template<size_t BitWidthRhs>
 		constexpr static_bitset
 		operator|=( static_bitset<BitWidthRhs> const &rhs ) noexcept {
-			size_t const SZ = ( std::min )( m_data.size( ), rhs.m_data.size( ) );
+			size_t const SZ = (std::min)( m_data.size( ), rhs.m_data.size( ) );
 			for( size_t n = 0; n < SZ; ++n ) {
 				m_data[n] |= rhs.m_data[n];
 			}
@@ -353,7 +354,7 @@ namespace daw {
 		}
 
 		template<size_t BitWidthRhs>
-		constexpr static_bitset<( std::max )( BitWidth, BitWidthRhs )>
+		constexpr static_bitset<(std::max)( BitWidth, BitWidthRhs )>
 		operator|( static_bitset<BitWidthRhs> const &rhs ) const noexcept {
 			if constexpr( BitWidth >= BitWidthRhs ) {
 				static_bitset result( *this );
@@ -369,7 +370,7 @@ namespace daw {
 		template<size_t BitWidthRhs>
 		constexpr static_bitset &
 		operator&=( static_bitset<BitWidthRhs> const &rhs ) noexcept {
-			size_t const SZ = ( std::min )( m_data.size( ), rhs.m_data.size( ) );
+			size_t const SZ = (std::min)( m_data.size( ), rhs.m_data.size( ) );
 			size_t n = 0;
 			for( ; n < SZ; ++n ) {
 				m_data[n] &= rhs.m_data[n];
@@ -389,9 +390,9 @@ namespace daw {
 		}
 
 		template<size_t BitWidthRhs>
-		constexpr static_bitset<( std::max )( BitWidth, BitWidthRhs )>
+		constexpr static_bitset<(std::max)( BitWidth, BitWidthRhs )>
 		operator^( static_bitset<BitWidthRhs> const &rhs ) const noexcept {
-			static_bitset<( std::max )( BitWidth, BitWidthRhs )> result{ };
+			static_bitset<(std::max)( BitWidth, BitWidthRhs )> result{ };
 			size_t n = 0;
 			for( ; n < m_data.size( ) and n < rhs.m_data.size( ); ++n ) {
 				result.m_data[n] = m_data[n] ^ rhs.m_data[n];
@@ -417,7 +418,7 @@ namespace daw {
 		template<size_t BitWidthRhs>
 		constexpr bool
 		operator==( static_bitset<BitWidthRhs> const &rhs ) const noexcept {
-			size_t const last = ( std::min )( m_data.size( ), rhs.m_data.size( ) );
+			size_t const last = (std::min)( m_data.size( ), rhs.m_data.size( ) );
 			size_t n = 0;
 			for( ; n < last; ++n ) {
 				if( m_data[n] != rhs.m_data[n] ) {
@@ -440,7 +441,7 @@ namespace daw {
 		template<size_t BitWidthRhs>
 		constexpr bool
 		operator!=( static_bitset<BitWidthRhs> const &rhs ) const noexcept {
-			size_t const last = ( std::min )( m_data.size( ), rhs.m_data.size( ) );
+			size_t const last = (std::min)( m_data.size( ), rhs.m_data.size( ) );
 			size_t n = 0;
 			for( ; n < last; ++n ) {
 				if( m_data[n] != rhs.m_data[n] ) {

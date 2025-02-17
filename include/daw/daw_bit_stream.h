@@ -8,9 +8,10 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_bit_queues.h"
-#include "daw_exception.h"
+#include "daw/ciso646.h"
+#include "daw/daw_bit_count.h"
+#include "daw/daw_bit_queues.h"
+#include "daw/daw_exception.h"
 
 #include <cstdint>
 #include <iterator>
@@ -18,50 +19,6 @@
 #include <type_traits>
 
 namespace daw {
-	/*template<typename InputIteratorF, typename InputIteratorL> class bit_stream;
-
-	template<typename BitStream>
-	struct bit_stream_iterator: public std::input_iterator_tag {
-	    using value_type = typename
-	std::iterator_traits<InputIteratorF>::value_type; using difference_type =
-	typename std::iterator_traits<InputIteratorF>::difference_type; using
-	reference = typename std::iterator_traits<InputIteratorF>::reference; using
-	pointer = typename std::iterator_traits<InputIteratorF>::pointer; private:
-	    BitStream * m_bit_stream;
-	    bool m_is_end;
-
-	    bool at_end( ) const {
-	        return !m_bit_stream->valid( );
-	    }
-
-	    template<typename InputIteratorF, typename InputIteratorL> friend class
-	bit_stream;
-
-	    bit_stream_iterator( BitStream * bit_stream, bool is_end ):
-	            m_bit_stream{ bit_stream },
-	            m_is_end{ is_end } { }
-	public:
-	    bit_stream_iterator( BitStream & bit_stream ):
-	            bit_stream_iterator{ &bit_stream, !bit_stream } { }
-
-	    bool operator==( bit_stream_iterator const & rhs ) const {
-	        return (std::tie( m_bit_stream, m_bit_stream->m_first,
-	m_bit_stream->m_left_overs ) == std::tie( rhs.m_bit_stream,
-	rhs.m_bit_stream->m_first, rhs.m_bit_stream->m_left_overs )) or (is_end or
-	!valid)
-	    }
-
-	    bool operator!=( bit_stream_iterator const & rhs ) const {
-	        return std::tie( m_bit_stream, m_bit_stream->m_first,
-	m_bit_stream->m_left_overs ) != std::tie( rhs.m_bit_stream,
-	rhs.m_bit_stream->m_first, rhs.m_bit_stream->m_left_overs );
-	    }
-
-	    value_type operator*( ) {
-	        return m_bit
-	    }
-	};*/
-
 	template<typename InputIteratorF, typename InputIteratorL,
 	         typename BitQueueLSB = bit_queue_source_native_endian>
 	struct bit_stream {
@@ -90,9 +47,9 @@ namespace daw {
 			return valid( );
 		}
 
-		value_type pop_bits( size_t num_bits = sizeof( value_type ) * 8 ) {
+		value_type pop_bits( std::size_t num_bits = bit_count_v<value_type> ) {
 			daw::exception::dbg_throw_on_true<std::overflow_error>(
-			  num_bits > sizeof( value_type ) * 8,
+			  num_bits > bit_count_v<value_type>,
 			  "Attempt to pop more bits than can fit into value" );
 			daw::exception::dbg_throw_on_true<std::runtime_error>(
 			  num_bits == 0, "Attempt to pop 0 bits" );
@@ -123,15 +80,15 @@ namespace daw {
 	template<typename T, typename BitStream>
 	auto pop_value( BitStream &bs, size_t bits_needed ) {
 		daw::exception::dbg_throw_on_false(
-		  bits_needed <= sizeof( T ) * 8,
+		  bits_needed <= bit_count_t<T>,
 		  "Attempt to extra more bits than can fit" );
 
 		using value_type = typename BitStream::value_type;
 		T result = 0;
-		while( bits_needed >= sizeof( value_type ) * 8 ) {
-			result <<= sizeof( value_type ) * 8;
+		while( bits_needed >= bit_count_v<value_type> ) {
+			result <<= bit_count_v<value_type>;
 			result |= bs.pop_bits( );
-			bits_needed -= sizeof( value_type ) * 8;
+			bits_needed -= bit_count_v<value_type>;
 		}
 		if( bits_needed > 0 ) {
 			result <<= bits_needed;
@@ -142,28 +99,28 @@ namespace daw {
 
 	template<typename T, typename BitStream>
 	auto pop_value( BitStream &bs ) {
-		return pop_value<T>( bs, sizeof( T ) * 8 );
+		return pop_value<T>( bs, bit_count_v<T> );
 	}
 
 	template<typename BitStream>
 	void skip_bits( BitStream &bs, size_t bits_needed ) {
 		using value_type = typename BitStream::value_type;
 
-		while( bits_needed >= sizeof( value_type ) * 8 ) {
+		while( bits_needed >= bit_count_v<value_type> ) {
 			bs.pop_bits( );
-			bits_needed -= sizeof( value_type ) * 8;
+			bits_needed -= bit_count_v<value_type>;
 		}
 	}
 
 	template<typename BitStream>
 	void skip_bytes( BitStream &bs, size_t bytes_needed ) {
-		skip_bits( bs, bytes_needed * 8 );
+		skip_bits( bs, bytes_needed * bit_count_v<char> );
 	}
 
 	template<typename BitStream, typename TestValue>
 	void skip_until( BitStream &bs, TestValue const &v, size_t bit_count ) {
 		daw::exception::dbg_throw_on_true(
-		  bit_count > sizeof( TestValue ) * 8,
+		  bit_count > bit_count_v<TestValue>,
 		  "Attempt to use more bits than can be put into TestValue" );
 		daw::exception::dbg_throw_on_true( bit_count < 1,
 		                                   "Attempt to pop less than 1 bits" );

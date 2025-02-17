@@ -8,13 +8,14 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_attributes.h"
-#include "daw_bit_cast.h"
-#include "daw_compiler_fixups.h"
-#include "daw_data_end.h"
-#include "impl/daw_is_string_view_like.h"
-#include "traits/daw_traits_conditional.h"
+#include "daw/ciso646.h"
+#include "daw/daw_attributes.h"
+#include "daw/daw_bit_cast.h"
+#include "daw/daw_bit_count.h"
+#include "daw/daw_compiler_fixups.h"
+#include "daw/daw_data_end.h"
+#include "daw/impl/daw_is_string_view_like.h"
+#include "daw/traits/daw_traits_conditional.h"
 
 #include <cassert>
 #include <cstddef>
@@ -70,8 +71,8 @@ namespace daw {
 			for( fnv1a_uint_t n = 0; n < sizeof( Value ); ++n ) {
 				current_hash ^= static_cast<fnv1a_uint_t>(
 				  ( static_cast<fnv1a_uint_t>( value ) &
-				    ( fnv1a_uint_t{ 0xFFU } << ( n * 8U ) ) ) >>
-				  ( n * 8U ) );
+				    ( fnv1a_uint_t{ 0xFFU } << (n * bit_count_v<char>)) ) >>
+				  (n * bit_count_v<char>));
 				current_hash *= fnv1a_impl::fnv_prime;
 			}
 			return current_hash;

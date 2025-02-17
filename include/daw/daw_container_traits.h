@@ -8,8 +8,9 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_cpp_feature_check.h"
+#include "daw/ciso646.h"
+#include "daw/daw_arith_traits.h"
+#include "daw/daw_cpp_feature_check.h"
 
 #include <array>
 #include <cstddef>
@@ -26,8 +27,7 @@
 #endif
 
 namespace daw {
-	inline constexpr std::size_t DynamicExtent =
-	  ( std::numeric_limits<std::size_t>::max )( );
+	inline constexpr auto DynamicExtent = max_value<std::size_t>;
 
 	template<typename Container>
 	struct container_traits {

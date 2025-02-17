@@ -12,6 +12,8 @@
 //
 #include "daw/ciso646.h"
 #include "daw/daw_algorithm.h"
+#include "daw/daw_arith_traits.h"
+#include "daw/daw_bounded_vector.h"
 #include "daw/daw_container_algorithm.h"
 #include "daw/daw_exception.h"
 #include "daw/daw_fnv1a_hash.h"
@@ -22,7 +24,6 @@
 #include "daw/impl/daw_make_trait.h"
 #include "daw/iterator/daw_back_inserter.h"
 #include "daw/iterator/daw_iterator.h"
-#include "daw_bounded_vector.h"
 #include "daw_string_view1.h"
 
 #include <algorithm>
@@ -59,8 +60,7 @@ namespace daw {
 		daw::bounded_vector_t<CharT, Capacity + 1> m_data{ };
 
 	public:
-		static constexpr size_type const npos =
-		  ( std::numeric_limits<size_type>::max )( );
+		static constexpr auto const npos = max_value<size_type>;
 
 		// Constructors
 
@@ -76,7 +76,7 @@ namespace daw {
 		template<size_t N>
 		constexpr basic_bounded_string( basic_bounded_string<CharT, N> str,
 		                                size_type count )
-		  : m_data( str.data( ), ( daw::min )( count, N ) ) {}
+		  : m_data( str.data( ), (daw::min)( count, N ) ) {}
 
 #ifndef NOSTRING
 		template<typename Tr, typename Al>
@@ -184,8 +184,7 @@ namespace daw {
 
 		template<typename T>
 		constexpr basic_bounded_string &
-		append( T const &t,
-		        size_type pos,
+		append( T const &t, size_type pos,
 		        size_type count = basic_bounded_string::npos ) {
 			daw::sv1::basic_string_view<CharT> tmp = t;
 			return append( tmp.substr( pos, count ) );
@@ -344,12 +343,12 @@ namespace daw {
 			swap( m_data, v.m_data );
 		}
 
-		constexpr size_type
-		copy( CharT *dest, size_type const count, size_type const pos = 0 ) const {
+		constexpr size_type copy( CharT *dest, size_type const count,
+		                          size_type const pos = 0 ) const {
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos < size( ), "Attempt to access basic_bounded_string past end" );
 
-			size_type rlen = ( daw::min )( count, size( ) - pos );
+			size_type rlen = (daw::min)( count, size( ) - pos );
 			daw::algorithm::copy_n( m_data.data( ) + pos, dest, rlen );
 			return rlen;
 		}
@@ -360,7 +359,7 @@ namespace daw {
 			  pos < size( ), "Attempt to access basic_bounded_string past end" );
 
 			auto const rcount =
-			  static_cast<size_type>( ( daw::min )( count, size( ) - pos ) );
+			  static_cast<size_type>( (daw::min)( count, size( ) - pos ) );
 			return basic_bounded_string{ &m_data[pos], rcount };
 		}
 
@@ -368,24 +367,24 @@ namespace daw {
 		static constexpr int
 		compare( basic_bounded_string<CharT, CapL> const &lhs,
 		         basic_bounded_string<CharT, CapR> const &rhs ) noexcept {
-			auto const str_compare =
-			  []( CharT const *p0, CharT const *p1, size_t len ) {
-				  auto const last = p0 + len;
-				  while( p0 != last ) {
-					  if( *p0 != *p1 ) {
-						  if( *p0 < *p1 ) {
-							  return -1;
-						  }
-						  return 1;
-					  }
-					  ++p0;
-					  ++p1;
-				  }
-				  return 0;
-			  };
+			auto const str_compare = []( CharT const *p0, CharT const *p1,
+			                             size_t len ) {
+				auto const last = p0 + len;
+				while( p0 != last ) {
+					if( *p0 != *p1 ) {
+						if( *p0 < *p1 ) {
+							return -1;
+						}
+						return 1;
+					}
+					++p0;
+					++p1;
+				}
+				return 0;
+			};
 
-			auto cmp = str_compare(
-			  lhs.data( ), rhs.data( ), ( daw::min )( lhs.size( ), rhs.size( ) ) );
+			auto cmp = str_compare( lhs.data( ), rhs.data( ),
+			                        (daw::min)( lhs.size( ), rhs.size( ) ) );
 			if( cmp == 0 ) {
 				if( lhs.size( ) < rhs.size( ) ) {
 					return -1;
@@ -401,24 +400,24 @@ namespace daw {
 		static constexpr int compare( basic_bounded_string<CharT, CapL> const &lhs,
 		                              CharT const *rhs_ptr,
 		                              size_t rhs_size ) noexcept {
-			auto const str_compare =
-			  []( CharT const *p0, CharT const *p1, size_t len ) {
-				  auto const last = p0 + len;
-				  while( p0 != last ) {
-					  if( *p0 != *p1 ) {
-						  if( *p0 < *p1 ) {
-							  return -1;
-						  }
-						  return 1;
-					  }
-					  ++p0;
-					  ++p1;
-				  }
-				  return 0;
-			  };
+			auto const str_compare = []( CharT const *p0, CharT const *p1,
+			                             size_t len ) {
+				auto const last = p0 + len;
+				while( p0 != last ) {
+					if( *p0 != *p1 ) {
+						if( *p0 < *p1 ) {
+							return -1;
+						}
+						return 1;
+					}
+					++p0;
+					++p1;
+				}
+				return 0;
+			};
 
-			auto cmp = str_compare(
-			  lhs.data( ), rhs_ptr, ( daw::min )( lhs.size( ), rhs_size ) );
+			auto cmp = str_compare( lhs.data( ), rhs_ptr,
+			                        (daw::min)( lhs.size( ), rhs_size ) );
 			if( cmp == 0 ) {
 				if( lhs.size( ) < rhs_size ) {
 					return -1;
@@ -447,15 +446,13 @@ namespace daw {
 #endif
 
 		template<size_t CapR>
-		constexpr int compare( size_type const pos1,
-		                       size_type const count1,
+		constexpr int compare( size_type const pos1, size_type const count1,
 		                       basic_bounded_string<CharT, CapR> const v ) const {
 			return substr( pos1, count1 ).compare( v );
 		}
 
 		template<size_t CapR>
-		constexpr int compare( size_type const pos1,
-		                       size_type const count1,
+		constexpr int compare( size_type const pos1, size_type const count1,
 		                       basic_bounded_string<CharT, CapR> const v,
 		                       size_type const pos2,
 		                       size_type const count2 ) const {
@@ -468,16 +465,13 @@ namespace daw {
 			return basic_bounded_string::compare( *this, rhs.data( ), rhs.size( ) );
 		}
 
-		constexpr int compare( size_type const pos1,
-		                       size_type const count1,
+		constexpr int compare( size_type const pos1, size_type const count1,
 		                       const_pointer s ) const {
 			return substr( pos1, count1 ).compare( s );
 		}
 
-		constexpr int compare( size_type const pos1,
-		                       size_type const count1,
-		                       const_pointer s,
-		                       size_type const count2 ) const {
+		constexpr int compare( size_type const pos1, size_type const count1,
+		                       const_pointer s, size_type const count2 ) const {
 			return basic_bounded_string::compare( substr( pos1, count1 ), s, count2 );
 		}
 
@@ -492,8 +486,7 @@ namespace daw {
 			return find( basic_bounded_string{ &c, 1 }, pos );
 		}
 
-		constexpr size_type find( const_pointer s,
-		                          size_type const pos,
+		constexpr size_type find( const_pointer s, size_type const pos,
 		                          size_type const count ) const noexcept {
 			return find( basic_bounded_string{ s, count }, pos );
 		}
@@ -514,8 +507,7 @@ namespace daw {
 			return rfind( basic_bounded_string{ &c, 1 }, pos );
 		}
 
-		constexpr size_type rfind( const_pointer s,
-		                           size_type const pos,
+		constexpr size_type rfind( const_pointer s, size_type const pos,
 		                           size_type const count ) const noexcept {
 			return rfind( basic_bounded_string{ s, count }, pos );
 		}
@@ -579,8 +571,7 @@ namespace daw {
 			return find_first_of( basic_bounded_string{ &c, 1 }, pos );
 		}
 
-		constexpr size_type find_first_of( const_pointer s,
-		                                   size_type pos,
+		constexpr size_type find_first_of( const_pointer s, size_type pos,
 		                                   size_type const count ) const noexcept {
 			return find_first_of( basic_bounded_string{ s, count }, pos );
 		}
@@ -631,8 +622,7 @@ namespace daw {
 			return find_last_of( basic_bounded_string{ s, N - 1 }, npos );
 		}
 
-		constexpr size_type find_last_of( const_pointer s,
-		                                  size_type pos,
+		constexpr size_type find_last_of( const_pointer s, size_type pos,
 		                                  size_type count ) const noexcept {
 			return find_last_of( basic_bounded_string{ s, count }, pos );
 		}
@@ -657,8 +647,7 @@ namespace daw {
 			return find_first_not_of( basic_bounded_string{ &c, 1 }, pos );
 		}
 
-		constexpr size_type find_first_not_of( const_pointer s,
-		                                       size_type pos,
+		constexpr size_type find_first_not_of( const_pointer s, size_type pos,
 		                                       size_type count ) const noexcept {
 			return find_first_not_of( basic_bounded_string{ s, count }, pos );
 		}
@@ -680,8 +669,7 @@ namespace daw {
 			return find_last_not_of( basic_bounded_string{ &c, 1 }, pos );
 		}
 
-		constexpr size_type find_last_not_of( const_pointer s,
-		                                      size_type pos,
+		constexpr size_type find_last_not_of( const_pointer s, size_type pos,
 		                                      size_type count ) const noexcept {
 			return find_last_not_of( basic_bounded_string{ s, count }, pos );
 		}
@@ -774,8 +762,7 @@ namespace daw {
 		  first, static_cast<size_t>( last - first ) };
 	}
 
-	template<size_t Capacity = 100,
-	         typename Iterator,
+	template<size_t Capacity = 100, typename Iterator,
 	         typename CharT = DAW_TYPEOF( *std::declval<Iterator>( ) )>
 	[[nodiscard]] constexpr auto
 	make_bounded_string_it( Iterator first, Iterator last ) noexcept {
@@ -1362,9 +1349,7 @@ namespace daw {
 	DAW_MAKE_REQ_TRAIT( can_be_bounded_string,
 	                    daw::bounded_string{ std::declval<T>( ) } );
 
-	template<typename OStream,
-	         typename CharT,
-	         size_t Capacity,
+	template<typename OStream, typename CharT, size_t Capacity,
 	         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
 	                          std::nullptr_t> = nullptr>
 	OStream &operator<<( OStream &os,

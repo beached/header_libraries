@@ -193,7 +193,7 @@ namespace daw {
 	inline constexpr bool is_system_integral_v = is_system_integral<T>::value;
 
 	template<typename T, std::size_t BitSize>
-	using is_same_size = std::bool_constant<( ( sizeof( T ) * 8 ) == BitSize )>;
+	using is_same_size = std::bool_constant<( bit_count_v<T> == BitSize )>;
 
 	template<typename T, std::size_t BitSize>
 	inline constexpr bool is_same_size_v = is_same_size<T, BitSize>::value;

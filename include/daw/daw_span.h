@@ -8,11 +8,12 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_exception.h"
-#include "daw_math.h"
-#include "daw_traits.h"
-#include "daw_typeof.h"
+#include "daw/ciso646.h"
+#include "daw/daw_arith_traits.h"
+#include "daw/daw_exception.h"
+#include "daw/daw_math.h"
+#include "daw/daw_traits.h"
+#include "daw/daw_typeof.h"
 
 #include <cstddef>
 #include <iterator>
@@ -201,14 +202,13 @@ namespace daw {
 			return true;
 		}
 
-		constexpr span subspan(
-		  size_type pos = 0,
-		  size_type count = ( std::numeric_limits<size_type>::max )( ) ) const {
+		constexpr span subspan( size_type pos = 0,
+		                        size_type count = max_value<size_type> ) const {
 
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos <= size( ), "Attempt to access span past end" );
 
-			count = ( daw::min )( count, size( ) - pos );
+			count = (daw::min)( count, size( ) - pos );
 			return { data( ) + pos, count };
 		}
 	};
@@ -463,25 +463,23 @@ namespace daw {
 			return true;
 		}
 
-		constexpr span
-		subspan( size_type pos = 0,
-		         size_type count = ( std::numeric_limits<size_type>::max )( ) ) {
+		constexpr span subspan( size_type pos = 0,
+		                        size_type count = max_value<size_type> ) {
 
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos <= size( ), "Attempt to access span past end" );
 
-			count = ( daw::min )( count, size( ) - pos );
+			count = (daw::min)( count, size( ) - pos );
 			return { data( ) + pos, count };
 		}
 
-		constexpr span subspan(
-		  size_type pos = 0,
-		  size_type count = ( std::numeric_limits<size_type>::max )( ) ) const {
+		constexpr span subspan( size_type pos = 0,
+		                        size_type count = max_value<size_type> ) const {
 
 			daw::exception::precondition_check<std::out_of_range>(
 			  pos < size( ), "Attempt to access span past end" );
 
-			count = ( daw::min )( count, size( ) - pos );
+			count = (daw::min)( count, size( ) - pos );
 			return { data( ) + pos, count };
 		}
 	};

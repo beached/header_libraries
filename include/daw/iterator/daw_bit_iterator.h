@@ -43,7 +43,7 @@ namespace daw {
 		  , m_pos{ std::move( bit_pos ) } {
 
 			daw::exception::daw_throw_on_false(
-			  bit_pos >= sizeof( value_type ) * 8,
+			  bit_pos >= bit_count_v<value_type>,
 			  "Cannot specify a bit position greater than the current value size in "
 			  "bits" );
 		}

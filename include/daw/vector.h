@@ -462,9 +462,8 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr size_type max_size( ) const noexcept {
-			return std::min<size_type>(
-			  alloc_traits::max_size( alloc( ) ),
-			  std::numeric_limits<difference_type>::max( ) );
+			return std::min<size_type>( alloc_traits::max_size( alloc( ) ),
+			                            max_value<difference_type> );
 		}
 
 		constexpr void reserve( size_type n ) {

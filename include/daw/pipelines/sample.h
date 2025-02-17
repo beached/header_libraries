@@ -8,9 +8,10 @@
 
 #pragma once
 
+#include "daw/daw_bit_count.h"
 #include "daw/daw_ensure.h"
-#include "filter.h"
-#include "range.h"
+#include "daw/pipelines/filter.h"
+#include "daw/pipelines/range.h"
 
 #include <cstddef>
 #include <random>
@@ -28,15 +29,13 @@ namespace daw::pipelines::pimpl {
 			using result_type = typename Distribution::result_type;
 			static_assert( std::is_integral_v<result_type> );
 			daw_ensure( m_number_to_keep < m_sample_size );
-			daw_ensure( std::cmp_less_equal(
-			  m_sample_size, std::numeric_limits<result_type>::max( ) ) );
+			daw_ensure(
+			  std::cmp_less_equal( m_sample_size, max_value<result_type> ) );
 			auto distribution = Distribution{
 			  result_type{ 1 }, static_cast<result_type>( m_sample_size ) };
 
-			return filter_view{ std::begin( r ),
-			                    std::end( r ),
-			                    [engine = m_engine,
-			                     number_to_keep = m_number_to_keep,
+			return filter_view{ std::begin( r ), std::end( r ),
+			                    [engine = m_engine, number_to_keep = m_number_to_keep,
 			                     distribution]( auto const & ) mutable {
 				                    auto n = distribution( engine );
 				                    auto result = n <= number_to_keep;
@@ -50,10 +49,9 @@ namespace daw::pipelines {
 	template<typename Distribution = std::uniform_int_distribution<std::size_t>,
 	         typename Engine = std::mt19937>
 	[[nodiscard]] constexpr auto
-	Sample( std::size_t numberToKeep,
-	        std::size_t sampleSize,
+	Sample( std::size_t numberToKeep, std::size_t sampleSize,
 	        Engine engine = Engine{ std::random_device{ }( ) } ) {
-		return pimpl::Sample_t<Engine, Distribution>{
-		  numberToKeep, sampleSize, std::move( engine ) };
+		return pimpl::Sample_t<Engine, Distribution>{ numberToKeep, sampleSize,
+		                                              std::move( engine ) };
 	}
 } // namespace daw::pipelines

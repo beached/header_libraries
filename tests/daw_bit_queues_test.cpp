@@ -9,6 +9,7 @@
 #include "daw/daw_bit_queues.h"
 
 #include "daw/daw_benchmark.h"
+#include "daw/daw_bit_count.h"
 #include "daw/daw_ensure.h"
 
 #include <cstddef>

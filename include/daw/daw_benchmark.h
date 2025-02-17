@@ -8,11 +8,12 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_do_not_optimize.h"
-#include "daw_expected.h"
-#include "daw_move.h"
-#include "daw_string_view.h"
+#include "daw/ciso646.h"
+#include "daw/daw_arith_traits.h"
+#include "daw/daw_do_not_optimize.h"
+#include "daw/daw_expected.h"
+#include "daw/daw_move.h"
+#include "daw/daw_string_view.h"
 
 #include <array>
 #include <chrono>
@@ -209,7 +210,7 @@ namespace daw {
 		static_assert( std::is_invocable_v<Test, Args...>,
 		               "Unable to call Test with provided Args" );
 
-		double base_time = ( std::numeric_limits<double>::max )( );
+		double base_time = max_value<double>;
 		{
 			for( size_t n = 0; n < 1000; ++n ) {
 				daw::do_not_optimize( args... );
@@ -230,7 +231,7 @@ namespace daw {
 				}
 			}
 		}
-		double min_time = ( std::numeric_limits<double>::max )( );
+		double min_time = max_value<double>;
 		double max_time = 0.0;
 
 		auto const total_start = std::chrono::steady_clock::now( );
@@ -321,7 +322,7 @@ namespace daw {
 		  "Validator must be callable with the results of Function" );
 
 		auto results = std::array<double, Runs>{ };
-		double base_time = ( std::numeric_limits<double>::max )( );
+		double base_time = max_value<double>;
 		{
 			for( size_t n = 0; n < 1000; ++n ) {
 				int a = 0;
@@ -371,7 +372,7 @@ namespace daw {
 		static_assert( Runs > 0 );
 		static_assert( std::is_invocable_v<Test, Args...>,
 		               "Unable to call Test with provided Args" );
-		double base_time = ( std::numeric_limits<double>::max )( );
+		double base_time = max_value<double>;
 		{
 			for( size_t n = 0; n < 1000; ++n ) {
 				intmax_t a = 0;
@@ -390,7 +391,7 @@ namespace daw {
 				}
 			}
 		}
-		double min_time = ( std::numeric_limits<double>::max )( );
+		double min_time = max_value<double>;
 		double max_time = 0.0;
 
 		auto const total_start = std::chrono::steady_clock::now( );
@@ -481,8 +482,7 @@ namespace daw {
 		static_assert( std::is_invocable_v<Function, Args...>,
 		               "Unable to call Test with provided Args" );
 
-		auto base_time =
-		  std::chrono::nanoseconds( ( std::numeric_limits<long long>::max )( ) );
+		auto base_time = std::chrono::nanoseconds( max_value<long long> );
 		{
 			for( size_t n = 0; n < 1000; ++n ) {
 				daw::do_not_optimize( args... );
@@ -538,8 +538,7 @@ namespace daw {
 		  std::is_invocable_v<Validator, std::invoke_result_t<Function, Args...>>,
 		  "Validator must be callable with the results of Function" );
 
-		auto base_time =
-		  std::chrono::nanoseconds( ( std::numeric_limits<long long>::max )( ) );
+		auto base_time = std::chrono::nanoseconds( max_value<long long> );
 		{
 			for( size_t n = 0; n < 1000; ++n ) {
 				daw::do_not_optimize( args... );

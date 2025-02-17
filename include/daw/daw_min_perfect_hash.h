@@ -8,13 +8,15 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_algorithm.h"
-#include "daw_bounded_array.h"
-#include "daw_bounded_vector.h"
-#include "daw_fnv1a_hash.h"
-#include "daw_sort_n.h"
-#include "daw_swap.h"
+#include "daw/ciso646.h"
+#include "daw/daw_algorithm.h"
+#include "daw/daw_arith_traits.h"
+#include "daw/daw_bit_count.h"
+#include "daw/daw_bounded_array.h"
+#include "daw/daw_bounded_vector.h"
+#include "daw/daw_fnv1a_hash.h"
+#include "daw/daw_sort_n.h"
+#include "daw/daw_swap.h"
 
 #include <cstddef>
 #include <functional>
@@ -62,8 +64,7 @@ namespace daw {
 		template<size_t Bits>
 		class static_bitset {
 			using values_type = opt_type_t<Bits>;
-			inline static constexpr size_t m_bits_per_bin =
-			  sizeof( values_type ) * 8U;
+			inline static constexpr size_t m_bits_per_bin = bit_count_v<values_type>;
 			inline static constexpr size_t m_bins = Bits / m_bits_per_bin;
 
 			daw::array<values_type, m_bins> m_values{ };
@@ -138,9 +139,7 @@ namespace daw {
 		using hash_result = daw::remove_cvref_t<std::invoke_result_t<Hasher, Key>>;
 		using salt_type = intmax_t;
 		static size_t constexpr m_data_size = mph_impl::next_pow2<N>( );
-		static_assert(
-		  m_data_size <=
-		  static_cast<size_t>( ( std::numeric_limits<salt_type>::max )( ) ) );
+		static_assert( m_data_size <= static_cast<size_t>( max_value<salt_type> ) );
 
 		/***
 		 * Construct a perfect_hash_table from a range of pair like items that have

@@ -8,9 +8,10 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_arith_traits.h"
-#include "traits/daw_traits_conditional.h"
+#include "daw/ciso646.h"
+#include "daw/daw_arith_traits.h"
+#include "daw/daw_bit_count.h"
+#include "daw/traits/daw_traits_conditional.h"
 
 #include <cassert>
 #include <climits>
@@ -3063,7 +3064,7 @@ namespace std {
 		static constexpr bool is_bounded = true;
 		static constexpr bool is_modulo = true;
 		static constexpr int digits =
-		  static_cast<int>( sizeof( std::uint64_t ) * CHAR_BIT - is_signed );
+		  static_cast<int>( daw::bit_count_v<std::uint64_t> - is_signed );
 		static constexpr int digits10 = digits * 3 / 10;
 		static constexpr int max_digits10 = 0;
 		static constexpr int radix = 2;
@@ -3084,8 +3085,7 @@ namespace std {
 		}
 
 		static constexpr daw::UInt64( max )( ) noexcept {
-			return static_cast<daw::UInt64>(
-			  ( std::numeric_limits<std::uint64_t>::max )( ) );
+			return static_cast<daw::UInt64>( daw::max_value<std::uint64_t> );
 		}
 
 		static constexpr daw::UInt64 epsilon( ) noexcept {
@@ -3130,7 +3130,7 @@ namespace std {
 		static constexpr bool is_bounded = true;
 		static constexpr bool is_modulo = true;
 		static constexpr int digits =
-		  static_cast<int>( sizeof( std::uint32_t ) * CHAR_BIT - is_signed );
+		  static_cast<int>( daw::bit_count_v<std::uint32_t> - is_signed );
 		static constexpr int digits10 = digits * 3 / 10;
 		static constexpr int max_digits10 = 0;
 		static constexpr int radix = 2;
@@ -3151,8 +3151,7 @@ namespace std {
 		}
 
 		static constexpr daw::UInt32( max )( ) noexcept {
-			return static_cast<daw::UInt32>(
-			  ( std::numeric_limits<std::uint32_t>::max )( ) );
+			return static_cast<daw::UInt32>( daw::max_value<std::uint32_t> );
 		}
 
 		static constexpr daw::UInt32 epsilon( ) noexcept {
@@ -3197,7 +3196,7 @@ namespace std {
 		static constexpr bool is_bounded = true;
 		static constexpr bool is_modulo = true;
 		static constexpr int digits =
-		  static_cast<int>( sizeof( std::uint16_t ) * CHAR_BIT - is_signed );
+		  static_cast<int>( daw::bit_count_v<std::uint16_t> - is_signed );
 		static constexpr int digits10 = digits * 3 / 10;
 		static constexpr int max_digits10 = 0;
 		static constexpr int radix = 2;
@@ -3218,8 +3217,7 @@ namespace std {
 		}
 
 		static constexpr daw::UInt16( max )( ) noexcept {
-			return static_cast<daw::UInt16>(
-			  ( std::numeric_limits<std::uint16_t>::max )( ) );
+			return static_cast<daw::UInt16>( daw::max_value<std::uint16_t> );
 		}
 
 		static constexpr daw::UInt16 epsilon( ) noexcept {
@@ -3264,7 +3262,7 @@ namespace std {
 		static constexpr bool is_bounded = true;
 		static constexpr bool is_modulo = true;
 		static constexpr int digits =
-		  static_cast<int>( sizeof( std::uint8_t ) * CHAR_BIT - is_signed );
+		  static_cast<int>( daw::bit_count_v<std::uint8_t> - is_signed );
 		static constexpr int digits10 = digits * 3 / 10;
 		static constexpr int max_digits10 = 0;
 		static constexpr int radix = 2;
@@ -3285,8 +3283,7 @@ namespace std {
 		}
 
 		static constexpr daw::UInt8( max )( ) noexcept {
-			return static_cast<daw::UInt8>(
-			  ( std::numeric_limits<std::uint8_t>::max )( ) );
+			return static_cast<daw::UInt8>( daw::max_value<std::uint8_t> );
 		}
 
 		static constexpr daw::UInt8 epsilon( ) noexcept {
@@ -3321,20 +3318,20 @@ namespace daw {
 	}
 
 	constexpr UInt32 operator""_u32( unsigned long long value ) {
-		assert( ( value <= static_cast<unsigned long long>(
-		                     ( daw::numeric_limits<std::uint32_t>::max )( ) ) ) );
+		assert( ( value <=
+		          static_cast<unsigned long long>( max_value<std::uint32_t> ) ) );
 		return static_cast<UInt32>( value );
 	}
 
 	constexpr UInt16 operator""_u16( unsigned long long value ) {
-		assert( ( value < static_cast<unsigned long long>(
-		                    ( std::numeric_limits<std::uint16_t>::max )( ) ) ) );
+		assert(
+		  ( value < static_cast<unsigned long long>( max_value<std::uint16_t> ) ) );
 		return static_cast<UInt16>( value );
 	}
 
 	constexpr UInt8 operator""_u8( unsigned long long value ) {
-		assert( ( value < static_cast<unsigned long long>(
-		                    ( std::numeric_limits<std::uint8_t>::max )( ) ) ) );
+		assert(
+		  ( value < static_cast<unsigned long long>( max_value<std::uint8_t> ) ) );
 		return static_cast<UInt8>( value );
 	}
 } // namespace daw
