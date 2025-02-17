@@ -8,11 +8,12 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "cpp_17.h"
-#include "daw_compiler_fixups.h"
-#include "daw_move.h"
-#include "impl/daw_is_string_view_like.h"
+#include "daw/ciso646.h"
+#include "daw/cpp_17.h"
+#include "daw/daw_bit_count.h"
+#include "daw/daw_compiler_fixups.h"
+#include "daw/daw_move.h"
+#include "daw/impl/daw_is_string_view_like.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -62,11 +63,11 @@ namespace daw {
 				current_hash += JODY_HASH_CONSTANT;
 				current_hash =
 				  static_cast<hash_value_t>( current_hash << JODY_HASH_SHIFT ) |
-				  current_hash >> ( sizeof( hash_value_t ) * 8 - JODY_HASH_SHIFT );
+				  current_hash >> ( bit_count_v<hash_value_t> - JODY_HASH_SHIFT );
 				current_hash ^= element;
 				current_hash =
 				  static_cast<hash_value_t>( current_hash << JODY_HASH_SHIFT ) |
-				  current_hash >> ( sizeof( hash_value_t ) * 8 - JODY_HASH_SHIFT );
+				  current_hash >> ( bit_count_v<hash_value_t> - JODY_HASH_SHIFT );
 				current_hash ^= JODY_HASH_CONSTANT;
 				current_hash += element;
 			}
@@ -99,8 +100,8 @@ namespace daw {
 			for( std::size_t n = 0; n < sizeof( Value ); ++n ) {
 				current_hash ^= static_cast<hash_value_t>(
 				  ( static_cast<uintmax_t>( value ) &
-				    ( static_cast<uintmax_t>( 0xFF ) << ( n * 8u ) ) ) >>
-				  ( n * 8u ) );
+				    ( static_cast<uintmax_t>( 0xFF ) << (n * bit_count_v<char>)) ) >>
+				  (n * bit_count_v<char>));
 				current_hash *= fnv1a_prime;
 			}
 			return current_hash;
@@ -146,8 +147,8 @@ namespace daw {
 			for( std::size_t n = 0; n < sizeof( Value ); ++n ) {
 				current_hash ^= static_cast<hash_value_t>(
 				  ( static_cast<uintmax_t>( value ) &
-				    ( static_cast<uintmax_t>( 0xFF ) << ( n * 8u ) ) ) >>
-				  ( n * 8u ) );
+				    ( static_cast<uintmax_t>( 0xFF ) << (n * bit_count_v<char>)) ) >>
+				  (n * bit_count_v<char>));
 				current_hash *= fnv1a_prime;
 			}
 			return current_hash;

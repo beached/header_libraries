@@ -8,11 +8,12 @@
 
 #pragma once
 
-#include "cpp_17.h"
-#include "daw_consteval.h"
-#include "daw_move.h"
-#include "daw_traits.h"
-#include "daw_utility.h"
+#include "daw/cpp_17.h"
+#include "daw/daw_bitset.h"
+#include "daw/daw_consteval.h"
+#include "daw/daw_move.h"
+#include "daw/daw_traits.h"
+#include "daw/daw_utility.h"
 
 #include <array>
 #include <cstddef>
@@ -24,7 +25,7 @@ namespace daw {
 	namespace tuple2_impl {
 		DAW_ATTRIB_INLINE constexpr std::size_t
 		encode_location( std::size_t outter, std::size_t inner ) {
-			constexpr std::size_t half_sz = ( sizeof( std::size_t ) * 8U ) / 2U;
+			constexpr std::size_t half_sz = bit_count_v<std::size_t> / 2U;
 			return ( outter << half_sz ) | inner;
 		}
 
@@ -176,7 +177,7 @@ namespace daw {
 	namespace tuple2_impl {
 		template<std::size_t location, typename TupleTuple>
 		constexpr decltype( auto ) decode_get( TupleTuple &&tp ) {
-			constexpr std::size_t half_sz = ( sizeof( std::size_t ) * 8U ) / 2U;
+			constexpr std::size_t half_sz = bit_count_v<std::size_t> / 2U;
 			constexpr std::size_t outter = location >> half_sz;
 			constexpr std::size_t inner = ( location << half_sz ) >> half_sz;
 			return get<inner>( get<outter>( DAW_FWD( tp ) ) );
@@ -184,7 +185,7 @@ namespace daw {
 
 		template<std::size_t location, typename TupleTuple>
 		DAW_ATTRIB_INLINE DAW_CONSTEVAL auto decode_get_type_impl( ) {
-			constexpr std::size_t half_sz = ( sizeof( std::size_t ) * 8U ) / 2U;
+			constexpr std::size_t half_sz = bit_count_v<std::size_t> / 2U;
 			constexpr std::size_t outter = location >> half_sz;
 			constexpr std::size_t inner = ( location << half_sz ) >> half_sz;
 			return daw::traits::identity<tuple2_element_t<

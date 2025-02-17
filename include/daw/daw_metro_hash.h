@@ -8,10 +8,11 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_compiler_fixups.h"
-#include "daw_do_n.h"
-#include "daw_view.h"
+#include "daw/ciso646.h"
+#include "daw/daw_bit_count.h"
+#include "daw/daw_compiler_fixups.h"
+#include "daw/daw_do_n.h"
+#include "daw/daw_view.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -28,7 +29,7 @@ namespace daw::metro::metro_impl {
 			auto const tmp = static_cast<unsigned char>( ptr[n] );
 			DAW_UNSAFE_BUFFER_FUNC_STOP
 			result = static_cast<Unsigned>( result | static_cast<Unsigned>( tmp )
-			                                           << ( n * 8U ) );
+			                                           << (n * bit_count_v<char>));
 		} );
 		return result;
 	}
@@ -37,9 +38,9 @@ namespace daw::metro::metro_impl {
 	constexpr Unsigned rotr( Unsigned value ) noexcept {
 		static_assert( std::is_integral_v<Unsigned> );
 		static_assert( std::is_unsigned_v<Unsigned> );
-		static_assert( BitCount < sizeof( Unsigned ) * 8U );
+		static_assert( BitCount < bit_count_v<Unsigned> );
 		static_assert( BitCount > 0 );
-		constexpr size_t size_bits = sizeof( Unsigned ) * 8U;
+		constexpr size_t size_bits = bit_count_v<Unsigned>;
 		return static_cast<Unsigned>(
 		  static_cast<Unsigned>( value >> BitCount ) |
 		  static_cast<Unsigned>( value << ( size_bits - BitCount ) ) );
@@ -93,7 +94,7 @@ namespace daw::metro {
 		}
 
 		if( buff.size( ) >= 8 ) {
-			hash += metro_impl::as_le_uint<uint64_t>( buff.data( ) ) * k3;
+			hash += metro_impl::as_le_uint<std::uint64_t>( buff.data( ) ) * k3;
 			hash ^= metro_impl::rotr<55U>( hash ) * k1;
 			buff.remove_prefix( 8U );
 		}

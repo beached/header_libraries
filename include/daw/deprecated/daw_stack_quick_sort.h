@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/ciso646.h"
+#include "daw/daw_bit_count.h"
 #include "daw/daw_move.h"
 
 #include <algorithm>
@@ -53,10 +54,10 @@ namespace daw {
 	} // namespace quick_sort_impl
 
 	template<typename RandomIterator, typename Compare = std::less<>>
-	constexpr void
-	quick_sort( RandomIterator f, RandomIterator l, Compare cmp = Compare{ } ) {
+	constexpr void quick_sort( RandomIterator f, RandomIterator l,
+	                           Compare cmp = Compare{ } ) {
 
-		constexpr size_t tree_size = sizeof( size_t ) * 8U * 2U;
+		constexpr size_t tree_size = bit_count_v<std::size_t> * 2U;
 
 		quick_sort_impl::bounded_stack<std::pair<RandomIterator, RandomIterator>,
 		                               tree_size * 2U>

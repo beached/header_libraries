@@ -10,6 +10,7 @@
 
 #include "daw/ciso646.h"
 #include "daw/cpp_17.h"
+#include "daw/daw_bit_count.h"
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_enable_if.h"
 #include "daw/daw_move.h"
@@ -938,7 +939,7 @@ namespace daw {
 
 	template<typename T>
 	inline constexpr std::size_t const bsizeof =
-	  static_cast<size_t>( sizeof( daw::remove_cvref_t<T> ) * 8U );
+	  bit_count_v<daw::remove_cvref_t<T>>;
 
 	template<typename...>
 	using void_t = void;

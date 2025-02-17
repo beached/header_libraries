@@ -8,12 +8,13 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_bit.h"
-#include "daw_endian.h"
-#include "daw_exception.h"
-#include "daw_move.h"
-#include "traits/daw_traits_conditional.h"
+#include "daw/ciso646.h"
+#include "daw/daw_bit.h"
+#include "daw/daw_bit_count.h"
+#include "daw/daw_endian.h"
+#include "daw/daw_exception.h"
+#include "daw/daw_move.h"
+#include "daw/traits/daw_traits_conditional.h"
 
 #include <cstdint>
 
@@ -32,14 +33,14 @@ namespace daw {
 		static_assert( std::is_unsigned_v<queue_type> and
 		                 std::is_unsigned_v<value_type>,
 		               "Only unsigned integral types are supported" );
-		size_t m_size = 0;
+		std::size_t m_size = 0;
 		queue_type m_queue = 0;
 
 	public:
 		explicit basic_bit_queue( ) = default;
 
 		constexpr explicit basic_bit_queue( queue_type v ) noexcept
-		  : m_size( sizeof( m_queue ) * 8 )
+		  : m_size( bit_count_v<queue_type> )
 		  , m_queue( std::move( v ) ) {}
 
 		[[nodiscard]] constexpr size_t size( ) const noexcept {
@@ -54,8 +55,8 @@ namespace daw {
 			return 0 == m_size;
 		}
 
-		[[nodiscard]] constexpr size_t capacity( ) const noexcept {
-			return sizeof( m_queue ) * 8;
+		[[nodiscard]] static DAW_CONSTEVAL size_t capacity( ) {
+			return bit_count_v<queue_type>;
 		}
 
 		[[nodiscard]] constexpr bool full( ) const noexcept {
@@ -78,14 +79,14 @@ namespace daw {
 
 	public:
 		constexpr void push_back( value_type value,
-		                          size_t const bits = sizeof( value_type ) * 8 ) {
+		                          size_t const bits = bit_count_v<value_type> ) {
 			daw::exception::dbg_throw_on_false(
 			  ( capacity( ) - m_size ) >= bits,
 			  "Not enough bits to hold value pushed" );
 
 			value &= mask_msb<value_type>(
-			  sizeof( value_type ) * 8 -
-			  bits ); // get_left_mask<value_type>( sizeof( value_type ) * 8 - bits );
+			  bit_count_v<value_type> -
+			  bits ); // get_left_mask<value_type>( bit_count_v<value_type> - bits );
 			m_queue <<= bits;
 			m_queue |= source_to_native_endian( value, BitQueueLSB{ } );
 			m_size += bits;

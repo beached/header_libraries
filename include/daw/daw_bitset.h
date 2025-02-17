@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/daw_attributes.h"
+#include "daw/daw_bit_count.h"
 #include "daw/daw_consteval.h"
 
 #include <cassert>
@@ -20,7 +21,7 @@ namespace daw {
 	class bitset {
 		static_assert( BitCount > 2, "BitCount must be greater than 2" );
 		using limb_t = std::uint32_t;
-		static constexpr std::size_t limb_size = sizeof( limb_t ) * 8;
+		static constexpr std::size_t limb_size = bit_count_v<limb_t>;
 		static constexpr std::size_t num_limbs = ( BitCount - 1 ) / limb_size + 1;
 		limb_t m_bits[num_limbs]{ };
 

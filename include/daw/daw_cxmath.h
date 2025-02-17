@@ -8,18 +8,19 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_arith_traits.h"
-#include "daw_assume.h"
-#include "daw_attributes.h"
-#include "daw_bit_cast.h"
-#include "daw_cpp_feature_check.h"
-#include "daw_do_n.h"
-#include "daw_enable_if.h"
-#include "daw_is_constant_evaluated.h"
-#include "daw_likely.h"
-#include "daw_uint_buffer.h"
-#include "impl/daw_math_impl.h"
+#include "daw/ciso646.h"
+#include "daw/daw_arith_traits.h"
+#include "daw/daw_assume.h"
+#include "daw/daw_attributes.h"
+#include "daw/daw_bit_cast.h"
+#include "daw/daw_bit_count.h"
+#include "daw/daw_cpp_feature_check.h"
+#include "daw/daw_do_n.h"
+#include "daw/daw_enable_if.h"
+#include "daw/daw_is_constant_evaluated.h"
+#include "daw/daw_likely.h"
+#include "daw/daw_uint_buffer.h"
+#include "daw/impl/daw_math_impl.h"
 
 #include <array>
 #include <cmath>
@@ -293,9 +294,10 @@ namespace daw::cxmath {
 		[[nodiscard]] constexpr Float pow2_impl2( intmax_t exp ) noexcept {
 			bool is_neg = exp < 0;
 			exp = is_neg ? -exp : exp;
-			auto const max_shft = ( daw::min )(
-			  static_cast<size_t>( daw::numeric_limits<Float>::max_exponent10 ),
-			  ( sizeof( size_t ) * 8ULL ) );
+			auto const max_shft =
+			  (daw::min)( static_cast<size_t>(
+			                daw::numeric_limits<Float>::max_exponent10 ),
+			              bit_count_v<std::size_t> );
 			Float result = 1.0;
 
 			while( static_cast<size_t>( exp ) >= max_shft ) {
@@ -331,8 +333,8 @@ namespace daw::cxmath {
 			exp = is_neg ? -exp : exp;
 
 			auto const max_spow =
-			  ( daw::min )( daw::numeric_limits<Float>::max_exponent10,
-			                daw::numeric_limits<size_t>::digits10 );
+			  (daw::min)( daw::numeric_limits<Float>::max_exponent10,
+			              daw::numeric_limits<size_t>::digits10 );
 			Float result = 1.0;
 
 			while( exp >= max_spow ) {
@@ -467,7 +469,7 @@ namespace daw::cxmath {
 		if( v != 0U ) {
 			return static_cast<unsigned>( __builtin_clz( v ) );
 		}
-		return static_cast<unsigned>( sizeof( unsigned ) * 8U );
+		return static_cast<unsigned>( bit_count_v<unsigned> );
 	}
 
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr unsigned
@@ -475,7 +477,7 @@ namespace daw::cxmath {
 		if( v != 0U ) {
 			return static_cast<unsigned>( __builtin_clzl( v ) );
 		}
-		return static_cast<unsigned>( sizeof( unsigned long ) * 8U );
+		return static_cast<unsigned>( bit_count_v<unsigned long> );
 	}
 
 	[[nodiscard]] DAW_ATTRIB_FLATINLINE inline constexpr unsigned
@@ -489,7 +491,7 @@ namespace daw::cxmath {
 		if( v != 0U ) {
 			return static_cast<unsigned>( __builtin_clzll( v ) );
 		}
-		return static_cast<unsigned>( sizeof( unsigned long long ) * 8U );
+		return static_cast<unsigned>( bit_count_v<unsigned long long> );
 	}
 #else
 	[[nodiscard]] DAW_ATTRIB_INLINE inline constexpr unsigned
@@ -1269,7 +1271,7 @@ namespace daw::cxmath {
 			return 0;
 		}
 		std::uint32_t lz = daw::cxmath::count_leading_zeroes( v );
-		Unsigned const msb = ( ( sizeof( Unsigned ) * 8U - Unsigned{ 1 } ) - lz );
+		Unsigned const msb = ( ( bit_count_v<Unsigned> - Unsigned{ 1 } ) - lz );
 		Unsigned res = Unsigned{ 1 } << msb;
 		if( res < v ) {
 			res <<= 1U;

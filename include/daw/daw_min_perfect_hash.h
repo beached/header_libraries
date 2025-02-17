@@ -8,13 +8,14 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_algorithm.h"
-#include "daw_bounded_array.h"
-#include "daw_bounded_vector.h"
-#include "daw_fnv1a_hash.h"
-#include "daw_sort_n.h"
-#include "daw_swap.h"
+#include "daw/ciso646.h"
+#include "daw/daw_algorithm.h"
+#include "daw/daw_bit_count.h"
+#include "daw/daw_bounded_array.h"
+#include "daw/daw_bounded_vector.h"
+#include "daw/daw_fnv1a_hash.h"
+#include "daw/daw_sort_n.h"
+#include "daw/daw_swap.h"
 
 #include <cstddef>
 #include <functional>
@@ -62,8 +63,7 @@ namespace daw {
 		template<size_t Bits>
 		class static_bitset {
 			using values_type = opt_type_t<Bits>;
-			inline static constexpr size_t m_bits_per_bin =
-			  sizeof( values_type ) * 8U;
+			inline static constexpr size_t m_bits_per_bin = bit_count_v<values_type>;
 			inline static constexpr size_t m_bins = Bits / m_bits_per_bin;
 
 			daw::array<values_type, m_bins> m_values{ };
