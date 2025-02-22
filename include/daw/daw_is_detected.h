@@ -58,20 +58,33 @@ namespace daw {
 			using type = Default;
 		};
 
-		template<typename /*Default*/, typename /*AlwaysVoid*/,
-		         template<typename...> typename /*Op*/, typename... /*Args*/>
+		/*
+		template<typename, typename,
+		         template<typename...> typename typename..>
 		inline constexpr bool detector_v = false;
-
+		*/
 		template<typename Default, template<class...> class Op, class... Args>
 		struct detector<Default, std::void_t<Op<Args...>>, Op, Args...> {
 			using value_t = std::true_type;
 			using type = Op<Args...>;
 		};
 
+		/*
 		template<typename Default, template<typename...> typename Op,
 		         typename... Args>
 		inline constexpr bool
 		  detector_v<Default, std::void_t<Op<Args...>>, Op, Args...> = true;
+		  */
+
+		template<typename...>
+		struct pack_t;
+
+		template<template<typename...> typename Op, typename Args, typename = void>
+		inline constexpr bool detector_v = false;
+
+		template<template<typename...> typename Op, typename... Args>
+		inline constexpr bool
+		  detector_v<Op, pack_t<Args...>, std::void_t<Op<Args...>>> = true;
 	} // namespace is_detect_details
 
 	template<template<typename...> typename Op, typename... Args>
@@ -84,10 +97,10 @@ namespace daw {
 	  typename is_detect_details::detector<nonesuch<Op, Args...>, void, Op,
 	                                       Args...>::type;
 
-#ifndef DAW_HAS_CONCEPTS
+#if not defined( DAW_HAS_CONCEPTS )
 	template<template<typename...> typename Op, typename... Args>
 	inline constexpr bool is_detected_v =
-	  is_detect_details::detector_v<nonesuch<Op, Args...>, void, Op, Args...>;
+	  is_detect_details::detector_v<Op, is_detect_details::pack_t<Args...>>;
 
 #endif
 	template<typename Default, template<typename...> typename Op,
