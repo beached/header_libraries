@@ -84,7 +84,7 @@ int main( ) {
 	bool destructed = false;
 	{
 		auto ptr = new Child2( &destructed );
-		auto v2 = daw::poly_value<Base>( ptr );
+		auto v2 = daw::poly_value<Base>( std::move( *ptr ) );
 	}
 	daw::expecting( destructed );
 
@@ -93,8 +93,8 @@ int main( ) {
 	auto v3 = daw::poly_value<Child>( );
 	daw::expecting( 'C', func( v0 ) );
 
-	daw::expecting( 'B', func( new Base( ) ) );
-	daw::expecting( 'C', func( new Child( ) ) );
+	daw::expecting( 'B', func( Base( ) ) );
+	daw::expecting( 'C', func( Child( ) ) );
 
 	Base b{ };
 	Child c{ };
@@ -104,6 +104,6 @@ int main( ) {
 	daw::expecting( 'B', func2( v4 ) );
 	daw::expecting( 'C', func3( v3 ) );
 	daw::expecting( 'C', func4( v3 ) );
-	daw::expecting( 'C', func5( v3 ) );
-	daw::expecting( 'C', func6( v3 ) );
+	daw::expecting( 'C', func5( v3.get( ) ) );
+	daw::expecting( 'C', func6( v3.get( ) ) );
 }
