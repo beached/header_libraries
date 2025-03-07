@@ -1012,7 +1012,7 @@ namespace daw {
 			/// empty, it does nothing.
 			/// @pre n <= size( )
 			DAW_ATTRIB_INLINE constexpr basic_string_view &
-			remove_prefix( size_type n, dont_clip_to_bounds_t ) {
+			remove_prefix_unsafe( size_type n ) {
 				DAW_STRING_VIEW_DBG_RNG_CHECK( size( ) >= n,
 				                               "Attempt to remove prefix too many "
 				                               "elements in a basic_string_view" );
@@ -1029,8 +1029,7 @@ namespace daw {
 
 			/// @brief Increment the data( ) pointer by 1.
 			/// @pre size( ) >= 1
-			DAW_ATTRIB_INLINE constexpr basic_string_view &
-			remove_prefix( dont_clip_to_bounds_t ) {
+			DAW_ATTRIB_INLINE constexpr basic_string_view &remove_prefix_unsafe( ) {
 				DAW_STRING_VIEW_DBG_RNG_CHECK( size( ) >= 1,
 				                               "Attempt to remove prefix too many "
 				                               "elements in a basic_string_view" );
@@ -1049,7 +1048,7 @@ namespace daw {
 			/// @brief Decrement the size( ) by n.
 			/// @pre n <= size( )
 			DAW_ATTRIB_INLINE constexpr basic_string_view &
-			remove_suffix( size_type n, dont_clip_to_bounds_t ) {
+			remove_suffix_unsafe( size_type n ) {
 				DAW_STRING_VIEW_DBG_RNG_CHECK( size( ) >= n,
 				                               "Attempt to remove suffix too many "
 				                               "elements in a basic_string_view" );
@@ -1065,8 +1064,7 @@ namespace daw {
 
 			/// @brief Decrement the size( ) by 1
 			/// @pre not empty( )
-			DAW_ATTRIB_INLINE constexpr basic_string_view &
-			remove_suffix( dont_clip_to_bounds_t ) {
+			DAW_ATTRIB_INLINE constexpr basic_string_view &remove_suffix_unsafe( ) {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  size( ) >= 1, "Attempt to remove suffix an empty basic_string_view" );
 				dec_back( size_type{ 1U } );
@@ -1083,11 +1081,11 @@ namespace daw {
 
 			/// @brief Increment the data( ) pointer by 1. Does not check bounds
 			/// @return front( ) prior to increment
-			[[nodiscard]] constexpr CharT pop_front( dont_clip_to_bounds_t ) {
+			[[nodiscard]] constexpr CharT pop_front_unsafe( ) {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  size( ) >= 1, "Attempt to pop front an empty basic_string_view" );
 				auto result = front( );
-				remove_prefix( 1U, dont_clip_to_bounds );
+				remove_prefix_unsafe( 1U );
 				return result;
 			}
 
@@ -1108,12 +1106,12 @@ namespace daw {
 			/// @param count number of characters to increment data( ) by
 			/// @return a new string_view of size count.
 			[[nodiscard]] constexpr basic_string_view
-			pop_front( size_type count, dont_clip_to_bounds_t ) {
+			pop_front_unsafe( size_type count ) {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  size( ) >= count,
 				  "Attempt to pop front too many elements basic_string_view" );
-				basic_string_view result = substr( 0, count, dont_clip_to_bounds );
-				remove_prefix( count, dont_clip_to_bounds );
+				basic_string_view result = substr_unsafe( 0 );
+				remove_prefix_unsafe( count );
 				return result;
 			}
 
@@ -1259,12 +1257,12 @@ namespace daw {
 
 			/// @brief Return the last character and decrement the size by 1
 			/// @pre not empty( )
-			[[nodiscard]] constexpr CharT pop_back( dont_clip_to_bounds_t ) {
+			[[nodiscard]] constexpr CharT pop_back_unsafe( ) {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  size( ) >= 1,
 				  "Attempt to pop back more elements that are available" );
 				auto result = back( );
-				remove_suffix( dont_clip_to_bounds );
+				remove_suffix_unsafe( );
 				return result;
 			}
 
@@ -1285,12 +1283,12 @@ namespace daw {
 			/// @pre count <= size( )
 			/// @return a substr of size count ending at end of string_view
 			[[nodiscard]] constexpr basic_string_view
-			pop_back( size_type count, dont_clip_to_bounds_t ) {
+			pop_back_unsafe( size_type count ) {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  size( ) >= count,
 				  "Attempt to pop back more elements that are available" );
-				basic_string_view result = substr( size( ) - count, npos );
-				remove_suffix( count );
+				basic_string_view result = substr_unsafe( size( ) - count, count );
+				remove_suffix_unsafe( count );
 				return result;
 			}
 
@@ -1764,7 +1762,7 @@ namespace daw {
 			/// @returns a new basic_string_view of the sub-range
 			/// @pre pos + count <= size( )
 			[[nodiscard]] constexpr basic_string_view
-			substr( size_type pos, size_type count, dont_clip_to_bounds_t ) const {
+			substr_unsafe( size_type pos, size_type count ) const {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos + count <= size( ),
 				  "Attempt to access basic_string_view past end" );
@@ -1778,7 +1776,7 @@ namespace daw {
 
 			/// @brief Return a copy of the string_view
 			[[nodiscard]] constexpr basic_string_view substr( ) const {
-				return substr( 0, size( ), dont_clip_to_bounds );
+				return substr_unsafe( 0, size( ) );
 			}
 
 			/// @brief Create a new sub-range basic_string_view [data( ) + pos,
@@ -1798,10 +1796,10 @@ namespace daw {
 			/// @returns a new basic_string_view of the sub-range
 			/// @pre pos <= size( )
 			[[nodiscard]] constexpr basic_string_view
-			substr( size_type pos, dont_clip_to_bounds_t ) const {
+			substr_unsafe( size_type pos ) const {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos <= size( ), "Attempt to access basic_string_view past end" );
-				return substr( pos, size( ) - pos, dont_clip_to_bounds );
+				return substr_unsafe( pos, size( ) - pos );
 			}
 
 		public:
