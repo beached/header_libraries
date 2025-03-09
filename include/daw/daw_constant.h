@@ -16,12 +16,12 @@
 #include <cstdlib>
 
 namespace daw {
-	template<decltype( auto ) Value>
+	template<auto Value>
 	struct constant {
 		using daw_i_am_a_constant = void;
 		using value_type = decltype( Value );
 		using type = constant;
-		static constexpr decltype( auto ) value = Value;
+		static constexpr auto value = Value;
 
 		DAW_CONSTEVAL operator value_type( ) const noexcept {
 			return Value;
