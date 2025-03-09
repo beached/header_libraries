@@ -16,12 +16,12 @@
 #include <cstdlib>
 
 namespace daw {
-	template<auto Value>
+	template<decltype( auto ) Value>
 	struct constant {
 		using daw_i_am_a_constant = void;
 		using value_type = decltype( Value );
 		using type = constant;
-		static constexpr value_type value = Value;
+		static constexpr decltype( auto ) value = Value;
 
 		DAW_CONSTEVAL operator value_type( ) const noexcept {
 			return Value;
@@ -33,20 +33,6 @@ namespace daw {
 		}
 	};
 
-	template<auto Value>
+	template<decltype( auto ) Value>
 	inline constexpr auto constant_v = constant<Value>{ };
-
-#if defined( DAW_HAS_CPP_CONSTEVAL )
-	// TODO check for __cpp_user_defined_literal support if there is one with a
-	// version since 2008
-	template<char... Cs>
-	[[deprecated( "This is deprecated, use constant_v instead" )]]
-	consteval auto operator""_c( ) {
-		static constexpr char const str[] = { Cs..., '\0' };
-		constexpr daw::string_view sv = str;
-		constexpr auto result =
-		  daw::parser::parse_unsigned_int<unsigned long long>( sv );
-		return constant<result>{ };
-	}
-#endif
 } // namespace daw
