@@ -235,4 +235,7 @@ namespace daw {
 
 	template<typename T>
 	inline constexpr auto max_digits10 = numeric_limits<T>::max_digits10;
+
+	template<typename T>
+	inline constexpr auto digits10 = numeric_limits<T>::digits10;
 } // namespace daw
