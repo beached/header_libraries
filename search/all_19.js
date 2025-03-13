@@ -23,7 +23,7 @@ var searchData=
   ['_7enonesuch_20',['~nonesuch',['../structdaw_1_1nonesuch.html#a801f9eeee56d85c557bfe615c598cd48',1,'daw::nonesuch']]],
   ['_7eon_5fexit_5fsuccess_21',['~on_exit_success',['../classdaw_1_1on__exit__success.html#a095c1436d04c2c3607336a43f6717fdf',1,'daw::on_exit_success']]],
   ['_7eoptional_5fpoly_22',['~optional_poly',['../structdaw_1_1optional__poly.html#aa38c6a90e6a900da21ee7da20b27268b',1,'daw::optional_poly']]],
-  ['_7epoly_5fvalue_23',['~poly_value',['../classdaw_1_1poly__value.html#a94d43db74dd3d8926a7c0403099b6727',1,'daw::poly_value']]],
+  ['_7epoly_5fvalue_23',['~poly_value',['../classdaw_1_1poly__value.html#ae1e3e87a405936fc1ed5a3edc104b4ec',1,'daw::poly_value']]],
   ['_7erange_24',['~Range',['../structdaw_1_1range_1_1_range.html#a547a432ab5a710a42d758eb91a976353',1,'daw::range::Range']]],
   ['_7erc_5fptr_25',['~rc_ptr',['../structdaw_1_1rc__ptr.html#a290d132f5ee69f9490fc62e5d994b35d',1,'daw::rc_ptr::~rc_ptr()'],['../structdaw_1_1rc__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a6154fb5aa56ca54aa5296132520304ac',1,'daw::rc_ptr&lt; T[], Deleter &gt;::~rc_ptr()']]],
   ['_7eread_5fonly_26',['~read_only',['../structdaw_1_1read__only.html#a307b088aea77024bc4faadd7d67dd8b4',1,'daw::read_only']]],
@@ -38,6 +38,6 @@ var searchData=
   ['_7eunique_5fptr_35',['~unique_ptr',['../structdaw_1_1unique__ptr.html#af5d0f80570d26c5688bd56ebc08bf735',1,'daw::unique_ptr::~unique_ptr()'],['../structdaw_1_1unique__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#a3fc0f6e4f76842af2d59e55391b87458',1,'daw::unique_ptr&lt; T[], Deleter &gt;::~unique_ptr()']]],
   ['_7eunique_5fresource_36',['~unique_resource',['../classdaw_1_1unique__resource.html#aaa57c73fdb865bbe05dd2816eb787ae8',1,'daw::unique_resource']]],
   ['_7evalue_5fptr_37',['~value_ptr',['../structdaw_1_1value__ptr.html#a26feb8e92ad2485341e33f804dd06352',1,'daw::value_ptr']]],
-  ['_7evector_38',['~vector',['../structdaw_1_1_vector.html#a698ac6097721a9977e94c6f7dbf7f57d',1,'daw::Vector::~Vector()'],['../structdaw_1_1vector.html#a12c34db32926c1d1d5d1f41d456ff446',1,'daw::vector::~vector()']]],
+  ['_7evector_38',['~vector',['../structdaw_1_1vector.html#a12c34db32926c1d1d5d1f41d456ff446',1,'daw::vector::~vector()'],['../structdaw_1_1_vector.html#a698ac6097721a9977e94c6f7dbf7f57d',1,'daw::Vector::~Vector()']]],
   ['_7evirtual_5fbase_39',['~virtual_base',['../structdaw_1_1virtual__base.html#a7d0871dc0ac1a46328fdc8951ef63bc1',1,'daw::virtual_base']]]
 ];
