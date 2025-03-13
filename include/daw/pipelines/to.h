@@ -49,7 +49,7 @@ namespace daw::pipelines::pimpl {
 #if defined( __cpp_lib_containers_ranges )
 #if __cpp_lib_containers_ranges >= 202202L
 			if constexpr( requires {
-				              Container( std::fromt_range, DAW_FWD( r ) );
+				              Container( std::fromm_range, DAW_FWD( r ) );
 			              } ) {
 				return Container( std::from_range, DAW_FWD( r ) );
 			} else {
