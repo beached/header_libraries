@@ -18,32 +18,21 @@
 namespace daw {
 	template<auto Value>
 	struct constant {
-		using type = decltype( Value );
-		static constexpr type value = Value;
+		using daw_i_am_a_constant = void;
+		using value_type = decltype( Value );
+		using type = constant;
+		static constexpr auto value = Value;
 
-		DAW_CONSTEVAL operator type( ) const noexcept {
+		DAW_CONSTEVAL operator value_type( ) const noexcept {
 			return Value;
 		}
 
-		DAW_CPP23_STATIC_CALL_OP DAW_CONSTEVAL type operator( )( )
+		DAW_CPP23_STATIC_CALL_OP DAW_CONSTEVAL value_type operator( )( )
 		  DAW_CPP23_STATIC_CALL_OP_CONST noexcept {
 			return Value;
 		}
 	};
 
-	template<auto Value>
+	template<decltype( auto ) Value>
 	inline constexpr auto constant_v = constant<Value>{ };
-
-#if defined( DAW_HAS_CPP_CONSTEVAL )
-	// TODO check for __cpp_user_defined_literal support if there is one with a
-	// version since 2008
-	template<char... Cs>
-	consteval auto operator""_c( ) {
-		constexpr char const str[] = { Cs..., '\0' };
-		constexpr daw::string_view sv = str;
-		constexpr auto result =
-		  daw::parser::parse_unsigned_int<unsigned long long>( sv );
-		return constant<result>{ };
-	}
-#endif
 } // namespace daw

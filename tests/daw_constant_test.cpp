@@ -12,7 +12,7 @@
 
 int main( ) {
 	using t = daw::constant<55>;
-	static_assert( std::is_same_v<typename t::type, int> );
+	static_assert( std::is_same_v<typename t::value_type, int> );
 
 	auto c = daw::constant_v<55>;
 

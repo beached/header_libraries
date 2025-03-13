@@ -232,4 +232,13 @@ namespace daw {
 
 	template<typename T>
 	inline constexpr auto lowest_value = numeric_limits<T>::lowest( );
+
+	template<typename T>
+	inline constexpr auto max_digits10 = numeric_limits<T>::max_digits10;
+
+	template<typename T>
+	inline constexpr auto digits10 = numeric_limits<T>::digits10;
+
+	template<typename T>
+	inline constexpr auto digits = numeric_limits<T>::digits;
 } // namespace daw

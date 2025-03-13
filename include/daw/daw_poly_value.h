@@ -18,15 +18,67 @@
 
 namespace daw {
 	namespace poly_value_impl {
-		template<typename BaseClass, typename Child = BaseClass>
-		std::function<
-		  std::unique_ptr<BaseClass>( std::unique_ptr<BaseClass> const &rhs )>
-		make_copier( ) {
-			return []( std::unique_ptr<BaseClass> const &rhs )
-			         -> std::unique_ptr<BaseClass> {
-				return std::make_unique<Child>(
-				  *static_cast<Child const *>( rhs.get( ) ) );
-			};
+		template<typename Base>
+		struct poly_value_storage_base {
+		protected:
+			poly_value_storage_base( ) = default;
+
+		public:
+			virtual ~poly_value_storage_base( ) = default;
+			virtual constexpr std::unique_ptr<poly_value_storage_base>
+			copy( ) const = 0;
+			virtual constexpr std::unique_ptr<poly_value_storage_base>
+			move( ) noexcept = 0;
+			virtual constexpr Base const *get( ) const = 0;
+			virtual constexpr Base *get( ) = 0;
+
+			poly_value_storage_base( poly_value_storage_base const & ) = delete;
+
+			poly_value_storage_base( poly_value_storage_base && ) = delete;
+
+			poly_value_storage_base &
+			operator=( poly_value_storage_base const & ) = delete;
+
+			poly_value_storage_base &operator=( poly_value_storage_base && ) = delete;
+		};
+
+		template<typename Base, typename T>
+		class poly_value_storage : public poly_value_storage_base<Base> {
+			DAW_NO_UNIQUE_ADDRESS T m_value;
+
+		public:
+			template<typename... Args>
+			requires( not traits::is_first_type_v<poly_value_storage, Args...> ) //
+			  constexpr poly_value_storage( Args &&...args )
+			  : m_value( DAW_FWD( args )... ) {}
+
+			constexpr std::unique_ptr<poly_value_storage_base<Base>>
+			copy( ) const override {
+				return std::unique_ptr<poly_value_storage_base<Base>>(
+				  new poly_value_storage( m_value ) );
+			}
+
+			constexpr std::unique_ptr<poly_value_storage_base<Base>>
+			move( ) noexcept override {
+				return std::unique_ptr<poly_value_storage_base<Base>>(
+				  new poly_value_storage( std::move( m_value ) ) );
+			}
+
+			constexpr Base const *get( ) const override {
+				return std::addressof( m_value );
+			}
+
+			constexpr Base *get( ) override {
+				return std::addressof( m_value );
+			}
+		};
+
+		template<typename Base, typename T = Base, typename... Args>
+		requires std::is_base_of_v<Base, T> //
+		  constexpr std::unique_ptr<poly_value_storage_base<Base>>
+		  create( Args &&...args ) {
+			return std::unique_ptr<poly_value_storage_base<Base>>(
+			  new poly_value_storage<Base, T>( DAW_FWD( args )... ) );
 		}
 	} // namespace poly_value_impl
 
@@ -36,142 +88,99 @@ namespace daw {
 	template<typename T = void>
 	inline constexpr construct_emplace_t<T> construct_emplace{ };
 
-	template<typename BaseClass,
-	         typename Deleter = std::default_delete<BaseClass>,
-	         bool AllowDefaultConstruction = true, bool AllowCopy = true>
-	class poly_value
-	  : public daw::enable_default_constructor<BaseClass,
-	                                           AllowDefaultConstruction>,
-	    public daw::enable_copy_constructor<BaseClass, AllowCopy>,
-	    public daw::enable_copy_assignment<BaseClass, AllowCopy> {
-		std::unique_ptr<BaseClass, Deleter> m_ptr;
-		std::function<std::unique_ptr<BaseClass>(
-		  std::unique_ptr<BaseClass> const &rhs )>
-		  m_copier;
+	template<typename Base>
+	class poly_value {
+		std::unique_ptr<poly_value_impl::poly_value_storage_base<Base>>
+		  m_storage{ };
 
 	public:
-		template<typename T, daw::enable_when_t<std::is_base_of_v<
-		                       BaseClass, daw::remove_cvref_t<T>>> = nullptr>
-		poly_value( T &&value )
-		  : m_ptr( std::make_unique<daw::remove_cvref_t<T>>( DAW_FWD( value ) ) )
-		  , m_copier(
-		      poly_value_impl::make_copier<BaseClass, daw::remove_cvref_t<T>>( ) ) {
-		}
+		constexpr poly_value( ) requires( std::is_default_constructible_v<Base> )
+		  : m_storage( poly_value_impl::create<Base>( ) ) {}
+
+		template<typename T>
+		requires std::is_base_of_v<Base, daw::remove_cvref_t<T>> //
+		  constexpr poly_value( T &&value )
+		  : m_storage( poly_value_impl::create<Base, std::remove_cvref_t<T>>(
+		      DAW_FWD( value ) ) ) {}
 
 		template<typename T, typename... Args>
-		poly_value( construct_emplace_t<T>, Args &&...args )
-		  : m_ptr( std::make_unique<T>( DAW_FWD( args )... ) )
-		  , m_copier( poly_value_impl::make_copier<BaseClass, T>( ) ) {}
+		requires std::is_base_of_v<Base, daw::remove_cvref_t<T>> //
+		  constexpr poly_value( construct_emplace_t<T>, Args &&...args )
+		  : m_storage( poly_value_impl::create<Base, std::remove_cvref_t<T>>(
+		      DAW_FWD( args )... ) ) {}
 
-		poly_value( )
-		  : m_ptr( std::make_unique<BaseClass>( ) )
-		  , m_copier( poly_value_impl::make_copier<BaseClass>( ) ) {}
+		constexpr poly_value( poly_value const &other )
+		  : m_storage( other.m_storage->copy( ) ) {}
 
-		poly_value( poly_value && ) = default;
-		poly_value &operator=( poly_value && ) = default;
-		~poly_value( ) = default;
-
-		poly_value( poly_value const &other )
-		  : daw::enable_default_constructor<BaseClass>( other )
-		  , daw::enable_copy_constructor<BaseClass>( other )
-		  , daw::enable_copy_assignment<BaseClass>( other )
-		  , m_ptr( other.m_copier( other.m_ptr ) )
-		  , m_copier( other.m_copier ) {}
-
-		poly_value &operator=( poly_value const &rhs ) {
+		constexpr poly_value &operator=( poly_value const &rhs ) {
 			if( this != &rhs ) {
-				m_ptr = rhs.m_copier( rhs.m_ptr );
-				m_copier = rhs.m_copier;
+				m_storage = rhs.m_storage->copy( );
 			}
 			return *this;
 		}
 
-		template<typename Child,
-		         daw::enable_when_t<std::is_base_of_v<BaseClass, Child>,
-		                            !std::is_same_v<BaseClass, Child>,
-		                            std::is_copy_constructible_v<Child>> = nullptr>
-		poly_value( poly_value<Child> const &other )
-		  : m_ptr( std::make_unique<Child>( *other.m_ptr ) )
-		  , m_copier( poly_value_impl::make_copier<BaseClass, Child>( ) ) {}
+		constexpr poly_value( poly_value &&other ) noexcept
+		  : m_storage( other.m_storage->move( ) ) {}
 
-		template<typename Child,
-		         daw::enable_when_t<std::is_base_of_v<BaseClass, Child> and
-		                            !std::is_same_v<BaseClass, Child>> = nullptr>
-		poly_value &operator=( poly_value<Child> const &rhs ) {
-			m_ptr = std::make_unique<Child>( *rhs.m_ptr );
-			m_copier = poly_value_impl::make_copier<BaseClass, Child>( );
+		constexpr poly_value &operator=( poly_value &&rhs ) noexcept {
+			if( this != &rhs ) {
+				m_storage = rhs.m_storage->move( );
+			}
 			return *this;
 		}
 
-		template<typename T, daw::enable_when_t<std::is_base_of_v<
-		                       BaseClass, daw::remove_cvref_t<T>>> = nullptr>
-		poly_value &operator=( T &&rhs ) {
-			m_ptr = std::make_unique<daw::remove_cvref_t<T>>( DAW_FWD( rhs ) );
-			m_copier =
-			  poly_value_impl::make_copier<BaseClass, daw::remove_cvref_t<T>>( );
-			return *this;
+		~poly_value( ) = default;
+
+		template<typename Child>
+		requires( std::is_base_of_v<Base, Child> and
+		          not std::is_same_v<Base, Child> ) //
+		  poly_value( poly_value<Child> const &other )
+		  : m_storage( other.m_storage->copy( ) ) {}
+
+		template<typename Child>
+		requires( std::is_base_of_v<Base, Child> and
+		          not std::is_same_v<Base, Child> ) //
+		  poly_value( poly_value<Child> &&other )
+		  : m_storage( other.m_storage->move( ) ) {}
+
+		Base const *get( ) const {
+			return m_storage->get( );
 		}
 
-		template<typename T,
-		         daw::enable_when_t<std::is_base_of_v<BaseClass, T>> = nullptr>
-		poly_value( T *other )
-		  : m_ptr( std::unique_ptr<T>( other ) )
-		  , m_copier( poly_value_impl::make_copier<BaseClass, T>( ) ) {}
-
-		template<typename T, typename D,
-		         daw::enable_when_t<std::is_base_of_v<BaseClass, T>> = nullptr>
-		poly_value( T *other, D &&deleter )
-		  : m_ptr( std::unique_ptr<T>( other ), DAW_FWD( deleter ) )
-		  , m_copier( poly_value_impl::make_copier<BaseClass, T>( ) ) {}
-
-		template<typename T,
-		         daw::enable_when_t<std::is_base_of_v<BaseClass, T>> = nullptr>
-		poly_value &operator=( T *rhs ) {
-			m_ptr = std::unique_ptr<T>( rhs );
-			m_copier = poly_value_impl::make_copier<BaseClass, T>( );
-			return *this;
+		Base *get( ) {
+			return m_storage->get( );
 		}
 
-		BaseClass const &operator*( ) const {
-			return *m_ptr;
+		Base const &operator*( ) const {
+			return *get( );
 		}
 
-		BaseClass &operator*( ) {
-			return *m_ptr;
+		Base &operator*( ) {
+			return *get( );
 		}
 
-		BaseClass const *operator->( ) const {
-			return m_ptr.get( );
+		Base const *operator->( ) const {
+			return get( );
 		}
 
-		BaseClass *operator->( ) {
-			return m_ptr.get( );
+		Base *operator->( ) {
+			return get( );
 		}
 
-		operator BaseClass &( ) & noexcept {
-			return *m_ptr;
+		operator Base &( ) & noexcept {
+			return *get( );
 		}
 
-		operator BaseClass const &( ) const & noexcept {
-			return *m_ptr;
+		operator Base const &( ) const & noexcept {
+			return *get( );
 		}
 
-		operator BaseClass &&( ) && noexcept {
-			return *m_ptr;
+		operator Base &&( ) && noexcept {
+			return std::move( *get( ) );
 		}
 
-		operator BaseClass const *( ) const noexcept {
-			return static_cast<BaseClass const *>( m_ptr.get( ) );
-		}
-
-		operator BaseClass *( ) noexcept {
-			return static_cast<BaseClass *>( m_ptr.get( ) );
+		operator Base &&( ) const && noexcept {
+			return std::move( *get( ) );
 		}
 	};
-
-	template<typename BaseClass, typename ChildClass = BaseClass,
-	         typename... Args>
-	poly_value<BaseClass> make_poly_value( Args &&...args ) {
-		return { construct_emplace<ChildClass>, DAW_FWD( args )... };
-	}
 } // namespace daw
