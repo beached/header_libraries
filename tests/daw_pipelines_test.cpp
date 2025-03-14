@@ -558,6 +558,12 @@ namespace tests {
 		for( auto p : zipped2 ) {
 			daw::println( "{}", p );
 		}
+
+		for( auto p : pipeline( Zip, MapApply( []( int x ) {
+			                        return x + 1;
+		                        } ) )( arr1 ) ) {
+			daw::println( "{}", p );
+		}
 	}
 } // namespace tests
 

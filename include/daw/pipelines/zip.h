@@ -263,11 +263,7 @@ namespace daw::pipelines {
 		[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
 		operator( )( Range auto &&r,
 		             Range auto &&...ranges ) DAW_CPP23_STATIC_CALL_OP_CONST {
-			if constexpr( sizeof...( ranges ) == 0 ) {
-				return r;
-			} else {
-				return zip_view( DAW_FWD( r ), DAW_FWD( ranges )... );
-			}
+			return zip_view( DAW_FWD( r ), DAW_FWD( ranges )... );
 		}
 	};
 
