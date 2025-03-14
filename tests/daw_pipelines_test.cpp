@@ -530,8 +530,7 @@ namespace tests {
 		            } );
 
 		static constexpr auto delim = std::array{ 3, 4 };
-		constexpr auto splitter =
-		  pipeline( Split( delim ), Map( nums_to_string ) );
+		constexpr auto splitter = pipeline( Split( delim ), Map( nums_to_string ) );
 		static constexpr auto data =
 		  std::array{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 42, 42, 42, 42, 42, 42 };
 
@@ -543,6 +542,22 @@ namespace tests {
 		  "2, 3, 4, 5, 6, 7, 8, 9]" );
 
 		daw::println( "{}", daw::fmt_range( parts ) );
+	}
+
+	DAW_ATTRIB_NOINLINE void test032( ) {
+		static constexpr int arr1[] = { 0, 1, 2, 3, 4 };
+		static constexpr int arr2[] = { 0, 100, 200, 300, 400 };
+
+		constexpr auto zipped = pipeline( Zip, MapApply( std::plus{ } ) );
+		daw::println( "test032: Expecting: 0, 101, 202, 303, 404" );
+		for( auto p : zipped( arr1, arr2 ) ) {
+			daw::println( "{}", p );
+		}
+		constexpr auto zipped2 =
+		  pipeline( Zip( arr1, arr2 ), MapApply( std::plus{ } ) );
+		for( auto p : zipped2 ) {
+			daw::println( "{}", p );
+		}
 	}
 } // namespace tests
 
@@ -578,6 +593,7 @@ int main( ) {
 	tests::test029( );
 	tests::test030( );
 	tests::test031( );
+	tests::test032( );
 
 	daw::println( "Done" );
 }

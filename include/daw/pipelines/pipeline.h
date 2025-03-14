@@ -34,20 +34,16 @@ namespace daw::pipelines::pimpl {
 		}
 	}
 
-	template<typename R,
-	         typename... Ts,
-	         std::size_t Idx = ( sizeof...( Ts ) - 1 )>
+	template<std::size_t Idx, typename R, typename... Ranges, typename... Ts>
 	[[nodiscard]] DAW_ATTRIB_FLATINLINE constexpr auto
-	pipeline( R &&r,
-	          std::tuple<Ts...> const &tpfns,
-	          daw::constant<Idx> = daw::constant_v<Idx> ) {
+	pipeline( std::tuple<Ts...> const &tpfns, R &&r, Ranges &&...ranges ) {
 		using std::get;
 		if constexpr( Idx > 0 ) {
 			return std::invoke(
 			  get<Idx>( tpfns ),
-			  pipeline( DAW_FWD( r ), tpfns, daw::constant_v<Idx - 1> ) );
+			  pipeline<Idx - 1>( tpfns, DAW_FWD( r ), DAW_FWD( ranges )... ) );
 		} else {
-			return std::invoke( get<0>( tpfns ), DAW_FWD( r ) );
+			return std::invoke( get<0>( tpfns ), DAW_FWD( r ), DAW_FWD( ranges )... );
 		}
 	}
 
@@ -107,23 +103,28 @@ namespace daw::pipelines::pimpl {
 namespace daw::pipelines {
 	template<Range R, typename... Fns>
 	DAW_ATTRIB_FLATTEN constexpr auto pipeline( R &&r, Fns &&...fns ) {
-		return pimpl::pipeline( pimpl::fix_range( DAW_FWD( r ) ),
-		                        pimpl::make_tpfns<true>( DAW_FWD( fns )... ) );
+		return pimpl::pipeline<sizeof...( Fns ) - 1>(
+		  pimpl::make_tpfns<true>( DAW_FWD( fns )... ),
+		  pimpl::fix_range( DAW_FWD( r ) ) );
 	}
 
 	template<typename Fn, typename... Fns>
 	requires( not Range<Fn> ) //
 	  DAW_ATTRIB_FLATTEN constexpr auto pipeline( Fn &&fn, Fns &&...fns ) {
 		// Store all passed functions as they must outlive the call to pipeline
-		return [tpfns = pimpl::make_tpfns<false>(
-		          DAW_FWD( fn ), DAW_FWD( fns )... )]( Range auto &&r ) {
-			// We are going to forward refs to the current tuple to ensure it is
-			// only stored here if there are large callables passed
-			return [&]<std::size_t... Is>( std::index_sequence<Is...> ) {
-				return pimpl::pipeline(
-				  pimpl::fix_range( DAW_FWD( r ) ),
-				  std::forward_as_tuple( std::get<Is>( tpfns )... ) );
-			}( std::make_index_sequence<std::tuple_size_v<decltype( tpfns )>>{ } );
-		};
+		return
+		  [tpfns = pimpl::make_tpfns<false>( DAW_FWD( fn ), DAW_FWD( fns )... )](
+		    Range auto &&r, Range auto &&...rs ) {
+			  // We are going to forward refs to the current tuple to ensure it is
+			  // only stored here if there are large callables passed
+			  using tp_size = daw::constant<std::tuple_size_v<DAW_TYPEOF( tpfns )>>;
+			  return [&]<std::size_t... Is>( std::index_sequence<Is...> ) {
+				  return pimpl::pipeline<tp_size::value - 1>(
+				    tpfns,
+				    // std::forward_as_tuple( std::get<Is>( tpfns )... ),
+				    pimpl::fix_range( DAW_FWD( r ) ),
+				    pimpl::fix_range( DAW_FWD( rs ) )... );
+			  }( std::make_index_sequence<std::tuple_size_v<decltype( tpfns )>>{ } );
+		  };
 	}
 } // namespace daw::pipelines
