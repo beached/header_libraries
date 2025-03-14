@@ -251,6 +251,24 @@ namespace daw::pipelines {
 	template<Range... Ranges>
 	zip_view( Ranges &&... ) -> zip_view<Ranges...>;
 
+	struct Zip_t {
+		explicit Zip_t( ) = default;
+		[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+		operator( )( ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			return []( Range auto &&r, Range auto &&...ranges ) {
+				return zip_view( DAW_FWD( r ), DAW_FWD( ranges )... );
+			};
+		}
+
+		[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+		operator( )( Range auto &&r,
+		             Range auto &&...ranges ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			return zip_view( DAW_FWD( r ), DAW_FWD( ranges )... );
+		}
+	};
+
+	inline constexpr auto Zip = Zip_t( );
+
 	/// Zip any number of containers and then the containers in the current
 	/// pipeline.  If the Range passed is a zip_view or tuple<Ranges> it will
 	/// merge them
