@@ -311,9 +311,9 @@ requires ( <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cca
 <tr class="memitem:a1f8d55b178da43b51b3b1336ccd779ff" id="r_a1f8d55b178da43b51b3b1336ccd779ff"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a> &gt; </td></tr>
 <tr class="memitem:a1f8d55b178da43b51b3b1336ccd779ff"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a1f8d55b178da43b51b3b1336ccd779ff">not_fn_t</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a>) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1not__fn__t.html">not_fn_t</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a> &gt;</td></tr>
 <tr class="separator:a1f8d55b178da43b51b3b1336ccd779ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d0a1030b4105622a456780ef662a077" id="r_a2d0a1030b4105622a456780ef662a077"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> R , typename... Ts, std::size_t Idx = ( sizeof...( Ts ) - 1 )&gt; </td></tr>
-<tr class="memitem:a2d0a1030b4105622a456780ef662a077"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a2d0a1030b4105622a456780ef662a077">pipeline</a> (R &amp;&amp;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">r</a>, std::tuple&lt; Ts... &gt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> &amp;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">tpfns</a>, <a class="el" href="structdaw_1_1constant.html">daw::constant</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Idx</a> &gt;=<a class="el" href="namespacedaw.html#a869c82c3e835590b2a97213b44fa1f75">daw::constant_v</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Idx</a> &gt;)</td></tr>
-<tr class="separator:a2d0a1030b4105622a456780ef662a077"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7708a1ce85eaadee5df543e0161123c" id="r_ab7708a1ce85eaadee5df543e0161123c"><td class="memTemplParams" colspan="2">template&lt;std::size_t Idx, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> R , typename... Ranges, typename... Ts&gt; </td></tr>
+<tr class="memitem:ab7708a1ce85eaadee5df543e0161123c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#ab7708a1ce85eaadee5df543e0161123c">pipeline</a> (std::tuple&lt; Ts... &gt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> &amp;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">tpfns</a>, R &amp;&amp;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">r</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &amp;&amp;...<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">ranges</a>)</td></tr>
+<tr class="separator:ab7708a1ce85eaadee5df543e0161123c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a181525f6f8781c51dba09e14ae209f63" id="r_a181525f6f8781c51dba09e14ae209f63"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a181525f6f8781c51dba09e14ae209f63">Print_t</a> () -&gt; <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_print__t.html">Print_t</a>&lt;&gt;</td></tr>
 <tr class="separator:a181525f6f8781c51dba09e14ae209f63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58870c34504ef8c0aa5c55494a817ed5" id="r_a58870c34504ef8c0aa5c55494a817ed5"><td class="memTemplParams" colspan="2">template&lt;Range R&gt; </td></tr>
@@ -714,7 +714,7 @@ template&lt;std::size_t N&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00056">56</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00052">52</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
 
 </div>
 </div>
@@ -742,7 +742,7 @@ template&lt;std::size_t N&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00065">65</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00061">61</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
 
 </div>
 </div>
@@ -772,7 +772,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00061">61</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00057">57</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
 
 </div>
 </div>
@@ -980,7 +980,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00097">97</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00093">93</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
 
 </div>
 </div>
@@ -1145,7 +1145,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00092">92</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00088">88</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
 
 </div>
 </div>
@@ -1175,7 +1175,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00088">88</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00084">84</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
 
 </div>
 </div>
@@ -1205,7 +1205,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00083">83</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00079">79</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
 
 </div>
 </div>
@@ -1363,13 +1363,13 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 
 </div>
 </div>
-<a id="a2d0a1030b4105622a456780ef662a077" name="a2d0a1030b4105622a456780ef662a077"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2d0a1030b4105622a456780ef662a077">&#9670;&#160;</a></span>pipeline()</h2>
+<a id="ab7708a1ce85eaadee5df543e0161123c" name="ab7708a1ce85eaadee5df543e0161123c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7708a1ce85eaadee5df543e0161123c">&#9670;&#160;</a></span>pipeline()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> R , typename... Ts, std::size_t Idx = ( sizeof...( Ts ) - 1 )&gt; </div>
+template&lt;std::size_t Idx, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> R , typename... Ranges, typename... Ts&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1377,20 +1377,20 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
         <tr>
           <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> daw::pipelines::pimpl::pipeline </td>
           <td>(</td>
-          <td class="paramtype">R &amp;&amp;&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">std::tuple&lt; Ts... &gt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> &amp;&#160;</td>
           <td class="paramname"><em>tpfns</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1constant.html">daw::constant</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Idx</a> &gt;&#160;</td>
-          <td class="paramname"> = <code><a class="el" href="namespacedaw.html#a869c82c3e835590b2a97213b44fa1f75">daw::constant_v</a>&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Idx</a>&gt;</code>&#160;</td>
+          <td class="paramtype">R &amp;&amp;&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>ranges</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1405,7 +1405,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00041">41</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00039">39</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
 
 </div>
 </div>

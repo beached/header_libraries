@@ -124,6 +124,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1zip__iterator.html">zip_iterator</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1_zip__t.html">Zip_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1zip__view.html">zip_view</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -347,6 +349,8 @@ Variables</h2></td></tr>
 <tr class="separator:a61af7dec0da9b95eace8e4f785c9e58d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad31317a259fa13e0d76eb7168a51fc3a" id="r_ad31317a259fa13e0d76eb7168a51fc3a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#ad31317a259fa13e0d76eb7168a51fc3a">Unique</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_unique__t.html">pimpl::Unique_t</a>{ }</td></tr>
 <tr class="separator:ad31317a259fa13e0d76eb7168a51fc3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6410eb582e292e3244f142ba8df29d9" id="r_ab6410eb582e292e3244f142ba8df29d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#ab6410eb582e292e3244f142ba8df29d9">Zip</a> = <a class="el" href="structdaw_1_1pipelines_1_1_zip__t.html">Zip_t</a>( )</td></tr>
+<tr class="separator:ab6410eb582e292e3244f142ba8df29d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a73a923632ccbd563fde7bc4741f021dc" name="a73a923632ccbd563fde7bc4741f021dc"></a>
@@ -1487,7 +1491,7 @@ requires ( <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cca
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00116">116</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00113">113</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
 
 </div>
 </div>
@@ -1527,7 +1531,7 @@ template&lt;Range R, typename... Fns&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00109">109</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00105">105</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
 
 </div>
 </div>
@@ -2056,7 +2060,7 @@ template&lt;Range... Ranges&gt; </div>
 
 <p>Zip any number of containers and then the containers in the current pipeline. If the Range passed is a <a class="el" href="structdaw_1_1pipelines_1_1zip__view.html">zip_view</a> or tuple&lt;Ranges&gt; it will merge them. </p>
 
-<p class="definition">Definition at line <a class="el" href="zip_8h_source.html#l00258">258</a> of file <a class="el" href="zip_8h_source.html">zip.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="zip_8h_source.html#l00276">276</a> of file <a class="el" href="zip_8h_source.html">zip.h</a>.</p>
 
 </div>
 </div>
@@ -2532,6 +2536,30 @@ template&lt;std::size_t... Indices&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="unique_8h_source.html#l00112">112</a> of file <a class="el" href="unique_8h_source.html">unique.h</a>.</p>
+
+</div>
+</div>
+<a id="ab6410eb582e292e3244f142ba8df29d9" name="ab6410eb582e292e3244f142ba8df29d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6410eb582e292e3244f142ba8df29d9">&#9670;&#160;</a></span>Zip</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> daw::pipelines::Zip = <a class="el" href="structdaw_1_1pipelines_1_1_zip__t.html">Zip_t</a>( )</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="zip_8h_source.html#l00270">270</a> of file <a class="el" href="zip_8h_source.html">zip.h</a>.</p>
 
 </div>
 </div>
