@@ -24,7 +24,7 @@ jobs:
       matrix:
         cpp_version: [ 17, 20 ]
         build_type: [ Debug, Release ]
-        os: [ ubuntu-24.10 ]
+        os: [ ubuntu-24.04 ]
         toolset: [ g++-12, g++-13, clang++-13, clang++-14, clang++-15, clang++-16, clang++-17, clang++-18, clang++-19, clang++-20 ]
         exclude:
           - toolset: clang++-13
@@ -35,8 +35,8 @@ jobs:
     name: "${{ matrix.os }} ${{ matrix.toolset }} ${{ matrix.cpp_version }} ${{ matrix.build_type }} ${{ matrix.except_type}}"
     steps:
       - uses: actions/checkout@v1
-      - name: Setup APT and Base Dependencies(24.10)
-        if: endsWith( matrix.os, '24.10' )
+      - name: Setup APT and Base Dependencies(24.04)
+        if: endsWith( matrix.os, '24.04' )
         run: |
           sudo wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | sudo tee /etc/apt/trusted.gpg.d/apt.llvm.org.asc
           sudo apt-add-repository 'deb http://apt.llvm.org/oracular/ llvm-toolchain-oracular main'
