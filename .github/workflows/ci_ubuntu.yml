@@ -16,7 +16,7 @@ jobs:
     - name: Download & Install Apt Dependencies
       run: |        
         sudo apt update
-        sudo apt install clang-20 lldb-20 lld-20 libc++-dev libc++abi-dev
+        sudo apt install clang-20 lldb-20 lld-20 libc++1 libc++abi1
     - name: Build
       run: ./ci_scripts/ci_ubuntu_build.sh
     - name: Test
