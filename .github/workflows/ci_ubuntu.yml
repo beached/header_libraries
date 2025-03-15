@@ -24,7 +24,7 @@ jobs:
       matrix:
         cpp_version: [ 17, 20 ]
         build_type: [ Debug, Release ]
-        os: [ ubuntu-22.10 ]
+        os: [ ubuntu-24.10 ]
         toolset: [ g++-12, g++-13, clang++-13, clang++-14, clang++-15, clang++-16, clang++-17, clang++-18, clang++-19, clang++-20 ]
         exclude:
           - toolset: clang++-13
