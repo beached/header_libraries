@@ -16,7 +16,7 @@ jobs:
     - name: Download & Install Apt Dependencies
       run: |        
         sudo apt update
-        sudo apt install clang-9 lldb-9 lld-9 libc++-9-dev libc++abi-9-dev
+        sudo apt install clang-20 lldb-20 lld-20 libc++-20-dev libc++abi-20-dev
     - name: Build
       run: ./ci_scripts/ci_ubuntu_build.sh
     - name: Test
