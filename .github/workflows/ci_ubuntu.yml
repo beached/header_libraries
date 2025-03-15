@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: [ubuntu-22.04]
+    runs-on: [ubuntu-22.10]
     steps:
     - uses: actions/checkout@v1
     - name: Add LLVM Repo
