@@ -83,12 +83,8 @@ jobs:
       - name: Build Dependencies
         run: cmake -GNinja -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DDAW_ENABLE_TESTING=ON -DCMAKE_CXX_STANDARD=${{ matrix.cpp_version }} -Bbuild/ .
       - name: Build
-        run: cmake --build build/ --target ci_tests -- -k 0
+        run: cmake --build build/ --target daw-header-libraries_full -- -k 0
         continue-on-error: true
       - name: Test
         run: |
-          sudo service apport stop
-          ulimit -c unlimited
-          ulimit -c
-          sudo sysctl -w kernel.core_pattern=core.%e.%p
-          ctest -C ${{ matrix.build_type }} -j2 -VV --timeout 1200 --test-dir build/
+          ctest -C ${{ matrix.build_type }} --build-target daw-header-libraries_full -j2 -VV --timeout 1200 --test-dir build/
