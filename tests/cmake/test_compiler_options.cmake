@@ -100,6 +100,7 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 			if( CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 16.0.0 )
 				add_compile_options(
 						-Wno-unsafe-buffer-usage
+						-Wc++2b-extensions
 						)
 			endif()
 			if( CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 17.0.0 )

@@ -33,6 +33,8 @@ jobs:
             cpp_version: 20
           - toolset: clang++-14
             cpp_version: 20
+          - toolset: clang++-15
+            cpp_version: 20
     runs-on: ${{ matrix.os }}
     name: "${{ matrix.os }} ${{ matrix.toolset }} ${{ matrix.cpp_version }} ${{ matrix.build_type }} ${{ matrix.except_type}}"
     steps:
