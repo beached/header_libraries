@@ -38,16 +38,13 @@ jobs:
       - name: Setup APT and Base Dependencies(24.04)
         if: endsWith( matrix.os, '24.04' )
         run: |
-          sudo wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | sudo tee /etc/apt/trusted.gpg.d/apt.llvm.org.asc
-          sudo apt-add-repository 'deb http://apt.llvm.org/oracular/ llvm-toolchain-oracular main'
-          sudo apt-add-repository 'deb http://apt.llvm.org/oracular/ llvm-toolchain-oracular-13 main'
-          sudo apt-add-repository 'deb http://apt.llvm.org/oracular/ llvm-toolchain-oracular-14 main'
-          sudo apt-add-repository 'deb http://apt.llvm.org/oracular/ llvm-toolchain-oracular-15 main'
-          sudo apt-add-repository 'deb http://apt.llvm.org/oracular/ llvm-toolchain-oracular-16 main'
-          sudo apt-add-repository 'deb http://apt.llvm.org/oracular/ llvm-toolchain-oracular-17 main'
-          sudo apt-add-repository 'deb http://apt.llvm.org/oracular/ llvm-toolchain-oracular-18 main'
-          sudo apt-add-repository 'deb http://apt.llvm.org/oracular/ llvm-toolchain-oracular-19 main'
-          sudo apt-add-repository 'deb http://apt.llvm.org/oracular/ llvm-toolchain-oracular-20 main'
+          sudo wget -O /etc/apt/trusted.gpg.d/llvm.asc https://apt.llvm.org/llvm-snapshot.gpg.key
+          sudo apt-add-repository 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy main'
+          sudo apt-add-repository 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-13 main'
+          sudo apt-add-repository 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-14 main'
+          sudo apt-add-repository 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-15 main'
+          sudo apt-add-repository 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main'
+          sudo apt-add-repository 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-17 main'
           sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
           sudo apt update
           sudo apt install ninja-build libunwind-dev
