@@ -27,6 +27,8 @@ jobs:
         os: [ ubuntu-24.04 ]
         toolset: [ g++-12, g++-13, clang++-13, clang++-14, clang++-15, clang++-16, clang++-17, clang++-18, clang++-19, clang++-20 ]
         exclude:
+          - toolset: gcc++-12
+            cpp_version: 20
           - toolset: clang++-13
             cpp_version: 20
           - toolset: clang++-14

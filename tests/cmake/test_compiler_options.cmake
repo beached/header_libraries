@@ -23,7 +23,6 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 				-pedantic-errors
 				-Weverything
 				-ftemplate-backtrace-limit=0
-				-Wno-c++2b-compat
 				-Wno-c++98-compat
 				-Wno-covered-switch-default
 				-Wno-double-promotion
