@@ -47,6 +47,9 @@ jobs:
           sudo apt-add-repository 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-15 main'
           sudo apt-add-repository 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main'
           sudo apt-add-repository 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-17 main'
+          sudo apt-add-repository 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-18 main'
+          sudo apt-add-repository 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-19 main'
+          sudo apt-add-repository 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-20 main'
           sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
           sudo apt update
           sudo apt install ninja-build libunwind-dev
