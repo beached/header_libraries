@@ -15,11 +15,7 @@ namespace daw::pipelines::pimpl {
 	struct Every_t {
 		std::size_t m_select_every;
 
-		template<typename R>
-		[[nodiscard]] constexpr auto operator( )( R &&r ) const {
-			static_assert( Range<R>,
-			               "Every requires the previous algorithm in the pipeline "
-			               "to return a range" );
+		[[nodiscard]] constexpr auto operator( )( Range auto &&r ) const {
 			return filter_view{ std::begin( DAW_FWD( r ) ), std::end( DAW_FWD( r ) ),
 			                    [select_every = m_select_every,
 			                     n = m_select_every]( auto const & ) mutable {
