@@ -17,15 +17,12 @@ int main( ) {
 	static constexpr auto v0 = pos_int( 42 );
 	constexpr int const &v0cr = v0;
 	(void)v0cr;
+#if defined( DAW_USE_EXCEPTIONS )
 	bool has_error = false;
-	daw::contract_failure_handler = [&] {
-		// This is not a good idea in real code.  Do not call accessors if used
-		has_error = true;
-	};
-
-	{
+	try {
 		auto v1 = pos_int{ -1 };
-		daw_ensure( has_error = true );
-	}
-	daw::contract_failure_handler = daw::default_contract_failure;
+		(void)v1;
+	} catch( daw::daw_contract_violation const & ) { has_error = true; }
+	daw_ensure( has_error );
+#endif
 }
