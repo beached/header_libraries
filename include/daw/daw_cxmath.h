@@ -553,6 +553,18 @@ namespace daw::cxmath {
 		return count_leading_zeroes( static_cast<std::uint64_t>( v ) << 32U );
 	}
 #endif
+	[[nodiscard]] DAW_ATTRIB_FLATTEN constexpr std::uint32_t
+	count_leading_zeros( daw::uint128_t v ) {
+		if( v == 0 ) {
+			return 128U;
+		}
+		auto const h =
+		  count_leading_zeros( static_cast<std::uint64_t>( v >> 64ULL ) );
+		if( h == 64U ) {
+			return count_leading_zeros( static_cast<std::uint64_t>( v ) );
+		}
+		return h;
+	}
 
 	namespace cxmath_impl {
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint32_t

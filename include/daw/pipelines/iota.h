@@ -177,6 +177,6 @@ namespace daw::pipelines {
 	iota_view( T, T ) -> iota_view<std::size_t>;
 
 	inline constexpr auto ToIota = []<Integer I>( I last ) {
-		return iota_view<I>{ 0, last };
+		return iota_view<I>{ I{}, last };
 	};
 } // namespace daw::pipelines
