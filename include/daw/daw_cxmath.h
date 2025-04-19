@@ -466,7 +466,10 @@ namespace daw::cxmath {
 #if __has_builtin( __builtin_clzg )
 	template<typename Unsigned, std::enable_if_t<daw::is_unsigned_v<Unsigned>, std::nullptr_t> = nullptr>
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint32_t count_leading_zeroes( Unsigned u ) {
-		return __builtin_clzg( u );
+		if( u != Unsigned{} ) {
+			return static_cast<std::uint32_t>( __builtin_clzg( u ) );
+		}
+		return static_cast<unsigned>( bit_count_v<Unsigned> );
 	}
 #else
 
