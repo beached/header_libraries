@@ -464,9 +464,11 @@ namespace daw::cxmath {
 	}
 
 #if __has_builtin( __builtin_clzg )
-	template<typename Unsigned, std::enable_if_t<daw::is_unsigned_v<Unsigned>, std::nullptr_t> = nullptr>
-	[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint32_t count_leading_zeroes( Unsigned u ) {
-		if( u != Unsigned{} ) {
+	template<typename Unsigned, std::enable_if_t<daw::is_unsigned_v<Unsigned>,
+	                                             std::nullptr_t> = nullptr>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint32_t
+	count_leading_zeroes( Unsigned u ) {
+		if( u != Unsigned{ } ) {
 			return static_cast<std::uint32_t>( __builtin_clzg( u ) );
 		}
 		return static_cast<unsigned>( bit_count_v<Unsigned> );
@@ -489,7 +491,6 @@ namespace daw::cxmath {
 		}
 		return static_cast<unsigned>( bit_count_v<unsigned long> );
 	}
-
 
 #if DAW_HAS_BUILTIN( __builtin_clzll )
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr unsigned
@@ -544,7 +545,7 @@ namespace daw::cxmath {
 		               bit_position[( v * 0x021'8a39'2cd3'd5dbf ) >> 58U] ); // [3]
 	}
 #endif
-
+#if defined( DAW_HAS_INT128 )
 	[[nodiscard]] DAW_ATTRIB_FLATTEN constexpr std::uint32_t
 	count_leading_zeros( daw::uint128_t v ) {
 		if( v == 0 ) {
@@ -558,15 +559,16 @@ namespace daw::cxmath {
 		return h;
 	}
 #endif
-		[[nodiscard]] DAW_ATTRIB_FLATINLINE inline constexpr unsigned
-		count_leading_zeroes( daw::UInt32 v ) noexcept {
-			return count_leading_zeroes( static_cast<std::uint32_t>( v ) );
-		}
+#endif
+	[[nodiscard]] DAW_ATTRIB_FLATINLINE inline constexpr unsigned
+	count_leading_zeroes( daw::UInt32 v ) noexcept {
+		return count_leading_zeroes( static_cast<std::uint32_t>( v ) );
+	}
 
-		[[nodiscard]] DAW_ATTRIB_FLATINLINE inline constexpr unsigned
-		count_leading_zeroes( daw::UInt64 v ) noexcept {
-			return count_leading_zeroes( static_cast<std::uint64_t>( v ) );
-		}
+	[[nodiscard]] DAW_ATTRIB_FLATINLINE inline constexpr unsigned
+	count_leading_zeroes( daw::UInt64 v ) noexcept {
+		return count_leading_zeroes( static_cast<std::uint64_t>( v ) );
+	}
 
 	namespace cxmath_impl {
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint32_t
