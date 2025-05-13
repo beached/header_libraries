@@ -61,7 +61,7 @@ namespace daw {
 		                                            std::nullptr_t> = nullptr>
 		DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr bool
 		operator( )( Integer c ) DAW_CPP23_STATIC_CALL_OP_CONST {
-			return Integer{ 32 } < c and c < Integer{ 127 };
+			return Integer{ 32 } <= c and c < Integer{ 127 };
 		}
 	};
 	inline constexpr auto is_ascii_printable = is_ascii_printable_t{ };
