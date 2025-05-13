@@ -21,6 +21,7 @@ set( TEST_SOURCES
 		 daw_arith_traits_test.cpp
 		 daw_array_compare_test.cpp
 		 daw_array_test.cpp
+		 daw_ascii_test.cpp
 		 daw_assume_test.cpp
 		 daw_attributes_test.cpp
 		 daw_benchmark_test.cpp
