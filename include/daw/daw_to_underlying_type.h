@@ -13,7 +13,7 @@
 namespace daw {
 	template<typename Enum,
 	         std::enable_if_t<std::is_enum_v<Enum>, std::nullptr_t> = nullptr>
-	constexpr auto to_underlying_type( Enum e ) {
+	constexpr auto to_underlying( Enum e ) {
 		return static_cast<std::underlying_type_t<Enum>>( e );
 	}
 } // namespace daw
