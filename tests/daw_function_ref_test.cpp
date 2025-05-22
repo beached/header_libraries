@@ -34,7 +34,7 @@ inline constexpr int add( int a, int b, int c ) {
 }
 
 DAW_CONSTEVAL void test2( ) {
-	auto const r = func( add );
+	constexpr auto const r = func( add );
 	daw_ensure( r == 96 );
 }
 
