@@ -468,7 +468,8 @@ namespace daw::cxmath {
 	                                             std::nullptr_t> = nullptr>
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint32_t
 	count_leading_zeroes( Unsigned u ) {
-			return static_cast<std::uint32_t>( __builtin_clzg( u, static_cast<int>(daw::bit_count_v<Unsigned>) ) );
+		return static_cast<std::uint32_t>(
+		  __builtin_clzg( u, static_cast<int>( daw::bit_count_v<Unsigned> ) ) );
 	}
 #else
 
@@ -1385,9 +1386,11 @@ namespace daw::cxmath {
 	  10'000'000'000'000'000'000ull };
 
 	constexpr int count_digits( std::uint64_t value ) {
-		auto b = -( value > 0 ) & ( 63 - count_leading_zeroes( value ) );
+		auto b = -static_cast<std::uint32_t>( value > 0 ) &
+		         ( 63 - count_leading_zeroes( value ) );
 		auto a = ( b * 77 ) / 256;
-		return static_cast<int>( 1 + a + ( value >= powers_of_ten[a] ) );
+		return static_cast<int>(
+		  1 + a + static_cast<std::uint32_t>( value >= powers_of_ten[a] ) );
 	}
 	static_assert( count_digits( 1'000'000ULL ) == 7 );
 } // namespace daw::cxmath
