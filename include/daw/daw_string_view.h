@@ -536,8 +536,8 @@ namespace daw {
 		/// refer to a constant contiguous sequence of char-like objects with the
 		/// first element of the sequence at position zero.
 		template<typename CharT>
-		struct [[DAW_PREF_NAME( string_view ),
-		         DAW_PREF_NAME( wstring_view )]] basic_string_view {
+		struct [[DAW_PREF_NAME( string_view ), DAW_PREF_NAME( wstring_view )]]
+		basic_string_view {
 			using value_type = CharT;
 			using pointer = CharT *;
 			using const_pointer = std::add_const_t<CharT> *;
@@ -1938,13 +1938,18 @@ namespace daw {
 						  reinterpret_cast<CharT const *>( r ) - first );
 					}
 				}
+				else {
 #endif
-				for( std::size_t n = pos; n < sz; ++n ) {
-					if( first[n] == c ) {
-						return n;
+					for( std::size_t n = pos; n < sz; ++n ) {
+						if( first[n] == c ) {
+							return n;
+						}
 					}
+					return npos;
+
+#if defined( DAW_HAS_IF_CONSTEVAL_COMPAT )
 				}
-				return npos;
+#endif
 			}
 
 			[[nodiscard]] DAW_ATTRIB_FLATTEN constexpr size_type
