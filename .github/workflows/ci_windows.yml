@@ -1,19 +1,72 @@
 name: Windows
-
 on:
+  schedule:
+    - cron: '10 5 * * *'
   push:
-    branches-ignore: dev
+    branches: [ release, develop ]
   pull_request:
-    branches-ignore: dev
+    push:
+      branches-ignore: develop
+    pull_request:
+      branches-ignore: develop
 
 jobs:
-  build:
-    runs-on: [windows-2019]
+  Windows:
+    permissions:
+      actions: none
+      checks: none
+      contents: none
+      deployments: none
+      issues: none
+      packages: none
+      pull-requests: none
+      repository-projects: none
+      security-events: none
+      statuses: none
+    defaults:
+      run:
+        shell: cmd
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - { cpp_version: 17, build_type: Debug, arch: x64, os: windows-2022, toolset: MSVC, cmake_flags: "-GNinja" }
+          - { cpp_version: 17, build_type: Release, arch: x64, os: windows-2022, toolset: MSVC, cmake_flags: "-GNinja" }
+          - { cpp_version: 20, build_type: Debug, arch: x64, os: windows-2022, toolset: MSVC, cmake_flags: "-GNinja" }
+          - { cpp_version: 20, build_type: Release, arch: x64, os: windows-2022, toolset: MSVC, cmake_flags: "-GNinja" }
+          - { cpp_version: 17, build_type: Debug, arch: Win32, os: windows-2022, toolset: MSVC, cmake_flags: "-GNinja" }
+          - { cpp_version: 17, build_type: Release, arch: Win32, os: windows-2022, toolset: MSVC, cmake_flags: "-GNinja" }
+          - { cpp_version: 20, build_type: Debug, arch: Win32, os: windows-2022, toolset: MSVC, cmake_flags: "-GNinja" }
+          - { cpp_version: 20, build_type: Release, arch: Win32, os: windows-2022, toolset: MSVC, cmake_flags: "-GNinja" }
+          - { cpp_version: 23, build_type: Debug, arch: Win32, os: windows-2022, toolset: MSVC, cmake_flags: "-GNinja" }
+          - { cpp_version: 23, build_type: Release, arch: Win32, os: windows-2022, toolset: MSVC, cmake_flags: "-GNinja" }
+          - { cpp_version: 23, build_type: Debug, arch: Win32, os: windows-2022, toolset: ClangCL, cmake_flags: " -T ClangCL -DCMAKE_C_COMPILER=clang-cl.exe -DCMAKE_CXX_COMPILER=clang-cl.exe" }
+          - { cpp_version: 23, build_type: Release, arch: Win32, os: windows-2022, toolset: ClangCL, cmake_flags: " -T ClangCL -DCMAKE_C_COMPILER=clang-cl.exe -DCMAKE_CXX_COMPILER=clang-cl.exe" }
+    runs-on: ${{ matrix.config.os }}
+    name: "${{ matrix.config.os }} ${{ matrix.config.toolset }} ${{ matrix.config.cpp_version }} ${{ matrix.config.arch }} ${{ matrix.config.build_type }}"
+    env:
+      DAW_BUILD_DIR: "build_${{ matrix.config.cpp_version }}_${{ matrix.config.arch }}_${{ matrix.config.build_type }}_${{ matrix.config.toolset }}"
     steps:
       - uses: actions/checkout@v1
+      - uses: beached/msvc-dev-cmd@285e7c0b9b57a02c900951da93a77e656425d783
+        with:
+          arch: ${{ matrix.config.arch }}
+      - name: Setup Build Environment
+        run: md ${{ env.DAW_BUILD_DIR }}
+      - name: CMake Config
+        run: cmake.exe ${{ matrix.config.cmake_flags }} -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DCMAKE_CXX_STANDARD=${{ matrix.config.cpp_version }} -DDAW_ENABLE_TESTING=On -B${{ env.DAW_BUILD_DIR }}/ .
       - name: Build
-        run: .\ci_scripts\ci_windows_build.cmd
+        run: cmake.exe --build ${{ env.DAW_BUILD_DIR }}/ --target ci_tests --config ${{ matrix.config.build_type }}
+        continue-on-error: true
       - name: Test
-        run: .\ci_scripts\ci_windows_test.cmd
-      - name: InstallTest
-        run: .\ci_scripts\ci_windows_install_test.cmd
+        run: ctest.exe -C ${{ matrix.config.build_type }} -j2 -VV --timeout 1200 --test-dir ${{ env.DAW_BUILD_DIR }}/
+      - name: Archive any crashes as an artifact
+        uses: actions/upload-artifact@v4
+        if: always( )
+        with:
+          name: crashes
+          path: |
+            crash-*
+            leak-*
+            timeout-*
+          if-no-files-found: ignore
