@@ -36,10 +36,18 @@ namespace daw {
 		}
 		auto result =
 		  std::basic_string<CharT>( static_cast<std::size_t>( fsize ), CharT{ } );
+#if defined( _MSC_VER )
+		FILE * f = nullptr;
+		auto err = fopen_s( &f, path.c_str( ), "rb" );
+		if( err ) {
+			return std::nullopt;
+		}
+#else
 		auto *f = fopen( path.c_str( ), "rb" );
 		if( not f ) {
 			return std::nullopt;
 		}
+#endif
 		auto num_read = fread( result.data( ), sizeof( CharT ), result.size( ), f );
 		if( num_read != ( result.size( ) / sizeof( CharT ) ) ) {
 			return std::nullopt;
@@ -76,8 +84,9 @@ namespace daw {
 		}
 		auto result =
 		  std::basic_string<CharT>( static_cast<std::size_t>( fsize ), CharT{ } );
-		auto *f = _wfopen( path.c_str( ), L"rb" );
-		if( not f ) {
+		FILE * f = nullptr;
+		auto err = _wfopen_s( &f, path.c_str( ), L"rb" );
+		if( err ) {
 			return std::nullopt;
 		}
 		auto num_read = fread( result.data( ), sizeof( CharT ), result.size( ), f );

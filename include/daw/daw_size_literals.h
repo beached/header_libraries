@@ -8,55 +8,53 @@
 
 #pragma once
 
-#include <cstddef>
-
 namespace daw::size_literals {
-	[[nodiscard]] constexpr size_t
+	[[nodiscard]] constexpr unsigned long long
 	operator""_KB( unsigned long long val ) noexcept {
 		return val * 1024ull;
 	}
 
-	[[nodiscard]] constexpr size_t
+	[[nodiscard]] constexpr unsigned long long
 	operator""_MB( unsigned long long val ) noexcept {
 		return val * 1024ull * 1024ull;
 	}
 
-	[[nodiscard]] constexpr size_t
+	[[nodiscard]] constexpr unsigned long long
 	operator""_GB( unsigned long long val ) noexcept {
 		return val * 1024ull * 1024ull * 1024ull;
 	}
 
-	[[nodiscard]] constexpr size_t
+	[[nodiscard]] constexpr unsigned long long
 	operator""_TB( unsigned long long val ) noexcept {
 		return val * 1024ull * 1024ull * 1024ull * 1024ull;
 	}
 
-	[[nodiscard]] constexpr size_t
+	[[nodiscard]] constexpr unsigned long long
 	operator""_PB( unsigned long long val ) noexcept {
 		return val * 1024ull * 1024ull * 1024ull * 1024ull * 1024ull;
 	}
 
-	[[nodiscard]] constexpr size_t
+	[[nodiscard]] constexpr unsigned long long
 	operator""_KiB( unsigned long long val ) noexcept {
 		return val * 1000ull;
 	}
 
-	[[nodiscard]] constexpr size_t
+	[[nodiscard]] constexpr unsigned long long
 	operator""_MiB( unsigned long long val ) noexcept {
 		return val * 1000ull * 1000ull;
 	}
 
-	[[nodiscard]] constexpr size_t
+	[[nodiscard]] constexpr unsigned long long
 	operator""_GiB( unsigned long long val ) noexcept {
 		return val * 1000ull * 1000ull * 1000ull;
 	}
 
-	[[nodiscard]] constexpr size_t
+	[[nodiscard]] constexpr unsigned long long
 	operator""_TiB( unsigned long long val ) noexcept {
 		return val * 1000ull * 1000ull * 1000ull * 1000ull;
 	}
 
-	[[nodiscard]] constexpr size_t
+	[[nodiscard]] constexpr unsigned long long
 	operator""_PiB( unsigned long long val ) noexcept {
 		return val * 1000ull * 1000ull * 1000ull * 1000ull * 1000ull;
 	}

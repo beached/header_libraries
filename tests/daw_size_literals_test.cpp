@@ -13,8 +13,8 @@ namespace daw_size_literals_001 {
 	static_assert( 1_KB == 1024ull );
 	static_assert( 1_MB == 1024ull * 1024u );
 	static_assert( 1_GB == 1024ull * 1024u * 1024u );
-	static_assert( 1_TB == 1024ull * 1024u * 1024u * 1024u );
-	static_assert( 1_PB == 1024ull * 1024u * 1024u * 1024u * 1024u );
+	static_assert( 1_TB == 1024ull * 1024ull * 1024ull * 1024ull );
+	static_assert( 1_PB == 1024ull * 1024ull * 1024ull * 1024ull * 1024ull );
 } // namespace daw_size_literals_001
 
 int main( ) {}

@@ -84,19 +84,22 @@ namespace daw {
 
 		constexpr function_ref( Result ( *ptr )( Params... ) ) noexcept
 		  : m_data( ptr )
-		  , m_thunk( fp_thunk ) {
+		  , m_thunk( nullptr ) {
 			assert( ptr );
 		}
 
 		constexpr function_ref &operator=( Result ( *ptr )( Params... ) ) noexcept {
 			m_data = ptr;
-			m_thunk = fp_thunk;
+			m_thunk = nullptr;
 			assert( ptr );
 			return *this;
 		}
 
 		constexpr Result operator( )( Params... params ) const {
-			return m_thunk( m_data, params... );
+			if( not m_thunk ) {
+				return m_data.func_ptr( std::forward<Params>( params )... );
+			}
+			return m_thunk( m_data, std::forward<Params>( params )... );
 		}
 	};
 

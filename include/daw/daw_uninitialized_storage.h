@@ -39,7 +39,7 @@ namespace daw {
 		void construct( Args &&...args ) noexcept(
 		  std::is_nothrow_constructible_v<T, Args...> ) {
 
-			if constexpr( std::is_aggregate_v<T> ) {
+			if constexpr( std::is_class_v<T> and std::is_aggregate_v<T> ) {
 				new( m_data ) T{ DAW_FWD( args )... };
 			} else {
 				new( m_data ) T( std ::forward<Args>( args )... );

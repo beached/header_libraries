@@ -16,6 +16,7 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 		if( DAW_WERROR )
 			add_compile_options( /WX )
 		endif()
+		add_compile_options( -Wno-missing-braces )
 	else()
 		message( STATUS "Clang ${CMAKE_CXX_COMPILER_VERSION} detected" )
 		add_compile_options(

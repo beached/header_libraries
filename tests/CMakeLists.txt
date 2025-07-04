@@ -21,6 +21,7 @@ set( TEST_SOURCES
 		 daw_arith_traits_test.cpp
 		 daw_array_compare_test.cpp
 		 daw_array_test.cpp
+		 daw_ascii_test.cpp
 		 daw_assume_test.cpp
 		 daw_attributes_test.cpp
 		 daw_benchmark_test.cpp
@@ -152,6 +153,7 @@ set( CPP20_TEST_SOURCES
 		 )
 
 set( CPP20_NOT_MSVC_TEST_SOURCES
+         daw_contract_test.cpp
 		 daw_pipelines_test.cpp
 		 vector_test.cpp
 		 )

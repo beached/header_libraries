@@ -536,8 +536,8 @@ namespace daw {
 		/// refer to a constant contiguous sequence of char-like objects with the
 		/// first element of the sequence at position zero.
 		template<typename CharT>
-		struct [[DAW_PREF_NAME( string_view ),
-		         DAW_PREF_NAME( wstring_view )]] basic_string_view {
+		struct [[DAW_PREF_NAME( string_view ), DAW_PREF_NAME( wstring_view )]]
+		basic_string_view {
 			using value_type = CharT;
 			using pointer = CharT *;
 			using const_pointer = std::add_const_t<CharT> *;

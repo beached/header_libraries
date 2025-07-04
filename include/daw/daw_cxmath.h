@@ -463,6 +463,16 @@ namespace daw::cxmath {
 		}
 	}
 
+#if DAW_HAS_BUILTIN( __builtin_clzg )
+	template<typename Unsigned, std::enable_if_t<daw::is_unsigned_v<Unsigned>,
+	                                             std::nullptr_t> = nullptr>
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint32_t
+	count_leading_zeroes( Unsigned u ) {
+		return static_cast<std::uint32_t>(
+		  __builtin_clzg( u, static_cast<int>( daw::bit_count_v<Unsigned> ) ) );
+	}
+#else
+
 #if DAW_HAS_BUILTIN( __builtin_clz )
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr unsigned
 	count_leading_zeroes( unsigned v ) noexcept {
@@ -478,11 +488,6 @@ namespace daw::cxmath {
 			return static_cast<unsigned>( __builtin_clzl( v ) );
 		}
 		return static_cast<unsigned>( bit_count_v<unsigned long> );
-	}
-
-	[[nodiscard]] DAW_ATTRIB_FLATINLINE inline constexpr unsigned
-	count_leading_zeroes( daw::UInt32 v ) noexcept {
-		return count_leading_zeroes( static_cast<std::uint32_t>( v ) );
 	}
 
 #if DAW_HAS_BUILTIN( __builtin_clzll )
@@ -512,11 +517,6 @@ namespace daw::cxmath {
 
 #endif
 
-	[[nodiscard]] DAW_ATTRIB_FLATINLINE inline constexpr unsigned
-	count_leading_zeroes( daw::UInt64 v ) noexcept {
-		return count_leading_zeroes( static_cast<std::uint64_t>( v ) );
-	}
-
 #else
 	// Based on code from
 	// https://graphics.stanford.edu/~seander/bithacks.html
@@ -542,17 +542,31 @@ namespace daw::cxmath {
 		return 63U - static_cast<std::uint32_t>(
 		               bit_position[( v * 0x021'8a39'2cd3'd5dbf ) >> 58U] ); // [3]
 	}
+#endif
+#if defined( DAW_HAS_INT128 )
+	[[nodiscard]] DAW_ATTRIB_FLATTEN constexpr std::uint32_t
+	count_leading_zeros( daw::uint128_t v ) {
+		if( v == 0 ) {
+			return 128U;
+		}
+		auto const h =
+		  count_leading_zeros( static_cast<std::uint64_t>( v >> 64ULL ) );
+		if( h == 64U ) {
+			return count_leading_zeros( static_cast<std::uint64_t>( v ) );
+		}
+		return h;
+	}
+#endif
+#endif
+	[[nodiscard]] DAW_ATTRIB_FLATINLINE inline constexpr unsigned
+	count_leading_zeroes( daw::UInt32 v ) noexcept {
+		return count_leading_zeroes( static_cast<std::uint32_t>( v ) );
+	}
 
-	[[nodiscard]] constexpr std::uint32_t
+	[[nodiscard]] DAW_ATTRIB_FLATINLINE inline constexpr unsigned
 	count_leading_zeroes( daw::UInt64 v ) noexcept {
 		return count_leading_zeroes( static_cast<std::uint64_t>( v ) );
 	}
-
-	[[nodiscard]] constexpr std::uint32_t
-	count_leading_zeroes( daw::UInt32 v ) noexcept {
-		return count_leading_zeroes( static_cast<std::uint64_t>( v ) << 32U );
-	}
-#endif
 
 	namespace cxmath_impl {
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint32_t
@@ -1372,9 +1386,11 @@ namespace daw::cxmath {
 	  10'000'000'000'000'000'000ull };
 
 	constexpr int count_digits( std::uint64_t value ) {
-		auto b = -( value > 0 ) & ( 63 - count_leading_zeroes( value ) );
+		auto b = -static_cast<std::uint32_t>( value > 0 ) &
+		         ( 63 - count_leading_zeroes( value ) );
 		auto a = ( b * 77 ) / 256;
-		return static_cast<int>( 1 + a + ( value >= powers_of_ten[a] ) );
+		return static_cast<int>(
+		  1 + a + static_cast<std::uint32_t>( value >= powers_of_ten[a] ) );
 	}
 	static_assert( count_digits( 1'000'000ULL ) == 7 );
 } // namespace daw::cxmath
