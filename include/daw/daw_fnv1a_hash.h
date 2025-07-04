@@ -68,12 +68,12 @@ namespace daw {
 		                                          std::nullptr_t> = nullptr>
 		[[nodiscard]] static constexpr fnv1a_uint_t
 		append_hash( fnv1a_uint_t current_hash, Value const &value ) noexcept {
+			struct array_t {
+				unsigned char values[sizeof( Value )];
+			};
+			auto const chars = DAW_BIT_CAST( array_t, value );
 			for( fnv1a_uint_t n = 0; n < sizeof( Value ); ++n ) {
-				auto const current_char =
-				  ( static_cast<fnv1a_uint_t>( value ) >> (n * bit_count_v<char>)) &
-				  fnv1a_uint_t{ 0xFFU };
-				current_hash ^= current_char;
-
+				current_hash ^= chars.values[n];
 				current_hash *= fnv1a_impl::fnv_prime;
 			}
 			return current_hash;

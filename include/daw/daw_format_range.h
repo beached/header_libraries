@@ -63,7 +63,7 @@ namespace std {
 		formatter( ) = default;
 
 		template<class ParseContext>
-		typename ParseContext::iterator parse( ParseContext &ctx ) {
+		constexpr typename ParseContext::iterator parse( ParseContext &ctx ) {
 			auto f = daw::string_view( ctx.begin( ), ctx.end( ) );
 			if( ctx.begin( ) == ctx.end( ) or *ctx.begin( ) == '}' ) {
 				flags = "{}";
