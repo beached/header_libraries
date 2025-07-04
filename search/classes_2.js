@@ -54,9 +54,10 @@ var searchData=
   ['contains_5ft_51',['Contains_t',['../structdaw_1_1pipelines_1_1pimpl_1_1_contains__t.html',1,'daw::pipelines::pimpl']]],
   ['contiguous_5fview_52',['contiguous_view',['../structdaw_1_1contiguous__view.html',1,'daw']]],
   ['contiguous_5fview_3c_20t_2c_20explicitconv_20_3e_53',['contiguous_view&lt; T, ExplicitConv &gt;',['../structdaw_1_1contiguous__view_3_01_t_00_01_explicit_conv_01_4.html',1,'daw']]],
-  ['copiable_5funique_5fptr_54',['copiable_unique_ptr',['../structdaw_1_1copiable__unique__ptr.html',1,'daw']]],
-  ['count_5ft_55',['count_t',['../structdaw_1_1pipelines_1_1pimpl_1_1count__t.html',1,'daw::pipelines::pimpl']]],
-  ['countable_5fresource_5ft_56',['countable_resource_t',['../classdaw_1_1countable__resource__t.html',1,'daw']]],
-  ['countif_5ft_57',['CountIf_t',['../structdaw_1_1pipelines_1_1pimpl_1_1_count_if__t.html',1,'daw::pipelines::pimpl']]],
-  ['cstring_58',['CString',['../classdaw_1_1_c_string.html',1,'daw']]]
+  ['contract_54',['contract',['../classdaw_1_1contract.html',1,'daw']]],
+  ['copiable_5funique_5fptr_55',['copiable_unique_ptr',['../structdaw_1_1copiable__unique__ptr.html',1,'daw']]],
+  ['count_5ft_56',['count_t',['../structdaw_1_1pipelines_1_1pimpl_1_1count__t.html',1,'daw::pipelines::pimpl']]],
+  ['countable_5fresource_5ft_57',['countable_resource_t',['../classdaw_1_1countable__resource__t.html',1,'daw']]],
+  ['countif_5ft_58',['CountIf_t',['../structdaw_1_1pipelines_1_1pimpl_1_1_count_if__t.html',1,'daw::pipelines::pimpl']]],
+  ['cstring_59',['CString',['../classdaw_1_1_c_string.html',1,'daw']]]
 ];

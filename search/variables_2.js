@@ -19,6 +19,7 @@ var searchData=
   ['construct_5femplace_16',['construct_emplace',['../namespacedaw.html#a8f094515b5322d8621e01661a64ba831',1,'daw']]],
   ['construct_5ffor_5foverwrite_17',['construct_for_overwrite',['../namespacedaw.html#a5a1f33c75eccb6bd683af47475591ab5',1,'daw']]],
   ['container_18',['container',['../structdaw_1_1fmt__range.html#af78802a3bb759888bbff20149a5098e9',1,'daw::fmt_range']]],
-  ['count_19',['Count',['../namespacedaw_1_1pipelines.html#ad265d11df123bf6f9617f80256b52bc4',1,'daw::pipelines']]],
-  ['current_5fvalue_20',['current_value',['../structdaw_1_1integer__range__iterator.html#af7c1a33dfe74660d8c7efef0e17245c1',1,'daw::integer_range_iterator']]]
+  ['contract_5ffailure_5fhandler_19',['contract_failure_handler',['../namespacedaw.html#a50536589602636fef4b48f3afdc47889',1,'daw']]],
+  ['count_20',['Count',['../namespacedaw_1_1pipelines.html#ad265d11df123bf6f9617f80256b52bc4',1,'daw::pipelines']]],
+  ['current_5fvalue_21',['current_value',['../structdaw_1_1integer__range__iterator.html#af7c1a33dfe74660d8c7efef0e17245c1',1,'daw::integer_range_iterator']]]
 ];

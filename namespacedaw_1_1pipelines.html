@@ -640,7 +640,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="enumerate_8h_source.html#l00095">95</a> of file <a class="el" href="enumerate_8h_source.html">enumerate.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="enumerate_8h_source.html#l00093">93</a> of file <a class="el" href="enumerate_8h_source.html">enumerate.h</a>.</p>
 
 </div>
 </div>
@@ -670,7 +670,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="enumerate_8h_source.html#l00090">90</a> of file <a class="el" href="enumerate_8h_source.html">enumerate.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="enumerate_8h_source.html#l00088">88</a> of file <a class="el" href="enumerate_8h_source.html">enumerate.h</a>.</p>
 
 </div>
 </div>
@@ -700,7 +700,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 
 <p>Given a Range, output every Nth element. </p>
 
-<p class="definition">Definition at line <a class="el" href="every_8h_source.html#l00039">39</a> of file <a class="el" href="every_8h_source.html">every.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="every_8h_source.html#l00035">35</a> of file <a class="el" href="every_8h_source.html">every.h</a>.</p>
 
 </div>
 </div>
@@ -2135,7 +2135,7 @@ template&lt;Range... Ranges&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="enumerate_8h_source.html#l00078">78</a> of file <a class="el" href="enumerate_8h_source.html">enumerate.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="enumerate_8h_source.html#l00076">76</a> of file <a class="el" href="enumerate_8h_source.html">enumerate.h</a>.</p>
 
 </div>
 </div>
@@ -2159,7 +2159,7 @@ template&lt;Range... Ranges&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="enumerate_8h_source.html#l00083">83</a> of file <a class="el" href="enumerate_8h_source.html">enumerate.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="enumerate_8h_source.html#l00081">81</a> of file <a class="el" href="enumerate_8h_source.html">enumerate.h</a>.</p>
 
 </div>
 </div>
@@ -2187,7 +2187,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">    pimpl::EnumerateApply_t&lt;EnumType&gt;{ }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="enumerate_8h_source.html#l00086">86</a> of file <a class="el" href="enumerate_8h_source.html">enumerate.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="enumerate_8h_source.html#l00084">84</a> of file <a class="el" href="enumerate_8h_source.html">enumerate.h</a>.</p>
 
 </div>
 </div>
@@ -2213,7 +2213,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="enumerate_8h_source.html#l00081">81</a> of file <a class="el" href="enumerate_8h_source.html">enumerate.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="enumerate_8h_source.html#l00079">79</a> of file <a class="el" href="enumerate_8h_source.html">enumerate.h</a>.</p>
 
 </div>
 </div>
@@ -2507,7 +2507,7 @@ template&lt;std::size_t... Indices&gt; </div>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= []&lt;<a class="code hl_concept" href="conceptdaw_1_1_integer.html">Integer</a> I&gt;( I last ) {</div>
-<div class="line">    <span class="keywordflow">return</span> iota_view&lt;I&gt;{ 0, last };</div>
+<div class="line">    <span class="keywordflow">return</span> iota_view&lt;I&gt;{ I{}, last };</div>
 <div class="line">  }</div>
 <div class="ttc" id="aconceptdaw_1_1_integer_html"><div class="ttname"><a href="conceptdaw_1_1_integer.html">daw::Integer</a></div><div class="ttdef"><b>Definition</b> <a href="daw__concepts_8h_source.html#l00401">daw_concepts.h:401</a></div></div>
 </div><!-- fragment -->

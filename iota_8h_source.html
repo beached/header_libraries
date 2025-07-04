@@ -316,7 +316,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
 <div class="foldopen" id="foldopen00179" data-start="{" data-end="};">
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno"><a class="line" href="namespacedaw_1_1pipelines.html#a61af7dec0da9b95eace8e4f785c9e58d">  179</a></span>  <span class="keyword">inline</span> <span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacedaw_1_1pipelines.html#a61af7dec0da9b95eace8e4f785c9e58d">ToIota</a> = []&lt;<a class="code hl_concept" href="conceptdaw_1_1_integer.html">Integer</a> I&gt;( I last ) {</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <span class="keywordflow">return</span> <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">iota_view&lt;I&gt;</a>{ 0, last };</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <span class="keywordflow">return</span> <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">iota_view&lt;I&gt;</a>{ I{}, last };</div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  };</div>
 </div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>} <span class="comment">// namespace daw::pipelines</span></div>
