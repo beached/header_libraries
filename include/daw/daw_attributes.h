@@ -104,7 +104,7 @@
 
 #endif
 
-#if defined( DAW_HAS_MSVC )
+#if defined( DAW_HAS_MSVC_LIKE )
 #define DAW_NO_UNIQUE_ADDRESS [[msvc::no_unique_address]]
 #else
 #define DAW_NO_UNIQUE_ADDRESS [[no_unique_address]]
