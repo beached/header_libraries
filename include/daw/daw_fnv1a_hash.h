@@ -69,10 +69,11 @@ namespace daw {
 		[[nodiscard]] static constexpr fnv1a_uint_t
 		append_hash( fnv1a_uint_t current_hash, Value const &value ) noexcept {
 			for( fnv1a_uint_t n = 0; n < sizeof( Value ); ++n ) {
-				current_hash ^= static_cast<fnv1a_uint_t>(
-				  ( static_cast<fnv1a_uint_t>( value ) &
-				    ( fnv1a_uint_t{ 0xFFU } << (n * bit_count_v<char>)) ) >>
-				  (n * bit_count_v<char>));
+				auto const current_char =
+				  ( static_cast<fnv1a_uint_t>( value ) >> (n * bit_count_v<char>)) &
+				  fnv1a_uint_t{ 0xFFU };
+				current_hash ^= current_char;
+
 				current_hash *= fnv1a_impl::fnv_prime;
 			}
 			return current_hash;
