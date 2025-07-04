@@ -1938,18 +1938,13 @@ namespace daw {
 						  reinterpret_cast<CharT const *>( r ) - first );
 					}
 				}
-				else {
 #endif
-					for( std::size_t n = pos; n < sz; ++n ) {
-						if( first[n] == c ) {
-							return n;
-						}
+				for( std::size_t n = pos; n < sz; ++n ) {
+					if( first[n] == c ) {
+						return n;
 					}
-					return npos;
-
-#if defined( DAW_HAS_IF_CONSTEVAL_COMPAT )
 				}
-#endif
+				return npos;
 			}
 
 			[[nodiscard]] DAW_ATTRIB_FLATTEN constexpr size_type
