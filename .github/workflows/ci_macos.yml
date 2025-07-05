@@ -4,12 +4,12 @@ on:
   schedule:
     - cron:  '0 5 * * *'
   push:
-    branches: [ release, develop ]
+    branches: [ master, v2 ]
   pull_request:
     push:
-      branches-ignore: develop
+      branches-ignore: dev, v2
     pull_request:
-      branches-ignore: develop
+      branches-ignore: dev, v2
 
 jobs:
   CI_Tests:

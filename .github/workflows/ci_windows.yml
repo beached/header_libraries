@@ -3,12 +3,12 @@ on:
   schedule:
     - cron: '10 5 * * *'
   push:
-    branches: [ release, develop ]
+    branches: [ master, v2 ]
   pull_request:
     push:
-      branches-ignore: develop
+      branches-ignore: dev, v2
     pull_request:
-      branches-ignore: develop
+      branches-ignore: dev, v2
 
 jobs:
   Windows:

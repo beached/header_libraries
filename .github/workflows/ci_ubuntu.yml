@@ -2,9 +2,9 @@ name: Ubuntu
 
 on:
   push:
-    branches-ignore: develop
+    branches-ignore: dev
   pull_request:
-    branches-ignore: develop
+    branches-ignore: dev, v2
 
 jobs:
   CI_Tests:
