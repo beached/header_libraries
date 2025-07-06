@@ -68,6 +68,11 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 						-Wno-c++2b-extensions
 						-Wno-c++20-compat
 						)
+				if( CMAKE_CXX_COMPILER_VERSION LESS "16.0.0" )
+					add_compile_options(
+							-Wno-undefined-func-template
+							)
+				endif()
 			endif()
 
 			add_compile_options( -Wno-poison-system-directories )
@@ -101,8 +106,13 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 			if( CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 16.0.0 )
 				add_compile_options(
 						-Wno-unsafe-buffer-usage
-						-Wc++2b-extensions
+						-Wno-c++2b-extensions
 						)
+				if( CMAKE_CXX_COMPILER_VERSION LESS 17.0.0 )
+					add_compile_options(
+							-Wno-undefined-func-template
+							)
+				endif()
 			endif()
 			if( CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 17.0.0 )
 				add_compile_options(
