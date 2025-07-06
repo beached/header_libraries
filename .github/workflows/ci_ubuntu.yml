@@ -25,7 +25,7 @@ jobs:
         cpp_version: [ 17, 20 ]
         build_type: [ Debug, Release ]
         os: [ ubuntu-24.04 ]
-        toolset: [ g++-12, g++-13, g++-15 clang++-19, clang++-20 ]
+        toolset: [ g++-12, g++-13, g++-15, clang++-19, clang++-20 ]
         exclude:
           - toolset: g++-12
             cpp_version: 20

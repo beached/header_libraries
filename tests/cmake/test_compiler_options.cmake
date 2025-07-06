@@ -67,12 +67,8 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 				add_compile_options(
 						-Wno-c++2b-extensions
 						-Wno-c++20-compat
+						-Wno-undefined-func-template
 						)
-				if( CMAKE_CXX_COMPILER_VERSION LESS "16.0.0" )
-					add_compile_options(
-							-Wno-undefined-func-template
-							)
-				endif()
 			endif()
 
 			add_compile_options( -Wno-poison-system-directories )
