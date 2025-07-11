@@ -352,7 +352,7 @@ namespace daw {
 			daw::do_not_optimize( result );
 			auto const valid_start = std::chrono::steady_clock::now( );
 			if( DAW_UNLIKELY( not validator( result ) ) ) {
-				std::cerr << "Error validating result\n";
+				std::cerr << "Error validating result\n" << std::flush;
 				std::terminate( );
 			}
 			valid_time += benchmark_impl::second_duration(
@@ -568,7 +568,7 @@ namespace daw {
 			auto const finish = std::chrono::steady_clock::now( );
 			daw::do_not_optimize( result );
 			if( DAW_UNLIKELY( not validator( std::move( result ) ) ) ) {
-				std::cerr << "Error validating result\n";
+				std::cerr << "Error validating result\n" << std::flush;
 				std::terminate( );
 			}
 
@@ -602,7 +602,7 @@ namespace daw {
 		  std::enable_if_t<(not is_streamable_v<T> and not is_streamable_v<U>),
 		                   std::nullptr_t> = nullptr>
 		DAW_ATTRIB_NOINLINE constexpr void output_expected_error( T &&, U && ) {
-			std::cerr << "Invalid or unexpected result\n";
+			std::cerr << "Invalid or unexpected result\n" << std::flush;
 		}
 	} // namespace benchmark_impl
 
@@ -624,7 +624,7 @@ namespace daw {
 	template<typename Bool>
 	DAW_ATTRIB_NOINLINE constexpr void expecting( Bool const &expected_result ) {
 		if( not static_cast<bool>( expected_result ) ) {
-			std::cerr << "Invalid result. Expecting true\n";
+			std::cerr << "Invalid result. Expecting true\n" << std::flush;
 			std::terminate( );
 		}
 	}
@@ -634,7 +634,7 @@ namespace daw {
 	                                                      String &&message ) {
 		do_not_optimize( expected_result );
 		if( DAW_UNLIKELY( not( expected_result ) ) ) {
-			std::cerr << message << '\n';
+			std::cerr << message << '\n' << std::flush;
 			std::terminate( );
 		}
 		(void)message;
@@ -667,9 +667,9 @@ namespace daw {
 			if( DAW_FWD( pred )( ex ) ) {
 				return;
 			}
-			std::cerr << "Failed predicate\n";
+			std::cerr << "Failed predicate\n" << std::flush;
 		} catch( ... ) {
-			std::cerr << "Unexpected exception\n";
+			std::cerr << "Unexpected exception\n" << std::flush;
 			throw;
 		}
 		std::terminate( );
