@@ -9,9 +9,10 @@
 #pragma once
 
 #include "ciso646.h"
-#include "daw_algorithm.h"
 #include "daw/daw_check_exceptions.h"
+#include "daw_algorithm.h"
 
+#include <cstdint>
 #include <functional>
 #include <optional>
 #include <vector>
@@ -21,18 +22,18 @@ namespace daw {
 	class hash_set_t {
 		std::vector<std::optional<Key>> m_indices;
 
-		[[nodiscard]] static constexpr size_t scale_hash( size_t hash,
-		                                                  size_t range_size ) {
-			size_t const prime_a = 18446744073709551557u;
-			size_t const prime_b = 18446744073709551533u;
+		[[nodiscard]] static constexpr std::uint64_t
+		scale_hash( std::uint64_t hash, std::uint64_t range_size ) {
+			constexpr std::uint64_t prime_a = 18446744073709551557ull;
+			constexpr std::uint64_t prime_b = 18446744073709551533ull;
 			return ( hash * prime_a + prime_b ) % range_size;
 		}
 
-		[[nodiscard]] std::optional<size_t> find_index( size_t hash,
-		                                                Key const &key ) const {
-			size_t const scaled_hash = scale_hash( hash, m_indices.size( ) );
+		[[nodiscard]] std::optional<std::uint64_t>
+		find_index( std::uint64_t hash, Key const &key ) const {
+			std::uint64_t const scaled_hash = scale_hash( hash, m_indices.size( ) );
 
-			for( size_t n = scaled_hash; n < m_indices.size( ); ++n ) {
+			for( std::uint64_t n = scaled_hash; n < m_indices.size( ); ++n ) {
 				if( !m_indices[n] ) {
 					return n;
 				}
@@ -40,7 +41,7 @@ namespace daw {
 					return n;
 				}
 			}
-			for( size_t n = 0; n < scaled_hash; ++n ) {
+			for( std::uint64_t n = 0; n < scaled_hash; ++n ) {
 				if( !m_indices[n] ) {
 					return n;
 				}
@@ -52,10 +53,10 @@ namespace daw {
 		}
 
 	public:
-		hash_set_t( size_t range_size ) noexcept
+		hash_set_t( std::uint64_t range_size ) noexcept
 		  : m_indices( range_size, std::nullopt ) {}
 
-		size_t insert( Key const &key ) {
+		std::uint64_t insert( Key const &key ) {
 			auto const hash = Hash{ }( key );
 			auto const index = find_index( hash, key );
 			if( not index ) {
@@ -65,7 +66,7 @@ namespace daw {
 			return *index;
 		}
 
-		std::optional<size_t> erase( Key const &key ) {
+		std::optional<std::uint64_t> erase( Key const &key ) {
 			auto const hash = Hash{ }( key );
 			auto const index = find_index( hash, key );
 			if( not index ) {
@@ -86,11 +87,11 @@ namespace daw {
 			return exists( key ) ? 1 : 0;
 		}
 
-		[[nodiscard]] size_t capacity( ) const noexcept {
+		[[nodiscard]] std::uint64_t capacity( ) const noexcept {
 			return m_indices.size( );
 		}
 
-		[[nodiscard]] size_t size( ) const noexcept {
+		[[nodiscard]] std::uint64_t size( ) const noexcept {
 			return daw::algorithm::accumulate(
 			  std::begin( m_indices ), std::end( m_indices ), 0ULL,
 			  []( auto const &opt ) {
