@@ -212,14 +212,14 @@ elseif( MSVC )
 	# Ensure that string pooling is enabled. Otherwise it breaks constexpr string literals.
 	# This affects debug modes by default, but optionally Release
 	# https://developercommunity.visualstudio.com/t/codegen:-constexpr-pointer-to-trailing-z/900648
-	add_compile_options( "/GF" )
+	# shouldn't be needed any longer add_compile_options( "/GF" )
 	if( DAW_WERROR )
 		if( CMAKE_CXX_FLAGS MATCHES "/W[0-4]" )
 			string( REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" )
 		else()
 			add_compile_options( /W4 )
 		endif()
-		add_compile_options( /wd4127 /wd2220 /wd4305 /WX )
+		add_compile_options( /wd4127 /wd4296 /wd4305 /WX )
 		add_definitions( -D_CRT_SECURE_NO_WARNINGS )
 	endif()
 	if( DAW_HEADERLIBS_USE_SANITIZERS )
