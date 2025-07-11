@@ -594,7 +594,7 @@ namespace daw {
 		DAW_ATTRIB_NOINLINE void output_expected_error( T &&expected_result,
 		                                                U &&result ) {
 			std::cerr << "Invalid result. Expecting '" << expected_result
-			          << "' but got '" << result << "'\n";
+			          << "' but got '" << result << "'\n" << std::flush;
 		}
 
 		template<
