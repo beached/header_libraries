@@ -158,7 +158,7 @@ void show_dist( std::vector<Integer> const &v,
 	auto const sz = static_cast<std::size_t>( maximum - minimum + 1 );
 	bins.resize( sz );
 	for( auto val : v ) {
-		++bins[val - minimum];
+		++bins[static_cast<std::size_t>( val - minimum )];
 	}
 	for( std::size_t n = 0; n < bins.size( ); ++n ) {
 		std::cout << ( static_cast<Integer>( n ) + minimum ) << ": " << bins[n]
