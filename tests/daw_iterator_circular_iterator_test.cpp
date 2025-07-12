@@ -42,7 +42,7 @@ void daw_circular_iterator_003( ) {
 	std::vector<int> numbers = { 1, 2, 3, 4, 5, 6, 7 };
 
 	auto first = daw::make_circular_iterator( numbers );
-	for( intmax_t n = 0; n < 14; ++n ) {
+	for( int n = 0; n < 14; ++n ) {
 		first += n * n;
 		std::cout << *first << ' ';
 	}
@@ -50,7 +50,7 @@ void daw_circular_iterator_003( ) {
 }
 
 void daw_circular_iterator_004( ) {
-	std::vector<int> a;
+	auto a = std::vector<int>{};
 	auto it = daw::make_circular_iterator( a );
 	constexpr bool is_move_assignable =
 	  std::is_move_assignable<decltype( it )>::value;
@@ -58,7 +58,7 @@ void daw_circular_iterator_004( ) {
 }
 
 void daw_circular_iterator_005( ) {
-	std::vector<int> a;
+	auto a = std::vector<int>{};
 	auto it = daw::make_circular_iterator( a );
 	constexpr bool is_move_constructible =
 	  std::is_move_constructible<decltype( it )>::value;
@@ -66,13 +66,13 @@ void daw_circular_iterator_005( ) {
 }
 
 void daw_circular_iterator_006( ) {
-	std::vector<int> a;
+	auto a = std::vector<int>{};
 	auto it = daw::make_circular_iterator( a );
 	static_assert( std::is_nothrow_move_assignable_v<decltype( it )> );
 }
 
 void daw_circular_iterator_007( ) {
-	std::vector<int> a;
+	auto a = std::vector<int>{};
 	auto it = daw::make_circular_iterator( a );
 	static_assert( std::is_nothrow_move_constructible_v<decltype( it )> );
 }
