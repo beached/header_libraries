@@ -1396,12 +1396,20 @@ namespace daw::cxmath {
 
 	template<typename T, typename U>
 	constexpr bool cmp_equal( T t, U u ) {
+#if defined( DAW_HAS_MSVC )
+#pragma warning( push )
+#pragma warning( disable : 4389 )
+#endif
 		if constexpr( std::is_signed_v<T> == std::is_signed_v<U> ) {
 			return t == u;
 		} else if constexpr( std::is_signed_v<T> ) {
-			return t >= 0 and std::make_unsigned_t<T>( t ) == u;
+			return t >= T{ 0 } and static_cast<std::make_unsigned_t<T>>( t ) == u;
 		} else {
-			return u >= 0 and std::make_unsigned_t<U>( u ) == t;
+			return u >= U{ 0 } and t == static_cast<std::make_unsigned_t<U>>( u );
 		}
+
+#if defined( DAW_HAS_MSVC )
+#pragma warning( pop )
+#endif
 	}
 } // namespace daw::cxmath
