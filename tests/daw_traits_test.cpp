@@ -78,10 +78,11 @@ namespace daw_traits_is_regular {
 } // namespace daw_traits_is_regular
 
 namespace daw_traits_max_sizeof {
-	static_assert( daw::traits::max_sizeof<int8_t, int16_t, uint8_t, int, int32_t,
-	                                       int64_t, uint64_t, size_t>::value ==
-	                 sizeof( size_t ),
-	               "1. Max sizeof did not report the size of the largest item" );
+	static_assert(
+	  daw::traits::max_sizeof_v<std::int8_t, std::int16_t, std::uint8_t, int,
+	                            std::int32_t, std::int64_t, std::uint64_t> ==
+	    sizeof( std::uint64_t ),
+	  "1. Max sizeof did not report the size of the largest item" );
 }
 
 namespace daw_traits_are_true {
