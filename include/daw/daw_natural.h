@@ -8,9 +8,10 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_exception.h"
-#include "daw_traits.h"
+#include "daw/ciso646.h"
+#include "daw/daw_cxmath.h"
+#include "daw/daw_exception.h"
+#include "daw/daw_traits.h"
 
 namespace daw {
 	struct invalid_natural_number : public daw::exception::arithmetic_exception {
@@ -20,7 +21,7 @@ namespace daw {
 	// An operation that causes overflow is undefined
 	template<typename T, required<std::is_integral_v<T>> = nullptr>
 	struct natural_t {
-		using value_type = std::decay_t<T>;
+		using value_type = daw::remove_cvref_t<T>;
 
 	private:
 		T m_value;
@@ -46,6 +47,10 @@ namespace daw {
 		constexpr natural_t &operator=( Value &&v ) {
 			m_value = validate( DAW_FWD( v ) );
 			return *this;
+		}
+
+		constexpr value_type value( ) const noexcept {
+			return m_value;
 		}
 
 		constexpr operator T( ) const noexcept {
@@ -214,7 +219,8 @@ namespace daw {
 	}
 
 	namespace literals {
-		constexpr size_t operator""_N( unsigned long long val ) noexcept {
+		constexpr unsigned long long
+		operator""_N( unsigned long long val ) noexcept {
 			return daw::natural_t<unsigned long long>{ val };
 		}
 	} // namespace literals
