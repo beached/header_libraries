@@ -1937,21 +1937,25 @@ namespace daw {
 						}
 						return static_cast<std::size_t>(
 						  reinterpret_cast<CharT const *>( r ) - first );
+					} else {
+						for( std::size_t n = pos; n < sz; ++n ) {
+							if( first[n] == c ) {
+								return n;
+							}
+						}
+						return npos;
 					}
 				}
+				else {
 #endif
-#if defined( DAW_HAS_MSVC )
-#pragma warning( push )
-#pragma warning( disable :4702 )
-#endif
-				for( std::size_t n = pos; n < sz; ++n ) {
-					if( first[n] == c ) {
-						return n;
+					for( std::size_t n = pos; n < sz; ++n ) {
+						if( first[n] == c ) {
+							return n;
+						}
 					}
+					return npos;
+#if defined( DAW_HAS_IF_CONSTEVAL_COMPAT )
 				}
-				return npos;
-#if defined( DAW_HAS_MSVC )
-#pragma warning( pop )
 #endif
 			}
 
