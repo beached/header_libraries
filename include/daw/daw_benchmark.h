@@ -608,6 +608,12 @@ namespace daw {
 		}
 	} // namespace benchmark_impl
 
+#if defined( DAW_USE_EXCEPTIONS )
+	struct expected_failure {
+		expected_failure( ) = default;
+	};
+#endif
+
 	template<typename T, typename U>
 	DAW_ATTRIB_NOINLINE constexpr void expecting( T &&expected_result,
 	                                              U &&result ) {
@@ -619,7 +625,11 @@ namespace daw {
 				benchmark_impl::output_expected_error( expected_result, result );
 			}
 #endif
+#if defined( DAW_USE_EXCEPTIONS )
+			throw expected_failure( );
+#else
 			std::terminate( );
+#endif
 		}
 	}
 
@@ -627,7 +637,11 @@ namespace daw {
 	DAW_ATTRIB_NOINLINE constexpr void expecting( Bool const &expected_result ) {
 		if( not static_cast<bool>( expected_result ) ) {
 			std::cerr << "Invalid result. Expecting true\n" << std::flush;
+#if defined( DAW_USE_EXCEPTIONS )
+			throw expected_failure( );
+#else
 			std::terminate( );
+#endif
 		}
 	}
 
@@ -637,7 +651,11 @@ namespace daw {
 		do_not_optimize( expected_result );
 		if( DAW_UNLIKELY( not( expected_result ) ) ) {
 			std::cerr << message << '\n' << std::flush;
+#if defined( DAW_USE_EXCEPTIONS )
+			throw expected_failure( );
+#else
 			std::terminate( );
+#endif
 		}
 		(void)message;
 	}
