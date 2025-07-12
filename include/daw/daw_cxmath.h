@@ -1393,4 +1393,15 @@ namespace daw::cxmath {
 		  1 + a + static_cast<std::uint32_t>( value >= powers_of_ten[a] ) );
 	}
 	static_assert( count_digits( 1'000'000ULL ) == 7 );
+
+	template<typename T, typename U>
+	constexpr bool cmp_equal( T t, U u ) {
+		if constexpr( std::is_signed_v<T> == std::is_signed_v<U> ) {
+			return t == u;
+		} else if constexpr( std::is_signed_v<T> ) {
+			return t >= 0 and std::make_unsigned_t<T>( t ) == u;
+		} else {
+			return u >= 0 and std::make_unsigned_t<U>( u ) == t;
+		}
+	}
 } // namespace daw::cxmath

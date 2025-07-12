@@ -10,6 +10,7 @@
 
 #include "daw/ciso646.h"
 #include "daw/daw_arith_traits.h"
+#include "daw/daw_cxmath.h"
 #include "daw/daw_do_not_optimize.h"
 #include "daw/daw_expected.h"
 #include "daw/daw_move.h"
@@ -594,7 +595,8 @@ namespace daw {
 		DAW_ATTRIB_NOINLINE void output_expected_error( T &&expected_result,
 		                                                U &&result ) {
 			std::cerr << "Invalid result. Expecting '" << expected_result
-			          << "' but got '" << result << "'\n" << std::flush;
+			          << "' but got '" << result << "'\n"
+			          << std::flush;
 		}
 
 		template<
@@ -609,7 +611,7 @@ namespace daw {
 	template<typename T, typename U>
 	DAW_ATTRIB_NOINLINE constexpr void expecting( T &&expected_result,
 	                                              U &&result ) {
-		if( not( expected_result == result ) ) {
+		if( not( daw::cmp_equal( expected_result, result ) ) ) {
 #ifdef __VERSION__
 			if constexpr( not daw::string_view( __VERSION__ )
 			                    .starts_with( daw::string_view(
