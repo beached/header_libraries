@@ -80,9 +80,9 @@ static_assert( cxrand_test_001( ) );
 
 void cxrand_test_002( ) {
 	auto rng = daw::static_random( );
-	for( size_t n = 0; n < 50; ++n ) {
-		size_t num = rng( );
-		num = ( ( num >> 60U ) | ( num & 0xFF ) ) % 100U;
+	for( std::size_t n = 0U; n < 50U; ++n ) {
+		auto num = rng( );
+		num = ( ( num >> 60U ) | ( num & 0xFFU ) ) % 100U;
 		std::cout << " " << num;
 	}
 	std::cout << '\n';
@@ -155,7 +155,7 @@ void show_dist( std::vector<Integer> const &v,
                 typename daw::traits::identity<Integer>::type minimum,
                 typename daw::traits::identity<Integer>::type maximum ) {
 	auto bins = std::vector<std::size_t>{ };
-	auto const sz = maximum - minimum + 1;
+	auto const sz = static_cast<std::size_t>( maximum - minimum + 1 );
 	bins.resize( sz );
 	for( auto val : v ) {
 		++bins[val - minimum];
@@ -172,11 +172,11 @@ void daw_make_random_02( ) {
 	using uint_t = std::uint64_t;
 	auto rnd = daw::RandomInteger<uint_t>( );
 	auto r = std::vector<uint_t>( );
-	constexpr auto minimum = 0;
-	constexpr auto maximum = 128;
+	constexpr uint_t minimum = 0U;
+	constexpr uint_t maximum = 128U;
 	constexpr auto sz = maximum - minimum + 1;
 	(void)sz;
-	r.resize( 1'000'000ULL );
+	r.resize( std::size_t{ 1'000'000ULL } );
 	for( auto &v : r ) {
 		v = rnd( maximum, minimum );
 	}
