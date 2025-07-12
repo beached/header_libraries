@@ -1857,7 +1857,7 @@ catch( std::exception const &ex ) {
 	          << '\n'
 	          << ex.what( ) << '\n'
 	          << std::flush;
-	exit( 1 );
+	return 1;
 } catch( ... ) {
 	std::cerr << "An unknown exception was thrown\n" << std::flush;
 	throw;

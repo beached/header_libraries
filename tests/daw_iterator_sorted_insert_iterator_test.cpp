@@ -122,6 +122,7 @@ int main( )
 #if defined( DAW_USE_EXCEPTIONS )
 catch( std::exception const &ex ) {
 	std::cerr << "Uncaught Exception: " << ex.what( ) << '\n' << std::flush;
+	return 1;
 } catch( ... ) {
 	std::cerr << "Unknown uncaught exception:\n" << std::flush;
 	throw;

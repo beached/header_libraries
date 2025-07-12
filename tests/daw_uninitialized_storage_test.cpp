@@ -16,11 +16,11 @@
 #include <type_traits>
 
 void test_001( ) {
-	daw::uninitialized_storage<std::array<size_t, 100>> str;
+	daw::uninitialized_storage<std::array<std::size_t, 100U>> str;
 	str.construct( );
 	auto result = str->size( );
 	str.destruct( );
-	str.construct( 100ULL );
+	str.construct( std::size_t{ 100U } );
 	result -= ( *str )[0];
 	daw::expecting( result == 0ULL );
 }
