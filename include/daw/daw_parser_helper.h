@@ -289,8 +289,9 @@ namespace daw::parser {
 	template<typename T, typename Min, typename Max>
 	[[nodiscard]] constexpr bool in_range( T value, Min minimum_value,
 	                                       Max maximum_value ) noexcept {
-		using val_t = typename daw::traits::max_sizeof<T, Min, Max>::type;
-		return static_cast<val_t>( minimum_value ) <= static_cast<val_t>( value ) &&
+		using val_t = daw::traits::max_sizeof_t<T, Min, Max>;
+		return static_cast<val_t>( minimum_value ) <=
+		         static_cast<val_t>( value ) and
 		       static_cast<val_t>( value ) <= static_cast<val_t>( maximum_value );
 	}
 
