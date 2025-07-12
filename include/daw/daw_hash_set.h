@@ -34,7 +34,7 @@ namespace daw {
 			std::uint64_t const scaled_hash = scale_hash( hash, m_indices.size( ) );
 
 			for( std::uint64_t n = scaled_hash; n < m_indices.size( ); ++n ) {
-				if( !m_indices[n] ) {
+				if( not m_indices[n] ) {
 					return n;
 				}
 				if( *m_indices[n] == key ) {
@@ -42,7 +42,7 @@ namespace daw {
 				}
 			}
 			for( std::uint64_t n = 0; n < scaled_hash; ++n ) {
-				if( !m_indices[n] ) {
+				if( not m_indices[n] ) {
 					return n;
 				}
 				if( *m_indices[n] == key ) {
@@ -79,8 +79,10 @@ namespace daw {
 		[[nodiscard]] bool exists( Key const &key ) const noexcept {
 			auto const hash = Hash{ }( key );
 			auto const index = find_index( hash, key );
-			return static_cast<bool>( index ) and
-			       static_cast<bool>( m_indices[*index] );
+			if( index ) {
+				return static_cast<bool>( m_indices[*index] );
+			}
+			return false;
 		}
 
 		[[nodiscard]] bool count( Key const &key ) const noexcept {
