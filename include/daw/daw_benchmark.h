@@ -10,6 +10,7 @@
 
 #include "daw/ciso646.h"
 #include "daw/daw_arith_traits.h"
+#include "daw/daw_check_exceptions.h"
 #include "daw/daw_cxmath.h"
 #include "daw/daw_do_not_optimize.h"
 #include "daw/daw_expected.h"
@@ -28,6 +29,12 @@
 #include <vector>
 
 namespace daw {
+#if defined( DAW_USE_EXCEPTIONS )
+	struct expected_failure {
+		expected_failure( ) = default;
+	};
+#endif
+
 	namespace benchmark_impl {
 		using second_duration = std::chrono::duration<double>;
 	} // namespace benchmark_impl
@@ -354,7 +361,11 @@ namespace daw {
 			auto const valid_start = std::chrono::steady_clock::now( );
 			if( DAW_UNLIKELY( not validator( result ) ) ) {
 				std::cerr << "Error validating result\n" << std::flush;
+#if defined( DAW_USE_EXCEPTIONS )
+				throw expected_failure( );
+#else
 				std::terminate( );
+#endif
 			}
 			valid_time += benchmark_impl::second_duration(
 			  std::chrono::steady_clock::now( ) - valid_start );
@@ -570,7 +581,11 @@ namespace daw {
 			daw::do_not_optimize( result );
 			if( DAW_UNLIKELY( not validator( std::move( result ) ) ) ) {
 				std::cerr << "Error validating result\n" << std::flush;
+#if defined( DAW_USE_EXCEPTIONS )
+				throw expected_failure( );
+#else
 				std::terminate( );
+#endif
 			}
 
 			auto const duration =
@@ -607,12 +622,6 @@ namespace daw {
 			std::cerr << "Invalid or unexpected result\n" << std::flush;
 		}
 	} // namespace benchmark_impl
-
-#if defined( DAW_USE_EXCEPTIONS )
-	struct expected_failure {
-		expected_failure( ) = default;
-	};
-#endif
 
 	template<typename T, typename U>
 	DAW_ATTRIB_NOINLINE constexpr void expecting( T &&expected_result,
@@ -692,7 +701,11 @@ namespace daw {
 			std::cerr << "Unexpected exception\n" << std::flush;
 			throw;
 		}
+#if defined( DAW_USE_EXCEPTIONS )
+		throw expected_failure( );
+#else
 		std::terminate( );
+#endif
 #endif
 	}
 } // namespace daw
