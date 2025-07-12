@@ -611,7 +611,7 @@ namespace daw {
 	template<typename T, typename U>
 	DAW_ATTRIB_NOINLINE constexpr void expecting( T &&expected_result,
 	                                              U &&result ) {
-		if( not( daw::cmp_equal( expected_result, result ) ) ) {
+		if( not( daw::cxmath::cmp_equal( expected_result, result ) ) ) {
 #ifdef __VERSION__
 			if constexpr( not daw::string_view( __VERSION__ )
 			                    .starts_with( daw::string_view(
