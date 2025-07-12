@@ -28,7 +28,8 @@ namespace daw {
 		scale_hash( std::uint64_t hash, std::size_t range_size ) {
 			constexpr std::uint64_t prime_a = 18446744073709551557ull;
 			constexpr std::uint64_t prime_b = 18446744073709551533ull;
-			return static_cast<std::size_t>( hash * prime_a + prime_b ) % range_size;
+			return static_cast<std::size_t>( ( hash * prime_a + prime_b ) %
+			                                 range_size );
 		}
 
 		[[nodiscard]] std::optional<std::size_t>
