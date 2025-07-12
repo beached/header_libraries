@@ -213,7 +213,7 @@ namespace daw {
 	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
 	DAW_ATTRIB_NOINLINE auto bench_n_test( std::string const &title,
 	                                       Test &&test_callable,
-	                                       Args const &...args ) noexcept {
+	                                       Args const &...args ) {
 		static_assert( Runs > 0 );
 		static_assert( std::is_invocable_v<Test, Args...>,
 		               "Unable to call Test with provided Args" );
@@ -321,7 +321,7 @@ namespace daw {
 	         typename Function, typename... Args>
 	[[nodiscard]] DAW_ATTRIB_NOINLINE std::array<double, Runs>
 	bench_n_test_mbs2( std::string const &, size_t, Validator &&validator,
-	                   Function &&func, Args const &...args ) noexcept {
+	                   Function &&func, Args const &...args ) {
 		static_assert( Runs > 0 );
 		static_assert( std::is_invocable_v<Function, Args...>,
 		               "Unable to call Function with provided Args" );
@@ -380,7 +380,7 @@ namespace daw {
 	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
 	[[nodiscard]] DAW_ATTRIB_NOINLINE auto
 	bench_n_test_mbs( std::string const &title, size_t bytes,
-	                  Test &&test_callable, Args const &...args ) noexcept {
+	                  Test &&test_callable, Args const &...args ) {
 		static_assert( Runs > 0 );
 		static_assert( std::is_invocable_v<Test, Args...>,
 		               "Unable to call Test with provided Args" );
@@ -489,7 +489,7 @@ namespace daw {
 	/// @return last result timing counts of runs
 	template<size_t Runs, typename Function, typename... Args>
 	[[nodiscard]] DAW_ATTRIB_NOINLINE std::vector<std::chrono::nanoseconds>
-	bench_n_test_json( Function &&func, Args &&...args ) noexcept {
+	bench_n_test_json( Function &&func, Args &&...args ) {
 		static_assert( Runs > 0 );
 		static_assert( std::is_invocable_v<Function, Args...>,
 		               "Unable to call Test with provided Args" );
@@ -542,7 +542,7 @@ namespace daw {
 	template<size_t Runs, typename Validator, typename Function, typename... Args>
 	DAW_ATTRIB_NOINLINE std::vector<std::chrono::nanoseconds>
 	bench_n_test_json_val( Validator &&validator, Function &&func,
-	                       Args &&...args ) noexcept {
+	                       Args &&...args ) {
 		static_assert( Runs > 0 );
 		static_assert( std::is_invocable_v<Function, Args...>,
 		               "Unable to call Test with provided Args" );
