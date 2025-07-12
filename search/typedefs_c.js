@@ -1,7 +1,7 @@
 var searchData=
 [
   ['negation_0',['negation',['../namespacedaw.html#ae2feaa76806ae41d5aba12d40e8c76e3',1,'daw']]],
-  ['next_1',['next',['../structdaw_1_1traits_1_1max__sizeof_3_01_first_00_01_args_8_8_8_01_4.html#a39c9d947650151fb35f07d6d444f176f',1,'daw::traits::max_sizeof&lt; First, Args... &gt;']]],
+  ['next_1',['next',['../structdaw_1_1traits_1_1max__sizeof_3_01_first_00_01_second_00_01_third_00_01_args_8_8_8_01_4.html#ae65546d04ccf7cf741d2eee3e7b39ac2',1,'daw::traits::max_sizeof&lt; First, Second, Third, Args... &gt;']]],
   ['nibble_5fqueue_2',['nibble_queue',['../namespacedaw.html#ae45cef3161fea7a30302e321c81700b3',1,'daw']]],
   ['node_5ft_3',['node_t',['../structdaw_1_1graph__t.html#af744e90dbab8002bcb99f5298d8b0782',1,'daw::graph_t::node_t'],['../structdaw_1_1bounded__graph__t.html#a2e0d61b5adaa9fa105547d2cdd7085ac',1,'daw::bounded_graph_t::node_t']]],
   ['node_5ftype_4',['node_type',['../structdaw_1_1bounded__hash__set__t.html#a98fb391b2d92bf47f82a5e13512df6f0',1,'daw::bounded_hash_set_t']]],
