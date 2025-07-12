@@ -1393,4 +1393,63 @@ namespace daw::cxmath {
 		  1 + a + static_cast<std::uint32_t>( value >= powers_of_ten[a] ) );
 	}
 	static_assert( count_digits( 1'000'000ULL ) == 7 );
+
+	template<typename T, typename U>
+	constexpr bool cmp_equal( T t, U u ) {
+#if defined( DAW_HAS_MSVC )
+#pragma warning( push )
+#pragma warning( disable : 4389 )
+#endif
+		if constexpr( not( std::is_integral_v<T> and std::is_integral_v<U> ) or
+		              std::is_signed_v<T> == std::is_signed_v<U> ) {
+			return t == u;
+		} else if constexpr( std::is_signed_v<T> ) {
+			return t >= T{ 0 } and static_cast<std::make_unsigned_t<T>>( t ) == u;
+		} else {
+			return u >= U{ 0 } and t == static_cast<std::make_unsigned_t<U>>( u );
+		}
+
+#if defined( DAW_HAS_MSVC )
+#pragma warning( pop )
+#endif
+	}
+
+	template<class T, class U>
+	constexpr bool cmp_not_equal( T t, U u ) {
+		return not cmp_equal( t, u );
+	}
+
+	template<typename T, typename U>
+	constexpr bool cmp_less( T t, U u ) {
+#if defined( DAW_HAS_MSVC )
+#pragma warning( push )
+#pragma warning( disable : 4389 )
+#endif
+		if constexpr( not( std::is_integral_v<T> and std::is_integral_v<U> ) or
+									std::is_signed_v<T> == std::is_signed_v<U> ) {
+			return t < u;
+		} else if constexpr( std::is_signed_v<T> ) {
+			return t < 0 or static_cast<std::make_unsigned_t<T>>( t ) < u;
+		} else {
+			return u >= 0 and t < static_cast<std::make_unsigned_t<U>>( u );
+		}
+#if defined( DAW_HAS_MSVC )
+#pragma warning( pop )
+#endif
+	}
+
+	template<class T, class U>
+	constexpr bool cmp_greater( T t, U u ) {
+		return cmp_less( u, t );
+	}
+
+	template<class T, class U>
+	constexpr bool cmp_less_equal( T t, U u ) {
+		return not cmp_less( u, t );
+	}
+
+	template<class T, class U>
+	constexpr bool cmp_greater_equal( T t, U u ) {
+		return not cmp_less( t, u );
+	}
 } // namespace daw::cxmath

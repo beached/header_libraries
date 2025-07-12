@@ -3,12 +3,12 @@ on:
   schedule:
     - cron: '10 5 * * *'
   push:
-    branches: [ release, develop ]
+    branches: [ master, v2 ]
   pull_request:
     push:
-      branches-ignore: develop
+      branches-ignore: dev, v2
     pull_request:
-      branches-ignore: develop
+      branches-ignore: dev, v2
 
 jobs:
   Windows:
@@ -54,7 +54,7 @@ jobs:
       - name: Setup Build Environment
         run: md ${{ env.DAW_BUILD_DIR }}
       - name: CMake Config
-        run: cmake.exe ${{ matrix.config.cmake_flags }} -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DCMAKE_CXX_STANDARD=${{ matrix.config.cpp_version }} -DDAW_ENABLE_TESTING=On -B${{ env.DAW_BUILD_DIR }}/ .
+        run: cmake.exe ${{ matrix.config.cmake_flags }} -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DCMAKE_CXX_STANDARD=${{ matrix.config.cpp_version }} -DDAW_ENABLE_TESTING=ON -DDAW_WERROR=ON -B${{ env.DAW_BUILD_DIR }}/ .
       - name: Build
         run: cmake.exe --build ${{ env.DAW_BUILD_DIR }}/ --target daw-header-libraries_full --config ${{ matrix.config.build_type }}
         continue-on-error: true

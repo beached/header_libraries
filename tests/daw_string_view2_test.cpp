@@ -6,6 +6,14 @@
 // Official repository: https://github.com/beached/string_view
 //
 
+#ifdef NDEBUG
+#undef NDEBUG
+#endif
+
+#ifndef DEBUG
+#define DEBUG 1
+#endif
+
 #include <daw/daw_ensure.h>
 #include <daw/daw_string_view.h>
 #include <daw/daw_utility.h>
@@ -47,7 +55,7 @@ static_assert( std::is_trivially_copyable_v<daw::sv2::string_view> );
 			std::cerr << "Invalid result. Expecting '" #Lhs << " == " #Rhs << "'\n" \
 			          << "File: " << __FILE__ << "\nLine: " << __LINE__             \
 			          << std::endl;                                                 \
-			std::abort( );                                                          \
+			std::terminate( );                                                      \
 		}                                                                         \
 	while( false )
 #endif
@@ -71,7 +79,7 @@ static_assert( std::is_trivially_copyable_v<daw::sv2::string_view> );
 			std::cerr << "Invalid result. Expecting '" #Bool << "' to be true\n" \
 			          << "Message: " #Message << "File: " << __FILE__            \
 			          << "\nLine: " << __LINE__ << std::endl;                    \
-			std::abort( );                                                       \
+			std::terminate( );                                                   \
 		}                                                                      \
 	while( false )
 #endif
@@ -107,7 +115,7 @@ namespace daw {
 		throw std::runtime_error( "unknown http request method" );
 #else
 		std::cerr << "Unknown http request method\n";
-		std::abort( );
+		std::terminate( );
 #endif
 	}
 
@@ -595,11 +603,16 @@ namespace daw {
 		bool good = false;
 		try {
 			(void)view.at( 11 );
-		} catch( std::out_of_range const & ) { good = true; } catch( ... ) {
+		} catch( std::out_of_range const & ) {
+			good = true;
+		} catch( std::exception const &ex ) {
+			std::cerr << "Unexpected exception: " << ex.what( ) << '\n' << std::flush;
+		} catch( ... ) {
+			std::cerr << "Unexpected exception of unknown type\n" << std::flush;
 		}
 		if( not good ) {
-			puts( "Expected out of range exception" );
-			std::abort( );
+			std::cerr << "Expected out_of_range_exception\n" << std::flush;
+			std::terminate( );
 		}
 #endif
 	}
@@ -706,16 +719,22 @@ namespace daw {
 
 		puts( "Throws std::out_of_range if pos >= view.size()" );
 		{
-			char result[12];
+			char result[12]{};
 
 			bool good = false;
 			try {
 				view.copy( result, 12, 12 );
-			} catch( std::out_of_range const & ) { good = true; } catch( ... ) {
+			} catch( std::out_of_range const & ) {
+				good = true;
+			} catch( std::exception const &ex ) {
+				std::cerr << "Unexpected exception: " << ex.what( ) << '\n'
+				          << std::flush;
+			} catch( ... ) {
+				std::cerr << "Unexpected exception of unknown type\n" << std::flush;
 			}
 			if( not good ) {
-				puts( "Expected out_of_range_exception" );
-				std::abort( );
+				std::cerr << "Expected out_of_range_exception\n" << std::flush;
+				std::terminate( );
 			}
 		}
 
@@ -795,11 +814,16 @@ namespace daw {
 		bool good = false;
 		try {
 			(void)view.substr( 15 );
-		} catch( std::out_of_range const & ) { good = true; } catch( ... ) {
+		} catch( std::out_of_range const & ) {
+			good = true;
+		} catch( std::exception const &ex ) {
+			std::cerr << "Unexpected exception: " << ex.what( ) << '\n' << std::flush;
+		} catch( ... ) {
+			std::cerr << "Unexpected exception of unknown type\n" << std::flush;
 		}
 		if( not good ) {
-			puts( "Expected out_of_range_exception" );
-			std::abort( );
+			std::cerr << "Expected out_of_range_exception\n" << std::flush;
+			std::terminate( );
 		}
 #endif
 	}
@@ -1857,7 +1881,7 @@ catch( std::exception const &ex ) {
 	          << '\n'
 	          << ex.what( ) << '\n'
 	          << std::flush;
-	exit( 1 );
+	return 1;
 } catch( ... ) {
 	std::cerr << "An unknown exception was thrown\n" << std::flush;
 	throw;

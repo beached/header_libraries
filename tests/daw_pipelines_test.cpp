@@ -548,13 +548,13 @@ namespace tests {
 		static constexpr int arr1[] = { 0, 1, 2, 3, 4 };
 		static constexpr int arr2[] = { 0, 100, 200, 300, 400 };
 
-		constexpr auto zipped = pipeline( Zip, MapApply( std::plus{ } ) );
+		constexpr auto zipped = pipeline( Zip, MapApply( std::plus<>{ } ) );
 		daw::println( "test032: Expecting: 0, 101, 202, 303, 404" );
 		for( auto p : zipped( arr1, arr2 ) ) {
 			daw::println( "{}", p );
 		}
 		constexpr auto zipped2 =
-		  pipeline( Zip( arr1, arr2 ), MapApply( std::plus{ } ) );
+		  pipeline( Zip( arr1, arr2 ), MapApply( std::plus<>{ } ) );
 		for( auto p : zipped2 ) {
 			daw::println( "{}", p );
 		}

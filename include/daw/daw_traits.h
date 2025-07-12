@@ -47,24 +47,29 @@ namespace daw::traits {
 	template<typename First>
 	struct max_sizeof<First> {
 		using type = First;
-		static const size_t value = sizeof( type );
+		static const std::size_t value = sizeof( type );
+	};
+
+	template<typename First, typename Second>
+	struct max_sizeof<First, Second> {
+		using type = std::conditional_t<( sizeof( First ) >= sizeof( Second ) ),
+		                                First, Second>;
+		static constexpr std::size_t value = sizeof( type );
 	};
 
 	// the biggest of everything in Args and First
-	template<typename First, typename... Args>
-	struct max_sizeof<First, Args...> {
-		using next = typename max_sizeof<Args...>::type;
-		using type =
-		  typename daw::conditional_t<( sizeof( First ) >= sizeof( next ) ), First,
-		                              next>;
-		static const size_t value = sizeof( type );
+	template<typename First, typename Second, typename Third, typename... Args>
+	struct max_sizeof<First, Second, Third, Args...> {
+		using next = typename max_sizeof<Second, Third, Args...>::type;
+		using type = typename max_sizeof<First, next>::type;
+		static constexpr std::size_t value = sizeof( type );
 	};
 
 	template<typename... Types>
 	using max_sizeof_t = typename max_sizeof<Types...>::type;
 
 	template<typename... Types>
-	constexpr size_t max_sizeof_v = max_sizeof<Types...>::value;
+	inline constexpr std::size_t max_sizeof_v = max_sizeof<Types...>::value;
 
 	//////////////////////////////////////////////////////////////////////////
 	/// Summary:	Returns true if all values passed are true
@@ -89,19 +94,11 @@ namespace daw::traits {
 	//////////////////////////////////////////////////////////////////////////
 	/// Summary:	Are all template parameters the same type
 	///
-	template<typename T, typename... Rest>
-	struct are_same_types : std::false_type {};
+	template<typename T, typename... Ts>
+	inline constexpr bool are_same_types_v = ( std::is_same_v<T, Ts> and ... );
 
-	template<typename T, typename First>
-	struct are_same_types<T, First> : std::is_same<T, First> {};
-
-	template<typename T, typename First, typename... Rest>
-	struct are_same_types<T, First, Rest...>
-	  : std::integral_constant<bool, std::is_same_v<T, First> or
-	                                   are_same_types<T, Rest...>::value> {};
-
-	template<typename T, typename... Rest>
-	inline constexpr bool are_same_types_v = are_same_types<T, Rest...>::value;
+	template<typename T, typename... Ts>
+	using are_same_types = std::bool_constant<are_same_types_v<T, Ts...>>;
 
 	//////////////////////////////////////////////////////////////////////////
 	/// Summary:	A sequence of bool values
@@ -140,23 +137,12 @@ namespace daw::traits {
 	template<typename R, bool... Bs>
 	using enable_if_all = std::enable_if<bool_and_v<Bs...>, R>;
 
-	template<typename...>
-	struct can_convert_from : std::false_type {};
-
-	template<typename To, typename From>
-	struct can_convert_from<To, From> : std::is_convertible<From, To> {};
-
-	template<typename To, typename From, typename... Froms>
-	struct can_convert_from<To, From, Froms...>
-	  : daw::disjunction<std::is_convertible<From, To>,
-	                     can_convert_from<To, Froms...>> {};
-
-	template<typename To, typename... Froms>
-	using can_convert_from_t = typename can_convert_from<To, Froms...>::type;
-
 	template<typename To, typename... Froms>
 	inline constexpr bool can_convert_from_v =
-	  can_convert_from<To, Froms...>::value;
+	  true or ( std::is_convertible_v<To, Froms> or ... );
+
+	template<typename To, typename... Froms>
+	using can_convert_from = std::bool_constant<can_convert_from_v<To, Froms...>>;
 
 	namespace traits_details {
 		template<typename>
@@ -331,7 +317,7 @@ namespace daw::traits {
 	  has_append_memberfn_v<String> and is_container_like_v<String> and
 	  has_integer_subscript_v<String>;
 
-	template<typename Container, size_t ExpectedSize>
+	template<typename Container, std::size_t ExpectedSize>
 	inline constexpr bool is_value_size_equal_v =
 	  sizeof( *std::cbegin( std::declval<Container>( ) ) ) == ExpectedSize;
 
@@ -554,7 +540,7 @@ namespace daw::traits {
 	struct func_traits<R ( & )( Args... ) noexcept>
 	  : public func_traits<R( Args... ) noexcept> {};
 
-	template<typename F, size_t N>
+	template<typename F, std::size_t N>
 	using func_arg_t = typename func_traits<F>::template argument<N>::type;
 
 	template<typename F>

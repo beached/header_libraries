@@ -48,9 +48,22 @@ void daw_bench_n_test_test_001( ) {
 	daw::expecting( 3025, *res );
 }
 
-int main( ) {
+int main( )
+#if defined( DAW_USE_EXCEPTIONS )
+  try
+#endif
+{
 	daw_benchmark_test_001( );
 	daw_benchmark_test_002( );
 	daw_bench_test_test_001( );
 	daw_bench_n_test_test_001( );
 }
+#if defined( DAW_USE_EXCEPTIONS )
+catch( std::exception const &ex ) {
+	std::cerr << "Uncaught Exception: " << ex.what( ) << '\n' << std::flush;
+	return 1;
+} catch( ... ) {
+	std::cerr << "Unknown uncaught exception:\n" << std::flush;
+	throw;
+}
+#endif

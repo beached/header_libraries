@@ -10,23 +10,23 @@
 
 #include "daw/daw_benchmark.h"
 
-#include <cstddef>
+#include <cstdint>
 
 void test_001( ) {
-	size_t count = 1024ULL;
-	daw::hash_set_t<size_t> adapt( count );
-	for( size_t n = 0; n < count; ++n ) {
+	std::size_t count = 1024ULL;
+	daw::hash_set_t<std::uint64_t> adapt( count );
+	for( std::size_t n = 0; n < count; ++n ) {
 		adapt.insert( n );
 	}
 }
 
 void test_003( ) {
-	size_t count = 1024ULL;
-	daw::hash_set_t<size_t> adapt( count );
-	for( size_t n = 0; n < count; ++n ) {
+	std::size_t count = 1024ULL;
+	daw::hash_set_t<std::uint64_t> adapt( count );
+	for( std::size_t n = 0; n < count; ++n ) {
 		adapt.insert( n );
 	}
-	for( size_t n = 0; n < count; ++n ) {
+	for( std::uint64_t n = 0; n < count; ++n ) {
 		daw::expecting( adapt.exists( n ) );
 	}
 }

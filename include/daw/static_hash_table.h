@@ -12,27 +12,29 @@
 #include "daw/daw_algorithm.h"
 #include "daw/daw_arith_traits.h"
 #include "daw/daw_fnv1a_hash.h"
-#include "daw/daw_move.h"
+#include "daw/daw_remove_cvref.h"
 
 #include <limits>
 
 namespace daw {
-	template<typename T, size_t Capacity>
+	template<typename T, std::size_t Capacity>
 	struct static_hash_t {
-		using value_type = std::decay_t<T>;
+		using value_type = daw::remove_cvref_t<T>;
 		using reference = value_type &;
 		using const_reference = value_type const &;
-		enum class hash_sentinals : size_t { empty, Size };
+		enum class hash_sentinals : std::size_t { empty, Size };
 
 		struct hash_item {
-			size_t hash_value;
-			value_type value;
-			constexpr hash_item( )
-			  : hash_value{ }
-			  , value{ } {}
+			std::uint64_t hash_value = 0;
+			value_type value = value_type{ };
+			hash_item( ) = default;
 
-			constexpr hash_item( size_t h, value_type v )
-			  : hash_value{ std::move( h ) }
+			constexpr hash_item( std::uint64_t h, value_type const &v )
+			  : hash_value{ h }
+			  , value{ v } {}
+
+			constexpr hash_item( std::uint64_t h, value_type &&v )
+			  : hash_value{ h }
 			  , value{ std::move( v ) } {}
 
 		}; // hash_item
@@ -42,30 +44,33 @@ namespace daw {
 	private:
 		values_type m_values;
 
-		[[nodiscard]] static constexpr size_t scale_hash( size_t hash_value ) {
-			const size_t prime_a = 18446744073709551557u;
-			const size_t prime_b = 18446744073709551533u;
-			return ( hash_value * prime_a + prime_b ) % Capacity;
+		[[nodiscard]] static constexpr std::size_t
+		scale_hash( std::uint64_t hash_value ) {
+			constexpr auto prime_a = 18446744073709551557ULL;
+			constexpr auto prime_b = 18446744073709551533ULL;
+			return static_cast<std::size_t>( ( hash_value * prime_a + prime_b ) %
+			                                 Capacity );
 		}
 
 		template<typename K>
-		[[nodiscard]] static constexpr size_t hash_fn( K const &key ) {
+		[[nodiscard]] static constexpr std::size_t hash_fn( K const &key ) {
 			return ( daw::fnv1a_hash( key ) %
 			         ( max_value<std::size_t> -
 			           static_cast<std::size_t>( hash_sentinals::Size ) ) ) +
 			       static_cast<std::size_t>( hash_sentinals::Size );
 		}
 
-		[[nodiscard]] static constexpr size_t hash_fn( char const *const key ) {
+		[[nodiscard]] static constexpr std::size_t
+		hash_fn( char const *const key ) {
 			return ( daw::fnv1a_hash( key ) %
 			         ( max_value<std::size_t> -
 			           static_cast<std::size_t>( hash_sentinals::Size ) ) ) +
 			       static_cast<std::size_t>( hash_sentinals::Size );
 		}
 
-		[[nodiscard]] constexpr size_t find_impl( size_t const hash ) const {
+		[[nodiscard]] constexpr std::size_t find_impl( std::uint64_t hash ) const {
 			auto const scaled_hash = scale_hash( hash );
-			for( size_t n = scaled_hash; n < Capacity; ++n ) {
+			for( std::size_t n = scaled_hash; n < Capacity; ++n ) {
 				if( m_values[n].hash_value ==
 				    static_cast<std::size_t>( hash_sentinals::empty ) ) {
 					return n;
@@ -73,7 +78,7 @@ namespace daw {
 					return n;
 				}
 			}
-			for( size_t n = 0; n < scaled_hash; ++n ) {
+			for( std::size_t n = 0; n < scaled_hash; ++n ) {
 				if( m_values[n].hash_value ==
 				    static_cast<std::size_t>( hash_sentinals::empty ) ) {
 					return n;
@@ -84,14 +89,15 @@ namespace daw {
 			return Capacity;
 		}
 
-		[[nodiscard]] constexpr size_t find_next_empty( size_t const pos ) const {
-			for( size_t n = pos; n < Capacity; ++n ) {
+		[[nodiscard]] constexpr std::size_t
+		find_next_empty( std::size_t const pos ) const {
+			for( std::size_t n = pos; n < Capacity; ++n ) {
 				if( m_values[n].hash_value ==
 				    static_cast<std::size_t>( hash_sentinals::empty ) ) {
 					return n;
 				}
 			}
-			for( size_t n = 0; n < pos; ++n ) {
+			for( std::size_t n = 0; n < pos; ++n ) {
 				if( m_values[n].hash_value ==
 				    static_cast<std::size_t>( hash_sentinals::empty ) ) {
 					return n;
@@ -128,7 +134,7 @@ namespace daw {
 		}
 
 		template<typename K>
-		[[nodiscard]] constexpr size_t find( K const &key ) const {
+		[[nodiscard]] constexpr std::size_t find( K const &key ) const {
 			auto const hash = hash_fn( key );
 			return find_impl( hash );
 		}

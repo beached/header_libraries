@@ -2,9 +2,9 @@ name: Ubuntu
 
 on:
   push:
-    branches-ignore: develop
+    branches-ignore: dev
   pull_request:
-    branches-ignore: develop
+    branches-ignore: dev, v2
 
 jobs:
   CI_Tests:
@@ -82,7 +82,7 @@ jobs:
         run: |
           mkdir build
       - name: Build Dependencies
-        run: cmake -GNinja -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DDAW_ENABLE_TESTING=ON -DCMAKE_CXX_STANDARD=${{ matrix.cpp_version }} -Bbuild/ .
+        run: cmake -GNinja -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DDAW_ENABLE_TESTING=ON -DDAW_WERROR=ON -DCMAKE_CXX_STANDARD=${{ matrix.cpp_version }} -Bbuild/ .
       - name: Build
         run: cmake --build build/ --target daw-header-libraries_full -- -k 0
         continue-on-error: true

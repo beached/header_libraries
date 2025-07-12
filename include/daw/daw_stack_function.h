@@ -188,8 +188,9 @@ namespace daw {
 					return f.empty( );
 				} else if constexpr( func_impl::is_boolable_v<F> ) {
 					return not static_cast<bool>( f );
+				} else {
+					return false;
 				}
-				return false;
 			}
 
 		public:

@@ -62,18 +62,20 @@ void test_005( std::vector<test_data_t> const &data ) {
 template<typename... Args>
 void test_006( std::vector<test_data_t> const &data ) {
 	std::list<test_data_t> new_data{ };
-	std::copy(
-	  begin( data ), end( data ), std::inserter( new_data, end( new_data ) ) );
+	std::copy( begin( data ), end( data ),
+	           std::inserter( new_data, end( new_data ) ) );
 	new_data.sort( );
 	daw::do_not_optimize( new_data );
 }
 
-int main( ) {
+int main( )
+#if defined( DAW_USE_EXCEPTIONS )
+  try
+#endif
+{
 	for( size_t sz = 10ULL; sz < 1'000ULL; sz *= 10 ) {
 		std::vector<test_data_t> test_data( sz, 0ULL );
-		daw::random_fill<test_data_t>( begin( test_data ),
-		                               end( test_data ),
-		                               0ULL,
+		daw::random_fill<test_data_t>( begin( test_data ), end( test_data ), 0ULL,
 		                               std::numeric_limits<test_data_t>::max( ) );
 		std::cout << "Data size: " << sz << '\n';
 		daw::bench_n_test<100>(
@@ -117,3 +119,12 @@ int main( ) {
 		std::cout << "####################\n";
 	}
 }
+#if defined( DAW_USE_EXCEPTIONS )
+catch( std::exception const &ex ) {
+	std::cerr << "Uncaught Exception: " << ex.what( ) << '\n' << std::flush;
+	return 1;
+} catch( ... ) {
+	std::cerr << "Unknown uncaught exception:\n" << std::flush;
+	throw;
+}
+#endif

@@ -132,7 +132,11 @@ void out_sqrt( float f ) {
 	          << E2 << ") diff: " << diff << '\n';
 }
 
-int main( ) {
+int main( )
+#if defined( DAW_USE_EXCEPTIONS )
+  try
+#endif
+{
 	sqrt_tests( );
 	std::cout << "pow10( -1 ) -> " << daw::cxmath::dpow10( -1 ) << '\n';
 	std::cout << "pow10( -2 ) -> " << daw::cxmath::dpow10( -2 ) << '\n';
@@ -191,8 +195,7 @@ int main( ) {
 		  return sum;
 	  },
 	  daw::make_random_data<int32_t, std::vector<float>>(
-	    1'000,
-	    std::numeric_limits<float>::min_exponent10,
+	    1'000, std::numeric_limits<float>::min_exponent10,
 	    std::numeric_limits<float>::max_exponent10 ) );
 
 	daw::bench_n_test<RUNCOUNT>(
@@ -287,3 +290,12 @@ int main( ) {
 #endif
 	return 0;
 }
+#if defined( DAW_USE_EXCEPTIONS )
+catch( std::exception const &ex ) {
+	std::cerr << "Uncaught Exception: " << ex.what( ) << '\n' << std::flush;
+	return 1;
+} catch( ... ) {
+	std::cerr << "Unknown uncaught exception:\n" << std::flush;
+	throw;
+}
+#endif

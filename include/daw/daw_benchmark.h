@@ -10,6 +10,8 @@
 
 #include "daw/ciso646.h"
 #include "daw/daw_arith_traits.h"
+#include "daw/daw_check_exceptions.h"
+#include "daw/daw_cxmath.h"
 #include "daw/daw_do_not_optimize.h"
 #include "daw/daw_expected.h"
 #include "daw/daw_move.h"
@@ -27,6 +29,12 @@
 #include <vector>
 
 namespace daw {
+#if defined( DAW_USE_EXCEPTIONS )
+	struct expected_failure {
+		expected_failure( ) = default;
+	};
+#endif
+
 	namespace benchmark_impl {
 		using second_duration = std::chrono::duration<double>;
 	} // namespace benchmark_impl
@@ -205,7 +213,7 @@ namespace daw {
 	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
 	DAW_ATTRIB_NOINLINE auto bench_n_test( std::string const &title,
 	                                       Test &&test_callable,
-	                                       Args const &...args ) noexcept {
+	                                       Args const &...args ) {
 		static_assert( Runs > 0 );
 		static_assert( std::is_invocable_v<Test, Args...>,
 		               "Unable to call Test with provided Args" );
@@ -313,7 +321,7 @@ namespace daw {
 	         typename Function, typename... Args>
 	[[nodiscard]] DAW_ATTRIB_NOINLINE std::array<double, Runs>
 	bench_n_test_mbs2( std::string const &, size_t, Validator &&validator,
-	                   Function &&func, Args const &...args ) noexcept {
+	                   Function &&func, Args const &...args ) {
 		static_assert( Runs > 0 );
 		static_assert( std::is_invocable_v<Function, Args...>,
 		               "Unable to call Function with provided Args" );
@@ -352,8 +360,12 @@ namespace daw {
 			daw::do_not_optimize( result );
 			auto const valid_start = std::chrono::steady_clock::now( );
 			if( DAW_UNLIKELY( not validator( result ) ) ) {
-				std::cerr << "Error validating result\n";
+				std::cerr << "Error validating result\n" << std::flush;
+#if defined( DAW_USE_EXCEPTIONS )
+				throw expected_failure( );
+#else
 				std::terminate( );
+#endif
 			}
 			valid_time += benchmark_impl::second_duration(
 			  std::chrono::steady_clock::now( ) - valid_start );
@@ -368,7 +380,7 @@ namespace daw {
 	template<size_t Runs, char delem = '\n', typename Test, typename... Args>
 	[[nodiscard]] DAW_ATTRIB_NOINLINE auto
 	bench_n_test_mbs( std::string const &title, size_t bytes,
-	                  Test &&test_callable, Args const &...args ) noexcept {
+	                  Test &&test_callable, Args const &...args ) {
 		static_assert( Runs > 0 );
 		static_assert( std::is_invocable_v<Test, Args...>,
 		               "Unable to call Test with provided Args" );
@@ -477,7 +489,7 @@ namespace daw {
 	/// @return last result timing counts of runs
 	template<size_t Runs, typename Function, typename... Args>
 	[[nodiscard]] DAW_ATTRIB_NOINLINE std::vector<std::chrono::nanoseconds>
-	bench_n_test_json( Function &&func, Args &&...args ) noexcept {
+	bench_n_test_json( Function &&func, Args &&...args ) {
 		static_assert( Runs > 0 );
 		static_assert( std::is_invocable_v<Function, Args...>,
 		               "Unable to call Test with provided Args" );
@@ -530,7 +542,7 @@ namespace daw {
 	template<size_t Runs, typename Validator, typename Function, typename... Args>
 	DAW_ATTRIB_NOINLINE std::vector<std::chrono::nanoseconds>
 	bench_n_test_json_val( Validator &&validator, Function &&func,
-	                       Args &&...args ) noexcept {
+	                       Args &&...args ) {
 		static_assert( Runs > 0 );
 		static_assert( std::is_invocable_v<Function, Args...>,
 		               "Unable to call Test with provided Args" );
@@ -568,8 +580,12 @@ namespace daw {
 			auto const finish = std::chrono::steady_clock::now( );
 			daw::do_not_optimize( result );
 			if( DAW_UNLIKELY( not validator( std::move( result ) ) ) ) {
-				std::cerr << "Error validating result\n";
+				std::cerr << "Error validating result\n" << std::flush;
+#if defined( DAW_USE_EXCEPTIONS )
+				throw expected_failure( );
+#else
 				std::terminate( );
+#endif
 			}
 
 			auto const duration =
@@ -594,7 +610,8 @@ namespace daw {
 		DAW_ATTRIB_NOINLINE void output_expected_error( T &&expected_result,
 		                                                U &&result ) {
 			std::cerr << "Invalid result. Expecting '" << expected_result
-			          << "' but got '" << result << "'\n";
+			          << "' but got '" << result << "'\n"
+			          << std::flush;
 		}
 
 		template<
@@ -602,14 +619,14 @@ namespace daw {
 		  std::enable_if_t<(not is_streamable_v<T> and not is_streamable_v<U>),
 		                   std::nullptr_t> = nullptr>
 		DAW_ATTRIB_NOINLINE constexpr void output_expected_error( T &&, U && ) {
-			std::cerr << "Invalid or unexpected result\n";
+			std::cerr << "Invalid or unexpected result\n" << std::flush;
 		}
 	} // namespace benchmark_impl
 
 	template<typename T, typename U>
 	DAW_ATTRIB_NOINLINE constexpr void expecting( T &&expected_result,
 	                                              U &&result ) {
-		if( not( expected_result == result ) ) {
+		if( not( daw::cxmath::cmp_equal( expected_result, result ) ) ) {
 #ifdef __VERSION__
 			if constexpr( not daw::string_view( __VERSION__ )
 			                    .starts_with( daw::string_view(
@@ -617,15 +634,23 @@ namespace daw {
 				benchmark_impl::output_expected_error( expected_result, result );
 			}
 #endif
+#if defined( DAW_USE_EXCEPTIONS )
+			throw expected_failure( );
+#else
 			std::terminate( );
+#endif
 		}
 	}
 
 	template<typename Bool>
 	DAW_ATTRIB_NOINLINE constexpr void expecting( Bool const &expected_result ) {
 		if( not static_cast<bool>( expected_result ) ) {
-			std::cerr << "Invalid result. Expecting true\n";
+			std::cerr << "Invalid result. Expecting true\n" << std::flush;
+#if defined( DAW_USE_EXCEPTIONS )
+			throw expected_failure( );
+#else
 			std::terminate( );
+#endif
 		}
 	}
 
@@ -634,8 +659,12 @@ namespace daw {
 	                                                      String &&message ) {
 		do_not_optimize( expected_result );
 		if( DAW_UNLIKELY( not( expected_result ) ) ) {
-			std::cerr << message << '\n';
+			std::cerr << message << '\n' << std::flush;
+#if defined( DAW_USE_EXCEPTIONS )
+			throw expected_failure( );
+#else
 			std::terminate( );
+#endif
 		}
 		(void)message;
 	}
@@ -667,12 +696,16 @@ namespace daw {
 			if( DAW_FWD( pred )( ex ) ) {
 				return;
 			}
-			std::cerr << "Failed predicate\n";
+			std::cerr << "Failed predicate\n" << std::flush;
 		} catch( ... ) {
-			std::cerr << "Unexpected exception\n";
+			std::cerr << "Unexpected exception\n" << std::flush;
 			throw;
 		}
+#if defined( DAW_USE_EXCEPTIONS )
+		throw expected_failure( );
+#else
 		std::terminate( );
+#endif
 #endif
 	}
 } // namespace daw
