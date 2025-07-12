@@ -8,9 +8,10 @@
 
 #pragma once
 
-#include "ciso646.h"
+#include "daw/ciso646.h"
+#include "daw/daw_algorithm.h"
+#include "daw/daw_attributes.h"
 #include "daw/daw_check_exceptions.h"
-#include "daw_algorithm.h"
 
 #include <cstdint>
 #include <functional>
@@ -80,7 +81,14 @@ namespace daw {
 			auto const hash = Hash{ }( key );
 			auto const index = find_index( hash, key );
 			if( index ) {
+#if defined( DAW_HAS_MSVC )
+#pragma warning( push )
+#pragma warning( disable : 4244 )
+#endif
 				return static_cast<bool>( m_indices[*index] );
+#if defined( HAS_HAS_MSVC )
+#pragma warning( pop )
+#endif
 			}
 			return false;
 		}
