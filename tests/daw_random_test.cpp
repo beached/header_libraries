@@ -81,7 +81,7 @@ static_assert( cxrand_test_001( ) );
 void cxrand_test_002( ) {
 	auto rng = daw::static_random( );
 	for( std::size_t n = 0U; n < 50U; ++n ) {
-		auto num = rng( );
+		auto num = static_cast<std::uint64_t>( rng( ) );
 		num = ( ( num >> 60U ) | ( num & 0xFFU ) ) % 100U;
 		std::cout << " " << num;
 	}
