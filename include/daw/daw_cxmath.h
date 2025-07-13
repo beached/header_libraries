@@ -1394,62 +1394,98 @@ namespace daw::cxmath {
 	}
 	static_assert( count_digits( 1'000'000ULL ) == 7 );
 
-	template<typename T, typename U>
-	constexpr bool cmp_equal( T t, U u ) {
+	struct cmp_equal_t {
+		cmp_equal_t( ) = default;
+
+		template<typename T, typename U>
+		DAW_CPP23_STATIC_CALL_OP constexpr bool
+		operator( )( T t, U u ) DAW_CPP23_STATIC_CALL_OP_CONST {
 #if defined( DAW_HAS_MSVC )
 #pragma warning( push )
 #pragma warning( disable : 4389 )
 #endif
-		if constexpr( not( std::is_integral_v<T> and std::is_integral_v<U> ) or
-		              std::is_signed_v<T> == std::is_signed_v<U> ) {
-			return t == u;
-		} else if constexpr( std::is_signed_v<T> ) {
-			return t >= T{ 0 } and static_cast<std::make_unsigned_t<T>>( t ) == u;
-		} else {
-			return u >= U{ 0 } and t == static_cast<std::make_unsigned_t<U>>( u );
-		}
+			if constexpr( not( std::is_integral_v<T> and std::is_integral_v<U> ) or
+			              std::is_signed_v<T> == std::is_signed_v<U> ) {
+				return t == u;
+			} else if constexpr( std::is_signed_v<T> ) {
+				return t >= T{ 0 } and static_cast<std::make_unsigned_t<T>>( t ) == u;
+			} else {
+				return u >= U{ 0 } and t == static_cast<std::make_unsigned_t<U>>( u );
+			}
 
 #if defined( DAW_HAS_MSVC )
 #pragma warning( pop )
 #endif
-	}
+		}
+	};
+	inline constexpr auto cmp_equal = cmp_equal_t{ };
 
-	template<class T, class U>
-	constexpr bool cmp_not_equal( T t, U u ) {
-		return not cmp_equal( t, u );
-	}
+	struct cmp_not_equal_t {
+		cmp_not_equal_t( ) = default;
 
-	template<typename T, typename U>
-	constexpr bool cmp_less( T t, U u ) {
+		template<class T, class U>
+		DAW_CPP23_STATIC_CALL_OP constexpr bool
+		operator( )( T t, U u ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			return not cmp_equal( t, u );
+		}
+	};
+	inline constexpr auto cmp_not_equal = cmp_not_equal_t{ };
+
+	struct cmp_less_t {
+		cmp_less_t( ) = default;
+
+		template<typename T, typename U>
+		DAW_CPP23_STATIC_CALL_OP constexpr bool
+		operator( )( T t, U u ) DAW_CPP23_STATIC_CALL_OP_CONST {
 #if defined( DAW_HAS_MSVC )
 #pragma warning( push )
 #pragma warning( disable : 4389 )
 #endif
-		if constexpr( not( std::is_integral_v<T> and std::is_integral_v<U> ) or
-									std::is_signed_v<T> == std::is_signed_v<U> ) {
-			return t < u;
-		} else if constexpr( std::is_signed_v<T> ) {
-			return t < 0 or static_cast<std::make_unsigned_t<T>>( t ) < u;
-		} else {
-			return u >= 0 and t < static_cast<std::make_unsigned_t<U>>( u );
-		}
+			if constexpr( not( std::is_integral_v<T> and std::is_integral_v<U> ) or
+			              std::is_signed_v<T> == std::is_signed_v<U> ) {
+				return t < u;
+			} else if constexpr( std::is_signed_v<T> ) {
+				return t < 0 or static_cast<std::make_unsigned_t<T>>( t ) < u;
+			} else {
+				return u >= 0 and t < static_cast<std::make_unsigned_t<U>>( u );
+			}
 #if defined( DAW_HAS_MSVC )
 #pragma warning( pop )
 #endif
-	}
+		}
+	};
+	inline constexpr auto cmp_less = cmp_less_t{ };
 
-	template<class T, class U>
-	constexpr bool cmp_greater( T t, U u ) {
-		return cmp_less( u, t );
-	}
+	struct cmp_greater_t {
+		cmp_greater_t( ) = default;
 
-	template<class T, class U>
-	constexpr bool cmp_less_equal( T t, U u ) {
-		return not cmp_less( u, t );
-	}
+		template<class T, class U>
+		DAW_CPP23_STATIC_CALL_OP constexpr bool
+		operator( )( T t, U u ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			return cmp_less( u, t );
+		}
+	};
+	inline constexpr auto cmp_greater = cmp_greater_t{ };
 
-	template<class T, class U>
-	constexpr bool cmp_greater_equal( T t, U u ) {
-		return not cmp_less( t, u );
-	}
+	struct cmp_less_equal_t {
+		cmp_less_equal_t( ) = default;
+
+		template<class T, class U>
+		DAW_CPP23_STATIC_CALL_OP constexpr bool
+		operator( )( T t, U u ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			return not cmp_less( u, t );
+		}
+	};
+	inline constexpr auto cmp_less_equal = cmp_less_equal_t{ };
+
+	struct cmp_greater_equal_t {
+		cmp_greater_equal_t( ) = default;
+
+		template<class T, class U>
+		DAW_CPP23_STATIC_CALL_OP constexpr bool
+		operator( )( T t, U u ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			return not cmp_less( t, u );
+		}
+	};
+	inline constexpr auto cmp_greater_equal = cmp_greater_equal_t{ };
 } // namespace daw::cxmath
