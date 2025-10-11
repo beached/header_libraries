@@ -18,9 +18,9 @@ inline constexpr daw::string_view test_value =
   "012345678901234567890123456789012345678901234567890123456789012";
 
 inline constexpr auto h0 =
-  daw::metro::hash64( { test_value.begin( ), test_value.end( ) }, 0 );
+  daw::metro::hash64( daw::view{ test_value.begin( ), test_value.end( ) }, 0 );
 inline constexpr auto h1 =
-  daw::metro::hash64( { test_value.begin( ), test_value.end( ) }, 1 );
+  daw::metro::hash64( daw::view{ test_value.begin( ), test_value.end( ) }, 1 );
 
 // const uint8_t MetroHash64::test_seed_0[8] = {0x6B, 0x75, 0x3D, 0xAE,
 //                                             0x06, 0x70, 0x4B, 0xAD};
