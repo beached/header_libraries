@@ -12,6 +12,7 @@
 #include "daw_assume.h"
 #include "daw_attributes.h"
 
+#include <cassert>
 #include <cstddef>
 #include <daw/stdinc/compare_fn.h>
 #include <daw/stdinc/hash.h>
