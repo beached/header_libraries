@@ -15,10 +15,10 @@
 int main( ) {
 	using namespace daw::string_view_literals;
 	static constexpr auto sv0 = "1234"_sv;
-	static_assert( daw::from_string( daw::tag<int>, sv0 ) == 1234 );
 	static_assert(
 		daw::from_string( daw::tag<daw::string_view>, sv0 ) == "1234"_sv );
 
+	daw_ensure( daw::from_string( daw::tag<int>, sv0 ) == 1234 );
 	daw_ensure( daw::from_string( daw::tag<double>, sv0 ) == 1234.0 );
 	daw_ensure( daw::from_string( daw::tag<std::string>, sv0 ) == "1234"_sv );
 }
