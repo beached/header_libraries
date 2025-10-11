@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['take_0',['take',['../namespacedaw.html#a3a892ca26df750c71b3c04c96e694209',1,'daw::take()'],['../namespacedaw_1_1pipelines.html#a740e0e115f0ea756920059d85ad67847',1,'daw::pipelines::Take()']]],
+  ['take_0',['take',['../namespacedaw_1_1pipelines.html#a740e0e115f0ea756920059d85ad67847',1,'daw::pipelines::Take()'],['../namespacedaw.html#a3a892ca26df750c71b3c04c96e694209',1,'daw::take()']]],
   ['take_5fownership_5fof_5fdata_1',['take_ownership_of_data',['../classdaw_1_1_c_string.html#ae542603322bc2bfa8e211ddc498d28d7',1,'daw::CString']]],
   ['take_5ft_2',['take_t',['../structdaw_1_1take__t.html#ab59a8a7e1633e48633e11f6b5732cbeb',1,'daw::take_t::take_t()=default'],['../structdaw_1_1take__t.html#a1cb1183415af12f3568ebf0e9623eb07',1,'daw::take_t::take_t(Arg &amp;&amp;arg, Args &amp;&amp;...args) noexcept(std::is_nothrow_constructible_v&lt; T, Arg, Args... &gt;)'],['../structdaw_1_1take__t.html#a0e576f986200ae2397283eb426fccab2',1,'daw::take_t::take_t(take_t &amp;&amp;other) noexcept(noexcept(take(other.value)))'],['../structdaw_1_1take__t.html#ad87a3b4f5dd5f309d3c8540fc1e4db11',1,'daw::take_t::take_t(take_t const &amp;)=default']]],
   ['takeuntil_3',['TakeUntil',['../namespacedaw_1_1pipelines.html#aa3f2b9d8df92bed98c4a6d769907a3d2',1,'daw::pipelines']]],
