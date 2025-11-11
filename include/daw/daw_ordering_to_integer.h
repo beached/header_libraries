@@ -11,7 +11,6 @@
 #include "daw/daw_cpp_feature_check.h"
 
 #if defined( DAW_HAS_CPP20_3WAY )
-#include "daw/daw_undefined.h"
 
 #include <bit>
 #include <compare>
