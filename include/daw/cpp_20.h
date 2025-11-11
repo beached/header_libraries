@@ -24,9 +24,9 @@
 #define DAW_CPP20_CX_DTOR constexpr
 #define DAW_CPP20_CX_ALLOC constexpr
 #else
-#define DAW_CX_DTOR
-#define DAW_CPP20_CX_DTOR
-#define DAW_CPP20_CX_ALLOC
+#define DAW_CX_DTOR inline
+#define DAW_CPP20_CX_DTOR inline
+#define DAW_CPP20_CX_ALLOC inline
 #endif
 
 #if defined( __cpp_lib_three_way_comparison )
