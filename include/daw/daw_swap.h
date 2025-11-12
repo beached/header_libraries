@@ -46,7 +46,7 @@ namespace daw {
 	                     std::is_nothrow_move_constructible<T>> ) {
 		static_assert( not std::is_const_v<std::remove_reference_t<T>>,
 		               "Cannot swap const values" );
-		if constexpr( std::is_trivial_v<std::remove_reference_t<T>> ) {
+		if constexpr( std::is_trivially_copyable_v<std::remove_reference_t<T>> ) {
 			auto tmp = lhs;
 			lhs = daw::exchange( rhs, tmp );
 		} else if constexpr( std::is_scalar_v<std::remove_reference_t<T>> ) {
