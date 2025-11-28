@@ -31,7 +31,7 @@ namespace daw {
 
 	template<typename... Ts>
 	inline constexpr bool conjunction_v =
-	  ( static_cast<bool>( Ts::value ) and ... );
+		( static_cast<bool>(Ts::value) and ... );
 
 	template<typename... Ts>
 	using conjunction_t = std::bool_constant<conjunction_v<Ts...>>;
@@ -60,24 +60,24 @@ namespace daw {
 			not_fn_t( ) = default;
 
 			explicit constexpr not_fn_t( Function &&func ) noexcept(
-			  std::is_nothrow_move_constructible_v<Function> )
-			  : m_function{ std::move( func ) } {}
+				std::is_nothrow_move_constructible_v<Function> )
+				: m_function{std::move( func )} {}
 
 			explicit constexpr not_fn_t( Function const &func ) noexcept(
-			  std::is_nothrow_copy_constructible_v<Function> )
-			  : m_function{ func } {}
+				std::is_nothrow_copy_constructible_v<Function> )
+				: m_function{func} {}
 
 			template<typename... Args>
 			[[nodiscard]] constexpr decltype( auto )
-			operator( )( Args &&...args ) noexcept(
-			  std::is_nothrow_invocable_v<Function, Args...> ) {
+			operator( )( Args &&... args ) noexcept(
+				std::is_nothrow_invocable_v<Function, Args...> ) {
 				return not m_function( DAW_FWD( args )... );
 			}
 
 			template<typename... Args>
 			[[nodiscard]] constexpr decltype( auto )
-			operator( )( Args &&...args ) const
-			  noexcept( std::is_nothrow_invocable_v<Function, Args...> ) {
+			operator( )( Args &&... args ) const
+				noexcept( std::is_nothrow_invocable_v<Function, Args...> ) {
 				return not m_function( DAW_FWD( args )... );
 			}
 		};
@@ -99,7 +99,7 @@ namespace daw {
 
 	template<typename T>
 	inline constexpr bool is_reference_wrapper_v<std::reference_wrapper<T>> =
-	  true;
+		true;
 
 	template<typename T>
 	using is_reference_wrapper = std::bool_constant<is_reference_wrapper_v<T>>;
@@ -115,7 +115,7 @@ namespace daw {
 	template<typename Container>
 	[[nodiscard]] constexpr auto
 	size( Container const &c ) noexcept( noexcept( c.size( ) ) )
-	  -> decltype( c.size( ) ) {
+		-> decltype( c.size( ) ) {
 		return c.size( );
 	}
 
@@ -132,9 +132,9 @@ namespace daw {
 #undef min
 #endif
 			template<typename T, typename U>
-			[[nodiscard]] constexpr std::common_type_t<T, U>( min )(
-			  T const &lhs, U const &rhs ) noexcept {
-				if( lhs <= rhs ) {
+			[[nodiscard]] constexpr std::common_type_t<T, U> ( min )(
+				T const &lhs, U const &rhs ) noexcept {
+				if(lhs <= rhs) {
 					return lhs;
 				}
 				return rhs;
@@ -143,19 +143,19 @@ namespace daw {
 			template<typename T, typename U, typename V>
 			[[nodiscard]] constexpr T clamp( T val, U const &min_val,
 			                                 V const &max_val ) noexcept {
-				if( val < min_val ) {
+				if(val < min_val) {
 					val = min_val;
-				} else if( val > max_val ) {
+				} else if(val > max_val) {
 					val = max_val;
 				}
 				return val;
 			}
 		} // namespace math
-	} // namespace cpp_17_details
+	}   // namespace cpp_17_details
 
 	template<typename... Ts>
 	inline constexpr bool disjunction_v =
-	  ( static_cast<bool>( Ts::value ) or ... );
+		( static_cast<bool>(Ts::value) or ... );
 
 	template<typename... Ts>
 	using disjunction_t = std::bool_constant<disjunction_v<Ts...>>;
@@ -186,26 +186,30 @@ namespace daw {
 		template<typename From, typename To>
 		struct do_is_nothrow_convertible<From, To, false> {
 			using type =
-			  decltype( do_is_nothrow_convertible_impl::test<From, To>( 0 ) );
+			decltype( do_is_nothrow_convertible_impl::test<From, To>( 0 ) );
 		};
 	} // namespace cpp_17_details
 
 	template<typename From, typename To>
 	struct is_nothrow_convertible
-	  : cpp_17_details::do_is_nothrow_convertible<From, To>::type {};
+		: cpp_17_details::do_is_nothrow_convertible<From, To>::type {};
 
 	template<typename From, typename To>
 	inline constexpr bool is_nothrow_convertible_v =
-	  is_nothrow_convertible<From, To>::value;
+		is_nothrow_convertible<From, To>::value;
 
 	template<class T>
 	[[nodiscard]] constexpr auto
 	decay_copy( T &&v ) noexcept( is_nothrow_convertible_v<T, std::decay_t<T>> )
-	  -> std::enable_if_t<std::is_convertible_v<T, std::decay_t<T>>,
-	                      std::decay_t<T>> {
+		-> std::enable_if_t<std::is_convertible_v<T, std::decay_t<T>>,
+		                    std::decay_t<T>> {
 
 		return DAW_FWD( v );
 	}
+
+	template<typename T>
+	using remove_rvalue_ref_t = daw::conditional_t<std::is_rvalue_reference_v<T>,
+	                                               daw::remove_cvref_t<T>, T>;
 } // namespace daw
 #ifdef DAW_HAS_CONCEPTS
 #undef DAW_HAS_CONCEPTS
