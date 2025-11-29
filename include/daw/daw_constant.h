@@ -38,8 +38,8 @@ namespace daw {
 	namespace literals {
 		template<char... c>
 		DAW_CONSTEVAL auto operator""_c( ) {
-			static constexpr char const buff[sizeof...( c ) + 1] = {c..., '\0'};
-			static constexpr auto result = [] {
+			constexpr auto result = [] {
+				constexpr char const buff[sizeof...( c ) + 1] = {c..., '\0'};
 				unsigned long long value = 0;
 				daw::parser::parse_unsigned_int( buff, buff + sizeof...( c ), value );
 				return value;
