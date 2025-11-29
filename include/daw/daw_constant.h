@@ -8,10 +8,9 @@
 
 #pragma once
 
-#include "daw_consteval.h"
-#include "daw_cpp_feature_check.h"
-#include "daw_parser_helper_sv.h"
-#include "daw_string_view.h"
+#include "daw/daw_consteval.h"
+#include "daw/daw_cpp_feature_check.h"
+#include "daw/daw_parser_addons.h"
 
 #include <cstdlib>
 
@@ -28,11 +27,24 @@ namespace daw {
 		}
 
 		DAW_CPP23_STATIC_CALL_OP DAW_CONSTEVAL value_type operator( )( )
-		  DAW_CPP23_STATIC_CALL_OP_CONST noexcept {
+		DAW_CPP23_STATIC_CALL_OP_CONST noexcept {
 			return Value;
 		}
 	};
 
 	template<decltype( auto ) Value>
-	inline constexpr auto constant_v = constant<Value>{ };
+	inline constexpr auto constant_v = constant<Value>{};
+
+	namespace literals {
+		template<char... c>
+		DAW_CONSTEVAL auto operator""_c( ) {
+			static constexpr char const buff[sizeof...( c ) + 1] = {c..., '\0'};
+			static constexpr auto result = [] {
+				unsigned long long value = 0;
+				daw::parser::parse_unsigned_int( buff, buff + sizeof...( c ), value );
+				return value;
+			}( );
+			return daw::constant_v<result>;
+		}
+	}
 } // namespace daw

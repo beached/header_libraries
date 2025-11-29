@@ -7,6 +7,7 @@
 //
 
 #include "daw/algorithms/daw_enumerate_tuple.h"
+#include "daw/daw_constant.h"
 
 #include <string_view>
 
@@ -37,4 +38,10 @@ int main( ) {
 	static_assert( std::tuple_size_v<elem0_t> == 2 );
 	auto const [index,element] = std::get<0>( enum_x2 );
 	static_assert( std::same_as<int, DAW_TYPEOF( index )> );
+	using namespace daw::literals;
+	static_assert( enum_x2[0_c].value == "a"sv );
+	static_assert( enum_x2[0_c][1_c] == "a"sv );
+
+	static_assert( enum_x2[0_c].index == 0 );
+	static_assert( enum_x2[0_c][0_c] == 0 );
 }

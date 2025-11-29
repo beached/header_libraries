@@ -8,22 +8,16 @@
 
 #pragma once
 
+#include "daw/daw_concepts.h"
+#include "daw/daw_constant.h"
 #include "daw_enumerate_tuple.h"
 #include "daw/cpp_17.h"
 #include "daw/daw_move.h"
-#include "daw/daw_constant.h"
 
 #include <cstddef>
 #include <utility>
 
 namespace daw {
-	template<typename Tp, typename Index = std::size_t>
-	struct enumerated_tuple_t {
-		using i_am_an_enumerated_tuple = void;
-		using tuple_t = Tp;
-		using index_t = Index;
-		Tp m_tuple;
-	};
 
 	template<typename T, auto Idx>
 	struct enumerate_tuple_element_t {
@@ -33,6 +27,16 @@ namespace daw {
 		static constexpr index_t index = Idx;
 
 		value_t value;
+
+		template<IntegralStd auto I, typename Self>
+			requires ( I >= 0 and I < 2 )
+		constexpr decltype(auto) operator[]( this Self &&self, daw::constant<I> ) {
+			if constexpr(I == 0) {
+				return Self::index;
+			} else {
+				return std::forward_like<Self>( self.value );
+			}
+		}
 	};
 
 	template<typename T>
@@ -57,6 +61,23 @@ namespace daw {
 	template<EnumeratedTupleElement T>
 	using enumerated_tuple_element_value_t = typename std::remove_cvref_t<
 		T>::value_t;
+
+	template<typename Tp, typename Index = std::size_t>
+	struct enumerated_tuple_t {
+		using i_am_an_enumerated_tuple = void;
+		using tuple_t = Tp;
+		using index_t = Index;
+		Tp m_tuple;
+
+		template<auto Idx, typename Self>
+		constexpr auto operator[]( this Self &&self, daw::constant<Idx> ) {
+			static constexpr auto i = static_cast<std::size_t>(Idx);
+			using element_t = decltype( std::get<i>(
+				std::forward_like<Self>( self.m_tuple ) ) );
+			return enumerate_tuple_element_t<element_t, static_cast<index_t>(Idx)>{
+				std::get<i>( std::forward_like<Self>( self.m_tuple ) )};
+		}
+	};
 
 	template<typename Index = std::size_t, typename Tp>
 	constexpr enumerated_tuple_t<Tp, Index> enumerate_tuple( Tp &&tp ) {

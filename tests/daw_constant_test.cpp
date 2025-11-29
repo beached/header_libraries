@@ -17,4 +17,6 @@ int main( ) {
 	auto c = daw::constant_v<55>;
 
 	static_assert( std::is_same_v<t, decltype( c )> );
+	using namespace daw::literals;
+	static_assert( 42_c == 42ULL );
 }
