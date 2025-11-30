@@ -14,8 +14,9 @@
 #include <cstddef>
 
 
-#if not (defined( DAW_CPP26_PACK_INDEXING ) or
-DAW_HAS_BUILTIN ( __type_pack_element ))
+// clang-format off
+#if not defined( DAW_CPP26_PACK_INDEXING ) and not DAW_HAS_BUILTIN( __type_pack_element )
+// clang-format on
 #include "daw/daw_nth_pack_element.h"
 #include "daw_traits_identity.h"
 #endif
@@ -37,4 +38,3 @@ namespace daw::traits {
 	template<std::size_t Idx, typename... Ts>
 	using nth_type = nth_element<Idx, Ts...>;
 } // namespace daw::traits
-#endif

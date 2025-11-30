@@ -70,7 +70,11 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
                 -Wno-undefined-func-template
         )
       endif ()
-
+			if (CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL "17.0.0")
+				add_compile_options(
+						-Wno-c++26-extensions
+						)
+			endif ()
       add_compile_options(-Wno-poison-system-directories)
       if (DAW_WERROR)
         add_compile_options(-Werror -pedantic-errors)
@@ -115,7 +119,12 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
                 -Wno-c++2b-compat
                 -Wno-c++23-extensions
         )
-      endif ()
+			endif ()
+			if (CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 20.0.0)
+				add_compile_options(
+						-Wno-c++26-extensions
+						)
+			endif ()
       if (DAW_WERROR)
         if (CMAKE_CXX_COMPILER_VERSION LESS 13.0.0)
           add_compile_options(-Werror -pedantic-errors)
