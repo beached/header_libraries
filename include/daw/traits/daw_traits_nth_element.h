@@ -9,23 +9,32 @@
 #pragma once
 
 #include "daw/ciso646.h"
+#include "daw/daw_cpp_feature_check.h"
 
 #include <cstddef>
 
-#if not DAW_HAS_BUILTIN( __type_pack_element )
+
+#if not (defined( DAW_CPP26_PACK_INDEXING ) or
+DAW_HAS_BUILTIN ( __type_pack_element ))
 #include "daw/daw_nth_pack_element.h"
 #include "daw_traits_identity.h"
 #endif
 
 namespace daw::traits {
-#if DAW_HAS_BUILTIN( __type_pack_element )
+#if defined( DAW_CPP26_PACK_INDEXING )
+	// clang-format off
+	template<std::size_t Idx, typename...Pack>
+  using nth_element = Pack...[Idx];
+	// clang-format on
+#elif DAW_HAS_BUILTIN( __type_pack_element )
 	template<std::size_t I, typename... Ts>
 	using nth_element = __type_pack_element<I, Ts...>;
 #else
 	template<std::size_t Idx, typename... Ts>
 	using nth_element = typename decltype( nth_pack_element<Idx>(
-	  daw::traits::identity<Ts>{ }... ) )::type;
+		daw::traits::identity<Ts>{}... ) )::type;
 #endif
 	template<std::size_t Idx, typename... Ts>
 	using nth_type = nth_element<Idx, Ts...>;
 } // namespace daw::traits
+#endif
