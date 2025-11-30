@@ -17,7 +17,7 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 			add_compile_options( /WX )
 		endif()
 		add_compile_options( -Wno-missing-braces )
-		if( CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL "23.0.0" )
+		if( CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL "19.1.0" )
 			add_compile_options(
 					-Wno-c++2c-extensions
 					)
