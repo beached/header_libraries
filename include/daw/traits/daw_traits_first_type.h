@@ -8,7 +8,15 @@
 
 #pragma once
 
+#include "daw/daw_cpp_feature_check.h"
+
 namespace daw::traits {
+#if defined( DAW_CPP26_PACK_INDEXING )
+	// clang-format off
+	template<typename...Ts>
+	using first_type = Ts...[0];
+	// clang-format on
+#else
 	namespace traits_details {
 		template<typename T, typename...>
 		struct first_type_impl {
@@ -16,7 +24,8 @@ namespace daw::traits {
 		};
 	} // namespace traits_details
 
-	template<typename... Args>
-	using first_type = typename traits_details::first_type_impl<Args...>::type;
+	template<typename... Ts>
+	using first_type = typename traits_details::first_type_impl<Ts...>::type;
 
+#endif
 } // namespace daw::traits

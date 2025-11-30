@@ -13,7 +13,6 @@
 
 #include <cstddef>
 
-
 // clang-format off
 #if not defined( DAW_CPP26_PACK_INDEXING ) and not DAW_HAS_BUILTIN( __type_pack_element )
 // clang-format on
@@ -24,8 +23,8 @@
 namespace daw::traits {
 #if defined( DAW_CPP26_PACK_INDEXING )
 	// clang-format off
-	template<std::size_t Idx, typename...Pack>
-  using nth_element = Pack...[Idx];
+	template<std::size_t Idx, typename...Ts>
+  using nth_element = Ts...[Idx];
 	// clang-format on
 #elif DAW_HAS_BUILTIN( __type_pack_element )
 	template<std::size_t I, typename... Ts>

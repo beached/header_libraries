@@ -18,6 +18,7 @@
 #include <daw/stdinc/move_fwd_exch.h>
 #include <daw/stdinc/remove_cvref.h>
 #include <type_traits>
+#include <daw/stdinc/tuple_traits.h>
 
 namespace daw {
 	namespace fwd_pack_impl {
@@ -31,22 +32,22 @@ namespace daw {
 
 		template<typename Pack, std::size_t... Is>
 		struct fwd_pack_base<Pack, std::index_sequence<Is...>>
-		  : pack_leaf<Is, pack_element_t<Is, Pack>>... {};
+			: pack_leaf<Is, pack_element_t<Is, Pack>>... {};
 	} // namespace fwd_pack_impl
 
 	template<typename... Ts>
 	struct fwd_pack
-	  : fwd_pack_impl::fwd_pack_base<pack_list<Ts...>,
-	                                 std::index_sequence_for<Ts...>> {
+		: fwd_pack_impl::fwd_pack_base<pack_list<Ts...>,
+		                               std::index_sequence_for<Ts...>> {
 
 		using base_type =
-		  fwd_pack_impl::fwd_pack_base<pack_list<Ts...>,
-		                               std::index_sequence_for<Ts...>>;
+		fwd_pack_impl::fwd_pack_base<pack_list<Ts...>,
+		                             std::index_sequence_for<Ts...>>;
 
 		fwd_pack( ) = default;
 
 		DAW_ATTRIB_INLINE constexpr fwd_pack( Ts... args )
-		  : base_type{ { &args }... } {}
+			: base_type{{&args}...} {}
 
 		template<std::size_t Idx>
 		DAW_ATTRIB_FLATINLINE constexpr decltype( auto ) get( ) const & {
@@ -54,7 +55,7 @@ namespace daw {
 			using result_t = daw::traits::nth_type<Idx, Ts...>;
 			using leaf_t = fwd_pack_impl::pack_leaf<Idx, result_t>;
 			return static_cast<result_t>(
-			  *static_cast<leaf_t const *>( this )->value );
+				*static_cast<leaf_t const *>(this)->value);
 		}
 
 		template<std::size_t Idx>
@@ -62,7 +63,7 @@ namespace daw {
 			static_assert( sizeof...( Ts ) > 0, "Error to call get on empty pack" );
 			using result_t = daw::traits::nth_type<Idx, Ts...>;
 			using leaf_t = fwd_pack_impl::pack_leaf<Idx, result_t>;
-			return static_cast<result_t>( *static_cast<leaf_t *>( this )->value );
+			return static_cast<result_t>(*static_cast<leaf_t *>(this)->value);
 		}
 
 		template<std::size_t Idx>
@@ -70,7 +71,7 @@ namespace daw {
 			static_assert( sizeof...( Ts ) > 0, "Error to call get on empty pack" );
 			using result_t = daw::traits::nth_type<Idx, Ts...>;
 			using leaf_t = fwd_pack_impl::pack_leaf<Idx, result_t>;
-			return static_cast<result_t>( *static_cast<leaf_t *>( this )->value );
+			return static_cast<result_t>(*static_cast<leaf_t *>(this)->value);
 		}
 
 		template<std::size_t Idx>
@@ -79,7 +80,7 @@ namespace daw {
 			using result_t = daw::traits::nth_type<Idx, Ts...>;
 			using leaf_t = fwd_pack_impl::pack_leaf<Idx, result_t>;
 			return static_cast<result_t>(
-			  *static_cast<leaf_t const *>( this )->value );
+				*static_cast<leaf_t const *>(this)->value);
 		}
 	};
 
@@ -108,33 +109,35 @@ namespace daw {
 	namespace fwd_pack_impl {
 		template<typename Func, typename... Ts, std::size_t... Is>
 		DAW_ATTRIB_FLATINLINE constexpr decltype( auto ) apply_impl(
-		  Func &&func, fwd_pack<Ts...> &&p,
-		  std::index_sequence<
-		    Is...> ) noexcept( std::is_nothrow_invocable_v<Func, Ts...> ) {
+			Func &&func, fwd_pack<Ts...> &&p,
+			std::index_sequence<
+				Is...> ) noexcept( std::is_nothrow_invocable_v<Func, Ts...> ) {
 			return DAW_FWD( func )( get<Is>( std::move( p ) )... );
 		}
 	} // namespace fwd_pack_impl
 
 	template<typename Func, typename... Ts>
 	DAW_ATTRIB_FLATTEN constexpr decltype( auto ) apply(
-	  Func &&func,
-	  fwd_pack<Ts...> &&p ) noexcept( std::is_nothrow_invocable_v<Func, Ts...> ) {
-		return fwd_pack_impl::apply_impl( DAW_FWD( func ), std::move( p ),
-		                                  std::index_sequence_for<Ts...>{ } );
+		Func &&func,
+		fwd_pack<Ts...> &&p ) noexcept( std::is_nothrow_invocable_v<Func, Ts...> ) {
+		return fwd_pack_impl::apply_impl( DAW_FWD( func ),
+		                                  std::move( p ),
+		                                  std::index_sequence_for<Ts...>{} );
 	}
+}
 
-	template<typename>
-	struct tuple_size;
+namespace std {
+	template<typename... Ts>
+	inline constexpr std::size_t tuple_size_v<daw::fwd_pack<Ts...>> = sizeof...(
+		Ts );
 
 	template<typename... Ts>
-	struct tuple_size<daw::fwd_pack<Ts...>>
-	  : std::integral_constant<std::size_t, sizeof...( Ts )> {};
-
-	template<std::size_t, typename>
-	struct tuple_element;
+	struct tuple_size<daw::fwd_pack<Ts...>> {
+		static constexpr std::size_t value = sizeof...( Ts );
+	};
 
 	template<std::size_t Idx, typename... Ts>
-	struct tuple_element<Idx, fwd_pack<Ts...>> {
+	struct tuple_element<Idx, daw::fwd_pack<Ts...>> {
 		using type = daw::traits::nth_type<Idx, Ts...>;
 	};
 } // namespace daw

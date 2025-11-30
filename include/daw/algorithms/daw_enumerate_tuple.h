@@ -87,10 +87,16 @@ namespace daw {
 
 namespace std {
 	template<daw::EnumeratedTuple ET>
+	inline constexpr std::size_t tuple_size_v<ET> = std::tuple_size_v<typename
+		std::remove_cvref_t<ET>::tuple_t>;
+
+	template<daw::EnumeratedTuple ET>
 	struct tuple_size<ET> {
-		static constexpr auto value =
-			std::tuple_size_v<typename std::remove_cvref_t<ET>::tuple_t>;
+		static constexpr auto value = tuple_size_v<ET>;
 	};
+
+	template<daw::EnumeratedTupleElement ETE>
+	inline constexpr std::size_t tuple_size_v<ETE> = 2U;
 
 	template<daw::EnumeratedTupleElement ETE>
 	struct tuple_size<ETE> {
