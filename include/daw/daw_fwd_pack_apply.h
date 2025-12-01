@@ -146,7 +146,7 @@ namespace std {
 
 namespace daw {
     template<typename>
-    struct [[deprecated( "use std::tuple_size" )]] tuple_size;
+    struct tuple_size;
 
     template<typename... Ts>
     struct [[deprecated( "use std::tuple_size" )]] tuple_size<daw::fwd_pack<Ts...>> {
@@ -155,7 +155,7 @@ namespace daw {
 
 
     template<std::size_t, typename>
-    struct [[deprecated( "use std::tuple_element" )]] tuple_element;
+    struct tuple_element;
 
     template<std::size_t Idx, typename... Ts>
     struct [[deprecated( "use std::tuple_element" )]] tuple_element<Idx, daw::fwd_pack<Ts...>> {
