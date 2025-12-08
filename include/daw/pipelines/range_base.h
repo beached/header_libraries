@@ -32,6 +32,9 @@ namespace daw::pipelines {
 
 namespace std {
 	template<daw::pipelines::RangeBase R>
+	inline constexpr std::size_t tuple_size_v<R> = 2;
+
+	template<daw::pipelines::RangeBase R>
 	struct tuple_size<R> {
 		static constexpr std::size_t value = 2;
 	};

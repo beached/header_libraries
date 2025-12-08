@@ -139,6 +139,11 @@ set(DEPRECATED_TEST_SOURCES
         daw_vector_test.cpp
 )
 
+
+set(CPP23_TEST_SOURCES
+		daw_enumerate_tuple_test.cpp
+)
+
 set(CPP20_TEST_SOURCES
         daw_atomic_wait_test.cpp
         daw_any_if_test.cpp
@@ -241,6 +246,30 @@ if (CMAKE_CXX_STANDARD STRGREATER_EQUAL "20")
 else ()
   message(STATUS "Disabling C++20 tests")
 endif ()
+
+if (CMAKE_CXX_STANDARD STRGREATER_EQUAL "23")
+	foreach (CUR_TEST IN LISTS CPP23_TEST_SOURCES)
+		string(REPLACE ".cpp" "" CUR_TEST_NAME ${CUR_TEST})
+		add_executable("${CUR_TEST_NAME}" "${CUR_TEST}")
+		target_link_libraries(${CUR_TEST_NAME} PRIVATE daw_test)
+		target_compile_features(${CUR_TEST_NAME} PUBLIC cxx_std_23)
+		add_test(${CUR_TEST_NAME}_test ${CUR_TEST_NAME})
+		add_dependencies(${PROJECT_NAME}_full ${CUR_TEST_NAME})
+	endforeach ()
+	if (NOT MSVC)
+		foreach (CUR_TEST IN LISTS CPP23_NOT_MSVC_TEST_SOURCES)
+			string(REPLACE ".cpp" "" CUR_TEST_NAME ${CUR_TEST})
+			add_executable("${CUR_TEST_NAME}" "${CUR_TEST}")
+			target_link_libraries(${CUR_TEST_NAME} PRIVATE daw_test)
+			target_compile_features(${CUR_TEST_NAME} PUBLIC cxx_std_23)
+			add_test(${CUR_TEST_NAME}_test ${CUR_TEST_NAME})
+			add_dependencies(${PROJECT_NAME}_full ${CUR_TEST_NAME})
+		endforeach ()
+	endif ()
+else ()
+	message(STATUS "Disabling C++23 tests")
+endif ()
+
 
 option(DAW_ENABLE_DEV_TESTING "Build unit tests still in development" OFF)
 foreach (CUR_TEST IN LISTS DEV_TEST_SOURCES)

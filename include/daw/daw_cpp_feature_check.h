@@ -179,3 +179,9 @@ inline constexpr bool daw_has_cx_cmath = false;
 #endif
 #define DAW_HAS_CPP20_3WAY
 #endif
+
+#if defined( __cpp_pack_indexing )
+#if __cpp_pack_indexing >= 202311L
+#define DAW_CPP26_PACK_INDEXING
+#endif
+#endif

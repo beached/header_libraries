@@ -19,6 +19,10 @@ int main( ) {
 		daw::from_string( daw::tag<daw::string_view>, sv0 ) == "1234"_sv );
 
 	daw_ensure( daw::from_string( daw::tag<int>, sv0 ) == 1234 );
+#if defined( __cpp_lib_to_chars )
+#if __cpp_lib_to_chars >= 201611L
 	daw_ensure( daw::from_string( daw::tag<double>, sv0 ) == 1234.0 );
+#endif
+#endif
 	daw_ensure( daw::from_string( daw::tag<std::string>, sv0 ) == "1234"_sv );
 }
