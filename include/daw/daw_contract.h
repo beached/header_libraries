@@ -20,10 +20,6 @@
 #include <optional>
 #include <utility>
 
-#if defined( DAW_HAS_CLANG ) and __has_attribute( enable_if )
-#define DAW_ATTRIB_ENABLE_IF(...) __attribute__((enable_if(__VA_ARGS__)))
-#endif
-
 namespace daw {
 #if defined( DAW_USE_EXCEPTIONS )
 	struct daw_contract_violation : std::exception {};
@@ -117,7 +113,3 @@ namespace daw {
 		}
 	};
 } // namespace daw
-
-#if defined( DAW_ATTRIB_ENABLE_IF )
-#undef DAW_ATTRIB_ENABLE_IF
-#endif
