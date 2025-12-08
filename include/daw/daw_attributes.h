@@ -142,6 +142,8 @@
 #define DAW_LIFETIME_BOUND
 #endif
 
-#if defined( DAW_HAS_CLANG ) and __has_attribute( enable_if )
+#if defined( DAW_HAS_CLANG )
+#if __has_attribute( enable_if )
 #define DAW_ATTRIB_ENABLE_IF(...) __attribute__((enable_if(__VA_ARGS__)))
+#endif
 #endif
