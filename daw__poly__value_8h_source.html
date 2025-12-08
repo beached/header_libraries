@@ -148,11 +148,11 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>          <span class="keyword">new</span> poly_value_storage( std::move( <a class="code hl_variable" href="daw__tuple_8h.html#af7168ac716cb955956811d9e85474864">m_value</a> ) ) );</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      }</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>      <span class="keyword">constexpr</span> <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Base</a> <span class="keyword">const</span> *<a class="code hl_function" href="namespacedaw.html#ad58e7e31346f3ba74621301e592a2c40">get</a>( )<span class="keyword"> const override </span>{</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>      <span class="keyword">constexpr</span> <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Base</a> <span class="keyword">const</span> *<a class="code hl_function" href="namespacestd.html#ad94cb983f10c431073debca9fe816622">get</a>( )<span class="keyword"> const override </span>{</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        <span class="keywordflow">return</span> std::addressof( <a class="code hl_variable" href="daw__tuple_8h.html#af7168ac716cb955956811d9e85474864">m_value</a> );</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>      }</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      <span class="keyword">constexpr</span> <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Base</a> *<a class="code hl_function" href="namespacedaw.html#ad58e7e31346f3ba74621301e592a2c40">get</a>( )<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      <span class="keyword">constexpr</span> <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Base</a> *<a class="code hl_function" href="namespacestd.html#ad94cb983f10c431073debca9fe816622">get</a>( )<span class="keyword"> override </span>{</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="keywordflow">return</span> std::addressof( <a class="code hl_variable" href="daw__tuple_8h.html#af7168ac716cb955956811d9e85474864">m_value</a> );</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>      }</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    };</div>
@@ -260,49 +260,49 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
 <div class="foldopen" id="foldopen00154" data-start="{" data-end="}">
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="classdaw_1_1poly__value.html#adba0bf78d76b3a1620e0db46d563bd16">  154</a></span>    <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Base</a> <span class="keyword">const</span> &amp;<a class="code hl_function" href="classdaw_1_1poly__value.html#adba0bf78d76b3a1620e0db46d563bd16">operator*</a>( )<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>      <span class="keywordflow">return</span> *<a class="code hl_function" href="namespacedaw.html#ad58e7e31346f3ba74621301e592a2c40">get</a>( );</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>      <span class="keywordflow">return</span> *get( );</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    }</div>
 </div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
 <div class="foldopen" id="foldopen00158" data-start="{" data-end="}">
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="classdaw_1_1poly__value.html#a67b46a82d1f6b2ba86907aa628201724">  158</a></span>    <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Base</a> &amp;<a class="code hl_function" href="classdaw_1_1poly__value.html#a67b46a82d1f6b2ba86907aa628201724">operator*</a>( ) {</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>      <span class="keywordflow">return</span> *<a class="code hl_function" href="namespacedaw.html#ad58e7e31346f3ba74621301e592a2c40">get</a>( );</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>      <span class="keywordflow">return</span> *get( );</div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    }</div>
 </div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
 <div class="foldopen" id="foldopen00162" data-start="{" data-end="}">
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="classdaw_1_1poly__value.html#a9eb83f4dc9bd7aad484f53e73adbbb5c">  162</a></span>    <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Base</a> <span class="keyword">const</span> *<a class="code hl_function" href="classdaw_1_1poly__value.html#a9eb83f4dc9bd7aad484f53e73adbbb5c">operator-&gt;</a>( )<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>      <span class="keywordflow">return</span> <a class="code hl_function" href="namespacedaw.html#ad58e7e31346f3ba74621301e592a2c40">get</a>( );</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>      <span class="keywordflow">return</span> get( );</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    }</div>
 </div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
 <div class="foldopen" id="foldopen00166" data-start="{" data-end="}">
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno"><a class="line" href="classdaw_1_1poly__value.html#af2a6cf14c5f6a0771f3d242b3a9580f1">  166</a></span>    <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Base</a> *<a class="code hl_function" href="classdaw_1_1poly__value.html#af2a6cf14c5f6a0771f3d242b3a9580f1">operator-&gt;</a>( ) {</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>      <span class="keywordflow">return</span> <a class="code hl_function" href="namespacedaw.html#ad58e7e31346f3ba74621301e592a2c40">get</a>( );</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>      <span class="keywordflow">return</span> get( );</div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    }</div>
 </div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
 <div class="foldopen" id="foldopen00170" data-start="{" data-end="}">
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="classdaw_1_1poly__value.html#a14db2ed966be1e1f10b2f18942e450bf">  170</a></span>    <span class="keyword">operator</span> <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Base</a> &amp;( ) &amp; <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>      <span class="keywordflow">return</span> *<a class="code hl_function" href="namespacedaw.html#ad58e7e31346f3ba74621301e592a2c40">get</a>( );</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>      <span class="keywordflow">return</span> *get( );</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    }</div>
 </div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
 <div class="foldopen" id="foldopen00174" data-start="{" data-end="}">
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno"><a class="line" href="classdaw_1_1poly__value.html#a8e7ff6847d94bc253bc83c8ed7f5e717">  174</a></span>    <span class="keyword">operator</span> <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Base</a> <span class="keyword">const</span> &amp;( ) <span class="keyword">const</span> &amp; <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>      <span class="keywordflow">return</span> *<a class="code hl_function" href="namespacedaw.html#ad58e7e31346f3ba74621301e592a2c40">get</a>( );</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>      <span class="keywordflow">return</span> *get( );</div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    }</div>
 </div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
 <div class="foldopen" id="foldopen00178" data-start="{" data-end="}">
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno"><a class="line" href="classdaw_1_1poly__value.html#ae517dd17c9f39aabda1063f37fa36d94">  178</a></span>    <span class="keyword">operator</span> <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Base</a> &amp;&amp;( ) &amp;&amp; <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>      <span class="keywordflow">return</span> std::move( *<a class="code hl_function" href="namespacedaw.html#ad58e7e31346f3ba74621301e592a2c40">get</a>( ) );</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>      <span class="keywordflow">return</span> std::move( *get( ) );</div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    }</div>
 </div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
 <div class="foldopen" id="foldopen00182" data-start="{" data-end="}">
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno"><a class="line" href="classdaw_1_1poly__value.html#a2a569096aa1d2c3218317b9414b782c9">  182</a></span>    <span class="keyword">operator</span> <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Base</a> &amp;&amp;( ) <span class="keyword">const</span> &amp;&amp; <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>      <span class="keywordflow">return</span> std::move( *<a class="code hl_function" href="namespacedaw.html#ad58e7e31346f3ba74621301e592a2c40">get</a>( ) );</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>      <span class="keywordflow">return</span> std::move( *get( ) );</div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    }</div>
 </div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  };</div>
@@ -338,8 +338,8 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="anamespacedaw_html_a8f094515b5322d8621e01661a64ba831"><div class="ttname"><a href="namespacedaw.html#a8f094515b5322d8621e01661a64ba831">daw::construct_emplace</a></div><div class="ttdeci">constexpr construct_emplace_t&lt; T &gt; construct_emplace</div><div class="ttdef"><b>Definition</b> <a href="daw__poly__value_8h_source.html#l00089">daw_poly_value.h:89</a></div></div>
 <div class="ttc" id="anamespacedaw_html_a9dd289d6deb8833d9a8363e8827ccad8"><div class="ttname"><a href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">daw::void_t</a></div><div class="ttdeci">void void_t</div><div class="ttdef"><b>Definition</b> <a href="daw__traits_8h_source.html#l00931">daw_traits.h:931</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ac1fed2bfc329128fd5d8b3b9bb677928"><div class="ttname"><a href="namespacedaw.html#ac1fed2bfc329128fd5d8b3b9bb677928">daw::remove_cvref_t</a></div><div class="ttdeci">std::remove_cv_t&lt; std::remove_reference_t&lt; T &gt; &gt; remove_cvref_t</div><div class="ttdef"><b>Definition</b> <a href="daw__remove__cvref_8h_source.html#l00017">daw_remove_cvref.h:17</a></div></div>
-<div class="ttc" id="anamespacedaw_html_ad58e7e31346f3ba74621301e592a2c40"><div class="ttname"><a href="namespacedaw.html#ad58e7e31346f3ba74621301e592a2c40">daw::get</a></div><div class="ttdeci">constexpr decltype(auto) get(fwd_pack&lt; Ts... &gt; &amp;&amp;p)</div><div class="ttdef"><b>Definition</b> <a href="daw__fwd__pack__apply_8h_source.html#l00093">daw_fwd_pack_apply.h:93</a></div></div>
-<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="daw__format__range_8h_source.html#l00058">daw_format_range.h:58</a></div></div>
+<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="daw__enumerate__tuple_8h_source.html#l00088">daw_enumerate_tuple.h:88</a></div></div>
+<div class="ttc" id="anamespacestd_html_ad94cb983f10c431073debca9fe816622"><div class="ttname"><a href="namespacestd.html#ad94cb983f10c431073debca9fe816622">std::get</a></div><div class="ttdeci">constexpr auto get(EnumeratedTuple &amp;&amp;tp)</div><div class="ttdef"><b>Definition</b> <a href="daw__enumerate__tuple_8h_source.html#l00127">daw_enumerate_tuple.h:127</a></div></div>
 <div class="ttc" id="astructdaw_1_1construct__emplace__t_html"><div class="ttname"><a href="structdaw_1_1construct__emplace__t.html">daw::construct_emplace_t</a></div><div class="ttdef"><b>Definition</b> <a href="daw__poly__value_8h_source.html#l00086">daw_poly_value.h:86</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

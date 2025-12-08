@@ -94,10 +94,10 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a364c3d1bb4972bc19abca7faf1d7ec8d" id="r_a364c3d1bb4972bc19abca7faf1d7ec8d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1contract.html#a364c3d1bb4972bc19abca7faf1d7ec8d">contract</a> (T v)</td></tr>
 <tr class="separator:a364c3d1bb4972bc19abca7faf1d7ec8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab74dbe109f8556cf4d5262efee555cf4" id="r_ab74dbe109f8556cf4d5262efee555cf4"><td class="memTemplParams" colspan="2">template&lt;typename... Pre2s&gt; <br />
-requires ( std::is_invocable_r_v&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Pre2s</a>, T&gt; and... )</td></tr>
-<tr class="memitem:ab74dbe109f8556cf4d5262efee555cf4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdaw_1_1contract.html#ab74dbe109f8556cf4d5262efee555cf4">add_condition</a> (Pre2s...) <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a></td></tr>
-<tr class="separator:ab74dbe109f8556cf4d5262efee555cf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae107861f46f486a87ac7b6bea5d2af25" id="r_ae107861f46f486a87ac7b6bea5d2af25"><td class="memTemplParams" colspan="2">template&lt;typename... Pre2s&gt; <br />
+requires ( std::is_invocable_r_v&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Pre2s</a>, T&gt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">and</a> ... )</td></tr>
+<tr class="memitem:ae107861f46f486a87ac7b6bea5d2af25"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdaw_1_1contract.html#ae107861f46f486a87ac7b6bea5d2af25">add_condition</a> (Pre2s...) <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a></td></tr>
+<tr class="separator:ae107861f46f486a87ac7b6bea5d2af25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb7f840175982d18888d80591f02e9d1" id="r_adb7f840175982d18888d80591f02e9d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1contract.html#adb7f840175982d18888d80591f02e9d1">extract</a> ()</td></tr>
 <tr class="separator:adb7f840175982d18888d80591f02e9d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af95fbafd2e7d3d6c89d148b4e48b0249" id="r_af95fbafd2e7d3d6c89d148b4e48b0249"><td class="memTemplParams" colspan="2">template&lt;typename... Ps&gt; </td></tr>
@@ -112,7 +112,7 @@ requires ( std::is_invocable_r_v&lt;<a class="el" href="namespacedaw.html#a9dd28
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T, typename... Preconditions&gt;<br />
-requires ( std::is_invocable_r_v&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Preconditions</a>, T&gt; and... )<br />
+requires ( std::is_invocable_r_v&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Preconditions</a>, T&gt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">and</a> ... )<br />
 class daw::contract&lt; T, Preconditions &gt;</div>
 <p class="definition">Definition at line <a class="el" href="daw__contract_8h_source.html#l00044">44</a> of file <a class="el" href="daw__contract_8h_source.html">daw_contract.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
@@ -132,7 +132,7 @@ template&lt;typename... Pre2s&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contract_8h_source.html#l00080">80</a> of file <a class="el" href="daw__contract_8h_source.html">daw_contract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contract_8h_source.html#l00099">99</a> of file <a class="el" href="daw__contract_8h_source.html">daw_contract.h</a>.</p>
 
 </div>
 </div>
@@ -163,13 +163,13 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contract_8h_source.html#l00052">52</a> of file <a class="el" href="daw__contract_8h_source.html">daw_contract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contract_8h_source.html#l00070">70</a> of file <a class="el" href="daw__contract_8h_source.html">daw_contract.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab74dbe109f8556cf4d5262efee555cf4" name="ab74dbe109f8556cf4d5262efee555cf4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab74dbe109f8556cf4d5262efee555cf4">&#9670;&#160;</a></span>add_condition()</h2>
+<a id="ae107861f46f486a87ac7b6bea5d2af25" name="ae107861f46f486a87ac7b6bea5d2af25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae107861f46f486a87ac7b6bea5d2af25">&#9670;&#160;</a></span>add_condition()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -177,7 +177,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T , typename... Preconditions&gt; </div>
 <div class="memtemplate">
 template&lt;typename... Pre2s&gt; <br />
-requires ( std::is_invocable_r_v&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Pre2s</a>, T&gt; and... )</div>
+requires ( std::is_invocable_r_v&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Pre2s</a>, T&gt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">and</a> ... )</div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -197,7 +197,7 @@ requires ( std::is_invocable_r_v&lt;<a class="el" href="namespacedaw.html#a9dd28
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contract_8h_source.html#l00090">90</a> of file <a class="el" href="daw__contract_8h_source.html">daw_contract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contract_8h_source.html#l00109">109</a> of file <a class="el" href="daw__contract_8h_source.html">daw_contract.h</a>.</p>
 
 </div>
 </div>
@@ -226,7 +226,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contract_8h_source.html#l00059">59</a> of file <a class="el" href="daw__contract_8h_source.html">daw_contract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contract_8h_source.html#l00078">78</a> of file <a class="el" href="daw__contract_8h_source.html">daw_contract.h</a>.</p>
 
 </div>
 </div>
@@ -257,7 +257,7 @@ template&lt;typename... Ps&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contract_8h_source.html#l00083">83</a> of file <a class="el" href="daw__contract_8h_source.html">daw_contract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contract_8h_source.html#l00102">102</a> of file <a class="el" href="daw__contract_8h_source.html">daw_contract.h</a>.</p>
 
 </div>
 </div>
@@ -286,7 +286,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contract_8h_source.html#l00074">74</a> of file <a class="el" href="daw__contract_8h_source.html">daw_contract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contract_8h_source.html#l00093">93</a> of file <a class="el" href="daw__contract_8h_source.html">daw_contract.h</a>.</p>
 
 </div>
 </div>
@@ -315,7 +315,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contract_8h_source.html#l00064">64</a> of file <a class="el" href="daw__contract_8h_source.html">daw_contract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contract_8h_source.html#l00083">83</a> of file <a class="el" href="daw__contract_8h_source.html">daw_contract.h</a>.</p>
 
 </div>
 </div>
@@ -344,7 +344,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__contract_8h_source.html#l00069">69</a> of file <a class="el" href="daw__contract_8h_source.html">daw_contract.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__contract_8h_source.html#l00088">88</a> of file <a class="el" href="daw__contract_8h_source.html">daw_contract.h</a>.</p>
 
 </div>
 </div>

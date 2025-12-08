@@ -265,6 +265,12 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="preprocessor">#define DAW_HAS_CPP20_3WAY</span></div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="preprocessor">#if defined( __cpp_pack_indexing )</span></div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="preprocessor">#if __cpp_pack_indexing &gt;= 202311L</span></div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span><span class="preprocessor">#define DAW_CPP26_PACK_INDEXING</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aciso646_8h_html"><div class="ttname"><a href="ciso646_8h.html">ciso646.h</a></div></div>
 <div class="ttc" id="adaw__cpp__feature__check_8h_html_a4a920f98bfa6246e269e1d49a08b3ef7"><div class="ttname"><a href="daw__cpp__feature__check_8h.html#a4a920f98bfa6246e269e1d49a08b3ef7">daw_has_cx_cmath</a></div><div class="ttdeci">constexpr bool daw_has_cx_cmath</div><div class="ttdef"><b>Definition</b> <a href="daw__cpp__feature__check_8h_source.html#l00144">daw_cpp_feature_check.h:144</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

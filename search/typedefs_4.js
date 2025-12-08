@@ -14,5 +14,8 @@ var searchData=
   ['enable_5fmove_5fconstructor_11',['enable_move_constructor',['../namespacedaw.html#ac81bd40a2358fd6b4fd3ff6871f7652e',1,'daw']]],
   ['enable_5fwhen_5fall_5ft_12',['enable_when_all_t',['../namespacedaw.html#aa315900e0ce1e794fc3997ca0cf80b89',1,'daw']]],
   ['enable_5fwhen_5ft_13',['enable_when_t',['../namespacedaw.html#a0c26fed4f9335fb3a674a5d7350368f8',1,'daw']]],
-  ['enough_5fargs_5ft_14',['enough_args_t',['../namespacedaw.html#a5c91012ab0611fd7c2282716018a57e1',1,'daw']]]
+  ['enough_5fargs_5ft_14',['enough_args_t',['../namespacedaw.html#a5c91012ab0611fd7c2282716018a57e1',1,'daw']]],
+  ['enumerated_5ftuple_5felement_5findex_5ft_15',['enumerated_tuple_element_index_t',['../namespacedaw.html#a1104312ffa9d40f055d428cb32fa825c',1,'daw']]],
+  ['enumerated_5ftuple_5felement_5fvalue_5ft_16',['enumerated_tuple_element_value_t',['../namespacedaw.html#a1080d458f4b39768f0faf5944c7d3716',1,'daw']]],
+  ['enumerated_5ftuple_5findex_5ft_17',['enumerated_tuple_index_t',['../namespacedaw.html#acaba0f69bdf0fe648b499898818a6da3',1,'daw']]]
 ];

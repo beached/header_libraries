@@ -72,7 +72,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">std Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -115,7 +116,19 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1tuple__element_3_011_00_01_r_01_4.html">tuple_element&lt; 1, R &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1tuple__element_3_01_i_00_01_e_t_01_4.html">tuple_element&lt; I, ET &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1tuple__element_3_01_i_00_01_r_01_4.html">tuple_element&lt; I, R &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1tuple__element_3_01_idx_00_01daw_1_1fwd__pack_3_01_ts_8_8_8_01_4_01_4.html">tuple_element&lt; Idx, daw::fwd_pack&lt; Ts... &gt; &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1tuple__element_3_01_idx_00_01_e_t_e_01_4.html">tuple_element&lt; Idx, ETE &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1tuple__size_3_01daw_1_1fwd__pack_3_01_ts_8_8_8_01_4_01_4.html">tuple_size&lt; daw::fwd_pack&lt; Ts... &gt; &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1tuple__size_3_01_e_t_01_4.html">tuple_size&lt; ET &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1tuple__size_3_01_e_t_e_01_4.html">tuple_size&lt; ETE &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1tuple__size_3_01_r_01_4.html">tuple_size&lt; R &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,10 +139,28 @@ Functions</h2></td></tr>
 requires ( I == 0 or I == 1 )</td></tr>
 <tr class="memitem:a0e2dbb85130f2565e539e626445bbb79"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestd.html#a0e2dbb85130f2565e539e626445bbb79">get</a> (<a class="el" href="conceptdaw_1_1pipelines_1_1_range_base.html">daw::pipelines::RangeBase</a> auto &amp;&amp;r)</td></tr>
 <tr class="separator:a0e2dbb85130f2565e539e626445bbb79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad94cb983f10c431073debca9fe816622" id="r_ad94cb983f10c431073debca9fe816622"><td class="memTemplParams" colspan="2">template&lt;std::size_t Idx, <a class="el" href="conceptdaw_1_1_enumerated_tuple.html">daw::EnumeratedTuple</a> EnumeratedTuple&gt; </td></tr>
+<tr class="memitem:ad94cb983f10c431073debca9fe816622"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestd.html#ad94cb983f10c431073debca9fe816622">get</a> (EnumeratedTuple &amp;&amp;tp)</td></tr>
+<tr class="separator:ad94cb983f10c431073debca9fe816622"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af27b24aa8121d292f1ca235b3d0b0c38" id="r_af27b24aa8121d292f1ca235b3d0b0c38"><td class="memTemplParams" colspan="2">template&lt;std::size_t I, <a class="el" href="conceptdaw_1_1_enumerated_tuple_element.html">daw::EnumeratedTupleElement</a> EnumeratedTupleElement&gt; </td></tr>
+<tr class="memitem:af27b24aa8121d292f1ca235b3d0b0c38"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestd.html#af27b24aa8121d292f1ca235b3d0b0c38">get</a> (EnumeratedTupleElement &amp;&amp;element)</td></tr>
+<tr class="separator:af27b24aa8121d292f1ca235b3d0b0c38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a5b86ec1fa2692fe61e1a84a10465325d" id="r_a5b86ec1fa2692fe61e1a84a10465325d"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="conceptdaw_1_1_enumerated_tuple.html">daw::EnumeratedTuple</a> ET&gt; </td></tr>
+<tr class="memitem:a5b86ec1fa2692fe61e1a84a10465325d"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestd.html#a5b86ec1fa2692fe61e1a84a10465325d">tuple_size_v&lt; ET &gt;</a></td></tr>
+<tr class="separator:a5b86ec1fa2692fe61e1a84a10465325d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab252bf466c8d34b174edaeb00bb9ebd7" id="r_ab252bf466c8d34b174edaeb00bb9ebd7"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="conceptdaw_1_1_enumerated_tuple_element.html">daw::EnumeratedTupleElement</a> ETE&gt; </td></tr>
+<tr class="memitem:ab252bf466c8d34b174edaeb00bb9ebd7"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestd.html#ab252bf466c8d34b174edaeb00bb9ebd7">tuple_size_v&lt; ETE &gt;</a> = 2U</td></tr>
+<tr class="separator:ab252bf466c8d34b174edaeb00bb9ebd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bd386994920a8416bb634017c430d43" id="r_a7bd386994920a8416bb634017c430d43"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="conceptdaw_1_1pipelines_1_1_range_base.html">daw::pipelines::RangeBase</a> R&gt; </td></tr>
+<tr class="memitem:a7bd386994920a8416bb634017c430d43"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestd.html#a7bd386994920a8416bb634017c430d43">tuple_size_v&lt; R &gt;</a> = 2</td></tr>
+<tr class="separator:a7bd386994920a8416bb634017c430d43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a0e2dbb85130f2565e539e626445bbb79" name="a0e2dbb85130f2565e539e626445bbb79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e2dbb85130f2565e539e626445bbb79">&#9670;&#160;</a></span>get()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e2dbb85130f2565e539e626445bbb79">&#9670;&#160;</a></span>get() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -155,7 +186,148 @@ requires ( I == 0 or I == 1 )</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="range__base_8h_source.html#l00050">50</a> of file <a class="el" href="range__base_8h_source.html">range_base.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="range__base_8h_source.html#l00053">53</a> of file <a class="el" href="range__base_8h_source.html">range_base.h</a>.</p>
+
+</div>
+</div>
+<a id="ad94cb983f10c431073debca9fe816622" name="ad94cb983f10c431073debca9fe816622"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad94cb983f10c431073debca9fe816622">&#9670;&#160;</a></span>get() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::size_t Idx, <a class="el" href="conceptdaw_1_1_enumerated_tuple.html">daw::EnumeratedTuple</a> EnumeratedTuple&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto std::get </td>
+          <td>(</td>
+          <td class="paramtype">EnumeratedTuple &amp;&amp;&#160;</td>
+          <td class="paramname"><em>tp</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__enumerate__tuple_8h_source.html#l00127">127</a> of file <a class="el" href="daw__enumerate__tuple_8h_source.html">daw_enumerate_tuple.h</a>.</p>
+
+</div>
+</div>
+<a id="af27b24aa8121d292f1ca235b3d0b0c38" name="af27b24aa8121d292f1ca235b3d0b0c38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af27b24aa8121d292f1ca235b3d0b0c38">&#9670;&#160;</a></span>get() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::size_t I, <a class="el" href="conceptdaw_1_1_enumerated_tuple_element.html">daw::EnumeratedTupleElement</a> EnumeratedTupleElement&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr decltype(auto) std::get </td>
+          <td>(</td>
+          <td class="paramtype">EnumeratedTupleElement &amp;&amp;&#160;</td>
+          <td class="paramname"><em>element</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__enumerate__tuple_8h_source.html#l00136">136</a> of file <a class="el" href="daw__enumerate__tuple_8h_source.html">daw_enumerate_tuple.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a5b86ec1fa2692fe61e1a84a10465325d" name="a5b86ec1fa2692fe61e1a84a10465325d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b86ec1fa2692fe61e1a84a10465325d">&#9670;&#160;</a></span>tuple_size_v&lt; ET &gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="conceptdaw_1_1_enumerated_tuple.html">daw::EnumeratedTuple</a> ET&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr std::size_t std::tuple_size_v&lt; ET &gt;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= std::tuple_size_v&lt;<span class="keyword">typename</span></div>
+<div class="line">    std::remove_cvref_t&lt;ET&gt;::tuple_t&gt;</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__enumerate__tuple_8h_source.html#l00090">90</a> of file <a class="el" href="daw__enumerate__tuple_8h_source.html">daw_enumerate_tuple.h</a>.</p>
+
+</div>
+</div>
+<a id="ab252bf466c8d34b174edaeb00bb9ebd7" name="ab252bf466c8d34b174edaeb00bb9ebd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab252bf466c8d34b174edaeb00bb9ebd7">&#9670;&#160;</a></span>tuple_size_v&lt; ETE &gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="conceptdaw_1_1_enumerated_tuple_element.html">daw::EnumeratedTupleElement</a> ETE&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr std::size_t std::tuple_size_v&lt; ETE &gt; = 2U</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__enumerate__tuple_8h_source.html#l00099">99</a> of file <a class="el" href="daw__enumerate__tuple_8h_source.html">daw_enumerate_tuple.h</a>.</p>
+
+</div>
+</div>
+<a id="a7bd386994920a8416bb634017c430d43" name="a7bd386994920a8416bb634017c430d43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bd386994920a8416bb634017c430d43">&#9670;&#160;</a></span>tuple_size_v&lt; R &gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="conceptdaw_1_1pipelines_1_1_range_base.html">daw::pipelines::RangeBase</a> R&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr std::size_t std::tuple_size_v&lt; R &gt; = 2</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="range__base_8h_source.html#l00035">35</a> of file <a class="el" href="range__base_8h_source.html">range_base.h</a>.</p>
 
 </div>
 </div>

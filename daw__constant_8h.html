@@ -77,14 +77,14 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">daw_constant.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="daw__consteval_8h_source.html">daw_consteval.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__cpp__feature__check_8h_source.html">daw_cpp_feature_check.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__parser__helper__sv_8h_source.html">daw_parser_helper_sv.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="daw__consteval_8h_source.html">daw/daw_consteval.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__cpp__feature__check_8h_source.html">daw/daw_cpp_feature_check.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__parser__addons_8h_source.html">daw/daw_parser_addons.h</a>&quot;</code><br />
 <code>#include &lt;cstdlib&gt;</code><br />
 </div>
 <p><a href="daw__constant_8h_source.html">Go to the source code of this file.</a></p>
@@ -99,11 +99,19 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw" id="r_namespacedaw"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
 <tr class="memdesc:namespacedaw"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides structs for wrapping function pointers and callable objects to facilitate function overloading and safe invocation. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacedaw_1_1literals" id="r_namespacedaw_1_1literals"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1literals.html">daw::literals</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a5ef96157903858eacf77156e9fde7940" id="r_a5ef96157903858eacf77156e9fde7940"><td class="memTemplParams" colspan="2">template&lt;char... c&gt; </td></tr>
+<tr class="memitem:a5ef96157903858eacf77156e9fde7940"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__consteval_8h.html#ab9e8028f305516c43a6b23d820386407">DAW_CONSTEVAL</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1literals.html#a5ef96157903858eacf77156e9fde7940">daw::literals::operator&quot;&quot;_c</a> ()</td></tr>
+<tr class="separator:a5ef96157903858eacf77156e9fde7940"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a869c82c3e835590b2a97213b44fa1f75" id="r_a869c82c3e835590b2a97213b44fa1f75"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">decltype</a>(<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>) Value&gt; </td></tr>
-<tr class="memitem:a869c82c3e835590b2a97213b44fa1f75"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a869c82c3e835590b2a97213b44fa1f75">daw::constant_v</a> = <a class="el" href="structdaw_1_1constant.html">constant</a>&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Value</a>&gt;{ }</td></tr>
+<tr class="memitem:a869c82c3e835590b2a97213b44fa1f75"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a869c82c3e835590b2a97213b44fa1f75">daw::constant_v</a> = <a class="el" href="structdaw_1_1constant.html">constant</a>&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Value</a>&gt;{}</td></tr>
 <tr class="separator:a869c82c3e835590b2a97213b44fa1f75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
