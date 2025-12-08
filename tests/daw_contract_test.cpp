@@ -6,6 +6,8 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include "daw/daw_do_not_optimize.h"
+
 #include <daw/daw_contract.h>
 #include <daw/daw_ensure.h>
 
@@ -20,7 +22,9 @@ int main( ) {
 #if defined( DAW_USE_EXCEPTIONS )
 	bool has_error = false;
 	try {
-		auto v1 = pos_int{ -1 };
+		int x = -1;
+		daw::do_not_optimize( x );
+		auto v1 = pos_int{ x };
 		(void)v1;
 	} catch( daw::daw_contract_violation const & ) { has_error = true; }
 	daw_ensure( has_error );

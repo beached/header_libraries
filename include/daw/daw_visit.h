@@ -118,7 +118,7 @@ namespace daw {
 		overload_t( Fs... ) -> overload_t<Fs...>;
 
 		template<typename F, typename... Fs>
-		DAW_ATTRIB_FLATINLINE [[nodiscard]] constexpr decltype( auto )
+		[[nodiscard]] DAW_ATTRIB_FLATINLINE constexpr decltype( auto )
 		overload( F &&f, Fs &&...fs ) noexcept {
 			if constexpr( sizeof...( Fs ) > 0 ) {
 				return overload_t{ daw::traits::lift_func( DAW_FWD( f ) ),
