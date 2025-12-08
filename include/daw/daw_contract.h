@@ -20,7 +20,7 @@
 #include <optional>
 #include <utility>
 
-#if defined( DAW_HAS_CLANG )
+#if defined( DAW_HAS_CLANG ) and __has_attribute( enable_if )
 #define DAW_ATTRIB_ENABLE_IF(...) __attribute__((enable_if(__VA_ARGS__)))
 #endif
 
@@ -55,7 +55,7 @@ namespace daw {
 	public:
 #if defined( DAW_ATTRIB_ENABLE_IF )
 		DAW_ATTRIB_FLATINLINE constexpr contract( T v )
-		DAW_ATTRIB_ENABLE_IF( __builtin_constant_p(v), "" )
+		DAW_ATTRIB_ENABLE_IF( __builtin_constant_p(v), "Constant value" )
 		DAW_ATTRIB_ENABLE_IF( validate( v ), "Contract violatiion" )
 			: value( std::move( v ) ) {
 			if(not validate( value )) {
@@ -63,9 +63,8 @@ namespace daw {
 			}
 		}
 
-		DAW_ATTRIB_FLATINLINE inline contract( T v )
-		DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p(v), "" )
-		DAW_ATTRIB_ENABLE_IF( true, "" )
+		DAW_ATTRIB_FLATINLINE contract( T v )
+		DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p(v), "Value isn't a constant" )
 			: value( std::move( v ) ) {
 			if(not validate( value )) {
 				contract_failure( );
