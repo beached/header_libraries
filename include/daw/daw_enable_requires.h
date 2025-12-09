@@ -13,7 +13,7 @@
 #include <cstddef>
 #include <type_traits>
 
-#if defined( DAW_CPP20_HAS_CONCEPTS ) and not defined( DAW_NO_REQUIRES )
+#if defined( DAW_HAS_CPP20_CONCEPTS ) and not defined( DAW_NO_REQUIRES )
 #define DAW_USE_REQUIRES
 #define DAW_ENABLEIF( ... )
 #define DAW_ENABLEIF2( ... )

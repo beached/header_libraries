@@ -32,7 +32,7 @@ namespace daw {
 	template<template<class...> class Op, class... Args>
 	inline constexpr bool is_nonesuch_v<nonesuch<Op, Args...>> = true;
 
-#ifdef DAW_CPP20_HAS_CONCEPTS
+#if defined( DAW_HAS_CONCEPTS )
 	template<template<class...> class Op, class... Args>
 	inline constexpr bool is_detected_v = requires {
 		typename Op<Args...>;

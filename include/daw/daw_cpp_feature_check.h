@@ -201,6 +201,6 @@ inline constexpr bool daw_has_cx_cmath = false;
 #if defined( __cpp_concepts ) and not defined( DAW_NO_CONCEPTS )
 #if __cpp_concepts >= 201907L
 #define DAW_HAS_CONCEPTS
-#define DAW_CPP20_HAS_CONCEPTS
+#define DAW_HAS_CPP20_CONCEPTS
 #endif
 #endif
