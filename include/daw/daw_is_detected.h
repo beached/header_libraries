@@ -8,14 +8,14 @@
 
 #pragma once
 
-#include "traits/daw_traits_is_same.h"
+#include "daw/daw_cpp_feature_check.h"
+#include "daw/traits/daw_traits_is_same.h"
 
 #include <daw/stdinc/integral_constant.h>
 #include <daw/stdinc/is_convertible.h>
 #include <daw/stdinc/void_t.h>
 
 namespace daw {
-
 	template<template<typename...> typename, typename...>
 	struct nonesuch {
 		nonesuch( ) = delete;
@@ -32,19 +32,7 @@ namespace daw {
 	template<template<class...> class Op, class... Args>
 	inline constexpr bool is_nonesuch_v<nonesuch<Op, Args...>> = true;
 
-#if defined( _MSC_VER )
-#if _MSC_VER < 1930 and not defined( DAW_NO_CONCEPTS )
-#define DAW_NO_CONCEPTS
-#endif
-#endif
-
-#if defined( __cpp_concepts ) and not defined( DAW_NO_CONCEPTS )
-#if __cpp_concepts >= 201907L
-#define DAW_HAS_CONCEPTS
-#endif
-#endif
-
-#ifdef DAW_HAS_CONCEPTS
+#ifdef DAW_CPP20_HAS_CONCEPTS
 	template<template<class...> class Op, class... Args>
 	inline constexpr bool is_detected_v = requires {
 		typename Op<Args...>;

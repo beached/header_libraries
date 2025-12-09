@@ -185,3 +185,22 @@ inline constexpr bool daw_has_cx_cmath = false;
 #define DAW_CPP26_PACK_INDEXING
 #endif
 #endif
+
+#if defined( __cpp_explicit_this_parameter )
+#if __cpp_explicit_this_parameter >= 202110L
+#define DAW_CPP23_DEDUCING_THIS
+#endif
+#endif
+
+#if defined( _MSC_VER )
+#if _MSC_VER < 1930 and not defined( DAW_NO_CONCEPTS )
+#define DAW_NO_CONCEPTS
+#endif
+#endif
+
+#if defined( __cpp_concepts ) and not defined( DAW_NO_CONCEPTS )
+#if __cpp_concepts >= 201907L
+#define DAW_HAS_CONCEPTS
+#define DAW_CPP20_HAS_CONCEPTS
+#endif
+#endif
