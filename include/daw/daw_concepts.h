@@ -434,4 +434,14 @@ namespace daw {
 
 	template<typename F, typename ExpectedF>
 	concept Fn = concepts_details::Fn_v<F, ExpectedF>;
+
+	template<typename R, typename Fn, typename... Args>
+	concept Callable_r = requires( Fn fn, Args... args ) {
+		{ fn( args... ) } -> convertible_to<R>;
+	};
+
+	template<typename Fn, typename... Args>
+	concept Callable = requires( Fn fn, Args... args ) {
+		fn( args... );
+	};
 } // namespace daw
