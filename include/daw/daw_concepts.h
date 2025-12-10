@@ -452,6 +452,6 @@ namespace daw {
 
 	template<typename Fn, typename... Args>
 	concept NothrowCallable = requires( Fn fn, Args... args ) {
-		fn( args... ) noexcept;
+		{ fn( args... ) } noexcept;
 	};
 } // namespace daw
