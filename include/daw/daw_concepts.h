@@ -8,10 +8,12 @@
 
 #pragma once
 
+#include "daw_cpp_feature_check.h"
+
+#if defined( DAW_HS_CPP20_CONCEPTS )
 #include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_arith_traits.h"
-#include "daw_cpp_feature_check.h"
 #include "daw_iterator_traits.h"
 #include "daw_move.h"
 
@@ -20,6 +22,7 @@
 #include <iterator>
 #include <type_traits>
 
+#define CPP20CONCEPT concept
 namespace daw {
 	/***
 	 * @brief Given types From and To and an expression E whose type and value
@@ -455,3 +458,6 @@ namespace daw {
 		{ fn( args... ) } noexcept;
 	};
 } // namespace daw
+#else
+#define CPP20CONCEPT inline constexpr bool
+#endif
