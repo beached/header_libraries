@@ -104,7 +104,7 @@ namespace bind_args_impl {
 		TpArgs tp_args;
 
 		template<typename... Args,
-		         std::enable_if_t<can_call_v<N, Invokable, TpArgs, Args...>,
+		         std::enable_if_t<bind_args_impl::can_call_v<N, Invokable, TpArgs, Args...>,
 		                          std::nullptr_t> = nullptr>
 		constexpr decltype( auto ) operator( )( Args &&...args ) const
 		  noexcept( bind_args_impl::is_nothrow_callable_v<N, Invokable, TpArgs, Args...> ) {
@@ -117,7 +117,7 @@ namespace bind_args_impl {
 		}
 
 		template<typename... Args,
-		         std::enable_if_t<can_call_v<N, Invokable, TpArgs, Args...>,
+		         std::enable_if_t<bind_args_impl::can_call_v<N, Invokable, TpArgs, Args...>,
 		                          std::nullptr_t> = nullptr>
 		constexpr decltype( auto ) operator( )( Args &&...args ) noexcept(
 		  bind_args_impl::is_nothrow_callable_v<N, Invokable, TpArgs, Args...> ) {
