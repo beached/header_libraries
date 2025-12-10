@@ -17,7 +17,7 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 			add_compile_options( /WX )
 		endif()
 		add_compile_options( -Wno-missing-braces )
-		if( CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL "19.1.0" )
+		if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.1 )
 			add_compile_options(
 					-Wno-c++2c-extensions
 					)
@@ -55,28 +55,28 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 			add_compile_options( -Wno-weak-vtables )
 		endif()
 		if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang" )
-			if( CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL "12.0.0" )
+			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 12 )
 				add_compile_options(
 						-Wno-c++20-extensions
 						)
 			endif()
-			if( CMAKE_CXX_COMPILER_VERSION LESS "13.1.6" )
+			if( CMAKE_CXX_COMPILER_VERSION VERSION_LESS 13.1.6 )
 				# This was removed in clang-13
 				add_compile_options( -Wno-return-std-move-in-c++11 )
 			endif()
-			if( CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL "14.0.0" )
+			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 14 )
 				add_compile_options(
 						-Wno-c++20-attribute-extensions
 						)
 			endif()
-			if( CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL "15.0.0" )
+			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 15 )
 				add_compile_options(
 						-Wno-c++2b-extensions
 						-Wno-c++20-compat
 						-Wno-undefined-func-template
 						)
 			endif()
-			if( CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL "17.0.0" )
+			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 17 )
 				add_compile_options(
 						-Wno-c++26-extensions
 						)
@@ -92,46 +92,51 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 				endif()
 			endif()
 		else() # Not Apple Clang Clang
-			if( CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 10.0.0 )
+			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 10 )
 				add_compile_options(
 						-Wno-poison-system-directories
 						-Wno-c++20-extensions
 						)
 			endif()
-			if( CMAKE_CXX_COMPILER_VERSION LESS 13.0.0 )
+			if( CMAKE_CXX_COMPILER_VERSION VERSION_LESS 13 )
 				# This was removed in clang-13
 				add_compile_options( -Wno-return-std-move-in-c++11 )
 			endif()
-			if( CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 14.0.0 )
+			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 14 )
 				add_compile_options(
 						-Wno-c++20-attribute-extensions
 						-Wno-bitwise-instead-of-logical
 						-Wno-c++20-compat
 						)
 			endif()
-			if( CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 16.0.0 )
+			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 16 )
 				add_compile_options(
 						-Wno-unsafe-buffer-usage
 						-Wno-c++2b-extensions
 						)
-				if( CMAKE_CXX_COMPILER_VERSION LESS 17.0.0 )
+				if( CMAKE_CXX_COMPILER_VERSION VERSION_LESS 17 )
 					add_compile_options(
 							-Wno-undefined-func-template
 							)
 				endif()
 			endif()
-			if( CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 17.0.0 )
+			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 17 )
 				add_compile_options(
 						-Wno-c++23-extensions
 						)
 			endif()
-			if( CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 20.0.0 )
+			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 20 )
 				add_compile_options(
 						-Wno-c++26-extensions
 						)
 			endif()
+			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 21 )
+				add_compile_options(
+						-Wno-nrvo
+						)
+			endif()
 			if( DAW_WERROR )
-				if( CMAKE_CXX_COMPILER_VERSION LESS 13.0.0 )
+				if( CMAKE_CXX_COMPILER_VERSION VERSION_LESS 13 )
 					add_compile_options( -Werror -pedantic-errors )
 				endif()
 				# Cannot add trapv for testing, it breaks 128bit processing on clang/libc++
@@ -145,7 +150,7 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 
 		if( CMAKE_SYSTEM_PROCESSOR MATCHES "(x86)|(X86)|(amd64)|(AMD64)" )
 			if( NOT CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" )
-				if( CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 10.0.0 )
+				if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 10 )
 					message( STATUS "Adding Intel JCC bugfix" )
 					add_compile_options( -mbranches-within-32B-boundaries )
 				endif()
@@ -194,7 +199,7 @@ elseif( ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" )
 	endif()
 	#-Wdisabled-optimization)
 	if( CMAKE_SYSTEM_PROCESSOR MATCHES "(x86)|(X86)|(amd64)|(AMD64)" )
-		if( CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 9.0.0 )
+		if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 9 )
 			if( LINUX )
 				message( STATUS "Adding Intel JCC bugfix" )
 				add_compile_options( -Wa,-mbranches-within-32B-boundaries )
@@ -203,7 +208,7 @@ elseif( ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" )
 	endif()
 	set( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -DDEBUG" )
 	set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -g -DDEBUG" )
-	if( CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 14.0.0 )
+	if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 14 )
 		set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wnull-dereference" )
 	endif()
 

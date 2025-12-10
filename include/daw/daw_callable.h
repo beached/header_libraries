@@ -11,18 +11,16 @@
 #include "daw/daw_cpp_feature_check.h"
 
 #if defined( DAW_HAS_CPP20_CONCEPTS )
-#include "daw/daw_concepts.h"
 #include <utility>
-#else
-#include <type_traits>
 #endif
+#include <type_traits>
 
 namespace daw {
 #if defined( DAW_HAS_CPP20_CONCEPTS )
 	template<typename R, typename Fn, typename... Args>
 	concept is_callable_r_v = requires( Fn && fn, Args &&...args ) {
 		{ std::forward<Fn>( fn )( std::forward<Args>( args )... ) }
-		  ->convertible_to<R>;
+		  ->std::convertible_to<R>;
 	};
 
 	template<typename Fn, typename... Args>
@@ -34,12 +32,12 @@ namespace daw {
 	concept is_nothrow_r_v = requires( Fn && fn, Args &&...args ) {
 		{
 			std::forward<Fn>( fn )( std::forward<Args>( args )... )
-		} noexcept -> convertible_to<R>;
+		} noexcept -> std::convertible_to<R>;
 	};
 
 	template<typename Fn, typename... Args>
 	concept is_nothrow_callable_v = requires( Fn fn, Args... args ) {
-		{ std::forward<Fn>( fn )( std::forward<Args>( args )... ) };
+		{ std::forward<Fn>( fn )( std::forward<Args>( args )... ) } noexcept;
 	};
 #else
 	template<typename Fn, typename... Args>

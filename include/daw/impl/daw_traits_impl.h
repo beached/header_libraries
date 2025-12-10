@@ -9,13 +9,14 @@
 #pragma once
 
 #include "daw/ciso646.h"
+#include "daw/daw_callable.h"
 #include "daw/daw_empty.h"
 #include "daw/daw_move.h"
 #include "daw/daw_remove_cvref.h"
 #include "daw/traits/daw_traits_identity.h"
 #include "daw/traits/daw_traits_nth_element.h"
 #include "daw/traits/daw_traits_pack_list.h"
-#include "daw_make_trait.h"
+#include "daw/impl/daw_make_trait.h"
 
 #include <cstddef>
 #include <daw/stdinc/data_access.h>
@@ -27,8 +28,7 @@
 namespace daw {
 	namespace traits {
 		template<typename Function, typename... Args>
-		inline constexpr bool is_callable_v =
-		  std::is_invocable_v<Function, Args...>;
+		inline constexpr bool is_callable_v = daw::is_callable_v<Function, Args...>;
 
 		// the single void test is used in places like expected.   Comes up with
 		// is_callable_v<DAW_TYPEOF( foo( args... ) )>
@@ -38,7 +38,7 @@ namespace daw {
 
 		template<typename Result, typename Function, typename... Args>
 		inline constexpr bool is_callable_convertible_v =
-		  std::is_invocable_r_v<Result, Function, Args...>;
+		  daw::is_callable_r_v<Result, Function, Args...>;
 
 		template<typename Result, typename Function, typename... Args>
 		inline constexpr bool
@@ -47,15 +47,15 @@ namespace daw {
 
 		template<typename UnaryPredicate, typename T>
 		inline constexpr bool is_unary_prdicate_v =
-		  std::is_invocable_r_v<bool, UnaryPredicate, T>;
+		  daw::is_callable_r_v<bool, UnaryPredicate, T>;
 
 		template<typename BinaryPredicate, typename T, typename U>
 		inline constexpr bool is_binary_prdicate_v =
-		  std::is_invocable_r_v<bool, BinaryPredicate, T, U>;
+		  daw::is_callable_r_v<bool, BinaryPredicate, T, U>;
 
 		template<typename Function, typename... Args>
 		inline constexpr bool is_nothrow_callable_v =
-		  std::is_nothrow_invocable_v<Function, Args...>;
+		  daw::is_nothrow_callable_v<Function, Args...>;
 
 		template<typename T>
 		using make_fp = std::add_pointer_t<T>;
