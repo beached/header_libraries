@@ -444,4 +444,14 @@ namespace daw {
 	concept Callable = requires( Fn fn, Args... args ) {
 		fn( args... );
 	};
+
+	template<typename R, typename Fn, typename... Args>
+	concept NothrowCallable_r = requires( Fn fn, Args... args ) {
+		{ fn( args... ) } noexcept -> convertible_to<R>;
+	};
+
+	template<typename Fn, typename... Args>
+	concept NothrowCallable = requires( Fn fn, Args... args ) {
+		fn( args... ) noexcept;
+	};
 } // namespace daw
