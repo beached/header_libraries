@@ -876,7 +876,7 @@ namespace daw {
 	using is_specialization_of =
 	  std::bool_constant<is_specialization_of_v<Primary, T>>;
 
-#if defined( DAW_CPP20_CONCEPTS )
+#if defined( DAW_HAS_CPP20_CONCEPTS )
 	template<typename T, template<typename...> typename Template>
 	concept specialization_of = is_specialization_of_v<Template, T>;
 #endif

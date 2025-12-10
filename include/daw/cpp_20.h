@@ -43,6 +43,9 @@
 #if not defined( DAW_CPP20_CONCEPTS )
 #define DAW_CPP20_CONCEPTS
 #endif
+#if not defined( DAW_HAS_CPP20_CONCEPTS )
+#define DAW_HAS_CPP20_CONCEPTS
+#endif
 #endif
 #endif
 
@@ -57,7 +60,7 @@ namespace daw {
 	using is_unbounded_array = std::bool_constant<is_unbounded_array_v<T>>;
 
 	namespace cpp_20_details {
-#if defined( DAW_CPP20_CONCEPTS )
+#if defined( DAW_HAS_CPP20_CONCEPTS )
 		template<typename T>
 		inline constexpr bool has_pointer_traits_to_address_v =
 		  requires( T const &p ) {

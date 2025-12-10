@@ -133,6 +133,7 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 21 )
 				add_compile_options(
 						-Wno-nrvo
+						-Wno-missing-noreturn
 						)
 			endif()
 			if( DAW_WERROR )
