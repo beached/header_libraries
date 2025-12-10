@@ -10,7 +10,7 @@
 
 #include "daw_cpp_feature_check.h"
 
-#if defined( DAW_HS_CPP20_CONCEPTS )
+#if defined( DAW_HAS_CPP20_CONCEPTS )
 #include "ciso646.h"
 #include "cpp_17.h"
 #include "daw_arith_traits.h"
