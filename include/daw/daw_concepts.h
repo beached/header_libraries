@@ -34,6 +34,15 @@ namespace daw {
 	};
 
 	/***
+	 * @brief Given types From and To and an expression E whose type and value
+	 * category are the same as those of std::declval<From>(),
+	 * implicitly_convertible_to<From, To> requires E to be implicitly
+	 * convertible to type To.
+	 */
+	template<typename From, typename To>
+	concept implicitly_convertible_to = std::is_convertible_v<From, To>;
+
+	/***
 	 * @brief Satisfied when Lhs and Rhs name the same type (taking into account
 	 * const/volatile qualifications)
 	 */
