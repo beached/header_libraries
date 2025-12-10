@@ -22,7 +22,7 @@
 #include <iterator>
 #include <type_traits>
 
-#define CPP20CONCEPT concept
+#define DAW_CPP20_CONCEPT concept
 namespace daw {
 	/***
 	 * @brief Given types From and To and an expression E whose type and value
@@ -459,5 +459,5 @@ namespace daw {
 	};
 } // namespace daw
 #else
-#define CPP20CONCEPT inline constexpr bool
+#define DAW_CPP20_CONCEPT inline constexpr bool
 #endif
