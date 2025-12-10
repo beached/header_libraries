@@ -13,6 +13,9 @@
 #include <cstddef>
 #include <type_traits>
 
+
+///
+/// This helps in migrating to concepts as compiler support is added.
 #if defined( DAW_HAS_CPP20_CONCEPTS ) and not defined( DAW_NO_REQUIRES )
 #define DAW_USE_REQUIRES
 #define DAW_ENABLEIF( ... )
