@@ -10,6 +10,7 @@
 
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/traits/daw_traits_is_same.h"
+#include "daw/daw_cpp20_concept.h"
 
 #include <daw/stdinc/integral_constant.h>
 #include <daw/stdinc/is_convertible.h>
@@ -32,9 +33,9 @@ namespace daw {
 	template<template<class...> class Op, class... Args>
 	inline constexpr bool is_nonesuch_v<nonesuch<Op, Args...>> = true;
 
-#if defined( DAW_HAS_CONCEPTS )
+#if defined( DAW_HAS_CPP20_CONCEPTS )
 	template<template<class...> class Op, class... Args>
-	inline constexpr bool is_detected_v = requires {
+	concept is_detected_v = requires {
 		typename Op<Args...>;
 	};
 #endif
@@ -46,23 +47,11 @@ namespace daw {
 			using type = Default;
 		};
 
-		/*
-		template<typename, typename,
-		         template<typename...> typename typename..>
-		inline constexpr bool detector_v = false;
-		*/
 		template<typename Default, template<class...> class Op, class... Args>
 		struct detector<Default, std::void_t<Op<Args...>>, Op, Args...> {
 			using value_t = std::true_type;
 			using type = Op<Args...>;
 		};
-
-		/*
-		template<typename Default, template<typename...> typename Op,
-		         typename... Args>
-		inline constexpr bool
-		  detector_v<Default, std::void_t<Op<Args...>>, Op, Args...> = true;
-		  */
 
 		template<typename...>
 		struct pack_t;
@@ -85,11 +74,10 @@ namespace daw {
 	  typename is_detect_details::detector<nonesuch<Op, Args...>, void, Op,
 	                                       Args...>::type;
 
-#if not defined( DAW_HAS_CONCEPTS )
+#if not defined( DAW_HAS_CPP20_CONCEPTS )
 	template<template<typename...> typename Op, typename... Args>
 	inline constexpr bool is_detected_v =
 	  is_detect_details::detector_v<Op, is_detect_details::pack_t<Args...>>;
-
 #endif
 	template<typename Default, template<typename...> typename Op,
 	         typename... Args>
@@ -101,7 +89,7 @@ namespace daw {
 
 	template<typename Expected, template<typename...> typename Op,
 	         typename... Args>
-	inline constexpr bool is_detected_exact_v =
+	DAW_CPP20_CONCEPT is_detected_exact_v =
 	  daw::is_same_v<Expected, detected_t<Op, Args...>>;
 
 	template<typename Expected, template<typename...> typename Op,
@@ -114,6 +102,6 @@ namespace daw {
 	  std::is_convertible<detected_t<Op, Args...>, To>;
 
 	template<typename To, template<typename...> typename Op, typename... Args>
-	inline constexpr bool is_detected_convertible_v =
+	DAW_CPP20_CONCEPT is_detected_convertible_v =
 	  is_detected_convertible<To, Op, Args...>::value;
 } // namespace daw
