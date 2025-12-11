@@ -12,7 +12,9 @@
 
 #if defined( DAW_HAS_CPP20_CONCEPTS )
 #define DAW_CPP20_CONCEPT concept
+#define DAW_CPP20_TYPENAME_CONSTRAINT(...) __VA_ARGS__
 #else
 #define DAW_CPP20_CONCEPT inline constexpr bool
+#define DAW_CPP20_TYPENAME_CONSTRAINT(...) typename
 #endif
 
