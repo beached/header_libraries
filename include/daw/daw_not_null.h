@@ -41,7 +41,7 @@ namespace daw {
 	template<typename Pointer>
 	using not_null_value_reference_t =
 	  std::conditional_t<std::is_pointer_v<Pointer>,
-	                     std::remove_pointer_t<Pointer> const &,
+	                     std::remove_pointer_t<Pointer> &,
 	                     not_null_value_type_t<Pointer> &>;
 
 	template<typename Pointer>
