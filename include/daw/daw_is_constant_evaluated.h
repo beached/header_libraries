@@ -13,27 +13,32 @@
 
 #if DAW_HAS_BUILTIN( __builtin_is_constant_evaluated )
 #define DAW_IS_CONSTANT_EVALUATED( ) __builtin_is_constant_evaluated( )
+#define DAW_HAS_IS_CONSTANT_EVALUATED 1
 
 #elif DAW_HAS_MSVC_VER_GTE( 1925 )
 
 #define DAW_IS_CONSTANT_EVALUATED( ) __builtin_is_constant_evaluated( )
+#define DAW_HAS_IS_CONSTANT_EVALUATED 1
 
 #elif DAW_HAS_GCC_VER_GTE( 9, 1 )
 
 #define DAW_IS_CONSTANT_EVALUATED( ) __builtin_is_constant_evaluated( )
+#define DAW_HAS_IS_CONSTANT_EVALUATED 1
 
 #elif DAW_HAS_CLANGCL_VER_GTE( 9, 0 )
 
 #define DAW_IS_CONSTANT_EVALUATED( ) __builtin_is_constant_evaluated( )
+#define DAW_HAS_IS_CONSTANT_EVALUATED 1
 
 #elif defined( __cpp_lib_is_constant_evaluated )
 #error "Hi2"
 #include <type_traits>
 #define DAW_IS_CONSTANT_EVALUATED( ) std::is_constant_evaluated( )
+#define DAW_HAS_IS_CONSTANT_EVALUATED 1
 
 #endif
 
-#if defined( DAW_IS_CONSTANT_EVALUATED )
+#if defined( DAW_HAS_IS_CONSTANT_EVALUATED )
 #define DAW_IS_CONSTANT_EVALUATED_COMPAT( ) DAW_IS_CONSTANT_EVALUATED( )
 #else
 #define DAW_IS_CONSTANT_EVALUATED_COMPAT( ) true
@@ -49,7 +54,7 @@
 #define DAW_IF_CONSTEVAL if consteval
 #define DAW_IF_NOT_CONSTEVAL if not consteval
 #define DAW_HAS_IF_CONSTEVAL_COMPAT
-#elif defined( DAW_IS_CONSTANT_EVALUATED )
+#elif defined( DAW_HAS_IS_CONSTANT_EVALUATED )
 #define DAW_IF_CONSTEVAL if( DAW_IS_CONSTANT_EVALUATED( ) )
 #define DAW_IF_NOT_CONSTEVAL if( not DAW_IS_CONSTANT_EVALUATED( ) )
 #define DAW_HAS_IF_CONSTEVAL_COMPAT
