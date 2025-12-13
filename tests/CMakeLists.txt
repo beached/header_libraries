@@ -85,6 +85,7 @@ set(TEST_SOURCES
         daw_read_only_test.cpp
         daw_ref_counted_pointer_test.cpp
         daw_ring_adaptor_test.cpp
+				daw_rw_ref_test.cpp
         daw_scope_guard_test.cpp
         daw_simple_array_test.cpp
         daw_sip_hash_test.cpp
