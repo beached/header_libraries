@@ -671,8 +671,8 @@ namespace daw {
 			/// @param count Size of character range
 			/// @post data( ) == s
 			/// @post size( ) == count
-			DAW_ATTRIB_INLINE constexpr basic_string_view( const_pointer s,
-			                                               size_type count ) noexcept
+			DAW_ATTRIB_INLINE constexpr basic_string_view(
+			  const_pointer s DAW_LIFETIME_BOUND, size_type count ) noexcept
 			  : m_first( s )
 			  , m_last( count ) {}
 
@@ -682,7 +682,8 @@ namespace daw {
 			/// @post data( ) == s
 			/// @post size( ) == count
 			DAW_ATTRIB_INLINE constexpr basic_string_view(
-			  const_pointer s, size_type count, zero_terminated_t ) noexcept
+			  const_pointer s DAW_LIFETIME_BOUND, size_type count,
+			  zero_terminated_t ) noexcept
 			  : m_first( s )
 			  , m_last( count ) {
 				m_last = set_zero_terminated( m_first, m_last );
@@ -702,7 +703,7 @@ namespace daw {
 			/// @post size( ) == strlen( s ) or CharT{} if s == nullptr
 			template<typename CharPtr DAW_REQ_CHAR_PTR( CharPtr, CharT )>
 			DAW_REQ_CHAR_PTR_REQ( CharPtr, CharT )
-			constexpr basic_string_view( CharPtr s ) noexcept
+			constexpr basic_string_view( CharPtr s DAW_LIFETIME_BOUND ) noexcept
 			  : m_first( s )
 			  , m_last( sv2_details::strlen<size_type>( s ) ) {
 				m_last = set_zero_terminated( m_first, m_last );
@@ -716,7 +717,8 @@ namespace daw {
 			template<typename StringView DAW_REQ_CONTIG_CHAR_RANGE( StringView,
 			                                                        CharT )>
 			DAW_REQ_CONTIG_CHAR_RANGE_REQ( StringView, CharT )
-			DAW_ATTRIB_INLINE constexpr basic_string_view( StringView &&sv ) noexcept
+			DAW_ATTRIB_INLINE constexpr basic_string_view(
+			  StringView &&sv DAW_LIFETIME_BOUND ) noexcept
 			  : m_first( std::data( sv ) )
 			  , m_last( std::size( sv ) ) {
 				if constexpr( is_zero_terminated_v<daw::remove_cvref_t<StringView>> ) {
@@ -735,7 +737,8 @@ namespace daw {
 			                                                        CharT )>
 			DAW_REQ_CONTIG_CHAR_RANGE_REQ( StringView, CharT )
 			DAW_ATTRIB_INLINE
-			  constexpr basic_string_view( StringView &&sv, size_type count ) noexcept
+			  constexpr basic_string_view( StringView &&sv DAW_LIFETIME_BOUND,
+			                               size_type count ) noexcept
 			  : m_first( std::data( sv ) )
 			  , m_last( ( std::min )( { std::size( sv ), count } ) ) {
 				if constexpr( is_zero_terminated_v<daw::remove_cvref_t<StringView>> ) {
@@ -757,7 +760,8 @@ namespace daw {
 			                                                        CharT )>
 			DAW_REQ_CONTIG_CHAR_RANGE_REQ( StringView, CharT )
 			DAW_ATTRIB_INLINE
-			  constexpr basic_string_view( StringView &&sv, size_type count,
+			  constexpr basic_string_view( StringView &&sv DAW_LIFETIME_BOUND,
+			                               size_type count,
 			                               dont_clip_to_bounds_t ) noexcept
 			  : m_first( std::data( sv ) )
 			  , m_last( count ) {
@@ -779,7 +783,7 @@ namespace daw {
 			/// @post size( ) == std::size( string_literal ) - 1
 			template<std::size_t N>
 			DAW_ATTRIB_INLINE constexpr basic_string_view(
-			  CharT const ( &string_literal )[N] ) noexcept
+			  CharT const ( &string_literal DAW_LIFETIME_BOUND )[N] ) noexcept
 			  : m_first( string_literal )
 			  , m_last( string_literal[N - 1] == CharT{ } ? N - 1 : N ) {
 
@@ -794,7 +798,8 @@ namespace daw {
 			/// @post size( ) == std::size( string_literal ) - 1
 			template<std::size_t N>
 			DAW_ATTRIB_INLINE constexpr basic_string_view(
-			  CharT const ( &string_literal )[N], not_zero_terminated_t ) noexcept
+			  CharT const ( &string_literal DAW_LIFETIME_BOUND )[N],
+			  not_zero_terminated_t ) noexcept
 			  : m_first( string_literal )
 			  , m_last( N ) {}
 
@@ -809,7 +814,8 @@ namespace daw {
 			         typename CharPtr2 DAW_REQ_CHAR_PTR( CharPtr1, CharT )
 			           DAW_REQ_CHAR_PTR( CharPtr2, CharT )>
 			DAW_REQ_CHAR_PTR_REQ2( CharPtr1, CharT, CharPtr2 )
-			constexpr basic_string_view( CharPtr1 &&first, CharPtr2 &&last ) noexcept
+			constexpr basic_string_view( CharPtr1 &&first DAW_LIFETIME_BOUND,
+			                             CharPtr2 &&last ) noexcept
 			  : m_first( first )
 			  , m_last( static_cast<size_type>( std::distance( first, last ) ) ) {}
 
@@ -824,8 +830,8 @@ namespace daw {
 			         typename CharPtr2 DAW_REQ_CHAR_PTR( CharPtr1, CharT )
 			           DAW_REQ_CHAR_PTR( CharPtr2, CharT )>
 			DAW_REQ_CHAR_PTR_REQ2( CharPtr1, CharT, CharPtr2 )
-			constexpr basic_string_view( CharPtr1 &&first, CharPtr2 &&last,
-			                             zero_terminated_t ) noexcept
+			constexpr basic_string_view( CharPtr1 &&first DAW_LIFETIME_BOUND,
+			                             CharPtr2 &&last, zero_terminated_t ) noexcept
 			  : m_first( first )
 			  , m_last( static_cast<size_type>( std::distance( first, last ) ) ) {
 
@@ -841,7 +847,7 @@ namespace daw {
 			template<typename T DAW_REQ_CONTIG_CHAR_RANGE_CTOR( T )>
 			DAW_REQ_CONTIG_CHAR_RANGE_CTOR_REQ( T )
 			explicit constexpr operator T( ) const
-			  noexcept( std::is_nothrow_constructible_v<T, CharT *, size_type> ) {
+			  noexcept( std::is_nothrow_constructible_v<T, CharT *, size_type> )  DAW_LIFETIME_BOUND{
 				return T{ data( ), size( ) };
 			}
 

@@ -58,8 +58,10 @@ namespace std {
 		formatter( ) = default;
 
 		template<class ParseContext>
-		constexpr ParseContext::iterator parse( ParseContext &ctx ) {
-			auto f = daw::string_view( ctx.begin( ), ctx.end( ) );
+		constexpr ParseContext::iterator parse( ParseContext &ctx DAW_LIFETIME_BOUND ) {
+			auto ctx_b = std::begin( ctx );
+			auto const ctx_sz = static_cast<std::size_t>( std::distance( std::begin( ctx ), std::end( ctx ) ) );
+			auto f = daw::basic_string_view( ctx_b, ctx_sz );
 			if( ctx.begin( ) == ctx.end( ) or *ctx.begin( ) == '}' ) {
 				flags = "{}";
 				return ctx.begin( );
