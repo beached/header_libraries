@@ -58,9 +58,6 @@ namespace daw {
 		  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( v ), "Constant value" )
 		    DAW_ATTRIB_ENABLE_IF( validate( v ), "Contract violatiion" )
 		  : value( std::move( v ) ) {
-			if( not validate( value ) ) {
-				contract_failure( );
-			}
 		}
 
 		DAW_ATTRIB_FLATINLINE contract( T v )

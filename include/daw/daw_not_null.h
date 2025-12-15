@@ -8,9 +8,11 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_assume.h"
-#include "daw_attributes.h"
+#include "daw/ciso646.h"
+#include "daw/daw_assume.h"
+#include "daw/daw_attributes.h"
+#include "daw/daw_enable_requires.h"
+#include "daw/impl/daw_make_trait.h"
 
 #include <cassert>
 #include <cstddef>
@@ -75,6 +77,46 @@ namespace daw {
 		pointer m_ptr;
 
 	public:
+#if defined( DAW_ATTRIB_ENABLE_IF )
+		DAW_ATTRIB_INLINE constexpr not_null( pointer_const_reference ptr ) noexcept
+		  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( ptr ), "Constant value" )
+		    DAW_ATTRIB_ENABLE_IF( ptr != null_value, "Contract violatiion" )
+		  : m_ptr( ptr ) {
+			if( ptr == null_value ) {
+				std::terminate( );
+			}
+		}
+
+		DAW_ATTRIB_INLINE constexpr not_null( pointer_const_reference ptr ) noexcept
+		  DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( ptr ), "Constant value" )
+		  : m_ptr( ptr ) {
+			if( ptr == null_value ) {
+				std::terminate( );
+			}
+		}
+
+		DAW_ATTRIB_INLINE constexpr not_null &
+		operator=( pointer_const_reference ptr ) noexcept
+		  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( ptr ), "Constant value" )
+		    DAW_ATTRIB_ENABLE_IF( ptr != null_value, "Contract violatiion" ) {
+			m_ptr = ptr;
+			if( ptr == null_value ) {
+				std::terminate( );
+			}
+			return *this;
+		}
+
+		DAW_ATTRIB_INLINE constexpr not_null &
+		operator=( pointer_const_reference ptr ) noexcept
+		  DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( ptr ),
+		                        "Constant value" ) {
+			m_ptr = ptr;
+			if( ptr == null_value ) {
+				std::terminate( );
+			}
+			return *this;
+		}
+#else
 		DAW_ATTRIB_INLINE constexpr not_null( pointer_const_reference ptr ) noexcept
 		  : m_ptr( ptr ) {
 			if( ptr == null_value ) {
@@ -90,7 +132,7 @@ namespace daw {
 			}
 			return *this;
 		}
-
+#endif
 		DAW_ATTRIB_INLINE constexpr not_null( never_null_t, pointer ptr ) noexcept
 		  : m_ptr( ptr ) {
 			DAW_ASSUME( m_ptr != null_value );
@@ -110,36 +152,37 @@ namespace daw {
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_reference
 		operator*( ) const noexcept {
-			return *get( );
+			DAW_ASSUME( m_ptr != null_value );
+			return *m_ptr;
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference operator*( ) noexcept {
-			return *get( );
+			DAW_ASSUME( m_ptr != null_value );
+			return *m_ptr;
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr
 		operator pointer_const_reference( ) const noexcept {
-			return get( );
+			DAW_ASSUME( m_ptr != null_value );
+			return m_ptr;
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr
 		operator pointer_reference( ) noexcept {
-			return get( );
+			DAW_ASSUME( m_ptr != null_value );
+			return m_ptr;
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer_const_reference
 		operator->( ) const noexcept {
-			return get( );
+			DAW_ASSUME( m_ptr != null_value );
+			return m_ptr;
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer_reference
 		operator->( ) noexcept {
-			return get( );
-		}
-
-		[[nodiscard]] DAW_ATTRIB_INLINE explicit constexpr
-		operator bool( ) const noexcept {
-			return true;
+			DAW_ASSUME( m_ptr != null_value );
+			return m_ptr;
 		}
 
 		// prevents compilation when someone attempts to assign a null pointer
@@ -214,10 +257,9 @@ namespace daw {
 			return *( get( ) + static_cast<difference_type>( idx ) );
 		}
 
-		template<typename NotNull,
-		         std::enable_if_t<
-		           // prevent implicit conversions
-		           std::is_same_v<NotNull, not_null>, std::nullptr_t> = nullptr>
+		// use template to prevent implicit conversions
+		template<typename NotNull DAW_ENABLEIF( std::is_same_v<NotNull, not_null> )>
+		DAW_REQUIRES( std::is_same_v<NotNull, not_null> )
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr difference_type
 		operator-( NotNull const &rhs ) const noexcept {
 			return get( ) - rhs.get( );
@@ -225,10 +267,9 @@ namespace daw {
 
 		/// @pre (std::intptr_t)lhs.get( ) <
 		/// std::numeric_limits<std::intptr_t>::max( ) - n
-		template<typename NotNull,
-		         std::enable_if_t<
-		           // prevent implicit conversions
-		           std::is_same_v<NotNull, not_null>, std::nullptr_t> = nullptr>
+		// use template to prevent implicit conversions
+		template<typename NotNull DAW_ENABLEIF( std::is_same_v<NotNull, not_null> )>
+		DAW_REQUIRES( std::is_same_v<NotNull, not_null> )
 		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr not_null<Pointer>
 		operator-( NotNull lhs, std::ptrdiff_t n ) noexcept {
 			DAW_ASSUME( lhs.m_ptr != null_value );
@@ -238,10 +279,9 @@ namespace daw {
 
 		/// @pre (std::intptr_t)lhs.get( ) + n <=
 		/// std::numeric_limits<std::intptr_t>::max( )
-		template<typename NotNull,
-		         std::enable_if_t<
-		           // prevent implicit conversions
-		           std::is_same_v<NotNull, not_null>, std::nullptr_t> = nullptr>
+		// use template to prevent implicit conversions
+		template<typename NotNull DAW_ENABLEIF( std::is_same_v<NotNull, not_null> )>
+		DAW_REQUIRES( std::is_same_v<NotNull, not_null> )
 		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr not_null<Pointer>
 		operator+( NotNull lhs, std::ptrdiff_t n ) noexcept {
 			DAW_ASSUME( lhs.m_ptr != null_value );
@@ -251,10 +291,9 @@ namespace daw {
 
 		/// @pre (std::intptr_t)lhs.get( ) + n <=
 		/// std::numeric_limits<std::intptr_t>::max( )
-		template<typename NotNull,
-		         std::enable_if_t<
-		           // prevent implicit conversions
-		           std::is_same_v<NotNull, not_null>, std::nullptr_t> = nullptr>
+		// use template to prevent implicit conversions
+		template<typename NotNull DAW_ENABLEIF( std::is_same_v<NotNull, not_null> )>
+		DAW_REQUIRES( std::is_same_v<NotNull, not_null> )
 		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr not_null<Pointer>
 		operator+( std::ptrdiff_t n, NotNull rhs ) noexcept {
 			DAW_ASSUME( rhs.m_ptr != null_value );
