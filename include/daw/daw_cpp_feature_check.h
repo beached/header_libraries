@@ -216,3 +216,8 @@ inline constexpr bool daw_has_cx_cmath = false;
 #define DAW_HAS_CPP23_CONSTEXPR_STATIC_LOCALS 1
 #endif
 #endif
+#if defined( DAW_HAS_CPP23_CONSTEXPR_STATIC_LOCALS )
+#define DAW_CPP23_STATIC_LOCAL static
+#else
+#define DAW_CPP23_STATIC_LOCAL
+#endif
