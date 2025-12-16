@@ -847,7 +847,8 @@ namespace daw {
 			template<typename T DAW_REQ_CONTIG_CHAR_RANGE_CTOR( T )>
 			DAW_REQ_CONTIG_CHAR_RANGE_CTOR_REQ( T )
 			explicit constexpr operator T( ) const
-			  noexcept( std::is_nothrow_constructible_v<T, CharT *, size_type> )  DAW_LIFETIME_BOUND{
+			  noexcept( std::is_nothrow_constructible_v<T, CharT *, size_type> )
+			    DAW_LIFETIME_BOUND {
 				return T{ data( ), size( ) };
 			}
 
@@ -1132,7 +1133,8 @@ namespace daw {
 			/// current data( ) pointer values.
 			/// @param count number of characters to increment data( ) by
 			/// @return a new string_view of size count.
-			[[nodiscard]] constexpr basic_string_view pop_front( size_type count ) {
+			[[nodiscard]] constexpr basic_string_view
+			pop_front( size_type count ) DAW_LIFETIME_BOUND {
 				basic_string_view result = substr( 0, count );
 				remove_prefix( count );
 				return result;
@@ -1144,7 +1146,7 @@ namespace daw {
 			/// @param count number of characters to increment data( ) by
 			/// @return a new string_view of size count.
 			[[nodiscard]] constexpr basic_string_view
-			pop_front_unsafe( size_type count ) {
+			pop_front_unsafe( size_type count ) DAW_LIFETIME_BOUND {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  size( ) >= count,
 				  "Attempt to pop front too many elements basic_string_view" );
@@ -1161,7 +1163,8 @@ namespace daw {
 			/// position up to the position of the leading character in where.  If
 			/// where is not found, a copy of the string_view is made
 			[[nodiscard]] constexpr basic_string_view
-			pop_front_until( basic_string_view where, nodiscard_t ) {
+			pop_front_until( basic_string_view where,
+			                 nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = find( where );
 				auto result = pop_front( pos );
 				return result;
@@ -1171,8 +1174,8 @@ namespace daw {
 			/// where, then pops off the substring
 			/// @param where string to split on and remove from front
 			/// @return substring from beginning to where string
-			[[nodiscard]] constexpr basic_string_view pop_front_until( CharT where,
-			                                                           nodiscard_t ) {
+			[[nodiscard]] constexpr basic_string_view
+			pop_front_until( CharT where, nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = find( where );
 				auto result = pop_front( pos );
 				return result;
@@ -1182,7 +1185,8 @@ namespace daw {
 			/// between front and where not, then pops off the substring
 			/// @param where The pattern to extract
 			/// @return substring from beginning to first non-match of where string
-			[[nodiscard]] constexpr basic_string_view pop_front_while( CharT where ) {
+			[[nodiscard]] constexpr basic_string_view
+			pop_front_while( CharT where ) DAW_LIFETIME_BOUND {
 				auto pos = find_first_not_of( where );
 				auto result = pop_front( pos );
 				return result;
@@ -1193,7 +1197,7 @@ namespace daw {
 			/// @param where The pattern to extract
 			/// @return substring from beginning to first non-match of where string
 			[[nodiscard]] constexpr basic_string_view
-			pop_front_while( basic_string_view where ) {
+			pop_front_while( basic_string_view where ) DAW_LIFETIME_BOUND {
 				auto pos = find_first_not_of( where );
 				auto result = pop_front( pos );
 				return result;
@@ -1204,7 +1208,7 @@ namespace daw {
 			/// @param where string to split on and remove from front
 			/// @return substring from beginning to where string
 			[[nodiscard]] constexpr basic_string_view
-			pop_front_until( basic_string_view where ) {
+			pop_front_until( basic_string_view where ) DAW_LIFETIME_BOUND {
 				auto pos = find( where );
 				auto result = pop_front( pos );
 				remove_prefix( where.size( ) );
@@ -1215,7 +1219,8 @@ namespace daw {
 			/// where, then pops off the substring and the where string
 			/// @param where string to split on and remove from front
 			/// @return substring from beginning to where string
-			[[nodiscard]] constexpr basic_string_view pop_front_until( CharT where ) {
+			[[nodiscard]] constexpr basic_string_view
+			pop_front_until( CharT where ) DAW_LIFETIME_BOUND {
 				auto pos = find( where );
 				auto result = pop_front( pos );
 				remove_prefix( );
@@ -1237,7 +1242,7 @@ namespace daw {
 			                                                     CharT )>
 			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr basic_string_view
-			  pop_front_until( UnaryPredicate pred, nodiscard_t ) {
+			  pop_front_until( UnaryPredicate pred, nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = find_first_of_if( std::move( pred ) );
 				return pop_front( pos );
 			}
@@ -1311,7 +1316,8 @@ namespace daw {
 			/// them from end
 			/// @param count number of characters to remove and return
 			/// @return a substr of size count ending at end of string_view
-			[[nodiscard]] constexpr basic_string_view pop_back( size_type count ) {
+			[[nodiscard]] constexpr basic_string_view
+			pop_back( size_type count ) DAW_LIFETIME_BOUND {
 				count = ( std::min )( { count, size( ) } );
 				basic_string_view result = substr( size( ) - count, npos );
 				remove_suffix( count );
@@ -1338,7 +1344,8 @@ namespace daw {
 			/// @param where string to split on and remove from back
 			/// @return substring from end of where string to end of string
 			[[nodiscard]] constexpr basic_string_view
-			pop_back_until( basic_string_view where, nodiscard_t ) {
+			pop_back_until( basic_string_view where,
+			                nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = rfind( where );
 				if( pos == npos ) {
 					auto result{ *this };
@@ -1354,8 +1361,8 @@ namespace daw {
 			/// where and end, then pops off the substring
 			/// @param where string to split on and remove from back
 			/// @return substring from end of where string to end of string
-			[[nodiscard]] constexpr basic_string_view pop_back_until( CharT where,
-			                                                          nodiscard_t ) {
+			[[nodiscard]] constexpr basic_string_view
+			pop_back_until( CharT where, nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = rfind( where );
 				if( pos == npos ) {
 					auto result{ *this };
@@ -1373,7 +1380,7 @@ namespace daw {
 			/// @param where string to split on and remove from back
 			/// @return substring from end of where string to end of string
 			[[nodiscard]] constexpr basic_string_view
-			pop_back_until( basic_string_view where ) {
+			pop_back_until( basic_string_view where ) DAW_LIFETIME_BOUND {
 				auto pos = rfind( where );
 				if( pos == npos ) {
 					auto result{ *this };
@@ -1390,7 +1397,8 @@ namespace daw {
 			/// string
 			/// @param where CharT to split string on and remove from back
 			/// @return substring from end of where string to end of string
-			[[nodiscard]] constexpr basic_string_view pop_back_until( CharT where ) {
+			[[nodiscard]] constexpr basic_string_view
+			pop_back_until( CharT where ) DAW_LIFETIME_BOUND {
 				auto pos = rfind( where );
 				if( pos == npos ) {
 					auto result{ *this };
@@ -1414,7 +1422,7 @@ namespace daw {
 			                                                     CharT )>
 			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr basic_string_view
-			  pop_back_until( UnaryPredicate pred ) {
+			  pop_back_until( UnaryPredicate pred ) DAW_LIFETIME_BOUND {
 				auto pos = find_last_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					auto result = *this;
@@ -1439,7 +1447,7 @@ namespace daw {
 			                                                     CharT )>
 			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr basic_string_view
-			  pop_back_until( UnaryPredicate pred, nodiscard_t ) {
+			  pop_back_until( UnaryPredicate pred, nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = find_last_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					auto result = *this;
@@ -1457,7 +1465,7 @@ namespace daw {
 			/// @param where string to split on and remove from front
 			/// @return substring from beginning to where string
 			[[nodiscard]] constexpr basic_string_view
-			try_pop_front_until( basic_string_view where ) {
+			try_pop_front_until( basic_string_view where ) DAW_LIFETIME_BOUND {
 				auto pos = find( where );
 				if( pos == npos ) {
 					return basic_string_view( );
@@ -1476,7 +1484,8 @@ namespace daw {
 			/// position up to the position of the leading character in where.  If
 			/// where is not found, a copy of the string_view is made
 			[[nodiscard]] constexpr basic_string_view
-			try_pop_front_until( basic_string_view where, nodiscard_t ) {
+			try_pop_front_until( basic_string_view where,
+			                     nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = find( where );
 				if( pos == npos ) {
 					return basic_string_view<CharT>( );
@@ -1491,7 +1500,7 @@ namespace daw {
 			/// @param where string to split on and remove from front
 			/// @return substring from beginning to where string
 			[[nodiscard]] constexpr basic_string_view
-			try_pop_front_until( CharT where, nodiscard_t ) {
+			try_pop_front_until( CharT where, nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = find( where );
 				if( pos == npos ) {
 					return basic_string_view<CharT>( );
@@ -1506,7 +1515,7 @@ namespace daw {
 			/// @param where string to split on and remove from front
 			/// @return substring from beginning to where string
 			[[nodiscard]] constexpr basic_string_view
-			try_pop_front_until( CharT where ) {
+			try_pop_front_until( CharT where ) DAW_LIFETIME_BOUND {
 				auto pos = find( where );
 				if( pos == npos ) {
 					return basic_string_view<CharT>( );
@@ -1532,7 +1541,8 @@ namespace daw {
 			                                                     CharT )>
 			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr basic_string_view
-			  try_pop_front_until( UnaryPredicate pred, nodiscard_t ) {
+			  try_pop_front_until( UnaryPredicate pred,
+			                       nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = find_first_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					return basic_string_view<CharT>( );
@@ -1556,7 +1566,7 @@ namespace daw {
 			                                                     CharT )>
 			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr basic_string_view
-			  try_pop_front_until( UnaryPredicate pred ) {
+			  try_pop_front_until( UnaryPredicate pred ) DAW_LIFETIME_BOUND {
 				auto result = try_pop_front_until( pred, nodiscard );
 				remove_prefix( sv2_details::find_predicate_result_size( pred ) );
 				return result;
@@ -1569,7 +1579,7 @@ namespace daw {
 			/// @param where string to split on and remove from back
 			/// @return substring from end of where string to end of string
 			[[nodiscard]] constexpr basic_string_view
-			try_pop_back_until( basic_string_view where ) {
+			try_pop_back_until( basic_string_view where ) DAW_LIFETIME_BOUND {
 				auto pos = rfind( where );
 				if( pos == npos ) {
 					return basic_string_view<CharT>( );
@@ -1585,7 +1595,8 @@ namespace daw {
 			/// @param where string to split on and remove from back
 			/// @return substring from end of where string to end of string
 			[[nodiscard]] constexpr basic_string_view
-			try_pop_back_until( basic_string_view where, nodiscard_t ) {
+			try_pop_back_until( basic_string_view where,
+			                    nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = rfind( where );
 				if( pos == npos ) {
 					return basic_string_view<CharT>( );
@@ -1601,7 +1612,7 @@ namespace daw {
 			/// @param where string to split on and remove from back
 			/// @return substring from end of where string to end of string
 			[[nodiscard]] constexpr basic_string_view
-			try_pop_back_until( CharT where, nodiscard_t ) {
+			try_pop_back_until( CharT where, nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = rfind( where );
 				if( pos == npos ) {
 					return basic_string_view<CharT>( );
@@ -1617,7 +1628,7 @@ namespace daw {
 			/// @param where CharT to split string on and remove from back
 			/// @return substring from end of where string to end of string
 			[[nodiscard]] constexpr basic_string_view
-			try_pop_back_until( CharT where ) {
+			try_pop_back_until( CharT where ) DAW_LIFETIME_BOUND {
 				auto pos = rfind( where );
 				if( pos == npos ) {
 					return basic_string_view<CharT>( );
@@ -1640,7 +1651,7 @@ namespace daw {
 			                                                     CharT )>
 			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr basic_string_view
-			  try_pop_back_until( UnaryPredicate pred ) {
+			  try_pop_back_until( UnaryPredicate pred ) DAW_LIFETIME_BOUND {
 				auto pos = find_last_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					return basic_string_view<CharT>( );
@@ -1662,7 +1673,8 @@ namespace daw {
 			                                                     CharT )>
 			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr basic_string_view
-			  try_pop_back_until( UnaryPredicate pred, nodiscard_t ) {
+			  try_pop_back_until( UnaryPredicate pred,
+			                      nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = find_last_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					return basic_string_view<CharT>( );
@@ -1797,12 +1809,12 @@ namespace daw {
 			/// @pre pos <= size( )
 			/// @returns a new basic_string_view of the sub-range
 			[[nodiscard]] constexpr basic_string_view
-			substr( size_type pos, size_type count ) const {
+			substr( size_type pos, size_type count ) const DAW_LIFETIME_BOUND {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos <= size( ), "Attempt to access basic_string_view past end" );
 				auto const rcount =
 				  static_cast<size_type>( ( std::min )( { count, size( ) - pos } ) );
-				return { m_first + pos, m_first + pos + rcount };
+				return basic_string_view( m_first + pos, m_first + pos + rcount );
 			}
 
 			/// @brief Create a new sub-range basic_string_view [data( ) + pos,
@@ -1812,7 +1824,7 @@ namespace daw {
 			/// @returns a new basic_string_view of the sub-range
 			/// @pre pos + count <= size( )
 			[[nodiscard]] constexpr basic_string_view
-			substr_unsafe( size_type pos, size_type count ) const {
+			substr_unsafe( size_type pos, size_type count ) const DAW_LIFETIME_BOUND {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos + count <= size( ),
 				  "Attempt to access basic_string_view past end" );
@@ -1825,7 +1837,8 @@ namespace daw {
 			}
 
 			/// @brief Return a copy of the string_view
-			[[nodiscard]] constexpr basic_string_view substr( ) const {
+			[[nodiscard]] constexpr basic_string_view
+			substr( ) const DAW_LIFETIME_BOUND {
 				return substr_unsafe( 0, size( ) );
 			}
 
@@ -1835,7 +1848,8 @@ namespace daw {
 			/// @param pos Starting position
 			/// @returns a new basic_string_view of the sub-range
 			/// @pre pos <= size( )
-			[[nodiscard]] constexpr basic_string_view substr( size_type pos ) const {
+			[[nodiscard]] constexpr basic_string_view
+			substr( size_type pos ) const DAW_LIFETIME_BOUND {
 				return substr( pos, npos );
 			}
 
@@ -1846,7 +1860,7 @@ namespace daw {
 			/// @returns a new basic_string_view of the sub-range
 			/// @pre pos <= size( )
 			[[nodiscard]] constexpr basic_string_view
-			substr_unsafe( size_type pos ) const {
+			substr_unsafe( size_type pos ) const DAW_LIFETIME_BOUND {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos <= size( ), "Attempt to access basic_string_view past end" );
 				return substr_unsafe( pos, size( ) - pos );
@@ -2716,7 +2730,7 @@ namespace daw {
 			}
 
 			[[nodiscard]] constexpr basic_string_view
-			trim_prefix_copy( ) const noexcept {
+			trim_prefix_copy( ) const noexcept DAW_LIFETIME_BOUND {
 				auto result = *this;
 				result.remove_prefix_while( is_space{ } );
 				return result;
@@ -2744,7 +2758,7 @@ namespace daw {
 			}
 
 			[[nodiscard]] constexpr basic_string_view
-			trim_suffix_copy( ) const noexcept {
+			trim_suffix_copy( ) const noexcept DAW_LIFETIME_BOUND {
 				auto result = *this;
 				result = remove_suffix_while( is_space{ } );
 				return result;
@@ -2755,7 +2769,8 @@ namespace daw {
 				return trim_suffix( );
 			}
 
-			[[nodiscard]] constexpr basic_string_view trim_copy( ) const noexcept {
+			[[nodiscard]] constexpr basic_string_view
+			trim_copy( ) const noexcept DAW_LIFETIME_BOUND {
 				auto result = trim_prefix_copy( );
 				result.trim_suffix( );
 				return result;
