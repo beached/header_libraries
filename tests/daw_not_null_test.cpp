@@ -98,7 +98,4 @@ int main( ) {
 	daw_not_null_test_005( );
 	daw_not_null_test_006( );
 	daw_not_null_test_007( );
-
-	constexpr int * p = nullptr;
-	auto nnp = daw::not_null<int *>{ p };
 }
