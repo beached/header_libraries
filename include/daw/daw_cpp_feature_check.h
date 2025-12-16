@@ -204,3 +204,9 @@ inline constexpr bool daw_has_cx_cmath = false;
 #define DAW_HAS_CPP20_CONCEPTS
 #endif
 #endif
+
+#if defined( __cpp_deleted_function )
+#if __cpp_deleted_function >= 202403L
+#define DAW_HAS_CPP26_DELETED_REASON 1
+#endif
+#endif
