@@ -210,3 +210,9 @@ inline constexpr bool daw_has_cx_cmath = false;
 #define DAW_HAS_CPP26_DELETED_REASON 1
 #endif
 #endif
+
+#if defined( __cpp_constexpr )
+#if __cpp_constexpr >= 202211L
+#define DAW_HAS_CPP23_CONSTEXPR_STATIC_LOCALS 1
+#endif
+#endif
