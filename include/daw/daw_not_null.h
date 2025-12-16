@@ -68,7 +68,7 @@ namespace daw {
 		using const_reference = not_null_value_const_reference_t<pointer>;
 		using difference_type = std::ptrdiff_t;
 		using size_type = std::size_t;
-		using iterator_category = std::random_access_iterator_tag;
+		using iterator_category = std::input_iterator_tag; // No default construct
 		using pointer_reference = not_null_pointer_reference_t<pointer>;
 		using pointer_const_reference = not_null_pointer_const_reference_t<pointer>;
 		static constexpr pointer null_value = not_null_null_value<pointer>;
