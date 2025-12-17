@@ -10,7 +10,9 @@
 
 #include "daw/daw_assume.h"
 #include "daw/daw_attributes.h"
+#include "daw/daw_callable.h"
 #include "daw/daw_check_exceptions.h"
+#include "daw/daw_consteval.h"
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_function_ref.h"
 
@@ -25,51 +27,57 @@ namespace daw {
 	struct daw_contract_violation : std::exception {};
 
 	[[noreturn]] inline void default_contract_failure( ) {
-		throw daw_contract_violation{};
+		throw daw_contract_violation{ };
 	}
 #else
 	[[noreturn]] inline void default_contract_failure( ) {
 		std::abort( );
 	}
 #endif
-	constinit static thread_local daw::function_ref<void( )>
-	contract_failure_handler = default_contract_failure;
+	DAW_CONSTINIT static thread_local daw::function_ref<void( )>
+	  contract_failure_handler = default_contract_failure;
 
 	DAW_ATTRIB_NOINLINE inline void contract_failure( ) {
 		contract_failure_handler( );
 	}
 
 	template<typename T, typename... Preconditions>
-		requires( std::is_invocable_r_v<bool, Preconditions, T> and ... ) //
 	class contract {
 		T value;
 
+		static_assert( ( daw::is_callable_r_v<bool, Preconditions, T> and ... ),
+		               "Preconditions must be callable with T and the return must "
+		               "convert to bool" );
+
 		static constexpr bool validate( T value ) {
-			return ( Preconditions{}( value ) and ... );
+			return ( Preconditions{ }( value ) and ... );
 		}
 
 	public:
 #if defined( DAW_ATTRIB_ENABLE_IF )
-		DAW_ATTRIB_FLATINLINE constexpr contract( T v )
-		DAW_ATTRIB_ENABLE_IF( __builtin_constant_p(v), "Constant value" )
-		DAW_ATTRIB_ENABLE_IF( validate( v ), "Contract violatiion" )
-			: value( std::move( v ) ) {
-			if(not validate( value )) {
-				contract_failure( );
-			}
-		}
+		DAW_CONSTEVAL contract( T v )
+		  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( v ), "Constant value" )
+		    DAW_ATTRIB_ENABLE_IF( validate( v ), "Contract violatiion" )
+		  : value( std::move( v ) ) {}
 
 		DAW_ATTRIB_FLATINLINE contract( T v )
-		DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p(v), "Value isn't a constant" )
-			: value( std::move( v ) ) {
-			if(not validate( value )) {
+		  DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( v ),
+		                        "Value isn't a constant" )
+		  : value( std::move( v ) ) {
+			if( not validate( value ) ) {
 				contract_failure( );
 			}
 		}
+#if defined( DAW_HAS_CPP26_DELETED_REASON )
+		DAW_CONSTEVAL contract( T v )
+		  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( v ), "Constant value" )
+		    DAW_ATTRIB_ENABLE_IF( not validate( v ), "Contract violatiion" ) =
+		      delete( "Contract violation" );
+#endif
 #else
 		DAW_ATTRIB_FLATINLINE constexpr contract( T v )
-			: value( std::move( v ) ) {
-			if(not validate( value )) {
+		  : value( std::move( v ) ) {
+			if( not validate( value ) ) {
 				contract_failure( );
 			}
 		}
@@ -105,11 +113,14 @@ namespace daw {
 		}
 
 		template<typename... Pre2s>
-			requires( std::is_invocable_r_v<bool, Pre2s, T> and ... ) //
 		constexpr auto add_condition( Pre2s... ) const {
+			static_assert(
+			  ( daw::is_callable_r_v<bool, Pre2s, T> and ... ),
+			  "Preconditions must be callable with T and the return must "
+			  "convert to bool" );
 
 			DAW_ASSUME( validate( value ) );
-			return contract<T, Preconditions..., Pre2s...>{value};
+			return contract<T, Preconditions..., Pre2s...>{ value };
 		}
 	};
 } // namespace daw

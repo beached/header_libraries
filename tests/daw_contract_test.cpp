@@ -11,10 +11,16 @@
 #include <daw/daw_contract.h>
 #include <daw/daw_ensure.h>
 
+struct positive_integral {
+	positive_integral( ) = default;
+
+	template<typename T>
+	constexpr bool operator( )( T const & value ) const {
+		return value >= T{};
+	}
+};
+
 int main( ) {
-	using positive_integral = decltype( []<typename T>( T const &value ) {
-		return value >= T{ };
-	} );
 	using pos_int = daw::contract<int, positive_integral>;
 	static constexpr auto v0 = pos_int( 42 );
 	constexpr int const &v0cr = v0;

@@ -8,12 +8,14 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "cpp_17.h"
-#include "daw_arith_traits.h"
 #include "daw_cpp_feature_check.h"
-#include "daw_iterator_traits.h"
-#include "daw_move.h"
+
+#if defined( DAW_HAS_CPP20_CONCEPTS )
+#include "daw/ciso646.h"
+#include "daw/cpp_17.h"
+#include "daw/daw_arith_traits.h"
+#include "daw/daw_iterator_traits.h"
+#include "daw/daw_move.h"
 
 #include <concepts>
 #include <functional>
@@ -32,6 +34,15 @@ namespace daw {
 	concept convertible_to = std::is_convertible_v<From, To> and requires {
 		{ static_cast<To>( std::declval<From>( ) ) };
 	};
+
+	/***
+	 * @brief Given types From and To and an expression E whose type and value
+	 * category are the same as those of std::declval<From>(),
+	 * implicitly_convertible_to<From, To> requires E to be implicitly
+	 * convertible to type To.
+	 */
+	template<typename From, typename To>
+	concept implicitly_convertible_to = std::is_convertible_v<From, To>;
 
 	/***
 	 * @brief Satisfied when Lhs and Rhs name the same type (taking into account
@@ -425,4 +436,25 @@ namespace daw {
 
 	template<typename F, typename ExpectedF>
 	concept Fn = concepts_details::Fn_v<F, ExpectedF>;
+
+	template<typename R, typename Fn, typename... Args>
+	concept Callable_r = requires( Fn fn, Args... args ) {
+		{ fn( args... ) } -> convertible_to<R>;
+	};
+
+	template<typename Fn, typename... Args>
+	concept Callable = requires( Fn fn, Args... args ) {
+		fn( args... );
+	};
+
+	template<typename R, typename Fn, typename... Args>
+	concept NothrowCallable_r = requires( Fn fn, Args... args ) {
+		{ fn( args... ) } noexcept -> convertible_to<R>;
+	};
+
+	template<typename Fn, typename... Args>
+	concept NothrowCallable = requires( Fn fn, Args... args ) {
+		{ fn( args... ) } noexcept;
+	};
 } // namespace daw
+#endif

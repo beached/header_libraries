@@ -8,12 +8,13 @@
 
 #pragma once
 
-#include "daw_attributes.h"
-#include "daw_cpp_feature_check.h"
-#include "daw_is_detected.h"
-#include "daw_move.h"
-#include "daw_traits.h"
-#include "impl/daw_make_trait.h"
+#include "daw/daw_attributes.h"
+#include "daw/daw_cpp_feature_check.h"
+#include "daw/daw_is_detected.h"
+#include "daw/daw_move.h"
+#include "daw/daw_traits.h"
+#include "daw/impl/daw_make_trait.h"
+#include "daw/daw_cpp20_concept.h"
 
 #include <type_traits>
 
@@ -89,6 +90,6 @@ namespace daw {
 	} // namespace construct_details
 
 	template<typename T, typename... Args>
-	inline constexpr bool can_construct_a_v =
+	DAW_CPP20_CONCEPT can_construct_a_v =
 	  is_detected_v<construct_details::can_construct_a_detect, T, Args...>;
 } // namespace daw

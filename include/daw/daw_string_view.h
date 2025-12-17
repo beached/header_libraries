@@ -22,6 +22,7 @@
 #include "daw/daw_consteval.h"
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_data_end.h"
+#include "daw/daw_enable_requires.h"
 #include "daw/daw_fnv1a_hash.h"
 #include "daw/daw_is_constant_evaluated.h"
 #include "daw/daw_likely.h"
@@ -107,33 +108,51 @@
 /// @brief Require Pred to be a Unary Predicate
 /// @param Pred Unary predicate
 /// @param Type Parameter type of predicate
-#define DAW_REQ_UNARY_PRED( Pred, Type )                                       \
-	std::enable_if_t<traits::is_unary_predicate_v<Pred, Type>, std::nullptr_t> = \
-	  nullptr
+#define DAW_REQ_UNARY_PRED( Pred, Type ) \
+	DAW_ENABLEIF( traits::is_unary_predicate_v<Pred, Type> )
+
+#define DAW_REQ_UNARY_PRED_REQ( Pred, Type ) \
+	DAW_REQUIRES( traits::is_unary_predicate_v<Pred, Type> )
 
 /// @brief Require a contiguous character range
 /// @param Range contiguous range
 /// @param CharT character type of range elements
-#define DAW_REQ_CONTIG_CHAR_RANGE( Range, CharT )                        \
-	std::enable_if_t<(not is_daw_string_view<Range> and                    \
-	                  sv2_details::is_string_view_like_v<Range, CharT> and \
-	                  not std::is_convertible_v<Range, char const *>),     \
-	                 std::nullptr_t> = nullptr
+#define DAW_REQ_CONTIG_CHAR_RANGE( Range, CharT )                    \
+	DAW_ENABLEIF( not is_daw_string_view<Range> and                    \
+	              sv2_details::is_string_view_like_v<Range, CharT> and \
+	              not std::is_convertible_v<Range, char const *> )
+
+#define DAW_REQ_CONTIG_CHAR_RANGE_REQ( Range, CharT )                \
+	DAW_REQUIRES( not is_daw_string_view<Range> and                    \
+	              sv2_details::is_string_view_like_v<Range, CharT> and \
+	              not std::is_convertible_v<Range, char const *> )
 
 /// @brief Require a character pointer
 /// @param Pointer a const_pointer
-#define DAW_REQ_CHAR_PTR( Pointer, CharT )                         \
-	std::enable_if_t<                                                \
-	  (std::is_same_v<CharT *, daw::remove_cvref_t<Pointer>> or      \
-	   std::is_same_v<CharT const *, daw::remove_cvref_t<Pointer>>), \
-	  std::nullptr_t> = nullptr
+#define DAW_REQ_CHAR_PTR( Pointer, CharT )                               \
+	DAW_ENABLEIF( std::is_same_v<CharT *, daw::remove_cvref_t<Pointer>> or \
+	              std::is_same_v<CharT const *, daw::remove_cvref_t<Pointer>> )
+
+#define DAW_REQ_CHAR_PTR_REQ( Pointer, CharT )                           \
+	DAW_REQUIRES( std::is_same_v<CharT *, daw::remove_cvref_t<Pointer>> or \
+	              std::is_same_v<CharT const *, daw::remove_cvref_t<Pointer>> )
+
+#define DAW_REQ_CHAR_PTR_REQ2( Pointer, CharT, Pointer2 )               \
+	DAW_REQUIRES(                                                         \
+	  ( std::is_same_v<CharT *, daw::remove_cvref_t<Pointer>> or          \
+	    std::is_same_v<CharT const *, daw::remove_cvref_t<Pointer>> ) and \
+	  ( std::is_same_v<CharT *, daw::remove_cvref_t<Pointer2>> or         \
+	    std::is_same_v<CharT const *, daw::remove_cvref_t<Pointer2>> ) )
 
 /// @brief Require Type be constructable from a CharT const * and a size_type
 /// @param Type A type to construct from a pointer/size_type pair
-#define DAW_REQ_CONTIG_CHAR_RANGE_CTOR( Type )                          \
-	std::enable_if_t<                                                     \
-	  sv2_details::is_contigious_range_constructible<Type, CharT>::value, \
-	  std::nullptr_t> = nullptr
+#define DAW_REQ_CONTIG_CHAR_RANGE_CTOR( Type ) \
+	DAW_ENABLEIF(                                \
+	  sv2_details::is_contigious_range_constructible<Type, CharT>::value )
+
+#define DAW_REQ_CONTIG_CHAR_RANGE_CTOR_REQ( Type ) \
+	DAW_REQUIRES(                                    \
+	  sv2_details::is_contigious_range_constructible<Type, CharT>::value )
 
 DAW_UNSAFE_BUFFER_FUNC_START
 
@@ -203,7 +222,8 @@ namespace daw {
 			find_first_of_if( InputIt first, InputIt last, UnaryPredicate p ) {
 				static_assert(
 				  traits::is_unary_predicate_v<
-				    UnaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
+				    UnaryPredicate,
+				    typename std::iterator_traits<InputIt>::value_type>,
 				  "UnaryPredicate p does not fullfill the requires of a unary "
 				  "predicate "
 				  "concept.  See "
@@ -223,7 +243,8 @@ namespace daw {
 			find_first_not_of_if( InputIt first, InputIt last, UnaryPredicate p ) {
 				static_assert(
 				  traits::is_unary_predicate_v<
-				    UnaryPredicate, typename std::iterator_traits<InputIt>::value_type>,
+				    UnaryPredicate,
+				    typename std::iterator_traits<InputIt>::value_type>,
 				  "UnaryPredicate p does not fullfill the requires of a unary "
 				  "predicate "
 				  "concept.  See "
@@ -304,8 +325,10 @@ namespace daw {
 				if constexpr( sizeof( CharT ) == 1 ) {
 					DAW_IF_NOT_CONSTEVAL {
 						void const *result =
-						  memmem( reinterpret_cast<char const *>( haystack ), haystack_sz,
-						          reinterpret_cast<char const *>( needle ), needle_sz );
+						  memmem( reinterpret_cast<char const *>( haystack ),
+						          haystack_sz,
+						          reinterpret_cast<char const *>( needle ),
+						          needle_sz );
 						return static_cast<CharT const *>( result );
 					}
 				}
@@ -509,7 +532,8 @@ namespace daw {
 				} );
 			}
 
-			template<typename T, DAW_REQ_CONTIG_CHAR_RANGE_CTOR( T )>
+			template<typename T DAW_REQ_CONTIG_CHAR_RANGE_CTOR( T )>
+			DAW_REQ_CONTIG_CHAR_RANGE_CTOR_REQ( T )
 			explicit DAW_CPP20_CX_ALLOC operator T( ) const
 			  noexcept( std::is_nothrow_constructible_v<T, CharT *, std::size_t> ) {
 				return T{ data( ), size( ) };
@@ -536,8 +560,8 @@ namespace daw {
 		/// refer to a constant contiguous sequence of char-like objects with the
 		/// first element of the sequence at position zero.
 		template<typename CharT>
-		struct [[DAW_PREF_NAME( string_view ), DAW_PREF_NAME( wstring_view )]]
-		basic_string_view {
+		struct [[DAW_PREF_NAME( string_view ),
+		         DAW_PREF_NAME( wstring_view )]] basic_string_view {
 			using value_type = CharT;
 			using pointer = CharT *;
 			using const_pointer = std::add_const_t<CharT> *;
@@ -647,8 +671,8 @@ namespace daw {
 			/// @param count Size of character range
 			/// @post data( ) == s
 			/// @post size( ) == count
-			DAW_ATTRIB_INLINE constexpr basic_string_view( const_pointer s,
-			                                               size_type count ) noexcept
+			DAW_ATTRIB_INLINE constexpr basic_string_view(
+			  const_pointer s DAW_LIFETIME_BOUND, size_type count ) noexcept
 			  : m_first( s )
 			  , m_last( count ) {}
 
@@ -658,7 +682,8 @@ namespace daw {
 			/// @post data( ) == s
 			/// @post size( ) == count
 			DAW_ATTRIB_INLINE constexpr basic_string_view(
-			  const_pointer s, size_type count, zero_terminated_t ) noexcept
+			  const_pointer s DAW_LIFETIME_BOUND, size_type count,
+			  zero_terminated_t ) noexcept
 			  : m_first( s )
 			  , m_last( count ) {
 				m_last = set_zero_terminated( m_first, m_last );
@@ -676,8 +701,9 @@ namespace daw {
 			/// has a CharT{} terminated sentinel
 			/// @post data( ) == s
 			/// @post size( ) == strlen( s ) or CharT{} if s == nullptr
-			template<typename CharPtr, DAW_REQ_CHAR_PTR( CharPtr, CharT )>
-			constexpr basic_string_view( CharPtr s ) noexcept
+			template<typename CharPtr DAW_REQ_CHAR_PTR( CharPtr, CharT )>
+			DAW_REQ_CHAR_PTR_REQ( CharPtr, CharT )
+			constexpr basic_string_view( CharPtr s DAW_LIFETIME_BOUND ) noexcept
 			  : m_first( s )
 			  , m_last( sv2_details::strlen<size_type>( s ) ) {
 				m_last = set_zero_terminated( m_first, m_last );
@@ -688,9 +714,11 @@ namespace daw {
 			/// @param sv A valid contiguous character range
 			/// @post data( ) == std::data( sv )
 			/// @post size( ) == std::size( sv )
-			template<typename StringView,
-			         DAW_REQ_CONTIG_CHAR_RANGE( StringView, CharT )>
-			DAW_ATTRIB_INLINE constexpr basic_string_view( StringView &&sv ) noexcept
+			template<typename StringView DAW_REQ_CONTIG_CHAR_RANGE( StringView,
+			                                                        CharT )>
+			DAW_REQ_CONTIG_CHAR_RANGE_REQ( StringView, CharT )
+			DAW_ATTRIB_INLINE constexpr basic_string_view(
+			  StringView &&sv DAW_LIFETIME_BOUND ) noexcept
 			  : m_first( std::data( sv ) )
 			  , m_last( std::size( sv ) ) {
 				if constexpr( is_zero_terminated_v<daw::remove_cvref_t<StringView>> ) {
@@ -705,12 +733,14 @@ namespace daw {
 			/// formed by sv
 			/// @post data( ) == sv.data( )
 			/// @post size( ) == min( count, sv.size( ) )
-			template<typename StringView,
-			         DAW_REQ_CONTIG_CHAR_RANGE( StringView, CharT )>
-			DAW_ATTRIB_INLINE constexpr basic_string_view( StringView &&sv,
-			                                               size_type count ) noexcept
+			template<typename StringView DAW_REQ_CONTIG_CHAR_RANGE( StringView,
+			                                                        CharT )>
+			DAW_REQ_CONTIG_CHAR_RANGE_REQ( StringView, CharT )
+			DAW_ATTRIB_INLINE
+			  constexpr basic_string_view( StringView &&sv DAW_LIFETIME_BOUND,
+			                               size_type count ) noexcept
 			  : m_first( std::data( sv ) )
-			  , m_last( (std::min)( { std::size( sv ), count } ) ) {
+			  , m_last( ( std::min )( { std::size( sv ), count } ) ) {
 				if constexpr( is_zero_terminated_v<daw::remove_cvref_t<StringView>> ) {
 					if( std::size( sv ) == count ) {
 						m_last = set_zero_terminated( m_first, m_last );
@@ -726,10 +756,13 @@ namespace daw {
 			/// @pre count <= sv.size( )
 			/// @post data( ) == sv.data( )
 			/// @post size( ) == min( count, sv.size( ) )
-			template<typename StringView,
-			         DAW_REQ_CONTIG_CHAR_RANGE( StringView, CharT )>
-			DAW_ATTRIB_INLINE constexpr basic_string_view(
-			  StringView &&sv, size_type count, dont_clip_to_bounds_t ) noexcept
+			template<typename StringView DAW_REQ_CONTIG_CHAR_RANGE( StringView,
+			                                                        CharT )>
+			DAW_REQ_CONTIG_CHAR_RANGE_REQ( StringView, CharT )
+			DAW_ATTRIB_INLINE
+			  constexpr basic_string_view( StringView &&sv DAW_LIFETIME_BOUND,
+			                               size_type count,
+			                               dont_clip_to_bounds_t ) noexcept
 			  : m_first( std::data( sv ) )
 			  , m_last( count ) {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
@@ -750,7 +783,7 @@ namespace daw {
 			/// @post size( ) == std::size( string_literal ) - 1
 			template<std::size_t N>
 			DAW_ATTRIB_INLINE constexpr basic_string_view(
-			  CharT const ( &string_literal )[N] ) noexcept
+			  CharT const ( &string_literal DAW_LIFETIME_BOUND )[N] ) noexcept
 			  : m_first( string_literal )
 			  , m_last( string_literal[N - 1] == CharT{ } ? N - 1 : N ) {
 
@@ -765,7 +798,8 @@ namespace daw {
 			/// @post size( ) == std::size( string_literal ) - 1
 			template<std::size_t N>
 			DAW_ATTRIB_INLINE constexpr basic_string_view(
-			  CharT const ( &string_literal )[N], not_zero_terminated_t ) noexcept
+			  CharT const ( &string_literal DAW_LIFETIME_BOUND )[N],
+			  not_zero_terminated_t ) noexcept
 			  : m_first( string_literal )
 			  , m_last( N ) {}
 
@@ -776,10 +810,12 @@ namespace daw {
 			/// @pre [first, last) form a valid character range
 			/// @post data( ) == first
 			/// @post size( ) == last - first
-			template<typename CharPtr1, typename CharPtr2,
-			         DAW_REQ_CHAR_PTR( CharPtr1, CharT ),
-			         DAW_REQ_CHAR_PTR( CharPtr2, CharT )>
-			constexpr basic_string_view( CharPtr1 &&first, CharPtr2 &&last ) noexcept
+			template<typename CharPtr1,
+			         typename CharPtr2 DAW_REQ_CHAR_PTR( CharPtr1, CharT )
+			           DAW_REQ_CHAR_PTR( CharPtr2, CharT )>
+			DAW_REQ_CHAR_PTR_REQ2( CharPtr1, CharT, CharPtr2 )
+			constexpr basic_string_view( CharPtr1 &&first DAW_LIFETIME_BOUND,
+			                             CharPtr2 &&last ) noexcept
 			  : m_first( first )
 			  , m_last( static_cast<size_type>( std::distance( first, last ) ) ) {}
 
@@ -790,11 +826,12 @@ namespace daw {
 			/// @pre [first, last) form a valid character range
 			/// @post data( ) == first
 			/// @post size( ) == last - first
-			template<typename CharPtr1, typename CharPtr2,
-			         DAW_REQ_CHAR_PTR( CharPtr1, CharT ),
-			         DAW_REQ_CHAR_PTR( CharPtr2, CharT )>
-			constexpr basic_string_view( CharPtr1 &&first, CharPtr2 &&last,
-			                             zero_terminated_t ) noexcept
+			template<typename CharPtr1,
+			         typename CharPtr2 DAW_REQ_CHAR_PTR( CharPtr1, CharT )
+			           DAW_REQ_CHAR_PTR( CharPtr2, CharT )>
+			DAW_REQ_CHAR_PTR_REQ2( CharPtr1, CharT, CharPtr2 )
+			constexpr basic_string_view( CharPtr1 &&first DAW_LIFETIME_BOUND,
+			                             CharPtr2 &&last, zero_terminated_t ) noexcept
 			  : m_first( first )
 			  , m_last( static_cast<size_type>( std::distance( first, last ) ) ) {
 
@@ -807,9 +844,11 @@ namespace daw {
 
 			/// @brief Convert to a contiguous range type
 			/// @pre T{ data( ), size( ) } is valid
-			template<typename T, DAW_REQ_CONTIG_CHAR_RANGE_CTOR( T )>
+			template<typename T DAW_REQ_CONTIG_CHAR_RANGE_CTOR( T )>
+			DAW_REQ_CONTIG_CHAR_RANGE_CTOR_REQ( T )
 			explicit constexpr operator T( ) const
-			  noexcept( std::is_nothrow_constructible_v<T, CharT *, size_type> ) {
+			  noexcept( std::is_nothrow_constructible_v<T, CharT *, size_type> )
+			    DAW_LIFETIME_BOUND {
 				return T{ data( ), size( ) };
 			}
 
@@ -1004,7 +1043,7 @@ namespace daw {
 			/// empty, it does nothing.
 			DAW_ATTRIB_INLINE constexpr basic_string_view &
 			remove_prefix( size_type n ) {
-				dec_front( (std::min)( { n, size( ) } ) );
+				dec_front( ( std::min )( { n, size( ) } ) );
 				return *this;
 			}
 
@@ -1023,7 +1062,7 @@ namespace daw {
 			/// @brief Increment the data( ) pointer by 1. If string_view is
 			/// empty, it does nothing.
 			DAW_ATTRIB_INLINE constexpr basic_string_view &remove_prefix( ) {
-				dec_front( (std::min)( { size_type{ 1U }, size( ) } ) );
+				dec_front( ( std::min )( { size_type{ 1U }, size( ) } ) );
 				return *this;
 			}
 
@@ -1041,7 +1080,7 @@ namespace daw {
 			/// does nothing.
 			DAW_ATTRIB_INLINE constexpr basic_string_view &
 			remove_suffix( size_type n ) {
-				dec_back( (std::min)( { n, size( ) } ) );
+				dec_back( ( std::min )( { n, size( ) } ) );
 				return *this;
 			}
 
@@ -1058,7 +1097,7 @@ namespace daw {
 
 			/// @brief Decrement the size( ) by 1 if size( ) > 0
 			DAW_ATTRIB_INLINE constexpr basic_string_view &remove_suffix( ) {
-				dec_back( (std::min)( { size_type{ 1U }, size( ) } ) );
+				dec_back( ( std::min )( { size_type{ 1U }, size( ) } ) );
 				return *this;
 			}
 
@@ -1094,7 +1133,8 @@ namespace daw {
 			/// current data( ) pointer values.
 			/// @param count number of characters to increment data( ) by
 			/// @return a new string_view of size count.
-			[[nodiscard]] constexpr basic_string_view pop_front( size_type count ) {
+			[[nodiscard]] constexpr basic_string_view
+			pop_front( size_type count ) DAW_LIFETIME_BOUND {
 				basic_string_view result = substr( 0, count );
 				remove_prefix( count );
 				return result;
@@ -1106,7 +1146,7 @@ namespace daw {
 			/// @param count number of characters to increment data( ) by
 			/// @return a new string_view of size count.
 			[[nodiscard]] constexpr basic_string_view
-			pop_front_unsafe( size_type count ) {
+			pop_front_unsafe( size_type count ) DAW_LIFETIME_BOUND {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  size( ) >= count,
 				  "Attempt to pop front too many elements basic_string_view" );
@@ -1123,7 +1163,8 @@ namespace daw {
 			/// position up to the position of the leading character in where.  If
 			/// where is not found, a copy of the string_view is made
 			[[nodiscard]] constexpr basic_string_view
-			pop_front_until( basic_string_view where, nodiscard_t ) {
+			pop_front_until( basic_string_view where,
+			                 nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = find( where );
 				auto result = pop_front( pos );
 				return result;
@@ -1133,8 +1174,8 @@ namespace daw {
 			/// where, then pops off the substring
 			/// @param where string to split on and remove from front
 			/// @return substring from beginning to where string
-			[[nodiscard]] constexpr basic_string_view pop_front_until( CharT where,
-			                                                           nodiscard_t ) {
+			[[nodiscard]] constexpr basic_string_view
+			pop_front_until( CharT where, nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = find( where );
 				auto result = pop_front( pos );
 				return result;
@@ -1144,7 +1185,8 @@ namespace daw {
 			/// between front and where not, then pops off the substring
 			/// @param where The pattern to extract
 			/// @return substring from beginning to first non-match of where string
-			[[nodiscard]] constexpr basic_string_view pop_front_while( CharT where ) {
+			[[nodiscard]] constexpr basic_string_view
+			pop_front_while( CharT where ) DAW_LIFETIME_BOUND {
 				auto pos = find_first_not_of( where );
 				auto result = pop_front( pos );
 				return result;
@@ -1155,7 +1197,7 @@ namespace daw {
 			/// @param where The pattern to extract
 			/// @return substring from beginning to first non-match of where string
 			[[nodiscard]] constexpr basic_string_view
-			pop_front_while( basic_string_view where ) {
+			pop_front_while( basic_string_view where ) DAW_LIFETIME_BOUND {
 				auto pos = find_first_not_of( where );
 				auto result = pop_front( pos );
 				return result;
@@ -1166,7 +1208,7 @@ namespace daw {
 			/// @param where string to split on and remove from front
 			/// @return substring from beginning to where string
 			[[nodiscard]] constexpr basic_string_view
-			pop_front_until( basic_string_view where ) {
+			pop_front_until( basic_string_view where ) DAW_LIFETIME_BOUND {
 				auto pos = find( where );
 				auto result = pop_front( pos );
 				remove_prefix( where.size( ) );
@@ -1177,7 +1219,8 @@ namespace daw {
 			/// where, then pops off the substring and the where string
 			/// @param where string to split on and remove from front
 			/// @return substring from beginning to where string
-			[[nodiscard]] constexpr basic_string_view pop_front_until( CharT where ) {
+			[[nodiscard]] constexpr basic_string_view
+			pop_front_until( CharT where ) DAW_LIFETIME_BOUND {
 				auto pos = find( where );
 				auto result = pop_front( pos );
 				remove_prefix( );
@@ -1195,10 +1238,11 @@ namespace daw {
 			/// predicate
 			/// @post data( ) is set to position where the predicate was true, or
 			/// one past the end of the range
-			template<typename UnaryPredicate,
-			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr basic_string_view
-			pop_front_until( UnaryPredicate pred, nodiscard_t ) {
+			  pop_front_until( UnaryPredicate pred, nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = find_first_of_if( std::move( pred ) );
 				return pop_front( pos );
 			}
@@ -1215,10 +1259,11 @@ namespace daw {
 			/// predicate
 			/// @post data( ) is set to position where the predicate was false, or
 			/// one past the end of the range
-			template<typename UnaryPredicate,
-			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr basic_string_view
-			pop_front_while( UnaryPredicate pred ) {
+			  pop_front_while( UnaryPredicate pred ) {
 				auto pos = find_first_not_of_if( std::move( pred ) );
 				return pop_front( pos );
 			}
@@ -1234,10 +1279,11 @@ namespace daw {
 			/// predicate
 			/// @post data( ) is set to one past position where the predicate was
 			/// true, or one past the end of the range
-			template<typename UnaryPredicate,
-			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr basic_string_view
-			pop_front_until( UnaryPredicate pred ) {
+			  pop_front_until( UnaryPredicate pred ) {
 				auto result = pop_front_until( pred, nodiscard );
 				remove_prefix( sv2_details::find_predicate_result_size( pred ) );
 				return result;
@@ -1270,8 +1316,9 @@ namespace daw {
 			/// them from end
 			/// @param count number of characters to remove and return
 			/// @return a substr of size count ending at end of string_view
-			[[nodiscard]] constexpr basic_string_view pop_back( size_type count ) {
-				count = (std::min)( { count, size( ) } );
+			[[nodiscard]] constexpr basic_string_view
+			pop_back( size_type count ) DAW_LIFETIME_BOUND {
+				count = ( std::min )( { count, size( ) } );
 				basic_string_view result = substr( size( ) - count, npos );
 				remove_suffix( count );
 				return result;
@@ -1297,7 +1344,8 @@ namespace daw {
 			/// @param where string to split on and remove from back
 			/// @return substring from end of where string to end of string
 			[[nodiscard]] constexpr basic_string_view
-			pop_back_until( basic_string_view where, nodiscard_t ) {
+			pop_back_until( basic_string_view where,
+			                nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = rfind( where );
 				if( pos == npos ) {
 					auto result{ *this };
@@ -1313,8 +1361,8 @@ namespace daw {
 			/// where and end, then pops off the substring
 			/// @param where string to split on and remove from back
 			/// @return substring from end of where string to end of string
-			[[nodiscard]] constexpr basic_string_view pop_back_until( CharT where,
-			                                                          nodiscard_t ) {
+			[[nodiscard]] constexpr basic_string_view
+			pop_back_until( CharT where, nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = rfind( where );
 				if( pos == npos ) {
 					auto result{ *this };
@@ -1332,7 +1380,7 @@ namespace daw {
 			/// @param where string to split on and remove from back
 			/// @return substring from end of where string to end of string
 			[[nodiscard]] constexpr basic_string_view
-			pop_back_until( basic_string_view where ) {
+			pop_back_until( basic_string_view where ) DAW_LIFETIME_BOUND {
 				auto pos = rfind( where );
 				if( pos == npos ) {
 					auto result{ *this };
@@ -1349,7 +1397,8 @@ namespace daw {
 			/// string
 			/// @param where CharT to split string on and remove from back
 			/// @return substring from end of where string to end of string
-			[[nodiscard]] constexpr basic_string_view pop_back_until( CharT where ) {
+			[[nodiscard]] constexpr basic_string_view
+			pop_back_until( CharT where ) DAW_LIFETIME_BOUND {
 				auto pos = rfind( where );
 				if( pos == npos ) {
 					auto result{ *this };
@@ -1369,10 +1418,11 @@ namespace daw {
 			/// @param pred predicate to determine where to split
 			/// @return substring from last position marked by predicate to
 			/// end
-			template<typename UnaryPredicate,
-			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr basic_string_view
-			pop_back_until( UnaryPredicate pred ) {
+			  pop_back_until( UnaryPredicate pred ) DAW_LIFETIME_BOUND {
 				auto pos = find_last_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					auto result = *this;
@@ -1393,10 +1443,11 @@ namespace daw {
 			/// @param pred predicate to determine where to split
 			/// @return substring from last position marked by predicate to
 			/// end
-			template<typename UnaryPredicate,
-			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr basic_string_view
-			pop_back_until( UnaryPredicate pred, nodiscard_t ) {
+			  pop_back_until( UnaryPredicate pred, nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = find_last_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					auto result = *this;
@@ -1414,7 +1465,7 @@ namespace daw {
 			/// @param where string to split on and remove from front
 			/// @return substring from beginning to where string
 			[[nodiscard]] constexpr basic_string_view
-			try_pop_front_until( basic_string_view where ) {
+			try_pop_front_until( basic_string_view where ) DAW_LIFETIME_BOUND {
 				auto pos = find( where );
 				if( pos == npos ) {
 					return basic_string_view( );
@@ -1433,7 +1484,8 @@ namespace daw {
 			/// position up to the position of the leading character in where.  If
 			/// where is not found, a copy of the string_view is made
 			[[nodiscard]] constexpr basic_string_view
-			try_pop_front_until( basic_string_view where, nodiscard_t ) {
+			try_pop_front_until( basic_string_view where,
+			                     nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = find( where );
 				if( pos == npos ) {
 					return basic_string_view<CharT>( );
@@ -1448,7 +1500,7 @@ namespace daw {
 			/// @param where string to split on and remove from front
 			/// @return substring from beginning to where string
 			[[nodiscard]] constexpr basic_string_view
-			try_pop_front_until( CharT where, nodiscard_t ) {
+			try_pop_front_until( CharT where, nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = find( where );
 				if( pos == npos ) {
 					return basic_string_view<CharT>( );
@@ -1463,7 +1515,7 @@ namespace daw {
 			/// @param where string to split on and remove from front
 			/// @return substring from beginning to where string
 			[[nodiscard]] constexpr basic_string_view
-			try_pop_front_until( CharT where ) {
+			try_pop_front_until( CharT where ) DAW_LIFETIME_BOUND {
 				auto pos = find( where );
 				if( pos == npos ) {
 					return basic_string_view<CharT>( );
@@ -1485,10 +1537,12 @@ namespace daw {
 			/// predicate
 			/// @post data( ) is set to position where the predicate was true, or
 			/// one past the end of the range
-			template<typename UnaryPredicate,
-			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr basic_string_view
-			try_pop_front_until( UnaryPredicate pred, nodiscard_t ) {
+			  try_pop_front_until( UnaryPredicate pred,
+			                       nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = find_first_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					return basic_string_view<CharT>( );
@@ -1508,10 +1562,11 @@ namespace daw {
 			/// predicate
 			/// @post data( ) is set to one past position where the predicate was
 			/// true, or one past the end of the range
-			template<typename UnaryPredicate,
-			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr basic_string_view
-			try_pop_front_until( UnaryPredicate pred ) {
+			  try_pop_front_until( UnaryPredicate pred ) DAW_LIFETIME_BOUND {
 				auto result = try_pop_front_until( pred, nodiscard );
 				remove_prefix( sv2_details::find_predicate_result_size( pred ) );
 				return result;
@@ -1524,7 +1579,7 @@ namespace daw {
 			/// @param where string to split on and remove from back
 			/// @return substring from end of where string to end of string
 			[[nodiscard]] constexpr basic_string_view
-			try_pop_back_until( basic_string_view where ) {
+			try_pop_back_until( basic_string_view where ) DAW_LIFETIME_BOUND {
 				auto pos = rfind( where );
 				if( pos == npos ) {
 					return basic_string_view<CharT>( );
@@ -1540,7 +1595,8 @@ namespace daw {
 			/// @param where string to split on and remove from back
 			/// @return substring from end of where string to end of string
 			[[nodiscard]] constexpr basic_string_view
-			try_pop_back_until( basic_string_view where, nodiscard_t ) {
+			try_pop_back_until( basic_string_view where,
+			                    nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = rfind( where );
 				if( pos == npos ) {
 					return basic_string_view<CharT>( );
@@ -1556,7 +1612,7 @@ namespace daw {
 			/// @param where string to split on and remove from back
 			/// @return substring from end of where string to end of string
 			[[nodiscard]] constexpr basic_string_view
-			try_pop_back_until( CharT where, nodiscard_t ) {
+			try_pop_back_until( CharT where, nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = rfind( where );
 				if( pos == npos ) {
 					return basic_string_view<CharT>( );
@@ -1572,7 +1628,7 @@ namespace daw {
 			/// @param where CharT to split string on and remove from back
 			/// @return substring from end of where string to end of string
 			[[nodiscard]] constexpr basic_string_view
-			try_pop_back_until( CharT where ) {
+			try_pop_back_until( CharT where ) DAW_LIFETIME_BOUND {
 				auto pos = rfind( where );
 				if( pos == npos ) {
 					return basic_string_view<CharT>( );
@@ -1591,10 +1647,11 @@ namespace daw {
 			/// @param pred predicate to determine where to split
 			/// @return substring from last position marked by predicate to
 			/// end
-			template<typename UnaryPredicate,
-			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr basic_string_view
-			try_pop_back_until( UnaryPredicate pred ) {
+			  try_pop_back_until( UnaryPredicate pred ) DAW_LIFETIME_BOUND {
 				auto pos = find_last_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					return basic_string_view<CharT>( );
@@ -1612,10 +1669,12 @@ namespace daw {
 			/// @param pred predicate to determine where to split
 			/// @return substring from last position marked by predicate to
 			/// end
-			template<typename UnaryPredicate,
-			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr basic_string_view
-			try_pop_back_until( UnaryPredicate pred, nodiscard_t ) {
+			  try_pop_back_until( UnaryPredicate pred,
+			                      nodiscard_t ) DAW_LIFETIME_BOUND {
 				auto pos = find_last_of_if( std::move( pred ) );
 				if( pos == npos ) {
 					return basic_string_view<CharT>( );
@@ -1679,10 +1738,11 @@ namespace daw {
 			/// and indicates with true when to stop
 			/// @param pred Predicate object
 			/// @return A reference to the current string_view object
-			template<typename UnaryPredicate,
-			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
-			DAW_ATTRIB_INLINE constexpr basic_string_view &
-			remove_prefix_until( UnaryPredicate pred ) {
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
+			DAW_ATTRIB_INLINE constexpr basic_string_view &remove_prefix_until(
+			  UnaryPredicate pred ) {
 				auto pos = find_first_of_if( pred );
 				remove_prefix( pos );
 				remove_prefix( sv2_details::find_predicate_result_size( pred ) );
@@ -1693,12 +1753,14 @@ namespace daw {
 			/// @param pred predicate that takes a CharT
 			/// @return substring with everything up until predicate is
 			/// removed
-			template<typename UnaryPredicate,
-			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
-			DAW_ATTRIB_INLINE constexpr basic_string_view &
-			remove_prefix_until( UnaryPredicate pred, nodiscard_t ) {
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
+			DAW_ATTRIB_INLINE
+			  constexpr basic_string_view &remove_prefix_until( UnaryPredicate pred,
+			                                                    nodiscard_t ) {
 				auto pos = find_if( pred );
-				dec_front( (std::min)( { size( ), pos } ) );
+				dec_front( ( std::min )( { size( ), pos } ) );
 				return *this;
 			}
 
@@ -1726,7 +1788,7 @@ namespace daw {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos <= size( ), "Attempt to access basic_string_view past end" );
 
-				size_type const rlen = (std::min)( { count, size( ) - pos } );
+				size_type const rlen = ( std::min )( { count, size( ) - pos } );
 				if( rlen > 0 ) {
 					auto const f =
 					  std::next( begin( ), static_cast<difference_type>( pos ) );
@@ -1747,12 +1809,12 @@ namespace daw {
 			/// @pre pos <= size( )
 			/// @returns a new basic_string_view of the sub-range
 			[[nodiscard]] constexpr basic_string_view
-			substr( size_type pos, size_type count ) const {
+			substr( size_type pos, size_type count ) const DAW_LIFETIME_BOUND {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos <= size( ), "Attempt to access basic_string_view past end" );
 				auto const rcount =
-				  static_cast<size_type>( (std::min)( { count, size( ) - pos } ) );
-				return { m_first + pos, m_first + pos + rcount };
+				  static_cast<size_type>( ( std::min )( { count, size( ) - pos } ) );
+				return basic_string_view( m_first + pos, m_first + pos + rcount );
 			}
 
 			/// @brief Create a new sub-range basic_string_view [data( ) + pos,
@@ -1762,20 +1824,21 @@ namespace daw {
 			/// @returns a new basic_string_view of the sub-range
 			/// @pre pos + count <= size( )
 			[[nodiscard]] constexpr basic_string_view
-			substr_unsafe( size_type pos, size_type count ) const {
+			substr_unsafe( size_type pos, size_type count ) const DAW_LIFETIME_BOUND {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos + count <= size( ),
 				  "Attempt to access basic_string_view past end" );
 				if( pos + count == size( ) ) {
-					return basic_string_view( m_first + pos, m_first + pos + count,
-					                          zero_terminated );
+					return basic_string_view(
+					  m_first + pos, m_first + pos + count, zero_terminated );
 				} else {
 					return basic_string_view( m_first + pos, m_first + pos + count );
 				}
 			}
 
 			/// @brief Return a copy of the string_view
-			[[nodiscard]] constexpr basic_string_view substr( ) const {
+			[[nodiscard]] constexpr basic_string_view
+			substr( ) const DAW_LIFETIME_BOUND {
 				return substr_unsafe( 0, size( ) );
 			}
 
@@ -1785,7 +1848,8 @@ namespace daw {
 			/// @param pos Starting position
 			/// @returns a new basic_string_view of the sub-range
 			/// @pre pos <= size( )
-			[[nodiscard]] constexpr basic_string_view substr( size_type pos ) const {
+			[[nodiscard]] constexpr basic_string_view
+			substr( size_type pos ) const DAW_LIFETIME_BOUND {
 				return substr( pos, npos );
 			}
 
@@ -1796,7 +1860,7 @@ namespace daw {
 			/// @returns a new basic_string_view of the sub-range
 			/// @pre pos <= size( )
 			[[nodiscard]] constexpr basic_string_view
-			substr_unsafe( size_type pos ) const {
+			substr_unsafe( size_type pos ) const DAW_LIFETIME_BOUND {
 				DAW_STRING_VIEW_DBG_RNG_CHECK(
 				  pos <= size( ), "Attempt to access basic_string_view past end" );
 				return substr_unsafe( pos, size( ) - pos );
@@ -1807,26 +1871,28 @@ namespace daw {
 			[[nodiscard]] static constexpr int compare( basic_string_view<CharT> lhs,
 			                                            basic_string_view<CharT> rhs,
 			                                            Compare cmp = Compare{ } ) {
-				constexpr auto str_compare = []( CharT const *p0, CharT const *p1,
-				                                 size_type len, Compare &c ) {
-					auto const last = p0 + len;
-					while( p0 != last ) {
-						if( c( *p0, *p1 ) ) {
-							return -1;
-						}
-						if( c( *p1, *p0 ) ) {
-							return 1;
-						}
+				constexpr auto str_compare =
+				  []( CharT const *p0, CharT const *p1, size_type len, Compare &c ) {
+					  auto const last = p0 + len;
+					  while( p0 != last ) {
+						  if( c( *p0, *p1 ) ) {
+							  return -1;
+						  }
+						  if( c( *p1, *p0 ) ) {
+							  return 1;
+						  }
 
-						++p0;
-						++p1;
-					}
-					return 0;
-				};
+						  ++p0;
+						  ++p1;
+					  }
+					  return 0;
+				  };
 
 				int const ret =
-				  str_compare( lhs.data( ), rhs.data( ),
-				               (std::min)( { lhs.size( ), rhs.size( ) } ), cmp );
+				  str_compare( lhs.data( ),
+				               rhs.data( ),
+				               ( std::min )( { lhs.size( ), rhs.size( ) } ),
+				               cmp );
 				if( ret == 0 ) {
 					if( lhs.size( ) < rhs.size( ) ) {
 						return -1;
@@ -1841,12 +1907,14 @@ namespace daw {
 			template<typename Compare = sv2_details::less>
 			[[nodiscard]] constexpr int compare( basic_string_view<CharT> rhs,
 			                                     Compare cmp = Compare{ } ) const {
-				return compare( *this, basic_string_view( rhs.data( ), rhs.size( ) ),
-				                cmp );
+				return compare(
+				  *this, basic_string_view( rhs.data( ), rhs.size( ) ), cmp );
 			}
 
-			template<typename Compare = sv2_details::less, typename StringView,
-			         DAW_REQ_CONTIG_CHAR_RANGE( StringView, CharT )>
+			template<typename Compare = sv2_details::less,
+			         typename StringView DAW_REQ_CONTIG_CHAR_RANGE( StringView,
+			                                                        CharT )>
+			DAW_REQ_CONTIG_CHAR_RANGE_REQ( StringView, CharT )
 			[[nodiscard]] constexpr int compare( StringView &&rhs,
 			                                     Compare cmp = Compare{ } ) const {
 				return compare(
@@ -1878,16 +1946,16 @@ namespace daw {
 			[[nodiscard]] constexpr int compare( size_type pos1, size_type count1,
 			                                     const_pointer s,
 			                                     Compare cmp = Compare{ } ) const {
-				return compare( substr( pos1, count1 ), basic_string_view<CharT>( s ),
-				                cmp );
+				return compare(
+				  substr( pos1, count1 ), basic_string_view<CharT>( s ), cmp );
 			}
 
 			template<typename Compare = sv2_details::less>
 			[[nodiscard]] constexpr int compare( size_type pos1, size_type count1,
 			                                     const_pointer s, size_type count2,
 			                                     Compare cmp = Compare{ } ) const {
-				return compare( substr( pos1, count1 ),
-				                basic_string_view<CharT>( s, count2 ), cmp );
+				return compare(
+				  substr( pos1, count1 ), basic_string_view<CharT>( s, count2 ), cmp );
 			}
 
 			[[nodiscard]] constexpr size_type
@@ -1920,8 +1988,8 @@ namespace daw {
 #if defined( DAW_HAS_IF_CONSTEVAL_COMPAT )
 				DAW_IF_NOT_CONSTEVAL {
 					if constexpr( sizeof( CharT ) == 1 ) {
-						void const *r = std::memchr( static_cast<void const *>( first ),
-						                             static_cast<char>( c ), sz );
+						void const *r = std::memchr(
+						  static_cast<void const *>( first ), static_cast<char>( c ), sz );
 						if( r == nullptr ) {
 							return npos;
 						}
@@ -1931,7 +1999,8 @@ namespace daw {
 						wchar_t const *r =
 						  ::wmemchr( const_cast<wchar_t *>(
 						               reinterpret_cast<wchar_t const *>( first ) ),
-						             static_cast<wchar_t>( c ), sz );
+						             static_cast<wchar_t>( c ),
+						             sz );
 						if( r == nullptr ) {
 							return npos;
 						}
@@ -1981,7 +2050,9 @@ namespace daw {
 				}
 				auto result = sv2_details::search(
 				  std::next( data( ), static_cast<std::ptrdiff_t>( pos ) ),
-				  size( ) - pos, v.data( ), v.size( ) );
+				  size( ) - pos,
+				  v.data( ),
+				  v.size( ) );
 				if( not result ) {
 					return npos;
 				}
@@ -2026,7 +2097,9 @@ namespace daw {
 				}
 				auto result = sv2_details::search(
 				  std::next( data( ), static_cast<std::ptrdiff_t>( pos ) ),
-				  size( ) - pos, v.data( ), v.size( ) );
+				  size( ) - pos,
+				  v.data( ),
+				  v.size( ) );
 				if( not result ) {
 					return npos;
 				}
@@ -2043,14 +2116,15 @@ namespace daw {
 				if( size( ) < v.size( ) ) {
 					return npos;
 				}
-				pos = (std::min)( { pos, size( ) - v.size( ) } );
+				pos = ( std::min )( { pos, size( ) - v.size( ) } );
 				if( v.empty( ) ) {
 					return pos;
 				}
 				do {
 					if( sv2_details::compare( m_first +
 					                            static_cast<std::ptrdiff_t>( pos ),
-					                          v.begin( ), v.size( ) ) == 0 ) {
+					                          v.begin( ),
+					                          v.size( ) ) == 0 ) {
 						return pos;
 					}
 				} while( pos-- > 0 );
@@ -2101,8 +2175,11 @@ namespace daw {
 					return npos;
 				}
 				auto const iter =
-				  sv2_details::find_first_of( begin( ) + pos, size( ) - pos, v.begin( ),
-				                              v.size( ), sv2_details::bp_eq<CharT> );
+				  sv2_details::find_first_of( begin( ) + pos,
+				                              size( ) - pos,
+				                              v.begin( ),
+				                              v.size( ),
+				                              sv2_details::bp_eq<CharT> );
 
 				if( end( ) == iter ) {
 					return npos;
@@ -2127,7 +2204,9 @@ namespace daw {
 				}
 				auto const iter = sv2_details::search(
 				  std::next( data( ), static_cast<std::ptrdiff_t>( pos ) ),
-				  size( ) - pos, v.data( ), v.size( ) );
+				  size( ) - pos,
+				  v.data( ),
+				  v.size( ) );
 				if( not iter ) {
 					return npos;
 				}
@@ -2161,10 +2240,11 @@ namespace daw {
 				return search_last( basic_string_view<CharT>( str ), pos );
 			}
 
-			template<typename UnaryPredicate,
-			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr size_type
-			find_first_of_if( UnaryPredicate pred, size_type pos = 0 ) const {
+			  find_first_of_if( UnaryPredicate pred, size_type pos = 0 ) const {
 				(void)traits::is_unary_predicate_test<UnaryPredicate, CharT>( );
 
 				if( pos >= size( ) ) {
@@ -2178,10 +2258,11 @@ namespace daw {
 				return static_cast<size_type>( iter - cbegin( ) );
 			}
 
-			template<typename UnaryPredicate,
-			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr size_type
-			find_first_not_of_if( UnaryPredicate pred, size_type pos = 0 ) const {
+			  find_first_not_of_if( UnaryPredicate pred, size_type pos = 0 ) const {
 				traits::is_unary_predicate_test<UnaryPredicate, CharT>( );
 
 				if( pos >= size( ) ) {
@@ -2270,22 +2351,24 @@ namespace daw {
 				return find_last_of( basic_string_view<CharT>( s ), pos );
 			}
 
-			template<typename UnaryPredicate,
-			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
-			[[nodiscard]] constexpr size_type find_last_of_if( UnaryPredicate pred,
-			                                                   size_type pos ) const {
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
+			[[nodiscard]] constexpr size_type
+			  find_last_of_if( UnaryPredicate pred, size_type pos ) const {
 				(void)traits::is_unary_predicate_test<UnaryPredicate, CharT>( );
 
 				auto haystack = substr( 0, pos );
-				auto iter = daw::algorithm::find_if( haystack.crbegin( ),
-				                                     haystack.crend( ), pred );
+				auto iter = daw::algorithm::find_if(
+				  haystack.crbegin( ), haystack.crend( ), pred );
 				return iter == crend( ) ? npos : reverse_distance( crbegin( ), iter );
 			}
 
-			template<typename UnaryPredicate,
-			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr size_type
-			find_last_of_if( UnaryPredicate pred ) const {
+			  find_last_of_if( UnaryPredicate pred ) const {
 				return find_last_of_if( pred, npos );
 			}
 
@@ -2300,7 +2383,9 @@ namespace daw {
 
 				auto haystack = substr( pos );
 				const_iterator iter = sv2_details::find_first_not_of(
-				  haystack.begin( ), haystack.end( ), v.begin( ),
+				  haystack.begin( ),
+				  haystack.end( ),
+				  v.begin( ),
 				  std::next( v.begin( ), static_cast<ptrdiff_t>( v.size( ) ) ),
 				  sv2_details::bp_eq<CharT> );
 				if( end( ) == iter ) {
@@ -2354,10 +2439,11 @@ namespace daw {
 				return find_first_not_of( basic_string_view<CharT>( s, N - 1 ), 0 );
 			}
 
-			template<typename UnaryPredicate,
-			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr size_type
-			find_last_not_of_if( UnaryPredicate pred, size_type pos ) const {
+			  find_last_not_of_if( UnaryPredicate pred, size_type pos ) const {
 				if( empty( ) ) {
 					return npos;
 				}
@@ -2372,10 +2458,11 @@ namespace daw {
 				return npos;
 			}
 
-			template<typename UnaryPredicate,
-			         DAW_REQ_UNARY_PRED( UnaryPredicate, CharT )>
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr size_type
-			find_last_not_of_if( UnaryPredicate pred ) const {
+			  find_last_not_of_if( UnaryPredicate pred ) const {
 				return find_last_not_of_if( pred, npos );
 			}
 
@@ -2488,8 +2575,9 @@ namespace daw {
 				return lhs.compare( rhs ) == 0;
 			}
 
-			template<typename StringView,
-			         DAW_REQ_CONTIG_CHAR_RANGE( StringView, CharT )>
+			template<typename StringView DAW_REQ_CONTIG_CHAR_RANGE( StringView,
+			                                                        CharT )>
+			DAW_REQ_CONTIG_CHAR_RANGE_REQ( StringView, CharT )
 			[[nodiscard]] friend constexpr bool
 			operator==( StringView &&lhs, basic_string_view rhs ) noexcept {
 				return basic_string_view( std::data( lhs ), std::size( lhs ) )
@@ -2511,8 +2599,9 @@ namespace daw {
 				return basic_string_view( lhs ).compare( rhs ) != 0;
 			}
 
-			template<typename StringView,
-			         DAW_REQ_CONTIG_CHAR_RANGE( StringView, CharT )>
+			template<typename StringView DAW_REQ_CONTIG_CHAR_RANGE( StringView,
+			                                                        CharT )>
+			DAW_REQ_CONTIG_CHAR_RANGE_REQ( StringView, CharT )
 			[[nodiscard]] friend constexpr bool
 			operator!=( StringView &&lhs, basic_string_view rhs ) noexcept {
 				return basic_string_view( std::data( lhs ), std::size( lhs ) )
@@ -2538,8 +2627,9 @@ namespace daw {
 				return basic_string_view( lhs ).compare( rhs ) < 0;
 			}
 
-			template<typename StringView,
-			         DAW_REQ_CONTIG_CHAR_RANGE( StringView, CharT )>
+			template<typename StringView DAW_REQ_CONTIG_CHAR_RANGE( StringView,
+			                                                        CharT )>
+			DAW_REQ_CONTIG_CHAR_RANGE_REQ( StringView, CharT )
 			[[nodiscard]] friend constexpr bool
 			operator<( StringView &&lhs, basic_string_view rhs ) noexcept {
 				return basic_string_view( std::data( lhs ), std::size( lhs ) )
@@ -2556,8 +2646,9 @@ namespace daw {
 				return basic_string_view( lhs ).compare( rhs ) <= 0;
 			}
 
-			template<typename StringView,
-			         DAW_REQ_CONTIG_CHAR_RANGE( StringView, CharT )>
+			template<typename StringView DAW_REQ_CONTIG_CHAR_RANGE( StringView,
+			                                                        CharT )>
+			DAW_REQ_CONTIG_CHAR_RANGE_REQ( StringView, CharT )
 			[[nodiscard]] friend constexpr bool
 			operator<=( StringView &&lhs, basic_string_view rhs ) noexcept {
 				return basic_string_view( std::data( lhs ), std::size( lhs ) )
@@ -2574,8 +2665,9 @@ namespace daw {
 				return basic_string_view( lhs ).compare( rhs ) > 0;
 			}
 
-			template<typename StringView,
-			         DAW_REQ_CONTIG_CHAR_RANGE( StringView, CharT )>
+			template<typename StringView DAW_REQ_CONTIG_CHAR_RANGE( StringView,
+			                                                        CharT )>
+			DAW_REQ_CONTIG_CHAR_RANGE_REQ( StringView, CharT )
 			[[nodiscard]] friend constexpr bool
 			operator>( StringView &&lhs, basic_string_view rhs ) noexcept {
 				return basic_string_view( std::data( lhs ), std::size( lhs ) )
@@ -2592,8 +2684,9 @@ namespace daw {
 				return basic_string_view( lhs ).compare( rhs ) >= 0;
 			}
 
-			template<typename StringView,
-			         DAW_REQ_CONTIG_CHAR_RANGE( StringView, CharT )>
+			template<typename StringView DAW_REQ_CONTIG_CHAR_RANGE( StringView,
+			                                                        CharT )>
+			DAW_REQ_CONTIG_CHAR_RANGE_REQ( StringView, CharT )
 			[[nodiscard]] friend constexpr bool
 			operator>=( StringView &&lhs, basic_string_view rhs ) noexcept {
 				return basic_string_view( std::data( lhs ), std::size( lhs ) )
@@ -2605,16 +2698,20 @@ namespace daw {
 			struct is_space {
 				DAW_CPP23_STATIC_CALL_OP constexpr bool
 				operator( )( CharT c ) DAW_CPP23_STATIC_CALL_OP_CONST noexcept {
-					return daw::nsc_or( c == CharT( ' ' ), c == CharT( '\t' ),
-					                    c == CharT( '\n' ), c == CharT( '\v' ),
-					                    c == CharT( '\f' ), c == CharT( '\r' ) );
+					return daw::nsc_or( c == CharT( ' ' ),
+					                    c == CharT( '\t' ),
+					                    c == CharT( '\n' ),
+					                    c == CharT( '\v' ),
+					                    c == CharT( '\f' ),
+					                    c == CharT( '\r' ) );
 				}
 			};
 
 		public:
-			template<typename UnaryPred, DAW_REQ_UNARY_PRED( UnaryPred, CharT )>
-			DAW_ATTRIB_INLINE constexpr basic_string_view &
-			remove_prefix_while( UnaryPred pred ) noexcept {
+			template<typename UnaryPred DAW_REQ_UNARY_PRED( UnaryPred, CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPred, CharT )
+			DAW_ATTRIB_INLINE constexpr basic_string_view &remove_prefix_while(
+			  UnaryPred pred ) noexcept {
 				auto const last_pos = find_first_not_of_if( pred );
 				remove_prefix( last_pos );
 				return *this;
@@ -2633,15 +2730,16 @@ namespace daw {
 			}
 
 			[[nodiscard]] constexpr basic_string_view
-			trim_prefix_copy( ) const noexcept {
+			trim_prefix_copy( ) const noexcept DAW_LIFETIME_BOUND {
 				auto result = *this;
 				result.remove_prefix_while( is_space{ } );
 				return result;
 			}
 
-			template<typename UnaryPred, DAW_REQ_UNARY_PRED( UnaryPred, CharT )>
-			DAW_ATTRIB_INLINE constexpr basic_string_view &
-			remove_suffix_while( UnaryPred pred ) noexcept {
+			template<typename UnaryPred DAW_REQ_UNARY_PRED( UnaryPred, CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPred, CharT )
+			DAW_ATTRIB_INLINE constexpr basic_string_view &remove_suffix_while(
+			  UnaryPred pred ) noexcept {
 				auto pos = find_last_not_of_if( pred );
 				resize( pos + 1U );
 				return *this;
@@ -2660,7 +2758,7 @@ namespace daw {
 			}
 
 			[[nodiscard]] constexpr basic_string_view
-			trim_suffix_copy( ) const noexcept {
+			trim_suffix_copy( ) const noexcept DAW_LIFETIME_BOUND {
 				auto result = *this;
 				result = remove_suffix_while( is_space{ } );
 				return result;
@@ -2671,7 +2769,8 @@ namespace daw {
 				return trim_suffix( );
 			}
 
-			[[nodiscard]] constexpr basic_string_view trim_copy( ) const noexcept {
+			[[nodiscard]] constexpr basic_string_view
+			trim_copy( ) const noexcept DAW_LIFETIME_BOUND {
 				auto result = trim_prefix_copy( );
 				result.trim_suffix( );
 				return result;
@@ -2763,9 +2862,9 @@ namespace daw {
 		} // namespace string_view_literals
 
 		namespace sv2_details {
-			template<typename OStream,
-			         std::enable_if_t<traits::is_ostream_like_lite_v<OStream>,
-			                          std::nullptr_t> = nullptr>
+			template<typename OStream DAW_ENABLEIF(
+			  traits::is_ostream_like_lite_v<OStream> )>
+			DAW_REQUIRES( traits::is_ostream_like_lite_v<OStream> )
 			inline void sv_insert_fill_chars( OStream &os, std::size_t n ) {
 				using CharT = typename OStream::char_type;
 				static_assert( traits::has_write_member_v<OStream, CharT>,
@@ -2778,8 +2877,9 @@ namespace daw {
 				}
 
 				for( ; n >= fill_chars_sz and os.good( ); n -= fill_chars_sz ) {
-					os.write( fill_chars, static_cast<std::make_signed_t<std::size_t>>(
-					                        fill_chars_sz ) );
+					os.write(
+					  fill_chars,
+					  static_cast<std::make_signed_t<std::size_t>>( fill_chars_sz ) );
 				}
 				if( n > 0 and os.good( ) ) {
 					os.write( fill_chars,
@@ -2787,9 +2887,9 @@ namespace daw {
 				}
 			}
 
-			template<typename OStream, typename CharT,
-			         std::enable_if_t<traits::is_ostream_like_v<OStream, CharT>,
-			                          std::nullptr_t> = nullptr>
+			template<typename OStream, typename CharT DAW_ENABLEIF(
+			                             traits::is_ostream_like_v<OStream, CharT> )>
+			DAW_REQUIRES( traits::is_ostream_like_v<OStream, CharT> )
 			void sv_insert_aligned( OStream &os,
 			                        daw::sv2::basic_string_view<CharT> str ) {
 				auto const size = str.size( );
@@ -2813,9 +2913,9 @@ namespace daw {
 			}
 		} // namespace sv2_details
 
-		template<typename OStream, typename CharT,
-		         std::enable_if_t<traits::is_ostream_like_v<OStream, CharT>,
-		                          std::nullptr_t> = nullptr>
+		template<typename OStream, typename CharT DAW_ENABLEIF(
+		                             traits::is_ostream_like_v<OStream, CharT> )>
+		DAW_REQUIRES( traits::is_ostream_like_v<OStream, CharT> )
 		OStream &operator<<( OStream &os, basic_string_view<CharT> v ) {
 			if( os.good( ) ) {
 				auto const size = v.size( );
@@ -2847,7 +2947,9 @@ namespace std {
 #undef DAW_STRING_VIEW_RNG_CHECK
 #undef DAW_STRING_VIEW_PRECOND_CHECK
 #undef DAW_REQ_UNARY_PRED
+#undef DAW_REQ_UNARY_PRED_REQ
 #undef DAW_REQ_CONTIG_CHAR_RANGE
-#undef DAW_REQ_CONTIG_CHAR_RANGE
+#undef DAW_REQ_CONTIG_CHAR_RANGE_REQ
 #undef DAW_REQ_CONTIG_CHAR_RANGE_CTOR
+#undef DAW_REQ_CONTIG_CHAR_RANGE_CTOR_REQ
 DAW_UNSAFE_BUFFER_FUNC_STOP

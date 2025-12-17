@@ -116,7 +116,7 @@ namespace daw {
 				return str;
 			}
 
-			constexpr daw::string_view parse_to_value( daw::string_view str,
+			constexpr daw::string_view parse_to_value( daw::string_view str DAW_LIFETIME_BOUND,
 			                                           tag_t<daw::string_view> ) {
 				daw::exception::precondition_check<empty_input_exception>(
 				  not str.empty( ) );

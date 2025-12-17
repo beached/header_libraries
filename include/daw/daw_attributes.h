@@ -130,6 +130,7 @@
 #define DAW_ATTRIB_RET_NONNULL
 #endif
 
+#if defined( DAW_NO_LIFETIME_BOUND )
 #if not defined( __has_cpp_attribute )
 #define DAW_LIFETIME_BOUND
 #elif __has_cpp_attribute( clang::lifetimebound )
@@ -138,6 +139,9 @@
 #define DAW_LIFETIME_BOUND [[msvc::lifetimebound]]
 #elif __has_cpp_attribute( lifetimebound )
 #define DAW_LIFETIME_BOUND [[lifetimebound]]
+#else
+#define DAW_LIFETIME_BOUND
+#endif
 #else
 #define DAW_LIFETIME_BOUND
 #endif

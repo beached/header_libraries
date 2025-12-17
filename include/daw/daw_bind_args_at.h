@@ -8,11 +8,12 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "cpp_17.h"
-#include "daw_is_detected.h"
-#include "daw_move.h"
-#include "daw_remove_cvref.h"
+#include "daw/ciso646.h"
+#include "daw/cpp_17.h"
+#include "daw/daw_is_detected.h"
+#include "daw/daw_cpp20_concept.h"
+#include "daw/daw_move.h"
+#include "daw/daw_remove_cvref.h"
 
 #include <cstddef>
 #include <iostream>
@@ -79,22 +80,23 @@ namespace daw {
 	    split_args<N::value, sizeof...( Args )>(
 	      std::forward_as_tuple( DAW_FWD( std::declval<Args>( ) )... ) ) ) )>;
 
+namespace bind_args_impl {
 	template<size_t N, typename Invokable, typename TpArgs, typename... Args>
-	inline constexpr bool can_call_v =
-	  daw::is_detected_v<can_call_test, std::integral_constant<std::size_t, N>,
-	                     Invokable, TpArgs, Args...>;
-	/*
-	    std::conjunction_v<enough_args_t<N, TpArgs, Args...>,
-	                       can_call2<N, Invokable, TpArgs, Args...>>;
-	*/
+	DAW_CPP20_CONCEPT can_call_v =
+		daw::is_detected_v<can_call_test, std::integral_constant<std::size_t, N>,
+											 Invokable, TpArgs, Args...>;
+}
+
+namespace bind_args_impl {
 	template<size_t N, typename Invokable, typename TpArgs, typename... Args>
-	inline constexpr bool is_nothrow_callable_v = noexcept( std::apply(
-	  std::declval<Invokable>( ),
-	  std::tuple_cat( split_args<0, N>( std::forward_as_tuple(
-	                    DAW_FWD( std::declval<Args>( ) )... ) ),
-	                  std::declval<TpArgs>( ),
-	                  split_args<N, sizeof...( Args )>( std::forward_as_tuple(
-	                    DAW_FWD( std::declval<Args>( ) )... ) ) ) ) );
+	DAW_CPP20_CONCEPT is_nothrow_callable_v = noexcept( std::apply(
+		std::declval<Invokable>( ),
+		std::tuple_cat( split_args<0, N>( std::forward_as_tuple(
+											DAW_FWD( std::declval<Args>( ) )... ) ),
+										std::declval<TpArgs>( ),
+										split_args<N, sizeof...( Args )>( std::forward_as_tuple(
+											DAW_FWD( std::declval<Args>( ) )... ) ) ) ) );
+}
 
 	template<std::size_t N, typename Invokable, typename TpArgs>
 	struct bind_args_at_fn {
@@ -102,10 +104,10 @@ namespace daw {
 		TpArgs tp_args;
 
 		template<typename... Args,
-		         std::enable_if_t<can_call_v<N, Invokable, TpArgs, Args...>,
+		         std::enable_if_t<bind_args_impl::can_call_v<N, Invokable, TpArgs, Args...>,
 		                          std::nullptr_t> = nullptr>
 		constexpr decltype( auto ) operator( )( Args &&...args ) const
-		  noexcept( is_nothrow_callable_v<N, Invokable, TpArgs, Args...> ) {
+		  noexcept( bind_args_impl::is_nothrow_callable_v<N, Invokable, TpArgs, Args...> ) {
 			return std::apply(
 			  func, std::tuple_cat(
 			          split_args<0, N>( std::forward_as_tuple( DAW_FWD( args )... ) ),
@@ -115,10 +117,10 @@ namespace daw {
 		}
 
 		template<typename... Args,
-		         std::enable_if_t<can_call_v<N, Invokable, TpArgs, Args...>,
+		         std::enable_if_t<bind_args_impl::can_call_v<N, Invokable, TpArgs, Args...>,
 		                          std::nullptr_t> = nullptr>
 		constexpr decltype( auto ) operator( )( Args &&...args ) noexcept(
-		  is_nothrow_callable_v<N, Invokable, TpArgs, Args...> ) {
+		  bind_args_impl::is_nothrow_callable_v<N, Invokable, TpArgs, Args...> ) {
 			static_assert( N <= sizeof...( Args ) );
 			return std::apply(
 			  func, std::tuple_cat(

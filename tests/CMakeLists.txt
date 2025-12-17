@@ -28,6 +28,7 @@ set(TEST_SOURCES
         daw_bounded_vector_test.cpp
         daw_constant_test.cpp
         daw_container_algorithm_test.cpp
+				daw_contract_test.cpp
         daw_cx_offset_of_test.cpp
         daw_cxmath_test.cpp
         daw_endian_test.cpp
@@ -84,6 +85,7 @@ set(TEST_SOURCES
         daw_read_only_test.cpp
         daw_ref_counted_pointer_test.cpp
         daw_ring_adaptor_test.cpp
+				daw_rw_ref_test.cpp
         daw_scope_guard_test.cpp
         daw_simple_array_test.cpp
         daw_sip_hash_test.cpp
@@ -159,7 +161,6 @@ set(CPP20_TEST_SOURCES
 )
 
 set(CPP20_NOT_MSVC_TEST_SOURCES
-        daw_contract_test.cpp
         daw_pipelines_test.cpp
         vector_test.cpp
 )

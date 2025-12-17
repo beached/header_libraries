@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw/daw_attributes.h"
 #include "daw/daw_format_tuple.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_string_view.h"
@@ -63,8 +64,11 @@ namespace std {
 		formatter( ) = default;
 
 		template<class ParseContext>
-		constexpr typename ParseContext::iterator parse( ParseContext &ctx ) {
-			auto f = daw::string_view( ctx.begin( ), ctx.end( ) );
+		constexpr typename ParseContext::iterator
+		parse( ParseContext &ctx DAW_LIFETIME_BOUND ) {
+			auto ctx_b = std::begin( ctx );
+			auto const ctx_sz = static_cast<std::size_t>( std::distance( std::begin( ctx ), std::end( ctx ) ) );
+			auto f = daw::basic_string_view( ctx_b, ctx_sz );
 			if( ctx.begin( ) == ctx.end( ) or *ctx.begin( ) == '}' ) {
 				flags = "{}";
 				return ctx.begin( );
@@ -113,8 +117,8 @@ namespace std {
 			if constexpr( std::is_same_v<daw::formatter_impl::DefaultCharT,
 			                             value_t> ) {
 				// format as string
-				auto out = std::copy( std::begin( c.container ),
-				                      std::end( c.container ), ctx.out( ) );
+				auto out = std::copy(
+				  std::begin( c.container ), std::end( c.container ), ctx.out( ) );
 				return out;
 			} else {
 				auto out = ctx.out( );
@@ -124,20 +128,20 @@ namespace std {
 					if( is_first ) {
 						is_first = false;
 					} else {
-						out = std::copy( std::data( c.Separator ),
-						                 daw::data_end( c.Separator ), out );
+						out = std::copy(
+						  std::data( c.Separator ), daw::data_end( c.Separator ), out );
 					}
 					if constexpr( daw::Range<daw::range_value_t<R>> ) {
 						auto t = daw::fmt_range( v );
-						out = std::vformat_to( out, std::string_view( flags ),
-						                       std::make_format_args( t ) );
+						out = std::vformat_to(
+						  out, std::string_view( flags ), std::make_format_args( t ) );
 					} else if constexpr( daw::is_tuple_like_v<daw::range_value_t<R>> ) {
 						auto t = daw::fmt_tuple( v );
-						out = std::vformat_to( out, std::string_view( flags ),
-						                       std::make_format_args( t ) );
+						out = std::vformat_to(
+						  out, std::string_view( flags ), std::make_format_args( t ) );
 					} else {
-						out = std::vformat_to( out, std::string_view( flags ),
-						                       std::make_format_args( v ) );
+						out = std::vformat_to(
+						  out, std::string_view( flags ), std::make_format_args( v ) );
 					}
 				}
 				out = std::copy( std::data( c.Right ), daw::data_end( c.Right ), out );
