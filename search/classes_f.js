@@ -18,7 +18,7 @@ var searchData=
   ['rc_5fptr_15',['rc_ptr',['../structdaw_1_1rc__ptr.html',1,'daw']]],
   ['rc_5fptr_3c_20t_5b_5d_2c_20deleter_20_3e_16',['rc_ptr&lt; T[], Deleter &gt;',['../structdaw_1_1rc__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html',1,'daw']]],
   ['read_5fonly_17',['read_only',['../structdaw_1_1read__only.html',1,'daw']]],
-  ['reference_18',['reference',['../structdaw_1_1_reference.html',1,'daw::Reference&lt; T &gt;'],['../structdaw_1_1static__bitset_1_1reference.html',1,'daw::static_bitset&lt; BitWidth &gt;::reference']]],
+  ['reference_18',['reference',['../structdaw_1_1static__bitset_1_1reference.html',1,'daw::static_bitset&lt; BitWidth &gt;::reference'],['../structdaw_1_1_reference.html',1,'daw::Reference&lt; T &gt;']]],
   ['referencerange_19',['ReferenceRange',['../classdaw_1_1range_1_1_reference_range.html',1,'daw::range']]],
   ['remove_5farray_5fref_20',['remove_array_ref',['../structdaw_1_1remove__array__ref.html',1,'daw']]],
   ['remove_5farray_5fref_3c_20t_28_26_29_5bn_5d_3e_21',['remove_array_ref&lt; T(&amp;)[N]&gt;',['../structdaw_1_1remove__array__ref_3_01_t_07_6_08_0f_n_0e_4.html',1,'daw']]],
@@ -35,5 +35,6 @@ var searchData=
   ['ring_5fadaptor_32',['ring_adaptor',['../structdaw_1_1ring__adaptor.html',1,'daw']]],
   ['rvalue_5fto_5fvalue_33',['rvalue_to_value',['../structdaw_1_1rvalue__to__value.html',1,'daw']]],
   ['rvalue_5fto_5fvalue_3c_20t_20_26_20_3e_34',['rvalue_to_value&lt; T &amp; &gt;',['../structdaw_1_1rvalue__to__value_3_01_t_01_6_01_4.html',1,'daw']]],
-  ['rvalue_5fto_5fvalue_3c_20t_20_26_26_20_3e_35',['rvalue_to_value&lt; T &amp;&amp; &gt;',['../structdaw_1_1rvalue__to__value_3_01_t_01_6_6_01_4.html',1,'daw']]]
+  ['rvalue_5fto_5fvalue_3c_20t_20_26_26_20_3e_35',['rvalue_to_value&lt; T &amp;&amp; &gt;',['../structdaw_1_1rvalue__to__value_3_01_t_01_6_6_01_4.html',1,'daw']]],
+  ['rw_5fref_36',['rw_ref',['../structdaw_1_1rw__ref.html',1,'daw']]]
 ];

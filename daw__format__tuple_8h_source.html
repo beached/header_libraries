@@ -152,79 +152,82 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">template</span>&lt;<span class="keyword">class</span> ParseContext&gt;</div>
 <div class="foldopen" id="foldopen00061" data-start="{" data-end="}">
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="structstd_1_1formatter_3_01daw_1_1fmt__tuple_3_01_t_00_01_char_t_01_4_00_01_char_t_01_4.html#a36c37e55de2687d0ef30485b94dec6dd">   61</a></span>    <span class="keyword">constexpr</span> ParseContext::iterator <a class="code hl_function" href="structstd_1_1formatter_3_01daw_1_1fmt__tuple_3_01_t_00_01_char_t_01_4_00_01_char_t_01_4.html#a36c37e55de2687d0ef30485b94dec6dd">parse</a>( ParseContext &amp;ctx ) {</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      <span class="keyword">auto</span> f = daw::string_view( ctx.begin( ), ctx.end( ) );</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>      <span class="keywordflow">if</span>( ctx.begin( ) == ctx.end( ) or *ctx.begin( ) == <span class="charliteral">&#39;}&#39;</span> ) {</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        flags = <span class="stringliteral">&quot;{}&quot;</span>;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="keywordflow">return</span> ctx.begin( );</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      }</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>      <span class="keywordtype">int</span> brace_count = 1;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      <span class="keywordtype">bool</span> in_quote = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>      <span class="keyword">auto</span> <span class="keyword">const</span> *first = f.data( );</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      <span class="keyword">auto</span> <span class="keyword">const</span> *last = first;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      <span class="keywordflow">while</span>( not f.empty( ) ) {</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="keywordflow">switch</span>( f.front( ) ) {</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        <span class="keywordflow">case</span> <span class="charliteral">&#39;&quot;&#39;</span>:</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>          in_quote = not in_quote;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>          <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <span class="keywordflow">case</span> <span class="charliteral">&#39;{&#39;</span>:</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>          <span class="keywordflow">if</span>( not in_quote ) {</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>            ++brace_count;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>          }</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>          <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        <span class="keywordflow">case</span> <span class="charliteral">&#39;}&#39;</span>:</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>          <span class="keywordflow">if</span>( not in_quote ) {</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>            --brace_count;</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>            assert( brace_count &gt;= 0 );</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>            <span class="keywordflow">if</span>( brace_count == 0 ) {</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>              last = f.data( ) + 1;</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>              f.remove_prefix( f.size( ) - 1 );</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>            }</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>          }</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>          <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="structstd_1_1formatter_3_01daw_1_1fmt__tuple_3_01_t_00_01_char_t_01_4_00_01_char_t_01_4.html#a5ac9b677c94b479d129c1c6aac4ec6fe">   61</a></span>    <span class="keyword">constexpr</span> ParseContext::iterator <a class="code hl_function" href="structstd_1_1formatter_3_01daw_1_1fmt__tuple_3_01_t_00_01_char_t_01_4_00_01_char_t_01_4.html#a5ac9b677c94b479d129c1c6aac4ec6fe">parse</a>( ParseContext &amp;ctx <a class="code hl_define" href="daw__attributes_8h.html#a53c997721fd02bc2ab0427e6a7f80e24">DAW_LIFETIME_BOUND</a> ) {</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      <span class="keyword">auto</span> ctx_b = std::begin( ctx );</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>      <span class="keyword">auto</span> <span class="keyword">const</span> ctx_sz = <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>( std::distance( std::begin( ctx ), std::end( ctx ) ) );</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>      <span class="keyword">auto</span> f = daw::basic_string_view( ctx_b, ctx_sz );</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      <span class="keywordflow">if</span>( ctx.begin( ) == ctx.end( ) or *ctx.begin( ) == <span class="charliteral">&#39;}&#39;</span> ) {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        flags = <span class="stringliteral">&quot;{}&quot;</span>;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        <span class="keywordflow">return</span> ctx.begin( );</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      }</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>      <span class="keywordtype">int</span> brace_count = 1;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      <span class="keywordtype">bool</span> in_quote = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      <span class="keyword">auto</span> <span class="keyword">const</span> *first = f.data( );</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>      <span class="keyword">auto</span> <span class="keyword">const</span> *last = first;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>      <span class="keywordflow">while</span>( not f.empty( ) ) {</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <span class="keywordflow">switch</span>( f.front( ) ) {</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        <span class="keywordflow">case</span> <span class="charliteral">&#39;&quot;&#39;</span>:</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>          in_quote = not in_quote;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>          <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <span class="keywordflow">case</span> <span class="charliteral">&#39;{&#39;</span>:</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>          <span class="keywordflow">if</span>( not in_quote ) {</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>            ++brace_count;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>          }</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>          <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        <span class="keywordflow">case</span> <span class="charliteral">&#39;}&#39;</span>:</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>          <span class="keywordflow">if</span>( not in_quote ) {</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>            --brace_count;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            assert( brace_count &gt;= 0 );</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>            <span class="keywordflow">if</span>( brace_count == 0 ) {</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>              last = f.data( ) + 1;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>              f.remove_prefix( f.size( ) - 1 );</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            }</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>          }</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>          <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        }</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        f.remove_prefix( );</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>      }</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>      flags =</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        daw::string_view( first, last ); <span class="comment">// static_cast&lt;std::size_t&gt;( sz ) );</span></div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>      flags.expand_prefix( 2 );</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>      assert( flags.front( ) == <span class="charliteral">&#39;{&#39;</span> );</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>      <span class="keyword">auto</span> <span class="keyword">const</span> sz = last - first;</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>      <span class="keywordflow">return</span> ctx.begin( ) + sz - 1;</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>      <span class="comment">//      return ctx.end( ) - 1;</span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    }</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>          <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        }</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        f.remove_prefix( );</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>      }</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>      flags =</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        daw::string_view( first, last ); <span class="comment">// static_cast&lt;std::size_t&gt;( sz ) );</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>      flags.expand_prefix( 2 );</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>      assert( flags.front( ) == <span class="charliteral">&#39;{&#39;</span> );</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>      <span class="keyword">auto</span> <span class="keyword">const</span> sz = last - first;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>      <span class="keywordflow">return</span> ctx.begin( ) + sz - 1;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>      <span class="comment">//      return ctx.end( ) - 1;</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    }</div>
 </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Ctx&gt;</div>
-<div class="foldopen" id="foldopen00106" data-start="{" data-end="}">
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="structstd_1_1formatter_3_01daw_1_1fmt__tuple_3_01_t_00_01_char_t_01_4_00_01_char_t_01_4.html#aef2eb484c2a4dab8ae1ed8048e35b9b2">  106</a></span>    Ctx::iterator <a class="code hl_function" href="structstd_1_1formatter_3_01daw_1_1fmt__tuple_3_01_t_00_01_char_t_01_4_00_01_char_t_01_4.html#aef2eb484c2a4dab8ae1ed8048e35b9b2">format</a>( <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">daw::fmt_tuple&lt;T, CharT&gt;</a> c, Ctx &amp;ctx )<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>      <span class="keyword">auto</span> out = ctx.out( );</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      out = std::copy( std::data( c.<a class="code hl_variable" href="structdaw_1_1fmt__tuple.html#a99a0b2b3487969f60a0873619746329b">Left</a> ), <a class="code hl_function" href="namespacedaw.html#a8334085cf8eddae54006d0f2d35f1a20">daw::data_end</a>( c.<a class="code hl_variable" href="structdaw_1_1fmt__tuple.html#a99a0b2b3487969f60a0873619746329b">Left</a> ), out );</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>      <span class="keywordtype">bool</span> is_first = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>      <span class="keyword">auto</span> <span class="keyword">const</span> write_value =</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        [&amp;]&lt;std::size_t Idx&gt;( std::integral_constant&lt;std::size_t, Idx&gt; ) {</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>          <span class="keywordflow">if</span>( is_first ) {</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>            is_first = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>          } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            out = std::copy( std::data( c.<a class="code hl_variable" href="structdaw_1_1fmt__tuple.html#aac659d0ec063fdbf9b0dd951692c4d10">Separator</a> ),</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>                             <a class="code hl_function" href="namespacedaw.html#a8334085cf8eddae54006d0f2d35f1a20">daw::data_end</a>( c.<a class="code hl_variable" href="structdaw_1_1fmt__tuple.html#aac659d0ec063fdbf9b0dd951692c4d10">Separator</a> ), out );</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>          }</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>          out = std::vformat_to( out, std::string_view( flags ),</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                                 std::make_format_args( get&lt;Idx&gt;( c.<a class="code hl_variable" href="structdaw_1_1fmt__tuple.html#a3f344072d11308660ddd7f12130e9e0b">value</a> ) ) );</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        };</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>      [&amp;]&lt;std::size_t... Is&gt;( std::index_sequence&lt;Is...&gt; ) {</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        (void)( write_value( std::integral_constant&lt;std::size_t, Is&gt;{ } ), ...,</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                1 );</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>      }( std::make_index_sequence&lt;std::tuple_size_v&lt;T&gt;&gt;{ } );</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      out = std::copy( std::data( c.<a class="code hl_variable" href="structdaw_1_1fmt__tuple.html#a6600851bc557fcf683b652ac8932edeb">Right</a> ), <a class="code hl_function" href="namespacedaw.html#a8334085cf8eddae54006d0f2d35f1a20">daw::data_end</a>( c.<a class="code hl_variable" href="structdaw_1_1fmt__tuple.html#a6600851bc557fcf683b652ac8932edeb">Right</a> ), out );</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>      <span class="keywordflow">return</span> out;</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    }</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Ctx&gt;</div>
+<div class="foldopen" id="foldopen00108" data-start="{" data-end="}">
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="structstd_1_1formatter_3_01daw_1_1fmt__tuple_3_01_t_00_01_char_t_01_4_00_01_char_t_01_4.html#aef2eb484c2a4dab8ae1ed8048e35b9b2">  108</a></span>    Ctx::iterator <a class="code hl_function" href="structstd_1_1formatter_3_01daw_1_1fmt__tuple_3_01_t_00_01_char_t_01_4_00_01_char_t_01_4.html#aef2eb484c2a4dab8ae1ed8048e35b9b2">format</a>( <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">daw::fmt_tuple&lt;T, CharT&gt;</a> c, Ctx &amp;ctx )<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>      <span class="keyword">auto</span> out = ctx.out( );</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>      out = std::copy( std::data( c.<a class="code hl_variable" href="structdaw_1_1fmt__tuple.html#a99a0b2b3487969f60a0873619746329b">Left</a> ), <a class="code hl_function" href="namespacedaw.html#a8334085cf8eddae54006d0f2d35f1a20">daw::data_end</a>( c.<a class="code hl_variable" href="structdaw_1_1fmt__tuple.html#a99a0b2b3487969f60a0873619746329b">Left</a> ), out );</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>      <span class="keywordtype">bool</span> is_first = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>      <span class="keyword">auto</span> <span class="keyword">const</span> write_value =</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        [&amp;]&lt;std::size_t Idx&gt;( std::integral_constant&lt;std::size_t, Idx&gt; ) {</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>          <span class="keywordflow">if</span>( is_first ) {</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            is_first = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>          } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>            out = std::copy( std::data( c.<a class="code hl_variable" href="structdaw_1_1fmt__tuple.html#aac659d0ec063fdbf9b0dd951692c4d10">Separator</a> ),</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>                             <a class="code hl_function" href="namespacedaw.html#a8334085cf8eddae54006d0f2d35f1a20">daw::data_end</a>( c.<a class="code hl_variable" href="structdaw_1_1fmt__tuple.html#aac659d0ec063fdbf9b0dd951692c4d10">Separator</a> ), out );</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>          }</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>          out = std::vformat_to( out, std::string_view( flags ),</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>                                 std::make_format_args( get&lt;Idx&gt;( c.<a class="code hl_variable" href="structdaw_1_1fmt__tuple.html#a3f344072d11308660ddd7f12130e9e0b">value</a> ) ) );</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        };</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>      [&amp;]&lt;std::size_t... Is&gt;( std::index_sequence&lt;Is...&gt; ) {</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        (void)( write_value( std::integral_constant&lt;std::size_t, Is&gt;{ } ), ...,</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>                1 );</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>      }( std::make_index_sequence&lt;std::tuple_size_v&lt;T&gt;&gt;{ } );</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>      out = std::copy( std::data( c.<a class="code hl_variable" href="structdaw_1_1fmt__tuple.html#a6600851bc557fcf683b652ac8932edeb">Right</a> ), <a class="code hl_function" href="namespacedaw.html#a8334085cf8eddae54006d0f2d35f1a20">daw::data_end</a>( c.<a class="code hl_variable" href="structdaw_1_1fmt__tuple.html#a6600851bc557fcf683b652ac8932edeb">Right</a> ), out );</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>      <span class="keywordflow">return</span> out;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    }</div>
 </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  };</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  };</div>
 </div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>} <span class="comment">// namespace std</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>} <span class="comment">// namespace std</span></div>
+<div class="ttc" id="adaw__attributes_8h_html_a53c997721fd02bc2ab0427e6a7f80e24"><div class="ttname"><a href="daw__attributes_8h.html#a53c997721fd02bc2ab0427e6a7f80e24">DAW_LIFETIME_BOUND</a></div><div class="ttdeci">#define DAW_LIFETIME_BOUND</div><div class="ttdef"><b>Definition</b> <a href="daw__attributes_8h_source.html#l00146">daw_attributes.h:146</a></div></div>
 <div class="ttc" id="adaw__iterator__traits_8h_html"><div class="ttname"><a href="daw__iterator__traits_8h.html">daw_iterator_traits.h</a></div></div>
 <div class="ttc" id="adaw__string__view_8h_html"><div class="ttname"><a href="daw__string__view_8h.html">daw_string_view.h</a></div></div>
 <div class="ttc" id="aformatter__common_8h_html"><div class="ttname"><a href="formatter__common_8h.html">formatter_common.h</a></div></div>
@@ -240,9 +243,9 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="astructdaw_1_1fmt__tuple_html_aac659d0ec063fdbf9b0dd951692c4d10"><div class="ttname"><a href="structdaw_1_1fmt__tuple.html#aac659d0ec063fdbf9b0dd951692c4d10">daw::fmt_tuple::Separator</a></div><div class="ttdeci">daw::basic_string_view&lt; CharT &gt; Separator</div><div class="ttdef"><b>Definition</b> <a href="daw__format__tuple_8h_source.html#l00023">daw_format_tuple.h:23</a></div></div>
 <div class="ttc" id="astructdaw_1_1fmt__tuple_html_ae32d11c4d202d31cb008e4b138752673"><div class="ttname"><a href="structdaw_1_1fmt__tuple.html#ae32d11c4d202d31cb008e4b138752673">daw::fmt_tuple::fmt_tuple</a></div><div class="ttdeci">constexpr fmt_tuple(T const &amp;c, CharT const *separator)</div><div class="ttdef"><b>Definition</b> <a href="daw__format__tuple_8h_source.html#l00031">daw_format_tuple.h:31</a></div></div>
 <div class="ttc" id="astructdaw_1_1fmt__tuple_html_afcc11164cbf4595b7d80b3e0db627728"><div class="ttname"><a href="structdaw_1_1fmt__tuple.html#afcc11164cbf4595b7d80b3e0db627728">daw::fmt_tuple::fmt_tuple</a></div><div class="ttdeci">constexpr fmt_tuple(T const &amp;c)</div><div class="ttdef"><b>Definition</b> <a href="daw__format__tuple_8h_source.html#l00028">daw_format_tuple.h:28</a></div></div>
-<div class="ttc" id="astructstd_1_1formatter_3_01daw_1_1fmt__tuple_3_01_t_00_01_char_t_01_4_00_01_char_t_01_4_html_a36c37e55de2687d0ef30485b94dec6dd"><div class="ttname"><a href="structstd_1_1formatter_3_01daw_1_1fmt__tuple_3_01_t_00_01_char_t_01_4_00_01_char_t_01_4.html#a36c37e55de2687d0ef30485b94dec6dd">std::formatter&lt; daw::fmt_tuple&lt; T, CharT &gt;, CharT &gt;::parse</a></div><div class="ttdeci">constexpr ParseContext::iterator parse(ParseContext &amp;ctx)</div><div class="ttdef"><b>Definition</b> <a href="daw__format__tuple_8h_source.html#l00061">daw_format_tuple.h:61</a></div></div>
+<div class="ttc" id="astructstd_1_1formatter_3_01daw_1_1fmt__tuple_3_01_t_00_01_char_t_01_4_00_01_char_t_01_4_html_a5ac9b677c94b479d129c1c6aac4ec6fe"><div class="ttname"><a href="structstd_1_1formatter_3_01daw_1_1fmt__tuple_3_01_t_00_01_char_t_01_4_00_01_char_t_01_4.html#a5ac9b677c94b479d129c1c6aac4ec6fe">std::formatter&lt; daw::fmt_tuple&lt; T, CharT &gt;, CharT &gt;::parse</a></div><div class="ttdeci">constexpr ParseContext::iterator parse(ParseContext &amp;ctx DAW_LIFETIME_BOUND)</div><div class="ttdef"><b>Definition</b> <a href="daw__format__tuple_8h_source.html#l00061">daw_format_tuple.h:61</a></div></div>
 <div class="ttc" id="astructstd_1_1formatter_3_01daw_1_1fmt__tuple_3_01_t_00_01_char_t_01_4_00_01_char_t_01_4_html_ae65c19b320746f0406086de6916f57a5"><div class="ttname"><a href="structstd_1_1formatter_3_01daw_1_1fmt__tuple_3_01_t_00_01_char_t_01_4_00_01_char_t_01_4.html#ae65c19b320746f0406086de6916f57a5">std::formatter&lt; daw::fmt_tuple&lt; T, CharT &gt;, CharT &gt;::formatter</a></div><div class="ttdeci">formatter()=default</div></div>
-<div class="ttc" id="astructstd_1_1formatter_3_01daw_1_1fmt__tuple_3_01_t_00_01_char_t_01_4_00_01_char_t_01_4_html_aef2eb484c2a4dab8ae1ed8048e35b9b2"><div class="ttname"><a href="structstd_1_1formatter_3_01daw_1_1fmt__tuple_3_01_t_00_01_char_t_01_4_00_01_char_t_01_4.html#aef2eb484c2a4dab8ae1ed8048e35b9b2">std::formatter&lt; daw::fmt_tuple&lt; T, CharT &gt;, CharT &gt;::format</a></div><div class="ttdeci">Ctx::iterator format(daw::fmt_tuple&lt; T, CharT &gt; c, Ctx &amp;ctx) const</div><div class="ttdef"><b>Definition</b> <a href="daw__format__tuple_8h_source.html#l00106">daw_format_tuple.h:106</a></div></div>
+<div class="ttc" id="astructstd_1_1formatter_3_01daw_1_1fmt__tuple_3_01_t_00_01_char_t_01_4_00_01_char_t_01_4_html_aef2eb484c2a4dab8ae1ed8048e35b9b2"><div class="ttname"><a href="structstd_1_1formatter_3_01daw_1_1fmt__tuple_3_01_t_00_01_char_t_01_4_00_01_char_t_01_4.html#aef2eb484c2a4dab8ae1ed8048e35b9b2">std::formatter&lt; daw::fmt_tuple&lt; T, CharT &gt;, CharT &gt;::format</a></div><div class="ttdeci">Ctx::iterator format(daw::fmt_tuple&lt; T, CharT &gt; c, Ctx &amp;ctx) const</div><div class="ttdef"><b>Definition</b> <a href="daw__format__tuple_8h_source.html#l00108">daw_format_tuple.h:108</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

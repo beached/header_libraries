@@ -84,13 +84,14 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="ciso646_8h_source.html">daw/ciso646.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__callable_8h_source.html">daw/daw_callable.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__empty_8h_source.html">daw/daw_empty.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw/daw_move.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__remove__cvref_8h_source.html">daw/daw_remove_cvref.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits__identity_8h_source.html">daw/traits/daw_traits_identity.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits__nth__element_8h_source.html">daw/traits/daw_traits_nth_element.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits__pack__list_8h_source.html">daw/traits/daw_traits_pack_list.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__make__trait_8h_source.html">daw_make_trait.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__make__trait_8h_source.html">daw/impl/daw_make_trait.h</a>&quot;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;<a class="el" href="data__access_8h_source.html">daw/stdinc/data_access.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="declval_8h_source.html">daw/stdinc/declval.h</a>&gt;</code><br />
@@ -237,7 +238,7 @@ Variables</h2></td></tr>
 <tr class="memitem:a54b75fe6e6cb97bd4a06da0a0a0b7a47"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a54b75fe6e6cb97bd4a06da0a0a0b7a47">daw::traits::is_callable_convertible_v&lt; Result, Function(Args...)&gt;</a></td></tr>
 <tr class="separator:a54b75fe6e6cb97bd4a06da0a0a0b7a47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aecdc47d64cabf7349af1ee8409b8730b" id="r_aecdc47d64cabf7349af1ee8409b8730b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Function</a> , typename... Args&gt; </td></tr>
-<tr class="memitem:aecdc47d64cabf7349af1ee8409b8730b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#aecdc47d64cabf7349af1ee8409b8730b">daw::traits::is_callable_v</a></td></tr>
+<tr class="memitem:aecdc47d64cabf7349af1ee8409b8730b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#aecdc47d64cabf7349af1ee8409b8730b">daw::traits::is_callable_v</a> = daw::is_callable_v&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Function</a>, Args...&gt;</td></tr>
 <tr class="separator:aecdc47d64cabf7349af1ee8409b8730b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac96b4e9ffe4c0c6267e47bcee1dc6650" id="r_ac96b4e9ffe4c0c6267e47bcee1dc6650"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Function</a> &gt; </td></tr>
 <tr class="memitem:ac96b4e9ffe4c0c6267e47bcee1dc6650"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#ac96b4e9ffe4c0c6267e47bcee1dc6650">daw::traits::is_callable_v&lt; Function, void &gt;</a></td></tr>
