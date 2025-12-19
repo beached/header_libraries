@@ -79,23 +79,19 @@ namespace daw {
 	public:
 #if defined( DAW_ATTRIB_ENABLE_IF )
 		DAW_ATTRIB_INLINE constexpr not_null( pointer_const_reference ptr ) noexcept
-		  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( ptr ), "Constant value" )
-		    DAW_ATTRIB_ENABLE_IF( ptr != null_value, "Unexpected null value" )
-		  : m_ptr( ptr ) {
-			if( ptr == null_value ) {
-				std::terminate( );
-			}
-		}
+		  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( ptr ) and ptr != null_value,
+		                        "Unexpected null value" )
+		  : m_ptr( ptr ) {}
 
 #if defined( DAW_HAS_CPP26_DELETED_REASON )
 		DAW_ATTRIB_INLINE constexpr not_null( pointer_const_reference ptr ) noexcept
-		  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( ptr ), "Constant value" )
-		    DAW_ATTRIB_ENABLE_IF( ptr == null_value, "Unexpected null value" ) =
-		      delete( "Unexpected null value" );
+		  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( ptr ) and ptr == null_value,
+		                        "Unexpected null value" ) =
+		    delete( "Unexpected null value" );
 #endif
 
 		DAW_ATTRIB_INLINE constexpr not_null( pointer_const_reference ptr ) noexcept
-		  DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( ptr ), "" )
+		  DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( ptr ), " " )
 		  : m_ptr( ptr ) {
 			if( ptr == null_value ) {
 				std::terminate( );
@@ -104,27 +100,23 @@ namespace daw {
 
 		DAW_ATTRIB_INLINE constexpr not_null &
 		operator=( pointer_const_reference ptr ) noexcept
-		  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( ptr ), "Constant value" )
-		    DAW_ATTRIB_ENABLE_IF( ptr != null_value, "Unexpected null value" ) {
+		  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( ptr ) and ptr != null_value,
+		                        "Unexpected null value" ) {
 			m_ptr = ptr;
-			if( ptr == null_value ) {
-				std::terminate( );
-			}
 			return *this;
 		}
 
 #if defined( DAW_HAS_CPP26_DELETED_REASON )
 		DAW_ATTRIB_INLINE constexpr not_null &
 		operator=( pointer_const_reference ptr ) noexcept
-		  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( ptr ), "Constant value" )
-		    DAW_ATTRIB_ENABLE_IF( ptr == null_value, "Unexpected null value" ) =
-		      delete( "Unexpected null value" );
+		  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( ptr ) and ptr == null_value,
+		                        "Unexpected null value" ) =
+		    delete( "Unexpected null value" );
 #endif
 
 		DAW_ATTRIB_INLINE constexpr not_null &
 		operator=( pointer_const_reference ptr ) noexcept
-		  DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( ptr ),
-		                        "Constant value" ) {
+		  DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( ptr ), " " ) {
 			m_ptr = ptr;
 			if( ptr == null_value ) {
 				std::terminate( );
