@@ -20,7 +20,8 @@
 
 namespace daw::traits {
 	template<typename Container>
-	DAW_ATTRIB_INLINE DAW_CONSTEVAL bool is_container_like_test( ) {
+	[[maybe_unused]] DAW_ATTRIB_INLINE static constexpr bool
+	is_container_like_test( ) {
 		static_assert( is_container_like_v<Container>,
 		               "Container does not fullfill the Container concept" );
 		static_assert( has_begin<Container>,
@@ -49,7 +50,7 @@ namespace daw::traits {
 	  is_inequality_comparable_v<T>;
 
 	template<typename T>
-	DAW_ATTRIB_INLINE DAW_CONSTEVAL bool is_regular_test( ) {
+	[[maybe_unused]] DAW_ATTRIB_INLINE static constexpr bool is_regular_test( ) {
 		static_assert( is_regular_v<T>,
 		               "T does not fullfill the concept of a regular type. See "
 		               "http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/"
@@ -87,7 +88,7 @@ namespace daw::traits {
 	  std::is_swappable_v<Iterator>;
 
 	template<typename Iterator>
-	DAW_ATTRIB_INLINE DAW_CONSTEVAL bool is_iterator_test( ) {
+	[[maybe_unused]] DAW_ATTRIB_INLINE static constexpr bool is_iterator_test( ) {
 		static_assert( is_iterator_v<Iterator>,
 		               "Iterator does not fullfill the Iterator concept.  See "
 		               "https://en.cppreference.com/w/cpp/named_req/Iterator" );
@@ -129,7 +130,8 @@ namespace daw::traits {
 
 	template<typename OutputIterator, typename T = typename std::iterator_traits<
 	                                    OutputIterator>::value_type>
-	DAW_ATTRIB_INLINE DAW_CONSTEVAL bool is_output_iterator_test( ) {
+	[[maybe_unused]] DAW_ATTRIB_INLINE static constexpr bool
+	is_output_iterator_test( ) {
 		static_assert(
 		  is_output_iterator_v<OutputIterator, T>,
 		  "OutputIterator does not fullfill the OutputIterator concept.  See "
@@ -155,7 +157,8 @@ namespace daw::traits {
 	  std::is_convertible_v<decltype( *std::declval<InputIterator>( ) ), T>;
 
 	template<typename InputIterator>
-	DAW_ATTRIB_INLINE DAW_CONSTEVAL bool is_input_iterator_test( ) {
+	[[maybe_unused]] DAW_ATTRIB_INLINE static constexpr bool
+	is_input_iterator_test( ) {
 		static_assert(
 		  is_input_iterator_v<InputIterator>,
 		  "InputIterator does not fullfill the InputIterator concept.  See "
@@ -188,7 +191,8 @@ namespace daw::traits {
 
 	template<typename InOutIterator, typename T = typename std::iterator_traits<
 	                                   InOutIterator>::value_type>
-	DAW_ATTRIB_INLINE DAW_CONSTEVAL bool is_inout_iterator_test( ) {
+	[[maybe_unused]] DAW_ATTRIB_INLINE static constexpr bool
+	is_inout_iterator_test( ) {
 		static_assert( is_inout_iterator_v<InOutIterator, T>,
 		               "InOutIterator does not fullfill the Input and Output "
 		               "Iterator concepts" );
@@ -211,7 +215,8 @@ namespace daw::traits {
 	  std::is_default_constructible_v<ForwardIterator>;
 
 	template<typename ForwardIterator>
-	DAW_ATTRIB_INLINE DAW_CONSTEVAL bool is_forward_access_iterator_test( ) {
+	[[maybe_unused]] DAW_ATTRIB_INLINE static constexpr bool
+	is_forward_access_iterator_test( ) {
 		static_assert(
 		  is_forward_access_iterator_v<ForwardIterator>,
 		  "ForwardIterator does not fullfill the RandomIterator concept.  See "
@@ -232,7 +237,7 @@ namespace daw::traits {
 	  traits::has_decrement_operator_v<BidirectionalIterator>;
 
 	template<typename BidirectionalIterator>
-	DAW_ATTRIB_INLINE DAW_CONSTEVAL bool
+	[[maybe_unused]] DAW_ATTRIB_INLINE static constexpr bool
 	is_bidirectional_access_iterator_test( ) {
 		static_assert(
 		  is_bidirectional_access_iterator_v<BidirectionalIterator>,
@@ -267,7 +272,8 @@ namespace daw::traits {
 	  traits::has_integer_subscript_v<RandomIterator>;
 
 	template<typename RandomIterator>
-	DAW_ATTRIB_INLINE DAW_CONSTEVAL bool is_random_access_iterator_test( ) {
+	[[maybe_unused]] DAW_ATTRIB_INLINE static constexpr bool
+	is_random_access_iterator_test( ) {
 
 		// Mathematics
 		static_assert(
@@ -322,7 +328,8 @@ namespace daw::traits {
 	    std::declval<Sortable>( ) ) )>;
 
 	template<typename Sortable>
-	DAW_ATTRIB_INLINE DAW_CONSTEVAL bool is_sortable_container_test( ) {
+	[[maybe_unused]] DAW_ATTRIB_INLINE static constexpr bool
+	is_sortable_container_test( ) {
 		static_assert(
 		  is_sortable_container_v<Sortable>,
 		  "Sortable does not fullfill the requirements of the Sortable concept" );
@@ -342,7 +349,8 @@ namespace daw::traits {
 	  is_callable_convertible_v<bool, Predicate( Args... )>;
 
 	template<typename Predicate, typename... Args>
-	DAW_ATTRIB_INLINE DAW_CONSTEVAL bool is_predicate_test( ) {
+	[[maybe_unused]] DAW_ATTRIB_INLINE static constexpr bool
+	is_predicate_test( ) {
 		static_assert(
 		  is_predicate_v<Predicate, Args...>,
 		  "Predicate does not satisfy the  Predicate concept.  See "
@@ -359,7 +367,8 @@ namespace daw::traits {
 	  is_predicate_v<BinaryPredicate, T, U>;
 
 	template<typename BinaryPredicate, typename T, typename U = T>
-	DAW_ATTRIB_INLINE DAW_CONSTEVAL bool is_binary_predicate_test( ) {
+	[[maybe_unused]] DAW_ATTRIB_INLINE static constexpr bool
+	is_binary_predicate_test( ) {
 		static_assert(
 		  is_binary_predicate_v<BinaryPredicate, T, U>,
 		  "BinaryPredicate does not satisfy the Binary Predicate concept.  See "
@@ -376,7 +385,7 @@ namespace daw::traits {
 	inline constexpr bool is_compare_v = is_binary_predicate_v<Compare, T, U>;
 
 	template<typename Compare, typename T, typename U = T>
-	DAW_ATTRIB_INLINE DAW_CONSTEVAL bool is_compare_test( ) {
+	[[maybe_unused]] DAW_ATTRIB_INLINE static constexpr bool is_compare_test( ) {
 		static_assert(
 		  is_compare_v<Compare, T, U>,
 		  "Compare function does not meet the requirements of the Compare "
@@ -391,7 +400,8 @@ namespace daw::traits {
 	  is_predicate_v<UnaryPredicate, T>;
 
 	template<typename UnaryPredicate, typename T>
-	DAW_ATTRIB_INLINE DAW_CONSTEVAL bool is_unary_predicate_test( ) {
+	[[maybe_unused]] DAW_ATTRIB_INLINE static constexpr bool
+	is_unary_predicate_test( ) {
 		static_assert(
 		  is_unary_predicate_v<UnaryPredicate, T>,
 		  "UnaryPredicate does not satisfy the Unary Predicate concept.  See "
