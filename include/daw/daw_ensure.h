@@ -16,12 +16,12 @@
 namespace daw::ensure {
 #if defined( DAW_ATTRIB_ENABLE_IF )
 #if defined( DAW_HAS_CPP26_DELETED_REASON )
-	[[noreturn]] DAW_ATTRIB_NOINLINE void ensure_error( bool b )
+	[[noreturn]] DAW_ATTRIB_NOINLINE inline void ensure_error( bool b )
 	  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( b ) and b,
 	                        "Ensure check failed" ) =
 	    delete( "Ensure check failed" );
 #endif
-	[[noreturn]] DAW_ATTRIB_NOINLINE void ensure_error( bool b )
+	[[noreturn]] DAW_ATTRIB_NOINLINE inline void ensure_error( bool b )
 	  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( b ) and not b,
 	                        "Ensure check failed" ) {
 		std::terminate( );

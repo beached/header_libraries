@@ -60,7 +60,7 @@ namespace daw {
 		                        "Contract violatiion" )
 		  : value( std::move( v ) ) {}
 
-		DAW_ATTRIB_FLATINLINE contract( T v )
+		DAW_ATTRIB_FLATINLINE constexpr contract( T v )
 		  DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( v ), " " )
 		  : value( std::move( v ) ) {
 			if( not validate( value ) ) {
