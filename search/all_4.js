@@ -538,8 +538,8 @@ var searchData=
   ['dpow2_535',['dpow2',['../namespacedaw_1_1cxmath.html#a415b2c02be2cea01ac90c2477e4610ca',1,'daw::cxmath']]],
   ['dpow2_5fv_536',['dpow2_v',['../namespacedaw_1_1cxmath.html#a6678b00bddac238c10795d942abb39c7',1,'daw::cxmath']]],
   ['drop_2eh_537',['drop.h',['../drop_8h.html',1,'']]],
-  ['drop_5funtil_538',['drop_until',['../namespacedaw_1_1pipelines.html#a13546b249661399ec10c5faf64774945',1,'daw::pipelines']]],
-  ['drop_5fwhile_539',['drop_while',['../namespacedaw_1_1pipelines.html#ad3cfc87da3a83626362e4a7f67a1c83b',1,'daw::pipelines']]],
+  ['dropuntil_538',['DropUntil',['../namespacedaw_1_1pipelines.html#aa8ca71881ad93b211cb45d13382fc5bf',1,'daw::pipelines']]],
+  ['dropwhile_539',['DropWhile',['../namespacedaw_1_1pipelines.html#a72648135b3d5d7f730cd360a7daeea06',1,'daw::pipelines']]],
   ['dump_540',['dump',['../namespacedaw.html#a9df7d6b1fa57c4d2ec840399da8b2e82',1,'daw']]],
   ['dynamic_5fstring_5fsize_541',['dynamic_string_size',['../namespacedaw_1_1sv1.html#a34c2ca7222e57ddd2ec2331eda9709bc',1,'daw::sv1']]],
   ['dynamicextent_542',['DynamicExtent',['../namespacedaw.html#a8c5165d63ef6e51257f9887621d1ab0e',1,'daw']]]

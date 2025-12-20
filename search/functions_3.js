@@ -49,7 +49,7 @@ var searchData=
   ['do_5fnot_5foptimize_46',['do_not_optimize',['../namespacedaw.html#a684bf694fcc660d457cff5d81a7b1e7c',1,'daw::do_not_optimize(T const &amp;value)'],['../namespacedaw.html#a0947a1e7aa3c9aec58e067fed98ccd4b',1,'daw::do_not_optimize(Values &amp;&amp;...values)']]],
   ['dpow10_47',['dpow10',['../namespacedaw_1_1cxmath.html#a16b3e2f3e10aba274af5ecbf61a30823',1,'daw::cxmath']]],
   ['dpow2_48',['dpow2',['../namespacedaw_1_1cxmath.html#a415b2c02be2cea01ac90c2477e4610ca',1,'daw::cxmath']]],
-  ['drop_5funtil_49',['drop_until',['../namespacedaw_1_1pipelines.html#a13546b249661399ec10c5faf64774945',1,'daw::pipelines']]],
-  ['drop_5fwhile_50',['drop_while',['../namespacedaw_1_1pipelines.html#ad3cfc87da3a83626362e4a7f67a1c83b',1,'daw::pipelines']]],
+  ['dropuntil_49',['DropUntil',['../namespacedaw_1_1pipelines.html#aa8ca71881ad93b211cb45d13382fc5bf',1,'daw::pipelines']]],
+  ['dropwhile_50',['DropWhile',['../namespacedaw_1_1pipelines.html#a72648135b3d5d7f730cd360a7daeea06',1,'daw::pipelines']]],
   ['dump_51',['dump',['../namespacedaw.html#a9df7d6b1fa57c4d2ec840399da8b2e82',1,'daw']]]
 ];
