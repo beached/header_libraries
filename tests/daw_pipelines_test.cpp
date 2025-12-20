@@ -597,12 +597,11 @@ namespace tests {
 
 	DAW_ATTRIB_NOINLINE void test033( ) {
 		constexpr daw::string_view s = " Hello ";
-		constexpr auto p = daw::pipelines::pipeline(
-		  s,
-		  daw::pipelines::drop_while( is_control_or_space ),
-		  daw::pipelines::Reverse,
-		  daw::pipelines::drop_while( is_control_or_space ),
-		  daw::pipelines::Reverse );
+		constexpr auto p = pipeline( s,
+		                             DropWhile( is_control_or_space ),
+		                             Reverse,
+		                             DropWhile( is_control_or_space ),
+		                             Reverse );
 		constexpr auto s2 = daw::string_view{ std::data( p ), std::size( p ) };
 		daw_ensure( s2 == "Hello" );
 	}

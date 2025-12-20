@@ -13,7 +13,7 @@
 
 namespace daw::pipelines {
 	template<typename Pred>
-	constexpr auto drop_while( Pred &&p ) {
+	constexpr auto DropWhile( Pred &&p ) {
 		return [pred = DAW_FWD( p )]( auto &&r ) {
 			auto f = std::begin( r );
 			auto l = std::end( r );
@@ -25,7 +25,7 @@ namespace daw::pipelines {
 	}
 
 	template<typename Pred>
-	constexpr auto drop_until( Pred &&p ) {
+	constexpr auto DropUntil( Pred &&p ) {
 		return [pred = DAW_FWD( p )]( auto &&r ) {
 			auto f = std::begin( r );
 			auto l = std::end( r );
