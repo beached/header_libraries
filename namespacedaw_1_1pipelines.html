@@ -161,6 +161,12 @@ Functions</h2></td></tr>
 <tr class="separator:a80defbf21d94d5cc720e65bd47a89419"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9807bae52a63e88faad556345fd489e" id="r_ae9807bae52a63e88faad556345fd489e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#ae9807bae52a63e88faad556345fd489e">CountIf</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> &amp;&amp;fn)</td></tr>
 <tr class="separator:ae9807bae52a63e88faad556345fd489e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13546b249661399ec10c5faf64774945" id="r_a13546b249661399ec10c5faf64774945"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Pred</a> &gt; </td></tr>
+<tr class="memitem:a13546b249661399ec10c5faf64774945"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a13546b249661399ec10c5faf64774945">drop_until</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Pred</a> &amp;&amp;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">p</a>)</td></tr>
+<tr class="separator:a13546b249661399ec10c5faf64774945"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3cfc87da3a83626362e4a7f67a1c83b" id="r_ad3cfc87da3a83626362e4a7f67a1c83b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Pred</a> &gt; </td></tr>
+<tr class="memitem:ad3cfc87da3a83626362e4a7f67a1c83b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#ad3cfc87da3a83626362e4a7f67a1c83b">drop_while</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Pred</a> &amp;&amp;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">p</a>)</td></tr>
+<tr class="separator:ad3cfc87da3a83626362e4a7f67a1c83b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85f3ba6b36ac2315053928afd0ed4e38" id="r_a85f3ba6b36ac2315053928afd0ed4e38"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">EnumType</a>  = std::size_t&gt; </td></tr>
 <tr class="memitem:a85f3ba6b36ac2315053928afd0ed4e38"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a85f3ba6b36ac2315053928afd0ed4e38">EnumerateApplyFrom</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">EnumType</a> offset)</td></tr>
 <tr class="separator:a85f3ba6b36ac2315053928afd0ed4e38"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -611,6 +617,66 @@ template&lt;typename... Ranges&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="numeric_8h_source.html#l00123">123</a> of file <a class="el" href="numeric_8h_source.html">numeric.h</a>.</p>
+
+</div>
+</div>
+<a id="a13546b249661399ec10c5faf64774945" name="a13546b249661399ec10c5faf64774945"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13546b249661399ec10c5faf64774945">&#9670;&#160;</a></span>drop_until()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Pred</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> daw::pipelines::drop_until </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Pred</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="drop_8h_source.html#l00028">28</a> of file <a class="el" href="drop_8h_source.html">drop.h</a>.</p>
+
+</div>
+</div>
+<a id="ad3cfc87da3a83626362e4a7f67a1c83b" name="ad3cfc87da3a83626362e4a7f67a1c83b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3cfc87da3a83626362e4a7f67a1c83b">&#9670;&#160;</a></span>drop_while()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Pred</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> daw::pipelines::drop_while </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Pred</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="drop_8h_source.html#l00016">16</a> of file <a class="el" href="drop_8h_source.html">drop.h</a>.</p>
 
 </div>
 </div>
@@ -2383,7 +2449,7 @@ template&lt;auto... haystack&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="reverse_8h_source.html#l00034">34</a> of file <a class="el" href="reverse_8h_source.html">reverse.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="reverse_8h_source.html#l00043">43</a> of file <a class="el" href="reverse_8h_source.html">reverse.h</a>.</p>
 
 </div>
 </div>

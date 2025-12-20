@@ -81,8 +81,8 @@ $(function() {
   <div class="headertitle"><div class="title">daw_ensure.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="ciso646_8h_source.html">ciso646.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__attributes_8h_source.html">daw_attributes.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="daw__attributes_8h_source.html">daw/daw_attributes.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__cpp__feature__check_8h_source.html">daw/daw_cpp_feature_check.h</a>&quot;</code><br />
 <code>#include &lt;exception&gt;</code><br />
 </div>
 <p><a href="daw__ensure_8h_source.html">Go to the source code of this file.</a></p>
@@ -102,8 +102,8 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a5fe704a92e68995045bf5c9945d89532" id="r_a5fe704a92e68995045bf5c9945d89532"><td class="memItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1ensure.html#a5fe704a92e68995045bf5c9945d89532">daw::ensure::do_error</a> ()</td></tr>
-<tr class="separator:a5fe704a92e68995045bf5c9945d89532"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d78cc8f954f15c7166b28087f0d2574" id="r_a5d78cc8f954f15c7166b28087f0d2574"><td class="memItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1ensure.html#a5d78cc8f954f15c7166b28087f0d2574">daw::ensure::ensure_error</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>)</td></tr>
+<tr class="separator:a5d78cc8f954f15c7166b28087f0d2574"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a9b8ddea0dc9954f47320bb7bf0645af8" name="a9b8ddea0dc9954f47320bb7bf0645af8"></a>
@@ -121,13 +121,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">do</span> {                            \</div>
-<div class="line">    if( not( __VA_ARGS__ ) ) {    \</div>
-<div class="line">      ::daw::ensure::do_error( ); \</div>
-<div class="line">    }                             \</div>
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">do</span> {                                                   \</div>
+<div class="line">    if( not( __VA_ARGS__ ) ) {                           \</div>
+<div class="line">      ::daw::ensure::ensure_error( not( __VA_ARGS__ ) ); \</div>
+<div class="line">    }                                                    \</div>
 <div class="line">  } <span class="keywordflow">while</span>( <span class="keyword">false</span> )</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__ensure_8h_source.html#l00022">22</a> of file <a class="el" href="daw__ensure_8h_source.html">daw_ensure.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ensure_8h_source.html#l00041">41</a> of file <a class="el" href="daw__ensure_8h_source.html">daw_ensure.h</a>.</p>
 
 </div>
 </div>
