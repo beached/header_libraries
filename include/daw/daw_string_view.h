@@ -2263,7 +2263,6 @@ namespace daw {
 			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
 			[[nodiscard]] constexpr size_type
 			  find_first_not_of_if( UnaryPredicate pred, size_type pos = 0 ) const {
-				traits::is_unary_predicate_test<UnaryPredicate, CharT>( );
 
 				if( pos >= size( ) ) {
 					return npos;

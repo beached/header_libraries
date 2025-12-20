@@ -8,20 +8,39 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_attributes.h"
+#include "daw/daw_attributes.h"
+#include "daw/daw_cpp_feature_check.h"
 
 #include <exception>
 
 namespace daw::ensure {
-	[[noreturn]] DAW_ATTRIB_NOINLINE inline void do_error( ) {
+#if defined( DAW_ATTRIB_ENABLE_IF )
+#if defined( DAW_HAS_CPP26_DELETED_REASON )
+	[[noreturn]] DAW_ATTRIB_NOINLINE inline void ensure_error( bool b )
+	  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( b ) and b,
+	                        "Ensure check failed" ) =
+	    delete( "Ensure check failed" );
+#endif
+	[[noreturn]] DAW_ATTRIB_NOINLINE inline void ensure_error( bool b )
+	  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( b ) and not b,
+	                        "Ensure check failed" ) {
 		std::terminate( );
 	}
+
+	[[noreturn]] DAW_ATTRIB_NOINLINE inline void ensure_error( bool b )
+	  DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( b ), " " ) {
+		std::terminate( );
+	}
+#else
+	[[noreturn]] DAW_ATTRIB_NOINLINE inline void ensure_error( bool ) {
+		std::terminate( );
+	}
+#endif
 } // namespace daw::ensure
 
-#define daw_ensure( ... )         \
-	do {                            \
-		if( not( __VA_ARGS__ ) ) {    \
-			::daw::ensure::do_error( ); \
-		}                             \
+#define daw_ensure( ... )                                \
+	do {                                                   \
+		if( not( __VA_ARGS__ ) ) {                           \
+			::daw::ensure::ensure_error( not( __VA_ARGS__ ) ); \
+		}                                                    \
 	} while( false )

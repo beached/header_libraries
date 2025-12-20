@@ -24,9 +24,18 @@ namespace daw::pipelines::pimpl {
 			static_assert(
 			  BidirectionalRange<R>,
 			  "The range passed to Reverse must have Bidirectional Iterators" );
-			auto first = daw::reverse_iterator( std::end( DAW_FWD( r ) ) );
-			auto last = daw::reverse_iterator( std::begin( DAW_FWD( r ) ) );
-			return range_t{ std::move( first ), std::move( last ) };
+			if constexpr( requires {
+				              typename daw::iterator_t<R>::i_am_a_daw_reverse_iterator;
+			              } ) {
+				// We are already a reverse iterator, lets use the base iterator
+				auto first = std::end( r ).base( );
+				auto last = std::begin( r ).base( );
+				return range_t{ first, last };
+			} else {
+				auto first = daw::reverse_iterator{ std::end( r ) };
+				auto last = daw::reverse_iterator{ std::begin( r ) };
+				return range_t{ std::move( first ), std::move( last ) };
+			}
 		}
 	};
 } // namespace daw::pipelines::pimpl

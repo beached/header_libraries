@@ -25,7 +25,7 @@ namespace daw {
 		using reference = typename std::iterator_traits<Iterator>::reference;
 		using iterator_category =
 		  typename std::iterator_traits<Iterator>::iterator_category;
-
+		using i_am_a_daw_reverse_iterator = void;
 	private:
 		Iterator m_base{ };
 
