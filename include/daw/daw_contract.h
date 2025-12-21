@@ -96,6 +96,16 @@ namespace daw {
 			return value;
 		}
 
+		DAW_ATTRIB_FLATINLINE constexpr T *operator->( ) {
+			DAW_ASSUME( validate( value ) );
+			return std::addressof( value );
+		}
+
+		DAW_ATTRIB_FLATINLINE constexpr T const *operator->( ) const {
+			DAW_ASSUME( validate( value ) );
+			return std::addressof( value );
+		}
+
 		DAW_ATTRIB_FLATINLINE constexpr operator T const &( ) const {
 			DAW_ASSUME( validate( value ) );
 			return value;
