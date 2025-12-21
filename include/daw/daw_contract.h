@@ -43,6 +43,8 @@ namespace daw {
 
 	template<typename T, typename... Preconditions>
 	class contract {
+		using pointer = std::remove_reference_t<T> *;
+		using const_pointer = std::remove_reference_t<T> const *;
 		T value;
 
 		static_assert( ( daw::is_callable_r_v<bool, Preconditions, T> and ... ),
@@ -96,12 +98,12 @@ namespace daw {
 			return value;
 		}
 
-		DAW_ATTRIB_FLATINLINE constexpr T *operator->( ) {
+		DAW_ATTRIB_FLATINLINE constexpr pointer *operator->( ) {
 			DAW_ASSUME( validate( value ) );
 			return std::addressof( value );
 		}
 
-		DAW_ATTRIB_FLATINLINE constexpr T const *operator->( ) const {
+		DAW_ATTRIB_FLATINLINE constexpr const_pointer operator->( ) const {
 			DAW_ASSUME( validate( value ) );
 			return std::addressof( value );
 		}
