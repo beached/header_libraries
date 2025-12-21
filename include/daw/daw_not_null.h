@@ -12,6 +12,7 @@
 #include "daw/daw_assume.h"
 #include "daw/daw_attributes.h"
 #include "daw/daw_enable_requires.h"
+#include "daw/daw_likely.h"
 #include "daw/impl/daw_make_trait.h"
 
 #include <cassert>
@@ -93,7 +94,8 @@ namespace daw {
 		DAW_ATTRIB_INLINE constexpr not_null( pointer_const_reference ptr ) noexcept
 		  DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( ptr ), " " )
 		  : m_ptr( ptr ) {
-			if( ptr == null_value ) {
+			if( DAW_UNLIKELY( ptr == null_value ) ) {
+				DAW_UNLIKELY_BRANCH
 				std::terminate( );
 			}
 		}
@@ -118,7 +120,8 @@ namespace daw {
 		operator=( pointer_const_reference ptr ) noexcept
 		  DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( ptr ), " " ) {
 			m_ptr = ptr;
-			if( ptr == null_value ) {
+			if( DAW_UNLIKELY( ptr == null_value ) ) {
+				DAW_UNLIKELY_BRANCH
 				std::terminate( );
 			}
 			return *this;
@@ -126,7 +129,8 @@ namespace daw {
 #else
 		DAW_ATTRIB_INLINE constexpr not_null( pointer_const_reference ptr ) noexcept
 		  : m_ptr( ptr ) {
-			if( ptr == null_value ) {
+			if( DAW_UNLIKELY( ptr == null_value ) ) {
+				DAW_UNLIKELY_BRANCH
 				std::terminate( );
 			}
 		}
@@ -134,7 +138,8 @@ namespace daw {
 		DAW_ATTRIB_INLINE constexpr not_null &
 		operator=( pointer_const_reference ptr ) noexcept {
 			m_ptr = ptr;
-			if( ptr == null_value ) {
+			if( DAW_UNLIKELY( ptr == null_value ) ) {
+				DAW_UNLIKELY_BRANCH
 				std::terminate( );
 			}
 			return *this;

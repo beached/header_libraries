@@ -15,6 +15,7 @@
 #include "daw/daw_consteval.h"
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_function_ref.h"
+#include "daw/daw_likely.h"
 #include "daw/daw_move.h"
 
 #include <cmath>
@@ -64,7 +65,8 @@ namespace daw {
 		DAW_ATTRIB_FLATINLINE constexpr contract( T v )
 		  DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( v ), " " )
 		  : value( DAW_FWD( v ) ) {
-			if( not validate( value ) ) {
+			if( DAW_UNLIKELY( not validate( value ) ) ) {
+				DAW_UNLIKELY_BRANCH
 				contract_failure( );
 			}
 		}
@@ -76,7 +78,8 @@ namespace daw {
 #else
 		DAW_ATTRIB_FLATINLINE constexpr contract( T v )
 		  : value( DAW_FWD( v ) ) {
-			if( not validate( value ) ) {
+			if( DAW_UNLIKELY( not validate( value ) ) ) {
+				DAW_UNLIKELY_BRANCH
 				contract_failure( );
 			}
 		}
