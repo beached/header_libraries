@@ -87,23 +87,14 @@ namespace daw {
 			return DAW_FWD( value );
 		}
 
-		DAW_ATTRIB_FLATINLINE constexpr T &operator*( ) {
-			DAW_ASSUME( validate( value ) );
-			return value;
-		}
-
 		DAW_ATTRIB_FLATINLINE constexpr T const &operator*( ) const {
 			DAW_ASSUME( validate( value ) );
 			return value;
 		}
 
-		DAW_ATTRIB_FLATINLINE constexpr auto operator->( ) {
+		DAW_ATTRIB_FLATINLINE constexpr T const &get( ) const {
 			DAW_ASSUME( validate( value ) );
-			if constexpr( std::is_pointer_v<T> ) {
-				return value;
-			} else {
-				return std::addressof( value );
-			}
+			return value;
 		}
 
 		DAW_ATTRIB_FLATINLINE constexpr auto operator->( ) const {
