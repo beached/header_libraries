@@ -91,11 +91,12 @@ namespace daw {
 
 	constexpr bool is_equal_nc( daw::sv2::string_view lhs,
 	                            daw::sv2::string_view rhs ) noexcept {
-		if( lhs.size( ) != rhs.size( ) ) {
+		auto const sz = lhs.size( );
+		if( sz != rhs.size( ) ) {
 			return false;
 		}
 		bool result = true;
-		for( size_t n = 0; n < lhs.size( ); ++n ) {
+		for( std::size_t n = 0; n < sz; ++n ) {
 			result &= ( lhs[n] | ' ' ) == ( rhs[n] | ' ' );
 		}
 		return result;
@@ -719,7 +720,7 @@ namespace daw {
 
 		puts( "Throws std::out_of_range if pos >= view.size()" );
 		{
-			char result[12]{};
+			char result[12]{ };
 
 			bool good = false;
 			try {
@@ -1717,10 +1718,11 @@ int main( )
 	/*
 	 * Ensure that daw::sv2::string_view s = { "a", "b" }; doesn't work
 	 */
-	static_assert(
-	  not std::is_constructible_v<daw::sv2::string_view, char const( & )[4],
-	                              char const( & )[4]> );
-	static_assert( std::is_constructible_v<daw::sv2::string_view, char const *,
+	static_assert( not std::is_constructible_v<daw::sv2::string_view,
+	                                           char const( & )[4],
+	                                           char const( & )[4]> );
+	static_assert( std::is_constructible_v<daw::sv2::string_view,
+	                                       char const *,
 	                                       char const *> );
 	static_assert(
 	  std::is_convertible_v<char const( & )[4], daw::sv2::string_view> );

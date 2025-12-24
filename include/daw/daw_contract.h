@@ -12,7 +12,6 @@
 #include "daw/daw_attributes.h"
 #include "daw/daw_callable.h"
 #include "daw/daw_check_exceptions.h"
-#include "daw/daw_consteval.h"
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_function_ref.h"
 #include "daw/daw_likely.h"
@@ -57,7 +56,7 @@ namespace daw {
 
 	public:
 #if defined( DAW_ATTRIB_ENABLE_IF )
-		DAW_CONSTEVAL contract( T v )
+		constexpr contract( T v )
 		  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( v ) and validate( v ),
 		                        "Contract violatiion" )
 		  : value( DAW_FWD( v ) ) {}
@@ -71,7 +70,7 @@ namespace daw {
 			}
 		}
 #if defined( DAW_HAS_CPP26_DELETED_REASON )
-		DAW_CONSTEVAL contract( T v ) DAW_ATTRIB_ENABLE_IF(
+		constexpr contract( T v ) DAW_ATTRIB_ENABLE_IF(
 		  __builtin_constant_p( v ) and not validate( v ),
 		  "Contract violatiion" ) = delete( "Contract violation" );
 #endif
