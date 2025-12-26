@@ -200,6 +200,10 @@ namespace daw {
 			return m_ptr;
 		}
 
+		constexpr pointer * get_out( ) noexcept {
+			return std::addressof( m_ptr );
+		}
+
 		constexpr pointer operator->( ) const {
 			return m_ptr;
 		}
