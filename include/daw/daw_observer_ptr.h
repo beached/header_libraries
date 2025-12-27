@@ -39,8 +39,6 @@ namespace daw {
 		            U *, T *> ) constexpr observer_ptr( observer_ptr<U> other )
 		  : m_ptr( other.m_ptr ) {}
 
-		observer_ptr &operator=( std::nullptr_t ) = delete;
-
 		constexpr observer_ptr &operator=( pointer p ) {
 			m_ptr = p;
 			return *this;
