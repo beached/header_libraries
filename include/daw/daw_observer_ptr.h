@@ -101,5 +101,5 @@ namespace daw {
 	};
 
 	template<typename P>
-	observer_ptr( P * ) -> observer_ptr<P>;
+	observer_ptr( P * ) -> observer_ptr<P *>;
 } // namespace daw
