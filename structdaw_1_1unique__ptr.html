@@ -134,6 +134,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:abb040af27dbb4555d2474b15574bb7e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb6d9b3d01693bffacfb86f32f2543b9" id="r_adb6d9b3d01693bffacfb86f32f2543b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="structdaw_1_1unique__ptr.html#a283993c049f1b7d5a734ef4aa5bcf124">deleter_t</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#adb6d9b3d01693bffacfb86f32f2543b9">get_deleter</a> () <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a></td></tr>
 <tr class="separator:adb6d9b3d01693bffacfb86f32f2543b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf37f9e9855c5ffc1049214e3267c363" id="r_acf37f9e9855c5ffc1049214e3267c363"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="structdaw_1_1unique__ptr.html#a9b89a3917c0a4f4327cbb86da417a71b">pointer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#acf37f9e9855c5ffc1049214e3267c363">get_out</a> () noexcept</td></tr>
+<tr class="separator:acf37f9e9855c5ffc1049214e3267c363"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbd6840fa3a37f2dabc252fee4ea77c6" id="r_adbd6840fa3a37f2dabc252fee4ea77c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#adbd6840fa3a37f2dabc252fee4ea77c6">operator bool</a> () <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> noexcept</td></tr>
 <tr class="separator:adbd6840fa3a37f2dabc252fee4ea77c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a074fe8df7026314c141f53eae617c734" id="r_a074fe8df7026314c141f53eae617c734"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="structdaw_1_1unique__ptr.html#a3f7f34600a3605a49f3dff40b0c046ef">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1unique__ptr.html#a074fe8df7026314c141f53eae617c734">operator*</a> () <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> noexcept</td></tr>
@@ -522,7 +524,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00221">221</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00225">225</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -613,6 +615,35 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 
 </div>
 </div>
+<a id="acf37f9e9855c5ffc1049214e3267c363" name="acf37f9e9855c5ffc1049214e3267c363"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf37f9e9855c5ffc1049214e3267c363">&#9670;&#160;</a></span>get_out()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> Deleter  = default_deleter&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="structdaw_1_1unique__ptr.html#a9b89a3917c0a4f4327cbb86da417a71b">pointer</a> * <a class="el" href="structdaw_1_1unique__ptr.html">daw::unique_ptr</a>&lt; T, Deleter &gt;::get_out </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00203">203</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+
+</div>
+</div>
 <a id="adbd6840fa3a37f2dabc252fee4ea77c6" name="adbd6840fa3a37f2dabc252fee4ea77c6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adbd6840fa3a37f2dabc252fee4ea77c6">&#9670;&#160;</a></span>operator bool()</h2>
 
@@ -638,7 +669,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00211">211</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00215">215</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -667,7 +698,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00207">207</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00211">211</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -696,7 +727,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00203">203</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00207">207</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -818,7 +849,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00226">226</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00230">230</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -936,7 +967,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00215">215</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00219">219</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -968,7 +999,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00231">231</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00235">235</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -1000,7 +1031,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00241">241</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00245">245</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -1032,7 +1063,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00236">236</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00240">240</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
@@ -1064,7 +1095,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00246">246</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__unique__ptr_8h_source.html#l00250">250</a> of file <a class="el" href="daw__unique__ptr_8h_source.html">daw_unique_ptr.h</a>.</p>
 
 </div>
 </div>
