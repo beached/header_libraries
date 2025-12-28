@@ -188,7 +188,8 @@ inline constexpr bool daw_has_cx_cmath = false;
 
 #if defined( __cpp_explicit_this_parameter )
 #if __cpp_explicit_this_parameter >= 202110L
-#define DAW_CPP23_DEDUCING_THIS
+#define DAW_CPP23_DEDUCING_THIS 1
+#define DAW_HAS_CPP23_DEDUCING_THIS 1
 #endif
 #endif
 
@@ -220,4 +221,10 @@ inline constexpr bool daw_has_cx_cmath = false;
 #define DAW_CPP23_STATIC_LOCAL static
 #else
 #define DAW_CPP23_STATIC_LOCAL
+#endif
+
+#if defined( __cpp_lib_move_only_function )
+#if __cpp_lib_move_only_function >= 202110L
+#define DAW_HAS_CPP23_MOVE_ONLY_FUNCTION
+#endif
 #endif

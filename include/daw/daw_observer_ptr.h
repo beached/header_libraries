@@ -28,9 +28,9 @@ namespace daw {
 		pointer m_ptr = nullptr;
 
 	public:
-		observer_ptr( ) = default;
-		constexpr observer_ptr( std::nullptr_t ) {}
-		constexpr explicit observer_ptr( pointer p )
+		explicit observer_ptr( ) = default;
+
+		constexpr observer_ptr( pointer p )
 		  : m_ptr( p ) {}
 
 		template<typename U>
@@ -38,6 +38,11 @@ namespace daw {
 		          std::convertible_to<
 		            U *, T *> ) constexpr observer_ptr( observer_ptr<U> other )
 		  : m_ptr( other.m_ptr ) {}
+
+		constexpr observer_ptr &operator=( pointer p ) {
+			m_ptr = p;
+			return *this;
+		}
 
 		constexpr void release( ) {
 			m_ptr = nullptr;
@@ -74,6 +79,26 @@ namespace daw {
 			return m_ptr;
 		}
 
+		constexpr bool operator==( pointer other ) const noexcept {
+			return m_ptr == other;
+		}
+
+		constexpr bool operator!=( pointer other ) const noexcept {
+			return m_ptr != other;
+		}
+
+		// clang-format off
+		constexpr std::strong_ordering operator<=>( pointer other ) const {
+			// clang-format on
+			if( m_ptr == other ) {
+				return std::strong_ordering::equal;
+			}
+			if( std::less<>{ }( m_ptr, other ) ) {
+				return std::strong_ordering::less;
+			}
+			return std::strong_ordering::greater;
+		}
+
 		constexpr bool operator==( observer_ptr const &other ) const = default;
 		// clang-format off
 		constexpr std::strong_ordering operator<=>( observer_ptr const &other ) const = default;
@@ -100,6 +125,11 @@ namespace daw {
 		}
 	};
 
+	template<typename A>
+	requires std::is_array_v<A>
+	observer_ptr( A ) -> observer_ptr<std::remove_extent_t<A>>;
+
 	template<typename P>
-	observer_ptr( P * ) -> observer_ptr<P *>;
+	requires std::is_pointer_v<P>
+	observer_ptr( P ) -> observer_ptr<std::remove_pointer_t<P>>;
 } // namespace daw

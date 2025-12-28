@@ -12,9 +12,10 @@
 #include "daw/daw_attributes.h"
 #include "daw/daw_callable.h"
 #include "daw/daw_check_exceptions.h"
-#include "daw/daw_consteval.h"
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_function_ref.h"
+#include "daw/daw_likely.h"
+#include "daw/daw_move.h"
 
 #include <cmath>
 #include <cstdlib>
@@ -55,27 +56,29 @@ namespace daw {
 
 	public:
 #if defined( DAW_ATTRIB_ENABLE_IF )
-		DAW_CONSTEVAL contract( T v )
+		constexpr contract( T v )
 		  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( v ) and validate( v ),
 		                        "Contract violatiion" )
-		  : value( std::move( v ) ) {}
+		  : value( DAW_FWD( v ) ) {}
 
 		DAW_ATTRIB_FLATINLINE constexpr contract( T v )
 		  DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( v ), " " )
-		  : value( std::move( v ) ) {
-			if( not validate( value ) ) {
+		  : value( DAW_FWD( v ) ) {
+			if( DAW_UNLIKELY( not validate( value ) ) ) {
+				DAW_UNLIKELY_BRANCH
 				contract_failure( );
 			}
 		}
 #if defined( DAW_HAS_CPP26_DELETED_REASON )
-		DAW_CONSTEVAL contract( T v ) DAW_ATTRIB_ENABLE_IF(
+		constexpr contract( T v ) DAW_ATTRIB_ENABLE_IF(
 		  __builtin_constant_p( v ) and not validate( v ),
 		  "Contract violatiion" ) = delete( "Contract violation" );
 #endif
 #else
 		DAW_ATTRIB_FLATINLINE constexpr contract( T v )
-		  : value( std::move( v ) ) {
-			if( not validate( value ) ) {
+		  : value( DAW_FWD( v ) ) {
+			if( DAW_UNLIKELY( not validate( value ) ) ) {
+				DAW_UNLIKELY_BRANCH
 				contract_failure( );
 			}
 		}
@@ -83,17 +86,26 @@ namespace daw {
 
 		DAW_ATTRIB_FLATINLINE constexpr T extract( ) {
 			DAW_ASSUME( validate( value ) );
-			return std::move( value );
-		}
-
-		DAW_ATTRIB_FLATINLINE constexpr T &operator*( ) {
-			DAW_ASSUME( validate( value ) );
-			return value;
+			return DAW_FWD( value );
 		}
 
 		DAW_ATTRIB_FLATINLINE constexpr T const &operator*( ) const {
 			DAW_ASSUME( validate( value ) );
 			return value;
+		}
+
+		DAW_ATTRIB_FLATINLINE constexpr T const &get( ) const {
+			DAW_ASSUME( validate( value ) );
+			return value;
+		}
+
+		DAW_ATTRIB_FLATINLINE constexpr auto operator->( ) const {
+			DAW_ASSUME( validate( value ) );
+			if constexpr( std::is_pointer_v<T> ) {
+				return value;
+			} else {
+				return std::addressof( value );
+			}
 		}
 
 		DAW_ATTRIB_FLATINLINE constexpr operator T const &( ) const {
