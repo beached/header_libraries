@@ -125,6 +125,11 @@ namespace daw {
 		}
 	};
 
+	template<typename A>
+	requires std::is_array_v<A>
+	observer_ptr( A ) -> observer_ptr<std::remove_extent_t<A>>;
+
 	template<typename P>
-	observer_ptr( P * ) -> observer_ptr<P>;
+	requires std::is_pointer_v<P>
+	observer_ptr( P ) -> observer_ptr<std::remove_pointer_t<P>>;
 } // namespace daw
