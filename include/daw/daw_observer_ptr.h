@@ -79,6 +79,26 @@ namespace daw {
 			return m_ptr;
 		}
 
+		constexpr bool operator==( pointer other ) const noexcept {
+			return m_ptr == other;
+		}
+
+		constexpr bool operator!=( pointer other ) const noexcept {
+			return m_ptr != other;
+		}
+
+		// clang-format off
+		constexpr std::strong_ordering operator<=>( pointer other ) const {
+			// clang-format on
+			if( m_ptr == other ) {
+				return std::strong_ordering::equal;
+			}
+			if( std::less<>{ }( m_ptr, other ) ) {
+				return std::strong_ordering::less;
+			}
+			return std::strong_ordering::greater;
+		}
+
 		constexpr bool operator==( observer_ptr const &other ) const = default;
 		// clang-format off
 		constexpr std::strong_ordering operator<=>( observer_ptr const &other ) const = default;
