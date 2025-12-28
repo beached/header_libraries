@@ -28,9 +28,9 @@ namespace daw {
 		pointer m_ptr = nullptr;
 
 	public:
-		observer_ptr( ) = default;
-		constexpr observer_ptr( std::nullptr_t ) {}
-		constexpr explicit observer_ptr( pointer p )
+		explicit observer_ptr( ) = default;
+
+		constexpr observer_ptr( pointer p )
 		  : m_ptr( p ) {}
 
 		template<typename U>
@@ -106,5 +106,5 @@ namespace daw {
 	};
 
 	template<typename P>
-	observer_ptr( P * ) -> observer_ptr<P *>;
+	observer_ptr( P * ) -> observer_ptr<P>;
 } // namespace daw
