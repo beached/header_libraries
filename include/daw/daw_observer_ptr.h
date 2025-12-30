@@ -58,7 +58,7 @@ namespace daw {
 			return m_ptr;
 		}
 
-		constexpr pointer *get_out( ) const {
+		constexpr pointer *get_out( ) {
 			return &m_ptr;
 		}
 
