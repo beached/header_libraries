@@ -58,6 +58,10 @@ namespace daw {
 			return m_ptr;
 		}
 
+		constexpr pointer *get_out( ) const {
+			return &m_ptr;
+		}
+
 		constexpr explicit operator bool( ) const {
 			return static_cast<bool>( m_ptr );
 		}
