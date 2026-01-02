@@ -26,14 +26,12 @@ namespace daw {
 	/***
 	 * @brief Given types From and To and an expression E whose type and value
 	 * category are the same as those of std::declval<From>(),
-	 * convertible_to<From, To> requires E to be both implicitly and explicitly
-	 * convertible to type To. The implicit and explicit conversions are required
-	 * to produce equal results.
+	 * explicitly_convertible_to<From, To> requires E to be explicitly
+	 * convertible to type To.
 	 */
 	template<typename From, typename To>
-	concept convertible_to = std::is_convertible_v<From, To> and requires {
-		{ static_cast<To>( std::declval<From>( ) ) };
-	};
+	concept explicitly_convertible_to =
+	  requires{ static_cast<To>( std::declval<From>( ) ) };
 
 	/***
 	 * @brief Given types From and To and an expression E whose type and value
@@ -43,6 +41,17 @@ namespace daw {
 	 */
 	template<typename From, typename To>
 	concept implicitly_convertible_to = std::is_convertible_v<From, To>;
+
+	/***
+	 * @brief Given types From and To and an expression E whose type and value
+	 * category are the same as those of std::declval<From>(),
+	 * convertible_to<From, To> requires E to be both implicitly and explicitly
+	 * convertible to type To. The implicit and explicit conversions are required
+	 * to produce equal results.
+	 */
+	template<typename From, typename To>
+	concept convertible_to =
+	  implicitly_convertible_to<From, To> and explicitly_convertible_to<From, To>;
 
 	/***
 	 * @brief Satisfied when Lhs and Rhs name the same type (taking into account
@@ -113,14 +122,14 @@ namespace daw {
 
 	template<typename T>
 	concept ContiguousContainer = requires( T && container ) {
-		{ std::data( container ) } -> Pointers;
-		{ std::size( container ) } -> convertible_to<std::size_t>;
+		{ std::data( container ) }->Pointers;
+		{ std::size( container ) }->convertible_to<std::size_t>;
 	};
 
 	template<typename T, typename U>
 	concept ContiguousContainerOf =
 	  ContiguousContainer<T> and requires( T container ) {
-		{ *std::data( container ) } -> convertible_to<U>;
+		{ *std::data( container ) }->convertible_to<U>;
 	};
 
 	template<typename T>
@@ -182,7 +191,7 @@ namespace daw {
 	  std::assignable_from<LHS, RHS>;
 #else
 	  std::is_lvalue_reference_v<LHS> and requires( LHS lhs, RHS &&rhs ) {
-		{ lhs = DAW_FWD( rhs ) } -> std::same_as<LHS>;
+		{ lhs = DAW_FWD( rhs ) }->std::same_as<LHS>;
 	};
 #endif
 
@@ -238,7 +247,7 @@ namespace daw {
 	  movable<I> and requires( I i ) {
 		typename iter_difference_t<I>;
 		requires SignedStd<iter_difference_t<I>>;
-		{ ++i } -> same_as<I &>;
+		{ ++i }->same_as<I &>;
 		i++;
 	};
 #endif
@@ -253,9 +262,7 @@ namespace daw {
 	 */
 	template<typename Func, typename Result, typename... Args>
 	concept invocable_result = requires( Func && f, Args &&...args ) {
-		{
-			std::invoke( DAW_FWD( f ), DAW_FWD( args )... )
-		} -> convertible_to<Result>;
+		{ std::invoke( DAW_FWD( f ), DAW_FWD( args )... ) }->convertible_to<Result>;
 	};
 
 	template<typename I>
@@ -358,7 +365,7 @@ namespace daw {
 	template<typename B>
 	concept boolean_testable =
 	  concept_details::boolean_testable_impl<B> and requires( B && b ) {
-		{ not DAW_FWD( b ) } -> concept_details::boolean_testable_impl;
+		{ not DAW_FWD( b ) }->concept_details::boolean_testable_impl;
 	};
 
 	namespace concept_details {
@@ -366,10 +373,10 @@ namespace daw {
 		concept weakly_equality_comparable_with =
 		  requires( std::remove_reference_t<T> const &t,
 		            std::remove_reference_t<U> const &u ) {
-			{ t == u } -> boolean_testable;
-			{ t != u } -> boolean_testable;
-			{ u == t } -> boolean_testable;
-			{ u != t } -> boolean_testable;
+			{ t == u }->boolean_testable;
+			{ t != u }->boolean_testable;
+			{ u == t }->boolean_testable;
+			{ u != t }->boolean_testable;
 		};
 	} // namespace concept_details
 #endif
@@ -439,7 +446,7 @@ namespace daw {
 
 	template<typename R, typename Fn, typename... Args>
 	concept Callable_r = requires( Fn fn, Args... args ) {
-		{ fn( args... ) } -> convertible_to<R>;
+		{ fn( args... ) }->convertible_to<R>;
 	};
 
 	template<typename Fn, typename... Args>
