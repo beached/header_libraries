@@ -30,8 +30,9 @@ namespace daw {
 	 * convertible to type To.
 	 */
 	template<typename From, typename To>
-	concept explicitly_convertible_to =
-	  requires{ static_cast<To>( std::declval<From>( ) ) };
+	concept explicitly_convertible_to = requires {
+		static_cast<To>( std::declval<From>( ) );
+	};
 
 	/***
 	 * @brief Given types From and To and an expression E whose type and value
