@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/daw_concepts.h"
+#include "daw/daw_ensure.h"
 #include "daw/daw_restrict.h"
 
 #include <cstdlib>
