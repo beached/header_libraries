@@ -58,4 +58,26 @@ namespace daw {
 		}
 		return out.subspan( sz );
 	}
+
+	/// Write a string literal, minus trailing zero to span
+	/// @tparam T Destination type
+	/// @tparam N size, including trailing zero, of string literal
+	/// @param out output span to write elements to
+	/// @param str input string literal to write to out
+	/// @return out.subspan( N-1 )
+	/// The two ranges cannot overlap and str must have a trailing 0
+	template<typename T, std::size_t N>
+	requires( daw::explicitly_convertible_to<char, T> )
+	  [[nodiscard]] constexpr std::span<T> span_writer_ntz(
+	    std::span<T> out, char const ( &str )[N] ) {
+		daw_ensure( str[N - 1] == '\0' );
+		auto const sz = N - 1;
+		daw_ensure( sz <= out.size( ) );
+		T *DAW_RESTRICT out_ptr = out.data( );
+		auto *DAW_RESTRICT in_ptr = str;
+		for( std::size_t n = 0; n < sz; ++n ) {
+			out_ptr[n] = static_cast<T>( in_ptr[n] );
+		}
+		return out.subspan( sz );
+	}
 } // namespace daw
