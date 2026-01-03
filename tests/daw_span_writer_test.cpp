@@ -39,7 +39,10 @@ void test1( ) {
 
 DAW_ATTRIB_NOINLINE void test2_impl( std::array<char, 256> &buff,
                                      std::size_t &out_size ) {
+	static_assert( std::ranges::contiguous_range<daw::output_span<char>> );
 	auto sp = daw::output_span( buff );
+	std::span s = sp;
+	(void)s;
 	sp.write_ntz( "Hello World.......Hello little letters:" );
 	sp.write( 'a', 'b', 'c', 0 );
 	constexpr auto const expected_sz =

@@ -89,6 +89,9 @@ namespace daw {
 	requires( not std::is_const_v<T> and not std::is_reference_v<T> ) //
 	  struct output_span {
 		using pointer = T *;
+		using const_pointer = T const *;
+		using reference = T &;
+		using const_reference = T const &;
 
 	private:
 		pointer m_first = nullptr;
@@ -106,12 +109,42 @@ namespace daw {
 		  : m_first( std::ranges::data( r ) )
 		  , m_size( std::ranges::size( r ) ) {}
 
-		constexpr pointer data( ) const {
+		constexpr pointer data( ) {
 			return m_first;
+		}
+
+		constexpr const_pointer data( ) const {
+			return m_first;
+		}
+
+		constexpr pointer begin( ) {
+			return m_first;
+		}
+
+		constexpr const_pointer begin( ) const {
+			return m_first;
+		}
+
+		constexpr pointer end( ) {
+			return std::next( m_first, static_cast<std::ptrdiff_t>( m_size ) );
+		}
+
+		constexpr const_pointer end( ) const {
+			return std::next( m_first, static_cast<std::ptrdiff_t>( m_size ) );
 		}
 
 		constexpr std::size_t size( ) const {
 			return m_size;
+		}
+
+		constexpr reference operator[]( std::size_t n ) {
+			daw_ensure( n < m_size );
+			return m_first[n];
+		}
+
+		constexpr const_reference operator[]( std::size_t n ) const {
+			daw_ensure( n < m_size );
+			return m_first[n];
 		}
 
 		constexpr output_span subspan( std::size_t n ) const {
