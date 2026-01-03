@@ -16,12 +16,32 @@
 #include <cstddef>
 #include <span>
 
-DAW_ATTRIB_NOINLINE void foo( std::array<char, 256> &buff,
-                              std::size_t &out_size ) {
-	auto sp = std::span<char>( buff );
-
-	sp = daw::span_writer_ntz( sp, "Hello World.......Hello little letters:" );
+DAW_ATTRIB_NOINLINE void test1_impl( std::array<char, 256> &buff,
+                                     std::size_t &out_size ) {
+	auto sp = daw::span_writer_ntz<char>(
+	  buff, "Hello World.......Hello little letters:" );
 	sp = daw::span_writer( sp, 'a', 'b', 'c', 0 );
+	constexpr auto const expected_sz =
+	  buff.size( ) -
+	  ( ( daw::string_view( "Hello World.......Hello little letters:" ).size( ) +
+	      4 /*second span_writer*/ ) );
+	daw_ensure( sp.size( ) == expected_sz );
+	out_size = sp.size( );
+}
+
+void test1( ) {
+	auto buff = std::array<char, 256>( );
+	std::size_t out_size = 0;
+	test1_impl( buff, out_size );
+	daw::do_not_optimize( buff );
+	daw::do_not_optimize( out_size );
+}
+
+DAW_ATTRIB_NOINLINE void test2_impl( std::array<char, 256> &buff,
+                                     std::size_t &out_size ) {
+	auto sp = daw::output_span( buff );
+	sp.write_ntz( "Hello World.......Hello little letters:" );
+	sp.write( 'a', 'b', 'c', 0 );
 	constexpr auto const expected_sz =
 	  ( daw::string_view( "Hello World.......Hello little letters:" ).size( ) +
 	    4 /*second span_writer*/ );
@@ -29,10 +49,15 @@ DAW_ATTRIB_NOINLINE void foo( std::array<char, 256> &buff,
 	out_size = sp.size( );
 }
 
-int main( ) {
+void test2( ) {
 	auto buff = std::array<char, 256>( );
 	std::size_t out_size = 0;
-	foo( buff, out_size );
+	test2_impl( buff, out_size );
 	daw::do_not_optimize( buff );
 	daw::do_not_optimize( out_size );
+}
+
+int main( ) {
+	test1( );
+	test2( );
 }

@@ -145,6 +145,7 @@ set( DEPRECATED_TEST_SOURCES
 
 set( CPP23_TEST_SOURCES
 		 daw_enumerate_tuple_test.cpp
+		 daw_span_writer_test.cpp
 		 )
 
 set( CPP20_TEST_SOURCES
@@ -159,7 +160,6 @@ set( CPP20_TEST_SOURCES
 		 daw_named_params_test.cpp
 		 daw_observer_ptr_test.cpp
 		 daw_poly_value_test.cpp
-		 daw_span_writer_test.cpp
 		 )
 
 set( CPP20_NOT_MSVC_TEST_SOURCES
