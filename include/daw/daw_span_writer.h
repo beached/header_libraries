@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "daw/daw_attributes.h"
 #include "daw/daw_concepts.h"
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_ensure.h"
@@ -115,7 +114,6 @@ namespace daw {
 			return m_size;
 		}
 
-#if not defined( DAW_ATTRIB_ENABLE_IF )
 		constexpr output_span subspan( std::size_t n ) const {
 			daw_ensure( n <= m_size );
 			return output_span{ .m_first = m_first + static_cast<std::ptrdiff_t>( n ),
@@ -174,186 +172,6 @@ namespace daw {
 			self.remove_prefix_unsafe( sz );
 			return self;
 		}
-
-#else
-#if defined( DAW_HAS_CPP26_DELETED_REASON )
-		constexpr output_span subspan( this auto const &self, std::size_t n )
-		  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( self ) and n > self.m_size ) =
-		    delete( "Attempt to create a subspan larger than size( )" );
-#endif
-
-		constexpr output_span subspan( this auto const &self, std::size_t n )
-		  DAW_ATTRIB_ENABLE_IF(
-		    __builtin_constant_p( self ) and n <= self.m_size,
-		    "Attempt to create a subspan larger than size( )" ) {
-			return output_span{ .m_first = m_first + static_cast<std::ptrdiff_t>( n ),
-			                    .m_size = m_size - n };
-		}
-
-		constexpr output_span subspan( this auto const &self, std::size_t n )
-		  DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( self ), " " ) {
-			{
-				daw_ensure( n <= self.m_size );
-				return output_span{ .m_first =
-				                      self.m_first + static_cast<std::ptrdiff_t>( n ),
-				                    .m_size = self.m_size - n };
-			}
-
-#if defined( DAW_HAS_CPP26_DELETED_REASON )
-			constexpr output_span &remove_prefix( std::size_t n )
-			  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( n ) and n <= self.m_size,
-			                        " " ) =
-			    delete(
-			      "Attempt to call remove_prefix with a value larger than size( )" );
-#endif
-			constexpr output_span &remove_prefix( std::size_t n )
-			  DAW_ATTRIB_ENABLE_IF(
-			    __builtin_constant_p( n ) and n <= self.m_size,
-			    "Attempt to call remove_prefix with a value larger than size( )" ) {
-				m_first += static_cast<std::ptrdiff_t>( n );
-				m_size -= n;
-				return *this;
-			}
-
-			constexpr output_span &remove_prefix( std::size_t n )
-			  DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( n ), " " ) {
-				daw_ensure( n <= m_size );
-				m_first += static_cast<std::ptrdiff_t>( n );
-				m_size -= n;
-				return *this;
-			}
-
-#if defined( DAW_HAS_CPP26_DELETED_REASON )
-			constexpr output_span &write(
-			  this auto &self, daw::explicitly_convertible_to<T> auto &&...values )
-			  DAW_ATTRIB_ENABLE_IF(
-			    __builtin_constant_p( self ) and sizeof...( values ) > self.m_size,
-			    " " ) = delete( "Attempt to write more items than size( )" );
-#endif
-			constexpr output_span &write(
-			  this auto &self, daw::explicitly_convertible_to<T> auto &&...values )
-			  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( self ) and
-			                          sizeof...( values ) <= self.m_size,
-			                        "Attempt to write more items than size( )" ) {
-				if constexpr( sizeof...( values ) == 0 ) {
-					return self;
-				}
-				[&]<std::size_t... Is>( std::index_sequence<Is...> ) {
-					( (void)( self.m_first[Is] = static_cast<T>( values ) ), ... );
-				}( std::make_index_sequence<sizeof...( values )>{ } );
-				self.remove_prefix_unsafe( sizeof...( values ) );
-				return self;
-			}
-
-			constexpr output_span &write(
-			  this auto &self, daw::explicitly_convertible_to<T> auto &&...values )
-			  DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( self ), " " ) {
-				if constexpr( sizeof...( values ) == 0 ) {
-					return self;
-				}
-				daw_ensure( sizeof...( values ) <= self.m_size );
-				[&]<std::size_t... Is>( std::index_sequence<Is...> ) {
-					( (void)( self.m_first[Is] = static_cast<T>( values ) ), ... );
-				}( std::make_index_sequence<sizeof...( values )>{ } );
-				self.remove_prefix_unsafe( sizeof...( values ) );
-				return self;
-			}
-
-#if defined( DAW_HAS_CPP26_DELETED_REASON )
-			template<std::size_t N>
-			requires( daw::explicitly_convertible_to<char, T> ) //
-			  constexpr output_span &write_ntz( this auto &self,
-			                                    char const( &str )[N] )
-			    DAW_ATTRIB_ENABLE_IF(
-			      __builtin_constant_p( self ) and ( N - 1 ) < self.m_size, " " ) =
-			      delete( "Attempt to write more items than size( )" );
-#endif
-			template<std::size_t N>
-			requires( daw::explicitly_convertible_to<char, T> ) //
-			  constexpr output_span &write_ntz( this auto &self,
-			                                    char const( &str )[N] )
-			    DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( self ) and
-			                            ( N - 1 ) < self.m_size,
-			                          "Attempt to write more items than size( )" ) {
-				daw_ensure( str[N - 1] == '\0' );
-				auto const sz = N - 1;
-				daw_ensure( sz <= self.m_size );
-				T *DAW_RESTRICT self_ptr = self.m_first;
-				auto *DAW_RESTRICT in_ptr = str;
-				for( std::size_t n = 0; n < sz; ++n ) {
-					self_ptr[n] = static_cast<T>( in_ptr[n] );
-				}
-				self.remove_prefix_unsafe( sz );
-				return self;
-			}
-
-			template<std::size_t N>
-			requires( daw::explicitly_convertible_to<char, T> ) //
-			  constexpr output_span &write_ntz( this auto &self,
-			                                    char const( &str )[N] )
-			    DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( self ), " " ) {
-				daw_ensure( str[N - 1] == '\0' );
-				auto const sz = N - 1;
-				daw_ensure( sz <= self.m_size );
-				T *DAW_RESTRICT self_ptr = self.m_first;
-				auto *DAW_RESTRICT in_ptr = str;
-				for( std::size_t n = 0; n < sz; ++n ) {
-					self_ptr[n] = static_cast<T>( in_ptr[n] );
-				}
-				self.remove_prefix_unsafe( sz );
-				return self;
-			}
-
-#if defined( DAW_HAS_CPP26_DELETED_REASON )
-			template<typename R>
-			requires(
-			  std::ranges::contiguous_range<R> and
-			  daw::explicitly_convertible_to<std::ranges::range_reference_t<R>,
-			                                 T> ) //
-			  constexpr output_span &write( this auto &self, R const &r )
-			    DAW_ATTRIB_ENABLE_IF(
-			      __builtin_constant_p( self ) and std::ranges::size( r ) <= self.m_size,
-			      " " ) = delete( "Attempt to write more items than size( )" );
-#endif
-			template<typename R>
-			requires(
-			  std::ranges::contiguous_range<R> and
-			  daw::explicitly_convertible_to<std::ranges::range_reference_t<R>,
-			                                 T> ) //
-			  constexpr output_span &write( this auto &self, R const &r )
-			    DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( r ) and
-			                            std::ranges::size( r ) <= self.m_size,
-			                          "Attempt to write more items than size( )" ) {
-				auto const sz = std::ranges::size( r );
-				daw_ensure( sz <= self.m_size );
-				T *DAW_RESTRICT self_ptr = self.m_first;
-				auto *DAW_RESTRICT in_ptr = std::ranges::data( r );
-				for( std::size_t n = 0; n < sz; ++n ) {
-					self_ptr[n] = static_cast<T>( in_ptr[n] );
-				}
-				self.remove_prefix_unsafe( sz );
-				return self;
-			}
-
-			template<typename R>
-			requires(
-			  std::ranges::contiguous_range<R> and
-			  daw::explicitly_convertible_to<std::ranges::range_reference_t<R>,
-			                                 T> ) //
-			  constexpr output_span &write( this auto &self, R const &r )
-			    DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( self ), " " ) {
-				auto const sz = std::ranges::size( r );
-				daw_ensure( sz <= self.m_size );
-				T *DAW_RESTRICT self_ptr = self.m_first;
-				auto *DAW_RESTRICT in_ptr = std::ranges::data( r );
-				for( std::size_t n = 0; n < sz; ++n ) {
-					self_ptr[n] = static_cast<T>( in_ptr[n] );
-				}
-				self.remove_prefix_unsafe( sz );
-				return self;
-			}
-
-#endif
 	};
 
 	template<std::ranges::contiguous_range R>
