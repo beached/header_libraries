@@ -109,6 +109,13 @@ namespace daw {
 		  : m_first( std::ranges::data( r ) )
 		  , m_size( std::ranges::size( r ) ) {}
 
+		constexpr output_span( std::ranges::contiguous_range auto &r,
+		                       std::size_t count )
+		  : m_first( std::ranges::data( r ) )
+		  , m_size( count ) {
+			daw_ensure( count <= std::ranges::size( r ) );
+		}
+
 		constexpr pointer data( ) {
 			return m_first;
 		}
