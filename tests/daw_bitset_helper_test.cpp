@@ -7,6 +7,7 @@
 //
 
 #include "daw/daw_bitset_helper.h"
+#include "daw/daw_do_not_optimize.h"
 
 #include <daw/daw_cpp_feature_check.h>
 #include <daw/daw_ensure.h>
@@ -14,8 +15,7 @@
 #include <bitset>
 
 int main( ) {
-	DAW_CPP23_CX_BITSET auto const bs0 =
-	  daw::create_bitset_from_set_positions<16>( { 1, 2, 5, 10 } );
+	auto const bs0 = daw::create_bitset_from_set_positions<16>( { 1, 2, 5, 10 } );
 	daw_ensure( bs0.count( ) == 4 );
 	daw_ensure( bs0.test( 1 ) );
 	daw_ensure( bs0.test( 2 ) );
@@ -23,7 +23,7 @@ int main( ) {
 	daw_ensure( bs0.test( 10 ) );
 
 	enum class EPos { a, b, c, d, e, f };
-	DAW_CPP23_CX_BITSET auto const bs1 =
+	auto const bs1 =
 	  daw::create_bitset_from_set_positions<4>( { EPos::a, EPos::d } );
 	daw_ensure( bs1.count( ) == 2 );
 	daw_ensure( bs1.test( static_cast<unsigned>( EPos::a ) ) );
@@ -43,4 +43,9 @@ int main( ) {
 	static_assert( bs3.test( static_cast<unsigned>( EPos::a ) ) );
 	static_assert( bs3.test( static_cast<unsigned>( EPos::d ) ) );
 #endif
+	auto const bs4 = daw::create_bitset_from_set_positions<4>( EPos::a, EPos::d );
+	daw::do_not_optimize( ( bs4 ) );
+	daw_ensure( bs4.count( ) == 2 );
+	daw_ensure( bs4.test( static_cast<unsigned>( EPos::a ) ) );
+	daw_ensure( bs4.test( static_cast<unsigned>( EPos::d ) ) );
 }
