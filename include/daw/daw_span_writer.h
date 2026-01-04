@@ -28,8 +28,8 @@ namespace daw {
 	/// @return out.subspan( sizeof...( values ) )
 	template<typename T>
 	[[nodiscard]] constexpr std::span<T>
-	span_writer( std::span<T> out,
-	             daw::explicitly_convertible_to<T> auto &&...values ) {
+	write_to_span( std::span<T> out,
+	               daw::explicitly_convertible_to<T> auto &&...values ) {
 		if constexpr( sizeof...( values ) == 0 ) {
 			return out;
 		}
@@ -51,8 +51,8 @@ namespace daw {
 	requires(
 	  std::ranges::contiguous_range<R>
 	    and daw::explicitly_convertible_to<std::ranges::range_reference_t<R>, T> )
-	  [[nodiscard]] constexpr std::span<T> span_writer( std::span<T> out,
-	                                                    R const &r ) {
+	  [[nodiscard]] constexpr std::span<T> write_to_span( std::span<T> out,
+	                                                      R const &r ) {
 		auto const sz = std::ranges::size( r );
 		daw_ensure( sz <= out.size( ) );
 		T *DAW_RESTRICT out_ptr = out.data( );
@@ -72,7 +72,7 @@ namespace daw {
 	/// The two ranges cannot overlap and str must have a trailing 0
 	template<typename T, std::size_t N>
 	requires( daw::explicitly_convertible_to<char, T> )
-	  [[nodiscard]] constexpr std::span<T> span_writer_ntz(
+	  [[nodiscard]] constexpr std::span<T> write_to_span_ntz(
 	    std::span<T> out, char const ( &str )[N] ) {
 		daw_ensure( str[N - 1] == '\0' );
 		auto const sz = N - 1;
@@ -87,7 +87,7 @@ namespace daw {
 
 	template<typename T>
 	requires( not std::is_const_v<T> and not std::is_reference_v<T> ) //
-	  struct output_span {
+	  struct span_writer {
 		using pointer = T *;
 		using const_pointer = T const *;
 		using reference = T &;
@@ -103,13 +103,13 @@ namespace daw {
 		}
 
 	public:
-		output_span( ) = default;
+		span_writer( ) = default;
 
-		constexpr output_span( std::ranges::contiguous_range auto &r )
+		constexpr span_writer( std::ranges::contiguous_range auto &r )
 		  : m_first( std::ranges::data( r ) )
 		  , m_size( std::ranges::size( r ) ) {}
 
-		constexpr output_span( std::ranges::contiguous_range auto &r,
+		constexpr span_writer( std::ranges::contiguous_range auto &r,
 		                       std::size_t count )
 		  : m_first( std::ranges::data( r ) )
 		  , m_size( count ) {
@@ -154,20 +154,20 @@ namespace daw {
 			return m_first[n];
 		}
 
-		constexpr output_span subspan( std::size_t n ) const {
+		constexpr span_writer subspan( std::size_t n ) const {
 			daw_ensure( n <= m_size );
-			return output_span{ .m_first = m_first + static_cast<std::ptrdiff_t>( n ),
+			return span_writer{ .m_first = m_first + static_cast<std::ptrdiff_t>( n ),
 			                    .m_size = m_size - n };
 		}
 
-		constexpr output_span &remove_prefix( std::size_t n ) {
+		constexpr span_writer &remove_prefix( std::size_t n ) {
 			daw_ensure( n <= m_size );
 			m_first += static_cast<std::ptrdiff_t>( n );
 			m_size -= n;
 			return *this;
 		}
 
-		constexpr output_span &
+		constexpr span_writer &
 		write( this auto &self,
 		       daw::explicitly_convertible_to<T> auto &&...values ) {
 			if constexpr( sizeof...( values ) == 0 ) {
@@ -185,7 +185,7 @@ namespace daw {
 		requires(
 		  std::ranges::contiguous_range<R> and daw::explicitly_convertible_to<
 		    std::ranges::range_reference_t<R>, T> ) //
-		  constexpr output_span &write( this auto &self, R const &r ) {
+		  constexpr span_writer &write( this auto &self, R const &r ) {
 			auto const sz = std::ranges::size( r );
 			daw_ensure( sz <= self.m_size );
 			T *DAW_RESTRICT self_ptr = self.m_first;
@@ -199,7 +199,7 @@ namespace daw {
 
 		template<std::size_t N>
 		requires( daw::explicitly_convertible_to<char, T> ) //
-		  constexpr output_span &write_ntz( this auto &self,
+		  constexpr span_writer &write_ntz( this auto &self,
 		                                    char const ( &str )[N] ) {
 			daw_ensure( str[N - 1] == '\0' );
 			auto const sz = N - 1;
@@ -215,6 +215,8 @@ namespace daw {
 	};
 
 	template<std::ranges::contiguous_range R>
-	output_span( R ) -> output_span<std::ranges::range_value_t<R>>;
+	span_writer( R ) -> span_writer<std::ranges::range_value_t<R>>;
 
+	template<std::ranges::contiguous_range R>
+	span_writer( R, std::size_t ) -> span_writer<std::ranges::range_value_t<R>>;
 } // namespace daw
