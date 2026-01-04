@@ -655,7 +655,6 @@ namespace tests {
 } // namespace tests
 
 int main( ) {
-	/*
 	tests::test001( );
 	tests::test002( );
 	tests::test003( );
@@ -693,7 +692,6 @@ int main( ) {
 	tests::test035( );
 	tests::test036( );
 	tests::test037( );
-	*/
 	tests::test038( );
 
 	daw::println( "Done" );

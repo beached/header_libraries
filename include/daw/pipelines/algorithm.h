@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/daw_attributes.h"
+#include "daw/daw_forward_lvalue.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
 #include "daw/pipelines/range.h"
@@ -34,7 +35,8 @@ namespace daw::pipelines {
 				return Sort_t{ DAW_FWD( compare ) };
 			}
 
-			[[nodiscard]] constexpr auto operator( )( Sortable auto &&r ) const {
+			[[nodiscard]] constexpr decltype( auto )
+			operator( )( Sortable auto &&r ) const {
 				std::sort( std::begin( r ),
 				           std::end( r ),
 				           [&]( auto const &lhs, auto const &rhs ) {
@@ -42,7 +44,7 @@ namespace daw::pipelines {
 					                               std::invoke( m_projection, lhs ),
 					                               std::invoke( m_projection, rhs ) );
 				           } );
-				return DAW_FWD( r );
+				return daw::forward_lvalue( r );
 			}
 		};
 		Sort_t( ) -> Sort_t<std::less<>, std::identity>;

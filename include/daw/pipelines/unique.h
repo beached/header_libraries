@@ -146,7 +146,11 @@ namespace daw::pipelines {
 		struct Unique_t {
 			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
 			operator( )( Range auto &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
-				return unique_range{ DAW_FWD( r ) };
+				if constexpr( std::is_rvalue_reference_v<decltype( r )> ) {
+					return unique_range{ DAW_FWD( r ) };
+				} else {
+					return unique_view{ DAW_FWD( r ) };
+				}
 			}
 		};
 	} // namespace pimpl
