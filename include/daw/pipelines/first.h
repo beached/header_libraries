@@ -17,9 +17,11 @@
 #include <type_traits>
 #include <utility>
 
-namespace daw::pipelines {
-	constexpr auto First( ) {
-		return []( Range auto &&r ) DAW_CPP23_STATIC_CALL_OP {
+namespace daw::pipelines::pimpl {
+	struct FirstFn {
+		explicit FirstFn( ) = default;
+		DAW_CPP23_STATIC_CALL_OP constexpr auto
+		operator( )( Range auto &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
 			auto f = std::begin( r );
 			auto l = std::end( r );
 			using ref_t = daw::iter_reference_t<decltype( f )>;
@@ -38,6 +40,12 @@ namespace daw::pipelines {
 				return std::optional<result_t>( );
 			}
 			return std::optional<result_t>( std::in_place, *f );
-		};
+		}
+	};
+} // namespace daw::pipelines::pimpl
+
+namespace daw::pipelines {
+	constexpr pimpl::FirstFn First( ) {
+		return pimpl::FirstFn{ };
 	}
 } // namespace daw::pipelines
