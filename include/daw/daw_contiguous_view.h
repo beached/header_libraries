@@ -8,12 +8,12 @@
 
 #pragma once
 
-#include "daw_concepts.h"
-#include "daw_consteval.h"
-#include "daw_data_end.h"
-#include "daw_utility.h"
-#include "impl/daw_view_tags.h"
-#include "wrap_iter.h"
+#include "daw/daw_concepts.h"
+#include "daw/daw_consteval.h"
+#include "daw/daw_data_end.h"
+#include "daw/daw_utility.h"
+#include "daw/impl/daw_view_tags.h"
+#include "daw/wrap_iter.h"
 
 #include <algorithm>
 #include <cassert>
@@ -45,7 +45,8 @@ namespace daw {
 		pointer m_last = nullptr;
 
 	public:
-		contiguous_view( ) = default;
+		explicit contiguous_view( ) = default;
+
 		constexpr contiguous_view( contiguous_view &other ) noexcept
 		  : m_first( other.m_first )
 		  , m_last( other.m_last ) {}
@@ -69,6 +70,15 @@ namespace daw {
 		  ExplicitConv ) constexpr contiguous_view( Container &&c ) noexcept
 		  : m_first( std::data( c ) )
 		  , m_last( daw::data_end( c ) ) {}
+
+		template<ContiguousContainerOf<value_type> Container>
+		requires( not_cvref_of<contiguous_view, Container> ) explicit(
+		  ExplicitConv ) constexpr contiguous_view( Container &&c,
+		                                            std::size_t count ) noexcept
+		  : m_first( std::data( c ) )
+		  , m_last( std::next( m_first, static_cast<difference_type>( count ) ) ) {
+			daw_ensure( count <= std::size( c ) );
+		}
 
 		template<constructible_from<pointer, size_type> Container>
 		explicit constexpr operator Container( ) const noexcept {
@@ -226,7 +236,7 @@ namespace daw {
 		}
 
 		constexpr void remove_prefix( std::size_t count ) noexcept {
-			count = ( std::min )( count, size( ) );
+			count = (std::min)( count, size( ) );
 			m_first += count;
 		}
 
@@ -241,7 +251,7 @@ namespace daw {
 		}
 
 		constexpr void remove_suffix( std::size_t count ) noexcept {
-			count = ( std::min )( count, size( ) );
+			count = (std::min)( count, size( ) );
 			m_last -= count;
 		}
 
@@ -397,8 +407,8 @@ namespace daw {
 
 		[[nodiscard]] friend constexpr bool operator<( contiguous_view const &x,
 		                                               contiguous_view const &y ) {
-			return std::lexicographical_compare( x.data( ), x.data_end( ), y.data( ),
-			                                     y.data_end( ) );
+			return std::lexicographical_compare(
+			  x.data( ), x.data_end( ), y.data( ), y.data_end( ) );
 		}
 
 		[[nodiscard]] friend constexpr bool operator>( contiguous_view const &x,
@@ -593,7 +603,7 @@ namespace daw {
 		}
 
 		constexpr void remove_prefix( std::size_t count ) noexcept {
-			count = ( std::min )( count, size( ) );
+			count = (std::min)( count, size( ) );
 			m_first += count;
 		}
 
@@ -608,7 +618,7 @@ namespace daw {
 		}
 
 		constexpr void remove_suffix( std::size_t count ) noexcept {
-			count = ( std::min )( count, size( ) );
+			count = (std::min)( count, size( ) );
 			m_last -= count;
 		}
 
@@ -764,8 +774,8 @@ namespace daw {
 
 		[[nodiscard]] friend constexpr bool operator<( contiguous_view const &x,
 		                                               contiguous_view const &y ) {
-			return std::lexicographical_compare( x.data( ), x.data_end( ), y.data( ),
-			                                     y.data_end( ) );
+			return std::lexicographical_compare(
+			  x.data( ), x.data_end( ), y.data( ), y.data_end( ) );
 		}
 
 		[[nodiscard]] friend constexpr bool operator>( contiguous_view const &x,
@@ -794,8 +804,15 @@ namespace daw {
 	contiguous_view( Container &&c )
 	  -> contiguous_view<std::remove_reference_t<decltype( *std::data( c ) )>>;
 
+	template<ContiguousContainer Container>
+	contiguous_view( Container &&c, std::size_t )
+	  -> contiguous_view<std::remove_reference_t<decltype( *std::data( c ) )>>;
+
 	template<typename T, std::size_t N>
 	contiguous_view( T ( & )[N] ) -> contiguous_view<T>;
+
+	template<typename T, std::size_t N>
+	contiguous_view( T ( & )[N], std::size_t ) -> contiguous_view<T>;
 
 } // namespace daw
 DAW_UNSAFE_BUFFER_FUNC_STOP
