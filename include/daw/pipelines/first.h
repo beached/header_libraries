@@ -18,8 +18,9 @@
 #include <utility>
 
 namespace daw::pipelines::pimpl {
-	struct FirstFn {
-		explicit FirstFn( ) = default;
+	struct FirstRefFn {
+		explicit FirstRefFn( ) = default;
+
 		DAW_CPP23_STATIC_CALL_OP constexpr auto
 		operator( )( Range auto &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
 			auto f = std::begin( r );
@@ -42,9 +43,28 @@ namespace daw::pipelines::pimpl {
 			return std::optional<result_t>( std::in_place, *f );
 		}
 	};
+	struct FirstFn {
+		explicit FirstFn( ) = default;
+
+		DAW_CPP23_STATIC_CALL_OP constexpr auto
+		operator( )( Range auto &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			auto f = std::begin( r );
+			auto l = std::end( r );
+			using ref_t = daw::iter_reference_t<decltype( f )>;
+			using result_t = std::remove_cvref_t<ref_t>;
+			if( f == l ) {
+				return std::optional<result_t>( );
+			}
+			return std::optional<result_t>( std::in_place, *f );
+		}
+	};
 } // namespace daw::pipelines::pimpl
 
 namespace daw::pipelines {
+	constexpr pimpl::FirstRefFn FirstRef( ) {
+		return pimpl::FirstRefFn{ };
+	}
+
 	constexpr pimpl::FirstFn First( ) {
 		return pimpl::FirstFn{ };
 	}

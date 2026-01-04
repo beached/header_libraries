@@ -614,16 +614,35 @@ namespace tests {
 		                             Reverse,
 		                             DropWhile( is_control_or_space ),
 		                             Reverse,
-		                             First );
+		                             FirstRef );
 		daw_ensure( p.has_value( ) and p.value( ) == 'H' );
 	}
 
 	DAW_ATTRIB_NOINLINE void test035( ) {
 		char buff[] = "Hello";
-	  auto p = pipeline( buff, First );
+		auto p = pipeline( buff, FirstRef );
 		daw_ensure( p.has_value( ) and p.value( ) == 'H' );
 		buff[0] = 'h';
 		daw_ensure( p.value( ) == 'h' );
+	}
+
+	DAW_ATTRIB_NOINLINE void test036( ) {
+		constexpr daw::string_view s = " Hello ";
+		constexpr auto p = pipeline( s,
+		                             DropWhile( is_control_or_space ),
+		                             Reverse,
+		                             DropWhile( is_control_or_space ),
+		                             Reverse,
+		                             First );
+		daw_ensure( p.has_value( ) and p.value( ) == 'H' );
+	}
+
+	DAW_ATTRIB_NOINLINE void test037( ) {
+		char buff[] = "Hello";
+		auto p = pipeline( buff, First );
+		daw_ensure( p.has_value( ) and p.value( ) == 'H' );
+		buff[0] = 'h';
+		daw_ensure( p.value( ) == 'H' );
 	}
 } // namespace tests
 
@@ -663,6 +682,8 @@ int main( ) {
 	tests::test033( );
 	tests::test034( );
 	tests::test035( );
+	tests::test036( );
+	tests::test037( );
 
 	daw::println( "Done" );
 }
