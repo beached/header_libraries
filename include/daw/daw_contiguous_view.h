@@ -11,6 +11,7 @@
 #include "daw/daw_concepts.h"
 #include "daw/daw_consteval.h"
 #include "daw/daw_data_end.h"
+#include "daw/daw_ensure.h"
 #include "daw/daw_utility.h"
 #include "daw/impl/daw_view_tags.h"
 #include "daw/wrap_iter.h"
@@ -27,7 +28,8 @@ namespace daw {
 	struct contiguous_view;
 
 	template<typename T, bool ExplicitConv>
-	requires( not std::is_const_v<T> ) struct contiguous_view<T, ExplicitConv> {
+	requires( not std::is_const_v<T> ) //
+	  struct contiguous_view<T, ExplicitConv> {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
@@ -428,8 +430,8 @@ namespace daw {
 	};
 
 	template<typename T, bool ExplicitConv>
-	requires( std::is_const_v<T> ) struct contiguous_view<T, ExplicitConv> {
-
+	requires( std::is_const_v<T> ) //
+	  struct contiguous_view<T, ExplicitConv> {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
@@ -467,6 +469,15 @@ namespace daw {
 		  ExplicitConv ) constexpr contiguous_view( Container &&c ) noexcept
 		  : m_first( std::data( c ) )
 		  , m_last( daw::data_end( c ) ) {}
+
+		template<ContiguousContainerOf<value_type> Container>
+		requires( not_cvref_of<contiguous_view, Container> ) explicit(
+		  ExplicitConv ) constexpr contiguous_view( Container &&c,
+		                                            std::size_t count ) noexcept
+		  : m_first( std::data( c ) )
+		  , m_last( std::next( m_first, static_cast<difference_type>( count ) ) ) {
+			daw_ensure( count <= std::size( c ) );
+		}
 
 		template<constructible_from<pointer, size_type> Container>
 		explicit constexpr operator Container( ) const noexcept {
