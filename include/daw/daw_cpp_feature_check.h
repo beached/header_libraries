@@ -236,7 +236,9 @@ inline constexpr bool daw_has_cx_cmath = false;
 #endif
 
 #if defined( DAW_HAS_CPP23_CONSTEXPR_BITSET )
-#define DAW_CPP23_CX_BITSET_CX constexpr
+#define DAW_CPP23_CX_BITSET_FN constexpr
+#define DAW_CPP23_CX_BITSET constexpr
 #else
-#define DAW_CPP23_CX_BITSET_CX inline
+#define DAW_CPP23_CX_BITSET_FN inline
+#define DAW_CPP23_CX_BITSET
 #endif

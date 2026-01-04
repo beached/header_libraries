@@ -19,7 +19,7 @@
 namespace daw {
 	namespace create_bs_impl {
 		template<std::size_t N>
-		DAW_CPP23_CX_BITSET_CX auto
+		DAW_CPP23_CX_BITSET_FN auto
 		create_bitset_from_set_positions( auto const &r ) {
 			auto result = std::bitset<N>{ };
 			using value_t =
@@ -38,12 +38,12 @@ namespace daw {
 	template<std::size_t N, typename R>
 	requires( std::ranges::range<R>
 	            and daw::traits::IntegerEnum<std::ranges::range_value_t<R>> ) //
-	  DAW_CPP23_CX_BITSET_CX auto create_bitset_from_set_positions( R const &r ) {
+	  DAW_CPP23_CX_BITSET_FN auto create_bitset_from_set_positions( R const &r ) {
 		return create_bs_impl::create_bitset_from_set_positions<N>( r );
 	}
 
 	template<std::size_t N, daw::traits::IntegerEnum T>
-	DAW_CPP23_CX_BITSET_CX auto
+	DAW_CPP23_CX_BITSET_FN auto
 	create_bitset_from_set_positions( std::initializer_list<T> r ) {
 		return create_bs_impl::create_bitset_from_set_positions<N>( r );
 	}
