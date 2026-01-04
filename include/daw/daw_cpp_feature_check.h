@@ -242,3 +242,7 @@ inline constexpr bool daw_has_cx_cmath = false;
 #define DAW_CPP23_CX_BITSET_FN inline
 #define DAW_CPP23_CX_BITSET
 #endif
+
+#if __cpp_lib_optional >= 202506L
+#define DAW_HAS_CPP26_OPTIONAL_REFS
+#endif

@@ -20,6 +20,7 @@
 #include <array>
 #include <iterator>
 #include <map>
+#include <span>
 #include <string>
 #include <type_traits>
 #include <utility>
@@ -605,6 +606,25 @@ namespace tests {
 		constexpr auto s2 = daw::string_view{ std::data( p ), std::size( p ) };
 		daw_ensure( s2 == "Hello" );
 	}
+
+	DAW_ATTRIB_NOINLINE void test034( ) {
+		constexpr daw::string_view s = " Hello ";
+		constexpr auto p = pipeline( s,
+		                             DropWhile( is_control_or_space ),
+		                             Reverse,
+		                             DropWhile( is_control_or_space ),
+		                             Reverse,
+		                             First );
+		daw_ensure( p.has_value( ) and p.value( ) == 'H' );
+	}
+
+	DAW_ATTRIB_NOINLINE void test035( ) {
+		char buff[] = "Hello";
+	  auto p = pipeline( buff, First );
+		daw_ensure( p.has_value( ) and p.value( ) == 'H' );
+		buff[0] = 'h';
+		daw_ensure( p.value( ) == 'h' );
+	}
 } // namespace tests
 
 int main( ) {
@@ -641,6 +661,8 @@ int main( ) {
 	tests::test031( );
 	tests::test032( );
 	tests::test033( );
+	tests::test034( );
+	tests::test035( );
 
 	daw::println( "Done" );
 }

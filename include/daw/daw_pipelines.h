@@ -16,6 +16,7 @@
 #include "daw/pipelines/every.h"
 #include "daw/pipelines/filter.h"
 #include "daw/pipelines/find.h"
+#include "daw/pipelines/first.h"
 #include "daw/pipelines/flatten.h"
 #include "daw/pipelines/foreach.h"
 #include "daw/pipelines/generate.h"
