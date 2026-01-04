@@ -230,13 +230,13 @@ inline constexpr bool daw_has_cx_cmath = false;
 #endif
 
 #if defined( __cpp_lib_constexpr_bitset )
-#if __cpp_lib_constexpr_bitset >= 202207L
+#if __cpp_lib_constexpr_bitset >= 202202L
 #define DAW_HAS_CPP23_CONSTEXPR_BITSET 1
 #endif
 #endif
 
 #if defined( DAW_HAS_CPP23_CONSTEXPR_BITSET )
-#define DAW_CPP23_CONSTEXPR_BITSET_CX constexpr
+#define DAW_CPP23_CX_BITSET_CX constexpr
 #else
 #define DAW_CPP23_CX_BITSET_CX inline
 #endif
