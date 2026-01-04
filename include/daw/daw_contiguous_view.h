@@ -805,28 +805,26 @@ namespace daw {
 		}
 	};
 
-	template<typename T>
-	contiguous_view( T *, T * ) -> contiguous_view<T>;
+	template<Pointers P>
+	contiguous_view( P, P ) -> contiguous_view<std::remove_pointer_t<P>>;
 
-	template<typename T>
-	contiguous_view( T *, std::size_t ) -> contiguous_view<T>;
+	template<Pointers P, IntegralStd SizeT>
+	contiguous_view( P, SizeT ) -> contiguous_view<std::remove_pointer_t<P>>;
 
 	template<ContiguousContainer Container>
 	contiguous_view( Container &&c ) -> contiguous_view<std::conditional_t<
 	  std::is_const_v<std::remove_reference_t<Container>>,
 	  daw::range_value_t<Container> const, daw::range_value_t<Container>>>;
 
-	template<ContiguousContainer Container>
-	contiguous_view( Container &&c, std::size_t )
-	  -> contiguous_view<std::conditional_t<
-	    std::is_const_v<std::remove_reference_t<Container>>,
-	    daw::range_value_t<Container> const, daw::range_value_t<Container>>>;
+	template<ContiguousContainer Container, IntegralStd SizeT>
+	contiguous_view( Container &&c, SizeT ) -> contiguous_view<std::conditional_t<
+	  std::is_const_v<std::remove_reference_t<Container>>,
+	  daw::range_value_t<Container> const, daw::range_value_t<Container>>>;
 
 	template<typename T, std::size_t N>
 	contiguous_view( T ( & )[N] ) -> contiguous_view<T>;
 
 	template<typename T, std::size_t N>
 	contiguous_view( T ( & )[N], std::size_t ) -> contiguous_view<T>;
-
 } // namespace daw
 DAW_UNSAFE_BUFFER_FUNC_STOP

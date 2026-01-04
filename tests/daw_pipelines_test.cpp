@@ -644,9 +644,18 @@ namespace tests {
 		buff[0] = 'h';
 		daw_ensure( p.value( ) == 'H' );
 	}
+
+	DAW_ATTRIB_NOINLINE void test038( ) {
+		constexpr auto values = std::array{ 1, 5, 5, 10, 32 };
+		auto const unique_values =
+		  pipeline( values, Copy, Sort, Unique, To<std::vector> );
+		daw_ensure( unique_values.size( ) == 4 );
+		daw_ensure( unique_values == std::vector{ 1, 5, 10, 32 } );
+	}
 } // namespace tests
 
 int main( ) {
+	/*
 	tests::test001( );
 	tests::test002( );
 	tests::test003( );
@@ -684,6 +693,8 @@ int main( ) {
 	tests::test035( );
 	tests::test036( );
 	tests::test037( );
+	*/
+	tests::test038( );
 
 	daw::println( "Done" );
 }

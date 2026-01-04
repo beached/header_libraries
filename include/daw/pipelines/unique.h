@@ -100,11 +100,53 @@ namespace daw::pipelines {
 	template<typename I>
 	unique_view( I ) -> unique_view<I>;
 
+	template<Range R>
+	struct unique_range {
+		using value_type = daw::range_value_t<R>;
+		static_assert( requires( value_type const &v ) { v == v; } );
+		using iterator = unique_view<daw::iterator_t<R>>;
+
+	private:
+		R m_range;
+
+	public:
+		explicit constexpr unique_range( R const &r ) noexcept
+		  : m_range{ r } {}
+
+		explicit constexpr unique_range( R &&r ) noexcept
+		  : m_range{ std::move( r ) } {}
+
+		[[nodiscard]] constexpr iterator begin( ) {
+			return iterator{ std::begin( m_range ), std::end( m_range ) };
+		}
+
+		[[nodiscard]] constexpr iterator begin( ) const {
+			return iterator{ std::begin( m_range ), std::end( m_range ) };
+		}
+
+		[[nodiscard]] constexpr iterator end( ) {
+			return iterator{ std::end( m_range ), std::end( m_range ) };
+		}
+
+		[[nodiscard]] constexpr iterator end( ) const {
+			return iterator{ std::end( m_range ), std::end( m_range ) };
+		}
+
+		[[nodiscard]] constexpr friend bool
+		operator==( unique_range const &lhs, unique_range const &rhs ) = default;
+
+		[[nodiscard]] constexpr friend bool
+		operator!=( unique_range const &lhs, unique_range const &rhs ) = default;
+	};
+
+	template<Range R>
+	unique_range( R ) -> unique_range<R>;
+
 	namespace pimpl {
 		struct Unique_t {
 			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
 			operator( )( Range auto &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
-				return unique_view( std::begin( r ), std::end( r ) );
+				return unique_range{ DAW_FWD( r ) };
 			}
 		};
 	} // namespace pimpl

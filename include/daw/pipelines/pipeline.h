@@ -38,12 +38,21 @@ namespace daw::pipelines::pimpl {
 	[[nodiscard]] DAW_ATTRIB_FLATINLINE constexpr auto
 	pipeline( std::tuple<Ts...> const &tpfns, R &&r, Ranges &&...ranges ) {
 		using std::get;
+		/*
+		  if constexpr( Idx > 0 ) {
+		    return std::invoke(
+		      get<Idx>( tpfns ),
+		      pipeline<Idx - 1>( tpfns, DAW_FWD( r ), DAW_FWD( ranges )... ) );
+		  } else {
+		    return std::invoke( get<0>( tpfns ), DAW_FWD( r ), DAW_FWD( ranges )...
+		  );
+		  }
+		  */
 		if constexpr( Idx > 0 ) {
-			return std::invoke(
-			  get<Idx>( tpfns ),
+			return get<Idx>( tpfns )(
 			  pipeline<Idx - 1>( tpfns, DAW_FWD( r ), DAW_FWD( ranges )... ) );
 		} else {
-			return std::invoke( get<0>( tpfns ), DAW_FWD( r ), DAW_FWD( ranges )... );
+			return get<0>( tpfns )( DAW_FWD( r ), DAW_FWD( ranges )... );
 		}
 	}
 
