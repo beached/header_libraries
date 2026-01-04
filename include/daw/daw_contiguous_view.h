@@ -801,12 +801,15 @@ namespace daw {
 	contiguous_view( T *, std::size_t ) -> contiguous_view<T>;
 
 	template<ContiguousContainer Container>
-	contiguous_view( Container &&c )
-	  -> contiguous_view<std::remove_reference_t<decltype( *std::data( c ) )>>;
+	contiguous_view( Container &&c ) -> contiguous_view<std::conditional_t<
+	  std::is_const_v<std::remove_reference_t<Container>>,
+	  daw::range_value_t<Container> const, daw::range_value_t<Container>>>;
 
 	template<ContiguousContainer Container>
 	contiguous_view( Container &&c, std::size_t )
-	  -> contiguous_view<std::remove_reference_t<decltype( *std::data( c ) )>>;
+	  -> contiguous_view<std::conditional_t<
+	    std::is_const_v<std::remove_reference_t<Container>>,
+	    daw::range_value_t<Container> const, daw::range_value_t<Container>>>;
 
 	template<typename T, std::size_t N>
 	contiguous_view( T ( & )[N] ) -> contiguous_view<T>;

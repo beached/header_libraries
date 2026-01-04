@@ -6,7 +6,9 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include <daw/daw_contiguous_view.h>
+#include "daw/daw_contiguous_view.h"
+
+#include <daw/daw_ensure.h>
 
 #include <numeric>
 
@@ -15,6 +17,9 @@ DAW_CONSTEVAL int foo( daw::contiguous_view<int const> vals ) {
 }
 
 int main( ) {
-	constexpr int vals[] = { 1, 2, 3 };
-	return foo( vals ) == 6 ? 0 : foo( vals );
+	static constexpr int vals[] = { 1, 2, 3 };
+	constexpr auto cv = daw::contiguous_view( vals );
+	static_assert( foo( cv ) == 6 );
+	constexpr auto vals2 = std::array{ 1, 2, 3 };
+	static_assert( daw::contiguous_view( vals2 )[0] == 1 );
 }
