@@ -157,10 +157,11 @@ set( CPP20_TEST_SOURCES
 		 daw_formatters_test.cpp
 		 daw_from_string_test.cpp
 		 daw_iter_view_test.cpp
+		 daw_poly_value_test.cpp
+		 daw_maybe_unique_ptr_test.cpp
 		 daw_move_only_test.cpp
 		 daw_named_params_test.cpp
 		 daw_observer_ptr_test.cpp
-		 daw_poly_value_test.cpp
 		 )
 
 set( CPP20_NOT_MSVC_TEST_SOURCES
