@@ -13,6 +13,7 @@
 #include "daw/pipelines/concat.h"
 #include "daw/pipelines/copy.h"
 #include "daw/pipelines/drop.h"
+#include "daw/pipelines/elements.h"
 #include "daw/pipelines/enumerate.h"
 #include "daw/pipelines/every.h"
 #include "daw/pipelines/filter.h"
