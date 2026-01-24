@@ -660,17 +660,34 @@ namespace tests {
 	DAW_ATTRIB_NOINLINE void test039( ) {
 		auto z0 = Zip( prices, costs );
 
-		auto e0 = elements<1>( z0 );
+		auto e0 = Elements<1>( z0 );
 		daw_ensure( std::ranges::distance( e0 ) == costs.size( ) );
 		auto eb0 = std::begin( e0 );
 		for( std::size_t n = 0; n < costs.size( ); ++n ) {
 			daw_ensure( std::get<0>( eb0[n] ) == costs[n] );
 		}
-		auto e1 = elements<0>( z0 );
+		auto e1 = Elements<0>( z0 );
 		auto eb1 = std::begin( e1 );
 		daw_ensure( std::ranges::distance( e1 ) == prices.size( ) );
 		for( std::size_t n = 0; n < prices.size( ); ++n ) {
 			daw_ensure( std::get<0>( eb1[n] ) == prices[n] );
+		}
+	}
+
+	DAW_ATTRIB_NOINLINE void test040( ) {
+		auto z0 = Zip( prices, costs );
+
+		auto e0 = Element<1>( z0 );
+		daw_ensure( std::ranges::distance( e0 ) == costs.size( ) );
+		auto eb0 = std::begin( e0 );
+		for( std::size_t n = 0; n < costs.size( ); ++n ) {
+			daw_ensure( eb0[n] == costs[n] );
+		}
+		auto e1 = Element<0>( z0 );
+		auto eb1 = std::begin( e1 );
+		daw_ensure( std::ranges::distance( e1 ) == prices.size( ) );
+		for( std::size_t n = 0; n < prices.size( ); ++n ) {
+			daw_ensure( eb1[n] == prices[n] );
 		}
 	}
 } // namespace tests
@@ -715,6 +732,7 @@ int main( ) {
 	tests::test037( );
 	tests::test038( );
 	tests::test039( );
+	tests::test040( );
 
 	daw::println( "Done" );
 }
