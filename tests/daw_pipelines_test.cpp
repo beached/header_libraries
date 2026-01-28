@@ -661,7 +661,8 @@ namespace tests {
 		auto z0 = Zip( prices, costs );
 
 		auto e0 = Elements<1>( z0 );
-		daw_ensure( std::ranges::distance( e0 ) == costs.size( ) );
+		daw_ensure( static_cast<std::size_t>( std::ranges::distance( e0 ) ) ==
+		            costs.size( ) );
 		auto eb0 = std::begin( e0 );
 		for( std::size_t n = 0; n < costs.size( ); ++n ) {
 			daw_ensure( std::get<0>( eb0[n] ) == costs[n] );

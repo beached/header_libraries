@@ -22,7 +22,7 @@ DAW_ATTRIB_NOINLINE void test1_impl( std::array<char, 256> &buff,
 	  buff, "Hello World.......Hello little letters:" );
 	sp = daw::write_to_span( sp, 'a', 'b', 'c', 0 );
 	constexpr auto const expected_sz =
-	  buff.size( ) -
+	  256 -
 	  ( ( daw::string_view( "Hello World.......Hello little letters:" ).size( ) +
 	      4 /*second write_to_span*/ ) );
 	daw_ensure( sp.size( ) == expected_sz );
