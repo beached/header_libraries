@@ -690,6 +690,25 @@ namespace tests {
 			daw_ensure( eb1[n] == prices[n] );
 		}
 	}
+
+	DAW_ATTRIB_NOINLINE void test041( ) {
+		constexpr auto values = std::array{ 1, 5, 5, 10, 32 };
+		auto cp = pipeline( values,
+		                    Map( []( int x ) {
+			                    static int map_count = 0;
+			                    ++map_count;
+			                    daw::println( "MapCount = {}", map_count );
+			                    return x * x;
+		                    } ),
+		                    CacheLast );
+		auto first = std::begin( cp );
+		auto last = std::end( cp );
+		while( first != last ) {
+			daw::println( "{}", *first );
+			daw::println( "{}", *first );
+			++first;
+		}
+	}
 } // namespace tests
 
 int main( ) {
@@ -733,6 +752,7 @@ int main( ) {
 	tests::test038( );
 	tests::test039( );
 	tests::test040( );
+	tests::test041( );
 
 	daw::println( "Done" );
 }

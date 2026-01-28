@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/pipelines/algorithm.h"
+#include "daw/pipelines/cache_last_view.h"
 #include "daw/pipelines/chunk.h"
 #include "daw/pipelines/concat.h"
 #include "daw/pipelines/copy.h"
