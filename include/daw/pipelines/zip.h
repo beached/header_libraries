@@ -148,14 +148,14 @@ namespace daw::pipelines {
 		// bidirectional iterator interface
 		constexpr zip_iterator &operator--( )
 		  requires( BidirectionalIteratorTag<iterator_category> ) {
-			decrement( m_iters );
+			decrement( zip_indices( ) );
 			return *this;
 		}
 
 		[[nodiscard]] constexpr zip_iterator operator--( int )
 		  requires( BidirectionalIteratorTag<iterator_category> ) {
 			auto tmp = *this;
-			decrement( m_iters );
+			decrement( zip_indices( ) );
 			return tmp;
 		}
 
