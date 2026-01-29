@@ -35,8 +35,7 @@ namespace daw {
 	  typename std::iterator_traits<daw::remove_cvref_t<It>>::difference_type;
 
 	template<typename It>
-	using iter_const_reference_t =
-	  std::common_reference_t<iter_value_t<It> const &&, iter_reference_t<It>>;
+	using iter_const_reference_t = decltype( *std::declval<It const &>( ) );
 
 	template<typename It>
 	using iter_category_t =
@@ -44,7 +43,7 @@ namespace daw {
 
 	template<typename It>
 	concept Iterator = requires( It & it ) {
-		{ ++it } -> std::same_as<It &>;
+		{ ++it }->std::same_as<It &>;
 		{ it++ };
 		{ *it };
 	};
