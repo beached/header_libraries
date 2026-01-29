@@ -669,7 +669,8 @@ namespace tests {
 		}
 		auto e1 = Elements<0>( z0 );
 		auto eb1 = std::begin( e1 );
-		daw_ensure( std::ranges::distance( e1 ) == prices.size( ) );
+		daw_ensure( static_cast<std::size_t>( std::ranges::distance( e1 ) ) ==
+		            prices.size( ) );
 		for( std::size_t n = 0; n < prices.size( ); ++n ) {
 			daw_ensure( std::get<0>( eb1[n] ) == prices[n] );
 		}
@@ -679,14 +680,16 @@ namespace tests {
 		auto z0 = Zip( prices, costs );
 
 		auto e0 = Element<1>( z0 );
-		daw_ensure( std::ranges::distance( e0 ) == costs.size( ) );
+		daw_ensure( static_cast<std::size_t>( std::ranges::distance( e0 ) ) ==
+		            costs.size( ) );
 		auto eb0 = std::begin( e0 );
 		for( std::size_t n = 0; n < costs.size( ); ++n ) {
 			daw_ensure( eb0[n] == costs[n] );
 		}
 		auto e1 = Element<0>( z0 );
 		auto eb1 = std::begin( e1 );
-		daw_ensure( std::ranges::distance( e1 ) == prices.size( ) );
+		daw_ensure( static_cast<std::size_t>( std::ranges::distance( e1 ) ) ==
+		            prices.size( ) );
 		for( std::size_t n = 0; n < prices.size( ); ++n ) {
 			daw_ensure( eb1[n] == prices[n] );
 		}
