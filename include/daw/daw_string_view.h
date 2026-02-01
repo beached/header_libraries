@@ -501,7 +501,7 @@ namespace daw {
 			DAW_CPP20_CX_ALLOC c_str_proxy( CharT const *str, std::size_t N ) noexcept
 			  : m_str{ std::basic_string( str, N ) } {
 #if not defined( DAW_STRINGVIEW_NOZTERM_CHECK )
-				daw_dbg_ensure( N == sv2_details::strlen<std::size_t>( str ) );
+				daw_dbg_ensure( N == sv2_details::strlen<std::size_t>( std::get<1>( m_str ).c_str( ) ) );
 #endif
 			}
 
