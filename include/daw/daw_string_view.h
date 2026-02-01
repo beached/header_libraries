@@ -461,6 +461,7 @@ namespace daw {
 		struct zero_terminated_t {
 			explicit zero_terminated_t( ) = default;
 		};
+
 		inline constexpr zero_terminated_t zero_terminated{ };
 
 		// tag type for non zero-terminated overloads
@@ -492,12 +493,12 @@ namespace daw {
 			DAW_CPP20_CX_ALLOC c_str_proxy( CharT const *str, std::size_t N,
 			                                zero_terminated_t ) noexcept
 			  : m_str{ buff_t{ str, N } } {
-				daw_dbg_ensure( N == sv2_details::strlen<CharT>( str ) );
+				daw_dbg_ensure( N == sv2_details::strlen<std::size_t>( str ) );
 			}
 
 			DAW_CPP20_CX_ALLOC c_str_proxy( CharT const *str, std::size_t N ) noexcept
 			  : m_str{ std::basic_string( str, N ) } {
-				daw_dbg_ensure( N == sv2_details::strlen<CharT>( str ) );
+				daw_dbg_ensure( N == sv2_details::strlen<std::size_t>( str ) );
 			}
 
 			template<typename Str>
