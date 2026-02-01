@@ -491,10 +491,14 @@ namespace daw {
 
 			DAW_CPP20_CX_ALLOC c_str_proxy( CharT const *str, std::size_t N,
 			                                zero_terminated_t ) noexcept
-			  : m_str{ buff_t{ str, N } } {}
+			  : m_str{ buff_t{ str, N } } {
+				daw_dbg_ensure( N == sv2_details::strlen<CharT>( str ) );
+			}
 
 			DAW_CPP20_CX_ALLOC c_str_proxy( CharT const *str, std::size_t N ) noexcept
-			  : m_str{ std::basic_string( str, N ) } {}
+			  : m_str{ std::basic_string( str, N ) } {
+				daw_dbg_ensure( N == sv2_details::strlen<CharT>( str ) );
+			}
 
 			template<typename Str>
 			static DAW_CPP20_CX_ALLOC std::basic_string<CharT>
