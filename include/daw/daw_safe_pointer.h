@@ -16,6 +16,7 @@
 #include <daw/stdinc/compare_fn.h>
 #include <daw/stdinc/iterator_traits.h>
 #include <daw/stdinc/remove_cvref.h>
+#include <span>
 #include <type_traits>
 
 #if not defined( DAW_NO_SAFE_POINTER_CHECKS )
