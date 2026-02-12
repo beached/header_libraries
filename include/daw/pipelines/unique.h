@@ -105,6 +105,7 @@ namespace daw::pipelines {
 		using value_type = daw::range_value_t<R>;
 		static_assert( requires( value_type const &v ) { v == v; } );
 		using iterator = unique_view<daw::iterator_t<R>>;
+		using const_iterator = unique_view<daw::const_iterator_t<R>>;
 
 	private:
 		R m_range;
@@ -120,16 +121,16 @@ namespace daw::pipelines {
 			return iterator{ std::begin( m_range ), std::end( m_range ) };
 		}
 
-		[[nodiscard]] constexpr iterator begin( ) const {
-			return iterator{ std::begin( m_range ), std::end( m_range ) };
+		[[nodiscard]] constexpr const_iterator begin( ) const {
+			return const_iterator{ std::begin( m_range ), std::end( m_range ) };
 		}
 
 		[[nodiscard]] constexpr iterator end( ) {
 			return iterator{ std::end( m_range ), std::end( m_range ) };
 		}
 
-		[[nodiscard]] constexpr iterator end( ) const {
-			return iterator{ std::end( m_range ), std::end( m_range ) };
+		[[nodiscard]] constexpr const_iterator end( ) const {
+			return const_iterator{ std::end( m_range ), std::end( m_range ) };
 		}
 
 		[[nodiscard]] constexpr friend bool
@@ -140,7 +141,7 @@ namespace daw::pipelines {
 	};
 
 	template<Range R>
-	unique_range( R ) -> unique_range<R>;
+	unique_range( R && ) -> unique_range<daw::remove_rvalue_ref_t<R>>;
 
 	namespace pimpl {
 		struct Unique_t {

@@ -25,7 +25,7 @@ namespace daw::pipelines::pimpl {
 	template<ForwardRange R>
 	struct flatten_view_end_t {
 		using iterator_t = daw::iterator_t<R>;
-		using sub_iterator_t = daw::iterator_t<daw::iter_value_t<iterator_t>>;
+		using sub_iterator_t = daw::iterator_t<daw::iter_reference_t<iterator_t>>;
 		using iterator_category = std::forward_iterator_tag;
 		using value_type = daw::iter_value_t<sub_iterator_t>;
 		using reference = daw::iter_reference_t<sub_iterator_t>;
@@ -50,7 +50,7 @@ namespace daw::pipelines::pimpl {
 		using end_t = flatten_view_end_t<R>;
 
 		using m_range_t = daw::remove_cvrvref_t<R>;
-		m_range_t m_range;
+		mutable m_range_t m_range;
 		iterator_t m_range_first{ };
 		sub_iterator_t m_cur_first{ };
 
@@ -62,11 +62,11 @@ namespace daw::pipelines::pimpl {
 			return std::begin( m_range );
 		}
 
-		[[nodiscard]] constexpr iterator_end_t<R> raend( ) {
+		[[nodiscard]] constexpr auto raend( ) {
 			return std::end( m_range );
 		}
 
-		[[nodiscard]] constexpr iterator_end_t<R> raend( ) const {
+		[[nodiscard]] constexpr auto raend( ) const {
 			return std::end( m_range );
 		}
 
@@ -93,7 +93,10 @@ namespace daw::pipelines::pimpl {
 	public:
 		explicit flatten_view( ) = default;
 
-		explicit constexpr flatten_view( auto &&r )
+		template<Range U>
+		requires( not std::same_as<std::remove_cvref_t<U>,
+		                           flatten_view> ) //
+		  explicit constexpr flatten_view( U &&r )
 		  : m_range( DAW_FWD( r ) )
 		  , m_range_first( rabegin( ) )
 		  , m_cur_first( m_range_first == raend( )
@@ -152,7 +155,7 @@ namespace daw::pipelines::pimpl {
 		}
 	};
 	template<Range R>
-	flatten_view( R && ) -> flatten_view<R>;
+	flatten_view( R && ) -> flatten_view<daw::remove_rvalue_ref_t<R>>;
 
 	struct Flatten_t {
 		[[nodiscard]] DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr auto

@@ -536,11 +536,11 @@ namespace tests {
 	}
 
 	DAW_ATTRIB_NOINLINE void test030( ) {
-		constexpr auto comma_splitter =
+		static constexpr auto comma_splitter =
 		  pipeline( Split( ',' ), Map( []( daw::Range auto r ) {
 			            return daw::string_view( r ).trim( );
 		            } ) );
-		constexpr auto values = "1a, 2b,3c, 4d ,5e"_sv;
+		static constexpr auto values = "1a, 2b,3c, 4d ,5e"_sv;
 
 		constexpr auto parts = comma_splitter( values );
 		daw::println(
@@ -713,6 +713,16 @@ namespace tests {
 			++first;
 		}
 	}
+
+	DAW_ATTRIB_NOINLINE void test042( ) {
+		auto v = std::vector<std::string>{ "Hello", "World" };
+
+		auto mapper = Map( +[]( std::string &s ) -> char * {
+			return s.data( );
+		} );
+		auto v2 = std::vector<char *>( std::from_range, mapper( v ) );
+		daw_ensure( v2.size( ) == v.size( ) );
+	}
 } // namespace tests
 
 int main( ) {
@@ -757,6 +767,6 @@ int main( ) {
 	tests::test039( );
 	tests::test040( );
 	tests::test041( );
-
+	tests::test042( );
 	daw::println( "Done" );
 }

@@ -19,12 +19,13 @@
 
 namespace daw {
 	template<typename It>
-	using iter_value_t =
-	  typename std::iterator_traits<daw::remove_cvref_t<It>>::value_type;
+	using iter_reference_t = decltype( *std::declval<It>( ) );
 
 	template<typename It>
-	using iter_reference_t =
-	  typename std::iterator_traits<daw::remove_cvref_t<It>>::reference;
+	using iter_const_reference_t = decltype( *std::declval<It const>( ) );
+
+	template<typename It>
+	using iter_value_t = std::remove_cvref_t<iter_reference_t<It>>;
 
 	template<typename It>
 	using iter_pointer_t =
@@ -33,9 +34,6 @@ namespace daw {
 	template<typename It>
 	using iter_difference_t =
 	  typename std::iterator_traits<daw::remove_cvref_t<It>>::difference_type;
-
-	template<typename It>
-	using iter_const_reference_t = decltype( *std::declval<It const &>( ) );
 
 	template<typename It>
 	using iter_category_t =
@@ -169,10 +167,10 @@ namespace daw {
 	};
 
 	template<Range R>
-	using iterator_t = DAW_TYPEOF( std::begin( std::declval<R>( ) ) );
+	using iterator_t = DAW_TYPEOF( std::begin( std::declval<R &>( ) ) );
 
 	template<Range R>
-	using iterator_end_t = DAW_TYPEOF( std::end( std::declval<R>( ) ) );
+	using iterator_end_t = DAW_TYPEOF( std::end( std::declval<R &>( ) ) );
 
 	template<Range R>
 	using const_iterator_t =
