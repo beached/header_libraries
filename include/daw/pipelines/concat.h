@@ -115,7 +115,8 @@ namespace daw::pipelines {
 		}
 	};
 	template<typename... Ranges>
-	concat_view( Ranges &&... ) -> concat_view<Ranges...>;
+	concat_view( Ranges &&... )
+	  -> concat_view<daw::remove_rvalue_ref_t<Ranges>...>;
 
 	namespace pimpl {
 		struct Concat_t {

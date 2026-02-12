@@ -27,7 +27,7 @@ namespace daw::pipelines {
 	struct map_iterator {
 		using iterator_category = daw::iter_category_t<Iterator>;
 		using value_type = daw::remove_cvref_t<std::invoke_result_t<
-		  Fn, std::invoke_result_t<Projection, daw::iter_value_t<Iterator>>>>;
+		  Fn, std::invoke_result_t<Projection, daw::iter_reference_t<Iterator>>>>;
 		using reference = value_type;
 		using const_reference = value_type;
 		using pointer = arrow_proxy<value_type>;
@@ -238,9 +238,9 @@ namespace daw::pipelines {
 			[[nodiscard]] constexpr auto operator( )( auto &&r ) const {
 				using R = DAW_TYPEOF( r );
 				static_assert(
-				  std::invocable<Projection, range_value_t<R>>,
+				  std::invocable<Projection, range_reference_t<R>>,
 				  "Projection must be invocable with the range_value_t<R>" );
-				using projected_t = std::invoke_result_t<Projection, range_value_t<R>>;
+				using projected_t = std::invoke_result_t<Projection, range_reference_t<R>>;
 
 				if constexpr( Range<R> ) {
 					static_assert( std::invocable<Fn, projected_t>,
