@@ -720,7 +720,8 @@ namespace tests {
 		auto mapper = Map( +[]( std::string &s ) -> char * {
 			return s.data( );
 		} );
-		auto v2 = std::vector<char *>( std::from_range, mapper( v ) );
+		auto m = mapper( v );
+		auto v2 = std::vector<char *>( std::begin( m ), std::end( m ) );
 		daw_ensure( v2.size( ) == v.size( ) );
 	}
 } // namespace tests
