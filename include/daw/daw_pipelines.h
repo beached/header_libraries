@@ -9,13 +9,17 @@
 #pragma once
 
 #include "daw/pipelines/algorithm.h"
+#include "daw/pipelines/cache_last_view.h"
 #include "daw/pipelines/chunk.h"
 #include "daw/pipelines/concat.h"
+#include "daw/pipelines/copy.h"
 #include "daw/pipelines/drop.h"
+#include "daw/pipelines/elements.h"
 #include "daw/pipelines/enumerate.h"
 #include "daw/pipelines/every.h"
 #include "daw/pipelines/filter.h"
 #include "daw/pipelines/find.h"
+#include "daw/pipelines/first.h"
 #include "daw/pipelines/flatten.h"
 #include "daw/pipelines/foreach.h"
 #include "daw/pipelines/generate.h"

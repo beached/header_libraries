@@ -48,9 +48,7 @@ namespace daw::pipelines::pimpl {
 		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
 #if defined( __cpp_lib_containers_ranges )
 #if __cpp_lib_containers_ranges >= 202202L
-			if constexpr( requires {
-				              Container( std::from_range, DAW_FWD( r ) );
-			              } ) {
+			if constexpr( requires { Container( std::from_range, DAW_FWD( r ) ); } ) {
 				return Container( std::from_range, DAW_FWD( r ) );
 			} else {
 #endif

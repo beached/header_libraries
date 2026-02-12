@@ -44,3 +44,16 @@ namespace daw::ensure {
 			::daw::ensure::ensure_error( not( __VA_ARGS__ ) ); \
 		}                                                    \
 	} while( false )
+
+#if not defined( NDEBUG )
+#define daw_dbg_ensure( ... )                            \
+	do {                                                   \
+		if( not( __VA_ARGS__ ) ) {                           \
+			::daw::ensure::ensure_error( not( __VA_ARGS__ ) ); \
+		}                                                    \
+	} while( false )
+#else
+#define daw_dbg_ensure( ... ) \
+	do {                        \
+	} while( false )
+#endif

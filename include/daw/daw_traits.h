@@ -937,6 +937,9 @@ namespace daw {
 		std::get<0>( std::declval<Tp>( ) );
 		typename std::tuple_element_t<0, daw::remove_cvref_t<Tp>>;
 	};
+
+	template<typename Tp>
+	concept TupleLike = is_tuple_like_v<Tp>;
 #else
 	template<typename Tp, typename = void>
 	inline constexpr bool is_tuple_like_v = false;

@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw/cpp_17.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
 #include "daw/daw_traits.h"
@@ -115,7 +116,8 @@ namespace daw::pipelines {
 		}
 	};
 	template<typename... Ranges>
-	concat_view( Ranges &&... ) -> concat_view<Ranges...>;
+	concat_view( Ranges &&... )
+	  -> concat_view<daw::remove_rvalue_ref_t<Ranges>...>;
 
 	namespace pimpl {
 		struct Concat_t {

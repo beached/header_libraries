@@ -26,7 +26,7 @@ namespace daw::pipelines::pimpl {
 				              typename daw::remove_cvref_t<
 				                R>::i_am_a_daw_zip_iterator_class;
 			              } ) {
-				return map_view{ std::begin( r ), std::end( r ), []( auto &&tp ) {
+				return map_view{ DAW_FWD( r ), []( auto &&tp ) {
 					                return daw::forward_nonrvalue_as_tuple(
 					                  get<Indices>( DAW_FWD( tp ) )... );
 				                } };
@@ -35,7 +35,7 @@ namespace daw::pipelines::pimpl {
 				static_assert( std::max( { Indices... } ) <
 				                 std::tuple_size_v<range_reference_t<R>>,
 				               "Swizzle - Index out of range of tuple type" );
-				return map_view{ std::begin( r ), std::end( r ), []( auto &&v ) {
+				return map_view{ DAW_FWD( r ), []( auto &&v ) {
 					                return daw::forward_nonrvalue_as_tuple(
 					                  get<Indices>( DAW_FWD( v ) )... );
 				                } };

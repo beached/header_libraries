@@ -228,3 +228,21 @@ inline constexpr bool daw_has_cx_cmath = false;
 #define DAW_HAS_CPP23_MOVE_ONLY_FUNCTION
 #endif
 #endif
+
+#if defined( __cpp_lib_constexpr_bitset )
+#if __cpp_lib_constexpr_bitset >= 202202L
+#define DAW_HAS_CPP23_CONSTEXPR_BITSET 1
+#endif
+#endif
+
+#if defined( DAW_HAS_CPP23_CONSTEXPR_BITSET )
+#define DAW_CPP23_CX_BITSET_FN constexpr
+#define DAW_CPP23_CX_BITSET constexpr
+#else
+#define DAW_CPP23_CX_BITSET_FN inline
+#define DAW_CPP23_CX_BITSET
+#endif
+
+#if __cpp_lib_optional >= 202506L
+#define DAW_HAS_CPP26_OPTIONAL_REFS
+#endif

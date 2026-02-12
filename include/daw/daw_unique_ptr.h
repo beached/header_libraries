@@ -176,12 +176,20 @@ namespace daw {
 			  m_ptr, unique_ptr_del::default_pointer_value_v<T, Deleter> );
 		}
 
-		constexpr deleter_t &get_deleter( ) {
+		constexpr deleter_t &get_deleter( ) & {
 			return *static_cast<Deleter *>( this );
 		}
 
-		constexpr deleter_t const &get_deleter( ) const {
+		constexpr deleter_t const &get_deleter( ) const & {
 			return *static_cast<Deleter const *>( this );
+		}
+
+		constexpr deleter_t &&get_deleter( ) && {
+			return std::move( *static_cast<Deleter *>( this ) );
+		}
+
+		constexpr deleter_t const &&get_deleter( ) const && {
+			return std::move( *static_cast<Deleter const *>( this ) );
 		}
 
 		constexpr void reset( ) noexcept {
@@ -200,7 +208,7 @@ namespace daw {
 			return m_ptr;
 		}
 
-		constexpr pointer * get_out( ) noexcept {
+		constexpr pointer *get_out( ) noexcept {
 			return std::addressof( m_ptr );
 		}
 
