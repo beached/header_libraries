@@ -150,9 +150,9 @@ Functions</h2></td></tr>
 <tr class="memitem:aa5f336380dcea72801aea580f9b2e1b9" id="r_aa5f336380dcea72801aea580f9b2e1b9"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Compare</a>  = std::less&lt;&gt;&gt; </td></tr>
 <tr class="memitem:aa5f336380dcea72801aea580f9b2e1b9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#aa5f336380dcea72801aea580f9b2e1b9">Clamp</a> (T &amp;&amp;lo, std::type_identity_t&lt; T &gt; hi, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Compare</a> &amp;&amp;compare=<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Compare</a>{ })</td></tr>
 <tr class="separator:aa5f336380dcea72801aea580f9b2e1b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c9d9613985333418afde428cc241d48" id="r_a2c9d9613985333418afde428cc241d48"><td class="memTemplParams" colspan="2">template&lt;typename... Ranges&gt; </td></tr>
-<tr class="memitem:a2c9d9613985333418afde428cc241d48"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a2c9d9613985333418afde428cc241d48">concat_view</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &amp;&amp;...) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a>&lt; <a class="el" href="namespacedaw.html#aaf8538a8a89cb447b98789ba8c4501b9">daw::remove_rvalue_ref_t</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;... &gt;</td></tr>
-<tr class="separator:a2c9d9613985333418afde428cc241d48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cbf0ea227ed96188927b0ff9d7734d5" id="r_a7cbf0ea227ed96188927b0ff9d7734d5"><td class="memTemplParams" colspan="2">template&lt;typename... Ranges&gt; </td></tr>
+<tr class="memitem:a7cbf0ea227ed96188927b0ff9d7734d5"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a7cbf0ea227ed96188927b0ff9d7734d5">concat_view</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &amp;&amp;...) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a>&lt; Ranges... &gt;</td></tr>
+<tr class="separator:a7cbf0ea227ed96188927b0ff9d7734d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4de3721245e86ac6a3dfb41a1ab76dbe" id="r_a4de3721245e86ac6a3dfb41a1ab76dbe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a4de3721245e86ac6a3dfb41a1ab76dbe">Contains</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> &amp;&amp;needle)</td></tr>
 <tr class="separator:a4de3721245e86ac6a3dfb41a1ab76dbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c09e9326fb6c14f3f7a3d9ccacf7114" id="r_a7c09e9326fb6c14f3f7a3d9ccacf7114"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a7c09e9326fb6c14f3f7a3d9ccacf7114">Contains</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> &amp;&amp;needle, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> &amp;&amp;compare)</td></tr>
@@ -258,7 +258,7 @@ requires ( <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cca
 <tr class="memitem:ae62d39d46a89122709acda8f2604a108"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#ae62d39d46a89122709acda8f2604a108">range_t</a> (I, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">L</a>) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1range__t.html">range_t</a>&lt; I, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">L</a> &gt;</td></tr>
 <tr class="separator:ae62d39d46a89122709acda8f2604a108"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac22f81b06e08f265bc5552dbf0e705a7" id="r_ac22f81b06e08f265bc5552dbf0e705a7"><td class="memTemplParams" colspan="2">template&lt;Range R&gt; </td></tr>
-<tr class="memitem:ac22f81b06e08f265bc5552dbf0e705a7"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#ac22f81b06e08f265bc5552dbf0e705a7">range_t</a> (R &amp;&amp;) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1range__t.html">range_t</a>&lt; <a class="el" href="namespacedaw.html#ac2931bde2449dd765dc1123f8d10add2">iterator_t</a>&lt; R &gt;, <a class="el" href="namespacedaw.html#aa3fd4737ea8d8c63396eb4fbdd5b041d">iterator_end_t</a>&lt; R &gt; &gt;</td></tr>
+<tr class="memitem:ac22f81b06e08f265bc5552dbf0e705a7"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#ac22f81b06e08f265bc5552dbf0e705a7">range_t</a> (R &amp;&amp;) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1range__t.html">range_t</a>&lt; <a class="el" href="namespacedaw.html#a85959f5d9497c18316b29fdabd756b43">iterator_t</a>&lt; R &gt;, <a class="el" href="namespacedaw.html#ab25dad857d86d201a3e78c6964bba16f">iterator_end_t</a>&lt; R &gt; &gt;</td></tr>
 <tr class="separator:ac22f81b06e08f265bc5552dbf0e705a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ee1965a5eb6b340fe3c5edfe3afc04c" id="r_a1ee1965a5eb6b340fe3c5edfe3afc04c"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Distribution</a>  = std::uniform_int_distribution&lt;std::size_t&gt;, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Engine</a>  = std::mt19937&gt; </td></tr>
 <tr class="memitem:a1ee1965a5eb6b340fe3c5edfe3afc04c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a1ee1965a5eb6b340fe3c5edfe3afc04c">Sample</a> (std::size_t <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">numberToKeep</a>, std::size_t <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">sampleSize</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Engine</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">engine</a>=<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Engine</a>{ std::random_device{ }() })</td></tr>
@@ -412,7 +412,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="chunk_8h_source.html#l00140">140</a> of file <a class="el" href="chunk_8h_source.html">chunk.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="chunk_8h_source.html#l00137">137</a> of file <a class="el" href="chunk_8h_source.html">chunk.h</a>.</p>
 
 </div>
 </div>
@@ -462,8 +462,8 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 
 </div>
 </div>
-<a id="a2c9d9613985333418afde428cc241d48" name="a2c9d9613985333418afde428cc241d48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c9d9613985333418afde428cc241d48">&#9670;&#160;</a></span>concat_view()</h2>
+<a id="a7cbf0ea227ed96188927b0ff9d7734d5" name="a7cbf0ea227ed96188927b0ff9d7734d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7cbf0ea227ed96188927b0ff9d7734d5">&#9670;&#160;</a></span>concat_view()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -475,7 +475,7 @@ template&lt;typename... Ranges&gt; </div>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &amp;&amp;&#160;</td>
           <td class="paramname"><em>...</em></td><td>)</td>
-          <td> -&gt;  <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a>&lt; <a class="el" href="namespacedaw.html#aaf8538a8a89cb447b98789ba8c4501b9">daw::remove_rvalue_ref_t</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;... &gt;</td>
+          <td> -&gt;  <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a>&lt; Ranges... &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1644,7 +1644,7 @@ template&lt;Range R&gt; </div>
           <td>(</td>
           <td class="paramtype">R &amp;&amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
-          <td> -&gt;  <a class="el" href="structdaw_1_1pipelines_1_1range__t.html">range_t</a>&lt; <a class="el" href="namespacedaw.html#ac2931bde2449dd765dc1123f8d10add2">iterator_t</a>&lt; R &gt;, <a class="el" href="namespacedaw.html#aa3fd4737ea8d8c63396eb4fbdd5b041d">iterator_end_t</a>&lt; R &gt; &gt;</td>
+          <td> -&gt;  <a class="el" href="structdaw_1_1pipelines_1_1range__t.html">range_t</a>&lt; <a class="el" href="namespacedaw.html#a85959f5d9497c18316b29fdabd756b43">iterator_t</a>&lt; R &gt;, <a class="el" href="namespacedaw.html#ab25dad857d86d201a3e78c6964bba16f">iterator_end_t</a>&lt; R &gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1749,7 +1749,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="slide_8h_source.html#l00140">140</a> of file <a class="el" href="slide_8h_source.html">slide.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="slide_8h_source.html#l00138">138</a> of file <a class="el" href="slide_8h_source.html">slide.h</a>.</p>
 
 </div>
 </div>
@@ -2153,7 +2153,7 @@ template&lt;Range... Ranges&gt; </div>
 
 <p>Make a Range that is a zip iterator, or who's value is a tuple of Ranges act as if it was one range. e.g tuple&lt;vector&lt;int&gt;, vector&lt;int&gt;&gt;{{1,2,3},{4,5,6}} would output {1,2,3,4,5,6}. </p>
 
-<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00156">156</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00155">155</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
 
 </div>
 </div>
@@ -2303,7 +2303,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatten_8h_source.html#l00161">161</a> of file <a class="el" href="flatten_8h_source.html">flatten.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="flatten_8h_source.html#l00166">166</a> of file <a class="el" href="flatten_8h_source.html">flatten.h</a>.</p>
 
 </div>
 </div>
