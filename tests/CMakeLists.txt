@@ -18,6 +18,7 @@ set( TEST_SOURCES
 		 InputIterator_test.cpp
 		 cpp_17_test.cpp
 		 daw_algorithm_test.cpp
+		 daw_allow_once_test.cpp
 		 daw_arith_traits_test.cpp
 		 daw_array_compare_test.cpp
 		 daw_array_test.cpp
