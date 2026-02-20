@@ -27,7 +27,7 @@ namespace daw::pipelines {
 	struct map_iterator {
 		using iterator_category = daw::iter_category_t<Iterator>;
 		using value_type = daw::remove_cvref_t<std::invoke_result_t<
-		  Fn, std::invoke_result_t<Projection, daw::iter_value_t<Iterator>>>>;
+		  Fn, std::invoke_result_t<Projection, daw::iter_reference_t<Iterator>>>>;
 		using reference = value_type;
 		using const_reference = value_type;
 		using pointer = arrow_proxy<value_type>;
@@ -172,38 +172,37 @@ namespace daw::pipelines {
 	template<Iterator I, typename F, typename P>
 	map_iterator( I, F, P ) -> map_iterator<I, F, P>;
 
-	template<Iterator First, typename Fn, typename Projection = std::identity>
-	struct map_view : range_base_t<map_iterator<First, Fn, Projection>> {
-		using daw_range_base_t = range_base_t<map_iterator<First, Fn, Projection>>;
+	template<Range R, typename Fn, typename Projection = std::identity>
+	struct map_view
+	  : range_base_t<map_iterator<iterator_t<R>, Fn, Projection>,
+	                 map_iterator<iterator_end_t<R>, Fn, Projection>> {
+		using daw_range_base_t =
+		  range_base_t<map_iterator<iterator_t<R>, Fn, Projection>,
+		               map_iterator<iterator_end_t<R>, Fn, Projection>>;
+
 		using typename daw_range_base_t::iterator_first_t;
 		using typename daw_range_base_t::iterator_last_t;
 
-		using value_type = daw::iter_value_t<map_iterator<First, Fn, Projection>>;
+		using value_type = daw::iter_value_t<iterator_first_t>;
 
-		iterator_first_t m_first = iterator_first_t{ };
-		iterator_last_t m_last = iterator_last_t{ };
+		daw::remove_rvalue_ref_t<R> m_range{ };
+		iterator_first_t m_first{ };
+		iterator_last_t m_last{ };
 
 		explicit map_view( ) = default;
 
-		explicit constexpr map_view( First first, Fn const &fn )
+		explicit constexpr map_view( Range auto &&r, Fn const &fn )
 		  requires( not Iterator<Fn> )
-		  : m_first( first, fn ) {}
+		  : m_range( DAW_FWD( r ) )
+		  , m_first{ std::begin( m_range ), fn }
+		  , m_last{ std::end( m_range ), fn } {}
 
-		explicit constexpr map_view( First first, Fn const &fn,
+		explicit constexpr map_view( Range auto &&r, Fn const &fn,
 		                             Projection const &projection )
 		  requires( not Iterator<Fn> and not Iterator<Projection> )
-		  : m_first( first, fn, projection ) {}
-
-		explicit constexpr map_view( First first, First last, Fn const &fn )
-		  requires( not Iterator<Fn> )
-		  : m_first( first, fn )
-		  , m_last( last, fn ) {}
-
-		explicit constexpr map_view( First first, First last, Fn const &fn,
-		                             Projection const &projection )
-		  requires( not Iterator<Fn> and not Iterator<Projection> )
-		  : m_first( first, fn, projection )
-		  , m_last( last, fn, projection ) {}
+		  : m_range( DAW_FWD( r ) )
+		  , m_first{ std::begin( m_range ), fn, projection }
+		  , m_last{ std::end( m_range ), fn, projection } {}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr iterator_first_t begin( ) const {
 			return m_first;
@@ -213,21 +212,13 @@ namespace daw::pipelines {
 			return m_last;
 		}
 	};
-	template<Iterator I, typename F>
+	template<Range R, typename F>
 	requires( not Iterator<F> ) //
-	  map_view( I, F ) -> map_view<I, F>;
+	  map_view( R &&, F ) -> map_view<daw::remove_rvalue_ref_t<R>, F>;
 
-	template<Iterator I, typename F, typename P>
+	template<Range R, typename F, typename P>
 	requires( not Iterator<F> and not Iterator<P> ) //
-	  map_view( I, F, P ) -> map_view<I, F, P>;
-
-	template<Iterator I, typename F>
-	requires( not Iterator<F> ) //
-	  map_view( I, I, F ) -> map_view<I, F>;
-
-	template<Iterator I, typename F, typename P>
-	requires( not Iterator<F> and not Iterator<P> ) //
-	  map_view( I, I, F, P ) -> map_view<I, F, P>;
+	  map_view( R &&, F, P ) -> map_view<daw::remove_rvalue_ref_t<R>, F, P>;
 
 	namespace pimpl {
 		template<typename Fn, typename Projection = std::identity>
@@ -236,23 +227,27 @@ namespace daw::pipelines {
 			DAW_NO_UNIQUE_ADDRESS Projection m_projection = Projection{ };
 
 			[[nodiscard]] constexpr auto operator( )( auto &&r ) const {
-				using R = DAW_TYPEOF( r );
-				static_assert(
-				  std::invocable<Projection, range_value_t<R>>,
-				  "Projection must be invocable with the range_value_t<R>" );
-				using projected_t = std::invoke_result_t<Projection, range_value_t<R>>;
-
+				using R = decltype( r );
 				if constexpr( Range<R> ) {
+					static_assert(
+					  std::invocable<Projection, range_reference_t<R>>,
+					  "Projection must be invocable with the range_value_t<R>" );
+					using projected_t =
+					  std::invoke_result_t<Projection, range_reference_t<R>>;
+
 					static_assert( std::invocable<Fn, projected_t>,
 					               "Map requires the function to be able to be called "
 					               "with invoke and the range_reference_t(e.g. invoke( "
 					               "MapFn, *it ) )" );
 					static_assert( traits::NoVoidResults<Fn, projected_t>,
 					               "Map requires the result to not be void" );
-					return map_view<iterator_t<R>, Fn, Projection>(
-					  std::begin( DAW_FWD( r ) ), std::end( DAW_FWD( r ) ), m_func,
-					  m_projection );
+					return map_view<R, Fn, Projection>(
+					  DAW_FWD( r ), m_func, m_projection );
 				} else {
+					static_assert( std::invocable<Projection, R>,
+					               "Projection must be invocable with R" );
+					using projected_t = std::invoke_result_t<Projection, R>;
+
 					static_assert( std::invocable<Fn, projected_t>,
 					               "Map requires the function to be able to be called "
 					               "with invoke and passed value" );
@@ -273,15 +268,15 @@ namespace daw::pipelines {
 		struct MapApply_t {
 			DAW_NO_UNIQUE_ADDRESS Fn m_func;
 
-			[[nodiscard]] constexpr auto operator( )( auto &&r ) const {
-				using R = DAW_TYPEOF( r );
+			template<Range R>
+			[[nodiscard]] constexpr auto operator( )( R &&r ) const {
 				static_assert( traits::is_applicable_v<Fn, range_reference_t<R>>,
 				               "MapApply requires the function to be able to be called "
 				               "with apply and the range_reference_t" );
 				auto func = m_func;
-				return map_view( std::begin( r ), std::end( r ), [=]( auto &&tp ) {
-					return std::apply( func, tp );
-				} );
+				return map_view{ DAW_FWD( r ), [=]( auto &&tp ) {
+					                return std::apply( func, tp );
+				                } };
 			}
 		};
 		template<typename Fn>
@@ -293,8 +288,8 @@ namespace daw::pipelines {
 			T hi;
 			DAW_NO_UNIQUE_ADDRESS Compare compare;
 
-			[[nodiscard]] constexpr auto operator( )( auto &&r ) const {
-				using R = DAW_TYPEOF( r );
+			template<typename R>
+			[[nodiscard]] constexpr auto operator( )( R &&r ) const {
 				auto h = hi;
 				auto l = lo;
 				auto c = compare;
@@ -303,10 +298,9 @@ namespace daw::pipelines {
 					static_assert( std::convertible_to<T, value_type>,
 					               "Clamp requires a lo/hi values convertible to the "
 					               "range value type" );
-					return map_view( std::begin( r ), std::end( r ),
-					                 [=]( value_type const &v ) {
-						                 return std::clamp( v, l, h, c );
-					                 } );
+					return map_view{ DAW_FWD( r ), [=]( value_type const &v ) {
+						                return std::clamp( v, l, h, c );
+					                } };
 				} else {
 					static_assert(
 					  std::convertible_to<T, daw::remove_cvref_t<R>>,

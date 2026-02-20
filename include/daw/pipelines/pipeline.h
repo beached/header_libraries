@@ -36,14 +36,14 @@ namespace daw::pipelines::pimpl {
 
 	template<std::size_t Idx, typename R, typename... Ranges, typename... Ts>
 	[[nodiscard]] DAW_ATTRIB_FLATINLINE constexpr auto
-	pipeline( std::tuple<Ts...> const &tpfns, R &&r, Ranges &&...ranges ) {
+	pipeline( std::tuple<Ts...> const &functions, R &&r, Ranges &&...ranges ) {
 		using std::get;
 		if constexpr( Idx > 0 ) {
-			return std::invoke(
-			  get<Idx>( tpfns ),
-			  pipeline<Idx - 1>( tpfns, DAW_FWD( r ), DAW_FWD( ranges )... ) );
+			auto &&param =
+			  pipeline<Idx - 1>( functions, DAW_FWD( r ), DAW_FWD( ranges )... );
+			return get<Idx>( functions )( DAW_FWD( param ) );
 		} else {
-			return std::invoke( get<0>( tpfns ), DAW_FWD( r ), DAW_FWD( ranges )... );
+			return get<0>( functions )( DAW_FWD( r ), DAW_FWD( ranges )... );
 		}
 	}
 

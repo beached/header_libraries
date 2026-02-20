@@ -100,11 +100,58 @@ namespace daw::pipelines {
 	template<typename I>
 	unique_view( I ) -> unique_view<I>;
 
+	template<Range R>
+	struct unique_range {
+		using value_type = daw::range_value_t<R>;
+		static_assert( requires( value_type const &v ) { v == v; } );
+		using iterator = unique_view<daw::iterator_t<R>>;
+		using const_iterator = unique_view<daw::const_iterator_t<R>>;
+
+	private:
+		R m_range;
+
+	public:
+		explicit constexpr unique_range( R const &r ) noexcept
+		  : m_range{ r } {}
+
+		explicit constexpr unique_range( R &&r ) noexcept
+		  : m_range{ std::move( r ) } {}
+
+		[[nodiscard]] constexpr iterator begin( ) {
+			return iterator{ std::begin( m_range ), std::end( m_range ) };
+		}
+
+		[[nodiscard]] constexpr const_iterator begin( ) const {
+			return const_iterator{ std::begin( m_range ), std::end( m_range ) };
+		}
+
+		[[nodiscard]] constexpr iterator end( ) {
+			return iterator{ std::end( m_range ), std::end( m_range ) };
+		}
+
+		[[nodiscard]] constexpr const_iterator end( ) const {
+			return const_iterator{ std::end( m_range ), std::end( m_range ) };
+		}
+
+		[[nodiscard]] constexpr friend bool
+		operator==( unique_range const &lhs, unique_range const &rhs ) = default;
+
+		[[nodiscard]] constexpr friend bool
+		operator!=( unique_range const &lhs, unique_range const &rhs ) = default;
+	};
+
+	template<Range R>
+	unique_range( R && ) -> unique_range<daw::remove_rvalue_ref_t<R>>;
+
 	namespace pimpl {
 		struct Unique_t {
 			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
 			operator( )( Range auto &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
-				return unique_view( std::begin( r ), std::end( r ) );
+				if constexpr( std::is_rvalue_reference_v<decltype( r )> ) {
+					return unique_range{ DAW_FWD( r ) };
+				} else {
+					return unique_view{ DAW_FWD( r ) };
+				}
 			}
 		};
 	} // namespace pimpl

@@ -20,6 +20,7 @@
 #include <array>
 #include <iterator>
 #include <map>
+#include <span>
 #include <string>
 #include <type_traits>
 #include <utility>
@@ -53,10 +54,10 @@ namespace tests {
 
 	DAW_ATTRIB_NOINLINE void test001( ) {
 		auto m1 = pipeline( zip_view( prices, costs ), To<std::map> );
-		daw_ensure( m1[prices[0]] == costs[0] );
-		daw::println(
-		  "\ntest001: pipeline( zip_view( prices, costs ), To<std::map> )\n{}",
-		  daw::fmt_range{ m1 } );
+		daw_ensure( m1.size( ) == prices.size( ) );
+		for( std::size_t n = 0; n < prices.size( ); ++n ) {
+			daw_ensure( m1[prices[n]] == costs[n] );
+		}
 	}
 
 	struct ToLetter_t {
@@ -67,7 +68,11 @@ namespace tests {
 			} else if( i < 52 ) {
 				return static_cast<char>( 'A' + ( i - 26 ) );
 			}
-			throw std::out_of_range( "i is out of range" );
+			daw::println( stderr,
+			              "{}:{} is out of range",
+			              static_cast<char>( i ),
+			              static_cast<int>( i ) );
+			std::terminate( );
 		}
 	};
 	inline constexpr auto to_letter = ToLetter_t{ };
@@ -75,17 +80,16 @@ namespace tests {
 	DAW_ATTRIB_NOINLINE void test002( ) {
 		constexpr auto pm2 = pipeline( Map( to_letter ), Enumerate, To<std::map> );
 		auto const m2 = pm2( iota_view( 0, 26 ) );
-		daw::println(
-		  "\ntest002: pipeline( Map( to_letter ), Enumerate, To<std::map> )\n{}",
-		  daw::fmt_range( m2 ) );
+		for( auto const &[k, v] : m2 ) {
+			daw_ensure( v == static_cast<char>( 'a' + k ) );
+		}
 
 		constexpr auto pm3 =
 		  pipeline( Map( to_letter ), EnumerateWith<int>, To<std::map> );
 		auto const m3 = pm3( iota_view( 0, 26 ) );
-		daw::println(
-		  "\ntest002: pipeline( Map( to_letter ), EnumerateWith<int>, To<std::map> "
-		  ")\n{}",
-		  daw::fmt_range( m3 ) );
+		for( auto const &[k, v] : m3 ) {
+			daw_ensure( v == static_cast<char>( 'a' + k ) );
+		}
 
 		for( auto vec = std::vector{ 1, 2, 3 };
 		     auto [index, value] : EnumerateWith<int>( vec ) ) {
@@ -532,11 +536,11 @@ namespace tests {
 	}
 
 	DAW_ATTRIB_NOINLINE void test030( ) {
-		constexpr auto comma_splitter =
+		static constexpr auto comma_splitter =
 		  pipeline( Split( ',' ), Map( []( daw::Range auto r ) {
 			            return daw::string_view( r ).trim( );
 		            } ) );
-		constexpr auto values = "1a, 2b,3c, 4d ,5e"_sv;
+		static constexpr auto values = "1a, 2b,3c, 4d ,5e"_sv;
 
 		constexpr auto parts = comma_splitter( values );
 		daw::println(
@@ -605,6 +609,121 @@ namespace tests {
 		constexpr auto s2 = daw::string_view{ std::data( p ), std::size( p ) };
 		daw_ensure( s2 == "Hello" );
 	}
+
+	DAW_ATTRIB_NOINLINE void test034( ) {
+		constexpr daw::string_view s = " Hello ";
+		constexpr auto p = pipeline( s,
+		                             DropWhile( is_control_or_space ),
+		                             Reverse,
+		                             DropWhile( is_control_or_space ),
+		                             Reverse,
+		                             FirstRef );
+		daw_ensure( p.has_value( ) and p.value( ) == 'H' );
+	}
+
+	DAW_ATTRIB_NOINLINE void test035( ) {
+		char buff[] = "Hello";
+		auto p = pipeline( buff, FirstRef );
+		daw_ensure( p.has_value( ) and p.value( ) == 'H' );
+		buff[0] = 'h';
+		daw_ensure( p.value( ) == 'h' );
+	}
+
+	DAW_ATTRIB_NOINLINE void test036( ) {
+		constexpr daw::string_view s = " Hello ";
+		constexpr auto p = pipeline( s,
+		                             DropWhile( is_control_or_space ),
+		                             Reverse,
+		                             DropWhile( is_control_or_space ),
+		                             Reverse,
+		                             First );
+		daw_ensure( p.has_value( ) and p.value( ) == 'H' );
+	}
+
+	DAW_ATTRIB_NOINLINE DAW_CONSTEVAL void test037( ) {
+		char buff[] = "Hello";
+		auto p = pipeline( buff, First );
+		daw_ensure( p.has_value( ) and p.value( ) == 'H' );
+		buff[0] = 'h';
+		daw_ensure( p.value( ) == 'H' );
+	}
+
+	DAW_ATTRIB_NOINLINE void test038( ) {
+		constexpr auto values = std::array{ 1, 5, 5, 10, 32 };
+		daw::do_not_optimize( values );
+		auto const unique_values =
+		  pipeline( values, Copy, Sort, Unique, To<std::vector> );
+		daw_ensure( unique_values.size( ) == 4 );
+		daw_ensure( unique_values == std::vector{ 1, 5, 10, 32 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test039( ) {
+		auto z0 = Zip( prices, costs );
+
+		auto e0 = Elements<1>( z0 );
+		daw_ensure( static_cast<std::size_t>( std::ranges::distance( e0 ) ) ==
+		            costs.size( ) );
+		auto eb0 = std::begin( e0 );
+		for( std::size_t n = 0; n < costs.size( ); ++n ) {
+			daw_ensure( std::get<0>( eb0[n] ) == costs[n] );
+		}
+		auto e1 = Elements<0>( z0 );
+		auto eb1 = std::begin( e1 );
+		daw_ensure( static_cast<std::size_t>( std::ranges::distance( e1 ) ) ==
+		            prices.size( ) );
+		for( std::size_t n = 0; n < prices.size( ); ++n ) {
+			daw_ensure( std::get<0>( eb1[n] ) == prices[n] );
+		}
+	}
+
+	DAW_ATTRIB_NOINLINE void test040( ) {
+		auto z0 = Zip( prices, costs );
+
+		auto e0 = Element<1>( z0 );
+		daw_ensure( static_cast<std::size_t>( std::ranges::distance( e0 ) ) ==
+		            costs.size( ) );
+		auto eb0 = std::begin( e0 );
+		for( std::size_t n = 0; n < costs.size( ); ++n ) {
+			daw_ensure( eb0[n] == costs[n] );
+		}
+		auto e1 = Element<0>( z0 );
+		auto eb1 = std::begin( e1 );
+		daw_ensure( static_cast<std::size_t>( std::ranges::distance( e1 ) ) ==
+		            prices.size( ) );
+		for( std::size_t n = 0; n < prices.size( ); ++n ) {
+			daw_ensure( eb1[n] == prices[n] );
+		}
+	}
+
+	DAW_ATTRIB_NOINLINE void test041( ) {
+		constexpr auto values = std::array{ 1, 5, 5, 10, 32 };
+		auto cp = pipeline( values,
+		                    Map( []( int x ) {
+			                    static int map_count = 0;
+			                    ++map_count;
+			                    daw::println( "MapCount = {}", map_count );
+			                    return x * x;
+		                    } ),
+		                    CacheLast );
+		auto first = std::begin( cp );
+		auto last = std::end( cp );
+		while( first != last ) {
+			daw::println( "{}", *first );
+			daw::println( "{}", *first );
+			++first;
+		}
+	}
+
+	DAW_ATTRIB_NOINLINE void test042( ) {
+		auto v = std::vector<std::string>{ "Hello", "World" };
+
+		auto mapper = Map( +[]( std::string &s ) -> char * {
+			return s.data( );
+		} );
+		auto m = mapper( v );
+		auto v2 = std::vector<char *>( std::begin( m ), std::end( m ) );
+		daw_ensure( v2.size( ) == v.size( ) );
+	}
 } // namespace tests
 
 int main( ) {
@@ -641,6 +760,14 @@ int main( ) {
 	tests::test031( );
 	tests::test032( );
 	tests::test033( );
-
+	tests::test034( );
+	tests::test035( );
+	tests::test036( );
+	tests::test037( );
+	tests::test038( );
+	tests::test039( );
+	tests::test040( );
+	tests::test041( );
+	tests::test042( );
 	daw::println( "Done" );
 }

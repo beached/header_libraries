@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw/cpp_17.h"
 #include "daw/daw_attributes.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
@@ -54,7 +55,9 @@ namespace daw::pipelines::pimpl {
 	public:
 		explicit chunk_view( ) = default;
 
-		explicit chunk_view( Range auto &&r )
+		template<Range U>
+		requires( not std::same_as<std::remove_reference_t<U>, chunk_view> ) //
+		  explicit chunk_view( U &&r )
 		  : m_range{ DAW_FWD( r ) }
 		  , m_iter{ std::begin( m_range ) } {}
 
@@ -119,9 +122,9 @@ namespace daw::pipelines::pimpl {
 		operator!=( chunk_view const &rhs ) const noexcept = default;
 	};
 	template<Range R>
-	chunk_view( R &&r ) -> chunk_view<R>;
+	chunk_view( R &&r ) -> chunk_view<daw::remove_rvalue_ref_t<R>>;
 	template<Range R>
-	chunk_view( R &&r, std::size_t ) -> chunk_view<R>;
+	chunk_view( R &&r, std::size_t ) -> chunk_view<daw::remove_rvalue_ref_t<R>>;
 
 	struct Chunk_t {
 		std::size_t chunk_size;

@@ -21,11 +21,11 @@ namespace daw::pipelines::pimpl {
 	template<ForwardRange R>
 	struct slide_view {
 		using iterator = daw::iterator_t<R>;
-		using const_iterator = daw::iterator_t<std::add_const_t<R>>;
+		using const_iterator = daw::const_iterator_t<R>;
 		using iterator_category = daw::range_category_t<R>;
 		using value_type = range_t<iterator>;
 		using reference = range_t<iterator>;
-		using const_reference = range_t<iterator>;
+		using const_reference = range_t<const_iterator>;
 		using difference_type = std::ptrdiff_t;
 		using i_am_a_daw_slide_view_iterator_class = void;
 
@@ -55,7 +55,9 @@ namespace daw::pipelines::pimpl {
 	public:
 		explicit slide_view( ) = default;
 
-		explicit slide_view( Range auto &&r )
+		template<Range U>
+		requires( not std::same_as<std::remove_cvref_t<U>, slide_view> ) //
+		  explicit slide_view( U &&r )
 		  : m_range{ DAW_FWD( r ) }
 		  , m_iter{ std::begin( m_range ) } {}
 
@@ -120,9 +122,9 @@ namespace daw::pipelines::pimpl {
 		operator!=( slide_view const &rhs ) const noexcept = default;
 	};
 	template<Range R>
-	slide_view( R &&r ) -> slide_view<R>;
+	slide_view( R &&r ) -> slide_view<daw::remove_rvalue_ref_t<R>>;
 	template<Range R>
-	slide_view( R &&r, std::size_t ) -> slide_view<R>;
+	slide_view( R &&r, std::size_t ) -> slide_view<daw::remove_rvalue_ref_t<R>>;
 
 	struct Slide_t {
 		std::size_t slide_size = 1;
