@@ -24,7 +24,7 @@
 namespace daw {
 	template<typename CharT = char>
 	DAW_ATTRIB_NOINLINE std::optional<std::basic_string<CharT>>
-	read_file( std::string const &path ) noexcept {
+	read_file( std::string const &path ) {
 		auto const fsize = std::filesystem::file_size( path );
 		if( fsize == 0 ) {
 			return std::basic_string<CharT>{ };
@@ -37,7 +37,7 @@ namespace daw {
 		auto result =
 		  std::basic_string<CharT>( static_cast<std::size_t>( fsize ), CharT{ } );
 #if defined( _MSC_VER )
-		FILE * f = nullptr;
+		FILE *f = nullptr;
 		auto err = fopen_s( &f, path.c_str( ), "rb" );
 		if( err ) {
 			return std::nullopt;
@@ -60,7 +60,7 @@ namespace daw {
 	  terminate_on_read_file_error_t{ };
 
 	inline std::string read_file( std::string const &path,
-	                              terminate_on_read_file_error_t ) noexcept {
+	                              terminate_on_read_file_error_t ) {
 		auto result = read_file( path );
 		if( not result ) {
 			std::cerr << "Error: could not open file '" << path << "'\n";
@@ -71,7 +71,7 @@ namespace daw {
 
 #if defined( _MSC_VER )
 	DAW_ATTRIB_NOINLINE inline std::optional<std::wstring>
-	read_wfile( std::wstring path ) noexcept {
+	read_wfile( std::wstring path ) {
 		using CharT = wchar_t;
 		auto const fsize = std::filesystem::file_size( path );
 		if( fsize == 0 ) {
@@ -84,7 +84,7 @@ namespace daw {
 		}
 		auto result =
 		  std::basic_string<CharT>( static_cast<std::size_t>( fsize ), CharT{ } );
-		FILE * f = nullptr;
+		FILE *f = nullptr;
 		auto err = _wfopen_s( &f, path.c_str( ), L"rb" );
 		if( err ) {
 			return std::nullopt;
@@ -97,8 +97,7 @@ namespace daw {
 	}
 
 	DAW_ATTRIB_NOINLINE inline std::wstring
-	read_wfile( std::wstring const &path,
-	            terminate_on_read_file_error_t ) noexcept {
+	read_wfile( std::wstring const &path, terminate_on_read_file_error_t ) {
 		auto result = read_wfile( path );
 		if( not result ) {
 			std::wcerr << L"Error: could not open file '" << path << L'\n';
