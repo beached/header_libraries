@@ -27,5 +27,6 @@ var searchData=
   ['daw_3a_3arandomrange_24',['RandomRange',['../conceptdaw_1_1_random_range.html',1,'daw']]],
   ['daw_3a_3arange_25',['Range',['../conceptdaw_1_1_range.html',1,'daw']]],
   ['daw_3a_3aresizeandoverwriteoperation_26',['ResizeAndOverwriteOperation',['../conceptdaw_1_1_resize_and_overwrite_operation.html',1,'daw']]],
-  ['daw_3a_3aresizeandoverwriteoperationalloc_27',['ResizeAndOverwriteOperationAlloc',['../conceptdaw_1_1_resize_and_overwrite_operation_alloc.html',1,'daw']]]
+  ['daw_3a_3aresizeandoverwriteoperationalloc_27',['ResizeAndOverwriteOperationAlloc',['../conceptdaw_1_1_resize_and_overwrite_operation_alloc.html',1,'daw']]],
+  ['daw_3a_3atraits_3a_3aintegerenum_28',['IntegerEnum',['../conceptdaw_1_1traits_1_1_integer_enum.html',1,'daw::traits']]]
 ];

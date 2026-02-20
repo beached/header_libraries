@@ -77,6 +77,7 @@ $(function() {
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#concepts">Concepts</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
@@ -166,6 +167,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1traits_1_1remove__reference_3_01_t_01_6_6_01_4.html">remove_reference&lt; T &amp;&amp; &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="concepts" name="concepts"></a>
+Concepts</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptdaw_1_1traits_1_1_integer_enum.html">IntegerEnum</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a6055474130c186daa56964b5f096f42a" id="r_a6055474130c186daa56964b5f096f42a"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T , typename... Ts&gt; </td></tr>
@@ -230,6 +236,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a6b480543f99cec8e1c7495c69aa4ca02" id="r_a6b480543f99cec8e1c7495c69aa4ca02"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
 <tr class="memitem:a6b480543f99cec8e1c7495c69aa4ca02"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a6b480543f99cec8e1c7495c69aa4ca02">identity_t</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="structdaw_1_1traits_1_1identity.html">identity</a>&lt; T &gt;::type</td></tr>
 <tr class="separator:a6b480543f99cec8e1c7495c69aa4ca02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c70cfb3fd3dd6a98b862775ed77e7d9" id="r_a4c70cfb3fd3dd6a98b862775ed77e7d9"><td class="memTemplParams" colspan="2">template&lt;IntegerEnum T&gt; </td></tr>
+<tr class="memitem:a4c70cfb3fd3dd6a98b862775ed77e7d9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a4c70cfb3fd3dd6a98b862775ed77e7d9">integral_type_t</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> std::conditional_t&lt; std::is_enum_v&lt; T &gt;, std::underlying_type&lt; T &gt;, std::type_identity&lt; T &gt; &gt;::type</td></tr>
+<tr class="separator:a4c70cfb3fd3dd6a98b862775ed77e7d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68f692eebcaaf2c1b6dcecf3624bd938" id="r_a68f692eebcaaf2c1b6dcecf3624bd938"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Function</a> , typename... Args&gt; </td></tr>
 <tr class="memitem:a68f692eebcaaf2c1b6dcecf3624bd938"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1traits.html#a68f692eebcaaf2c1b6dcecf3624bd938">invoke_result_t</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">decltype</a>(std::declval&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Function</a> &gt;()(std::declval&lt; Args &gt;()...))</td></tr>
 <tr class="separator:a68f692eebcaaf2c1b6dcecf3624bd938"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1117,6 +1126,24 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__traits__identity_8h_source.html#l00018">18</a> of file <a class="el" href="daw__traits__identity_8h_source.html">daw_traits_identity.h</a>.</p>
+
+</div>
+</div>
+<a id="a4c70cfb3fd3dd6a98b862775ed77e7d9" name="a4c70cfb3fd3dd6a98b862775ed77e7d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c70cfb3fd3dd6a98b862775ed77e7d9">&#9670;&#160;</a></span>integral_type_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;IntegerEnum T&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="namespacedaw_1_1traits.html#a4c70cfb3fd3dd6a98b862775ed77e7d9">daw::traits::integral_type_t</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typedef</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> std::conditional_t&lt;std::is_enum_v&lt;T&gt;, std::underlying_type&lt;T&gt;, std::type_identity&lt;T&gt; &gt;::type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__traits__integer__type_8h_source.html#l00018">18</a> of file <a class="el" href="daw__traits__integer__type_8h_source.html">daw_traits_integer_type.h</a>.</p>
 
 </div>
 </div>

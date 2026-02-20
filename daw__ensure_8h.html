@@ -97,6 +97,8 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:a0088a942f2fca813d80eeed16b32a2f3" id="r_a0088a942f2fca813d80eeed16b32a2f3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__ensure_8h.html#a0088a942f2fca813d80eeed16b32a2f3">daw_dbg_ensure</a>(...)</td></tr>
+<tr class="separator:a0088a942f2fca813d80eeed16b32a2f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b8ddea0dc9954f47320bb7bf0645af8" id="r_a9b8ddea0dc9954f47320bb7bf0645af8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="daw__ensure_8h.html#a9b8ddea0dc9954f47320bb7bf0645af8">daw_ensure</a>(...)</td></tr>
 <tr class="separator:a9b8ddea0dc9954f47320bb7bf0645af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -106,6 +108,31 @@ Functions</h2></td></tr>
 <tr class="separator:a5d78cc8f954f15c7166b28087f0d2574"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a0088a942f2fca813d80eeed16b32a2f3" name="a0088a942f2fca813d80eeed16b32a2f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0088a942f2fca813d80eeed16b32a2f3">&#9670;&#160;</a></span>daw_dbg_ensure</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define daw_dbg_ensure</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">do</span> {                                                   \</div>
+<div class="line">    if( not( __VA_ARGS__ ) ) {                           \</div>
+<div class="line">      ::daw::ensure::ensure_error( not( __VA_ARGS__ ) ); \</div>
+<div class="line">    }                                                    \</div>
+<div class="line">  } <span class="keywordflow">while</span>( <span class="keyword">false</span> )</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="daw__ensure_8h_source.html#l00049">49</a> of file <a class="el" href="daw__ensure_8h_source.html">daw_ensure.h</a>.</p>
+
+</div>
+</div>
 <a id="a9b8ddea0dc9954f47320bb7bf0645af8" name="a9b8ddea0dc9954f47320bb7bf0645af8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9b8ddea0dc9954f47320bb7bf0645af8">&#9670;&#160;</a></span>daw_ensure</h2>
 

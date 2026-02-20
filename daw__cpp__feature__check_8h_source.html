@@ -314,6 +314,24 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="preprocessor">#define DAW_HAS_CPP23_MOVE_ONLY_FUNCTION</span></div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span><span class="preprocessor">#if defined( __cpp_lib_constexpr_bitset )</span></div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span><span class="preprocessor">#if __cpp_lib_constexpr_bitset &gt;= 202202L</span></div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span><span class="preprocessor">#define DAW_HAS_CPP23_CONSTEXPR_BITSET 1</span></div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span><span class="preprocessor">#if defined( DAW_HAS_CPP23_CONSTEXPR_BITSET )</span></div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span><span class="preprocessor">#define DAW_CPP23_CX_BITSET_FN constexpr</span></div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span><span class="preprocessor">#define DAW_CPP23_CX_BITSET constexpr</span></div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#af719665d61ee7d72433e9003d78097fb">  242</a></span><span class="preprocessor">#define DAW_CPP23_CX_BITSET_FN inline</span></div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#a403706d051fec74b4b35e728aed5ec64">  243</a></span><span class="preprocessor">#define DAW_CPP23_CX_BITSET</span></div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span><span class="preprocessor">#if __cpp_lib_optional &gt;= 202506L</span></div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span><span class="preprocessor">#define DAW_HAS_CPP26_OPTIONAL_REFS</span></div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aciso646_8h_html"><div class="ttname"><a href="ciso646_8h.html">ciso646.h</a></div></div>
 <div class="ttc" id="adaw__cpp__feature__check_8h_html_a4a920f98bfa6246e269e1d49a08b3ef7"><div class="ttname"><a href="daw__cpp__feature__check_8h.html#a4a920f98bfa6246e269e1d49a08b3ef7">daw_has_cx_cmath</a></div><div class="ttdeci">constexpr bool daw_has_cx_cmath</div><div class="ttdef"><b>Definition</b> <a href="daw__cpp__feature__check_8h_source.html#l00144">daw_cpp_feature_check.h:144</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
