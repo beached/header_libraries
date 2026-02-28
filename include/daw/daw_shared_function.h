@@ -19,7 +19,7 @@ namespace daw::sf_impl {
 
 	struct shared_function_storage_counts {
 		shared_function_storage_counts( ) = default;
-		~shared_function_storage_counts( ) = default;
+		virtual ~shared_function_storage_counts( ) = default;
 
 		shared_function_storage_counts( shared_function_storage_counts const & ) =
 		  delete;
@@ -65,7 +65,7 @@ namespace daw::sf_impl {
 		shared_function_storage_base( ) = default;
 
 		virtual R call( Params... ) noexcept( IsNoExcept ) = 0;
-		virtual ~shared_function_storage_base( ) = default;
+		~shared_function_storage_base( ) override = default;
 	};
 
 	template<bool IsNoExcept, typename R, typename... Params>
@@ -74,7 +74,7 @@ namespace daw::sf_impl {
 		shared_function_storage_base( ) = default;
 
 		virtual R call( Params... ) const noexcept( IsNoExcept ) = 0;
-		virtual ~shared_function_storage_base( ) = default;
+		~shared_function_storage_base( ) override = default;
 	};
 
 	template<bool IsNoExcept, typename R, typename... Params>
@@ -83,7 +83,7 @@ namespace daw::sf_impl {
 		shared_function_storage_base( ) = default;
 
 		virtual R call( Params... ) & noexcept( IsNoExcept ) = 0;
-		virtual ~shared_function_storage_base( ) = default;
+		~shared_function_storage_base( ) override = default;
 	};
 
 	template<bool IsNoExcept, typename R, typename... Params>
@@ -93,7 +93,7 @@ namespace daw::sf_impl {
 		shared_function_storage_base( ) = default;
 
 		virtual R call( Params... ) const & noexcept( IsNoExcept ) = 0;
-		virtual ~shared_function_storage_base( ) = default;
+		~shared_function_storage_base( ) override = default;
 	};
 
 	template<bool IsNoExcept, typename R, typename... Params>
@@ -102,7 +102,7 @@ namespace daw::sf_impl {
 		shared_function_storage_base( ) = default;
 
 		virtual R call( Params... ) && noexcept( IsNoExcept ) = 0;
-		virtual ~shared_function_storage_base( ) = default;
+		~shared_function_storage_base( ) override = default;
 	};
 
 	template<bool IsNoExcept, typename R, typename... Params>
@@ -112,7 +112,7 @@ namespace daw::sf_impl {
 		shared_function_storage_base( ) = default;
 
 		virtual R call( Params... ) const && noexcept( IsNoExcept ) = 0;
-		virtual ~shared_function_storage_base( ) = default;
+		~shared_function_storage_base( ) override = default;
 	};
 
 	template<typename Fn, cvref_t CVRef, bool IsNoExcept, typename R,
@@ -270,7 +270,7 @@ namespace daw::sf_impl {
 		  : m_storage( other.m_storage ? other.m_storage->weak_copy( ) : nullptr ) {
 		}
 
-		weak_shared_function_base( weak_shared_function_base &&other )
+		weak_shared_function_base( weak_shared_function_base &&other ) noexcept
 		  : m_storage( std::exchange( other.m_storage, nullptr ) ) {}
 
 		weak_shared_function_base &
@@ -283,7 +283,8 @@ namespace daw::sf_impl {
 			return *this;
 		}
 
-		weak_shared_function_base &operator=( weak_shared_function_base &&rhs ) {
+		weak_shared_function_base &
+		operator=( weak_shared_function_base &&rhs ) noexcept {
 			if( this != &rhs ) {
 				storage_t *old = m_storage;
 				m_storage = std::exchange( rhs.m_storage, nullptr );
