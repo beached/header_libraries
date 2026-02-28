@@ -30,6 +30,7 @@ set( TEST_SOURCES
 		 daw_constant_test.cpp
 		 daw_container_algorithm_test.cpp
 		 daw_contract_test.cpp
+		 daw_copy_cvref_t_tests.cpp
 		 daw_cx_offset_of_test.cpp
 		 daw_cxmath_test.cpp
 		 daw_endian_test.cpp
@@ -146,6 +147,7 @@ set( DEPRECATED_TEST_SOURCES
 
 set( CPP23_TEST_SOURCES
 		 daw_enumerate_tuple_test.cpp
+		 daw_shared_function_test.cpp
 		 daw_span_writer_test.cpp
 		 )
 

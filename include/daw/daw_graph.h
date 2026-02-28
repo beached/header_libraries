@@ -358,8 +358,9 @@ namespace daw {
 			auto const id = cur_id;
 			++cur_id;
 			m_nodes.emplace( std::make_pair(
-			  id, graph_impl::node_impl_t<T>(
-			        node_id_t{ id }, daw::construct_a<T>( DAW_FWD( args )... ) ) ) );
+			  id,
+			  graph_impl::node_impl_t<T>(
+			    node_id_t{ id }, daw::construct_a<T>( DAW_FWD( args )... ) ) ) );
 
 			return node_id_t{ id };
 		}
@@ -523,7 +524,7 @@ namespace daw {
 
 		template<typename Predicate>
 		std::vector<node_id_t> find( Predicate &&pred ) const {
-			std::vector<node_id_t> result{ };
+			auto result = std::vector<node_id_t>{ };
 			visit( pred, [&result]( auto const &node ) {
 				result.push_back( node.id( ) );
 			} );
