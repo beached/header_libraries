@@ -246,3 +246,15 @@ inline constexpr bool daw_has_cx_cmath = false;
 #if __cpp_lib_optional >= 202506L
 #define DAW_HAS_CPP26_OPTIONAL_REFS
 #endif
+
+#if defined( __cpp_lib_constexpr_atomic )
+#if __cpp_lib_constexpr_atomic >= 202401L
+#define DAW_HAS_CPP26_CONSTEXPR_ATOMIC
+#endif
+#endif
+
+#if defined( DAW_HAS_CPP26_CONSTEXPR_ATOMIC )
+#define DAW_CPP26_CX_ATOMIC constexpr
+#else
+#define DAW_CPP26_CX_ATOMIC inline
+#endif
