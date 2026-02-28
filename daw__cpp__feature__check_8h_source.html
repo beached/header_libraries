@@ -332,6 +332,18 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span><span class="preprocessor">#if __cpp_lib_optional &gt;= 202506L</span></div>
 <div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span><span class="preprocessor">#define DAW_HAS_CPP26_OPTIONAL_REFS</span></div>
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span><span class="preprocessor">#if defined( __cpp_lib_constexpr_atomic )</span></div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="preprocessor">#if __cpp_lib_constexpr_atomic &gt;= 202401L</span></div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span><span class="preprocessor">#define DAW_HAS_CPP26_CONSTEXPR_ATOMIC</span></div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="preprocessor">#if defined( DAW_HAS_CPP26_CONSTEXPR_ATOMIC )</span></div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="preprocessor">#define DAW_CPP26_CX_ATOMIC constexpr</span></div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#a69838127dcf7bb9638b2ffc6a0869e59">  259</a></span><span class="preprocessor">#define DAW_CPP26_CX_ATOMIC inline</span></div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aciso646_8h_html"><div class="ttname"><a href="ciso646_8h.html">ciso646.h</a></div></div>
 <div class="ttc" id="adaw__cpp__feature__check_8h_html_a4a920f98bfa6246e269e1d49a08b3ef7"><div class="ttname"><a href="daw__cpp__feature__check_8h.html#a4a920f98bfa6246e269e1d49a08b3ef7">daw_has_cx_cmath</a></div><div class="ttdeci">constexpr bool daw_has_cx_cmath</div><div class="ttdef"><b>Definition</b> <a href="daw__cpp__feature__check_8h_source.html#l00144">daw_cpp_feature_check.h:144</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
