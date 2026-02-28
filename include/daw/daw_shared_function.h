@@ -353,6 +353,7 @@ namespace daw::sf_impl {
 			using type = std::conditional_t<std::is_reference_v<Self>,
 			                                copy_cvref_t<Self, storage_t>,
 			                                copy_cvref_t<Self, storage_t> &&>;
+			daw_ensure( self.m_storage );
 			return static_cast<type>( *self.m_storage )
 			  .call( std::forward<param_t<Params>>( params )... );
 		}
