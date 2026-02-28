@@ -113,6 +113,7 @@ public:                                                                     \
 		DAW_CPP26_CX_ATOMIC R call( Params... params ) CallQuals                  \
 		  noexcept( IsNoExcept ) override {                                       \
 			if constexpr( is_optional ) {                                           \
+				daw_ensure( m_func );                                                 \
 				return ( *InvokeFn )( std::forward<param_t<Params>>( params )... );   \
 			} else {                                                                \
 				return InvokeFn( std::forward<param_t<Params>>( params )... );        \
