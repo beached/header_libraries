@@ -203,8 +203,8 @@ namespace daw::sf_impl {
 	};
 
 	template<cvref_t CVRef, bool IsNoExcept, typename R, typename... Params>
-	void weak_release(
-	  shared_function_storage_base<CVRef, IsNoExcept, R, Params...> *p ) {
+	void weak_release( shared_function_storage_base<CVRef, IsNoExcept, R,
+	                                                Params...> *p ) noexcept {
 		if( not p ) {
 			return;
 		}
@@ -214,8 +214,8 @@ namespace daw::sf_impl {
 	}
 
 	template<cvref_t CVRef, bool IsNoExcept, typename R, typename... Params>
-	void strong_release(
-	  shared_function_storage_base<CVRef, IsNoExcept, R, Params...> *p ) {
+	void strong_release( shared_function_storage_base<CVRef, IsNoExcept, R,
+	                                                  Params...> *p ) noexcept {
 		if( not p ) {
 			return;
 		}
