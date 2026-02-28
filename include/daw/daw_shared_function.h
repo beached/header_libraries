@@ -72,14 +72,14 @@ public:                                                                     \
 	}
 
 // One specialization generator
-#define DAW_SF_STORAGE_BASE_SPEC( CVREF_ENUM, CALL_QUALS )                   \
+#define DAW_SF_STORAGE_BASE_SPEC( CVREF_ENUM, ... )                          \
 	template<bool IsNoExcept, typename R, typename... Params>                  \
 	class shared_function_storage_base<CVREF_ENUM, IsNoExcept, R, Params...> { \
-		DAW_SF_STORAGE_BASE_BODY( CALL_QUALS )                                   \
+		DAW_SF_STORAGE_BASE_BODY( __VA_ARGS__ )                                  \
 	}
 
 	// 6 specializations
-	DAW_SF_STORAGE_BASE_SPEC( cvref_t::None, );
+	DAW_SF_STORAGE_BASE_SPEC( cvref_t::None );
 	DAW_SF_STORAGE_BASE_SPEC( cvref_t::Const, const );
 	DAW_SF_STORAGE_BASE_SPEC( cvref_t::Ref, & );
 	DAW_SF_STORAGE_BASE_SPEC( cvref_t::ConstRef, const & );
