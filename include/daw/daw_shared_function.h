@@ -23,198 +23,53 @@ namespace daw::sf_impl {
 	template<typename T>
 	using param_t = std::conditional_t<std::is_scalar_v<T>, T, T &&>;
 
-	template<bool IsNoExcept, typename R, typename... Params>
-	class shared_function_storage_base<cvref_t::None, IsNoExcept, R, Params...> {
-		std::atomic_int m_weak_count = 1;
-		std::atomic_int m_strong_count = 1;
+#define DAW_SF_STORAGE_BASE_BODY( CALL_QUALS )                             \
+	std::atomic_int m_weak_count = 1;                                        \
+	std::atomic_int m_strong_count = 1;                                      \
+                                                                           \
+public:                                                                    \
+	shared_function_storage_base( ) = default;                               \
+	virtual ~shared_function_storage_base( ) = default;                      \
+                                                                           \
+	virtual DAW_CPP26_CX_ATOMIC R call( Params... )                          \
+	  CALL_QUALS noexcept( IsNoExcept ) = 0;                                 \
+                                                                           \
+	[[nodiscard]] DAW_CPP26_CX_ATOMIC auto *strong_copy( this auto &self ) { \
+		++self.m_strong_count;                                                 \
+		++self.m_weak_count;                                                   \
+		return &self;                                                          \
+	}                                                                        \
+                                                                           \
+	[[nodiscard]] DAW_CPP26_CX_ATOMIC auto *weak_copy( this auto &self ) {   \
+		++self.m_weak_count;                                                   \
+		return &self;                                                          \
+	}                                                                        \
+                                                                           \
+	DAW_CPP26_CX_ATOMIC void strong_dec( ) {                                 \
+		--m_strong_count;                                                      \
+	}                                                                        \
+                                                                           \
+	[[nodiscard]] DAW_CPP26_CX_ATOMIC bool weak_dec( ) {                     \
+		return --m_weak_count == 0;                                            \
+	}
 
-	public:
-		[[nodiscard]] auto *strong_copy( this auto &self ) {
-			++self.m_strong_count;
-			++self.m_weak_count;
-			return &self;
-		}
+// One specialization generator
+#define DAW_SF_STORAGE_BASE_SPEC( CVREF_ENUM, CALL_QUALS )                   \
+	template<bool IsNoExcept, typename R, typename... Params>                  \
+	class shared_function_storage_base<CVREF_ENUM, IsNoExcept, R, Params...> { \
+		DAW_SF_STORAGE_BASE_BODY( CALL_QUALS );                                  \
+	}
 
-		[[nodiscard]] auto *weak_copy( this auto &self ) {
-			++self.m_weak_count;
-			return &self;
-		}
+	// 6 specializations
+	DAW_SF_STORAGE_BASE_SPEC( cvref_t::None, );
+	DAW_SF_STORAGE_BASE_SPEC( cvref_t::Const, const );
+	DAW_SF_STORAGE_BASE_SPEC( cvref_t::Ref, & );
+	DAW_SF_STORAGE_BASE_SPEC( cvref_t::ConstRef, const & );
+	DAW_SF_STORAGE_BASE_SPEC( cvref_t::RefRef, && );
+	DAW_SF_STORAGE_BASE_SPEC( cvref_t::ConstRefRef, const && );
 
-		void strong_dec( ) {
-			--m_strong_count;
-		}
-
-		[[nodiscard]] bool weak_dec( ) {
-			return --m_weak_count == 0;
-		}
-		shared_function_storage_base( ) = default;
-
-		virtual R call( Params... ) noexcept( IsNoExcept ) = 0;
-		virtual ~shared_function_storage_base( ) = default;
-	};
-
-	template<bool IsNoExcept, typename R, typename... Params>
-	class shared_function_storage_base<cvref_t::Const, IsNoExcept, R, Params...> {
-	private:
-		std::atomic_int m_weak_count = 1;
-		std::atomic_int m_strong_count = 1;
-
-	public:
-		[[nodiscard]] auto *strong_copy( this auto &self ) {
-			++self.m_strong_count;
-			++self.m_weak_count;
-			return &self;
-		}
-
-		[[nodiscard]] auto *weak_copy( this auto &self ) {
-			++self.m_weak_count;
-			return &self;
-		}
-
-		void strong_dec( ) {
-			--m_strong_count;
-		}
-
-		[[nodiscard]] bool weak_dec( ) {
-			return --m_weak_count == 0;
-		}
-
-		shared_function_storage_base( ) = default;
-
-		virtual R call( Params... ) const noexcept( IsNoExcept ) = 0;
-		virtual ~shared_function_storage_base( ) = default;
-	};
-
-	template<bool IsNoExcept, typename R, typename... Params>
-	class shared_function_storage_base<cvref_t::Ref, IsNoExcept, R, Params...> {
-	private:
-		std::atomic_int m_weak_count = 1;
-		std::atomic_int m_strong_count = 1;
-
-	public:
-		[[nodiscard]] auto *strong_copy( this auto &self ) {
-			++self.m_strong_count;
-			++self.m_weak_count;
-			return &self;
-		}
-
-		[[nodiscard]] auto *weak_copy( this auto &self ) {
-			++self.m_weak_count;
-			return &self;
-		}
-
-		void strong_dec( ) {
-			--m_strong_count;
-		}
-
-		[[nodiscard]] bool weak_dec( ) {
-			return --m_weak_count == 0;
-		}
-
-		shared_function_storage_base( ) = default;
-
-		virtual R call( Params... ) & noexcept( IsNoExcept ) = 0;
-		virtual ~shared_function_storage_base( ) = default;
-	};
-
-	template<bool IsNoExcept, typename R, typename... Params>
-	class shared_function_storage_base<cvref_t::ConstRef, IsNoExcept, R,
-	                                   Params...> {
-	private:
-		std::atomic_int m_weak_count = 1;
-		std::atomic_int m_strong_count = 1;
-
-	public:
-		[[nodiscard]] auto *strong_copy( this auto &self ) {
-			++self.m_strong_count;
-			++self.m_weak_count;
-			return &self;
-		}
-
-		[[nodiscard]] auto *weak_copy( this auto &self ) {
-			++self.m_weak_count;
-			return &self;
-		}
-
-		void strong_dec( ) {
-			--m_strong_count;
-		}
-
-		[[nodiscard]] bool weak_dec( ) {
-			return --m_weak_count == 0;
-		}
-
-		shared_function_storage_base( ) = default;
-
-		virtual R call( Params... ) const & noexcept( IsNoExcept ) = 0;
-		virtual ~shared_function_storage_base( ) = default;
-	};
-
-	template<bool IsNoExcept, typename R, typename... Params>
-	class shared_function_storage_base<cvref_t::RefRef, IsNoExcept, R,
-	                                   Params...> {
-	private:
-		std::atomic_int m_weak_count = 1;
-		std::atomic_int m_strong_count = 1;
-
-	public:
-		[[nodiscard]] auto *strong_copy( this auto &self ) {
-			++self.m_strong_count;
-			++self.m_weak_count;
-			return &self;
-		}
-
-		[[nodiscard]] auto *weak_copy( this auto &self ) {
-			++self.m_weak_count;
-			return &self;
-		}
-
-		void strong_dec( ) {
-			--m_strong_count;
-		}
-
-		[[nodiscard]] bool weak_dec( ) {
-			return --m_weak_count == 0;
-		}
-
-		shared_function_storage_base( ) = default;
-
-		virtual R call( Params... ) && noexcept( IsNoExcept ) = 0;
-		virtual ~shared_function_storage_base( ) = default;
-	};
-
-	template<bool IsNoExcept, typename R, typename... Params>
-	class shared_function_storage_base<cvref_t::ConstRefRef, IsNoExcept, R,
-	                                   Params...> {
-	private:
-		std::atomic_int m_weak_count = 1;
-		std::atomic_int m_strong_count = 1;
-
-	public:
-		[[nodiscard]] auto *strong_copy( this auto &self ) {
-			++self.m_strong_count;
-			++self.m_weak_count;
-			return &self;
-		}
-
-		[[nodiscard]] auto *weak_copy( this auto &self ) {
-			++self.m_weak_count;
-			return &self;
-		}
-
-		void strong_dec( ) {
-			--m_strong_count;
-		}
-
-		[[nodiscard]] bool weak_dec( ) {
-			return --m_weak_count == 0;
-		}
-
-		shared_function_storage_base( ) = default;
-
-		virtual R call( Params... ) const && noexcept( IsNoExcept ) = 0;
-		virtual ~shared_function_storage_base( ) = default;
-	};
+#undef DAW_SF_STORAGE_BASE_SPEC
+#undef DAW_SF_STORAGE_BASE_BODY
 
 	template<typename Fn, cvref_t CVRef, bool IsNoExcept, typename R,
 	         typename... Params>
@@ -227,10 +82,11 @@ namespace daw::sf_impl {
 		DAW_NO_UNIQUE_ADDRESS Fn m_func;
 
 	public:
-		explicit shared_function_storage( Fn f )
+		explicit DAW_CPP26_CX_ATOMIC shared_function_storage( Fn f )
 		  : m_func{ DAW_FWD( f ) } {}
 
-		R call( Params... params ) noexcept( IsNoExcept ) override {
+		DAW_CPP26_CX_ATOMIC R
+		call( Params... params ) noexcept( IsNoExcept ) override {
 			return m_func( std::forward<param_t<Params>>( params )... );
 		}
 	};
@@ -242,10 +98,11 @@ namespace daw::sf_impl {
 		DAW_NO_UNIQUE_ADDRESS Fn m_func;
 
 	public:
-		explicit shared_function_storage( Fn fn )
+		explicit DAW_CPP26_CX_ATOMIC shared_function_storage( Fn fn )
 		  : m_func{ DAW_FWD( fn ) } {}
 
-		R call( Params... params ) const noexcept( IsNoExcept ) override {
+		DAW_CPP26_CX_ATOMIC R call( Params... params ) const
+		  noexcept( IsNoExcept ) override {
 			return m_func( std::forward<param_t<Params>>( params )... );
 		}
 	};
@@ -257,10 +114,11 @@ namespace daw::sf_impl {
 		DAW_NO_UNIQUE_ADDRESS Fn m_func;
 
 	public:
-		explicit shared_function_storage( Fn fn )
+		explicit DAW_CPP26_CX_ATOMIC shared_function_storage( Fn fn )
 		  : m_func{ DAW_FWD( fn ) } {}
 
-		R call( Params... params ) & noexcept( IsNoExcept ) override {
+		DAW_CPP26_CX_ATOMIC R
+		call( Params... params ) & noexcept( IsNoExcept ) override {
 			return m_func( std::forward<param_t<Params>>( params )... );
 		}
 	};
@@ -272,10 +130,11 @@ namespace daw::sf_impl {
 		DAW_NO_UNIQUE_ADDRESS Fn m_func;
 
 	public:
-		explicit shared_function_storage( Fn fn )
+		explicit DAW_CPP26_CX_ATOMIC shared_function_storage( Fn fn )
 		  : m_func{ DAW_FWD( fn ) } {}
 
-		R call( Params... params ) const & noexcept( IsNoExcept ) override {
+		DAW_CPP26_CX_ATOMIC R
+		call( Params... params ) const & noexcept( IsNoExcept ) override {
 			return m_func( std::forward<param_t<Params>>( params )... );
 		}
 	};
@@ -287,10 +146,11 @@ namespace daw::sf_impl {
 		DAW_NO_UNIQUE_ADDRESS Fn m_func;
 
 	public:
-		explicit shared_function_storage( Fn fn )
+		explicit DAW_CPP26_CX_ATOMIC shared_function_storage( Fn fn )
 		  : m_func{ DAW_FWD( fn ) } {}
 
-		R call( Params... params ) && noexcept( IsNoExcept ) override {
+		DAW_CPP26_CX_ATOMIC R
+		call( Params... params ) && noexcept( IsNoExcept ) override {
 			return std::move( m_func )( std::forward<param_t<Params>>( params )... );
 		}
 	};
@@ -303,17 +163,19 @@ namespace daw::sf_impl {
 		DAW_NO_UNIQUE_ADDRESS Fn m_func;
 
 	public:
-		explicit shared_function_storage( Fn fn )
+		explicit DAW_CPP26_CX_ATOMIC shared_function_storage( Fn fn )
 		  : m_func{ DAW_FWD( fn ) } {}
 
-		R call( Params... params ) const && noexcept( IsNoExcept ) override {
+		DAW_CPP26_CX_ATOMIC R
+		call( Params... params ) const && noexcept( IsNoExcept ) override {
 			return std::move( m_func )( std::forward<param_t<Params>>( params )... );
 		}
 	};
 
 	template<cvref_t CVRef, bool IsNoExcept, typename R, typename... Params>
-	void weak_release( shared_function_storage_base<CVRef, IsNoExcept, R,
-	                                                Params...> *p ) noexcept {
+	DAW_CPP26_CX_ATOMIC void
+	weak_release( shared_function_storage_base<CVRef, IsNoExcept, R, Params...>
+	                *p ) noexcept {
 		if( not p ) {
 			return;
 		}
@@ -323,8 +185,9 @@ namespace daw::sf_impl {
 	}
 
 	template<cvref_t CVRef, bool IsNoExcept, typename R, typename... Params>
-	void strong_release( shared_function_storage_base<CVRef, IsNoExcept, R,
-	                                                  Params...> *p ) noexcept {
+	DAW_CPP26_CX_ATOMIC void
+	strong_release( shared_function_storage_base<CVRef, IsNoExcept, R, Params...>
+	                  *p ) noexcept {
 		if( not p ) {
 			return;
 		}
@@ -335,7 +198,7 @@ namespace daw::sf_impl {
 	template<cvref_t CVRef, bool IsNoExcept, typename R, typename... Params,
 	         typename Fn>
 	requires( std::is_class_v<std::remove_cvref_t<Fn>> ) //
-	  auto make_fn_storage( Fn &&fn ) {
+	  DAW_CPP26_CX_ATOMIC auto make_fn_storage( Fn &&fn ) {
 		return new shared_function_storage<std::remove_cvref_t<Fn>,
 		                                   CVRef,
 		                                   IsNoExcept,
@@ -346,7 +209,7 @@ namespace daw::sf_impl {
 	template<cvref_t CVRef, bool IsNoExcept, typename R, typename... Params,
 	         typename Fn>
 	requires( not std::is_class_v<std::remove_cvref_t<Fn>> ) //
-	  auto make_fn_storage( Fn fn ) {
+	  DAW_CPP26_CX_ATOMIC auto make_fn_storage( Fn fn ) {
 		return new shared_function_storage<Fn, CVRef, IsNoExcept, R, Params...>{
 		  fn };
 	}
@@ -360,17 +223,19 @@ namespace daw::sf_impl {
 		storage_t *m_storage = nullptr;
 
 	public:
-		weak_shared_function_base( storage_t *storage )
+		explicit DAW_CPP26_CX_ATOMIC weak_shared_function_base( storage_t *storage )
 		  : m_storage( storage ? storage->weak_copy( ) : nullptr ) {}
 
+		DAW_CPP26_CX_ATOMIC
 		weak_shared_function_base( weak_shared_function_base const &other )
 		  : m_storage( other.m_storage ? other.m_storage->weak_copy( ) : nullptr ) {
 		}
 
+		DAW_CPP26_CX_ATOMIC
 		weak_shared_function_base( weak_shared_function_base &&other ) noexcept
 		  : m_storage( std::exchange( other.m_storage, nullptr ) ) {}
 
-		weak_shared_function_base &
+		DAW_CPP26_CX_ATOMIC weak_shared_function_base &
 		operator=( weak_shared_function_base const &rhs ) {
 			if( this != &rhs ) {
 				storage_t *old = m_storage;
@@ -380,7 +245,7 @@ namespace daw::sf_impl {
 			return *this;
 		}
 
-		weak_shared_function_base &
+		DAW_CPP26_CX_ATOMIC weak_shared_function_base &
 		operator=( weak_shared_function_base &&rhs ) noexcept {
 			if( this != &rhs ) {
 				storage_t *old = m_storage;
@@ -390,7 +255,7 @@ namespace daw::sf_impl {
 			return *this;
 		}
 
-		~weak_shared_function_base( ) {
+		DAW_CPP26_CX_ATOMIC ~weak_shared_function_base( ) {
 			weak_release( std::exchange( m_storage, nullptr ) );
 		}
 	};
@@ -402,7 +267,7 @@ namespace daw::sf_impl {
 		  shared_function_storage_base<CVRef, IsNoExcept, R, Params...>;
 		storage_t *m_storage = nullptr;
 
-		shared_function_base( storage_t *storage )
+		DAW_CPP26_CX_ATOMIC shared_function_base( storage_t *storage )
 		  : m_storage( storage ? storage->strong_copy( ) : nullptr ) {}
 
 	public:
@@ -415,19 +280,22 @@ namespace daw::sf_impl {
 
 		shared_function_base( ) = default;
 
-		~shared_function_base( ) {
+		DAW_CPP26_CX_ATOMIC ~shared_function_base( ) {
 			storage_t *tmp = std::exchange( m_storage, nullptr );
 			strong_release( tmp );
 		}
 
+		DAW_CPP26_CX_ATOMIC
 		shared_function_base( shared_function_base const &other )
 		  : m_storage( other.m_storage ? other.m_storage->strong_copy( )
 		                               : nullptr ) {}
 
+		DAW_CPP26_CX_ATOMIC
 		shared_function_base( shared_function_base &&other ) noexcept
 		  : m_storage( std::exchange( other.m_storage, nullptr ) ) {}
 
-		shared_function_base &operator=( shared_function_base const &rhs ) {
+		DAW_CPP26_CX_ATOMIC shared_function_base &
+		operator=( shared_function_base const &rhs ) {
 			if( this != &rhs ) {
 				auto *old = m_storage;
 				m_storage = rhs.m_storage ? rhs.m_storage->strong_copy( ) : nullptr;
@@ -436,7 +304,8 @@ namespace daw::sf_impl {
 			return *this;
 		}
 
-		shared_function_base &operator=( shared_function_base &&rhs ) noexcept {
+		DAW_CPP26_CX_ATOMIC shared_function_base &
+		operator=( shared_function_base &&rhs ) noexcept {
 			if( this != &rhs ) {
 				auto *old = m_storage;
 				m_storage = std::exchange( rhs.m_storage, nullptr );
@@ -446,7 +315,8 @@ namespace daw::sf_impl {
 		}
 
 		template<typename Self>
-		R operator( )( this Self &&self, Params... params ) noexcept( IsNoExcept ) {
+		DAW_CPP26_CX_ATOMIC R
+		operator( )( this Self &&self, Params... params ) noexcept( IsNoExcept ) {
 			using type = std::conditional_t<std::is_reference_v<Self>,
 			                                copy_cvref_t<Self, storage_t>,
 			                                copy_cvref_t<Self, storage_t> &&>;
@@ -455,7 +325,7 @@ namespace daw::sf_impl {
 			  .call( std::forward<param_t<Params>>( params )... );
 		}
 
-		explicit operator bool( ) const {
+		explicit DAW_CPP26_CX_ATOMIC operator bool( ) const {
 			return m_storage != nullptr;
 		}
 	};
@@ -467,463 +337,112 @@ namespace daw {
 	template<typename>
 	class weak_shared_function;
 
-	template<typename R, typename... Params>
-	struct shared_function<R( Params... )>
-	  : sf_impl::shared_function_base<sf_impl::cvref_t::None, false, R,
-	                                  Params...> {
-		using sf_impl::shared_function_base<sf_impl::cvref_t::None, false, R,
-		                                    Params...>::shared_function_base;
-
-		template<typename>
-		friend class weak_shared_function;
-
-		weak_shared_function<R( Params... )> get_weak( );
-	};
-
-	template<typename R, typename... Params>
-	struct shared_function<R( Params... ) const>
-	  : sf_impl::shared_function_base<sf_impl::cvref_t::Const, false, R,
-	                                  Params...> {
-		using sf_impl::shared_function_base<sf_impl::cvref_t::Const, false, R,
-		                                    Params...>::shared_function_base;
-		template<typename>
-		friend class weak_shared_function;
-
-		weak_shared_function<R( Params... ) const> get_weak( );
-	};
-
-	template<typename R, typename... Params>
-	struct shared_function<R( Params... ) &>
-	  : sf_impl::shared_function_base<sf_impl::cvref_t::Ref, false, R,
-	                                  Params...> {
-
-		using sf_impl::shared_function_base<sf_impl::cvref_t::Ref, false, R,
-		                                    Params...>::shared_function_base;
-		template<typename>
-		friend class weak_shared_function;
-
-		weak_shared_function<R( Params... ) &> get_weak( );
-	};
-
-	template<typename R, typename... Params>
-	struct shared_function<R( Params... ) const &>
-	  : sf_impl::shared_function_base<sf_impl::cvref_t::ConstRef, false, R,
-	                                  Params...> {
-
-		using sf_impl::shared_function_base<sf_impl::cvref_t::ConstRef, false, R,
-		                                    Params...>::shared_function_base;
-		template<typename>
-		friend class weak_shared_function;
-
-		weak_shared_function<R( Params... ) const &> get_weak( );
-	};
-
-	template<typename R, typename... Params>
-	struct shared_function<R( Params... ) &&>
-	  : sf_impl::shared_function_base<sf_impl::cvref_t::RefRef, false, R,
-	                                  Params...> {
-		using sf_impl::shared_function_base<sf_impl::cvref_t::RefRef, false, R,
-		                                    Params...>::shared_function_base;
-		template<typename>
-		friend class weak_shared_function;
-
-		weak_shared_function<R( Params... ) &&> get_weak( );
-	};
-
-	template<typename R, typename... Params>
-	struct shared_function<R( Params... ) const &&>
-	  : sf_impl::shared_function_base<sf_impl::cvref_t::ConstRefRef, false, R,
-	                                  Params...> {
-		using sf_impl::shared_function_base<sf_impl::cvref_t::ConstRefRef, false, R,
-		                                    Params...>::shared_function_base;
-		template<typename>
-		friend class weak_shared_function;
-
-		weak_shared_function<R( Params... ) const &&> get_weak( );
-	};
-
-	template<typename R, typename... Params>
-	struct shared_function<R( Params... ) noexcept>
-	  : sf_impl::shared_function_base<sf_impl::cvref_t::None, true, R,
-	                                  Params...> {
-		using sf_impl::shared_function_base<sf_impl::cvref_t::None, true, R,
-		                                    Params...>::shared_function_base;
-		template<typename>
-		friend class weak_shared_function;
-
-		weak_shared_function<R( Params... ) noexcept> get_weak( );
-	};
-
-	template<typename R, typename... Params>
-	struct shared_function<R( Params... ) const noexcept>
-	  : sf_impl::shared_function_base<sf_impl::cvref_t::Const, true, R,
-	                                  Params...> {
-		using sf_impl::shared_function_base<sf_impl::cvref_t::Const, true, R,
-		                                    Params...>::shared_function_base;
-		template<typename>
-		friend class weak_shared_function;
-
-		weak_shared_function<R( Params... ) const noexcept> get_weak( );
-	};
-
-	template<typename R, typename... Params>
-	struct shared_function<R( Params... ) & noexcept>
-	  : sf_impl::shared_function_base<sf_impl::cvref_t::Ref, true, R, Params...> {
-
-		using sf_impl::shared_function_base<sf_impl::cvref_t::Ref, true, R,
-		                                    Params...>::shared_function_base;
-		template<typename>
-		friend class weak_shared_function;
-
-		weak_shared_function<R( Params... ) & noexcept> get_weak( );
-	};
-
-	template<typename R, typename... Params>
-	struct shared_function<R( Params... ) const & noexcept>
-	  : sf_impl::shared_function_base<sf_impl::cvref_t::ConstRef, true, R,
-	                                  Params...> {
-		using sf_impl::shared_function_base<sf_impl::cvref_t::ConstRef, true, R,
-		                                    Params...>::shared_function_base;
-		template<typename>
-		friend class weak_shared_function;
-
-		weak_shared_function<R( Params... ) const & noexcept> get_weak( );
-	};
-
-	template<typename R, typename... Params>
-	struct shared_function<R( Params... ) && noexcept>
-	  : sf_impl::shared_function_base<sf_impl::cvref_t::RefRef, true, R,
-	                                  Params...> {
-		using sf_impl::shared_function_base<sf_impl::cvref_t::RefRef, true, R,
-		                                    Params...>::shared_function_base;
-		template<typename>
-		friend class weak_shared_function;
-
-		weak_shared_function<R( Params... ) && noexcept> get_weak( );
-	};
-
-	template<typename R, typename... Params>
-	struct shared_function<R( Params... ) const && noexcept>
-	  : sf_impl::shared_function_base<sf_impl::cvref_t::ConstRefRef, true, R,
-	                                  Params...> {
-		using sf_impl::shared_function_base<sf_impl::cvref_t::ConstRefRef, true, R,
-		                                    Params...>::shared_function_base;
-		template<typename>
-		friend class weak_shared_function;
-
-		weak_shared_function<R( Params... ) const && noexcept> get_weak( );
-	};
-
-	template<typename R, typename... Params>
-	weak_shared_function<R( Params... )>
-	shared_function<R( Params... )>::get_weak( ) {
-		return weak_shared_function<R( Params... )>( this->m_storage );
+#define DAW_DETAIL_SHARED_FUNCTION_SPEC( Signature, CVRef, IsNoExcept )   \
+	template<typename R, typename... Params>                                \
+	struct shared_function<Signature>                                       \
+	  : sf_impl::shared_function_base<CVRef, IsNoExcept, R, Params...> {    \
+		using sf_impl::shared_function_base<CVRef, IsNoExcept, R,             \
+		                                    Params...>::shared_function_base; \
+                                                                          \
+		template<typename>                                                    \
+		friend class weak_shared_function;                                    \
+                                                                          \
+		DAW_CPP26_CX_ATOMIC weak_shared_function<Signature> get_weak( );      \
 	}
 
-	template<typename R, typename... Params>
-	weak_shared_function<R( Params... ) const>
-	shared_function<R( Params... ) const>::get_weak( ) {
-		return weak_shared_function<R( Params... ) const>( this->m_storage );
+	DAW_DETAIL_SHARED_FUNCTION_SPEC( R( Params... ), sf_impl::cvref_t::None,
+	                                 false );
+	DAW_DETAIL_SHARED_FUNCTION_SPEC( R( Params... ) const,
+	                                 sf_impl::cvref_t::Const, false );
+	DAW_DETAIL_SHARED_FUNCTION_SPEC( R( Params... ) &, sf_impl::cvref_t::Ref,
+	                                 false );
+	DAW_DETAIL_SHARED_FUNCTION_SPEC( R( Params... ) const &,
+	                                 sf_impl::cvref_t::ConstRef, false );
+	DAW_DETAIL_SHARED_FUNCTION_SPEC( R( Params... ) &&, sf_impl::cvref_t::RefRef,
+	                                 false );
+	DAW_DETAIL_SHARED_FUNCTION_SPEC( R( Params... ) const &&,
+	                                 sf_impl::cvref_t::ConstRefRef, false );
+	DAW_DETAIL_SHARED_FUNCTION_SPEC( R( Params... ) noexcept,
+	                                 sf_impl::cvref_t::None, true );
+	DAW_DETAIL_SHARED_FUNCTION_SPEC( R( Params... ) const noexcept,
+	                                 sf_impl::cvref_t::Const, true );
+	DAW_DETAIL_SHARED_FUNCTION_SPEC( R( Params... ) & noexcept,
+	                                 sf_impl::cvref_t::Ref, true );
+	DAW_DETAIL_SHARED_FUNCTION_SPEC( R( Params... ) const & noexcept,
+	                                 sf_impl::cvref_t::ConstRef, true );
+	DAW_DETAIL_SHARED_FUNCTION_SPEC( R( Params... ) && noexcept,
+	                                 sf_impl::cvref_t::RefRef, true );
+	DAW_DETAIL_SHARED_FUNCTION_SPEC( R( Params... ) const && noexcept,
+	                                 sf_impl::cvref_t::ConstRefRef, true );
+
+#undef DAW_DETAIL_SHARED_FUNCTION_SPEC
+
+#define DAW_DETAIL_SHARED_FUNCTION_GET_WEAK_DEF( Signature )   \
+	template<typename R, typename... Params>                     \
+	DAW_CPP26_CX_ATOMIC weak_shared_function<Signature>          \
+	shared_function<Signature>::get_weak( ) {                    \
+		return weak_shared_function<Signature>( this->m_storage ); \
 	}
 
-	template<typename R, typename... Params>
-	weak_shared_function<R( Params... ) &>
-	shared_function<R( Params... ) &>::get_weak( ) {
-		return weak_shared_function<R( Params... ) &>( this->m_storage );
+	DAW_DETAIL_SHARED_FUNCTION_GET_WEAK_DEF( R( Params... ) );
+	DAW_DETAIL_SHARED_FUNCTION_GET_WEAK_DEF( R( Params... ) const );
+	DAW_DETAIL_SHARED_FUNCTION_GET_WEAK_DEF( R( Params... ) & );
+	DAW_DETAIL_SHARED_FUNCTION_GET_WEAK_DEF( R( Params... ) const & );
+	DAW_DETAIL_SHARED_FUNCTION_GET_WEAK_DEF( R( Params... ) && );
+	DAW_DETAIL_SHARED_FUNCTION_GET_WEAK_DEF( R( Params... ) const && );
+	DAW_DETAIL_SHARED_FUNCTION_GET_WEAK_DEF( R( Params... ) noexcept );
+	DAW_DETAIL_SHARED_FUNCTION_GET_WEAK_DEF( R( Params... ) const noexcept );
+	DAW_DETAIL_SHARED_FUNCTION_GET_WEAK_DEF( R( Params... ) & noexcept );
+	DAW_DETAIL_SHARED_FUNCTION_GET_WEAK_DEF( R( Params... ) const & noexcept );
+	DAW_DETAIL_SHARED_FUNCTION_GET_WEAK_DEF( R( Params... ) && noexcept );
+	DAW_DETAIL_SHARED_FUNCTION_GET_WEAK_DEF( R( Params... ) const && noexcept );
+
+#undef DAW_DETAIL_SHARED_FUNCTION_GET_WEAK_DEF
+
+#define DAW_DETAIL_WEAK_SHARED_FUNCTION_SPEC( Signature, CVRef, IsNoExcept ) \
+	template<typename R, typename... Params>                                   \
+	class weak_shared_function<Signature>                                      \
+	  : sf_impl::weak_shared_function_base<CVRef, IsNoExcept, R, Params...> {  \
+		template<typename>                                                       \
+		friend struct shared_function;                                           \
+                                                                             \
+		using base_t =                                                           \
+		  sf_impl::weak_shared_function_base<CVRef, IsNoExcept, R, Params...>;   \
+                                                                             \
+		explicit DAW_CPP26_CX_ATOMIC                                             \
+		weak_shared_function( shared_function<Signature> const &s )              \
+		  : base_t( s.m_storage ) {}                                             \
+                                                                             \
+	public:                                                                    \
+		[[nodiscard]] DAW_CPP26_CX_ATOMIC shared_function<Signature> lock( ) {   \
+			return shared_function<Signature>( this->m_storage );                  \
+		}                                                                        \
 	}
 
-	template<typename R, typename... Params>
-	weak_shared_function<R( Params... ) const &>
-	shared_function<R( Params... ) const &>::get_weak( ) {
-		return weak_shared_function<R( Params... ) const &>( this->m_storage );
-	}
+	DAW_DETAIL_WEAK_SHARED_FUNCTION_SPEC( R( Params... ), sf_impl::cvref_t::None,
+	                                      false );
+	DAW_DETAIL_WEAK_SHARED_FUNCTION_SPEC( R( Params... ) const,
+	                                      sf_impl::cvref_t::Const, false );
+	DAW_DETAIL_WEAK_SHARED_FUNCTION_SPEC( R( Params... ) &, sf_impl::cvref_t::Ref,
+	                                      false );
+	DAW_DETAIL_WEAK_SHARED_FUNCTION_SPEC( R( Params... ) const &,
+	                                      sf_impl::cvref_t::ConstRef, false );
+	DAW_DETAIL_WEAK_SHARED_FUNCTION_SPEC( R( Params... ) &&,
+	                                      sf_impl::cvref_t::RefRef, false );
+	DAW_DETAIL_WEAK_SHARED_FUNCTION_SPEC( R( Params... ) const &&,
+	                                      sf_impl::cvref_t::ConstRefRef, false );
+	DAW_DETAIL_WEAK_SHARED_FUNCTION_SPEC( R( Params... ) noexcept,
+	                                      sf_impl::cvref_t::None, true );
+	DAW_DETAIL_WEAK_SHARED_FUNCTION_SPEC( R( Params... ) const noexcept,
+	                                      sf_impl::cvref_t::Const, true );
+	DAW_DETAIL_WEAK_SHARED_FUNCTION_SPEC( R( Params... ) & noexcept,
+	                                      sf_impl::cvref_t::Ref, true );
+	DAW_DETAIL_WEAK_SHARED_FUNCTION_SPEC( R( Params... ) const & noexcept,
+	                                      sf_impl::cvref_t::ConstRef, true );
+	DAW_DETAIL_WEAK_SHARED_FUNCTION_SPEC( R( Params... ) && noexcept,
+	                                      sf_impl::cvref_t::RefRef, true );
+	DAW_DETAIL_WEAK_SHARED_FUNCTION_SPEC( R( Params... ) const && noexcept,
+	                                      sf_impl::cvref_t::ConstRefRef, true );
 
-	template<typename R, typename... Params>
-	weak_shared_function<R( Params... ) &&>
-	shared_function<R( Params... ) &&>::get_weak( ) {
-		return weak_shared_function<R( Params... ) &&>( this->m_storage );
-	}
-
-	template<typename R, typename... Params>
-	weak_shared_function<R( Params... ) const &&>
-	shared_function<R( Params... ) const &&>::get_weak( ) {
-		return weak_shared_function<R( Params... ) const &&>( this->m_storage );
-	}
-
-	template<typename R, typename... Params>
-	weak_shared_function<R( Params... ) noexcept>
-	shared_function<R( Params... ) noexcept>::get_weak( ) {
-		return weak_shared_function<R( Params... ) noexcept>( this->m_storage );
-	}
-
-	template<typename R, typename... Params>
-	weak_shared_function<R( Params... ) const noexcept>
-	shared_function<R( Params... ) const noexcept>::get_weak( ) {
-		return weak_shared_function<R( Params... ) const noexcept>(
-		  this->m_storage );
-	}
-
-	template<typename R, typename... Params>
-	weak_shared_function<R( Params... ) & noexcept>
-	shared_function<R( Params... ) & noexcept>::get_weak( ) {
-		return weak_shared_function<R( Params... ) & noexcept>( this->m_storage );
-	}
-
-	template<typename R, typename... Params>
-	weak_shared_function<R( Params... ) const & noexcept>
-	shared_function<R( Params... ) const & noexcept>::get_weak( ) {
-		return weak_shared_function<R( Params... ) const & noexcept>(
-		  this->m_storage );
-	}
-
-	template<typename R, typename... Params>
-	weak_shared_function<R( Params... ) && noexcept>
-	shared_function<R( Params... ) && noexcept>::get_weak( ) {
-		return weak_shared_function < R( Params... ) &&
-		       noexcept > ( this->m_storage );
-	}
-
-	template<typename R, typename... Params>
-	weak_shared_function<R( Params... ) const && noexcept>
-	shared_function<R( Params... ) const && noexcept>::get_weak( ) {
-		return weak_shared_function < R( Params... ) const &&
-		       noexcept > ( this->m_storage );
-	}
-
-	template<typename R, typename... Params>
-	class weak_shared_function<R( Params... )>
-	  : sf_impl::weak_shared_function_base<sf_impl::cvref_t::None, false, R,
-	                                       Params...> {
-		template<typename>
-		friend struct shared_function;
-
-		using base_t = sf_impl::weak_shared_function_base<sf_impl::cvref_t::None,
-		                                                  false, R, Params...>;
-
-		weak_shared_function( shared_function<R( Params... )> const &s )
-		  : base_t( s.m_storage ) {}
-
-	public:
-		shared_function<R( Params... )> lock( ) {
-			return shared_function<R( Params... )>( this->m_storage );
-		}
-	};
-
-	template<typename R, typename... Params>
-	class weak_shared_function<R( Params... ) const>
-	  : sf_impl::weak_shared_function_base<sf_impl::cvref_t::Const, false, R,
-	                                       Params...> {
-		template<typename>
-		friend struct shared_function;
-
-		using base_t = sf_impl::weak_shared_function_base<sf_impl::cvref_t::Const,
-		                                                  false, R, Params...>;
-
-		weak_shared_function( shared_function<R( Params... ) const> const &s )
-		  : base_t( s.m_storage ) {}
-
-	public:
-		shared_function<R( Params... ) const> lock( ) {
-			return shared_function<R( Params... ) const>( this->m_storage );
-		}
-	};
-
-	template<typename R, typename... Params>
-	class weak_shared_function<R( Params... ) &>
-	  : sf_impl::weak_shared_function_base<sf_impl::cvref_t::Ref, false, R,
-	                                       Params...> {
-		template<typename>
-		friend struct shared_function;
-
-		using base_t = sf_impl::weak_shared_function_base<sf_impl::cvref_t::Ref,
-		                                                  false, R, Params...>;
-
-		weak_shared_function( shared_function<R( Params... ) &> const &s )
-		  : base_t( s.m_storage ) {}
-
-	public:
-		shared_function<R( Params... ) &> lock( ) {
-			return shared_function<R( Params... ) &>( this->m_storage );
-		}
-	};
-
-	template<typename R, typename... Params>
-	class weak_shared_function<R( Params... ) const &>
-	  : sf_impl::weak_shared_function_base<sf_impl::cvref_t::ConstRef, false, R,
-	                                       Params...> {
-		template<typename>
-		friend struct shared_function;
-
-		using base_t =
-		  sf_impl::weak_shared_function_base<sf_impl::cvref_t::ConstRef, false, R,
-		                                     Params...>;
-
-		weak_shared_function( shared_function<R( Params... ) const &> const &s )
-		  : base_t( s.m_storage ) {}
-
-	public:
-		shared_function<R( Params... ) const &> lock( ) {
-			return shared_function<R( Params... ) const &>( this->m_storage );
-		}
-	};
-
-	template<typename R, typename... Params>
-	class weak_shared_function<R( Params... ) &&>
-	  : sf_impl::weak_shared_function_base<sf_impl::cvref_t::RefRef, false, R,
-	                                       Params...> {
-		template<typename>
-		friend struct shared_function;
-
-		using base_t = sf_impl::weak_shared_function_base<sf_impl::cvref_t::RefRef,
-		                                                  false, R, Params...>;
-
-		weak_shared_function( shared_function<R( Params... ) &&> const &s )
-		  : base_t( s.m_storage ) {}
-
-	public:
-		shared_function<R( Params... ) &&> lock( ) {
-			return shared_function<R( Params... ) &&>( this->m_storage );
-		}
-	};
-
-	template<typename R, typename... Params>
-	class weak_shared_function<R( Params... ) const &&>
-	  : sf_impl::weak_shared_function_base<sf_impl::cvref_t::ConstRefRef, false,
-	                                       R, Params...> {
-		template<typename>
-		friend struct shared_function;
-
-		using base_t =
-		  sf_impl::weak_shared_function_base<sf_impl::cvref_t::ConstRefRef, false,
-		                                     R, Params...>;
-
-		weak_shared_function( shared_function<R( Params... ) const &&> const &s )
-		  : base_t( s.m_storage ) {}
-
-	public:
-		shared_function<R( Params... ) const &&> lock( ) {
-			return shared_function<R( Params... ) const &&>( this->m_storage );
-		}
-	};
-
-	template<typename R, typename... Params>
-	class weak_shared_function<R( Params... ) noexcept>
-	  : sf_impl::weak_shared_function_base<sf_impl::cvref_t::None, true, R,
-	                                       Params...> {
-		template<typename>
-		friend struct shared_function;
-
-		using base_t = sf_impl::weak_shared_function_base<sf_impl::cvref_t::None,
-		                                                  true, R, Params...>;
-
-		weak_shared_function( shared_function<R( Params... ) noexcept> const &s )
-		  : base_t( s.m_storage ) {}
-
-	public:
-		shared_function<R( Params... ) noexcept> lock( ) {
-			return shared_function<R( Params... ) noexcept>( this->m_storage );
-		}
-	};
-
-	template<typename R, typename... Params>
-	class weak_shared_function<R( Params... ) const noexcept>
-	  : sf_impl::weak_shared_function_base<sf_impl::cvref_t::Const, true, R,
-	                                       Params...> {
-		template<typename>
-		friend struct shared_function;
-
-		using base_t = sf_impl::weak_shared_function_base<sf_impl::cvref_t::Const,
-		                                                  true, R, Params...>;
-
-		weak_shared_function(
-		  shared_function<R( Params... ) const noexcept> const &s )
-		  : base_t( s.m_storage ) {}
-
-	public:
-		shared_function<R( Params... ) const noexcept> lock( ) {
-			return shared_function<R( Params... ) const noexcept>( this->m_storage );
-		}
-	};
-
-	template<typename R, typename... Params>
-	class weak_shared_function<R( Params... ) & noexcept>
-	  : sf_impl::weak_shared_function_base<sf_impl::cvref_t::Ref, true, R,
-	                                       Params...> {
-		template<typename>
-		friend struct shared_function;
-
-		using base_t = sf_impl::weak_shared_function_base<sf_impl::cvref_t::Ref,
-		                                                  true, R, Params...>;
-
-		weak_shared_function( shared_function<R( Params... ) & noexcept> const &s )
-		  : base_t( s.m_storage ) {}
-
-	public:
-		shared_function<R( Params... ) & noexcept> lock( ) {
-			return shared_function<R( Params... ) & noexcept>( this->m_storage );
-		}
-	};
-
-	template<typename R, typename... Params>
-	class weak_shared_function<R( Params... ) const & noexcept>
-	  : sf_impl::weak_shared_function_base<sf_impl::cvref_t::ConstRef, true, R,
-	                                       Params...> {
-		template<typename>
-		friend struct shared_function;
-
-		using base_t =
-		  sf_impl::weak_shared_function_base<sf_impl::cvref_t::ConstRef, true, R,
-		                                     Params...>;
-
-		weak_shared_function(
-		  shared_function<R( Params... ) const & noexcept> const &s )
-		  : base_t( s.m_storage ) {}
-
-	public:
-		shared_function<R( Params... ) const & noexcept> lock( ) {
-			return shared_function<R( Params... ) const & noexcept>(
-			  this->m_storage );
-		}
-	};
-
-	template<typename R, typename... Params>
-	class weak_shared_function<R( Params... ) && noexcept>
-	  : sf_impl::weak_shared_function_base<sf_impl::cvref_t::RefRef, true, R,
-	                                       Params...> {
-		template<typename>
-		friend struct shared_function;
-
-		using base_t = sf_impl::weak_shared_function_base<sf_impl::cvref_t::RefRef,
-		                                                  true, R, Params...>;
-
-		weak_shared_function( shared_function<R( Params... ) && noexcept> const &s )
-		  : base_t( s.m_storage ) {}
-
-	public:
-		shared_function<R( Params... ) && noexcept> lock( ) {
-			return shared_function < R( Params... ) && noexcept > ( this->m_storage );
-		}
-	};
-
-	template<typename R, typename... Params>
-	class weak_shared_function<R( Params... ) const && noexcept>
-	  : sf_impl::weak_shared_function_base<sf_impl::cvref_t::ConstRefRef, true, R,
-	                                       Params...> {
-		template<typename>
-		friend struct shared_function;
-
-		using base_t =
-		  sf_impl::weak_shared_function_base<sf_impl::cvref_t::ConstRefRef, true, R,
-		                                     Params...>;
-
-		weak_shared_function(
-		  shared_function<R( Params... ) const && noexcept> const &s )
-		  : base_t( s.m_storage ) {}
-
-	public:
-		shared_function<R( Params... ) const && noexcept> lock( ) {
-			return shared_function < R( Params... ) const &&
-			       noexcept > ( this->m_storage );
-		}
-	};
+#undef DAW_DETAIL_WEAK_SHARED_FUNCTION_SPEC
 } // namespace daw
