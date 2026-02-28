@@ -17,22 +17,18 @@
 namespace daw::sf_impl {
 	enum class cvref_t { None, Const, Ref, RefRef, ConstRef, ConstRefRef };
 
-	struct shared_function_storage_counts {
-		shared_function_storage_counts( ) = default;
-		virtual ~shared_function_storage_counts( ) = default;
+	template<cvref_t CVRef, bool IsNoExcept, typename R, typename... Params>
+	class shared_function_storage_base;
 
-		shared_function_storage_counts( shared_function_storage_counts const & ) =
-		  delete;
-		shared_function_storage_counts( shared_function_storage_counts && ) =
-		  delete;
-		shared_function_storage_counts &
-		operator=( shared_function_storage_counts const & ) = delete;
-		shared_function_storage_counts &
-		operator=( shared_function_storage_counts && ) = delete;
+	template<typename T>
+	using param_t = std::conditional_t<std::is_scalar_v<T>, T, T &&>;
 
+	template<bool IsNoExcept, typename R, typename... Params>
+	class shared_function_storage_base<cvref_t::None, IsNoExcept, R, Params...> {
 		std::atomic_int m_weak_count = 1;
 		std::atomic_int m_strong_count = 1;
 
+	public:
 		[[nodiscard]] auto *strong_copy( this auto &self ) {
 			++self.m_strong_count;
 			++self.m_weak_count;
@@ -51,154 +47,267 @@ namespace daw::sf_impl {
 		[[nodiscard]] bool weak_dec( ) {
 			return --m_weak_count == 0;
 		}
-	};
-
-	template<cvref_t CVRef, bool IsNoExcept, typename R, typename... Params>
-	struct shared_function_storage_base;
-
-	template<typename T>
-	using param_t = std::conditional_t<std::is_scalar_v<T>, T, T &&>;
-
-	template<bool IsNoExcept, typename R, typename... Params>
-	struct shared_function_storage_base<cvref_t::None, IsNoExcept, R, Params...>
-	  : shared_function_storage_counts {
 		shared_function_storage_base( ) = default;
 
 		virtual R call( Params... ) noexcept( IsNoExcept ) = 0;
-		~shared_function_storage_base( ) override = default;
+		virtual ~shared_function_storage_base( ) = default;
 	};
 
 	template<bool IsNoExcept, typename R, typename... Params>
-	struct shared_function_storage_base<cvref_t::Const, IsNoExcept, R, Params...>
-	  : shared_function_storage_counts {
+	class shared_function_storage_base<cvref_t::Const, IsNoExcept, R, Params...> {
+	private:
+		std::atomic_int m_weak_count = 1;
+		std::atomic_int m_strong_count = 1;
+
+	public:
+		[[nodiscard]] auto *strong_copy( this auto &self ) {
+			++self.m_strong_count;
+			++self.m_weak_count;
+			return &self;
+		}
+
+		[[nodiscard]] auto *weak_copy( this auto &self ) {
+			++self.m_weak_count;
+			return &self;
+		}
+
+		void strong_dec( ) {
+			--m_strong_count;
+		}
+
+		[[nodiscard]] bool weak_dec( ) {
+			return --m_weak_count == 0;
+		}
+
 		shared_function_storage_base( ) = default;
 
 		virtual R call( Params... ) const noexcept( IsNoExcept ) = 0;
-		~shared_function_storage_base( ) override = default;
+		virtual ~shared_function_storage_base( ) = default;
 	};
 
 	template<bool IsNoExcept, typename R, typename... Params>
-	struct shared_function_storage_base<cvref_t::Ref, IsNoExcept, R, Params...>
-	  : shared_function_storage_counts {
+	class shared_function_storage_base<cvref_t::Ref, IsNoExcept, R, Params...> {
+	private:
+		std::atomic_int m_weak_count = 1;
+		std::atomic_int m_strong_count = 1;
+
+	public:
+		[[nodiscard]] auto *strong_copy( this auto &self ) {
+			++self.m_strong_count;
+			++self.m_weak_count;
+			return &self;
+		}
+
+		[[nodiscard]] auto *weak_copy( this auto &self ) {
+			++self.m_weak_count;
+			return &self;
+		}
+
+		void strong_dec( ) {
+			--m_strong_count;
+		}
+
+		[[nodiscard]] bool weak_dec( ) {
+			return --m_weak_count == 0;
+		}
+
 		shared_function_storage_base( ) = default;
 
 		virtual R call( Params... ) & noexcept( IsNoExcept ) = 0;
-		~shared_function_storage_base( ) override = default;
+		virtual ~shared_function_storage_base( ) = default;
 	};
 
 	template<bool IsNoExcept, typename R, typename... Params>
-	struct shared_function_storage_base<cvref_t::ConstRef, IsNoExcept, R,
-	                                    Params...>
-	  : shared_function_storage_counts {
+	class shared_function_storage_base<cvref_t::ConstRef, IsNoExcept, R,
+	                                   Params...> {
+	private:
+		std::atomic_int m_weak_count = 1;
+		std::atomic_int m_strong_count = 1;
+
+	public:
+		[[nodiscard]] auto *strong_copy( this auto &self ) {
+			++self.m_strong_count;
+			++self.m_weak_count;
+			return &self;
+		}
+
+		[[nodiscard]] auto *weak_copy( this auto &self ) {
+			++self.m_weak_count;
+			return &self;
+		}
+
+		void strong_dec( ) {
+			--m_strong_count;
+		}
+
+		[[nodiscard]] bool weak_dec( ) {
+			return --m_weak_count == 0;
+		}
+
 		shared_function_storage_base( ) = default;
 
 		virtual R call( Params... ) const & noexcept( IsNoExcept ) = 0;
-		~shared_function_storage_base( ) override = default;
+		virtual ~shared_function_storage_base( ) = default;
 	};
 
 	template<bool IsNoExcept, typename R, typename... Params>
-	struct shared_function_storage_base<cvref_t::RefRef, IsNoExcept, R, Params...>
-	  : shared_function_storage_counts {
+	class shared_function_storage_base<cvref_t::RefRef, IsNoExcept, R,
+	                                   Params...> {
+	private:
+		std::atomic_int m_weak_count = 1;
+		std::atomic_int m_strong_count = 1;
+
+	public:
+		[[nodiscard]] auto *strong_copy( this auto &self ) {
+			++self.m_strong_count;
+			++self.m_weak_count;
+			return &self;
+		}
+
+		[[nodiscard]] auto *weak_copy( this auto &self ) {
+			++self.m_weak_count;
+			return &self;
+		}
+
+		void strong_dec( ) {
+			--m_strong_count;
+		}
+
+		[[nodiscard]] bool weak_dec( ) {
+			return --m_weak_count == 0;
+		}
+
 		shared_function_storage_base( ) = default;
 
 		virtual R call( Params... ) && noexcept( IsNoExcept ) = 0;
-		~shared_function_storage_base( ) override = default;
+		virtual ~shared_function_storage_base( ) = default;
 	};
 
 	template<bool IsNoExcept, typename R, typename... Params>
-	struct shared_function_storage_base<cvref_t::ConstRefRef, IsNoExcept, R,
-	                                    Params...>
-	  : shared_function_storage_counts {
+	class shared_function_storage_base<cvref_t::ConstRefRef, IsNoExcept, R,
+	                                   Params...> {
+	private:
+		std::atomic_int m_weak_count = 1;
+		std::atomic_int m_strong_count = 1;
+
+	public:
+		[[nodiscard]] auto *strong_copy( this auto &self ) {
+			++self.m_strong_count;
+			++self.m_weak_count;
+			return &self;
+		}
+
+		[[nodiscard]] auto *weak_copy( this auto &self ) {
+			++self.m_weak_count;
+			return &self;
+		}
+
+		void strong_dec( ) {
+			--m_strong_count;
+		}
+
+		[[nodiscard]] bool weak_dec( ) {
+			return --m_weak_count == 0;
+		}
+
 		shared_function_storage_base( ) = default;
 
 		virtual R call( Params... ) const && noexcept( IsNoExcept ) = 0;
-		~shared_function_storage_base( ) override = default;
+		virtual ~shared_function_storage_base( ) = default;
 	};
 
 	template<typename Fn, cvref_t CVRef, bool IsNoExcept, typename R,
 	         typename... Params>
-	struct shared_function_storage;
+	class shared_function_storage;
 
 	template<typename Fn, bool IsNoExcept, typename R, typename... Params>
-	struct shared_function_storage<Fn, cvref_t::None, IsNoExcept, R, Params...>
-	  : private Fn,
-	    shared_function_storage_base<cvref_t::None, IsNoExcept, R, Params...> {
+	class shared_function_storage<Fn, cvref_t::None, IsNoExcept, R, Params...>
+	  : public shared_function_storage_base<cvref_t::None, IsNoExcept, R,
+	                                        Params...> {
+		DAW_NO_UNIQUE_ADDRESS Fn m_func;
 
-		shared_function_storage( Fn f )
-		  : Fn{ DAW_FWD( f ) } {}
+	public:
+		explicit shared_function_storage( Fn f )
+		  : m_func{ DAW_FWD( f ) } {}
 
 		R call( Params... params ) noexcept( IsNoExcept ) override {
-			auto &fn_self = *static_cast<Fn *>( this );
-			return fn_self( std::forward<param_t<Params>>( params )... );
+			return m_func( std::forward<param_t<Params>>( params )... );
 		}
 	};
 
 	template<typename Fn, bool IsNoExcept, typename R, typename... Params>
-	struct shared_function_storage<Fn, cvref_t::Const, IsNoExcept, R, Params...>
-	  : private Fn,
-	    shared_function_storage_base<cvref_t::Const, IsNoExcept, R, Params...> {
-		shared_function_storage( Fn fn )
-		  : Fn{ DAW_FWD( fn ) } {}
+	class shared_function_storage<Fn, cvref_t::Const, IsNoExcept, R, Params...>
+	  : public shared_function_storage_base<cvref_t::Const, IsNoExcept, R,
+	                                        Params...> {
+		DAW_NO_UNIQUE_ADDRESS Fn m_func;
+
+	public:
+		explicit shared_function_storage( Fn fn )
+		  : m_func{ DAW_FWD( fn ) } {}
 
 		R call( Params... params ) const noexcept( IsNoExcept ) override {
-			auto &fn_self = *static_cast<Fn const *>( this );
-			return fn_self( std::forward<param_t<Params>>( params )... );
+			return m_func( std::forward<param_t<Params>>( params )... );
 		}
 	};
 
 	template<typename Fn, bool IsNoExcept, typename R, typename... Params>
-	struct shared_function_storage<Fn, cvref_t::Ref, IsNoExcept, R, Params...>
-	  : private Fn,
-	    shared_function_storage_base<cvref_t::Ref, IsNoExcept, R, Params...> {
-		shared_function_storage( Fn fn )
-		  : Fn{ DAW_FWD( fn ) } {}
+	class shared_function_storage<Fn, cvref_t::Ref, IsNoExcept, R, Params...>
+	  : public shared_function_storage_base<cvref_t::Ref, IsNoExcept, R,
+	                                        Params...> {
+		DAW_NO_UNIQUE_ADDRESS Fn m_func;
+
+	public:
+		explicit shared_function_storage( Fn fn )
+		  : m_func{ DAW_FWD( fn ) } {}
 
 		R call( Params... params ) & noexcept( IsNoExcept ) override {
-			auto &fn_self = *static_cast<Fn *>( this );
-			return fn_self( std::forward<param_t<Params>>( params )... );
+			return m_func( std::forward<param_t<Params>>( params )... );
 		}
 	};
 
 	template<typename Fn, bool IsNoExcept, typename R, typename... Params>
-	struct shared_function_storage<Fn, cvref_t::ConstRef, IsNoExcept, R,
-	                               Params...>
-	  : private Fn,
-	    shared_function_storage_base<cvref_t::ConstRef, IsNoExcept, R,
-	                                 Params...> {
-		shared_function_storage( Fn fn )
-		  : Fn{ DAW_FWD( fn ) } {}
+	class shared_function_storage<Fn, cvref_t::ConstRef, IsNoExcept, R, Params...>
+	  : public shared_function_storage_base<cvref_t::ConstRef, IsNoExcept, R,
+	                                        Params...> {
+		DAW_NO_UNIQUE_ADDRESS Fn m_func;
+
+	public:
+		explicit shared_function_storage( Fn fn )
+		  : m_func{ DAW_FWD( fn ) } {}
 
 		R call( Params... params ) const & noexcept( IsNoExcept ) override {
-			auto &fn_self = *static_cast<Fn const *>( this );
-			return fn_self( std::forward<param_t<Params>>( params )... );
+			return m_func( std::forward<param_t<Params>>( params )... );
 		}
 	};
 
 	template<typename Fn, bool IsNoExcept, typename R, typename... Params>
-	struct shared_function_storage<Fn, cvref_t::RefRef, IsNoExcept, R, Params...>
-	  : private Fn,
-	    shared_function_storage_base<cvref_t::RefRef, IsNoExcept, R, Params...> {
-		shared_function_storage( Fn fn )
-		  : Fn{ DAW_FWD( fn ) } {}
+	class shared_function_storage<Fn, cvref_t::RefRef, IsNoExcept, R, Params...>
+	  : public shared_function_storage_base<cvref_t::RefRef, IsNoExcept, R,
+	                                        Params...> {
+		DAW_NO_UNIQUE_ADDRESS Fn m_func;
+
+	public:
+		explicit shared_function_storage( Fn fn )
+		  : m_func{ DAW_FWD( fn ) } {}
 
 		R call( Params... params ) && noexcept( IsNoExcept ) override {
-			auto &fn_self = *static_cast<Fn *>( this );
-			return std::move( fn_self )( std::forward<param_t<Params>>( params )... );
+			return std::move( m_func )( std::forward<param_t<Params>>( params )... );
 		}
 	};
 
 	template<typename Fn, bool IsNoExcept, typename R, typename... Params>
-	struct shared_function_storage<Fn, cvref_t::ConstRefRef, IsNoExcept, R,
-	                               Params...>
-	  : private Fn,
-	    shared_function_storage_base<cvref_t::ConstRefRef, IsNoExcept, R,
-	                                 Params...> {
-		shared_function_storage( Fn fn )
-		  : Fn{ DAW_FWD( fn ) } {}
+	class shared_function_storage<Fn, cvref_t::ConstRefRef, IsNoExcept, R,
+	                              Params...>
+	  : public shared_function_storage_base<cvref_t::ConstRefRef, IsNoExcept, R,
+	                                        Params...> {
+		DAW_NO_UNIQUE_ADDRESS Fn m_func;
+
+	public:
+		explicit shared_function_storage( Fn fn )
+		  : m_func{ DAW_FWD( fn ) } {}
 
 		R call( Params... params ) const && noexcept( IsNoExcept ) override {
-			auto &fn_self = *static_cast<Fn const *>( this );
-			return std::move( fn_self )( std::forward<param_t<Params>>( params )... );
+			return std::move( m_func )( std::forward<param_t<Params>>( params )... );
 		}
 	};
 
@@ -223,21 +332,10 @@ namespace daw::sf_impl {
 		weak_release( p );
 	}
 
-	template<typename Fn>
-	struct func_wrapper_t {
-		Fn fn;
-
-		template<typename... Params>
-		constexpr decltype( auto ) operator( )( Params &&...params ) const
-		  noexcept( std::is_nothrow_invocable_v<Fn, Params...> ) {
-			return fn( DAW_FWD( params )... );
-		}
-	};
-
 	template<cvref_t CVRef, bool IsNoExcept, typename R, typename... Params,
 	         typename Fn>
 	requires( std::is_class_v<std::remove_cvref_t<Fn>> ) //
-	  constexpr auto make_fn_storage( Fn &&fn ) {
+	  auto make_fn_storage( Fn &&fn ) {
 		return new shared_function_storage<std::remove_cvref_t<Fn>,
 		                                   CVRef,
 		                                   IsNoExcept,
@@ -248,10 +346,9 @@ namespace daw::sf_impl {
 	template<cvref_t CVRef, bool IsNoExcept, typename R, typename... Params,
 	         typename Fn>
 	requires( not std::is_class_v<std::remove_cvref_t<Fn>> ) //
-	  constexpr auto make_fn_storage( Fn fn ) {
-		using func_t = func_wrapper_t<Fn>;
-		return new shared_function_storage<func_t, CVRef, IsNoExcept, R, Params...>{
-		  func_t( fn ) };
+	  auto make_fn_storage( Fn fn ) {
+		return new shared_function_storage<Fn, CVRef, IsNoExcept, R, Params...>{
+		  fn };
 	}
 
 	template<cvref_t CVRef, bool IsNoExcept, typename R, typename... Params>
