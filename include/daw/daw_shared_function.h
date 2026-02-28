@@ -30,8 +30,8 @@ namespace daw::sf_impl {
 		shared_function_storage_counts &
 		operator=( shared_function_storage_counts && ) = delete;
 
-		std::atomic_size_t m_weak_count = 1;
-		std::atomic_size_t m_strong_count = 1;
+		std::atomic_int m_weak_count = 1;
+		std::atomic_int m_strong_count = 1;
 
 		[[nodiscard]] auto *strong_copy( this auto &self ) {
 			++self.m_strong_count;
