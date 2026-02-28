@@ -25,7 +25,7 @@ namespace daw::sf_impl {
 	template<typename T>
 	using param_t = std::conditional_t<std::is_scalar_v<T>, T, T &&>;
 
-#define DAW_SF_STORAGE_BASE_BODY( CALL_QUALS )                              \
+#define DAW_SF_STORAGE_BASE_BODY( ... )                                     \
 	std::atomic_int m_weak_count = 1;                                         \
 	std::atomic_int m_strong_count = 1;                                       \
                                                                             \
@@ -35,7 +35,7 @@ public:                                                                     \
 	DAW_CPP26_CX_ATOMIC virtual void reset_storage( ) = 0;                    \
                                                                             \
 	virtual DAW_CPP26_CX_ATOMIC R call( Params... )                           \
-	  CALL_QUALS noexcept( IsNoExcept ) = 0;                                  \
+	  __VA_ARGS__ noexcept( IsNoExcept ) = 0;                                 \
                                                                             \
 	[[nodiscard]] DAW_CPP26_CX_ATOMIC auto *strong_copy( this auto &self ) {  \
 		++self.m_strong_count;                                                  \
