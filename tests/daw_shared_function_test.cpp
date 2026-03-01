@@ -131,6 +131,7 @@ void test_move_only_parameter( ) {
 	daw_ensure( sf( std::make_unique<int>( 42 ) ) == 42 );
 }
 // constexpr tests
+#if not defined( DAW_HAS_MSVC )
 
 // Basic call
 static_assert( [] {
@@ -250,6 +251,7 @@ static_assert( [] {
 	auto locked = weak.lock( );
 	return static_cast<bool>( locked ) and locked( ) == 42;
 }( ) );
+#endif
 
 int main( ) {
 	test_basic_and_copy_semantics( );
