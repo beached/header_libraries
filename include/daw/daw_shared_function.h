@@ -100,19 +100,13 @@ public:                                                                 \
 	  std::conditional_t<std::is_trivially_destructible_v<Fn>, Fn,
 	                     std::optional<Fn>>;
 
-#if defined( DAW_HAS_MSVC )
-#define DAW_SF_NO_UNIQUE_ADDRESS
-#else
-#define DAW_SF_NO_UNIQUE_ADDRESS DAW_NO_UNIQUE_ADDRESS
-#endif
-
 #define DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC( CVRef, CallQuals, InvokeFn ) \
 	template<typename Fn, bool IsNoExcept, typename R, typename... Params>      \
 	class shared_function_storage<Fn, CVRef, IsNoExcept, R, Params...>          \
 	  : public shared_function_storage_base<CVRef, IsNoExcept, R, Params...> {  \
 		using func_t = function_storage_t<Fn>;                                    \
 		static constexpr bool is_optional = not std::same_as<Fn, func_t>;         \
-		DAW_SF_NO_UNIQUE_ADDRESS func_t m_func;                                   \
+		DAW_NO_UNIQUE_ADDRESS func_t m_func;                                   \
                                                                               \
 	public:                                                                     \
 		explicit constexpr shared_function_storage( Fn fn )                       \
@@ -135,14 +129,14 @@ public:                                                                 \
 		}                                                                         \
 	};
 
-	DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC( cvref_t::None, , m_func );
-	DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC( cvref_t::Const, const, m_func );
-	DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC( cvref_t::Ref, &, m_func );
-	DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC( cvref_t::ConstRef, const &, m_func );
+	DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC( cvref_t::None, , this->m_func );
+	DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC( cvref_t::Const, const, this->m_func );
+	DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC( cvref_t::Ref, &, this->m_func );
+	DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC( cvref_t::ConstRef, const &, this->m_func );
 	DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC( cvref_t::RefRef, &&,
-	                                         std::move( m_func ) );
+	                                         std::move( this->m_func ) );
 	DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC( cvref_t::ConstRefRef, const &&,
-	                                         std::move( m_func ) );
+	                                         std::move( this->m_func ) );
 
 #undef DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC
 
