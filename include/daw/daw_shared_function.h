@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_cx_atomic.h"
 #include "daw/daw_move.h"
 #include "daw/daw_utility.h"
@@ -99,13 +100,19 @@ public:                                                                 \
 	  std::conditional_t<std::is_trivially_destructible_v<Fn>, Fn,
 	                     std::optional<Fn>>;
 
+#if defined( DAW_HAS_MSVC )
+#define DAW_SF_NO_UNIQUE_ADDRESS
+#else
+#define DAW_SF_NO_UNIQUE_ADDRESS DAW_NO_UNIQUE_ADDRESS
+#endif
+
 #define DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC( CVRef, CallQuals, InvokeFn ) \
 	template<typename Fn, bool IsNoExcept, typename R, typename... Params>      \
 	class shared_function_storage<Fn, CVRef, IsNoExcept, R, Params...>          \
 	  : public shared_function_storage_base<CVRef, IsNoExcept, R, Params...> {  \
 		using func_t = function_storage_t<Fn>;                                    \
 		static constexpr bool is_optional = not std::same_as<Fn, func_t>;         \
-		DAW_NO_UNIQUE_ADDRESS func_t m_func;                                      \
+		DAW_SF_NO_UNIQUE_ADDRESS func_t m_func;                                   \
                                                                               \
 	public:                                                                     \
 		explicit constexpr shared_function_storage( Fn fn )                       \
