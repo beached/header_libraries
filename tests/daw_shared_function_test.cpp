@@ -135,29 +135,38 @@ namespace {
 
 	// Basic call
 	static_assert( [] {
-		auto sf = daw::shared_function<int( )>( [] { return 42; } );
+		auto sf = daw::shared_function<int( )>( [] {
+			return 42;
+		} );
 		return sf( ) == 42;
 	}( ) );
 
 	// Call with parameters
 	static_assert( [] {
-		auto sf = daw::shared_function<int( int, int )>(
-		  []( int a, int b ) { return a + b; } );
+		auto sf = daw::shared_function<int( int, int )>( []( int a, int b ) {
+			return a + b;
+		} );
 		return sf( 20, 22 ) == 42;
 	}( ) );
 
 	// Copies share the same callable (same storage)
 	static_assert( [] {
-		auto sf0 =
-		  daw::shared_function<int( int )>( []( int v ) { return v * 2; } );
+		auto sf0 = daw::shared_function<int( int )>( []( int v ) {
+			return v * 2;
+		} );
 		auto sf1 = sf0;
 		return sf0( 21 ) == 42 and sf1( 21 ) == 42;
 	}( ) );
 
 	// Mutable shared state: copies all see the same counter
+	struct CXTest_t {
+		int count = 0;
+		constexpr int operator( )( ) {
+			return ++count;
+		}
+	};
 	static_assert( [] {
-		auto sf0 = daw::shared_function<int( )>(
-		  [count = 0]( ) mutable { return ++count; } );
+		auto sf0 = daw::shared_function<int( )>( CXTest_t{ } );
 		auto r0 = sf0( );
 		auto sf1 = sf0;
 		auto r1 = sf1( );
@@ -167,10 +176,11 @@ namespace {
 
 	// Move: source becomes empty
 	static_assert( [] {
-		auto sf0 = daw::shared_function<int( )>( [] { return 42; } );
+		auto sf0 = daw::shared_function<int( )>( [] {
+			return 42;
+		} );
 		auto sf1 = std::move( sf0 );
-		return not static_cast<bool>( sf0 ) and
-		       static_cast<bool>( sf1 ) and
+		return not static_cast<bool>( sf0 ) and static_cast<bool>( sf1 ) and
 		       sf1( ) == 42;
 	}( ) );
 
@@ -182,43 +192,51 @@ namespace {
 
 	// noexcept signature
 	static_assert( [] {
-		auto sf =
-		  daw::shared_function<int( ) noexcept>( [] noexcept { return 7; } );
+		auto sf = daw::shared_function<int( ) noexcept>( [] noexcept {
+			return 7;
+		} );
 		return sf( ) == 7;
 	}( ) );
 
 	// const-qualified signature
 	static_assert( [] {
-		auto const sf = daw::shared_function<int( int ) const>(
-		  []( int v ) { return v + 1; } );
+		auto const sf = daw::shared_function<int( int ) const>( []( int v ) {
+			return v + 1;
+		} );
 		return sf( 41 ) == 42;
 	}( ) );
 
 	// const noexcept signature
 	static_assert( [] {
-		auto const sf = daw::shared_function<int( ) const noexcept>(
-		  [] noexcept { return 42; } );
+		auto const sf = daw::shared_function<int( ) const noexcept>( [] noexcept {
+			return 42;
+		} );
 		return sf( ) == 42;
 	}( ) );
 
 	// Functor type
 	static_assert( [] {
-		auto sf =
-		  daw::shared_function<int( int )>( cx_functor_t{ .delta = 2 } );
+		auto sf = daw::shared_function<int( int )>( cx_functor_t{ .delta = 2 } );
 		return sf( 40 ) == 42;
 	}( ) );
 
 	// Copy assignment
 	static_assert( [] {
-		auto sf0 = daw::shared_function<int( )>( [] { return 1; } );
-		auto sf1 = daw::shared_function<int( )>( [] { return 2; } );
+		auto sf0 = daw::shared_function<int( )>( [] {
+			return 1;
+		} );
+		auto sf1 = daw::shared_function<int( )>( [] {
+			return 2;
+		} );
 		sf1 = sf0;
 		return sf0( ) == 1 and sf1( ) == 1;
 	}( ) );
 
 	// Move assignment
 	static_assert( [] {
-		auto sf0 = daw::shared_function<int( )>( [] { return 42; } );
+		auto sf0 = daw::shared_function<int( )>( [] {
+			return 42;
+		} );
 		daw::shared_function<int( )> sf1( nullptr );
 		sf1 = std::move( sf0 );
 		return not static_cast<bool>( sf0 ) and sf1( ) == 42;
@@ -226,7 +244,9 @@ namespace {
 
 	// Weak lock: locked copy calls the same function
 	static_assert( [] {
-		auto sf = daw::shared_function<int( )>( [] { return 42; } );
+		auto sf = daw::shared_function<int( )>( [] {
+			return 42;
+		} );
 		auto weak = sf.get_weak( );
 		auto locked = weak.lock( );
 		return static_cast<bool>( locked ) and locked( ) == 42;
