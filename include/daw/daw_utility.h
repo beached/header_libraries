@@ -952,4 +952,7 @@ namespace daw {
 		::free( ptr );
 #endif
 	}
+
+	template<typename T>
+	inline constexpr T * null_v = static_cast<T*>( nullptr );
 } // namespace daw
