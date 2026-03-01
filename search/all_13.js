@@ -2,7 +2,7 @@ var searchData=
 [
   ['tag_0',['tag',['../namespacedaw.html#af01a60f846d9856c98617f4872cd8fa6',1,'daw']]],
   ['tag_5ft_1',['tag_t',['../structdaw_1_1tag__t.html',1,'daw']]],
-  ['take_2',['take',['../namespacedaw_1_1pipelines.html#a740e0e115f0ea756920059d85ad67847',1,'daw::pipelines::Take()'],['../namespacedaw.html#a3a892ca26df750c71b3c04c96e694209',1,'daw::take()']]],
+  ['take_2',['take',['../namespacedaw.html#a3a892ca26df750c71b3c04c96e694209',1,'daw::take()'],['../namespacedaw_1_1pipelines.html#a740e0e115f0ea756920059d85ad67847',1,'daw::pipelines::Take()']]],
   ['take_2eh_3',['take.h',['../take_8h.html',1,'']]],
   ['take_5fownership_4',['take_ownership',['../namespacedaw.html#aa19b4953ecb10e84f836dada9b18b449',1,'daw']]],
   ['take_5fownership_5fof_5fdata_5',['take_ownership_of_data',['../classdaw_1_1_c_string.html#ae542603322bc2bfa8e211ddc498d28d7',1,'daw::CString']]],
