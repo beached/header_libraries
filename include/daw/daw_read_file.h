@@ -25,7 +25,7 @@ namespace daw {
 	template<typename CharT = char>
 	DAW_ATTRIB_NOINLINE std::optional<std::basic_string<CharT>>
 	read_file( std::string const &path ) {
-		auto ec = std::error_code{};
+		auto ec = std::error_code{ };
 		auto const fsize = std::filesystem::file_size( path, ec );
 		if( ec ) {
 			return std::nullopt;
@@ -54,8 +54,10 @@ namespace daw {
 #endif
 		auto num_read = fread( result.data( ), sizeof( CharT ), result.size( ), f );
 		if( num_read != ( result.size( ) / sizeof( CharT ) ) ) {
+			fclose( f );
 			return std::nullopt;
 		}
+		fclose( f );
 		return result;
 	}
 
@@ -77,7 +79,7 @@ namespace daw {
 	DAW_ATTRIB_NOINLINE inline std::optional<std::wstring>
 	read_wfile( std::wstring path ) {
 		using CharT = wchar_t;
-		auto ec = std::error_code{};
+		auto ec = std::error_code{ };
 		auto const fsize = std::filesystem::file_size( path, ec );
 		if( ec ) {
 			return std::nullopt;
