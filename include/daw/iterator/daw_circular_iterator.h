@@ -41,7 +41,7 @@ namespace daw {
 	struct circular_iterator {
 		using iterator = decltype( std::begin( std::declval<Container &>( ) ) );
 		using difference_type = std::ptrdiff_t;
-		using pointer = std::iterator_traits<iterator>::pointer;
+		using pointer = typename std::iterator_traits<iterator>::pointer;
 		using const_pointer =
 		  std::conditional_t<std::is_pointer_v<pointer>,
 		                     std::remove_pointer_t<pointer> const *, pointer>;
