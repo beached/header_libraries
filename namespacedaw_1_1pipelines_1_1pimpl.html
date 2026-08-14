@@ -278,6 +278,9 @@ requires ( <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cca
 <tr class="memitem:aacdcda6017b107706529cf654eeced4f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#aacdcda6017b107706529cf654eeced4f">invoke_if_needed</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Fn</a> &amp;&amp;fn)</td></tr>
 <tr class="memdesc:aacdcda6017b107706529cf654eeced4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This allows specialized overloads like <a class="el" href="namespacedaw_1_1pipelines.html#a2e6df84495bfd4acd078606b449c629e" title="Convert Range to a Container that has deduction guides to get the value_type from two iterators or a ...">To( )</a> to work without putting the ( ) e.g. <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">To&lt;std::vector&gt;( )</a> can be typed as <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">To&lt;std::vector&gt;</a>  <br /></td></tr>
 <tr class="separator:aacdcda6017b107706529cf654eeced4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3dce06d7799196ab6b07a9e90201675a" id="r_a3dce06d7799196ab6b07a9e90201675a"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Fn</a> , typename... Args&gt; </td></tr>
+<tr class="memitem:a3dce06d7799196ab6b07a9e90201675a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">consteval</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a3dce06d7799196ab6b07a9e90201675a">is_const_fn_same_v</a> ()</td></tr>
+<tr class="separator:a3dce06d7799196ab6b07a9e90201675a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebd5195b093920bb9539be72470f200c" id="r_aebd5195b093920bb9539be72470f200c"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a> &gt; </td></tr>
 <tr class="memitem:aebd5195b093920bb9539be72470f200c"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#aebd5195b093920bb9539be72470f200c">lifted_t</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a>) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1lifted__t.html">lifted_t</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a> &gt;</td></tr>
 <tr class="separator:aebd5195b093920bb9539be72470f200c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -905,6 +908,27 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 <p>This allows specialized overloads like <a class="el" href="namespacedaw_1_1pipelines.html#a2e6df84495bfd4acd078606b449c629e" title="Convert Range to a Container that has deduction guides to get the value_type from two iterators or a ...">To( )</a> to work without putting the ( ) e.g. <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">To&lt;std::vector&gt;( )</a> can be typed as <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">To&lt;std::vector&gt;</a> </p>
 
 <p class="definition">Definition at line <a class="el" href="pipeline_8h_source.html#l00029">29</a> of file <a class="el" href="pipeline_8h_source.html">pipeline.h</a>.</p>
+
+</div>
+</div>
+<a id="a3dce06d7799196ab6b07a9e90201675a" name="a3dce06d7799196ab6b07a9e90201675a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3dce06d7799196ab6b07a9e90201675a">&#9670;&#160;</a></span>is_const_fn_same_v()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Fn</a> , typename... Args&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">consteval</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a> daw::pipelines::pimpl::is_const_fn_same_v </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="map_8h_source.html#l00029">29</a> of file <a class="el" href="map_8h_source.html">map.h</a>.</p>
 
 </div>
 </div>

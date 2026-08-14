@@ -7,7 +7,7 @@ var searchData=
   ['_7ecfile_4',['~CFile',['../classdaw_1_1_c_file.html#aab29d517b21177d33f5d930a87d88cfb',1,'daw::CFile']]],
   ['_7echecked_5fexpected_5ft_5',['~checked_expected_t',['../structdaw_1_1checked__expected__t_3_01void_00_01_expected_exceptions_8_8_8_01_4.html#a7dac7a358d29d27c1eb81cfe8f092adc',1,'daw::checked_expected_t&lt; void, ExpectedExceptions... &gt;']]],
   ['_7echecked_5fiterator_5fproxy_5ft_6',['~checked_iterator_proxy_t',['../classdaw_1_1checked__iterator__proxy__t.html#a29ca5887f2244dd7301ed07eeb91fc51',1,'daw::checked_iterator_proxy_t']]],
-  ['_7ecircular_5fiterator_7',['~circular_iterator',['../structdaw_1_1circular__iterator.html#a932ae0b10e27ccfde4aa507be1a46354',1,'daw::circular_iterator']]],
+  ['_7ecircular_5fiterator_7',['~circular_iterator',['../structdaw_1_1circular__iterator.html#add346e443b2272ea2e47836e985a2abe',1,'daw::circular_iterator']]],
   ['_7ecollectionrange_8',['~CollectionRange',['../structdaw_1_1range_1_1_collection_range.html#ace05f07b8fa13b5215023b955ff403d9',1,'daw::range::CollectionRange']]],
   ['_7ecopiable_5funique_5fptr_9',['~copiable_unique_ptr',['../structdaw_1_1copiable__unique__ptr.html#a1043d6c2eeebc95425b544e4bdc7862c',1,'daw::copiable_unique_ptr']]],
   ['_7ecountable_5fresource_5ft_10',['~countable_resource_t',['../classdaw_1_1countable__resource__t.html#ab8b79a25bbe2326554b34c8379980916',1,'daw::countable_resource_t']]],

@@ -26,5 +26,8 @@ var searchData=
   ['move_5fonly_23',['move_only',['../classdaw_1_1move__only.html',1,'daw']]],
   ['move_5fonly_3c_20void_20_3e_24',['move_only&lt; void &gt;',['../classdaw_1_1move__only_3_01void_01_4.html',1,'daw']]],
   ['move_5fonly_5fbase_25',['move_only_base',['../structdaw_1_1move__only__base.html',1,'daw']]],
-  ['mutable_5fcapture_26',['mutable_capture',['../classdaw_1_1mutable__capture.html',1,'daw']]]
+  ['mutable_5fcapture_26',['mutable_capture',['../classdaw_1_1mutable__capture.html',1,'daw']]],
+  ['mutable_5ffunction_5fref_27',['mutable_function_ref',['../classdaw_1_1mutable__function__ref.html',1,'daw']]],
+  ['mutable_5ffunction_5fref_3c_20result_28params_2e_2e_2e_29_3e_28',['mutable_function_ref&lt; Result(Params...)&gt;',['../classdaw_1_1mutable__function__ref_3_01_result_07_params_8_8_8_08_4.html',1,'daw']]],
+  ['mutable_5ffunction_5fref_3c_20void_28params_2e_2e_2e_29_3e_29',['mutable_function_ref&lt; void(Params...)&gt;',['../classdaw_1_1mutable__function__ref_3_01void_07_params_8_8_8_08_4.html',1,'daw']]]
 ];
