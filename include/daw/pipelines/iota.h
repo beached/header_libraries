@@ -24,8 +24,8 @@ namespace daw::pipelines {
 	struct iota_iterator {
 		using iterator_category = std::random_access_iterator_tag;
 		using value_type = T;
-		using reference = value_type;
-		using const_reference = value_type;
+		using reference = value_type &;
+		using const_reference = value_type const &;
 		using pointer = daw::arrow_proxy<value_type>;
 		using const_pointer = daw::arrow_proxy<value_type>;
 		using difference_type = std::ptrdiff_t;
@@ -83,18 +83,28 @@ namespace daw::pipelines {
 			return *this;
 		}
 
-		[[nodiscard]] constexpr iota_iterator
-		operator+( difference_type n ) const noexcept {
-			iota_iterator result = *this;
-			result.value += n;
-			return result;
+		[[nodiscard]] constexpr friend iota_iterator
+		operator+( iota_iterator lhs, difference_type n ) noexcept {
+			lhs += n;
+			return lhs;
 		}
 
-		[[nodiscard]] constexpr iota_iterator
-		operator-( difference_type n ) const noexcept {
-			iota_iterator result = *this;
-			result.value -= n;
-			return result;
+		[[nodiscard]] constexpr friend iota_iterator
+		operator+( difference_type n, iota_iterator rhs ) noexcept {
+			rhs += n;
+			return rhs;
+		}
+
+		[[nodiscard]] constexpr friend iota_iterator
+		operator-( iota_iterator lhs, difference_type n ) noexcept {
+			lhs -= n;
+			return lhs;
+		}
+
+		[[nodiscard]] constexpr friend iota_iterator
+		operator-( difference_type n, iota_iterator rhs ) noexcept {
+			rhs -= n;
+			return rhs;
 		}
 
 		[[nodiscard]] constexpr difference_type
@@ -102,11 +112,7 @@ namespace daw::pipelines {
 			return static_cast<difference_type>( value - i.value );
 		}
 
-		[[nodiscard]] constexpr reference operator[]( size_type n ) noexcept {
-			return *( value + static_cast<difference_type>( n ) );
-		}
-
-		[[nodiscard]] constexpr const_reference
+		[[nodiscard]] constexpr value_type
 		operator[]( size_type n ) const noexcept {
 			return *( value + static_cast<difference_type>( n ) );
 		}
@@ -121,25 +127,12 @@ namespace daw::pipelines {
 			return lhs.value != rhs.value;
 		}
 
-		[[nodiscard]] friend constexpr bool operator<( iota_iterator const &lhs,
-		                                               iota_iterator const &rhs ) {
-			return lhs.value < rhs.value;
+		// clang-format off
+		[[nodiscard]] friend constexpr auto operator<=>
+		  ( iota_iterator const &lhs, iota_iterator const &rhs ) {
+			return lhs.value <=> rhs.value;
 		}
-
-		[[nodiscard]] friend constexpr bool operator<=( iota_iterator const &lhs,
-		                                                iota_iterator const &rhs ) {
-			return lhs.value <= rhs.value;
-		}
-
-		[[nodiscard]] friend constexpr bool operator>( iota_iterator const &lhs,
-		                                               iota_iterator const &rhs ) {
-			return lhs.value > rhs.value;
-		}
-
-		[[nodiscard]] friend constexpr bool operator>=( iota_iterator const &lhs,
-		                                                iota_iterator const &rhs ) {
-			return lhs.value >= rhs.value;
-		}
+		// clang-format on
 	};
 
 	template<typename T>
@@ -177,6 +170,6 @@ namespace daw::pipelines {
 	iota_view( T, T ) -> iota_view<std::size_t>;
 
 	inline constexpr auto ToIota = []<Integer I>( I last ) {
-		return iota_view<I>{ I{}, last };
+		return iota_view<I>{ I{ }, last };
 	};
 } // namespace daw::pipelines

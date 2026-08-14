@@ -22,9 +22,8 @@ namespace daw {
 	namespace impl {
 		DAW_MAKE_REQ_TRAIT( has_size_member_v, std::declval<T>( ).size( ) );
 
-		template<
-		  typename Container,
-		  std::enable_if_t<has_size_member_v<Container>, std::nullptr_t> = nullptr>
+		template<typename Container, std::enable_if_t<has_size_member_v<Container>,
+		                                              std::nullptr_t> = nullptr>
 		constexpr std::size_t container_size( Container &c ) {
 			return c.size( );
 		}
@@ -42,10 +41,17 @@ namespace daw {
 	struct circular_iterator {
 		using iterator = decltype( std::begin( std::declval<Container &>( ) ) );
 		using difference_type = std::ptrdiff_t;
-		using pointer = void;
+		using pointer = std::iterator_traits<iterator>::pointer;
+		using const_pointer =
+		  std::conditional_t<std::is_pointer_v<pointer>,
+		                     std::remove_pointer_t<pointer> const *, pointer>;
 		using value_type = typename std::iterator_traits<iterator>::value_type;
 		using iterator_category = std::random_access_iterator_tag;
 		using reference = typename std::iterator_traits<iterator>::reference;
+		using const_reference = std::conditional_t<
+		  std::is_reference_v<reference>,
+		  daw::traits::copy_ref_t<std::remove_reference_t<reference>, reference>,
+		  reference>;
 
 	private:
 		static_assert(
@@ -77,7 +83,7 @@ namespace daw {
 		}
 
 	public:
-		constexpr circular_iterator( ) noexcept
+		explicit constexpr circular_iterator( ) noexcept
 		  : m_container{ nullptr }
 		  , m_position{ 0 } {}
 
@@ -122,7 +128,7 @@ namespace daw {
 			return *this;
 		}
 
-		~circular_iterator( ) noexcept = default;
+		~circular_iterator( ) = default;
 
 		constexpr circular_iterator &operator+=( difference_type n ) noexcept {
 			m_position = get_offset( n );
@@ -134,12 +140,28 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr decltype( auto ) operator*( ) {
+		constexpr reference operator*( ) {
 			return *get_iterator( m_position );
 		}
 
-		constexpr decltype( auto ) operator->( ) noexcept {
+		constexpr const_reference operator*( ) const {
 			return *get_iterator( m_position );
+		}
+
+		constexpr reference operator[]( std::size_t idx ) {
+			return *get_iterator( get_offset( idx ) );
+		}
+
+		constexpr const_reference operator[]( std::size_t idx ) const {
+			return *get_iterator( get_offset( idx ) );
+		}
+
+		constexpr pointer operator->( ) noexcept {
+			return std::addressof( *get_iterator( m_position ) );
+		}
+
+		constexpr const_pointer operator->( ) const noexcept {
+			return std::addressof( *get_iterator( m_position ) );
 		}
 
 		constexpr circular_iterator &operator++( ) noexcept {
@@ -164,16 +186,28 @@ namespace daw {
 			return result;
 		}
 
-		constexpr circular_iterator operator+( difference_type n ) noexcept {
-			circular_iterator tmp{ *this };
-			tmp += n;
-			return tmp;
+		friend constexpr circular_iterator operator+( circular_iterator lhs,
+		                                              difference_type n ) noexcept {
+			lhs += n;
+			return lhs;
 		}
 
-		constexpr circular_iterator operator-( difference_type n ) noexcept {
-			circular_iterator tmp{ *this };
-			tmp -= n;
-			return tmp;
+		friend constexpr circular_iterator
+		operator+( difference_type n, circular_iterator rhs ) noexcept {
+			rhs += n;
+			return rhs;
+		}
+
+		friend constexpr circular_iterator operator-( circular_iterator lhs,
+		                                              difference_type n ) noexcept {
+			lhs -= n;
+			return lhs;
+		}
+
+		friend constexpr circular_iterator
+		operator-( difference_type n, circular_iterator rhs ) noexcept {
+			rhs -= n;
+			return rhs;
 		}
 
 		constexpr circular_iterator end( ) noexcept {
@@ -182,6 +216,7 @@ namespace daw {
 			  static_cast<difference_type>( impl::container_size( *m_container ) );
 			return tmp;
 		}
+
 		constexpr friend bool operator==( circular_iterator const &lhs,
 		                                  circular_iterator const &rhs ) noexcept {
 			return lhs.m_position == rhs.m_position &&

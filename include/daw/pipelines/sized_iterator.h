@@ -95,6 +95,13 @@ namespace daw::pipelines {
 			return m_count != rhs.m_count;
 		}
 
+		// clang-format off
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
+		operator<=>( sized_iterator const &rhs ) const noexcept {
+			return m_count <=> rhs.m_count;
+		}
+		// clang-format on
+
 		// bidirectional iterator interface
 		constexpr sized_iterator &operator--( )
 		  requires( BidirectionalIteratorTag<iterator_category> ) {
@@ -134,47 +141,37 @@ namespace daw::pipelines {
 			return *this;
 		}
 
-		constexpr sized_iterator operator+( difference_type n ) const
+		friend constexpr sized_iterator operator+( sized_iterator lhs,
+		                                           difference_type n )
 		  requires( RandomIteratorTag<iterator_category> ) {
-			auto result = *this;
-			result.advance( n );
-			return result;
+			lhs += n;
+			return lhs;
 		}
 
-		constexpr sized_iterator operator-( difference_type n ) const
+		friend constexpr sized_iterator operator+( difference_type n,
+		                                           sized_iterator rhs )
 		  requires( RandomIteratorTag<iterator_category> ) {
-			auto result = *this;
-			result.advance( -n );
-			return result;
+			rhs += n;
+			return rhs;
+		}
+
+		friend constexpr sized_iterator operator-( sized_iterator lhs,
+		                                           difference_type n )
+		  requires( RandomIteratorTag<iterator_category> ) {
+			lhs -= n;
+			return lhs;
+		}
+
+		friend constexpr sized_iterator operator-( difference_type n,
+		                                           sized_iterator rhs )
+		  requires( RandomIteratorTag<iterator_category> ) {
+			rhs -= n;
+			return rhs;
 		}
 
 		constexpr difference_type operator-( sized_iterator const &rhs ) const
 		  requires( RandomIteratorTag<iterator_category> ) {
 			return rhs.m_count - m_count;
-		}
-
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
-		operator<( sized_iterator const &rhs )
-		  requires( RandomIteratorTag<iterator_category> ) {
-			return m_count > rhs.m_count;
-		}
-
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
-		operator<=( sized_iterator const &rhs )
-		  requires( RandomIteratorTag<iterator_category> ) {
-			return m_count >= rhs.m_count;
-		}
-
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
-		operator>( sized_iterator const &rhs )
-		  requires( RandomIteratorTag<iterator_category> ) {
-			return m_count < rhs.m_count;
-		}
-
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
-		operator>=( sized_iterator const &rhs )
-		  requires( RandomIteratorTag<iterator_category> ) {
-			return m_count <= rhs.m_count;
 		}
 	};
 
@@ -202,8 +199,7 @@ namespace daw::pipelines {
 	public:
 		explicit sized_iterator( ) = default;
 
-		explicit constexpr sized_iterator( Iterator first,
-		                                   Iterator last,
+		explicit constexpr sized_iterator( Iterator first, Iterator last,
 		                                   std::size_t how_many )
 		  : m_first( first )
 		  , m_last( last )
