@@ -145,6 +145,13 @@ namespace daw::pipelines {
 			}( std::make_index_sequence<sizeof...( Iterators )>{ } );
 		}
 
+		// clang-format off
+		[[nodiscard]] constexpr auto
+		operator<=>( zip_iterator const &rhs ) const noexcept {
+			return m_iters <=> rhs.m_iters;
+		}
+		// clang-format on
+
 		// bidirectional iterator interface
 		constexpr zip_iterator &operator--( )
 		  requires( BidirectionalIteratorTag<iterator_category> ) {
@@ -182,45 +189,40 @@ namespace daw::pipelines {
 			return *this;
 		}
 
-		constexpr zip_iterator operator+( difference_type n ) const
+		friend constexpr zip_iterator operator+( zip_iterator lhs,
+		                                         difference_type n )
 		  requires( RandomIteratorTag<iterator_category> ) {
-			auto result = *this;
-			result.advance( n, zip_indices( ) );
-			return result;
+			lhs += n;
+			return lhs;
 		}
 
-		constexpr zip_iterator operator-( difference_type n ) const
+		friend constexpr zip_iterator operator+( difference_type n,
+		                                         zip_iterator rhs )
 		  requires( RandomIteratorTag<iterator_category> ) {
-			auto result = *this;
-			result.advance( -n, zip_indices( ) );
-			return result;
+			rhs += n;
+			return rhs;
+		}
+
+		friend constexpr zip_iterator operator-( zip_iterator lhs,
+		                                         difference_type n )
+		  requires( RandomIteratorTag<iterator_category> ) {
+			lhs -= n;
+			return lhs;
+		}
+
+		friend constexpr zip_iterator operator-( difference_type n,
+		                                         zip_iterator rhs )
+		  requires( RandomIteratorTag<iterator_category> ) {
+			rhs -= n;
+			return rhs;
 		}
 
 		constexpr difference_type operator-( zip_iterator const &rhs ) const
 		  requires( RandomIteratorTag<iterator_category> ) {
 			return std::get<0>( m_iters ) - std::get<0>( rhs.m_iters );
 		}
-
-		[[nodiscard]] constexpr bool operator<( zip_iterator const &rhs )
-		  requires( RandomIteratorTag<iterator_category> ) {
-			return m_iters < rhs.m_iters;
-		}
-
-		[[nodiscard]] constexpr bool operator<=( zip_iterator const &rhs )
-		  requires( RandomIteratorTag<iterator_category> ) {
-			return m_iters <= rhs.m_iters;
-		}
-
-		[[nodiscard]] constexpr bool operator>( zip_iterator const &rhs )
-		  requires( RandomIteratorTag<iterator_category> ) {
-			return m_iters > rhs.m_iters;
-		}
-
-		[[nodiscard]] constexpr bool operator>=( zip_iterator const &rhs )
-		  requires( RandomIteratorTag<iterator_category> ) {
-			return m_iters >= rhs.m_iters;
-		}
 	};
+
 	template<Iterator... Iterators>
 	zip_iterator( Iterators... ) -> zip_iterator<Iterators...>;
 

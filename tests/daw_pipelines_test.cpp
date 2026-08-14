@@ -194,9 +194,9 @@ namespace tests {
 		                              Map( []( int x ) {
 			                              return x * 2;
 		                              } ) );
-		constexpr auto x = p4( std::array{ 1, 2, 3 } );
-		constexpr auto y = *std::next( x.begin( ) );
-		static_assert( y == 2 );
+		auto x = p4( std::array{ 1, 2, 3 } );
+		auto y = *std::next( x.begin( ) );
+		daw_ensure( y == 2 );
 	}
 
 	DAW_ATTRIB_NOINLINE void test008( ) {

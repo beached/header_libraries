@@ -8,9 +8,8 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_enable_if.h"
-#include "daw_traits.h"
+#include "daw/ciso646.h"
+#include "daw/daw_traits.h"
 
 #include <functional>
 #include <memory>

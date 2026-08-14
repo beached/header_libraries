@@ -161,6 +161,7 @@ set( CPP20_TEST_SOURCES
 		 daw_formatters_test.cpp
 		 daw_from_string_test.cpp
 		 daw_iter_view_test.cpp
+		 daw_mutable_function_ref_test.cpp
 		 daw_poly_value_test.cpp
 		 daw_maybe_unique_ptr_test.cpp
 		 daw_move_only_test.cpp

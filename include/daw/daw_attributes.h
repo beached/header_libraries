@@ -130,7 +130,7 @@
 #define DAW_ATTRIB_RET_NONNULL
 #endif
 
-#if defined( DAW_NO_LIFETIME_BOUND )
+#if not defined( DAW_NO_LIFETIME_BOUND )
 #if not defined( __has_cpp_attribute )
 #define DAW_LIFETIME_BOUND
 #elif __has_cpp_attribute( clang::lifetimebound )

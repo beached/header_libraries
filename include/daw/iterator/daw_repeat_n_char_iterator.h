@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/ciso646.h"
+#include "daw/daw_ensure.h"
 
 #include <iterator>
 #include <limits>
@@ -71,33 +72,76 @@ namespace daw {
 			return m_position == rhs.m_position;
 		}
 
-		constexpr repeat_n_char_iterator const &operator+=( ptrdiff_t p ) noexcept {
+		constexpr repeat_n_char_iterator &operator+=( ptrdiff_t p ) noexcept {
 			m_position += p;
 			return *this;
 		}
 
-		constexpr repeat_n_char_iterator const &operator-=( ptrdiff_t p ) noexcept {
+		constexpr repeat_n_char_iterator &operator-=( ptrdiff_t p ) noexcept {
 			m_position -= p;
 			return *this;
 		}
 
-		constexpr repeat_n_char_iterator operator+( ptrdiff_t p ) const noexcept {
-			auto tmp = *this;
-			tmp += p;
-			return tmp;
+		friend constexpr repeat_n_char_iterator
+		operator+( repeat_n_char_iterator lhs, ptrdiff_t p ) noexcept {
+			lhs += p;
+			return lhs;
 		}
 
-		constexpr repeat_n_char_iterator operator-( ptrdiff_t p ) const noexcept {
-			auto tmp = *this;
-			tmp -= p;
-			return tmp;
+		friend constexpr repeat_n_char_iterator
+		operator+( ptrdiff_t p, repeat_n_char_iterator rhs ) noexcept {
+			rhs += p;
+			return rhs;
 		}
 
-		constexpr ptrdiff_t
-		operator-( repeat_n_char_iterator const &rhs ) const noexcept {
-			return rhs.m_position - m_position;
+		friend constexpr repeat_n_char_iterator
+		operator-( repeat_n_char_iterator lhs, ptrdiff_t p ) noexcept {
+			lhs -= p;
+			return lhs;
+		}
+
+		friend constexpr repeat_n_char_iterator
+		operator-( ptrdiff_t p, repeat_n_char_iterator rhs ) noexcept {
+			rhs -= p;
+			return rhs;
+		}
+
+		constexpr difference_type
+		operator-( repeat_n_char_iterator rhs ) const noexcept {
+			return m_position - rhs.m_position;
+		}
+
+		constexpr bool
+		operator==( repeat_n_char_iterator const &rhs ) const noexcept {
+			return m_position == rhs.m_position;
+		}
+
+		constexpr bool
+		operator!=( repeat_n_char_iterator const &rhs ) const noexcept {
+			return m_position != rhs.m_position;
+		}
+
+		constexpr bool
+		operator<( repeat_n_char_iterator const &rhs ) const noexcept {
+			return m_position < rhs.m_position;
+		}
+
+		constexpr bool
+		operator>( repeat_n_char_iterator const &rhs ) const noexcept {
+			return m_position > rhs.m_position;
+		}
+
+		constexpr bool
+		operator<=( repeat_n_char_iterator const &rhs ) const noexcept {
+			return m_position <= rhs.m_position;
+		}
+
+		constexpr bool
+		operator>=( repeat_n_char_iterator const &rhs ) const noexcept {
+			return m_position >= rhs.m_position;
 		}
 	};
+
 	template<typename CharT>
 	repeat_n_char_iterator( size_t, CharT ) -> repeat_n_char_iterator<CharT>;
 

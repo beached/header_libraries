@@ -10,6 +10,7 @@
 
 #include "daw/ciso646.h"
 
+#include <cstddef>
 #include <iterator>
 
 namespace daw {
@@ -20,13 +21,12 @@ namespace daw {
 		using pointer = value_type *;
 		using iterator_category = std::random_access_iterator_tag;
 		using reference = value_type &;
-		using const_reference = value_type const &;
 
 	private:
 		pointer m_pointer = nullptr;
 
 	public:
-		RandomIterator( ) = default;
+		explicit RandomIterator( ) = default;
 
 		explicit constexpr RandomIterator( T *ptr ) noexcept
 		  : m_pointer{ ptr } {}
@@ -34,6 +34,10 @@ namespace daw {
 		constexpr RandomIterator &operator=( T *rhs ) noexcept {
 			m_pointer = rhs;
 			return *this;
+		}
+
+		[[nodiscard]] constexpr pointer ptr( ) noexcept {
+			return m_pointer;
 		}
 
 		[[nodiscard]] constexpr pointer ptr( ) const noexcept {
@@ -50,12 +54,12 @@ namespace daw {
 			return *this;
 		}
 
-		[[nodiscard]] constexpr reference operator*( ) {
+		[[nodiscard]] constexpr reference operator*( ) const {
 			return *m_pointer;
 		}
 
-		[[nodiscard]] constexpr const_reference operator*( ) const {
-			return *m_pointer;
+		[[nodiscard]] constexpr reference operator[]( std::size_t idx ) const {
+			return *std::next( m_pointer, static_cast<std::ptrdiff_t>( idx ) );
 		}
 
 		[[nodiscard]] constexpr pointer operator->( ) const noexcept {
@@ -84,20 +88,28 @@ namespace daw {
 			return result;
 		}
 
-		constexpr RandomIterator operator+( std::ptrdiff_t const &n ) noexcept {
-			auto old = this->m_pointer;
-			this->m_pointer += n;
-			auto temp{ *this };
-			this->m_pointer = old;
-			return temp;
+		friend constexpr RandomIterator operator+( RandomIterator lhs,
+		                                           std::ptrdiff_t n ) noexcept {
+			lhs += n;
+			return lhs;
 		}
 
-		constexpr RandomIterator operator-( std::ptrdiff_t const &n ) noexcept {
-			auto old = this->m_pointer;
-			this->m_pointer -= n;
-			auto temp{ *this };
-			this->m_pointer = old;
-			return temp;
+		friend constexpr RandomIterator operator+( std::ptrdiff_t n,
+		                                           RandomIterator rhs ) noexcept {
+			rhs += n;
+			return rhs;
+		}
+
+		friend constexpr RandomIterator operator-( RandomIterator lhs,
+		                                           std::ptrdiff_t n ) noexcept {
+			lhs += n;
+			return lhs;
+		}
+
+		friend constexpr RandomIterator operator-( std::ptrdiff_t n,
+		                                           RandomIterator rhs ) noexcept {
+			rhs -= n;
+			return rhs;
 		}
 
 		constexpr friend bool operator==( RandomIterator const &lhs,
@@ -137,12 +149,19 @@ namespace daw {
 	}; // RandomIterator
 
 	template<typename T>
-	[[nodiscard]] constexpr auto make_random_iterator( T *const ptr ) noexcept {
+	[[nodiscard]] constexpr RandomIterator<T>
+	make_random_iterator( T *ptr ) noexcept {
 		return RandomIterator<T>{ ptr };
 	}
 
 	template<typename T>
-	[[nodiscard]] constexpr auto
+	[[nodiscard]] constexpr RandomIterator<T const>
+	make_random_iterator( T const *ptr ) noexcept {
+		return RandomIterator<T const>{ ptr };
+	}
+
+	template<typename T>
+	[[nodiscard]] constexpr RandomIterator<T const>
 	make_const_random_iterator( T *const ptr ) noexcept {
 		return RandomIterator<T const>{ ptr };
 	}

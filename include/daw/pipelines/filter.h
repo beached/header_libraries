@@ -125,6 +125,13 @@ namespace daw::pipelines {
 		operator!=( filter_view const &lhs, filter_view const &rhs ) {
 			return lhs.m_first != rhs.m_first;
 		}
+
+		// clang-format off
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend auto
+		operator<=>( filter_view const &lhs, filter_view const &rhs ) {
+			return lhs.m_first <=> rhs.m_first;
+		}
+		// clang-format on
 	};
 
 	template<typename I, typename F>
@@ -147,8 +154,8 @@ namespace daw::pipelines {
 				static_assert(
 				  std::convertible_to<std::invoke_result_t<Fn, projected_t>, bool>,
 				  "Filter requires an invokable function that returns a bool" );
-				return filter_view<iterator_t<R>, Fn>( std::begin( r ), std::end( r ),
-				                                       m_func, m_projection );
+				return filter_view<iterator_t<R>, Fn>(
+				  std::begin( r ), std::end( r ), m_func, m_projection );
 			}
 
 			template<typename Value>
