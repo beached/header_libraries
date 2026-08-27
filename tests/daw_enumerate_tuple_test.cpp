@@ -36,7 +36,7 @@ int main( ) {
 		std::same_as<daw::enumerate_tuple_element_t<std::string_view const &, 0>,
 		             elem0_t> );
 	static_assert( std::tuple_size_v<elem0_t> == 2 );
-	auto const [index,element] = std::get<0>( enum_x2 );
+	[[maybe_unused]] auto const [index,element] = std::get<0>( enum_x2 );
 	static_assert( std::same_as<int, DAW_TYPEOF( index )> );
 	using namespace daw::literals;
 	static_assert( enum_x2[0_c].value == "a"sv );

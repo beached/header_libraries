@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "cpp_17.h"
-#include "daw_cpp_feature_check.h"
+#include "daw/cpp_17.h"
+#include "daw/daw_cpp_feature_check.h"
 
 #include <cstddef>
 #include <type_traits>

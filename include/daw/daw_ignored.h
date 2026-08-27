@@ -13,7 +13,7 @@
 namespace daw {
 	namespace {
 		struct ignored_t {
-			ignored_t( ) = default;
+			explicit ignored_t( ) = default;
 
 			template<typename T>
 			DAW_ATTRIB_INLINE constexpr ignored_t( T && ) noexcept {}

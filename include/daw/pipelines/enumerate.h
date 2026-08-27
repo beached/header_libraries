@@ -23,7 +23,7 @@ namespace daw::pipelines::pimpl {
 		template<Range R>
 		[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
 		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
-			return zip_view<iota_view<EnumType>, daw::remove_cvref_t<R>>(
+			return zip_view<iota_view<EnumType>, std::remove_reference_t<R>>(
 			  iota_view<EnumType>( 0, max_value<EnumType> ), DAW_FWD( r ) );
 		}
 	};

@@ -10,6 +10,7 @@
 
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
+#include "daw/daw_mutable_function_ref.h"
 #include "daw/daw_tuple_forward.h"
 #include "daw/daw_typeof.h"
 #include "daw/iterator/daw_arrow_proxy.h"
@@ -19,36 +20,68 @@
 #include <cstddef>
 #include <functional>
 #include <iterator>
+#include <ranges>
 #include <tuple>
 #include <type_traits>
+
+namespace daw::pipelines::pimpl {
+	template<typename Fn, typename... Args>
+	consteval bool is_const_fn_same_v( ) {
+		if constexpr( std::is_invocable_v<Fn const, Args...> ) {
+			using fn_result_t = std::remove_reference_t<
+			  std::remove_const_t<std::invoke_result_t<Fn, Args...>>>;
+			using fn_c_result_t = std::remove_reference_t<
+			  std::remove_const_t<std::invoke_result_t<Fn const, Args...>>>;
+			return std::is_convertible_v<fn_c_result_t, fn_result_t>;
+		} else {
+			return true;
+		}
+	}
+} // namespace daw::pipelines::pimpl
 
 namespace daw::pipelines {
 	template<Iterator Iterator, typename Fn, typename Projection = std::identity>
 	struct map_iterator {
 		using iterator_category = daw::iter_category_t<Iterator>;
-		using value_type = daw::remove_cvref_t<std::invoke_result_t<
-		  Fn, std::invoke_result_t<Projection, daw::iter_reference_t<Iterator>>>>;
-		using reference = value_type;
-		using const_reference = value_type;
+
+	private:
+		using iter_ref_t =
+		  daw::remove_rvalue_ref_t<daw::iter_reference_t<Iterator>>;
+		static_assert(
+		  std::is_same_v<iter_ref_t, daw::iter_reference_t<Iterator const>> );
+		using proj_result_t =
+		  daw::remove_rvalue_ref_t<std::invoke_result_t<Projection, iter_ref_t>>;
+		static_assert( pimpl::is_const_fn_same_v<Projection, iter_ref_t>( ),
+		               "Expect similar results for const/non-const Projection" );
+		using func_result_t =
+		  daw::remove_rvalue_ref_t<std::invoke_result_t<Fn, proj_result_t>>;
+		static_assert( pimpl::is_const_fn_same_v<Fn, proj_result_t>( ),
+		               "Expect similar results for const/non-const Fn" );
+
+	public:
+		using reference = func_result_t;
+		using value_type = std::remove_cvref_t<reference>;
+		using const_reference = reference;
 		using pointer = arrow_proxy<value_type>;
 		using difference_type = std::ptrdiff_t;
 		using size_type = std::size_t;
 
 	private:
 		Iterator m_iter{ };
-		DAW_NO_UNIQUE_ADDRESS Fn m_func = Fn{ };
-		DAW_NO_UNIQUE_ADDRESS Projection m_projection = Projection{ };
+		DAW_NO_UNIQUE_ADDRESS daw::remove_rvalue_ref_t<Fn> m_func{ };
+		DAW_NO_UNIQUE_ADDRESS daw::remove_rvalue_ref_t<Projection> m_projection{ };
 
 	public:
-		explicit constexpr map_iterator( ) = default;
+		explicit map_iterator( ) = default;
+
 		explicit constexpr map_iterator( Iterator it, Fn f )
 		  : m_iter( it )
-		  , m_func( f ) {}
+		  , m_func( std::forward<Fn>( f ) ) {}
 
 		explicit constexpr map_iterator( Iterator it, Fn f, Projection projection )
 		  : m_iter( it )
-		  , m_func( f )
-		  , m_projection( projection ) {}
+		  , m_func( std::forward<Fn>( f ) )
+		  , m_projection( std::forward<Projection>( projection ) ) {}
 
 	private:
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr decltype( auto )
@@ -59,6 +92,26 @@ namespace daw::pipelines {
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr decltype( auto )
 		raw_get( size_type n ) const requires( RandomIterator<Iterator> ) {
 			return *( m_iter + static_cast<difference_type>( n ) );
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr decltype( auto )
+		do_project( auto &&v ) {
+			return std::invoke( m_projection, DAW_FWD( v ) );
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr decltype( auto )
+		do_project( auto &&v ) const {
+			return std::invoke( m_projection, DAW_FWD( v ) );
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr decltype( auto )
+		do_func( auto &&v ) {
+			return std::invoke( m_func, do_project( DAW_FWD( v ) ) );
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr decltype( auto )
+		do_func( auto &&v ) const {
+			return std::invoke( m_func, do_project( DAW_FWD( v ) ) );
 		}
 
 	public:
@@ -72,23 +125,23 @@ namespace daw::pipelines {
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr value_type
 		operator[]( size_type n ) const requires( RandomIterator<Iterator> ) {
-			return std::invoke( m_func, raw_get( n ) );
+			return do_func( raw_get( n ) );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr value_type operator*( ) {
-			return std::invoke( m_func, *m_iter );
+			return do_func( *m_iter );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr value_type operator*( ) const {
-			return std::invoke( m_func, *m_iter );
+			return do_func( *m_iter );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer operator->( ) {
-			return pointer( std::invoke( m_func, *m_iter ) );
+			return do_func( *m_iter );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer operator->( ) const {
-			return pointer( std::invoke( m_func, *m_iter ) );
+			return do_func( *m_iter );
 		}
 
 		DAW_ATTRIB_INLINE constexpr map_iterator &operator++( ) {
@@ -127,24 +180,37 @@ namespace daw::pipelines {
 			return *this;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr map_iterator
-		operator+( difference_type n ) const noexcept
+		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr map_iterator
+		operator+( map_iterator lhs, difference_type n ) noexcept
 		  requires( RandomIterator<Iterator> ) {
-			map_iterator result = *this;
-			m_iter += n;
-			return result;
+			lhs += n;
+			return lhs;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr map_iterator
-		operator-( difference_type n ) const noexcept
+		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr map_iterator
+		operator+( difference_type n, map_iterator rhs ) noexcept
 		  requires( RandomIterator<Iterator> ) {
-			map_iterator result = *this;
-			m_iter -= n;
-			return result;
+			rhs += n;
+			return rhs;
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr map_iterator
+		operator-( map_iterator lhs, difference_type n ) noexcept
+		  requires( RandomIterator<Iterator> ) {
+			lhs -= n;
+			return lhs;
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr map_iterator
+		operator-( difference_type n, map_iterator rhs ) noexcept
+		  requires( RandomIterator<Iterator> ) {
+			rhs -= n;
+			return rhs;
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr difference_type
-		operator-( map_iterator const &rhs ) requires( RandomIterator<Iterator> ) {
+		operator-( map_iterator const &rhs ) const
+		  requires( RandomIterator<Iterator> ) {
 			return m_iter - rhs.m_iter;
 		}
 
