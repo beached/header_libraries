@@ -2004,7 +2004,7 @@ namespace daw {
 							return npos;
 						}
 						auto const result = static_cast<CharT const *>( r ) - first;
-						return result + pos;
+						return static_cast<std::size_t>( result ) + pos;
 					} else if constexpr( std::is_same_v<CharT, wchar_t> ) {
 						wchar_t const *r = ::wmemchr( first, c, sz );
 						if( r == nullptr ) {
@@ -2338,7 +2338,7 @@ namespace daw {
 						needle_array.set( static_cast<unsigned char>( c ) );
 					}
 					for( std::size_t n = pos; n > 0; --n ) {
-						CharT const c = static_cast<unsigned char>( m_first[n - 1] );
+						auto const c = static_cast<unsigned char>( m_first[n - 1] );
 						if( needle_array.test( c ) ) {
 							return n - 1;
 						}
