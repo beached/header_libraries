@@ -132,11 +132,24 @@ void out_sqrt( float f ) {
 	          << E2 << ") diff: " << diff << '\n';
 }
 
+bool cxmath_regression_tests( ) {
+	// is_even must be the complement of is_odd for integral values.
+	return daw::cxmath::is_even( 2 ) and not daw::cxmath::is_even( 3 ) and
+	       daw::cxmath::is_odd( 3 ) and not daw::cxmath::is_odd( 2 ) and
+	       daw::cxmath::dpow2( 0 ) == 1.0 and
+	       daw::cxmath::dpow10( 0 ) == 1.0 and
+	       daw::cxmath::pow10( 0 ) == 1U;
+}
+
 int main( )
 #if defined( DAW_USE_EXCEPTIONS )
   try
 #endif
 {
+	if( not cxmath_regression_tests( ) ) {
+		std::cerr << "cxmath parity regression failed\n";
+		return 1;
+	}
 	sqrt_tests( );
 	std::cout << "pow10( -1 ) -> " << daw::cxmath::dpow10( -1 ) << '\n';
 	std::cout << "pow10( -2 ) -> " << daw::cxmath::dpow10( -2 ) << '\n';
