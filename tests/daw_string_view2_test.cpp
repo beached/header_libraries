@@ -163,7 +163,7 @@ namespace daw {
 	void daw_string_view_find_last_of_004( ) {
 		auto a = daw::sv2::string_view( "this is a test" );
 		auto const pos = a.find_last_of( "a", 5 );
-		daw_expecting( 8U, pos );
+		daw_expecting( std::string_view::npos, pos );
 	}
 
 	constexpr void
@@ -1708,6 +1708,41 @@ namespace daw {
 		daw_ensure( strlen( zview2 ) == sv2.size( ) );
 		daw_ensure( daw::string_view( zview2 ) == sv2 );
 	}
+
+	// Regression coverage for boundary and positioned-search behavior.
+	void daw_string_view_regression_search_001( ) {
+		daw::sv2::string_view const sv = "abcdef";
+		daw_expecting( sv.find( 'd', 2 ), 3U );
+		daw_expecting( sv.find( "cd", 2 ), 2U );
+		daw_expecting( sv.find_first_match( "cd", 2 ), 2U );
+		daw_expecting( sv.contains( "a", 0U, 1U ), true );
+
+		daw::sv2::string_view const abcabc = "abcabc";
+		daw_expecting( abcabc.find_last_of( 'c', 2U ), 2U );
+
+		daw::sv2::string_view const end_match = "abc";
+		daw_expecting( end_match.search( "bc" ), 1U );
+
+		auto prefix = daw::sv2::string_view{ "abcdef" };
+		auto popped = prefix.pop_front_unsafe( 3U );
+		daw_expecting( popped, "abc" );
+		daw_expecting( popped.size( ), 3U );
+	}
+
+	// The wchar_t path must use the same absolute position convention as the
+	// byte-sized memchr path.
+	void daw_string_view_regression_wchar_find_001( ) {
+		daw::sv2::wstring_view const sv = L"abcdef";
+		daw_expecting( sv.find( L'd', 2U ), 3U );
+	}
+
+	void daw_string_view_regression_zeroterminated_001( ) {
+		char const buffer[] = { 'a', 'b', '\0' };
+		daw::sv2::string_view sv{ buffer, 2U };
+		sv.set_zero_terminated( );
+		daw_expecting( sv.is_zero_terminated( ), daw::sv2::ZeroTerminated::Yes );
+		daw_expecting( std::string( sv.get_c_str( ) ), "ab" );
+	}
 } // namespace daw
 
 int main( )
@@ -1876,6 +1911,9 @@ int main( )
 #endif
 	daw::test_null_001( );
 	daw::test_get_c_str_001( );
+	daw::daw_string_view_regression_search_001( );
+	daw::daw_string_view_regression_wchar_find_001( );
+	daw::daw_string_view_regression_zeroterminated_001( );
 }
 #if defined( DAW_USE_EXCEPTIONS )
 catch( std::exception const &ex ) {
