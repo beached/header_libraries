@@ -1741,7 +1741,7 @@ namespace daw {
 		daw::sv2::string_view sv{ buffer, 2U };
 		sv.set_zero_terminated( );
 		daw_expecting( sv.is_zero_terminated( ), daw::sv2::ZeroTerminated::Yes );
-		daw_expecting( std::string( sv.get_c_str( ) ), "ab" );
+		daw_expecting( sv.get_c_str( ).string(  ), "ab" );
 	}
 } // namespace daw
 
