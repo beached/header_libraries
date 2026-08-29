@@ -107,6 +107,19 @@
 	} while( false )
 #endif
 
+#if not defined( NDEBUG )
+#define DAW_DBG_STRING_VIEW_PRECOND_CHECK( Bool, ... ) \
+	if( DAW_UNLIKELY( not( Bool ) ) ) {              \
+		std::terminate( );                             \
+	}                                                \
+	do {                                             \
+	} while( false )
+#else
+#define DAW_DBG_STRING_VIEW_PRECOND_CHECK( Bool, ... ) \
+	do {                                             \
+	} while( false )
+#endif
+
 /// @brief Require Pred to be a Unary Predicate
 /// @param Pred Unary predicate
 /// @param Type Parameter type of predicate
@@ -674,7 +687,7 @@ namespace daw {
 			/// string_view
 			DAW_ATTRIB_INLINE constexpr basic_string_view( std::nullptr_t,
 			                                               size_type n ) {
-				DAW_STRING_VIEW_PRECOND_CHECK( n == 0,
+				DAW_DBG_STRING_VIEW_PRECOND_CHECK( n == 0,
 				                               "nullptr can only form an empty range" );
 			}
 
@@ -689,7 +702,7 @@ namespace daw {
 			  const_pointer s DAW_LIFETIME_BOUND, size_type count ) noexcept
 			  : m_first( s )
 			  , m_last( count ) {
-				DAW_STRING_VIEW_PRECOND_CHECK( s != nullptr or count == 0 );
+				DAW_DBG_STRING_VIEW_PRECOND_CHECK( s != nullptr or count == 0, "When s is null, count must be zero" );
 			}
 
 			/// @brief Construct a zero terminated string_view
@@ -704,7 +717,7 @@ namespace daw {
 			  zero_terminated_t ) noexcept
 			  : m_first( s )
 			  , m_last( count ) {
-				DAW_DBG_PRECONDITION_CHECK( s != nullptr or count == 0 );
+				DAW_DBG_PRECONDITION_CHECK( s != nullptr or count == 0, "[s, s+counbt) must be a valid range" );
 				m_last = set_zero_terminated( m_first, m_last );
 			}
 
