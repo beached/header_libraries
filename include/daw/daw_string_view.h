@@ -689,6 +689,7 @@ namespace daw {
 			                                               size_type n ) {
 				DAW_DBG_STRING_VIEW_PRECOND_CHECK( n == 0,
 				                               "nullptr can only form an empty range" );
+				(void)n;
 			}
 
 			/// @brief Construct a string_view
