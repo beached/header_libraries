@@ -54,7 +54,9 @@ namespace daw::atomic_impl {
 			}
 			auto const elapsed =
 			  std::chrono::high_resolution_clock::now( ) - start_time;
-			if( elapsed >= max_elapsed ) {
+			auto const elapsed_ns =
+			  std::chrono::duration_cast<std::chrono::nanoseconds>( elapsed );
+			if( elapsed_ns.count( ) >= max_elapsed.count( ) ) {
 				return false;
 			}
 			if( backoff_policy( elapsed ) ) {
