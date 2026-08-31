@@ -36,8 +36,51 @@ namespace daw::ensure {
 		std::terminate( );
 	}
 #endif
+
+#if defined( DAW_HAS_GCC_LIKE )
+	[[gnu::error( "Ensure check failed at compile time" )]]
+	extern void ensure_compile_error( bool );
+#endif
 } // namespace daw::ensure
 
+#if defined( DAW_HAS_GCC_LIKE )
+#define daw_ensure( ... )                                          \
+	do {                                                             \
+		if( __builtin_constant_p( __VA_ARGS__ ) ) {                    \
+			if( not( __VA_ARGS__ ) ) {                                   \
+				::daw::ensure::ensure_compile_error( not( __VA_ARGS__ ) ); \
+			}                                                            \
+		} else {                                                       \
+			if( not( __VA_ARGS__ ) ) {                                   \
+				::daw::ensure::ensure_error( not( __VA_ARGS__ ) );         \
+			}                                                            \
+		}                                                              \
+	} while( false )
+
+#if not defined( NDEBUG )
+#define daw_dbg_ensure( ... )                                      \
+	do {                                                             \
+		if( __builtin_constant_p( __VA_ARGS__ ) ) {                    \
+			if( not( __VA_ARGS__ ) ) {                                   \
+				::daw::ensure::ensure_compile_error( not( __VA_ARGS__ ) ); \
+			}                                                            \
+		} else {                                                       \
+			if( not( __VA_ARGS__ ) ) {                                   \
+				::daw::ensure::ensure_error( not( __VA_ARGS__ ) );         \
+			}                                                            \
+		}                                                              \
+	} while( false )
+#else
+#define daw_dbg_ensure( ... )                                      \
+	do {                                                             \
+		if( __builtin_constant_p( __VA_ARGS__ ) ) {                    \
+			if( not( __VA_ARGS__ ) ) {                                   \
+				::daw::ensure::ensure_compile_error( not( __VA_ARGS__ ) ); \
+			}                                                            \
+		}                                                              \
+	} while( false )
+#endif
+#else
 #define daw_ensure( ... )                                \
 	do {                                                   \
 		if( not( __VA_ARGS__ ) ) {                           \
@@ -56,4 +99,5 @@ namespace daw::ensure {
 #define daw_dbg_ensure( ... ) \
 	do {                        \
 	} while( false )
+#endif
 #endif
