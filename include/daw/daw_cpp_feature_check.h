@@ -30,8 +30,8 @@
 	  ( ( __clang_major__ == ( ver_maj ) ) and     \
 	    ( __clang_minor__ < ( ver_min ) ) ) )
 
-#define DAW_HAS_CLANG
-#define DAW_HAS_GCC_LIKE
+#define DAW_HAS_CLANG 1
+#define DAW_HAS_GCC_LIKE 1
 #else
 #define DAW_HAS_CLANG_VER_GTE( ver_maj, ver_min ) ( false )
 #define DAW_HAS_CLANG_VER_LT( ver_maj, ver_min ) ( false )
@@ -48,8 +48,8 @@
 	( ( __GNUC__ < ( ver_maj ) ) or              \
 	  ( ( __GNUC__ == ( ver_maj ) ) and ( __GNUC_MINOR__ < ( ver_min ) ) ) )
 
-#define DAW_HAS_GCC
-#define DAW_HAS_GCC_LIKE
+#define DAW_HAS_GCC 1
+#define DAW_HAS_GCC_LIKE 1
 #else
 #define DAW_HAS_GCC_VER_GTE( ver_maj, ver_min ) ( false )
 #define DAW_HAS_GCC_VER_LT( ver_maj, ver_min ) ( false )
