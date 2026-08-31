@@ -44,17 +44,18 @@ namespace daw::ensure {
 } // namespace daw::ensure
 
 #if defined( DAW_HAS_GCC_LIKE )
-#define daw_ensure( ... )                                          \
-	do {                                                             \
-		if( __builtin_constant_p( __VA_ARGS__ ) ) {                    \
-			if( not( __VA_ARGS__ ) ) {                                   \
-				::daw::ensure::ensure_compile_error( not( __VA_ARGS__ ) ); \
-			}                                                            \
-		} else {                                                       \
-			if( not( __VA_ARGS__ ) ) {                                   \
-				::daw::ensure::ensure_error( not( __VA_ARGS__ ) );         \
-			}                                                            \
-		}                                                              \
+#define daw_ensure( ... )                                             \
+	do {                                                                \
+		if( auto daw_ensure_bool_test = static_cast<bool>( __VA_ARGS__ ); \
+		    __builtin_constant_p( daw_ensure_bool_test ) ) {              \
+			if( not( daw_ensure_bool_test ) ) {                             \
+				::daw::ensure::ensure_compile_error( not( __VA_ARGS__ ) );    \
+			}                                                               \
+		} else {                                                          \
+			if( not( daw_ensure_bool_test ) ) {                             \
+				::daw::ensure::ensure_error( not( __VA_ARGS__ ) );            \
+			}                                                               \
+		}                                                                 \
 	} while( false )
 
 #if not defined( NDEBUG )
