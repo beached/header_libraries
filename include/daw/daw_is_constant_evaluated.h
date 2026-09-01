@@ -46,16 +46,16 @@
 
 #if defined( __cpp_if_consteval )
 #if __cpp_if_consteval >= 202106L
-#define DAW_HAS_IF_CONSTEVAL
+#define DAW_HAS_IF_CONSTEVAL 1
 #endif
 #endif
 
 #if defined( DAW_HAS_IF_CONSTEVAL )
 #define DAW_IF_CONSTEVAL if consteval
 #define DAW_IF_NOT_CONSTEVAL if not consteval
-#define DAW_HAS_IF_CONSTEVAL_COMPAT
+#define DAW_HAS_IF_CONSTEVAL_COMPAT 1
 #elif defined( DAW_HAS_IS_CONSTANT_EVALUATED )
 #define DAW_IF_CONSTEVAL if( DAW_IS_CONSTANT_EVALUATED( ) )
 #define DAW_IF_NOT_CONSTEVAL if( not DAW_IS_CONSTANT_EVALUATED( ) )
-#define DAW_HAS_IF_CONSTEVAL_COMPAT
+#define DAW_HAS_IF_CONSTEVAL_COMPAT 1
 #endif

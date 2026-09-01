@@ -164,7 +164,7 @@ inline constexpr bool daw_has_cx_cmath = false;
 #endif
 
 #if not defined( DAW_CONSTINIT )
-#define DAW_CONSTINIT 1
+#define DAW_CONSTINIT
 #endif
 
 #if defined( __cpp_lib_unreachable )

@@ -34,6 +34,7 @@ set( TEST_SOURCES
 		 daw_cx_offset_of_test.cpp
 		 daw_cxmath_test.cpp
 		 daw_endian_test.cpp
+		 daw_ensure_test.cpp
 		 daw_exception_test.cpp
 		 daw_expected_test.cpp
 		 daw_fnv1a_hash_test.cpp
@@ -220,6 +221,11 @@ foreach( CUR_TEST IN LISTS all_tests )
 	add_test( ${CUR_TEST_NAME}_test ${CUR_TEST_NAME} )
 	add_dependencies( ${PROJECT_NAME}_full ${CUR_TEST_NAME} )
 endforeach()
+
+add_test( daw_ensure_runtime_failure_test daw_ensure_test runtime-failure )
+if( CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang" )
+	target_compile_options( daw_ensure_test PRIVATE -O2 )
+endif()
 
 option( DAW_ENABLE_DEPRECATED_TESTING "Build unit tests still for deprecated libraries" OFF )
 foreach( CUR_TEST IN LISTS DEPRECATED_TEST_SOURCES )
