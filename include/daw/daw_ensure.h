@@ -55,7 +55,7 @@ namespace daw::ensure {
 #define DAW_ENSURE_IS_CONSTANT_EVAL( ) false
 #endif
 
-#if defined( DAW_HAS_GCC_LIKE )
+#if not defined( DAW_NO_OPT_TIME_ENSURE ) and defined( DAW_HAS_GCC_LIKE )
 #define daw_ensure( ... )                                               \
 	do {                                                                  \
 		if( DAW_ENSURE_IS_CONSTANT_EVAL( ) ) {                              \
