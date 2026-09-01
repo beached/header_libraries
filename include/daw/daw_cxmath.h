@@ -400,7 +400,7 @@ namespace daw::cxmath {
 
 		public:
 			template<typename Result = Float>
-			[[nodiscard]] static constexpr Result get( std::int64_t pos ) noexcept {
+			[[nodiscard]] static constexpr Result get( std::int64_t pos ) {
 				auto const zero = static_cast<intmax_t>( m_tbl.size( ) / 2ULL );
 				auto const index = static_cast<std::size_t>( zero + pos );
 				daw_dbg_ensure( index < m_tbl.size( ) );
@@ -414,7 +414,7 @@ namespace daw::cxmath {
 
 		public:
 			template<typename Result = Float>
-			[[nodiscard]] static constexpr Result get( std::int64_t pos ) noexcept {
+			[[nodiscard]] static constexpr Result get( std::int64_t pos ) {
 				auto const zero = static_cast<std::int64_t>( m_tbl.size( ) / 2ULL );
 				auto const index = static_cast<size_t>( zero + pos );
 				daw_dbg_ensure( index < m_tbl.size( ) );
@@ -428,7 +428,7 @@ namespace daw::cxmath {
 
 		public:
 			template<typename Result = Integer>
-			[[nodiscard]] static constexpr Result get( std::size_t pos ) noexcept {
+			[[nodiscard]] static constexpr Result get( std::size_t pos ) {
 				daw_dbg_ensure( pos < m_tbl.size( ) );
 				return static_cast<Result>( m_tbl[pos] );
 			}
@@ -992,7 +992,7 @@ namespace daw::cxmath {
 
 #if defined( DAW_CX_BIT_CAST )
 	[[nodiscard]] constexpr double ldexp( double d,
-	                                      std::int32_t exponent ) noexcept {
+	                                      std::int32_t exponent ) {
 		daw::UInt64 dint = DAW_BIT_CAST( daw::UInt64, 2.0 );
 		auto const new_exponent = static_cast<std::int32_t>(
 		  static_cast<std::uint32_t>( exponent ) + 1023U );

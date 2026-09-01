@@ -505,14 +505,14 @@ namespace daw {
 			friend struct basic_string_view<CharT>;
 
 			DAW_CPP20_CX_ALLOC c_str_proxy( CharT const *str, std::size_t N,
-			                                zero_terminated_t ) noexcept
+			                                zero_terminated_t )
 			  : m_str{ buff_t{ str, N } } {
 #if not defined( DAW_STRINGVIEW_NOZTERM_CHECK )
 				daw_dbg_ensure( N == sv2_details::strlen<std::size_t>( str ) );
 #endif
 			}
 
-			DAW_CPP20_CX_ALLOC c_str_proxy( CharT const *str, std::size_t N ) noexcept
+			DAW_CPP20_CX_ALLOC c_str_proxy( CharT const *str, std::size_t N )
 			  : m_str{ std::basic_string( str, N ) } {
 #if not defined( DAW_STRINGVIEW_NOZTERM_CHECK )
 				daw_dbg_ensure( N == sv2_details::strlen<std::size_t>(
