@@ -26,6 +26,6 @@ var searchData=
   ['construct_5ffor_5foverwrite_23',['construct_for_overwrite',['../namespacedaw.html#a5a1f33c75eccb6bd683af47475591ab5',1,'daw']]],
   ['container_24',['container',['../structdaw_1_1fmt__range.html#af78802a3bb759888bbff20149a5098e9',1,'daw::fmt_range']]],
   ['contract_5ffailure_5fhandler_25',['contract_failure_handler',['../namespacedaw.html#aa9f77feccffd12a7c1103be46811dbe5',1,'daw']]],
-  ['count_26',['Count',['../namespacedaw_1_1pipelines.html#ad265d11df123bf6f9617f80256b52bc4',1,'daw::pipelines']]],
+  ['count_26',['count',['../namespacedaw_1_1pipelines.html#ad265d11df123bf6f9617f80256b52bc4',1,'daw::pipelines::Count'],['../structdaw_1_1contiguous__view_3_01_t_00_01_explicit_conv_01_4.html#ad9fef58320afbfaa10ccf0e20fe22f52',1,'daw::contiguous_view&lt; T, ExplicitConv &gt;::count']]],
   ['current_5fvalue_27',['current_value',['../structdaw_1_1integer__range__iterator.html#af7c1a33dfe74660d8c7efef0e17245c1',1,'daw::integer_range_iterator']]]
 ];
