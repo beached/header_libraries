@@ -17,11 +17,11 @@
 #include "daw/traits/daw_traits_nth_element.h"
 #include "daw/traits/daw_traits_pack_list.h"
 
+#include <cstddef>
 #include <daw/stdinc/integer_sequence.h>
 #include <daw/stdinc/move_fwd_exch.h>
 #include <daw/stdinc/remove_cvref.h>
 #include <daw/stdinc/tuple_traits.h>
-#include <cstddef>
 #include <type_traits>
 
 namespace daw {
@@ -108,17 +108,15 @@ namespace daw {
 	fwd_pack( Ts &&... ) -> fwd_pack<Ts &&...>;
 
 	template<typename, typename = void>
-  inline constexpr bool is_fwd_pack_v = false;
+	inline constexpr bool is_fwd_pack_v = false;
 
 	template<typename T>
 	inline constexpr bool is_fwd_pack_v<
-			T,
-			std::void_t<
-				typename daw::remove_cvref_t<T>::i_am_a_daw_fwd_pack
-			>
-		> = true;
+	  T, std::void_t<typename daw::remove_cvref_t<T>::i_am_a_daw_fwd_pack>> =
+	  true;
 
-	template<std::size_t Idx, typename FwdPack DAW_ENABLEIF( is_fwd_pack_v<FwdPack> )>
+	template<std::size_t Idx,
+	         typename FwdPack DAW_ENABLEIF( is_fwd_pack_v<FwdPack> )>
 	DAW_REQUIRES( is_fwd_pack_v<FwdPack> )
 	DAW_ATTRIB_FLATINLINE constexpr decltype( auto ) get( FwdPack &&p ) {
 		return DAW_FWD( p ).template get<Idx>( );
@@ -144,37 +142,33 @@ namespace daw {
 } // namespace daw
 
 namespace std {
-	template<typename... Ts>
-	inline constexpr std::size_t tuple_size_v<daw::fwd_pack<Ts...>> =
-	  sizeof...( Ts );
+		template<typename... Ts>
+		struct tuple_size<daw::fwd_pack<Ts...>> {
+			static constexpr std::size_t value = sizeof...( Ts );
+		};
 
-	template<typename... Ts>
-	struct tuple_size<daw::fwd_pack<Ts...>> {
-		static constexpr std::size_t value = sizeof...( Ts );
-	};
+		template<std::size_t Idx, typename... Ts>
+		struct tuple_element<Idx, daw::fwd_pack<Ts...>> {
+			using type = daw::traits::nth_type<Idx, Ts...>;
+		};
+	} // namespace std
 
-	template<std::size_t Idx, typename... Ts>
-	struct tuple_element<Idx, daw::fwd_pack<Ts...>> {
-		using type = daw::traits::nth_type<Idx, Ts...>;
-	};
-} // namespace std
+	namespace daw {
+		template<typename>
+		struct tuple_size;
 
-namespace daw {
-	template<typename>
-	struct tuple_size;
+		template<typename... Ts>
+		struct [[deprecated( "use std::tuple_size" )]]
+		tuple_size<daw::fwd_pack<Ts...>> {
+			static constexpr std::size_t value = sizeof...( Ts );
+		};
 
-	template<typename... Ts>
-	struct [[deprecated(
-	  "use std::tuple_size" )]] tuple_size<daw::fwd_pack<Ts...>> {
-		static constexpr std::size_t value = sizeof...( Ts );
-	};
+		template<std::size_t, typename>
+		struct tuple_element;
 
-	template<std::size_t, typename>
-	struct tuple_element;
-
-	template<std::size_t Idx, typename... Ts>
-	struct [[deprecated(
-	  "use std::tuple_element" )]] tuple_element<Idx, daw::fwd_pack<Ts...>> {
-		using type = daw::traits::nth_type<Idx, Ts...>;
-	};
-} // namespace daw
+		template<std::size_t Idx, typename... Ts>
+		struct [[deprecated( "use std::tuple_element" )]]
+		tuple_element<Idx, daw::fwd_pack<Ts...>> {
+			using type = daw::traits::nth_type<Idx, Ts...>;
+		};
+	} // namespace daw

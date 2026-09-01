@@ -21,6 +21,7 @@
 #include "daw/daw_likely.h"
 #include "daw/daw_uint_buffer.h"
 #include "daw/impl/daw_math_impl.h"
+#include "daw_ensure.h"
 
 #include <array>
 #include <cmath>
@@ -399,31 +400,36 @@ namespace daw::cxmath {
 
 		public:
 			template<typename Result = Float>
-			[[nodiscard]] static constexpr Result get( intmax_t pos ) noexcept {
+			[[nodiscard]] static constexpr Result get( std::int64_t pos ) {
 				auto const zero = static_cast<intmax_t>( m_tbl.size( ) / 2ULL );
-				return static_cast<Result>( m_tbl[static_cast<size_t>( zero + pos )] );
+				auto const index = static_cast<std::size_t>( zero + pos );
+				daw_dbg_ensure( index < m_tbl.size( ) );
+				return static_cast<Result>( m_tbl[index] );
 			}
 		};
 
 		template<typename Float>
 		class [[nodiscard]] fpow10_t {
-			static constexpr std::array const m_tbl = calc_fpow10s<Float>( );
+			static constexpr std::array m_tbl = calc_fpow10s<Float>( );
 
 		public:
 			template<typename Result = Float>
-			[[nodiscard]] static constexpr Result get( intmax_t pos ) noexcept {
-				auto const zero = static_cast<intmax_t>( m_tbl.size( ) / 2ULL );
-				return static_cast<Result>( m_tbl[static_cast<size_t>( zero + pos )] );
+			[[nodiscard]] static constexpr Result get( std::int64_t pos ) {
+				auto const zero = static_cast<std::int64_t>( m_tbl.size( ) / 2ULL );
+				auto const index = static_cast<size_t>( zero + pos );
+				daw_dbg_ensure( index < m_tbl.size( ) );
+				return static_cast<Result>( m_tbl[index] );
 			}
 		};
 
 		template<typename Integer>
 		class [[nodiscard]] pow10_t {
-			static constexpr std::array const m_tbl = calc_pow10s<Integer>( );
+			static constexpr std::array m_tbl = calc_pow10s<Integer>( );
 
 		public:
 			template<typename Result = Integer>
-			[[nodiscard]] static constexpr Result get( size_t pos ) noexcept {
+			[[nodiscard]] static constexpr Result get( std::size_t pos ) {
+				daw_dbg_ensure( pos < m_tbl.size( ) );
 				return static_cast<Result>( m_tbl[pos] );
 			}
 		};
@@ -575,7 +581,9 @@ namespace daw::cxmath {
 				return 32U;
 			}
 			std::uint32_t c = 32U;
-			v &= static_cast<std::uint32_t>( -static_cast<std::int32_t>( v ) );
+			// Unsigned subtraction is modulo 2^32; avoid signed negation of
+			// INT32_MIN.
+			v &= std::uint32_t{ 0 } - v;
 			if( v ) {
 				c--;
 			}
@@ -984,10 +992,12 @@ namespace daw::cxmath {
 
 #if defined( DAW_CX_BIT_CAST )
 	[[nodiscard]] constexpr double ldexp( double d,
-	                                      std::int32_t exponent ) noexcept {
+	                                      std::int32_t exponent ) {
 		daw::UInt64 dint = DAW_BIT_CAST( daw::UInt64, 2.0 );
-		exponent += 1023;
-		daw::UInt64 new_exp = static_cast<daw::UInt64>( exponent );
+		auto const new_exponent = static_cast<std::int32_t>(
+		  static_cast<std::uint32_t>( exponent ) + 1023U );
+		daw_dbg_ensure( exponent < new_exponent );
+		daw::UInt64 new_exp = static_cast<daw::UInt64>( new_exponent );
 		constexpr daw::UInt64 remove_mask{ ~0x7FF0'0000'0000'0000ULL };
 		double result =
 		  DAW_BIT_CAST( double, ( dint & remove_mask ) | ( new_exp << 52U ) );
@@ -1022,7 +1032,7 @@ namespace daw::cxmath {
 	                                            std::nullptr_t> = nullptr>
 	[[nodiscard]] inline constexpr bool is_even( Integer i ) noexcept {
 		return ( std::make_unsigned_t<daw::remove_cvref_t<Integer>>( i ) & 1U ) ==
-		       1U;
+		       0U;
 	}
 
 	template<typename Real, std::enable_if_t<std::is_floating_point_v<Real>,
@@ -1139,10 +1149,11 @@ namespace daw::cxmath {
 	template<typename Number, typename Number2
 #if defined( DAW_CX_BIT_CAST )
 	         ,
-	         std::enable_if_t<
-	           ( (daw::is_integral_v<Number> and daw::is_integral_v<Number2>) or
-	             not( std::is_floating_point_v<Number> and
-	                  std::is_floating_point_v<Number2> ) )> = nullptr
+	         std::enable_if_t<( (daw::is_integral_v<Number> and
+	                             daw::is_integral_v<Number2>) or
+	                            not( std::is_floating_point_v<Number> and
+	                                 std::is_floating_point_v<Number2> ) ),
+	                          std::nullptr_t> = nullptr
 #endif
 	         >
 	[[nodiscard]] constexpr Number copy_sign( Number x, Number2 s ) noexcept {

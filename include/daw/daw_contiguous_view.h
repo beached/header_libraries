@@ -473,7 +473,7 @@ namespace daw {
 		template<ContiguousContainerOf<value_type> Container>
 		requires( not_cvref_of<contiguous_view, Container> ) explicit(
 		  ExplicitConv ) constexpr contiguous_view( Container &&c,
-		                                            std::size_t count ) noexcept
+		                                            std::size_t count )
 		  : m_first( std::data( c ) )
 		  , m_last( std::next( m_first, static_cast<difference_type>( count ) ) ) {
 			daw_ensure( count <= std::size( c ) );

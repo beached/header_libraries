@@ -62,11 +62,13 @@ void test_move_semantics_and_bool( ) {
 }
 
 void test_noexcept_signature( ) {
-	auto sf = daw::shared_function<int( ) noexcept>( [] noexcept {
+	auto sf = daw::shared_function<int( ) noexcept>( [] {
 		return 7;
 	} );
 	static_assert( noexcept( sf( ) ) );
-	daw_ensure( sf( ) == 7 );
+	if( sf( ) != 7 ) {
+		std::terminate( );
+	}
 }
 
 void test_const_signature( ) {
@@ -110,7 +112,9 @@ void test_lvalue_noexcept_functor_support( ) {
 	auto fn = lvalue_noexcept_functor_t{ };
 	auto sf = daw::shared_function<int( ) noexcept>( fn );
 	static_assert( noexcept( sf( ) ) );
-	daw_ensure( sf( ) == 42 );
+	if( sf( ) != 42 ) {
+		std::terminate( );
+	}
 }
 
 void test_weak_lock( ) {

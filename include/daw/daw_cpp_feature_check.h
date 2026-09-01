@@ -30,8 +30,8 @@
 	  ( ( __clang_major__ == ( ver_maj ) ) and     \
 	    ( __clang_minor__ < ( ver_min ) ) ) )
 
-#define DAW_HAS_CLANG
-#define DAW_HAS_GCC_LIKE
+#define DAW_HAS_CLANG 1
+#define DAW_HAS_GCC_LIKE 1
 #else
 #define DAW_HAS_CLANG_VER_GTE( ver_maj, ver_min ) ( false )
 #define DAW_HAS_CLANG_VER_LT( ver_maj, ver_min ) ( false )
@@ -48,8 +48,8 @@
 	( ( __GNUC__ < ( ver_maj ) ) or              \
 	  ( ( __GNUC__ == ( ver_maj ) ) and ( __GNUC_MINOR__ < ( ver_min ) ) ) )
 
-#define DAW_HAS_GCC
-#define DAW_HAS_GCC_LIKE
+#define DAW_HAS_GCC 1
+#define DAW_HAS_GCC_LIKE 1
 #else
 #define DAW_HAS_GCC_VER_GTE( ver_maj, ver_min ) ( false )
 #define DAW_HAS_GCC_VER_LT( ver_maj, ver_min ) ( false )
@@ -61,8 +61,8 @@
 
 // Check if MSVC has a version < to that specified
 #define DAW_HAS_MSVC_VER_LT( ver ) ( _MSC_VER < ( ver ) )
-#define DAW_HAS_MSVC
-#define DAW_HAS_MSVC_LIKE
+#define DAW_HAS_MSVC 1
+#define DAW_HAS_MSVC_LIKE 1
 #else
 #define DAW_HAS_MSVC_VER_GTE( ver ) ( false )
 #define DAW_HAS_MSVC_VER_LT( ver ) ( false )
@@ -81,9 +81,9 @@
 	  ( ( __clang_major__ == ( ver_maj ) ) and       \
 	    ( __clang_minor__ < ( ver_min ) ) ) )
 
-#define DAW_HAS_CLANGCL
-#define DAW_HAS_CLANG
-#define DAW_HAS_MSVC_LIKE
+#define DAW_HAS_CLANGCL 1
+#define DAW_HAS_CLANG 1
+#define DAW_HAS_MSVC_LIKE 1
 #else
 #define DAW_HAS_CLANGCL_VER_GTE( ver_maj, ver_min ) ( false )
 #define DAW_HAS_CLANGCL_VER_LT( ver_maj, ver_min ) ( false )
@@ -111,12 +111,12 @@
 #if defined( _LIBCPP_VERSION )
 #define DAW_HAS_STD_LIBCPP
 #elif defined( __GLIBCXX__ )
-#define DAW_HAS_STD_LIBSTDCPP
+#define DAW_HAS_STD_LIBSTDCPP 1
 #endif
 
 #if defined( __cpp_static_call_operator )
 #if __cpp_static_call_operator >= 202207L
-#define DAW_HAS_CPP23_STATIC_CALL_OP
+#define DAW_HAS_CPP23_STATIC_CALL_OP 1
 #endif
 #endif
 
@@ -146,19 +146,19 @@ inline constexpr bool daw_has_cx_cmath = false;
 
 #if defined( __cpp_concepts )
 #if __cpp_concepts >= 202002L
-#define DAW_HAS_CPP_CONCEPTS
+#define DAW_HAS_CPP_CONCEPTS 1
 #endif
 #endif
 
 #if defined( __cpp_consteval )
 #if __cpp_consteval >= 201811L
-#define DAW_HAS_CPP_CONSTEVAL
+#define DAW_HAS_CPP_CONSTEVAL 1
 #endif
 #endif
 
 #if defined( __cpp_constinit )
 #if __cpp_constinit >= 201907L
-#define DAW_HAS_CPP_CONSTINIT
+#define DAW_HAS_CPP_CONSTINIT 1
 #define DAW_CONSTINIT constinit
 #endif
 #endif
@@ -169,20 +169,21 @@ inline constexpr bool daw_has_cx_cmath = false;
 
 #if defined( __cpp_lib_unreachable )
 #if __cpp_lib_unreachable >= 202202L
-#define DAW_HAS_CPP23_UNREACHABLE
+#define DAW_HAS_CPP23_UNREACHABLE 1
 #endif
 #endif
 
 #if defined( __cpp_lib_three_way_comparison )
 #if __cpp_lib_three_way_comparison >= 201907L
-#define DAW_HAS_CPP20_3WAY
+#define DAW_HAS_CPP20_3WAY 1
 #endif
-#define DAW_HAS_CPP20_3WAY
+#define DAW_HAS_CPP20_3WAY 1
 #endif
 
 #if defined( __cpp_pack_indexing )
 #if __cpp_pack_indexing >= 202311L
-#define DAW_CPP26_PACK_INDEXING
+#define DAW_CPP26_PACK_INDEXING 1
+#define DAW_HAS_CPP26_PACK_INDEXING 1
 #endif
 #endif
 
@@ -201,8 +202,8 @@ inline constexpr bool daw_has_cx_cmath = false;
 
 #if defined( __cpp_concepts ) and not defined( DAW_NO_CONCEPTS )
 #if __cpp_concepts >= 201907L
-#define DAW_HAS_CONCEPTS
-#define DAW_HAS_CPP20_CONCEPTS
+#define DAW_HAS_CONCEPTS 1
+#define DAW_HAS_CPP20_CONCEPTS 1
 #endif
 #endif
 
@@ -225,7 +226,7 @@ inline constexpr bool daw_has_cx_cmath = false;
 
 #if defined( __cpp_lib_move_only_function )
 #if __cpp_lib_move_only_function >= 202110L
-#define DAW_HAS_CPP23_MOVE_ONLY_FUNCTION
+#define DAW_HAS_CPP23_MOVE_ONLY_FUNCTION 1
 #endif
 #endif
 
@@ -244,12 +245,12 @@ inline constexpr bool daw_has_cx_cmath = false;
 #endif
 
 #if __cpp_lib_optional >= 202506L
-#define DAW_HAS_CPP26_OPTIONAL_REFS
+#define DAW_HAS_CPP26_OPTIONAL_REFS 1
 #endif
 
 #if defined( __cpp_lib_constexpr_atomic )
 #if __cpp_lib_constexpr_atomic >= 202401L
-#define DAW_HAS_CPP26_CONSTEXPR_ATOMIC
+#define DAW_HAS_CPP26_CONSTEXPR_ATOMIC 1
 #endif
 #endif
 
