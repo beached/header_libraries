@@ -106,7 +106,7 @@ namespace daw::ensure {
 				::daw::ensure::ensure_error( not( __VA_ARGS__ ) );            \
 			}                                                               \
 		}                                                                 \
-		while( false )
+	} while( false )
 
 #if not defined( NDEBUG )
 #define daw_dbg_ensure( ... )                                         \
