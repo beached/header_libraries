@@ -106,7 +106,7 @@ public:                                                                 \
 	  : public shared_function_storage_base<CVRef, IsNoExcept, R, Params...> {  \
 		using func_t = function_storage_t<Fn>;                                    \
 		static constexpr bool is_optional = not std::same_as<Fn, func_t>;         \
-		DAW_NO_UNIQUE_ADDRESS func_t m_func;                                   \
+		DAW_NO_UNIQUE_ADDRESS func_t m_func;                                      \
                                                                               \
 	public:                                                                     \
 		explicit constexpr shared_function_storage( Fn fn )                       \
@@ -130,9 +130,11 @@ public:                                                                 \
 	};
 
 	DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC( cvref_t::None, , this->m_func );
-	DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC( cvref_t::Const, const, this->m_func );
+	DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC( cvref_t::Const, const,
+	                                         this->m_func );
 	DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC( cvref_t::Ref, &, this->m_func );
-	DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC( cvref_t::ConstRef, const &, this->m_func );
+	DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC( cvref_t::ConstRef, const &,
+	                                         this->m_func );
 	DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC( cvref_t::RefRef, &&,
 	                                         std::move( this->m_func ) );
 	DAW_DETAIL_SHARED_FUNCTION_STORAGE_SPEC( cvref_t::ConstRefRef, const &&,
@@ -296,7 +298,9 @@ public:                                                                 \
 			using type = std::conditional_t<std::is_reference_v<Self>,
 			                                copy_cvref_t<Self, storage_t>,
 			                                copy_cvref_t<Self, storage_t> &&>;
-			daw_ensure( self.m_storage );
+			if( not self.m_storage ) {
+				std::terminate( );
+			}
 			return static_cast<type>( *self.m_storage )
 			  .call( std::forward<param_t<Params>>( params )... );
 		}
