@@ -75,7 +75,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
@@ -90,11 +89,6 @@ $(function() {
 </div>
 <p><a href="daw__ensure_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1ensure_1_1daw__ensure__exception.html">daw::ensure::daw_ensure_exception</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw" id="r_namespacedaw"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html">daw</a></td></tr>
@@ -133,20 +127,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">do</span> {                                                                \</div>
-<div class="line">    if( <a class="code hl_define" href="daw__ensure_8h.html#a75efc2247f46ca1222e6b14fa7b218ff">DAW_ENSURE_IS_CONSTANT_EVAL</a>( ) ) {                            \</div>
-<div class="line">      if( not( __VA_ARGS__ ) ) {                                      \</div>
-<div class="line">        throw ::daw::ensure::daw_ensure_exception{ <span class="stringliteral">&quot;&quot;</span> #__VA_ARGS__ }; \</div>
-<div class="line">      }                                                               \</div>
-<div class="line">    } <span class="keywordflow">else</span> {                                                          \</div>
-<div class="line">      if( not( __VA_ARGS__ ) ) {                                      \</div>
-<div class="line">        ::daw::ensure::ensure_error( not( __VA_ARGS__ ) );            \</div>
-<div class="line">      }                                                               \</div>
-<div class="line">    }                                                                 \</div>
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">do</span> {                                                   \</div>
+<div class="line">    if( not( __VA_ARGS__ ) ) {                           \</div>
+<div class="line">      ::daw::ensure::ensure_error( not( __VA_ARGS__ ) ); \</div>
+<div class="line">    }                                                    \</div>
 <div class="line">  } <span class="keywordflow">while</span>( <span class="keyword">false</span> )</div>
-<div class="ttc" id="adaw__ensure_8h_html_a75efc2247f46ca1222e6b14fa7b218ff"><div class="ttname"><a href="daw__ensure_8h.html#a75efc2247f46ca1222e6b14fa7b218ff">DAW_ENSURE_IS_CONSTANT_EVAL</a></div><div class="ttdeci">#define DAW_ENSURE_IS_CONSTANT_EVAL()</div><div class="ttdef"><b>Definition</b> <a href="daw__ensure_8h_source.html#l00055">daw_ensure.h:55</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__ensure_8h_source.html#l00112">112</a> of file <a class="el" href="daw__ensure_8h_source.html">daw_ensure.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ensure_8h_source.html#l00090">90</a> of file <a class="el" href="daw__ensure_8h_source.html">daw_ensure.h</a>.</p>
 
 </div>
 </div>
@@ -165,19 +152,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">do</span> {                                                                \</div>
-<div class="line">    if( <a class="code hl_define" href="daw__ensure_8h.html#a75efc2247f46ca1222e6b14fa7b218ff">DAW_ENSURE_IS_CONSTANT_EVAL</a>( ) ) {                            \</div>
-<div class="line">      if( not( __VA_ARGS__ ) ) {                                      \</div>
-<div class="line">        throw ::daw::ensure::daw_ensure_exception{ <span class="stringliteral">&quot;&quot;</span> #__VA_ARGS__ }; \</div>
-<div class="line">      }                                                               \</div>
-<div class="line">    } <span class="keywordflow">else</span> {                                                          \</div>
-<div class="line">      if( not( __VA_ARGS__ ) ) {                                      \</div>
-<div class="line">        ::daw::ensure::ensure_error( not( __VA_ARGS__ ) );            \</div>
-<div class="line">      }                                                               \</div>
-<div class="line">    }                                                                 \</div>
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">do</span> {                                                   \</div>
+<div class="line">    if( not( __VA_ARGS__ ) ) {                           \</div>
+<div class="line">      ::daw::ensure::ensure_error( not( __VA_ARGS__ ) ); \</div>
+<div class="line">    }                                                    \</div>
 <div class="line">  } <span class="keywordflow">while</span>( <span class="keyword">false</span> )</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="daw__ensure_8h_source.html#l00098">98</a> of file <a class="el" href="daw__ensure_8h_source.html">daw_ensure.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ensure_8h_source.html#l00082">82</a> of file <a class="el" href="daw__ensure_8h_source.html">daw_ensure.h</a>.</p>
 
 </div>
 </div>
@@ -196,7 +177,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__ensure_8h_source.html#l00055">55</a> of file <a class="el" href="daw__ensure_8h_source.html">daw_ensure.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__ensure_8h_source.html#l00051">51</a> of file <a class="el" href="daw__ensure_8h_source.html">daw_ensure.h</a>.</p>
 
 </div>
 </div>

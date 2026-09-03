@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['create_5fcomparison_5foperators_0',['create_comparison_operators',['../daw__operators_8h.html#a076a7feb3af52e634c28743a5f797b39',1,'daw_operators.h']]],
-  ['create_5ffriend_5fcomparison_5foperators_1',['create_friend_comparison_operators',['../daw__operators_8h.html#a3fe8310aa2f488b02c62de344700b099',1,'daw_operators.h']]]
+  ['_5f_5fhas_5fattribute_0',['__has_attribute',['../daw__attributes_8h.html#ab98935b25bfd4850c7d1d4f2b669744b',1,'daw_attributes.h']]]
 ];

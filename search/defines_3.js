@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['malloc_5fsize_0',['MALLOC_SIZE',['../daw__vector_8h.html#a139560faf3cb860debae080142fa9662',1,'daw_vector.h']]],
-  ['may_5fthrow_5fexceptions_1',['MAY_THROW_EXCEPTIONS',['../daw__exception_8h.html#a060e13be26b60cf7a33a397fec75d85a',1,'daw_exception.h']]]
+  ['generate_5fis_5fstd_5fcontainer1_0',['GENERATE_IS_STD_CONTAINER1',['../daw__traits__is__a__type_8h.html#afe8ca084b0b42c6f625eebf8a910e305',1,'daw_traits_is_a_type.h']]],
+  ['generate_5fis_5fstd_5fcontainer2_1',['GENERATE_IS_STD_CONTAINER2',['../daw__traits__is__a__type_8h.html#a8f0f73af1ca3c0956b6b45bbf139d67a',1,'daw_traits_is_a_type.h']]]
 ];
