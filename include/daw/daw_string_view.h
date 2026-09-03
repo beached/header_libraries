@@ -56,12 +56,13 @@
 #define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... ) \
 	do {                                             \
 	} while( false )
-#elif not defined( NDEBUG ) or defined( DEBUG )
-#define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... )            \
-	if( DAW_UNLIKELY( not( Bool ) ) ) {                         \
-		DAW_THROW_OR_TERMINATE( std::out_of_range, __VA_ARGS__ ); \
-	}                                                           \
-	do {                                                        \
+#elif not defined( DAW_NO_SV_CHECKS ) and not defined( NDEBUG ) or \
+  defined( DEBUG )
+#define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... )              \
+	do {                                                          \
+		if( DAW_UNLIKELY( not( Bool ) ) ) {                         \
+			DAW_THROW_OR_TERMINATE( std::out_of_range, __VA_ARGS__ ); \
+		}                                                           \
 	} while( false )
 #else
 #define DAW_STRING_VIEW_DBG_RNG_CHECK( Bool, ... ) \
@@ -69,13 +70,14 @@
 	} while( false )
 #endif
 
-#if not defined( NDEBUG ) or defined( DEBUG )
-#define DAW_STRING_VIEW_DBG_ZERO_CHECK( )                        \
-	if( DAW_UNLIKELY( *( f + static_cast<std::ptrdiff_t>( l ) ) != \
-	                  CharT{ } ) ) {                               \
-		DAW_THROW_OR_TERMINATE_NA( std::exception );                 \
-	}                                                              \
-	do {                                                           \
+#if not defined( DAW_NO_SV_CHECKS ) and not defined( NDEBUG ) or \
+  defined( DEBUG )
+#define DAW_STRING_VIEW_DBG_ZERO_CHECK( )                          \
+	do {                                                             \
+		if( DAW_UNLIKELY( *( f + static_cast<std::ptrdiff_t>( l ) ) != \
+		                  CharT{ } ) ) {                               \
+			DAW_THROW_OR_TERMINATE_NA( std::exception );                 \
+		}                                                              \
 	} while( false )
 #else
 #define DAW_STRING_VIEW_DBG_ZERO_CHECK( ) \
@@ -83,19 +85,20 @@
 	} while( false )
 #endif
 
-#if not defined( DAW_NO_STRING_VIEW_PRECOND_CHECKS )
+#if not defined( DAW_NO_SV_CHECKS ) and \
+  not defined( DAW_NO_STRING_VIEW_PRECOND_CHECKS )
 #define DAW_STRING_VIEW_PRECOND_CHECK( Bool, ... ) \
-	if( DAW_UNLIKELY( not( Bool ) ) ) {              \
-		std::terminate( );                             \
-	}                                                \
 	do {                                             \
+		if( DAW_UNLIKELY( not( Bool ) ) ) {            \
+			std::terminate( );                           \
+		}                                              \
 	} while( false )
 
-#define DAW_STRING_VIEW_RNG_CHECK( Bool, ... )                \
-	if( DAW_UNLIKELY( not( Bool ) ) ) {                         \
-		DAW_THROW_OR_TERMINATE( std::out_of_range, __VA_ARGS__ ); \
-	}                                                           \
-	do {                                                        \
+#define DAW_STRING_VIEW_RNG_CHECK( Bool, ... )                  \
+	do {                                                          \
+		if( DAW_UNLIKELY( not( Bool ) ) ) {                         \
+			DAW_THROW_OR_TERMINATE( std::out_of_range, __VA_ARGS__ ); \
+		}                                                           \
 	} while( false )
 #else
 #define DAW_STRING_VIEW_PRECOND_CHECK( Bool, ... ) \
@@ -107,16 +110,16 @@
 	} while( false )
 #endif
 
-#if not defined( NDEBUG )
+#if not defined( DAW_NO_SV_CHECKS ) and not defined( NDEBUG )
 #define DAW_DBG_STRING_VIEW_PRECOND_CHECK( Bool, ... ) \
-	if( DAW_UNLIKELY( not( Bool ) ) ) {              \
-		std::terminate( );                             \
-	}                                                \
-	do {                                             \
+	do {                                                 \
+		if( DAW_UNLIKELY( not( Bool ) ) ) {                \
+			std::terminate( );                               \
+		}                                                  \
 	} while( false )
 #else
 #define DAW_DBG_STRING_VIEW_PRECOND_CHECK( Bool, ... ) \
-	do {                                             \
+	do {                                                 \
 	} while( false )
 #endif
 
@@ -687,8 +690,8 @@ namespace daw {
 			/// string_view
 			DAW_ATTRIB_INLINE constexpr basic_string_view( std::nullptr_t,
 			                                               size_type n ) {
-				DAW_DBG_STRING_VIEW_PRECOND_CHECK( n == 0,
-				                               "nullptr can only form an empty range" );
+				DAW_DBG_STRING_VIEW_PRECOND_CHECK(
+				  n == 0, "nullptr can only form an empty range" );
 				(void)n;
 			}
 
@@ -703,7 +706,8 @@ namespace daw {
 			  const_pointer s DAW_LIFETIME_BOUND, size_type count ) noexcept
 			  : m_first( s )
 			  , m_last( count ) {
-				DAW_DBG_STRING_VIEW_PRECOND_CHECK( s != nullptr or count == 0, "When s is null, count must be zero" );
+				DAW_DBG_STRING_VIEW_PRECOND_CHECK(
+				  s != nullptr or count == 0, "When s is null, count must be zero" );
 			}
 
 			/// @brief Construct a zero terminated string_view
@@ -718,7 +722,8 @@ namespace daw {
 			  zero_terminated_t ) noexcept
 			  : m_first( s )
 			  , m_last( count ) {
-				DAW_DBG_PRECONDITION_CHECK( s != nullptr or count == 0, "[s, s+counbt) must be a valid range" );
+				DAW_DBG_PRECONDITION_CHECK( s != nullptr or count == 0,
+				                            "[s, s+counbt) must be a valid range" );
 				m_last = set_zero_terminated( m_first, m_last );
 			}
 
