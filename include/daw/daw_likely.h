@@ -10,15 +10,15 @@
 
 #include "daw_cpp_feature_check.h"
 
-#if DAW_HAS_BUILTIN( __builtin_expect )
+#if not defined( DAW_NOLIKELY ) and DAW_HAS_BUILTIN( __builtin_expect )
 
 #define DAW_LIKELY( ... ) ( __builtin_expect( !!( __VA_ARGS__ ), 1 ) )
 #define DAW_UNLIKELY( ... ) ( __builtin_expect( !!( __VA_ARGS__ ), 0 ) )
 
 #else
 
-#define DAW_LIKELY( ... ) !!( __VA_ARGS__ )
-#define DAW_UNLIKELY( ... ) !!( __VA_ARGS__ )
+#define DAW_LIKELY( ... ) __VA_ARGS__
+#define DAW_UNLIKELY( ... ) __VA_ARGS__
 
 #endif
 #if __has_cpp_attribute( likely )
