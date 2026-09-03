@@ -19,18 +19,6 @@ namespace {
 
 	static_assert( constant_evaluation_success( ) );
 
-#if defined( __cpp_constexpr_exceptions ) and \
-  __cpp_constexpr_exceptions >= 202411L
-	constexpr bool constant_evaluation_failure( bool condition ) {
-		try {
-			daw_ensure( condition );
-		} catch( ... ) { return true; }
-		return false;
-	}
-
-	static_assert( constant_evaluation_failure( false ) );
-#endif
-
 	DAW_ATTRIB_NOINLINE void runtime_check( bool condition ) {
 		daw_ensure( condition );
 	}

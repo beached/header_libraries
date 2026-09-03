@@ -14,7 +14,12 @@
 #ifdef __has_cpp_attribute
 #define DAW_HAS_ATTRIBUTE( Attrib ) __has_cpp_attribute( Attrib )
 #else
-#define DAW_HAS_ATTRIBUTE( Attrib ) false
+#define DAW_HAS_ATTRIBUTE( Attrib ) 0
+#defien __has_cpp_attribute( Attrib ) 0
+#endif
+
+#ifndef __has_attribute
+#define __has_attribute( Attrib ) 0
 #endif
 
 #if DAW_HAS_ATTRIBUTE( clang::lifetimebound )
@@ -148,6 +153,7 @@
 
 #if defined( DAW_HAS_CLANG )
 #if __has_attribute( enable_if )
-#define DAW_ATTRIB_ENABLE_IF(...) __attribute__((enable_if(__VA_ARGS__)))
+#define DAW_ATTRIB_ENABLE_IF( ... ) \
+	__attribute__( ( enable_if( __VA_ARGS__ ) ) )
 #endif
 #endif
