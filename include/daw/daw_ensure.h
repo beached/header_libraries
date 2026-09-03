@@ -43,8 +43,6 @@ namespace daw::ensure {
 	[[gnu::error( "Ensure check failed at compile time" )]]
 	extern void ensure_compile_error( bool );
 #endif
-
-	struct daw_ensure_exception {};
 } // namespace daw::ensure
 
 #if defined( DAW_HAS_IS_CONSTANT_EVALUATED )
@@ -54,79 +52,55 @@ namespace daw::ensure {
 #endif
 
 #if not defined( DAW_NO_OPT_TIME_ENSURE ) and defined( DAW_HAS_GCC_LIKE )
-#define daw_ensure( ... )                                               \
-	do {                                                                  \
-		if( DAW_ENSURE_IS_CONSTANT_EVAL( ) ) {                              \
-			if( not( __VA_ARGS__ ) ) {                                        \
-				throw ::daw::ensure::daw_ensure_exception{ };                   \
-			}                                                                 \
-		} else {                                                            \
-			if( auto daw_ensure_bool_test = static_cast<bool>( __VA_ARGS__ ); \
-			    __builtin_constant_p( daw_ensure_bool_test ) ) {              \
-				if( not( daw_ensure_bool_test ) ) {                             \
-					::daw::ensure::ensure_compile_error( not( __VA_ARGS__ ) );    \
-				}                                                               \
-			} else {                                                          \
-				if( not( daw_ensure_bool_test ) ) {                             \
-					::daw::ensure::ensure_error( not( __VA_ARGS__ ) );            \
-				}                                                               \
-			}                                                                 \
-		}                                                                   \
+#define daw_ensure( ... )                                             \
+	do {                                                                \
+		if( auto daw_ensure_bool_test = static_cast<bool>( __VA_ARGS__ ); \
+		    __builtin_constant_p( daw_ensure_bool_test ) ) {              \
+			if( not( daw_ensure_bool_test ) ) {                             \
+				::daw::ensure::ensure_compile_error( not( __VA_ARGS__ ) );    \
+			}                                                               \
+		} else {                                                          \
+			if( not( daw_ensure_bool_test ) ) {                             \
+				::daw::ensure::ensure_error( not( __VA_ARGS__ ) );            \
+			}                                                               \
+		}                                                                 \
 	} while( false )
 
 #if not defined( NDEBUG )
 #define daw_dbg_ensure( ... ) daw_ensure( __VA_ARGS__ )
 #else
-#define daw_dbg_ensure( ... )                                        \
-	do {                                                               \
-		if( DAW_ENSURE_IS_CONSTANT_EVAL( ) ) {                           \
-			if( not( __VA_ARGS__ ) ) {                                     \
-				throw ::daw::ensure::daw_ensure_exception{ };                \
-			}                                                              \
-		} else {                                                         \
-			if( __builtin_constant_p( __VA_ARGS__ ) ) {                    \
-				if( not( __VA_ARGS__ ) ) {                                   \
-					::daw::ensure::ensure_compile_error( not( __VA_ARGS__ ) ); \
-				}                                                            \
-			}                                                              \
-		}                                                                \
+#define daw_dbg_ensure( ... )                                      \
+	do {                                                             \
+		if( __builtin_constant_p( __VA_ARGS__ ) ) {                    \
+			if( not( __VA_ARGS__ ) ) {                                   \
+				::daw::ensure::ensure_compile_error( not( __VA_ARGS__ ) ); \
+			}                                                            \
+		}                                                              \
 	} while( false )
 #endif
 #else
-#define daw_ensure( ... )                                  \
-	do {                                                     \
-		if( DAW_ENSURE_IS_CONSTANT_EVAL( ) ) {                 \
-			if( not( __VA_ARGS__ ) ) {                           \
-				throw ::daw::ensure::daw_ensure_exception{ };      \
-			}                                                    \
-		} else {                                               \
-			if( not( __VA_ARGS__ ) ) {                           \
-				::daw::ensure::ensure_error( not( __VA_ARGS__ ) ); \
-			}                                                    \
-		}                                                      \
+#define daw_ensure( ... )                                \
+	do {                                                   \
+		if( not( __VA_ARGS__ ) ) {                           \
+			::daw::ensure::ensure_error( not( __VA_ARGS__ ) ); \
+		}                                                    \
 	} while( false )
 
 #if not defined( NDEBUG )
+#define daw_dbg_ensure( ... )                            \
+	do {                                                   \
+		if( not( __VA_ARGS__ ) ) {                           \
+			::daw::ensure::ensure_error( not( __VA_ARGS__ ) ); \
+		}                                                    \
+	} while( false )
+#else
 #define daw_dbg_ensure( ... )                              \
 	do {                                                     \
 		if( DAW_ENSURE_IS_CONSTANT_EVAL( ) ) {                 \
 			if( not( __VA_ARGS__ ) ) {                           \
-				throw ::daw::ensure::daw_ensure_exception{ };      \
-			}                                                    \
-		} else {                                               \
-			if( not( __VA_ARGS__ ) ) {                           \
 				::daw::ensure::ensure_error( not( __VA_ARGS__ ) ); \
 			}                                                    \
 		}                                                      \
-	} while( false )
-#else
-#define daw_dbg_ensure( ... )                         \
-	do {                                                \
-		if( DAW_ENSURE_IS_CONSTANT_EVAL( ) ) {            \
-			if( not( __VA_ARGS__ ) ) {                      \
-				throw ::daw::ensure::daw_ensure_exception{ }; \
-			}                                               \
-		}                                                 \
 	} while( false )
 #endif
 #endif
