@@ -39,7 +39,7 @@ namespace daw::ensure {
 	}
 #endif
 
-#if defined( DAW_HAS_GCC_LIKE )
+#if __has_attribute( error )
 	[[gnu::error( "Ensure check failed at compile time" )]]
 	extern void ensure_compile_error( bool );
 #endif
@@ -51,7 +51,7 @@ namespace daw::ensure {
 #define DAW_ENSURE_IS_CONSTANT_EVAL( ) false
 #endif
 
-#if not defined( DAW_NO_OPT_TIME_ENSURE ) and defined( DAW_HAS_GCC_LIKE )
+#if not defined( DAW_NO_OPT_TIME_ENSURE ) and __has_attribute( error )
 #define daw_ensure( ... )                                             \
 	do {                                                                \
 		if( auto daw_ensure_bool_test = static_cast<bool>( __VA_ARGS__ ); \
