@@ -10,7 +10,7 @@
 
 #include "daw_cpp_feature_check.h"
 
-#if not defined( DAW_NOLIKELY ) and DAW_HAS_BUILTIN( __builtin_expect )
+#if not defined( DAW_NO_LIKELY ) and DAW_HAS_BUILTIN( __builtin_expect )
 
 #define DAW_LIKELY( ... ) ( __builtin_expect( !!( __VA_ARGS__ ), 1 ) )
 #define DAW_UNLIKELY( ... ) ( __builtin_expect( !!( __VA_ARGS__ ), 0 ) )
