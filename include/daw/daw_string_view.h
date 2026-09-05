@@ -530,7 +530,7 @@ namespace daw {
 					auto const &b = std::get<0>( s.m_str );
 					return std::basic_string<CharT>( b.data( ), b.size( ) );
 				}
-				return std::get<1>( DAW_FWD( s.m_str ) );
+				return std::get<1>( DAW_FWD( s ).m_str );
 			}
 
 		public:

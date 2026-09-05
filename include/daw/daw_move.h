@@ -8,35 +8,25 @@
 
 #pragma once
 
-#include "ciso646.h"
+#if not defined( NDEBUG ) and defined( DAW_FWD_CHECKER )
+#include <type_traits>
 
-#include "traits/daw_traits_is_const.h"
-#include "traits/daw_traits_is_rvalue_reference.h"
-#include "traits/daw_traits_remove_cvref.h"
-
-namespace daw {
-	/// Convert a value to an rvalue.
-	/// \param  value  A thing of arbitrary type.
-	/// \return The parameter cast to an rvalue-reference to allow moving it.
+namespace daw::forward_impl {
 	template<typename T>
-	[[nodiscard,
-	  deprecated(
-	    "Use std move, it will generally be special to the "
-	    "compiler" )]] inline constexpr daw::traits::remove_reference_t<T> &&
-	move( T &&value ) noexcept {
-		static_assert(
-		  not daw::traits::is_const_v<daw::traits::remove_reference_t<T>>,
-		  "Attempt to move const value" );
-		static_assert( not daw::traits::is_rvalue_reference_v<decltype( value )>,
-		               "Value is already an rvalue" );
-		return static_cast<daw::traits::remove_reference_t<T> &&>( value );
-	}
-} // namespace daw
+	struct forward_helper {
+		static_assert( std::is_reference_v<T>,
+		               "Forward can only forward references" );
+		using type = T;
+	};
+} // namespace daw::forward_impl
+#define DAW_FWD( ... )                                      \
+	static_cast<typename ::daw::forward_impl::forward_helper< \
+	  decltype( __VA_ARGS__ )>::type>( __VA_ARGS__ )
 
-#ifndef DAW_MOVE
-#define DAW_MOVE( ... ) daw::move( __VA_ARGS__ )
-#endif
-
+#define DAW_FWD2( ... ) static_cast<decltype( __VA_ARGS__ )>( __VA_ARGS__ )
+#else
 #ifndef DAW_FWD
 #define DAW_FWD( ... ) static_cast<decltype( __VA_ARGS__ )>( __VA_ARGS__ )
+#define DAW_FWD2( ... ) static_cast<decltype( __VA_ARGS__ )>( __VA_ARGS__ )
+#endif
 #endif
