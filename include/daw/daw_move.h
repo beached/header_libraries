@@ -8,7 +8,7 @@
 
 #pragma once
 
-#if not defined( NDEBUG ) and defined( DAW_FWD_CHECKER )
+#if not defined( NDEBUG ) or defined( DAW_FWD_CHECKER )
 #include <type_traits>
 
 namespace daw::forward_impl {
@@ -19,14 +19,19 @@ namespace daw::forward_impl {
 		using type = T;
 	};
 } // namespace daw::forward_impl
+#ifndef DAW_FWD
 #define DAW_FWD( ... )                                      \
 	static_cast<typename ::daw::forward_impl::forward_helper< \
 	  decltype( __VA_ARGS__ )>::type>( __VA_ARGS__ )
-
+#endif
+#ifndef DAW_FWD2
 #define DAW_FWD2( ... ) static_cast<decltype( __VA_ARGS__ )>( __VA_ARGS__ )
+#endif
 #else
 #ifndef DAW_FWD
 #define DAW_FWD( ... ) static_cast<decltype( __VA_ARGS__ )>( __VA_ARGS__ )
+#endif
+#ifndef DAW_FWD2
 #define DAW_FWD2( ... ) static_cast<decltype( __VA_ARGS__ )>( __VA_ARGS__ )
 #endif
 #endif
