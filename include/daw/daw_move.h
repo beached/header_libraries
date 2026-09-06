@@ -8,7 +8,7 @@
 
 #pragma once
 
-#if not defined( NDEBUG ) or defined( DAW_FWD_CHECKER )
+#if defined( DAW_FWD_CHECKER )
 #include <type_traits>
 
 namespace daw::forward_impl {
