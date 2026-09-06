@@ -185,6 +185,20 @@ namespace daw {
 			return m_ptr;
 		}
 
+		template<typename U,
+		         std::enable_if_t<std::is_convertible_v<pointer_reference, U *>,
+		                          std::nullptr_t> = nullptr>
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr operator U *( ) {
+			return m_ptr;
+		}
+
+		template<typename U, std::enable_if_t<
+		                       std::is_convertible_v<pointer_const_reference, U *>,
+		                       std::nullptr_t> = nullptr>
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr operator U *( ) const {
+			return m_ptr;
+		}
+
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer_const_reference
 		operator->( ) const noexcept {
 			DAW_ASSUME( m_ptr != null_value );
