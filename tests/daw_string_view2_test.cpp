@@ -26,6 +26,7 @@
 #include <exception>
 #include <iostream>
 #include <map>
+#include <memory>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -35,30 +36,30 @@
 
 static_assert( std::is_trivially_copyable_v<daw::sv2::string_view> );
 
+namespace details {
 #if defined( DAW_USE_EXCEPTIONS )
-#define daw_expecting( Lhs, Rhs )                                        \
-	do                                                                     \
-		if( ( Lhs ) != ( Rhs ) ) {                                           \
-			throw[] {                                                          \
-				std::stringstream ss{ };                                         \
-				ss << "Invalid result. Expecting '" #Lhs << " == " #Rhs << "'\n" \
-				   << "File: " << __FILE__ << "\nLine: " << __LINE__;            \
-				return std::logic_error( ss.str( ) );                            \
-			}                                                                  \
-			( );                                                               \
-		}                                                                    \
-	while( false )
+	[[noreturn]] void handle_expecting_error( std::string msg ) {
+		throw std::logic_error( std::move( msg ) );
+	}
 #else
-#define daw_expecting( Lhs, Rhs )                                             \
-	do                                                                          \
-		if( ( Lhs ) != ( Rhs ) ) {                                                \
-			std::cerr << "Invalid result. Expecting '" #Lhs << " == " #Rhs << "'\n" \
-			          << "File: " << __FILE__ << "\nLine: " << __LINE__             \
-			          << std::endl;                                                 \
-			std::terminate( );                                                      \
-		}                                                                         \
-	while( false )
+	[[noreturn]] void handle_expecting_error( std::string msg ) {
+		std::cerr << msg;
+		std::terminate( );
+	}
 #endif
+} // namespace details
+
+#define daw_expecting( Lhs, Rhs )                                         \
+	do {                                                                    \
+		if( ( Lhs ) != ( Rhs ) ) {                                            \
+			details::handle_expecting_error( [] {                               \
+				std::stringstream ss{ };                                          \
+				ss << "Invalid result. Expecting '" #Lhs << " == " #Rhs << "'\n"; \
+				ss << "File: " << __FILE__ << "\nLine: " << __LINE__;             \
+				return ss.str( );                                                 \
+			}( ) );                                                             \
+		}                                                                     \
+	} while( false )
 
 #if defined( DAW_USE_EXCEPTIONS )
 #define daw_expecting_message( Bool, Message )                      \
@@ -1736,12 +1737,128 @@ namespace daw {
 		daw_expecting( sv.find( L'd', 2U ), 3U );
 	}
 
+	void daw_string_view_regression_find_002( ) {
+		daw::sv2::u16string_view const u16sv = u"abcdef";
+		daw_expecting( u16sv.find( u'd', 2U ), 3U );
+
+		daw::sv2::u32string_view const u32sv = U"abcdef";
+		daw_expecting( u32sv.find( U'd', 2U ), 3U );
+
+		daw::sv2::string_view const sv = "abcdef";
+		auto f0 = sv.find( "", sv.size( ) );
+		daw_expecting( f0, sv.size( ) );
+		daw_expecting( sv.find( "", sv.size( ) + 1U ),
+		               daw::sv2::string_view::npos );
+	}
+
+	void daw_string_view_regression_find_last_001( ) {
+		daw::sv2::u16string_view const sv = u"abcdef";
+		daw_expecting( sv.find_last_of( u"bd" ), 3U );
+		daw_expecting( sv.find_last_of_if(
+		                 []( char16_t c ) {
+			                 return c == u'd';
+		                 },
+		                 3U ),
+		               3U );
+	}
+
+	void daw_string_view_regression_find_first_match_001( ) {
+		daw::sv2::string_view const sv = "ab";
+		auto r = sv.find_first_match( { "ax", "ab" } );
+		daw_expecting( r, 0U );
+		daw_expecting( sv.find_first_match( { "abc", "ab" } ), 0U );
+	}
+
+	void daw_string_view_regression_search_002( ) {
+		daw::sv2::string_view const sv = "abc";
+		daw_expecting( sv.search( "abc" ), 0U );
+		daw_expecting( sv.search( "bc", 1U ), 1U );
+
+		daw::sv2::string_view const repeated = "ababa";
+		daw_expecting( repeated.search_last( "aba" ), 2U );
+		daw_expecting( repeated.search_last( "zz", 2U ),
+		               daw::sv2::string_view::npos );
+	}
+
+	// find( CharT, pos ) must honor pos identically for every CharT
+	// specialization: a match located before pos must not be reported, and
+	// a match located at/after pos must be reported at its absolute index.
+	// The byte-sized (memchr) and wchar_t (wmemchr) fast paths, and the
+	// generic loop used for other CharT, and the constexpr-evaluated path
+	// must all agree.
+	void daw_string_view_regression_find_pos_001( ) {
+		daw::sv2::string_view const only_before = "axxxxx";
+		daw_expecting( only_before.find( 'a', 1U ), daw::sv2::string_view::npos );
+
+		daw::sv2::string_view const skip_many = "aaaaaaaaaa";
+		daw_expecting( skip_many.find( 'a', 5U ), 5U );
+
+		daw::sv2::string_view const not_found_after = "xxxxxbxxxx";
+		daw_expecting( not_found_after.find( 'b', 6U ),
+		               daw::sv2::string_view::npos );
+
+		daw::sv2::u16string_view const u16_before = u"axxxxx";
+		daw_expecting( u16_before.find( u'a', 1U ),
+		               daw::sv2::u16string_view::npos );
+
+		daw::sv2::u32string_view const u32_before = U"axxxxx";
+		daw_expecting( u32_before.find( U'a', 1U ),
+		               daw::sv2::u32string_view::npos );
+
+		// Heap allocated with an exact-sized buffer so that, under a sanitizer,
+		// a fast path that reads `size( )` elements starting at `pos` instead
+		// of `size( ) - pos` elements will read past the end of the
+		// allocation.
+		auto wbuf = std::make_unique<wchar_t[]>( 6 );
+		wchar_t const wsrc[] = { L'a', L'b', L'c', L'x', L'y', L'z' };
+		for( std::size_t n = 0; n < 6; ++n ) {
+			wbuf[n] = wsrc[n];
+		}
+		daw::sv2::wstring_view const wsv{ wbuf.get( ), 6U };
+		daw_expecting( wsv.find( L'd', 2U ), daw::sv2::wstring_view::npos );
+	}
+
+	// The same find( CharT, pos ) logic is used when evaluated at compile
+	// time (the constexpr fallback path), and must return the same results
+	// as the runtime path.
+	void daw_string_view_regression_find_pos_002( ) {
+		constexpr daw::sv2::string_view const_sv = "abcdef";
+		constexpr auto f0 = const_sv.find( 'd', 2U );
+		(void)f0;
+		static_assert( const_sv.find( 'd', 2U ) == 3U,
+		               "find(char, pos) must not double count pos when "
+		               "evaluated at compile time" );
+		constexpr auto f1 = const_sv.find( 'a', 1U );
+		(void)f1;
+		static_assert( f1 == daw::sv2::string_view::npos,
+		               "find(char, pos) must not ignore pos when evaluated at "
+		               "compile time" );
+	}
+
+	// find with an empty pattern must still respect pos: a pos beyond the
+	// end of the view must yield npos, not pos, regardless of which
+	// overload is used to reach the empty-pattern case.
+	void daw_string_view_regression_find_pos_003( ) {
+		daw::sv2::string_view const sv = "abcdef";
+		auto f0 = sv.find( daw::sv2::string_view( "" ), sv.size( ) + 1U );
+		daw_expecting( f0, daw::sv2::string_view::npos );
+
+		daw_expecting(
+		  sv.find_first_match( daw::sv2::string_view( "" ), sv.size( ) + 1U ),
+		  daw::sv2::string_view::npos );
+
+		daw_expecting( sv.find_first_match( { daw::sv2::string_view( "" ),
+		                                      daw::sv2::string_view( "zz" ) },
+		                                    sv.size( ) + 1U ),
+		               daw::sv2::string_view::npos );
+	}
+
 	void daw_string_view_regression_zeroterminated_001( ) {
 		char const buffer[] = { 'a', 'b', '\0' };
 		daw::sv2::string_view sv{ buffer, 2U };
 		sv.set_zero_terminated( );
 		daw_expecting( sv.is_zero_terminated( ), daw::sv2::ZeroTerminated::Yes );
-		daw_expecting( sv.get_c_str( ).string(  ), "ab" );
+		daw_expecting( sv.get_c_str( ).string( ), "ab" );
 	}
 } // namespace daw
 
@@ -1913,6 +2030,13 @@ int main( )
 	daw::test_get_c_str_001( );
 	daw::daw_string_view_regression_search_001( );
 	daw::daw_string_view_regression_wchar_find_001( );
+	daw::daw_string_view_regression_find_002( );
+	daw::daw_string_view_regression_find_last_001( );
+	daw::daw_string_view_regression_find_first_match_001( );
+	daw::daw_string_view_regression_search_002( );
+	daw::daw_string_view_regression_find_pos_001( );
+	daw::daw_string_view_regression_find_pos_002( );
+	daw::daw_string_view_regression_find_pos_003( );
 	daw::daw_string_view_regression_zeroterminated_001( );
 }
 #if defined( DAW_USE_EXCEPTIONS )
