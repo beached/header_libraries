@@ -2325,8 +2325,11 @@ namespace daw {
 
 			[[nodiscard]] constexpr size_type
 			find_first_of( CharT c, size_type pos = 0 ) const {
-				return find_first_of(
-				  basic_string_view<CharT>( std::addressof( c ), 1U ), pos );
+				// Searching for a single character is exactly what find( ) does,
+				// and find( ) has a memchr/wmemchr fast path.  Avoid routing
+				// through the multi-character bitset based algorithm for a
+				// needle of size 1.
+				return find( c, pos );
 			}
 
 			[[nodiscard]] constexpr size_type
@@ -2383,7 +2386,20 @@ namespace daw {
 
 			[[nodiscard]] constexpr size_type
 			find_last_of( CharT c, size_type pos = npos ) const {
-				return find_last_of( basic_string_view( std::addressof( c ), 1 ), pos );
+				// Avoid building a 256-bit bitset (or a temporary
+				// basic_string_view) for a needle of size 1. A direct reverse
+				// scalar scan is sufficient.
+				auto const sz = size( );
+				if( sz == 0 ) {
+					return npos;
+				}
+				size_type const end_pos = pos >= sz ? sz : pos + 1;
+				for( size_type n = end_pos; n > 0; --n ) {
+					if( m_first[n - 1] == c ) {
+						return n - 1;
+					}
+				}
+				return npos;
 			}
 
 			template<size_type N>
@@ -2458,13 +2474,25 @@ namespace daw {
 
 			[[nodiscard]] constexpr size_type
 			find_first_not_of( CharT c, size_type pos ) const {
-				return find_first_not_of(
-				  basic_string_view<CharT>( std::addressof( c ), 1U ), pos );
+				// Avoid constructing a temporary 1-element basic_string_view and
+				// routing through the generic iterator-range algorithm for a
+				// needle of size 1.  A direct scalar scan is simpler for the
+				// compiler to reason about/vectorize.
+				auto const sz = size( );
+				if( pos >= sz ) {
+					return npos;
+				}
+				auto const *const first = data( );
+				for( size_type n = pos; n < sz; ++n ) {
+					if( first[n] != c ) {
+						return n;
+					}
+				}
+				return npos;
 			}
 
 			[[nodiscard]] constexpr size_type find_first_not_of( CharT c ) const {
-				return find_first_not_of(
-				  basic_string_view<CharT>( std::addressof( c ), 1U ), 0 );
+				return find_first_not_of( c, 0 );
 			}
 
 			[[nodiscard]] constexpr size_type

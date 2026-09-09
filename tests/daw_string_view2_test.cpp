@@ -188,6 +188,54 @@ namespace daw {
 		daw_expecting( 0U, pos );
 	}
 
+	// find_last_of( CharT, pos ) - single character overload
+	void daw_string_view_find_last_of_char_001( ) {
+		daw::sv2::string_view const a = "abcabc";
+		daw_expecting( 3U, a.find_last_of( 'a' ) );
+	}
+
+	void daw_string_view_find_last_of_char_002( ) {
+		daw::sv2::string_view const a = "abcabc";
+		daw_expecting( 0U, a.find_last_of( 'a', 2 ) );
+		daw_expecting( 2U, a.find_last_of( 'c', 2U ) );
+	}
+
+	void daw_string_view_find_last_of_char_003( ) {
+		daw::sv2::string_view const a = "abcabc";
+		daw_expecting( daw::sv2::string_view::npos, a.find_last_of( 'z' ) );
+	}
+
+	void daw_string_view_find_last_of_char_004( ) {
+		daw::sv2::string_view const a{ };
+		daw_expecting( daw::sv2::string_view::npos, a.find_last_of( 'a' ) );
+	}
+
+	void daw_string_view_find_last_of_char_005( ) {
+		daw::sv2::string_view const a = "x";
+		daw_expecting( 0U, a.find_last_of( 'x' ) );
+		daw_expecting( 0U, a.find_last_of( 'x', 0 ) );
+		daw_expecting( daw::sv2::string_view::npos, a.find_last_of( 'y' ) );
+	}
+
+	void daw_string_view_find_last_of_char_006( ) {
+		daw::sv2::string_view const a = "abcabc";
+		daw_expecting( 3U, a.find_last_of( 'a', daw::sv2::string_view::npos ) );
+	}
+
+	void daw_string_view_find_last_of_char_007( ) {
+		// Cross check against std::string_view for every ending position
+		std::string_view const str = "abcabfghijklmabc";
+		daw::sv2::string_view const sv = str;
+		for( char c : { 'a', 'b', 'f', 'z' } ) {
+			for( std::size_t n = 0; n < sv.size( ); ++n ) {
+				auto pos = str.find_last_of( c, n );
+				auto pos_sv = sv.find_last_of( c, n );
+				daw_expecting( pos, pos_sv );
+			}
+			daw_expecting( str.find_last_of( c ), sv.find_last_of( c ) );
+		}
+	}
+
 	void daw_string_view_find_first_of_if_001( ) {
 		daw::sv2::string_view const a = "abcdefghijklm";
 		auto pos = a.find_first_of_if( []( auto c ) {
@@ -278,6 +326,98 @@ namespace daw {
 		daw_expecting( 5U, pos );
 		pos = a.find_first_not_of( a );
 		daw_expecting( daw::sv2::string_view::npos, pos );
+	}
+
+	// find_first_of( CharT, pos ) - single character overload
+	void daw_string_view_find_first_of_char_001( ) {
+		daw::sv2::string_view const a = "abcdefghijklm";
+		daw_expecting( 3U, a.find_first_of( 'd' ) );
+	}
+
+	void daw_string_view_find_first_of_char_002( ) {
+		daw::sv2::string_view const a = "abcdefghijklm";
+		daw_expecting( daw::sv2::string_view::npos, a.find_first_of( 'z' ) );
+	}
+
+	void daw_string_view_find_first_of_char_003( ) {
+		daw::sv2::string_view const a = "abcabc";
+		daw_expecting( 3U, a.find_first_of( 'a', 1 ) );
+	}
+
+	void daw_string_view_find_first_of_char_004( ) {
+		daw::sv2::string_view const a = "abcdefghijklm";
+		daw_expecting( daw::sv2::string_view::npos, a.find_first_of( 'a', 100 ) );
+		daw_expecting( daw::sv2::string_view::npos,
+		               a.find_first_of( 'a', a.size( ) ) );
+	}
+
+	void daw_string_view_find_first_of_char_005( ) {
+		daw::sv2::string_view const a{ };
+		daw_expecting( daw::sv2::string_view::npos, a.find_first_of( 'a' ) );
+	}
+
+	void daw_string_view_find_first_of_char_006( ) {
+		daw::sv2::string_view const a = "abcdefghijklm";
+		daw_expecting( 0U, a.find_first_of( 'a' ) );
+		daw_expecting( a.size( ) - 1, a.find_first_of( 'm' ) );
+	}
+
+	void daw_string_view_find_first_of_char_007( ) {
+		// Cross check against std::string_view for every starting position
+		std::string_view const str = "abcabfghijklmabc";
+		daw::sv2::string_view const sv = str;
+		for( char c : { 'a', 'b', 'f', 'z' } ) {
+			for( std::size_t n = 0; n <= sv.size( ); ++n ) {
+				auto pos = str.find_first_of( c, n );
+				auto pos_sv = sv.find_first_of( c, n );
+				daw_expecting( pos, pos_sv );
+			}
+		}
+	}
+
+	// find_first_not_of( CharT, pos ) - single character overload
+	void daw_string_view_find_first_not_of_char_001( ) {
+		daw::sv2::string_view const a = "aaabbbccc";
+		daw_expecting( 3U, a.find_first_not_of( 'a' ) );
+	}
+
+	void daw_string_view_find_first_not_of_char_002( ) {
+		daw::sv2::string_view const a = "aaabbbccc";
+		daw_expecting( 3U, a.find_first_not_of( 'a', 3 ) );
+		daw_expecting( 4U, a.find_first_not_of( 'a', 4 ) );
+	}
+
+	void daw_string_view_find_first_not_of_char_003( ) {
+		daw::sv2::string_view const a = "aaaa";
+		daw_expecting( daw::sv2::string_view::npos, a.find_first_not_of( 'a' ) );
+		daw_expecting( daw::sv2::string_view::npos,
+		               a.find_first_not_of( 'a', a.size( ) ) );
+		daw_expecting( daw::sv2::string_view::npos,
+		               a.find_first_not_of( 'a', 1000 ) );
+	}
+
+	void daw_string_view_find_first_not_of_char_004( ) {
+		daw::sv2::string_view const a{ };
+		daw_expecting( daw::sv2::string_view::npos, a.find_first_not_of( 'a' ) );
+	}
+
+	void daw_string_view_find_first_not_of_char_005( ) {
+		daw::sv2::string_view const a = "x";
+		daw_expecting( daw::sv2::string_view::npos, a.find_first_not_of( 'x' ) );
+		daw_expecting( 0U, a.find_first_not_of( 'y' ) );
+	}
+
+	void daw_string_view_find_first_not_of_char_006( ) {
+		// Cross check against std::string_view for every starting position
+		std::string_view const str = "aaabbbcccaaa";
+		daw::sv2::string_view const sv = str;
+		for( char c : { 'a', 'b', 'z' } ) {
+			for( std::size_t n = 0; n <= sv.size( ); ++n ) {
+				auto pos = str.find_first_not_of( c, n );
+				auto pos_sv = sv.find_first_not_of( c, n );
+				daw_expecting( pos, pos_sv );
+			}
+		}
 	}
 
 	void daw_string_view_find_last_not_of_001( ) {
@@ -1896,6 +2036,13 @@ int main( )
 	(void)arg2;
 	daw::daw_string_view_find_last_of_006( arg2 );
 	daw::daw_string_view_find_last_of_007( arg2 );
+	daw::daw_string_view_find_last_of_char_001( );
+	daw::daw_string_view_find_last_of_char_002( );
+	daw::daw_string_view_find_last_of_char_003( );
+	daw::daw_string_view_find_last_of_char_004( );
+	daw::daw_string_view_find_last_of_char_005( );
+	daw::daw_string_view_find_last_of_char_006( );
+	daw::daw_string_view_find_last_of_char_007( );
 	daw::daw_string_view_find_first_of_if_001( );
 	daw::daw_string_view_find_first_of_if_002( );
 	daw::daw_string_view_find_first_of_if_003( );
@@ -1908,6 +2055,19 @@ int main( )
 	daw::daw_string_view_find_first_of_004( );
 	daw::daw_string_view_find_first_not_of_001( );
 	daw::daw_string_view_find_first_not_of_002( );
+	daw::daw_string_view_find_first_of_char_001( );
+	daw::daw_string_view_find_first_of_char_002( );
+	daw::daw_string_view_find_first_of_char_003( );
+	daw::daw_string_view_find_first_of_char_004( );
+	daw::daw_string_view_find_first_of_char_005( );
+	daw::daw_string_view_find_first_of_char_006( );
+	daw::daw_string_view_find_first_of_char_007( );
+	daw::daw_string_view_find_first_not_of_char_001( );
+	daw::daw_string_view_find_first_not_of_char_002( );
+	daw::daw_string_view_find_first_not_of_char_003( );
+	daw::daw_string_view_find_first_not_of_char_004( );
+	daw::daw_string_view_find_first_not_of_char_005( );
+	daw::daw_string_view_find_first_not_of_char_006( );
 	daw::daw_string_view_find_last_not_of_001( );
 	daw::daw_string_view_find_last_not_of_002( );
 	daw::daw_string_view_find_last_not_of_003( );
