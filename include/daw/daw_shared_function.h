@@ -110,7 +110,7 @@ public:                                                                 \
                                                                               \
 	public:                                                                     \
 		explicit constexpr shared_function_storage( Fn fn )                       \
-		  : m_func{ DAW_FWD( fn ) } {}                                            \
+		  : m_func{ DAW_FWD2( fn ) } {}                                           \
                                                                               \
 		constexpr R call( Params... params ) CallQuals                            \
 		  noexcept( IsNoExcept ) override {                                       \

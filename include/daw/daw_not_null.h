@@ -185,6 +185,11 @@ namespace daw {
 			return m_ptr;
 		}
 
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr
+		operator not_null<pointer_const_reference>( ) const {
+			return not_null( never_null, m_ptr );
+		}
+
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer_const_reference
 		operator->( ) const noexcept {
 			DAW_ASSUME( m_ptr != null_value );

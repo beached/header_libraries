@@ -176,7 +176,17 @@ namespace daw {
 	using make_unsigned_t = typename make_unsigned<T>::type;
 
 	template<typename T>
+	constexpr make_unsigned_t<T> as_unsigned( T const &value ) {
+		return static_cast<make_unsigned_t<T>>( value );
+	}
+
+	template<typename T>
 	using make_signed_t = typename make_signed<T>::type;
+
+	template<typename T>
+	constexpr make_signed_t<T> as_signed( T const &value ) {
+		return static_cast<make_signed_t<T>>( value );
+	}
 
 	template<typename T>
 	struct is_system_integral : std::is_integral<T> {};

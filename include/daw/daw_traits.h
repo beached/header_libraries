@@ -481,7 +481,7 @@ namespace daw::traits {
 		F fp;
 
 		constexpr R operator( )( Args... args ) const noexcept( IsNoExcept ) {
-			return fp( DAW_FWD( args )... );
+			return fp( DAW_FWD2( args )... );
 		}
 	};
 
@@ -668,7 +668,8 @@ namespace daw::traits {
 			static_assert( StartIdx < sizeof...( Args ) );
 			std::size_t result = NotFound;
 			find_template_parameter<StartIdx, T, pack_list<Args...>>(
-			  result, std::make_index_sequence<sizeof...( Args ) - StartIdx>{ },
+			  result,
+			  std::make_index_sequence<sizeof...( Args ) - StartIdx>{ },
 			  NotFound );
 			return result;
 		}
@@ -680,8 +681,8 @@ namespace daw::traits {
 		                                           std::size_t NotFound ) {
 			std::size_t result = NotFound;
 			(void)( update_if_different<StartIdx + Idx,
-			                            pack_element_t<StartIdx + Idx, Lhs>, Rhs>(
-			          result, NotFound ) &&
+			                            pack_element_t<StartIdx + Idx, Lhs>,
+			                            Rhs>( result, NotFound ) &&
 			        ... );
 			return result;
 		}
@@ -694,8 +695,10 @@ namespace daw::traits {
 				return r < l ? r : l;
 			}( pack_size_v<TpL>, pack_size_v<TpL> );
 			return find_first_mismatch<StartIdx>(
-			  static_cast<TpL *>( nullptr ), static_cast<TpR *>( nullptr ),
-			  std::make_index_sequence<Max - StartIdx>{ }, Max );
+			  static_cast<TpL *>( nullptr ),
+			  static_cast<TpR *>( nullptr ),
+			  std::make_index_sequence<Max - StartIdx>{ },
+			  Max );
 		}
 	} // namespace class_parts_details
 

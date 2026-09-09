@@ -59,11 +59,11 @@ namespace daw {
 		constexpr contract( T v )
 		  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( v ) and validate( v ),
 		                        "Contract violatiion" )
-		  : value( DAW_FWD( v ) ) {}
+		  : value( std::move( v ) ) {}
 
 		DAW_ATTRIB_FLATINLINE constexpr contract( T v )
 		  DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( v ), " " )
-		  : value( DAW_FWD( v ) ) {
+		  : value( std::move( v ) ) {
 			if( DAW_UNLIKELY( not validate( value ) ) ) {
 				DAW_UNLIKELY_BRANCH
 				contract_failure( );
@@ -76,7 +76,7 @@ namespace daw {
 #endif
 #else
 		DAW_ATTRIB_FLATINLINE constexpr contract( T v )
-		  : value( DAW_FWD( v ) ) {
+		  : value( std::move( v ) ) {
 			if( DAW_UNLIKELY( not validate( value ) ) ) {
 				DAW_UNLIKELY_BRANCH
 				contract_failure( );
@@ -86,7 +86,7 @@ namespace daw {
 
 		DAW_ATTRIB_FLATINLINE constexpr T extract( ) {
 			DAW_ASSUME( validate( value ) );
-			return DAW_FWD( value );
+			return std::move( value );
 		}
 
 		DAW_ATTRIB_FLATINLINE constexpr T const &operator*( ) const {

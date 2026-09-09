@@ -397,6 +397,6 @@ namespace daw::pipelines {
 	                                    Compare &&compare = Compare{ } ) {
 		return pimpl::Clamp_t<daw::remove_rvalue_ref_t<T>,
 		                      daw::remove_rvalue_ref_t<Compare>>{
-		  DAW_FWD( lo ), DAW_FWD( hi ), DAW_FWD( compare ) };
+		  DAW_FWD( lo ), DAW_FWD2( hi ), DAW_FWD( compare ) };
 	}
 } // namespace daw::pipelines
