@@ -125,7 +125,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a934bc4e64eed73a765eaa56538d3761a" id="r_a934bc4e64eed73a765eaa56538d3761a"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> CharT &gt; </td></tr>
 <tr class="memitem:a934bc4e64eed73a765eaa56538d3761a"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#a934bc4e64eed73a765eaa56538d3761a">basic_string_view</a> (CharT <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> *, std::size_t count) -&gt; <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">basic_string_view</a>&lt; CharT &gt;</td></tr>
 <tr class="separator:a934bc4e64eed73a765eaa56538d3761a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb6b9e7ee896cb9c20f95d7d0da067af" id="r_aeb6b9e7ee896cb9c20f95d7d0da067af"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">StringView</a> , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> CharT  = std::decay_t&lt;DAW_TYPEOF(		                                std::data( std::declval&lt;StringView&gt;( ) ) )&gt;&gt; </td></tr>
+<tr class="memitem:aeb6b9e7ee896cb9c20f95d7d0da067af" id="r_aeb6b9e7ee896cb9c20f95d7d0da067af"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">StringView</a> , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> CharT  = std::decay_t&lt;		           DAW_TYPEOF( *std::data( std::declval&lt;StringView&gt;( ) ) )&gt;&gt; </td></tr>
 <tr class="memitem:aeb6b9e7ee896cb9c20f95d7d0da067af"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#aeb6b9e7ee896cb9c20f95d7d0da067af">basic_string_view</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">StringView</a> &amp;&amp;) -&gt; <a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">basic_string_view</a>&lt; CharT &gt;</td></tr>
 <tr class="separator:aeb6b9e7ee896cb9c20f95d7d0da067af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a698eb377aa18a5278a987f12e298dd0b" id="r_a698eb377aa18a5278a987f12e298dd0b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1sv2.html#a698eb377aa18a5278a987f12e298dd0b">DAW_MAKE_REQ_TRAIT</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">is_zero_terminated_v</a>, std::declval&lt; T &gt;().c_str())</td></tr>
@@ -295,7 +295,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">StringView</a> , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> CharT  = std::decay_t&lt;DAW_TYPEOF(		                                std::data( std::declval&lt;StringView&gt;( ) ) )&gt;&gt; </div>
+template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">StringView</a> , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> CharT  = std::decay_t&lt;		           DAW_TYPEOF( *std::data( std::declval&lt;StringView&gt;( ) ) )&gt;&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structdaw_1_1sv2_1_1basic__string__view.html">daw::sv2::basic_string_view</a> </td>
@@ -393,7 +393,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l02964">2964</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l03005">3005</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -418,7 +418,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00488">488</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00489">489</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
@@ -442,7 +442,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00482">482</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__string__view_8h_source.html#l00483">483</a> of file <a class="el" href="daw__string__view_8h_source.html">daw_string_view.h</a>.</p>
 
 </div>
 </div>
