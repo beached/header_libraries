@@ -157,3 +157,9 @@
 	__attribute__( ( enable_if( __VA_ARGS__ ) ) )
 #endif
 #endif
+
+#if DAW_HAS_MSVC_VER_GTE( 1935 ) and DAW_HAS_ATTRIBUTE( msvc::intrinsic )
+#define DAW_ATTRIB_INSTRINSIC [[msvc::intrinsic]]
+#else
+#define DAW_ATTRIB_INSTRINSIC
+#endif
