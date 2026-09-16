@@ -75,7 +75,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr iota_iterator operator++( int ) noexcept {
+		[[nodiscard]] constexpr iota_iterator operator++( int ) noexcept {
 			auto result = *this;
 			operator++( );
 			return result;
@@ -87,7 +87,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr const iota_iterator operator--( int ) noexcept {
+		[[nodiscard]] constexpr const iota_iterator operator--( int ) noexcept {
 			auto result = *this;
 			operator--( );
 			return result;
@@ -192,8 +192,7 @@ namespace daw {
 		  : m_first( start_value )
 		  , m_last( last_value ) {}
 
-		explicit constexpr iota_range( reference start_value,
-		                               reference last_value,
+		explicit constexpr iota_range( reference start_value, reference last_value,
 		                               difference_type step ) noexcept
 		  : m_first( start_value, step )
 		  , m_last( last_value ) {}

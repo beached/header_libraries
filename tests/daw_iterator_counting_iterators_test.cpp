@@ -32,7 +32,7 @@ constexpr bool fwd_ary_test_002( ) {
 	auto first = daw::forward_counting_iterator( nums.begin( ) );
 
 	while( first != nums.end( ) ) {
-		first++;
+		++first;
 	}
 	daw::expecting( first.distance( ) == static_cast<int>( nums.size( ) ) );
 
@@ -63,12 +63,12 @@ constexpr bool bidir_ary_test_002( ) {
 	auto first = daw::bidirectional_counting_iterator( nums.begin( ) );
 
 	while( first != nums.end( ) ) {
-		first++;
+		++first;
 	}
 	daw::expecting( first.distance( ) == static_cast<int>( nums.size( ) ) );
 
 	while( first != nums.begin( ) ) {
-		first--;
+		--first;
 	}
 	daw::expecting( first.distance( ) == 0 );
 

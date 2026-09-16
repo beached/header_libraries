@@ -47,7 +47,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr repeat_n_char_iterator operator++( int ) noexcept {
+		[[nodiscard]] constexpr repeat_n_char_iterator operator++( int ) noexcept {
 			auto tmp = *this;
 			--m_position;
 			return tmp;
@@ -58,7 +58,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr repeat_n_char_iterator operator--( int ) noexcept {
+		[[nodiscard]] constexpr repeat_n_char_iterator operator--( int ) noexcept {
 			auto tmp = *this;
 			++m_position;
 			return tmp;

@@ -59,7 +59,7 @@ namespace daw::pipelines {
 			return *this;
 		}
 
-		constexpr cache_last_iterator operator++( int ) {
+		[[nodiscard]] constexpr cache_last_iterator operator++( int ) {
 			auto result = *this;
 			operator++( );
 			return result;
@@ -73,7 +73,7 @@ namespace daw::pipelines {
 			return *this;
 		}
 
-		constexpr cache_last_iterator operator--( int ) requires(
+		[[nodiscard]] constexpr cache_last_iterator operator--( int ) requires(
 		  std::is_same_v<iterator_category, std::bidirectional_iterator_tag> ) {
 
 			auto result = *this;

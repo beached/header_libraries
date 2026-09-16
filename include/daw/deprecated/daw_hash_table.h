@@ -199,7 +199,7 @@ namespace daw {
 			return at_end( ) or !m_position->empty( );
 		}
 
-		hash_table_item_iterator operator++( int ) {
+		[[nodiscard]] hash_table_item_iterator operator++( int ) {
 			hash_table_item_iterator result{ *this };
 			++( *this );
 			return result;
@@ -213,7 +213,7 @@ namespace daw {
 			return *this;
 		}
 
-		hash_table_item_iterator operator--( int ) {
+		[[nodiscard]] hash_table_item_iterator operator--( int ) {
 			hash_table_item_iterator result{ *this };
 			--( *this );
 			return result;

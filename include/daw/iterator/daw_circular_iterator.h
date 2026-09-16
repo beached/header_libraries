@@ -169,7 +169,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr circular_iterator operator++( int ) noexcept {
+		[[nodiscard]] constexpr circular_iterator operator++( int ) noexcept {
 			auto result = circular_iterator{ *this };
 			m_position = get_offset( 1 );
 			return result;
@@ -180,7 +180,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr circular_iterator operator--( int ) noexcept {
+		[[nodiscard]] constexpr circular_iterator operator--( int ) noexcept {
 			auto result = circular_iterator{ *this };
 			m_position = get_offset( -1 );
 			return result;

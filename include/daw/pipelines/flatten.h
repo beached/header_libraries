@@ -81,7 +81,7 @@ namespace daw::pipelines::pimpl {
 		  , m_cur_first( m_iter == m_last ? sub_iterator_t{ }
 		                                  : std::begin( *m_iter ) ) {}
 
-		DAW_ATTRIB_NOINLINE constexpr flatten_iterator &operator++( ) {
+		constexpr flatten_iterator &operator++( ) {
 			inc_sub_range( );
 			return *this;
 		}

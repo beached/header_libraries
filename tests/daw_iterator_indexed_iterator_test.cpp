@@ -94,7 +94,7 @@ namespace {
 	constexpr bool inc_test_002( ) noexcept {
 		std::array<int, 7> const numbers = { 1, 2, 3, 4, 5, 6, 7 };
 		auto it = daw::cibegin( numbers );
-		it++;
+		++it;
 		return *it == 2;
 	}
 
@@ -121,7 +121,7 @@ namespace {
 	constexpr bool dec_test_002( ) noexcept {
 		std::array<int, 7> const numbers = { 1, 2, 3, 4, 5, 6, 7 };
 		auto it = daw::ciend( numbers );
-		it--;
+		--it;
 		return *it == 7;
 	}
 
@@ -143,7 +143,7 @@ namespace {
 	};
 
 	constexpr bool operator_arrow_001( ) noexcept {
-		std::array<A, 5> as = { A{ }, A{ }, A{ }, A{ }, A{} };
+		std::array<A, 5> as = { A{ }, A{ }, A{ }, A{ }, A{ } };
 		auto it = daw::ibegin( as );
 
 		return it->t( );
@@ -152,7 +152,7 @@ namespace {
 	static_assert( operator_arrow_001( ) );
 
 	constexpr bool operator_arrow_002( ) noexcept {
-		std::array<A, 5> const as = { A{ }, A{ }, A{ }, A{ }, A{} };
+		std::array<A, 5> const as = { A{ }, A{ }, A{ }, A{ }, A{ } };
 		auto it = daw::cibegin( as );
 
 		return it->t( );

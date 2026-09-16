@@ -28,9 +28,8 @@ namespace daw {
 		constexpr set_node_t( ) noexcept(
 		  std::is_nothrow_default_constructible_v<Key> ) = default;
 
-		template<
-		  typename K,
-		  std::enable_if_t<std::is_convertible_v<K, Key>, std::nullptr_t> = nullptr>
+		template<typename K, std::enable_if_t<std::is_convertible_v<K, Key>,
+		                                      std::nullptr_t> = nullptr>
 		constexpr set_node_t( K &&k ) noexcept(
 		  std::is_nothrow_constructible_v<Key, K> )
 		  : key( DAW_FWD( k ) ) {}
@@ -59,8 +58,7 @@ namespace daw {
 
 	public:
 		constexpr const_bounded_hash_set_iterator(
-		  set_node_t<Key> const *first,
-		  set_node_t<Key> const *last,
+		  set_node_t<Key> const *first, set_node_t<Key> const *last,
 		  set_node_t<Key> const *pos ) noexcept
 		  : m_first( first )
 		  , m_last( last )
@@ -82,7 +80,8 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr const_bounded_hash_set_iterator operator++( int ) noexcept {
+		[[nodiscard]] constexpr const_bounded_hash_set_iterator
+		operator++( int ) noexcept {
 			auto result = *this;
 			operator++( );
 			return result;
@@ -96,7 +95,8 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr const_bounded_hash_set_iterator operator--( int ) noexcept {
+		[[nodiscard]] constexpr const_bounded_hash_set_iterator
+		operator--( int ) noexcept {
 			auto result = *this;
 			operator--( );
 			return result;
@@ -173,7 +173,8 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr bounded_hash_set_iterator operator++( int ) noexcept {
+		[[nodiscard]] constexpr bounded_hash_set_iterator
+		operator++( int ) noexcept {
 			auto result = *this;
 			operator++( );
 			return result;
@@ -187,7 +188,8 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr bounded_hash_set_iterator operator--( int ) noexcept {
+		[[nodiscard]] constexpr bounded_hash_set_iterator
+		operator--( int ) noexcept {
 			auto result = *this;
 			operator--( );
 			return result;
@@ -277,9 +279,7 @@ namespace daw {
 		return lhs.compare( rhs ) != 0;
 	}
 
-	template<typename Key,
-	         size_t Capacity,
-	         typename Hash = std::hash<Key>,
+	template<typename Key, size_t Capacity, typename Hash = std::hash<Key>,
 	         typename KeyEqual = std::equal_to<Key>>
 	struct bounded_hash_set_t {
 		using key_type = Key;

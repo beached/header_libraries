@@ -33,9 +33,8 @@ namespace daw {
 		explicit constexpr back_inserter( Container &c ) noexcept
 		  : m_container( &c ) {}
 
-		template<typename T,
-		         daw::enable_when_t<not std::is_same_v<daw::remove_cvref_t<T>,
-		                                               back_inserter>> = nullptr>
+		template<typename T, daw::enable_when_t<not std::is_same_v<
+		                       daw::remove_cvref_t<T>, back_inserter>> = nullptr>
 		constexpr back_inserter &operator=( T &&val ) {
 			m_container->push_back( DAW_FWD( val ) );
 			return *this;
@@ -49,7 +48,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr back_inserter operator++( int ) const noexcept {
+		[[nodiscard]] constexpr back_inserter operator++( int ) const noexcept {
 			return *this;
 		}
 	};

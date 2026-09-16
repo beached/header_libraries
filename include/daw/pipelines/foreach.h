@@ -24,8 +24,8 @@ namespace daw::pipelines::pimpl {
 			static_assert( std::invocable<Fn, range_reference_t<R>>,
 			               "ForEach requires the function to be able to be called "
 			               "with invoke and passed value" );
-			for( auto &&v : r ) {
-				(void)std::invoke( fn, v );
+			for( auto &&v : DAW_FWD( r ) ) {
+				(void)std::invoke( fn, DAW_FWD( v ) );
 			}
 			if constexpr( std::is_rvalue_reference_v<decltype( r )> ) {
 				using result_t = std::remove_cvref_t<decltype( r )>;
@@ -47,8 +47,8 @@ namespace daw::pipelines::pimpl {
 			static_assert( traits::is_applicable_v<Fn, range_reference_t<R>>,
 			               "ForEach requires the function to be able to be called "
 			               "with apply and passed value" );
-			for( auto &&v : r ) {
-				(void)std::apply( fn, v );
+			for( auto &&v : DAW_FWD( r ) ) {
+				(void)std::apply( fn, DAW_FWD( v ) );
 			}
 			return DAW_FWD( r );
 		}
@@ -68,10 +68,11 @@ namespace daw::pipelines {
 
 	[[nodiscard]] constexpr auto ForEachIndexed( auto &&fn ) {
 		// Maybe used owned range
-		return [=]( RandomRange auto &&r ) {
-			auto const sz = std::distance( std::begin( r ), std::end( r ) );
+		return [fun=DAW_FWD(fn)]( RandomRange auto &&r ) {
+			auto const sz = static_cast<std::size_t>(
+			  std::distance( std::begin( r ), std::end( r ) ) );
 			for( std::size_t n = 0; n < sz; ++n ) {
-				(void)std::invoke( fn, r[n] );
+				(void)std::invoke( fun, r[n] );
 			}
 			return DAW_FWD( r );
 		};

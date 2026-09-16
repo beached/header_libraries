@@ -201,7 +201,7 @@ void daw_natural_op_dec_04( ) {
 	daw::natural_t<int> a = 1;
 	daw::natural_t<int> b( 2 );
 	daw::expecting_exception<daw::exception::arithmetic_exception>( [&]( ) {
-		a--;
+		--a;
 	} );
 	daw::expecting( 1, a );
 	daw::expecting( 2, b );

@@ -224,7 +224,8 @@ namespace daw {
 		}
 
 		/// @pre (std::intptr_t)get( ) != std::numeric_limits<std::intptr_t>::max( )
-		DAW_ATTRIB_INLINE constexpr not_null operator++( int ) noexcept {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr not_null
+		operator++( int ) noexcept {
 			DAW_ASSUME( m_ptr != null_value );
 			auto result = *this;
 			++m_ptr;
@@ -232,7 +233,8 @@ namespace daw {
 		}
 
 		/// @pre (std::intptr_t)get( ) - 1 > 0
-		DAW_ATTRIB_INLINE constexpr not_null operator--( int ) noexcept {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr not_null
+		operator--( int ) noexcept {
 			DAW_ASSUME( m_ptr != null_value );
 			auto result = *this;
 			--m_ptr;

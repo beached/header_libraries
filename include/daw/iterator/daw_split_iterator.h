@@ -93,11 +93,10 @@ namespace daw {
 	struct split_it;
 
 	template<typename Iterator, typename Splitter>
-	struct split_it<Iterator,
-	                Splitter,
-	                std::enable_if_t<not std::is_same_v<
-	                  char,
-	                  typename std::iterator_traits<Iterator>::value_type>>> {
+	struct split_it<
+	  Iterator, Splitter,
+	  std::enable_if_t<not std::is_same_v<
+	    char, typename std::iterator_traits<Iterator>::value_type>>> {
 
 		using CharT = typename std::iterator_traits<Iterator>::value_type;
 		static_assert( daw::traits::is_unary_predicate_v<Splitter, CharT>,
@@ -158,8 +157,7 @@ namespace daw {
 		}
 
 	public:
-		constexpr split_it( Iterator first,
-		                    Iterator last,
+		constexpr split_it( Iterator first, Iterator last,
 		                    Splitter &&splitter ) noexcept
 		  : m_data{ first, last }
 		  , m_position{ first, last }
@@ -172,13 +170,12 @@ namespace daw {
 		  typename Container,
 		  daw::required<daw::traits::is_container_like_v<Container>> = nullptr>
 		constexpr split_it( Container &container, Splitter &&splitter ) noexcept
-		  : split_it( std::begin( container ),
-		              std::end( container ),
+		  : split_it( std::begin( container ), std::end( container ),
 		              DAW_FWD( splitter ) ) {}
 
 		constexpr split_it( ) noexcept
-		  : m_data{ { }, {} }
-		  , m_position{ { }, {} }
+		  : m_data{ { }, { } }
+		  , m_position{ { }, { } }
 		  , m_splitter{ } {}
 
 		~split_it( ) noexcept = default;
@@ -223,13 +220,13 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr split_it operator++( int ) const noexcept {
+		[[nodiscard]] constexpr split_it operator++( int ) const noexcept {
 			split_it tmp{ *this };
 			move_next( );
 			return tmp;
 		}
 
-		constexpr split_it operator--( int ) const noexcept {
+		[[nodiscard]] constexpr split_it operator--( int ) const noexcept {
 			static_assert( impl::can_decrement<Iterator>,
 			               "Supplied Iterator is not Bidirectional" );
 			split_it tmp{ *this };
@@ -329,11 +326,10 @@ namespace daw {
 	};
 
 	template<typename Iterator, typename Splitter>
-	struct split_it<Iterator,
-	                Splitter,
-	                std::enable_if_t<std::is_same_v<
-	                  char,
-	                  typename std::iterator_traits<Iterator>::value_type>>> {
+	struct split_it<
+	  Iterator, Splitter,
+	  std::enable_if_t<std::is_same_v<
+	    char, typename std::iterator_traits<Iterator>::value_type>>> {
 
 		using CharT = char;
 		static_assert( daw::traits::is_unary_predicate_v<Splitter, CharT>,
@@ -394,8 +390,7 @@ namespace daw {
 		}
 
 	public:
-		constexpr split_it( Iterator first,
-		                    Iterator last,
+		constexpr split_it( Iterator first, Iterator last,
 		                    Splitter &&splitter ) noexcept
 		  : m_data{ first, last }
 		  , m_position{ first, last }
@@ -408,13 +403,12 @@ namespace daw {
 		  typename Container,
 		  daw::required<daw::traits::is_container_like_v<Container>> = nullptr>
 		constexpr split_it( Container &container, Splitter &&splitter ) noexcept
-		  : split_it( std::begin( container ),
-		              std::end( container ),
+		  : split_it( std::begin( container ), std::end( container ),
 		              DAW_FWD( splitter ) ) {}
 
 		constexpr split_it( ) noexcept
-		  : m_data{ { }, {} }
-		  , m_position{ { }, {} }
+		  : m_data{ { }, { } }
+		  , m_position{ { }, { } }
 		  , m_splitter{ } {}
 
 		~split_it( ) noexcept = default;
@@ -459,13 +453,13 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr split_it operator++( int ) const noexcept {
+		[[nodiscard]] constexpr split_it operator++( int ) const noexcept {
 			split_it tmp{ *this };
 			move_next( );
 			return tmp;
 		}
 
-		constexpr split_it operator--( int ) const noexcept {
+		[[nodiscard]] constexpr split_it operator--( int ) const noexcept {
 			static_assert( impl::can_decrement<Iterator>,
 			               "Supplied Iterator is not Bidirectional" );
 			split_it tmp{ *this };
@@ -573,8 +567,7 @@ namespace daw {
 		  daw::traits::is_unary_predicate_v<Splitter, string_char_t<String>>;
 	} // namespace impl
 
-	template<typename String,
-	         typename Splitter,
+	template<typename String, typename Splitter,
 	         daw::required<impl::is_splitter_v<Splitter, String>> = nullptr>
 	constexpr auto make_split_it( String &sv, Splitter &&splitter ) noexcept {
 		using IterT = DAW_TYPEOF( std::begin( sv ) );

@@ -67,7 +67,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr pointer_iterator &operator++( int ) {
+		[[nodiscard]] constexpr pointer_iterator &operator++( int ) {
 			auto result = *this;
 			++m_ptr;
 			return result;
@@ -78,7 +78,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr pointer_iterator operator--( int ) {
+		[[nodiscard]] constexpr pointer_iterator operator--( int ) {
 			auto result = *this;
 			--m_ptr;
 			return result;

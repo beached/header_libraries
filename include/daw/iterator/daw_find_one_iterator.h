@@ -56,8 +56,7 @@ namespace daw {
 		std::size_t m_last_index = -std::size_t{ 1 };
 
 	public:
-		constexpr find_one_iterator( Iterator first,
-		                             IteratorLast last,
+		constexpr find_one_iterator( Iterator first, IteratorLast last,
 		                             Filters... filts )
 		  : find_iterator_impl::FilterProxy<Filters, std::is_class_v<Filters>>(
 		      filts )...
@@ -89,7 +88,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr find_one_iterator operator++( int ) & {
+		[[nodiscard]] constexpr find_one_iterator operator++( int ) & {
 			auto result = *this;
 			operator++( );
 			return result;

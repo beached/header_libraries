@@ -62,7 +62,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr bit_iterator &operator++( int ) {
+		[[nodiscard]] constexpr bit_iterator &operator++( int ) {
 			return *this;
 		}
 	};

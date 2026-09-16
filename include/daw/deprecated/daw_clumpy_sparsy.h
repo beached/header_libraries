@@ -224,7 +224,7 @@ namespace daw {
 			return *this;
 		}
 
-		clumpy_sparsy_iterator operator++( int ) {
+		[[nodiscard]] clumpy_sparsy_iterator operator++( int ) {
 			auto result = *this;
 			increment( );
 			return result;
@@ -235,7 +235,7 @@ namespace daw {
 			return *this;
 		}
 
-		clumpy_sparsy_iterator operator--( int ) {
+		[[nodiscard]] clumpy_sparsy_iterator operator--( int ) {
 			clumpy_sparsy_iterator result = *this;
 			decrement( );
 			return result;

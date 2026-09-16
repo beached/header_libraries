@@ -106,7 +106,7 @@ namespace daw::pipelines {
 			return *this;
 		}
 
-		constexpr split_view_iterator operator++( int ) {
+		[[nodiscard]] constexpr split_view_iterator operator++( int ) {
 			auto result = *this;
 			operator++( );
 			return result;

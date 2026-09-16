@@ -44,8 +44,7 @@ namespace daw::pipelines::pimpl {
 				if constexpr( std::is_constructible_v<
 				                Container<range_value_t<range_type>>,
 				                std::from_range_t,
-				                iterator_t<range_type>,
-				                iterator_end_t<range_type>> ) {
+				                range_type> ) {
 					return Container( std::from_range,
 					                  std::begin( DAW_FWD( r ) ),
 					                  std::end( DAW_FWD( r ) ) );

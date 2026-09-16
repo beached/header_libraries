@@ -70,7 +70,7 @@ namespace daw::string_concat_impl {
 			return *this;
 		}
 
-		constexpr string_join_iterator operator++( int ) noexcept {
+		[[nodiscard]] constexpr string_join_iterator operator++( int ) noexcept {
 			auto result = *this;
 			this->operator++( );
 			return result;

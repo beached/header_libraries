@@ -348,7 +348,7 @@ namespace daw {
 			return *this;
 		}
 
-		topological_sorted_iterator operator++( int ) noexcept {
+		[[nodiscard]] topological_sorted_iterator operator++( int ) noexcept {
 			auto result = *this;
 			++m_iterator;
 			return result;
@@ -359,7 +359,7 @@ namespace daw {
 			return *this;
 		}
 
-		topological_sorted_iterator operator--( int ) noexcept {
+		[[nodiscard]] topological_sorted_iterator operator--( int ) noexcept {
 			auto result = *this;
 			--m_iterator;
 			return result;

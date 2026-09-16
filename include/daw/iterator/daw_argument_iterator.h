@@ -48,13 +48,13 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr arg_iterator_t operator++( int ) noexcept {
+		[[nodiscard]] constexpr arg_iterator_t operator++( int ) noexcept {
 			auto result = arg_iterator_t( *this );
 			++m_pos;
 			return result;
 		}
 
-		constexpr arg_iterator_t operator--( int ) noexcept {
+		[[nodiscard]] constexpr arg_iterator_t operator--( int ) noexcept {
 			auto result = arg_iterator_t( *this );
 			--m_pos;
 			return result;
