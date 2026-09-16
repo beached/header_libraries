@@ -12,9 +12,9 @@
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_typeof.h"
 #include "filter.h"
-#include "range.h"
 #include "sized_iterator.h"
 #include "skip.h"
+#include "view.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -31,15 +31,15 @@ namespace daw::pipelines::pimpl {
 			auto first = std::begin( r );
 			auto last = std::end( r );
 
-			if constexpr( ForwardIterator<iter_t> ) {
+			if constexpr( RandomIterator<iter_t> ) {
 				auto const range_size = std::distance( first, last );
 				auto take_size =
 				  std::min( { range_size, static_cast<std::ptrdiff_t>( how_many ) } );
-				return range_t{ sized_iterator<iter_t>{
+				return view_t{ sized_iterator<iter_t>{
 				                  first, static_cast<std::size_t>( take_size ) },
 				                sized_iterator<iter_t>{ last, 0 } };
 			} else {
-				return range_t{ sized_iterator<iter_t>{ first, how_many },
+				return view_t{ sized_iterator<iter_t>{ first, how_many },
 				                sized_iterator<iter_t>{ last, 0 } };
 			}
 		}

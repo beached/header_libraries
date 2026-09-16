@@ -9,8 +9,8 @@
 #pragma once
 
 #include "daw/daw_iterator_traits.h"
-#include "range.h"
 #include "sized_iterator.h"
+#include "view.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -26,7 +26,7 @@ namespace daw::pipelines::pimpl {
 			auto first = std::begin( r );
 			auto last = std::end( r );
 
-			if constexpr( ForwardIterator<iter_t> ) {
+			if constexpr( RandomIterator<iter_t> ) {
 				auto const range_size = std::distance( first, last );
 				auto const skip =
 				  std::min( { static_cast<std::ptrdiff_t>( how_many ), range_size } );
@@ -40,7 +40,7 @@ namespace daw::pipelines::pimpl {
 					++first;
 				}
 			}
-			return range_t{ first, last };
+			return view_t{ first, last };
 		}
 	};
 } // namespace daw::pipelines::pimpl

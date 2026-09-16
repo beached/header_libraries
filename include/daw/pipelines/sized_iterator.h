@@ -87,12 +87,12 @@ namespace daw::pipelines {
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
 		operator==( sized_iterator const &rhs ) const noexcept {
-			return m_count == rhs.m_count;
+			return m_count == rhs.m_count or m_iter == rhs.m_iter;
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
 		operator!=( sized_iterator const &rhs ) const noexcept {
-			return m_count != rhs.m_count;
+			return m_count != rhs.m_count and m_iter != rhs.m_iter;
 		}
 
 		// clang-format off

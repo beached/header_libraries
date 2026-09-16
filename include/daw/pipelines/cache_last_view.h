@@ -10,7 +10,7 @@
 
 #include "daw/daw_iterator_traits.h"
 #include "daw/iterator/daw_arrow_proxy.h"
-#include "daw/pipelines/range.h"
+#include "daw/pipelines/view.h"
 
 #include <iterator>
 #include <optional>

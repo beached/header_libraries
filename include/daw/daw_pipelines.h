@@ -30,7 +30,6 @@
 #include "daw/pipelines/pipeline.h"
 #include "daw/pipelines/predicates.h"
 #include "daw/pipelines/print.h"
-#include "daw/pipelines/range.h"
 #include "daw/pipelines/reverse.h"
 #include "daw/pipelines/sample.h"
 #include "daw/pipelines/skip.h"
@@ -40,4 +39,5 @@
 #include "daw/pipelines/take.h"
 #include "daw/pipelines/to.h"
 #include "daw/pipelines/unique.h"
+#include "daw/pipelines/view.h"
 #include "daw/pipelines/zip.h"

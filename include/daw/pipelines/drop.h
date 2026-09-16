@@ -9,7 +9,7 @@
 #pragma once
 
 #include "daw/daw_move.h"
-#include "daw/pipelines/range.h"
+#include "daw/pipelines/view.h"
 
 namespace daw::pipelines {
 	template<typename Pred>
@@ -20,7 +20,7 @@ namespace daw::pipelines {
 			while( f != l and pred( *f ) ) {
 				++f;
 			}
-			return range_t{ std::move( f ), std::move( l ) };
+			return view_t{ std::move( f ), std::move( l ) };
 		};
 	}
 
@@ -32,7 +32,7 @@ namespace daw::pipelines {
 			while( f != l and not pred( *f ) ) {
 				++f;
 			}
-			return range_t{ std::move( f ), std::move( l ) };
+			return view_t{ std::move( f ), std::move( l ) };
 		};
 	}
 } // namespace daw::pipelines

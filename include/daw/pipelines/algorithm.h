@@ -12,7 +12,7 @@
 #include "daw/daw_forward_lvalue.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
-#include "daw/pipelines/range.h"
+#include "daw/pipelines/view.h"
 
 #include <algorithm>
 #include <functional>

@@ -161,7 +161,7 @@ namespace daw::pipelines::pimpl {
 
 	template<Range R, std::size_t Index>
 	struct element_view
-	  : range_base_t<
+	  : private pimpl::range_base_t<
 	      element_iterator<daw::iterator_t<std::remove_reference_t<R>>, Index>,
 	      element_iterator<daw::iterator_end_t<std::remove_reference_t<R>>,
 	                       Index>> {
@@ -353,7 +353,7 @@ namespace daw::pipelines::pimpl {
 
 	template<Range R, std::size_t... Indices>
 	struct elements_view
-	  : range_base_t<
+	  : private pimpl::range_base_t<
 	      elements_iterator<daw::iterator_t<std::remove_reference_t<R>>,
 	                        Indices...>,
 	      elements_iterator<daw::iterator_end_t<std::remove_reference_t<R>>,

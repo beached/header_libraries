@@ -12,7 +12,7 @@
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
 #include "daw/iterator/daw_reverse_iterator.h"
-#include "range.h"
+#include "view.h"
 
 #include <utility>
 
@@ -30,11 +30,11 @@ namespace daw::pipelines::pimpl {
 				// We are already a reverse iterator, lets use the base iterator
 				auto first = std::end( r ).base( );
 				auto last = std::begin( r ).base( );
-				return range_t{ first, last };
+				return view_t{ first, last };
 			} else {
 				auto first = daw::reverse_iterator{ std::end( r ) };
 				auto last = daw::reverse_iterator{ std::begin( r ) };
-				return range_t{ std::move( first ), std::move( last ) };
+				return view_t{ std::move( first ), std::move( last ) };
 			}
 		}
 	};

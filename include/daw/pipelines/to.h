@@ -8,10 +8,12 @@
 
 #pragma once
 
+#include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_move.h"
-#include "range.h"
+#include "daw/pipelines/view.h"
 
 #include <iterator>
+#include <ranges>
 #include <type_traits>
 #include <version>
 
@@ -28,11 +30,40 @@ namespace daw::pipelines::pimpl {
 		template<Range R>
 		[[nodiscard]] DAW_ATTRIB_NOINLINE DAW_CPP23_STATIC_CALL_OP constexpr auto
 		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			using range_type = daw::remove_cvref_t<R>;
 			static_assert(
-			  requires( iterator_t<R> it ) { Container( it, it ); },
+			  requires( iterator_t<range_type> it ) { Container( it, it ); },
 			  "To requires the container to be constructible from an iterator "
 			  "pair" );
-			return Container( std::begin( DAW_FWD( r ) ), std::end( DAW_FWD( r ) ) );
+			if constexpr( std::is_same_v<iterator_t<range_type>,
+			                             iterator_end_t<range_type>> ) {
+				return Container( std::begin( DAW_FWD( r ) ),
+				                  std::end( DAW_FWD( r ) ) );
+			} else {
+#if defined( DAW_HAS_CPP23_FROM_RANGE )
+				if constexpr( std::is_constructible_v<
+				                Container<range_value_t<range_type>>,
+				                std::from_range_t,
+				                iterator_t<range_type>,
+				                iterator_end_t<range_type>> ) {
+					return Container( std::from_range,
+					                  std::begin( DAW_FWD( r ) ),
+					                  std::end( DAW_FWD( r ) ) );
+				} else {
+#endif
+					auto result = Container<range_value_t<range_type>>{ };
+					auto first = std::begin( DAW_FWD( r ) );
+					auto last = std::end( DAW_FWD( r ) );
+
+					while( first != last ) {
+						result.insert( std::end( result ), *first );
+						++first;
+					}
+					return result;
+#if defined( DAW_HAS_CPP23_FROM_RANGE )
+				}
+#endif
+			}
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr auto

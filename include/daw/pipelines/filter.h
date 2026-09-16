@@ -15,8 +15,8 @@
 #include "daw/daw_print.h"
 #include "daw/daw_remove_cvref.h"
 #include "daw/daw_typeof.h"
-#include "daw/pipelines/range.h"
 #include "daw/pipelines/range_base.h"
+#include "daw/pipelines/view.h"
 
 #include <concepts>
 #include <cstddef>
@@ -27,8 +27,8 @@
 namespace daw::pipelines {
 	template<typename Iterator, typename Filter,
 	         typename Projection = std::identity>
-	struct filter_view : range_base_t<Iterator> {
-		using daw_range_base_t = range_base_t<Iterator>;
+	struct filter_view : private pimpl::range_base_t<Iterator> {
+		using daw_range_base_t = pimpl::range_base_t<Iterator>;
 		using typename daw_range_base_t::iterator_first_t;
 		using typename daw_range_base_t::iterator_last_t;
 

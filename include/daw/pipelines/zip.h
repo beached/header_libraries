@@ -10,7 +10,7 @@
 
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_traits.h"
-#include "range.h"
+#include "view.h"
 
 #include <cstddef>
 #include <tuple>
@@ -18,6 +18,8 @@
 
 namespace daw::pipelines {
 	namespace pimpl {
+		struct Concat_t;
+
 		template<typename... Ts>
 		struct tuple_pair_t {
 			using type = std::tuple<Ts...>;
@@ -71,14 +73,15 @@ namespace daw::pipelines {
 		}
 
 		template<std::size_t... Is>
-		constexpr reference get_at( difference_type n, std::index_sequence<Is...> )
+		[[nodiscard]] constexpr reference get_at( difference_type n,
+		                                          std::index_sequence<Is...> )
 		  requires( RandomIteratorTag<iterator_category> ) {
 			return reference{ *std::next( std::get<Is>( m_iters ), n )... };
 		}
 
 		template<std::size_t... Is>
-		constexpr const_reference get_at( difference_type n,
-		                                  std::index_sequence<Is...> ) const
+		[[nodiscard]] constexpr const_reference
+		get_at( difference_type n, std::index_sequence<Is...> ) const
 		  requires( RandomIteratorTag<iterator_category> ) {
 			return const_reference{ *std::next( std::get<Is>( m_iters ), n )... };
 		}
@@ -228,25 +231,84 @@ namespace daw::pipelines {
 
 	template<Range... Ranges>
 	struct zip_view {
-		using value_type = daw::iter_value_t<zip_iterator<iterator_t<Ranges>...>>;
+		using ranges_t = std::tuple<pimpl::range_storage_t<Ranges>...>;
 		using iterator = zip_iterator<iterator_t<Ranges>...>;
+		using const_iterator = zip_iterator<const_iterator_t<Ranges>...>;
+		using last_iterator = zip_iterator<iterator_end_t<Ranges>...>;
+		using const_last_iterator = zip_iterator<const_iterator_end_t<Ranges>...>;
+		using i_am_a_daw_zip_view_class = void;
 
-		iterator m_first = iterator{ };
-		iterator m_last = iterator{ };
+		static constexpr std::size_t range_count = sizeof...(Ranges);
+	private:
+		ranges_t m_ranges{ };
+		friend struct pimpl::Concat_t;
 
+	public:
 		explicit zip_view( ) = default;
 
-		template<Range... Rs>
-		explicit constexpr zip_view( Rs &&...rs )
-		  : m_first( ( std::begin( DAW_FWD( rs ) ) )... )
-		  , m_last( ( std::end( DAW_FWD( rs ) ) )... ) {}
+		explicit constexpr zip_view( Ranges... rs )
+		  : m_ranges{ DAW_FWD( rs )... } {}
 
-		[[nodiscard]] constexpr iterator begin( ) const {
-			return m_first;
+		[[nodiscard]] constexpr iterator begin( ) {
+			return std::apply(
+			  []( auto &&...rs ) {
+				  return iterator{ std::begin( pimpl::get_range_ref( rs ) )... };
+			  },
+			  m_ranges );
 		}
 
-		[[nodiscard]] constexpr iterator end( ) const {
-			return m_last;
+		[[nodiscard]] constexpr const_iterator begin( ) const {
+			return std::apply(
+			  []( auto &&...rs ) {
+				  return const_iterator{ std::begin( pimpl::get_range_ref( rs ) )... };
+			  },
+			  m_ranges );
+		}
+
+		[[nodiscard]] constexpr last_iterator end( ) {
+			return std::apply(
+			  []( auto &&...rs ) {
+				  return last_iterator{ std::end( pimpl::get_range_ref( rs ) )... };
+			  },
+			  m_ranges );
+		}
+
+		[[nodiscard]] constexpr const_last_iterator end( ) const {
+			return std::apply(
+			  []( auto &&...rs ) {
+				  return const_last_iterator{
+				    std::end( pimpl::get_range_ref( rs ) )... };
+			  },
+			  m_ranges );
+		}
+
+		template<Range... NewRanges>
+		[[nodiscard]] constexpr auto append_ranges( NewRanges &&...nranges ) const {
+			return std::apply(
+			  [&]<typename... CRs>( CRs const &...current_ranges ) {
+				  return zip_view<CRs..., NewRanges...>{
+				    pimpl::get_range_ref( current_ranges )..., DAW_FWD( nranges )... };
+			  },
+			  m_ranges );
+		}
+
+		template<Range...>
+		friend struct zip_view;
+
+		template<Range... NewRanges>
+		[[nodiscard]] constexpr auto
+		append_zip_view( zip_view<NewRanges...> const &zv ) const {
+			return std::apply(
+			  [&]( auto const &...current_ranges ) {
+				  return std::apply(
+				    [&]<typename... NRs>( NRs const &...next_ranges ) {
+					    return zip_view<Ranges..., NewRanges...>{
+					      pimpl::get_range_ref( current_ranges )...,
+					      pimpl::get_range_ref( next_ranges )... };
+				    },
+				    zv.m_ranges );
+			  },
+			  m_ranges );
 		}
 	};
 
@@ -276,30 +338,20 @@ namespace daw::pipelines {
 	/// merge them
 	template<Range... Ranges>
 	[[nodiscard]] constexpr auto ZipMore( Ranges &&...rs ) {
-		return [=]<Range R>( R &&r ) {
-			if constexpr( requires( R ) {
-				              typename iterator_t<R>::i_am_a_daw_zip_iterator_class;
+		return [v = zip_view{ DAW_FWD( rs )... }]<typename R>( R &&r ) {
+			if constexpr( requires {
+				              typename daw::remove_cvref_t<
+				                R>::i_am_a_daw_zip_view_class;
 			              } ) {
-				// zip_view
-				auto tp_first = std::begin( DAW_FWD( r ) ).base( );
-				auto tp_last = std::end( DAW_FWD( r ) ).base( );
-				static_assert( std::tuple_size_v<decltype( tp_first )> ==
-				                 std::tuple_size_v<decltype( tp_last )>,
-				               "There is a bug in zip_view.  The begin( ) and end( ) "
-				               "should have the same size" );
-				return [&]<std::size_t... Is>( std::index_sequence<Is...> ) {
-					return zip_view( rs...,
-					                 range_t{ std::get<Is>( std::move( tp_first ) ),
-					                          std::get<Is>( std::move( tp_last ) ) }... );
-				}( std::make_index_sequence<
-				         std::tuple_size_v<decltype( tp_first )>>{ } );
-			} else if constexpr( daw::is_tuple_like_v<range_value_t<R>> ) {
-				// tuple like.
-				return [&]<std::size_t... Is>( std::index_sequence<Is...> ) {
-					return zip_view( rs..., std::get<Is>( DAW_FWD( r ) )... );
-				}( std::make_index_sequence<std::tuple_size_v<DAW_TYPEOF( r )>>{ } );
+				return v.append_zip_view( DAW_FWD( r ) );
+			} else if constexpr( daw::is_tuple_like_v<R> ) {
+				return std::apply(
+				  [&]( auto &&...next_ranges ) {
+					  return v.append_ranges( DAW_FWD( next_ranges )... );
+				  },
+				  DAW_FWD( r ) );
 			} else {
-				return zip_view( rs..., DAW_FWD( r ) );
+				return v.append_ranges( DAW_FWD( r ) );
 			}
 		};
 	}

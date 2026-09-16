@@ -20,7 +20,7 @@
 namespace daw::pipelines::pimpl {
 	template<typename EnumType = std::size_t>
 	struct Enumerate_t {
-		template<Range R>
+		template<ForwardRange R>
 		[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
 		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
 			return zip_view<iota_view<EnumType>, std::remove_reference_t<R>>(
@@ -31,7 +31,7 @@ namespace daw::pipelines::pimpl {
 	template<typename EnumType = std::size_t>
 	struct EnumerateFrom_t {
 		EnumType offset = EnumType{ };
-		template<Range R>
+		template<ForwardRange R>
 		[[nodiscard]] constexpr auto operator( )( R &&r ) const {
 			return zip_view<iota_view<EnumType>, daw::remove_cvref_t<R>>(
 			  iota_view<EnumType>( offset, max_value<EnumType> ), DAW_FWD( r ) );
@@ -40,7 +40,7 @@ namespace daw::pipelines::pimpl {
 
 	template<typename EnumType = std::size_t>
 	struct EnumerateApply_t {
-		template<Range R>
+		template<ForwardRange R>
 		[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
 		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
 			if constexpr( RandomRange<R> ) {
@@ -57,7 +57,7 @@ namespace daw::pipelines::pimpl {
 	template<typename EnumType = std::size_t>
 	struct EnumerateApplyFrom_t {
 		EnumType offset = EnumType{ };
-		template<Range R>
+		template<ForwardRange R>
 		[[nodiscard]] constexpr auto operator( )( R &&r ) const {
 			if constexpr( RandomRange<R> ) {
 				auto const sz = static_cast<EnumType>(

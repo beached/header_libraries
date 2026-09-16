@@ -20,14 +20,19 @@ namespace daw::pipelines::pimpl {
 		DAW_NO_UNIQUE_ADDRESS mutable Fn fn;
 
 		template<Range R>
-		[[nodiscard]] constexpr auto operator( )( R &&r ) const {
+		[[nodiscard]] constexpr decltype( auto ) operator( )( R &&r ) const {
 			static_assert( std::invocable<Fn, range_reference_t<R>>,
 			               "ForEach requires the function to be able to be called "
 			               "with invoke and passed value" );
 			for( auto &&v : r ) {
 				(void)std::invoke( fn, v );
 			}
-			return DAW_FWD( r );
+			if constexpr( std::is_rvalue_reference_v<decltype( r )> ) {
+				using result_t = std::remove_cvref_t<decltype( r )>;
+				return result_t{ DAW_FWD( r ) };
+			} else {
+				return DAW_FWD( r );
+			}
 		}
 	};
 	template<typename Fn>

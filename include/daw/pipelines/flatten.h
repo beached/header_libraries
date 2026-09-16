@@ -15,16 +15,16 @@
 #include "daw/daw_remove_cvref.h"
 #include "daw/daw_traits.h"
 #include "daw/pipelines/pipeline_traits.h"
-#include "daw/pipelines/range.h"
+#include "daw/pipelines/view.h"
 
 #include <cassert>
 #include <cstddef>
 #include <iterator>
 
 namespace daw::pipelines::pimpl {
-	template<ForwardRange R>
-	struct flatten_view_end_t {
-		using iterator_t = daw::iterator_t<R>;
+	template<typename It>
+	struct flatten_iterator_end_t {
+		using iterator_t = It;
 		using sub_iterator_t = daw::iterator_t<daw::iter_reference_t<iterator_t>>;
 		using iterator_category = std::forward_iterator_tag;
 		using value_type = daw::iter_value_t<sub_iterator_t>;
@@ -35,124 +35,150 @@ namespace daw::pipelines::pimpl {
 		iterator_t m_range_first{ };
 	};
 
-	template<ForwardRange R>
-	struct flatten_view : range_base_t<flatten_view<R>, flatten_view_end_t<R>> {
-		using iterator_t = daw::iterator_t<R>;
+	template<typename First, typename Last = First>
+	struct flatten_iterator {
+		using iterator_t = First;
 		using sub_iterator_t = daw::iterator_t<daw::iter_value_t<iterator_t>>;
 		using iterator_category = std::forward_iterator_tag;
 		using value_type = daw::iter_value_t<sub_iterator_t>;
 		using reference = daw::iter_reference_t<sub_iterator_t>;
 		using const_reference = daw::iter_const_reference_t<sub_iterator_t>;
 		using difference_type = std::ptrdiff_t;
-		using i_am_a_daw_flatten_view_class = void;
+		using i_am_a_daw_flatten_iterator_class = void;
 
 	private:
-		using end_t = flatten_view_end_t<R>;
+		using end_t = flatten_iterator_end_t<Last>;
 
-		using m_range_t = daw::remove_cvrvref_t<R>;
-		mutable m_range_t m_range;
-		iterator_t m_range_first{ };
+		iterator_t m_iter{ };
+		DAW_NO_UNIQUE_ADDRESS Last m_last{ };
 		sub_iterator_t m_cur_first{ };
 
-		[[nodiscard]] constexpr auto rabegin( ) {
-			return std::begin( m_range );
-		}
-
-		[[nodiscard]] constexpr auto rabegin( ) const {
-			return std::begin( m_range );
-		}
-
-		[[nodiscard]] constexpr auto raend( ) {
-			return std::end( m_range );
-		}
-
-		[[nodiscard]] constexpr auto raend( ) const {
-			return std::end( m_range );
-		}
-
 		DAW_ATTRIB_INLINE constexpr void inc_range( ) {
-			assert( m_range_first != raend( ) );
-			++m_range_first;
-			if( m_range_first == raend( ) ) {
+			assert( m_iter != m_last );
+			++m_iter;
+			if( m_iter == m_last ) {
 				m_cur_first = sub_iterator_t{ };
-				assert( *this == end( ) );
 			} else {
-				m_cur_first = std::begin( *m_range_first );
+				m_cur_first = std::begin( *m_iter );
 			}
 		}
 
 		DAW_ATTRIB_INLINE constexpr void inc_sub_range( ) {
 			assert( m_cur_first != sub_iterator_t{ } );
-			assert( m_cur_first != std::end( *m_range_first ) );
+			assert( m_cur_first != std::end( *m_iter ) );
 			++m_cur_first;
-			if( m_cur_first == std::end( *m_range_first ) ) {
+			if( m_cur_first == std::end( *m_iter ) ) {
 				inc_range( );
 			}
 		}
 
 	public:
-		explicit flatten_view( ) = default;
+		explicit flatten_iterator( ) = default;
 
-		template<Range U>
-		requires( not std::same_as<std::remove_cvref_t<U>,
-		                           flatten_view> ) //
-		  explicit constexpr flatten_view( U &&r )
-		  : m_range( DAW_FWD( r ) )
-		  , m_range_first( rabegin( ) )
-		  , m_cur_first( m_range_first == raend( )
-		                   ? sub_iterator_t{ }
-		                   : std::begin( *m_range_first ) ) {}
+		explicit constexpr flatten_iterator( First first, Last last )
+		  : m_iter( first )
+		  , m_last( last )
+		  , m_cur_first( m_iter == m_last ? sub_iterator_t{ }
+		                                  : std::begin( *m_iter ) ) {}
 
-		[[nodiscard]] constexpr flatten_view begin( ) const {
-			return *this;
-		}
-
-		[[nodiscard]] constexpr end_t end( ) const {
-			return end_t{ raend( ) };
-		}
-
-		DAW_ATTRIB_NOINLINE constexpr flatten_view &operator++( ) {
+		DAW_ATTRIB_NOINLINE constexpr flatten_iterator &operator++( ) {
 			inc_sub_range( );
 			return *this;
 		}
 
-		[[nodiscard]] constexpr flatten_view operator++( int ) {
+		[[nodiscard]] constexpr flatten_iterator operator++( int ) {
 			auto tmp = *this;
 			++( *this );
 			return tmp;
 		}
 
 		[[nodiscard]] constexpr reference operator*( ) noexcept {
-			assert( m_range_first != raend( ) );
-			assert( m_cur_first != std::end( *m_range_first ) );
+			assert( m_iter != m_last );
+			assert( m_cur_first != std::end( *m_iter ) );
 			assert( m_cur_first != sub_iterator_t{ } );
 			return *m_cur_first;
 		}
 
 		[[nodiscard]] constexpr const_reference operator*( ) const noexcept {
-			assert( m_range_first != raend( ) );
-			assert( m_cur_first != std::end( *m_range_first ) );
+			assert( m_iter != m_last );
+			assert( m_cur_first != std::end( *m_iter ) );
 			assert( m_cur_first != sub_iterator_t{ } );
 			return *m_cur_first;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_NOINLINE constexpr bool
-		operator==( flatten_view const &rhs ) const noexcept {
-			return m_range_first == rhs.m_range_first and
-			       m_cur_first == rhs.m_cur_first;
+		[[nodiscard]] constexpr bool
+		operator==( flatten_iterator const &rhs ) const {
+			return m_iter == rhs.m_iter and m_cur_first == rhs.m_cur_first;
 		}
 
 		[[nodiscard]] constexpr bool
-		operator!=( flatten_view const &rhs ) const noexcept = default;
+		operator!=( flatten_iterator const &rhs ) const = default;
 
-		[[nodiscard]] DAW_ATTRIB_NOINLINE constexpr bool
-		operator==( end_t const &rhs ) const noexcept {
-			return m_range_first == rhs.m_range_first;
+		[[nodiscard]] constexpr bool operator==( end_t const &rhs ) const {
+			return m_iter == rhs.m_range_first;
 		}
 
-		[[nodiscard]] constexpr bool operator!=( end_t const &rhs ) const noexcept {
-			return m_range_first != rhs.m_range_first;
+		[[nodiscard]] constexpr bool operator!=( end_t const &rhs ) const {
+			return m_iter != rhs.m_range_first;
 		}
+	};
+
+	template<ForwardRange R>
+	struct flatten_view
+	  : private stored_range_base_t<R, flatten_iterator<iterator_t<R>>,
+	                                flatten_iterator<iterator_end_t<R>>,
+	                                flatten_iterator<const_iterator_t<R>>,
+	                                flatten_iterator<const_iterator_end_t<R>>> {
+		using base_t =
+		  stored_range_base_t<R, flatten_iterator<iterator_t<R>>,
+		                      flatten_iterator<iterator_end_t<R>>,
+		                      flatten_iterator<const_iterator_t<R>>,
+		                      flatten_iterator<const_iterator_end_t<R>>>;
+
+		using iterator = typename base_t::iterator_first_t;
+		using const_iterator = typename base_t::const_iterator_first_t;
+		using last_iterator = typename base_t::iterator_last_t;
+		using const_last_iterator = typename base_t::const_iterator_last_t;
+		using iterator_category = range_category_t<R>;
+		using i_am_a_daw_flatten_view_class = void;
+		explicit flatten_view( ) = default;
+
+		template<Range U>
+		requires( not std::same_as<std::remove_cvref_t<U>,
+		                           flatten_view> ) //
+		  explicit constexpr flatten_view( U &&r )
+		  : base_t( DAW_FWD( r ) ) {}
+
+		[[nodiscard]] constexpr iterator begin( ) {
+			return iterator{ base_t::rbegin( ), base_t::rend( ) };
+		}
+
+		[[nodiscard]] constexpr const_iterator begin( ) const {
+			return const_iterator{ base_t::rbegin( ), base_t::rend( ) };
+		}
+
+		[[nodiscard]] constexpr last_iterator end( ) {
+			return last_iterator{ base_t::rend( ), base_t::rend( ) };
+		}
+
+		[[nodiscard]] constexpr const_last_iterator end( ) const {
+			return const_last_iterator{ base_t::rend( ), base_t::rend( ) };
+		}
+
+	private:
+		using underlying_range_t = std::remove_cvref_t<R>;
+		using underlying_value_t = daw::range_value_t<underlying_range_t>;
+
+	public:
+		[[nodiscard]] constexpr bool operator==( flatten_view const &rhs ) const
+		  requires( std::equality_comparable<underlying_range_t>
+		              and std::equality_comparable<underlying_value_t> ) {
+			return static_cast<base_t const &>( *this ) ==
+			       static_cast<base_t const &>( rhs );
+		}
+
+		[[nodiscard]] constexpr bool
+		operator!=( flatten_view const &rhs ) const = default;
 	};
 	template<Range R>
 	flatten_view( R && ) -> flatten_view<daw::remove_rvalue_ref_t<R>>;

@@ -117,15 +117,11 @@ namespace daw::pipelines {
 			return *( value + static_cast<difference_type>( n ) );
 		}
 
-		[[nodiscard]] friend constexpr bool operator==( iota_iterator const &lhs,
-		                                                iota_iterator const &rhs ) {
-			return lhs.value == rhs.value;
-		}
+		[[nodiscard]] constexpr bool
+		operator==( iota_iterator const &rhs ) const = default;
 
-		[[nodiscard]] friend constexpr bool operator!=( iota_iterator const &lhs,
-		                                                iota_iterator const &rhs ) {
-			return lhs.value != rhs.value;
-		}
+		[[nodiscard]] constexpr bool
+		operator!=( iota_iterator const &rhs ) const = default;
 
 		// clang-format off
 		[[nodiscard]] friend constexpr auto operator<=>
@@ -136,7 +132,7 @@ namespace daw::pipelines {
 	};
 
 	template<typename T>
-	struct iota_view : range_base_t<iota_iterator<T>> {
+	struct iota_view : private pimpl::range_base_t<iota_iterator<T>> {
 		using value_type = daw::iter_value_t<iota_iterator<T>>;
 		using iterator = iota_iterator<T>;
 
@@ -162,6 +158,13 @@ namespace daw::pipelines {
 		[[nodiscard]] constexpr iterator end( ) const {
 			return m_last;
 		}
+
+		[[nodiscard]] constexpr bool operator==( iota_view const &rhs ) const {
+			return m_first == rhs.m_first and m_last == rhs.m_last;
+		}
+
+		[[nodiscard]] constexpr bool
+		operator!=( iota_view const &rhs ) const = default;
 	};
 	template<typename T>
 	iota_view( T ) -> iota_view<std::size_t>;

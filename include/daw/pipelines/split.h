@@ -10,8 +10,8 @@
 
 #include "daw/daw_iterator_traits.h"
 #include "daw/pipelines/find.h"
-#include "daw/pipelines/range.h"
 #include "daw/pipelines/range_base.h"
+#include "daw/pipelines/view.h"
 
 #include <iterator>
 #include <optional>
@@ -50,7 +50,7 @@ namespace daw::pipelines {
 	         typename Projection>
 	struct split_view_iterator {
 		using iterator_category = std::forward_iterator_tag;
-		using value_type = range_t<I, I>;
+		using value_type = view_t<I, I>;
 		using reference = value_type;
 		using const_reference = value_type;
 		using difference_type = std::ptrdiff_t;
@@ -68,14 +68,14 @@ namespace daw::pipelines {
 				return;
 			}
 			if constexpr( std::is_invocable_v<Delimiter, iter_reference_t<I>> ) {
-				m_next = daw::pipelines::FindIf( range_t{ m_first, m_last },
-				                                 m_delimiter, m_projection );
+				m_next = daw::pipelines::FindIf(
+				  view_t{ m_first, m_last }, m_delimiter, m_projection );
 			} else if constexpr( Range<Delimiter> ) {
-				m_next = std::search( m_first, m_last, std::begin( m_delimiter ),
-				                      std::end( m_delimiter ) );
+				m_next = std::search(
+				  m_first, m_last, std::begin( m_delimiter ), std::end( m_delimiter ) );
 			} else {
-				m_next = daw::pipelines::Find( range_t{ m_first, m_last }, m_delimiter,
-				                               m_projection );
+				m_next = daw::pipelines::Find(
+				  view_t{ m_first, m_last }, m_delimiter, m_projection );
 			}
 			assert( m_next );
 		}
@@ -128,7 +128,7 @@ namespace daw::pipelines {
 	template<ForwardRange R, typename Delimiter,
 	         typename Projection = std::identity>
 	struct split_view
-	  : range_base_t<split_view_iterator<
+	  : private pimpl::range_base_t<split_view_iterator<
 	      iterator_t<daw::remove_rvalue_ref_t<R>>,
 	      iterator_end_t<daw::remove_rvalue_ref_t<R>>, Delimiter, Projection>> {
 		using i_am_a_daw_split_view_class = void;
@@ -167,18 +167,18 @@ namespace daw::pipelines {
 		  , m_projection{ std::move( p ) } {}
 
 		[[nodiscard]] constexpr iterator begin( ) {
-			return iterator{ std::begin( m_range ), m_last, m_delimiter,
-			                 m_projection };
+			return iterator{
+			  std::begin( m_range ), m_last, m_delimiter, m_projection };
 		}
 
 		[[nodiscard]] constexpr iterator begin( ) const {
-			return iterator{ std::begin( m_range ), m_last, m_delimiter,
-			                 m_projection };
+			return iterator{
+			  std::begin( m_range ), m_last, m_delimiter, m_projection };
 		}
 
 		[[nodiscard]] constexpr iterator cbegin( ) const {
-			return iterator{ std::begin( m_range ), m_last, m_delimiter,
-			                 m_projection };
+			return iterator{
+			  std::begin( m_range ), m_last, m_delimiter, m_projection };
 		}
 
 		[[nodiscard]] constexpr iterator end( ) {
@@ -215,8 +215,8 @@ namespace daw::pipelines {
 			[[nodiscard]] constexpr auto operator( )( R &&r ) const {
 				static_assert( std::invocable<Projection, range_value_t<R>>,
 				               "Projection must be invocable with range_value_t<R>" );
-				return split_view<R, Delimiter, Projection>( DAW_FWD( r ), m_delimiter,
-				                                             m_projection );
+				return split_view<R, Delimiter, Projection>(
+				  DAW_FWD( r ), m_delimiter, m_projection );
 			}
 		};
 		template<typename F>
