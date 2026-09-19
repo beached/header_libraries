@@ -24,6 +24,11 @@
 #include <tuple>
 #include <type_traits>
 
+namespace daw::pipelines {
+	template<Range R, typename Fn, typename Projection = std::identity>
+	struct map_view;
+}
+
 namespace daw::pipelines::pimpl {
 	template<typename Fn, typename... Args>
 	consteval bool is_const_fn_same_v( ) {
@@ -37,25 +42,54 @@ namespace daw::pipelines::pimpl {
 			return true;
 		}
 	}
-} // namespace daw::pipelines::pimpl
 
-namespace daw::pipelines {
-	template<Iterator Iterator, typename Fn, typename Projection = std::identity>
+	template<Iterator SentinelFor>
+	struct map_iterator_end {
+		using iterator_category = std::input_iterator_tag;
+		using difference_type = std::ptrdiff_t;
+		using value_type = std::common_type_t<iter_value_t<SentinelFor>>;
+		using reference = std::common_reference_t<iter_reference_t<SentinelFor>>;
+		using pointer = void;
+		using i_am_a_daw_map_iterator_end_class = void;
+
+		map_iterator_end( ) = default;
+
+		constexpr bool operator==( map_iterator_end const & ) const {
+			return true;
+		}
+
+		[[noreturn]] DAW_ATTRIB_NOINLINE inline value_type operator*( ) const {
+			std::terminate( );
+		}
+
+		[[noreturn]] DAW_ATTRIB_NOINLINE inline map_iterator_end &
+		operator++( ) const {
+			std::terminate( );
+		}
+
+		[[noreturn]] DAW_ATTRIB_NOINLINE inline map_iterator_end
+		operator++( int ) const {
+			std::terminate( );
+		}
+	};
+
+	template<typename MI, Iterator I, Iterator ILast, typename Fn,
+	         typename Projection>
 	struct map_iterator {
-		using iterator_category = daw::iter_category_t<Iterator>;
+		using iterator_category = daw::iter_category_t<I>;
 
 	private:
+		using iterator = I;
+		using last_iterator = map_iterator_end<ILast>;
 		using iter_ref_t =
-		  daw::remove_rvalue_ref_t<daw::iter_reference_t<Iterator>>;
-		static_assert(
-		  std::is_same_v<iter_ref_t, daw::iter_reference_t<Iterator const>> );
+		  daw::remove_rvalue_ref_t<daw::iter_reference_t<iterator>>;
 		using proj_result_t =
 		  daw::remove_rvalue_ref_t<std::invoke_result_t<Projection, iter_ref_t>>;
-		static_assert( pimpl::is_const_fn_same_v<Projection, iter_ref_t>( ),
-		               "Expect similar results for const/non-const Projection" );
 		using func_result_t =
 		  daw::remove_rvalue_ref_t<std::invoke_result_t<Fn, proj_result_t>>;
 
+		static_assert( pimpl::is_const_fn_same_v<Projection, iter_ref_t>( ),
+		               "Expect similar results for const/non-const Projection" );
 		static_assert( pimpl::is_const_fn_same_v<Fn, proj_result_t>( ),
 		               "Expect similar results for const/non-const Fn" );
 
@@ -68,51 +102,45 @@ namespace daw::pipelines {
 		using size_type = std::size_t;
 
 	private:
-		Iterator m_iter{ };
-		DAW_NO_UNIQUE_ADDRESS daw::remove_rvalue_ref_t<Fn> m_func{ };
-		DAW_NO_UNIQUE_ADDRESS daw::remove_rvalue_ref_t<Projection> m_projection{ };
+		MI *m_parent{ };
+		iterator m_iter{ };
 
 	public:
-		explicit map_iterator( ) = default;
+		map_iterator( ) = default;
 
-		explicit constexpr map_iterator( Iterator it, Fn f )
-		  : m_iter( it )
-		  , m_func( std::forward<Fn>( f ) ) {}
-
-		explicit constexpr map_iterator( Iterator it, Fn f, Projection projection )
-		  : m_iter( it )
-		  , m_func( std::forward<Fn>( f ) )
-		  , m_projection( std::forward<Projection>( projection ) ) {}
+		template<Iterator First>
+		requires( std::constructible_from<iterator, First> ) //
+		  explicit constexpr map_iterator( MI *parent, First &&first )
+		  : m_parent( parent )
+		  , m_iter( DAW_FWD( first ) ) {}
 
 	private:
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr decltype( auto )
-		raw_get( size_type n ) requires( RandomIterator<Iterator> ) {
+		[[nodiscard]] constexpr decltype( auto ) raw_get( size_type n )
+		  requires( RandomIterator<iterator> ) {
 			return *( m_iter + static_cast<difference_type>( n ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr decltype( auto )
-		raw_get( size_type n ) const requires( RandomIterator<Iterator> ) {
+		[[nodiscard]] constexpr decltype( auto ) raw_get( size_type n ) const
+		  requires( RandomIterator<iterator> ) {
 			return *( m_iter + static_cast<difference_type>( n ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr decltype( auto )
-		do_project( auto &&v ) {
-			return std::invoke( m_projection, DAW_FWD( v ) );
+		[[nodiscard]] constexpr decltype( auto ) do_project( auto &&v ) {
+			return std::invoke( m_parent->m_proj, DAW_FWD( v ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr decltype( auto )
-		do_project( auto &&v ) const {
-			return std::invoke( m_projection, DAW_FWD( v ) );
+		[[nodiscard]] constexpr decltype( auto ) do_project( auto &&v ) const {
+			return std::invoke( static_cast<MI const *>( m_parent )->m_proj,
+			                    DAW_FWD( v ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr decltype( auto )
-		do_func( auto &&v ) {
-			return std::invoke( m_func, do_project( DAW_FWD( v ) ) );
+		[[nodiscard]] constexpr decltype( auto ) do_func( auto &&v ) {
+			return std::invoke( m_parent->m_fn, do_project( DAW_FWD( v ) ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr decltype( auto )
-		do_func( auto &&v ) const {
-			return std::invoke( m_func, do_project( DAW_FWD( v ) ) );
+		[[nodiscard]] constexpr decltype( auto ) do_func( auto &&v ) const {
+			return std::invoke( static_cast<MI const *>( m_parent )->m_fn,
+			                    do_project( DAW_FWD( v ) ) );
 		}
 
 	public:
@@ -124,225 +152,216 @@ namespace daw::pipelines {
 			return m_iter;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference
-		operator[]( size_type n ) requires( RandomIterator<Iterator> ) {
+		[[nodiscard]] constexpr bool good( ) const {
+			return m_iter != m_parent->rend( );
+		}
+
+		[[nodiscard]] constexpr reference operator[]( size_type n )
+		  requires( RandomIterator<iterator> ) {
 			return do_func( raw_get( n ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference
-		operator[]( size_type n ) const requires( RandomIterator<Iterator> ) {
+		[[nodiscard]] constexpr reference operator[]( size_type n ) const
+		  requires( RandomIterator<iterator> ) {
 			return do_func( raw_get( n ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference operator*( ) {
+		[[nodiscard]] constexpr reference operator*( ) {
 			return do_func( *m_iter );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference operator*( ) const {
+		[[nodiscard]] constexpr reference operator*( ) const {
 			return do_func( *m_iter );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer operator->( ) {
+		[[nodiscard]] constexpr pointer operator->( ) {
 			return do_func( *m_iter );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr pointer operator->( ) const {
+		[[nodiscard]] constexpr pointer operator->( ) const {
 			return do_func( *m_iter );
 		}
 
-		DAW_ATTRIB_INLINE constexpr map_iterator &operator++( ) {
+		constexpr map_iterator &operator++( ) {
 			++m_iter;
 			return *this;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr map_iterator operator++( int ) {
+		[[nodiscard]] constexpr map_iterator operator++( int ) {
 			map_iterator result = *this;
 			++m_iter;
 			return result;
 		}
 
-		DAW_ATTRIB_INLINE constexpr map_iterator &operator--( )
-		  requires( BidirectionalIterator<Iterator> ) {
+		constexpr map_iterator &operator--( )
+		  requires( BidirectionalIterator<iterator> ) {
 			--m_iter;
 			return *this;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr map_iterator operator--( int )
-		  requires( BidirectionalIterator<Iterator> ) {
+		[[nodiscard]] constexpr map_iterator operator--( int )
+		  requires( BidirectionalIterator<iterator> ) {
 			map_iterator result = *this;
 			--m_iter;
 			return result;
 		}
 
-		DAW_ATTRIB_INLINE constexpr map_iterator &operator+=( difference_type n )
-		  requires( RandomIterator<Iterator> ) {
+		constexpr map_iterator &operator+=( difference_type n )
+		  requires( RandomIterator<iterator> ) {
 			m_iter += n;
 			return *this;
 		}
 
-		DAW_ATTRIB_INLINE constexpr map_iterator &operator-=( difference_type n )
-		  requires( RandomIterator<Iterator> ) {
+		constexpr map_iterator &operator-=( difference_type n )
+		  requires( RandomIterator<iterator> ) {
 			m_iter -= n;
 			return *this;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr map_iterator
+		[[nodiscard]] friend constexpr map_iterator
 		operator+( map_iterator lhs, difference_type n ) noexcept
-		  requires( RandomIterator<Iterator> ) {
+		  requires( RandomIterator<iterator> ) {
 			lhs += n;
 			return lhs;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr map_iterator
+		[[nodiscard]] friend constexpr map_iterator
 		operator+( difference_type n, map_iterator rhs ) noexcept
-		  requires( RandomIterator<Iterator> ) {
+		  requires( RandomIterator<iterator> ) {
 			rhs += n;
 			return rhs;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr map_iterator
+		[[nodiscard]] friend constexpr map_iterator
 		operator-( map_iterator lhs, difference_type n ) noexcept
-		  requires( RandomIterator<Iterator> ) {
+		  requires( RandomIterator<iterator> ) {
 			lhs -= n;
 			return lhs;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr map_iterator
+		[[nodiscard]] friend constexpr map_iterator
 		operator-( difference_type n, map_iterator rhs ) noexcept
-		  requires( RandomIterator<Iterator> ) {
+		  requires( RandomIterator<iterator> ) {
 			rhs -= n;
 			return rhs;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr difference_type
+		[[nodiscard]] constexpr difference_type
 		operator-( map_iterator const &rhs ) const
-		  requires( RandomIterator<Iterator> ) {
+		  requires( RandomIterator<iterator> ) {
 			return m_iter - rhs.m_iter;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
-		operator==( map_iterator const &lhs, map_iterator const &rhs ) {
-			return lhs.m_iter == rhs.m_iter;
+		[[nodiscard]] constexpr difference_type
+		operator-( last_iterator const & ) const
+		  requires( RandomIterator<iterator> ) {
+			return m_iter - m_parent->rend( );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
-		operator!=( map_iterator const &lhs, map_iterator const &rhs ) {
-			return lhs.m_iter != rhs.m_iter;
+		[[nodiscard]] friend constexpr difference_type
+		operator-( last_iterator const &, map_iterator const &rhs )
+		  requires( RandomIterator<iterator> ) {
+			return rhs.m_parent->rend( ) - rhs.m_iter;
+		}
+
+		[[nodiscard]] constexpr bool operator==( map_iterator const &rhs ) const {
+			return m_iter == rhs.m_iter;
+		}
+
+		[[nodiscard]] constexpr bool operator==( last_iterator const & ) const {
+			return not good( );
 		}
 
 		// clang-format off
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend auto
-		operator<=>( map_iterator const &lhs, map_iterator const &rhs )
-		  requires( RandomIterator<Iterator> ) {
-			return lhs.m_iter <=> rhs.m_iter;
-		}
+		[[nodiscard]] constexpr auto operator<=>( map_iterator const &rhs )
+			requires( RandomIterator<iterator> ) {
+			return m_iter <=> rhs.m_iter;
+			}
 		// clang-format on
 	};
-	template<Iterator I, typename F>
-	map_iterator( I, F ) -> map_iterator<I, F>;
+} // namespace daw::pipelines::pimpl
 
-	template<Iterator I, typename F, typename P>
-	map_iterator( I, F, P ) -> map_iterator<I, F, P>;
+namespace daw::pipelines {
+	template<Range R, typename Fn, typename Projection>
+	struct map_view
+	  : private pimpl::stored_range_base_t<
+	      R, //
+	      pimpl::map_iterator<map_view<R, Fn, Projection>, iterator_t<R>,
+	                          iterator_end_t<R>, Fn, Projection>,
+	      pimpl::map_iterator_end<iterator_end_t<R>>,
+	      pimpl::map_iterator<map_view<R, Fn, Projection> const,
+	                          const_iterator_t<R>, const_iterator_end_t<R>, Fn,
+	                          Projection>,
+	      pimpl::map_iterator_end<const_iterator_end_t<R>>> {
 
-	template<Range R, typename Fn, typename Projection = std::identity>
-	struct map_view : private pimpl::range_base_t<
-	                    map_iterator<iterator_t<R>, Fn, Projection>,
-	                    map_iterator<iterator_end_t<R>, Fn, Projection>> {
-		using daw_range_base_t =
-		  pimpl::range_base_t<map_iterator<iterator_t<R>, Fn, Projection>,
-		                      map_iterator<iterator_end_t<R>, Fn, Projection>>;
+		using base_t = pimpl::stored_range_base_t<
+		  R, //
+		  pimpl::map_iterator<map_view<R, Fn, Projection>, iterator_t<R>,
+		                      iterator_end_t<R>, Fn, Projection>,
+		  pimpl::map_iterator_end<iterator_end_t<R>>,
+		  pimpl::map_iterator<map_view<R, Fn, Projection> const,
+		                      const_iterator_t<R>, const_iterator_end_t<R>, Fn,
+		                      Projection>,
+		  pimpl::map_iterator_end<const_iterator_end_t<R>>>;
 
-		using typename daw_range_base_t::iterator_first_t;
-		using typename daw_range_base_t::iterator_last_t;
-		using const_iterator_first_t =
-		  map_iterator<const_iterator_t<R>, Fn, Projection>;
-		using const_iterator_last_t =
-		  map_iterator<const_iterator_end_t<R>, Fn, Projection>;
+		using typename base_t::const_iterator_first_t;
+		using typename base_t::const_iterator_last_t;
+		using typename base_t::iterator_first_t;
+		using typename base_t::iterator_last_t;
 
 		using value_type = daw::iter_value_t<iterator_first_t>;
-		using m_range_valref_t = daw::remove_rvalue_ref_t<R>;
-		using m_range_t = std::conditional_t<
-		  std::is_lvalue_reference_v<m_range_valref_t>,
-		  std::reference_wrapper<std::remove_reference_t<m_range_valref_t>>,
-		  m_range_valref_t>;
 
 	private:
-		constexpr auto rng_begin( ) {
-			if constexpr( std::is_lvalue_reference_v<m_range_valref_t> ) {
-				return std::begin( m_range.get( ) );
-			} else {
-				return std::begin( m_range );
-			}
-		}
+		template<typename, Iterator, Iterator, typename, typename>
+		friend struct pimpl::map_iterator;
 
-		constexpr auto rng_begin( ) const {
-			if constexpr( std::is_lvalue_reference_v<m_range_valref_t> ) {
-				return std::begin( m_range.get( ) );
-			} else {
-				return std::begin( m_range );
-			}
-		}
-
-		constexpr auto rng_end( ) {
-			if constexpr( std::is_lvalue_reference_v<m_range_valref_t> ) {
-				return std::end( m_range.get( ) );
-			} else {
-				return std::end( m_range );
-			}
-		}
-
-		constexpr auto rng_end( ) const {
-			if constexpr( std::is_lvalue_reference_v<m_range_valref_t> ) {
-				return std::end( m_range.get( ) );
-			} else {
-				return std::end( m_range );
-			}
-		}
-
-		m_range_t m_range;
 		DAW_NO_UNIQUE_ADDRESS Fn m_fn;
 		DAW_NO_UNIQUE_ADDRESS Projection m_proj{ };
 
 	public:
 		explicit map_view( ) = default;
 
-		explicit constexpr map_view( Range auto &&r, Fn const &fn )
-		  requires( not Iterator<Fn> )
-		  : m_range( DAW_FWD( r ) )
-		  , m_fn{ fn } {}
+		template<Range R0, typename F>
+		requires(
+		  std::constructible_from<base_t, R0> and std::constructible_from<Fn, F> and
+		  not Iterator<F> ) //
+		  explicit constexpr map_view( R0 &&r, F &&fn )
+		  : base_t( DAW_FWD( r ) )
+		  , m_fn{ DAW_FWD( fn ) } {}
 
-		explicit constexpr map_view( Range auto &&r, Fn const &fn,
-		                             Projection const &projection )
-		  requires( not Iterator<Fn> and not Iterator<Projection> )
-		  : m_range( DAW_FWD( r ) )
-		  , m_fn{ fn }
-		  , m_proj( projection ) {}
+		template<Range R0, typename F, typename P>
+		requires(
+		  std::constructible_from<base_t, R0> and std::constructible_from<Fn, F> and
+		  not Iterator<F> and std::constructible_from<Projection, P> and
+		  not Iterator<P> ) //
+		  explicit constexpr map_view( R0 &&r, F &&fn, P &&projection )
+		  : base_t( DAW_FWD( r ) )
+		  , m_fn{ DAW_FWD( fn ) }
+		  , m_proj( DAW_FWD( projection ) ) {}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr iterator_first_t begin( ) {
-			return iterator_first_t( rng_begin( ), m_fn, m_proj );
+		[[nodiscard]] constexpr iterator_first_t begin( ) {
+			return iterator_first_t( this, base_t::rbegin( ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr iterator_last_t end( ) {
-			return iterator_last_t( rng_end( ), m_fn, m_proj );
+		[[nodiscard]] constexpr const_iterator_first_t begin( ) const {
+			return const_iterator_first_t( this, base_t::rbegin( ) );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_iterator_first_t
-		begin( ) const {
-			return const_iterator_first_t( rng_begin( ), m_fn, m_proj );
+		[[nodiscard]] constexpr iterator_last_t end( ) {
+			return iterator_last_t{ };
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_iterator_last_t
-		end( ) const {
-			return const_iterator_last_t( rng_end( ), m_fn, m_proj );
+		[[nodiscard]] constexpr const_iterator_last_t end( ) const {
+			return const_iterator_last_t{ };
 		}
 	};
 	template<Range R, typename F>
 	requires( not Iterator<F> ) //
-	  map_view( R &&, F ) -> map_view<daw::remove_rvalue_ref_t<R>, F>;
+	  map_view( R &&, F ) -> map_view<R, F>;
 
 	template<Range R, typename F, typename P>
 	requires( not Iterator<F> and not Iterator<P> ) //
-	  map_view( R &&, F, P ) -> map_view<daw::remove_rvalue_ref_t<R>, F, P>;
+	  map_view( R &&, F, P ) -> map_view<R, F, P>;
 
 	namespace pimpl {
 		template<typename Fn, typename Projection = std::identity>
@@ -365,8 +384,7 @@ namespace daw::pipelines {
 					               "MapFn, *it ) )" );
 					static_assert( traits::NoVoidResults<Fn, projected_t>,
 					               "Map requires the result to not be void" );
-					return map_view<R, Fn, Projection>(
-					  DAW_FWD( r ), m_func, m_projection );
+					return map_view( DAW_FWD( r ), m_func, m_projection );
 				} else {
 					static_assert( std::invocable<Projection, R>,
 					               "Projection must be invocable with R" );

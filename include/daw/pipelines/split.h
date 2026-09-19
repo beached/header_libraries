@@ -39,7 +39,7 @@ namespace daw::pipelines {
 			}
 
 			constexpr delimiter_length_t( Delimiter const &d )
-			  : length( std::distance( std::begin( d ), std::end( d ) ) ) {}
+			  : length( daw::pipelines::pimpl::ranges_distance( std::begin( d ), std::end( d ) ) ) {}
 		};
 	} // namespace pimpl
 
@@ -147,7 +147,7 @@ namespace daw::pipelines {
 
 		static constexpr auto advance_to_last( auto f, auto l ) {
 			if constexpr( RandomRange<range_type> ) {
-				auto const sz = std::distance( f, l );
+				auto const sz = daw::pipelines::pimpl::ranges_distance( f, l );
 				return std::next( f, sz );
 			} else {
 				while( f != l ) {

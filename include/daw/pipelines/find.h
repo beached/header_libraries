@@ -79,7 +79,7 @@ namespace daw::pipelines::pimpl {
 			while( first != last ) {
 				ForwardIterator auto p0 = first;
 				Iterator auto plast = daw::safe_next( first, last, FindWidth );
-				if( static_cast<std::size_t>( std::distance( p0, plast ) ) <
+				if( static_cast<std::size_t>( daw::pipelines::pimpl::ranges_distance( p0, plast ) ) <
 				    FindWidth ) {
 					return last;
 				}

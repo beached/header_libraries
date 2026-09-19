@@ -117,8 +117,14 @@ namespace std {
 			if constexpr( std::is_same_v<daw::formatter_impl::DefaultCharT,
 			                             value_t> ) {
 				// format as string
-				auto out = std::copy(
-				  std::begin( c.container ), std::end( c.container ), ctx.out( ) );
+				auto out = ctx.out( );
+				auto first = std::begin( c.container );
+				auto const last = std::end( c.container );
+				while( first != last ) {
+					*out = *first;
+					++out;
+					++first;
+				}
 				return out;
 			} else {
 				auto out = ctx.out( );

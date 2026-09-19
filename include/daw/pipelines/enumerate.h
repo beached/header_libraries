@@ -23,7 +23,7 @@ namespace daw::pipelines::pimpl {
 		template<ForwardRange R>
 		[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
 		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
-			return zip_view<iota_view<EnumType>, std::remove_reference_t<R>>(
+			return zip_view<iota_view<EnumType>, R>(
 			  iota_view<EnumType>( 0, max_value<EnumType> ), DAW_FWD( r ) );
 		}
 	};
@@ -33,7 +33,7 @@ namespace daw::pipelines::pimpl {
 		EnumType offset = EnumType{ };
 		template<ForwardRange R>
 		[[nodiscard]] constexpr auto operator( )( R &&r ) const {
-			return zip_view<iota_view<EnumType>, daw::remove_cvref_t<R>>(
+			return zip_view<iota_view<EnumType>, R>(
 			  iota_view<EnumType>( offset, max_value<EnumType> ), DAW_FWD( r ) );
 		}
 	};
@@ -45,7 +45,7 @@ namespace daw::pipelines::pimpl {
 		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
 			if constexpr( RandomRange<R> ) {
 				auto const sz = static_cast<EnumType>(
-				  std::distance( std::begin( r ), std::end( r ) ) );
+				  daw::pipelines::pimpl::ranges_distance( std::begin( r ), std::end( r ) ) );
 				return ZipMore( iota_view<EnumType>( EnumType{ }, sz ), DAW_FWD( r ) );
 			} else {
 				return ZipMore( iota_view<EnumType>( EnumType{ }, max_value<EnumType> ),
@@ -61,7 +61,7 @@ namespace daw::pipelines::pimpl {
 		[[nodiscard]] constexpr auto operator( )( R &&r ) const {
 			if constexpr( RandomRange<R> ) {
 				auto const sz = static_cast<EnumType>(
-				  std::distance( std::begin( r ), std::end( r ) ) );
+				  daw::pipelines::pimpl::ranges_distance( std::begin( r ), std::end( r ) ) );
 				return ZipMore( iota_view<EnumType>( offset, offset + sz ),
 				                DAW_FWD( r ) );
 			} else {

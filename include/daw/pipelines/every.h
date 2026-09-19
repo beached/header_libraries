@@ -6,6 +6,7 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
+#include "daw/daw_mutable_capture.h"
 #include "daw/pipelines/filter.h"
 #include "daw/pipelines/view.h"
 
@@ -16,16 +17,17 @@ namespace daw::pipelines::pimpl {
 		std::size_t m_select_every;
 
 		[[nodiscard]] constexpr auto operator( )( Range auto &&r ) const {
-			return filter_view{ std::begin( DAW_FWD( r ) ), std::end( DAW_FWD( r ) ),
-			                    [select_every = m_select_every,
-			                     n = m_select_every]( auto const & ) mutable {
-				                    if( n >= select_every ) {
-					                    n = 1;
-					                    return true;
-				                    }
-				                    ++n;
-				                    return false;
-			                    } };
+			return filter_view{
+			  DAW_FWD( r ),
+			  [select_every = m_select_every,
+			   n = daw::mutable_capture{ m_select_every }]( auto const & ) {
+				  if( n.get( ) >= select_every ) {
+					  n.get( ) = 1;
+					  return true;
+				  }
+				  ++n.get( );
+				  return false;
+			  } };
 		}
 	};
 } // namespace daw::pipelines::pimpl

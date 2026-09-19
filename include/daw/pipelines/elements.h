@@ -140,14 +140,16 @@ namespace daw::pipelines::pimpl {
 			return m_iter - rhs.m_iter;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
-		operator==( element_iterator const &lhs, element_iterator const &rhs ) {
-			return lhs.m_iter == rhs.m_iter;
+		template<typename OtherIterator>
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+		operator==( element_iterator<OtherIterator, Index> const &rhs ) const {
+			return m_iter == rhs.base( );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
-		operator!=( element_iterator const &lhs, element_iterator const &rhs ) {
-			return lhs.m_iter != rhs.m_iter;
+		template<typename OtherIterator>
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+		operator!=( element_iterator<OtherIterator, Index> const &rhs ) const {
+			return m_iter != rhs.base( );
 		}
 
 		// clang-format off
@@ -332,14 +334,16 @@ namespace daw::pipelines::pimpl {
 			return m_iter - rhs.m_iter;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
-		operator==( elements_iterator const &lhs, elements_iterator const &rhs ) {
-			return lhs.m_iter == rhs.m_iter;
+		template<typename OtherIterator>
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+		operator==( elements_iterator<OtherIterator, Indices...> const &rhs ) const {
+			return m_iter == rhs.base( );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
-		operator!=( elements_iterator const &lhs, elements_iterator const &rhs ) {
-			return lhs.m_iter != rhs.m_iter;
+		template<typename OtherIterator>
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+		operator!=( elements_iterator<OtherIterator, Indices...> const &rhs ) const {
+			return m_iter != rhs.base( );
 		}
 
 		// clang-format off

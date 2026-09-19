@@ -16,35 +16,59 @@
 #include <iterator>
 
 namespace daw::pipelines {
+	template<Iterator SentinelFor>
+	struct unique_iterator_end {
+		using iterator_category = std::input_iterator_tag;
+		using difference_type = std::ptrdiff_t;
+		using value_type = std::common_type_t<iter_value_t<SentinelFor>>;
+		using reference = std::common_reference_t<iter_reference_t<SentinelFor>>;
+		using pointer = void;
+		using i_am_a_daw_unique_iterator_end_class = void;
 
-	template<typename Iterator>
-	struct unique_view {
-		using value_type = daw::iter_value_t<Iterator>;
+		unique_iterator_end( ) = default;
+
+		constexpr bool operator==( unique_iterator_end const & ) const {
+			return true;
+		}
+
+		[[noreturn]] DAW_ATTRIB_NOINLINE inline value_type operator*( ) const {
+			std::terminate( );
+		}
+
+		[[noreturn]] DAW_ATTRIB_NOINLINE inline unique_iterator_end &
+		operator++( ) const {
+			std::terminate( );
+		}
+
+		[[noreturn]] DAW_ATTRIB_NOINLINE inline unique_iterator_end
+		operator++( int ) const {
+			std::terminate( );
+		}
+	};
+
+	template<ForwardIterator First, typename Last>
+	struct unique_iterator {
+		using value_type = daw::iter_value_t<First>;
 		static_assert( requires( value_type const &v ) { v == v; } );
 
 		using iterator_category = std::forward_iterator_tag;
-		using reference = daw::iter_reference_t<Iterator>;
-		using const_reference = daw::iter_const_reference_t<Iterator>;
+		using reference = daw::iter_reference_t<First>;
+		using const_reference = daw::iter_const_reference_t<First>;
 		using difference_type = std::ptrdiff_t;
 
 	private:
-		Iterator m_first = { };
-		Iterator m_last = { };
+		First m_first{ };
+		Last m_last{ };
 
 	public:
-		explicit unique_view( ) = default;
+		unique_iterator( ) = default;
 
-		explicit constexpr unique_view( Iterator first, Iterator last )
-		  : m_first( first )
-		  , m_last( last ) {}
-
-		[[nodiscard]] constexpr unique_view begin( ) const {
-			return *this;
-		}
-
-		[[nodiscard]] constexpr unique_view end( ) const {
-			return unique_view( m_last, m_last );
-		}
+		template<ForwardIterator F, typename L>
+		requires( std::constructible_from<First, F>
+		            and std::constructible_from<Last, L> ) //
+		  explicit constexpr unique_iterator( F &&first, L &&last )
+		  : m_first( DAW_FWD( first ) )
+		  , m_last( DAW_FWD( last ) ) {}
 
 		[[nodiscard]] constexpr reference operator*( ) {
 			return *m_first;
@@ -55,11 +79,11 @@ namespace daw::pipelines {
 		}
 
 		[[nodiscard]] constexpr auto operator->( ) const {
-			return m_first.operator->( );
+			return std::to_address( m_first );
 		}
 
 		[[nodiscard]] constexpr auto operator->( ) {
-			return m_first.operator->( );
+			return std::to_address( m_first );
 		}
 
 		[[nodiscard]] constexpr bool good( ) const {
@@ -69,7 +93,7 @@ namespace daw::pipelines {
 			return good( );
 		}
 
-		constexpr unique_view &operator++( ) {
+		constexpr unique_iterator &operator++( ) {
 			if( not good( ) ) {
 				return *this;
 			}
@@ -81,77 +105,75 @@ namespace daw::pipelines {
 			return *this;
 		}
 
-		[[nodiscard]] constexpr unique_view operator++( int ) {
+		[[nodiscard]] constexpr unique_iterator operator++( int ) {
 			auto result = *this;
 			operator++( );
 			return result;
 		}
 
-		[[nodiscard]] constexpr friend bool operator==( unique_view const &lhs,
-		                                                unique_view const &rhs ) {
-			return lhs.m_first == rhs.m_first;
+		[[nodiscard]] constexpr bool
+		operator==( unique_iterator const &rhs ) const {
+			return m_first == rhs.m_first;
 		}
 
-		[[nodiscard]] constexpr friend bool operator!=( unique_view const &lhs,
-		                                                unique_view const &rhs ) {
-			return lhs.m_first != rhs.m_first;
+		[[nodiscard]] constexpr bool
+		operator==( unique_iterator_end<Last> const & ) const {
+			return not good( );
 		}
 	};
-	template<typename I>
-	unique_view( I ) -> unique_view<I>;
+	template<ForwardRange R>
+	struct unique_view
+	  : private pimpl::stored_range_base_t<
+	      R, unique_iterator<iterator_t<R>, iterator_end_t<R>>,
+	      unique_iterator_end<iterator_end_t<R>>,
+	      unique_iterator<const_iterator_t<R>, const_iterator_end_t<R>>,
+	      unique_iterator_end<const_iterator_end_t<R>>> {
 
-	template<Range R>
-	struct unique_range {
-		using value_type = daw::range_value_t<R>;
-		static_assert( requires( value_type const &v ) { v == v; } );
-		using iterator = unique_view<daw::iterator_t<R>>;
-		using const_iterator = unique_view<daw::const_iterator_t<R>>;
+		using base_t = pimpl::stored_range_base_t<
+		  R, unique_iterator<iterator_t<R>, iterator_end_t<R>>,
+		  unique_iterator_end<iterator_end_t<R>>,
+		  unique_iterator<const_iterator_t<R>, const_iterator_end_t<R>>,
+		  unique_iterator_end<const_iterator_end_t<R>>>;
 
-	private:
-		R m_range;
+		using iterator = typename base_t::iterator_first_t;
+		using iterator_last = typename base_t::iterator_last_t;
+		using const_iterator = typename base_t::const_iterator_first_t;
+		using const_iterator_last = typename base_t::const_iterator_last_t;
 
-	public:
-		explicit constexpr unique_range( R const &r ) noexcept
-		  : m_range{ r } {}
+		explicit unique_view( ) = default;
 
-		explicit constexpr unique_range( R &&r ) noexcept
-		  : m_range{ std::move( r ) } {}
+		template<ForwardRange FR>
+		requires( std::constructible_from<R, FR> ) //
+		  explicit constexpr unique_view( FR &&range )
+		  : base_t( DAW_FWD( range ) ) {}
 
 		[[nodiscard]] constexpr iterator begin( ) {
-			return iterator{ std::begin( m_range ), std::end( m_range ) };
+			return iterator{ base_t::rbegin( ), base_t::rend( ) };
 		}
 
 		[[nodiscard]] constexpr const_iterator begin( ) const {
-			return const_iterator{ std::begin( m_range ), std::end( m_range ) };
+			return const_iterator{ base_t::rbegin( ), base_t::rend( ) };
 		}
 
-		[[nodiscard]] constexpr iterator end( ) {
-			return iterator{ std::end( m_range ), std::end( m_range ) };
+		[[nodiscard]] constexpr iterator_last end( ) {
+			return iterator_last{ };
 		}
 
-		[[nodiscard]] constexpr const_iterator end( ) const {
-			return const_iterator{ std::end( m_range ), std::end( m_range ) };
+		[[nodiscard]] constexpr const_iterator_last end( ) const {
+			return const_iterator_last{ };
 		}
 
-		[[nodiscard]] constexpr friend bool
-		operator==( unique_range const &lhs, unique_range const &rhs ) = default;
-
-		[[nodiscard]] constexpr friend bool
-		operator!=( unique_range const &lhs, unique_range const &rhs ) = default;
+		[[nodiscard]] constexpr bool
+		operator==( unique_view const & ) const = default;
 	};
-
-	template<Range R>
-	unique_range( R && ) -> unique_range<daw::remove_rvalue_ref_t<R>>;
+	template<ForwardRange R>
+	unique_view( R && ) -> unique_view<R>;
 
 	namespace pimpl {
 		struct Unique_t {
 			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
-			operator( )( Range auto &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
-				if constexpr( std::is_rvalue_reference_v<decltype( r )> ) {
-					return unique_range{ DAW_FWD( r ) };
-				} else {
-					return unique_view{ DAW_FWD( r ) };
-				}
+			operator( )( ForwardRange auto &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
+				return unique_view{ DAW_FWD( r ) };
 			}
 		};
 	} // namespace pimpl

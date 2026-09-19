@@ -20,7 +20,8 @@ namespace daw::pipelines::pimpl {
 		DAW_NO_UNIQUE_ADDRESS mutable Fn fn;
 
 		template<Range R>
-		[[nodiscard]] constexpr decltype( auto ) operator( )( R &&r ) const {
+		[[nodiscard]] constexpr daw::remove_rvalue_ref_t<R>
+		operator( )( R &&r ) const {
 			static_assert( std::invocable<Fn, range_reference_t<R>>,
 			               "ForEach requires the function to be able to be called "
 			               "with invoke and passed value" );
@@ -43,7 +44,8 @@ namespace daw::pipelines::pimpl {
 		DAW_NO_UNIQUE_ADDRESS mutable Fn fn;
 
 		template<Range R>
-		[[nodiscard]] constexpr auto operator( )( R &&r ) const {
+		[[nodiscard]] constexpr daw::remove_rvalue_ref_t<R>
+		operator( )( R &&r ) const {
 			static_assert( traits::is_applicable_v<Fn, range_reference_t<R>>,
 			               "ForEach requires the function to be able to be called "
 			               "with apply and passed value" );
@@ -68,9 +70,11 @@ namespace daw::pipelines {
 
 	[[nodiscard]] constexpr auto ForEachIndexed( auto &&fn ) {
 		// Maybe used owned range
-		return [fun=DAW_FWD(fn)]( RandomRange auto &&r ) {
-			auto const sz = static_cast<std::size_t>(
-			  std::distance( std::begin( r ), std::end( r ) ) );
+		return [fun = DAW_FWD( fn )]<RandomRange R>(
+		         R &&r ) -> daw::remove_rvalue_ref_t<R> {
+			auto const sz =
+			  static_cast<std::size_t>( daw::pipelines::pimpl::ranges_distance(
+			    std::begin( r ), std::end( r ) ) );
 			for( std::size_t n = 0; n < sz; ++n ) {
 				(void)std::invoke( fun, r[n] );
 			}

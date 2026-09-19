@@ -24,8 +24,7 @@ namespace daw::pipelines::pimpl {
 		std::size_t m_sample_size;
 		RandomEngine m_engine = RandomEngine{ };
 
-		template<Range R>
-		[[nodiscard]] constexpr auto operator( )( R &&r ) const {
+		[[nodiscard]] constexpr auto operator( )( Range auto &&r ) const {
 			using result_type = typename Distribution::result_type;
 			static_assert( std::is_integral_v<result_type> );
 			daw_ensure( m_number_to_keep < m_sample_size );
@@ -34,10 +33,12 @@ namespace daw::pipelines::pimpl {
 			auto distribution = Distribution{
 			  result_type{ 1 }, static_cast<result_type>( m_sample_size ) };
 
-			return filter_view{ std::begin( r ), std::end( r ),
-			                    [engine = m_engine, number_to_keep = m_number_to_keep,
-			                     distribution]( auto const & ) mutable {
-				                    auto n = distribution( engine );
+			return filter_view{ DAW_FWD( r ),
+			                    [engine = daw::mutable_capture{ m_engine },
+			                     number_to_keep = m_number_to_keep,
+			                     dist = daw::mutable_capture{
+			                       std::move( distribution ) }]( auto const & ) {
+				                    auto n = dist.get( )( engine.get( ) );
 				                    auto result = n <= number_to_keep;
 				                    return result;
 			                    } };
@@ -51,7 +52,7 @@ namespace daw::pipelines {
 	[[nodiscard]] constexpr auto
 	Sample( std::size_t numberToKeep, std::size_t sampleSize,
 	        Engine engine = Engine{ std::random_device{ }( ) } ) {
-		return pimpl::Sample_t<Engine, Distribution>{ numberToKeep, sampleSize,
-		                                              std::move( engine ) };
+		return pimpl::Sample_t<Engine, Distribution>{
+		  numberToKeep, sampleSize, std::move( engine ) };
 	}
 } // namespace daw::pipelines

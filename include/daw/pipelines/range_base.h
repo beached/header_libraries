@@ -12,11 +12,43 @@
 #include "daw/daw_constant.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_remove_cvref.h"
+#include <daw/daw_ref_storage.h>
 
 #include <cstddef>
 #include <daw/stdinc/tuple_traits.h>
 
 namespace daw::pipelines::pimpl {
+	template<Range R>
+	[[nodiscard]] constexpr auto range_distance( R const &r ) {
+		if constexpr( daw::RandomRange<R> ) {
+			return std::end( r ) - std::begin( r );
+		} else {
+			std::ptrdiff_t d = 0;
+			auto f = std::begin( r );
+			auto const l = std::end( r );
+			while( f != l ) {
+				++f;
+				++d;
+			}
+			return d;
+		}
+	}
+
+	template<typename First, typename Last>
+	[[nodiscard]] constexpr std::ptrdiff_t ranges_distance( First first,
+	                                                        Last last ) {
+		if constexpr( requires { last - first; } ) {
+			return static_cast<std::ptrdiff_t>( last - first );
+		} else {
+			std::ptrdiff_t d = 0;
+			while( first != last ) {
+				++first;
+				++d;
+			}
+			return d;
+		}
+	}
+
 	template<typename First, typename Last = First>
 	struct range_base_t {
 		using i_am_a_daw_pipelines_range_base_t = void;
@@ -30,43 +62,6 @@ namespace daw::pipelines::pimpl {
 		typename daw::remove_cvref_t<R>::i_am_a_daw_pipelines_range_base_t;
 	};
 
-	template<Range R>
-	using range_storage_t =
-	  std::conditional_t<std::is_lvalue_reference_v<daw::remove_rvalue_ref_t<R>>,
-	                     std::reference_wrapper<
-	                       std::remove_reference_t<daw::remove_rvalue_ref_t<R>>>,
-	                     daw::remove_rvalue_ref_t<R>>;
-
-	template<Range R>
-	[[nodiscard]] constexpr auto &get_range_ref( R &r ) {
-		return r;
-	}
-
-	template<Range R>
-	[[nodiscard]] constexpr auto const &get_range_ref( R const &r ) {
-		return r;
-	}
-	template<Range R>
-	[[nodiscard]] constexpr auto &get_range_ref( std::reference_wrapper<R> &r ) {
-		return r.get( );
-	}
-
-	template<Range R>
-	[[nodiscard]] constexpr auto &
-	get_range_ref( std::reference_wrapper<R> const &r ) {
-		return r.get( );
-	}
-
-	template<Range R>
-	void get_range_ref( std::reference_wrapper<R> && ) = delete;
-
-	template<Range R>
-	void get_range_ref( std::reference_wrapper<R> const && ) = delete;
-
-	template<Range R>
-	requires( std::is_rvalue_reference_v<R> ) //
-	  void get_range_ref( R && ) = delete;
-
 	template<Range R, typename First = iterator_t<R>,
 	         typename Last = iterator_end_t<R>,
 	         typename CFirst = const_iterator_t<R>,
@@ -77,71 +72,62 @@ namespace daw::pipelines::pimpl {
 		using iterator_last_t = typename daw_range_base_t::iterator_last_t;
 		using const_iterator_first_t = CFirst;
 		using const_iterator_last_t = CLast;
-		using m_range_t = range_storage_t<R>;
+		using m_range_t = daw::ref_storage<R>;
 
 	private:
 		m_range_t m_range;
 
 	public:
+		explicit stored_range_base_t( ) = default;
+
+		constexpr stored_range_base_t( R r )
+		  : m_range( DAW_FWD( r ) ) {}
+
+		[[nodiscard]] constexpr auto &get( ) {
+			return m_range.get( );
+		}
+
+		[[nodiscard]] constexpr auto const &get( ) const {
+			return m_range.get( );
+		}
+
 		[[nodiscard]] constexpr decltype( auto ) rbegin( ) {
-			if constexpr( std::is_lvalue_reference_v<R> ) {
-				return std::begin( m_range.get( ) );
-			} else {
-				return std::begin( m_range );
-			}
+			return std::begin( get( ) );
 		}
 
 		[[nodiscard]] constexpr decltype( auto ) rbegin( ) const {
-			if constexpr( std::is_lvalue_reference_v<R> ) {
-				return std::begin( m_range.get( ) );
-			} else {
-				return std::begin( m_range );
-			}
+			return std::begin( get( ) );
 		}
 
 		[[nodiscard]] constexpr decltype( auto ) rend( ) {
-			if constexpr( std::is_lvalue_reference_v<R> ) {
-				return std::end( m_range.get( ) );
-			} else {
-				return std::end( m_range );
-			}
+			return std::end( get( ) );
 		}
 
 		[[nodiscard]] constexpr decltype( auto ) rend( ) const {
-			if constexpr( std::is_lvalue_reference_v<R> ) {
-				return std::end( m_range.get( ) );
-			} else {
-				return std::end( m_range );
-			}
+			return std::end( get( ) );
 		}
-
-		explicit stored_range_base_t( ) = default;
-		constexpr stored_range_base_t( R r )
-		  : m_range( DAW_FWD( r ) ) {}
 
 		[[nodiscard]] constexpr bool
 		operator==( stored_range_base_t const &rhs ) const
 		  requires( std::equality_comparable<daw::remove_cvref_t<R>> ) {
-			if constexpr( std::is_lvalue_reference_v<R> ) {
-				return m_range.get( ) == rhs.m_range.get( );
-			} else {
-				return m_range == rhs.m_range;
-			}
+			return get( ) == rhs.get( );
 		}
 
 		[[nodiscard]] constexpr bool
-		operator!=( stored_range_base_t const &rhs ) const = default;
+		operator!=( stored_range_base_t const &rhs ) const {
+			return get( ) != rhs.get( );
+		}
 
 		[[nodiscard]] constexpr decltype( auto ) operator*( ) {
-			return *get_range_ref( m_range );
+			return *get( );
 		}
 
 		[[nodiscard]] constexpr decltype( auto ) operator*( ) const {
-			return *get_range_ref( m_range );
+			return *get( );
 		}
 
-		constexpr decltype( auto ) operator++( ) {
-			return ++get_range_ref( m_range );
+		[[nodiscard]] constexpr decltype( auto ) operator++( ) {
+			return ++get( );
 		}
 	};
 
@@ -152,7 +138,7 @@ namespace daw::pipelines::pimpl {
 		using elem_type = std::variant_alternative_t<Idx, range_type>;
 		range_type m_range;
 
-		explicit variant_range_storage_t( ) = default;
+		variant_range_storage_t( ) = default;
 
 		template<std::size_t Index, Range R>
 		constexpr variant_range_storage_t( R &&r, constant<Index> )

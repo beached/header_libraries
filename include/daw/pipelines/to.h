@@ -11,6 +11,7 @@
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_move.h"
 #include "daw/pipelines/view.h"
+#include "daw_concept_checker.h"
 
 #include <iterator>
 #include <ranges>
@@ -31,36 +32,46 @@ namespace daw::pipelines::pimpl {
 		[[nodiscard]] DAW_ATTRIB_NOINLINE DAW_CPP23_STATIC_CALL_OP constexpr auto
 		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
 			using range_type = daw::remove_cvref_t<R>;
+			static_assert( check_sentinel_for<daw::iterator_end_t<range_type>,
+			                                  daw::iterator_t<range_type>>( ) );
+			static_assert( check_input_range<std::remove_cvref_t<R>>( ) );
+
 			static_assert(
 			  requires( iterator_t<range_type> it ) { Container( it, it ); },
 			  "To requires the container to be constructible from an iterator "
 			  "pair" );
 			if constexpr( std::is_same_v<iterator_t<range_type>,
 			                             iterator_end_t<range_type>> ) {
-				return Container( std::begin( DAW_FWD( r ) ),
-				                  std::end( DAW_FWD( r ) ) );
+				return Container( std::begin( r ), std::end( r ) );
 			} else {
 #if defined( DAW_HAS_CPP23_FROM_RANGE )
-				if constexpr( std::is_constructible_v<
-				                Container<range_value_t<range_type>>,
-				                std::from_range_t,
-				                range_type> ) {
-					return Container( std::from_range,
-					                  std::begin( DAW_FWD( r ) ),
-					                  std::end( DAW_FWD( r ) ) );
-				} else {
-#endif
-					auto result = Container<range_value_t<range_type>>{ };
-					auto first = std::begin( DAW_FWD( r ) );
-					auto last = std::end( DAW_FWD( r ) );
-
-					while( first != last ) {
-						result.insert( std::end( result ), *first );
-						++first;
+				return Container( std::from_range, DAW_FWD( r ) );
+#else
+				auto first = std::begin( r );
+				auto last = std::end( r );
+				auto result = [] {
+					if constexpr( requires {
+						              typename Container<range_value_t<range_type>>;
+					              } ) {
+						return Container<range_value_t<range_type>>{ };
+					} else {
+						using value_t = range_value_t<range_type>;
+						using key_t = std::remove_cvref_t<std::tuple_element_t<0, value_t>>;
+						using mapped_t =
+						  std::remove_cvref_t<std::tuple_element_t<1, value_t>>;
+						return Container<key_t, mapped_t>{ };
 					}
-					return result;
-#if defined( DAW_HAS_CPP23_FROM_RANGE )
+				}( );
+				if constexpr(
+				  RandomIterator<iterator_t<R>> and requires { last - first; } and
+				  requires { result.reserve( std::size_t{ 1 } ); } ) {
+					result.reserve( as<std::size_t>( last - first ) );
 				}
+				while( first != last ) {
+					result.insert( std::end( result ), *first );
+					++first;
+				}
+				return result;
 #endif
 			}
 		}

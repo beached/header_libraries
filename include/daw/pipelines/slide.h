@@ -132,10 +132,11 @@ namespace daw::pipelines::pimpl {
 	public:
 		explicit slide_view( ) = default;
 
-		explicit constexpr slide_view( R r )
+		explicit constexpr slide_view( daw::constructible<base_t> auto &&r )
 		  : base_t{ DAW_FWD( r ) } {}
 
-		explicit constexpr slide_view( R r, std::size_t slide_size )
+		explicit constexpr slide_view( daw::constructible<base_t> auto &&r,
+		                               std::size_t slide_size )
 		  : base_t{ DAW_FWD( r ) }
 		  , m_slide_size{ slide_size } {}
 

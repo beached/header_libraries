@@ -24,16 +24,14 @@ namespace daw::pipelines::pimpl {
 		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
 			if constexpr( requires {
 				              typename daw::remove_cvref_t<
-				                R>::i_am_a_daw_zip_iterator_class;
+				                R>::i_am_a_daw_zip_view_class;
 			              } ) {
 				static_assert( std::max( { Indices... } ) <
 				                 std::remove_cvref_t<R>::range_count,
 				               "Swizzle - Index that is beyond the number "
 				               "of zipped ranges" );
-				return map_view{ DAW_FWD( r ), []( auto &&tp ) {
-					                return daw::forward_nonrvalue_as_tuple(
-					                  get<Indices>( DAW_FWD( tp ) )... );
-				                } };
+
+				return DAW_FWD( r ).template swizzle<Indices...>( );
 			} else if constexpr( is_tuple_like_v<range_value_t<R>> ) {
 				using std::get;
 				static_assert( std::max( { Indices... } ) <
