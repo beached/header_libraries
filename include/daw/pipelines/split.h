@@ -39,7 +39,8 @@ namespace daw::pipelines {
 			}
 
 			constexpr delimiter_length_t( Delimiter const &d )
-			  : length( daw::pipelines::pimpl::ranges_distance( std::begin( d ), std::end( d ) ) ) {}
+			  : length( daw::pipelines::pimpl::ranges_distance( std::begin( d ),
+			                                                    std::end( d ) ) ) {}
 		};
 	} // namespace pimpl
 
@@ -97,6 +98,7 @@ namespace daw::pipelines {
 		}
 
 		constexpr split_view_iterator &operator++( ) {
+			increment_iterator( );
 			assert( m_next );
 			m_first = std::move( *m_next );
 			m_next.reset( );
@@ -142,11 +144,12 @@ namespace daw::pipelines {
 		DAW_NO_UNIQUE_ADDRESS range_type m_range{ };
 		DAW_NO_UNIQUE_ADDRESS Delimiter m_delimiter{ };
 		DAW_NO_UNIQUE_ADDRESS Projection m_projection = Projection{ };
-		DAW_NO_UNIQUE_ADDRESS iterator_t<range_type> m_last =
-		  advance_to_last( std::begin( m_range ), std::end( m_range ) );
 
 		static constexpr auto advance_to_last( auto f, auto l ) {
-			if constexpr( RandomRange<range_type> ) {
+			if constexpr( std::same_as<decltype( f ), decltype( l )> ) {
+				// common range, the end is already an iterator
+				return l;
+			} else if constexpr( RandomRange<range_type> ) {
 				auto const sz = daw::pipelines::pimpl::ranges_distance( f, l );
 				return std::next( f, sz );
 			} else {
@@ -155,6 +158,16 @@ namespace daw::pipelines {
 				}
 				return f;
 			}
+		}
+
+		// Computed on demand instead of cached at construction, so a copied or
+		// moved split_view never holds an iterator into another object.
+		[[nodiscard]] constexpr auto last( ) {
+			return advance_to_last( std::begin( m_range ), std::end( m_range ) );
+		}
+
+		[[nodiscard]] constexpr auto last( ) const {
+			return advance_to_last( std::begin( m_range ), std::end( m_range ) );
 		}
 
 	public:
@@ -168,29 +181,32 @@ namespace daw::pipelines {
 
 		[[nodiscard]] constexpr iterator begin( ) {
 			return iterator{
-			  std::begin( m_range ), m_last, m_delimiter, m_projection };
+			  std::begin( m_range ), last( ), m_delimiter, m_projection };
 		}
 
 		[[nodiscard]] constexpr iterator begin( ) const {
 			return iterator{
-			  std::begin( m_range ), m_last, m_delimiter, m_projection };
+			  std::begin( m_range ), last( ), m_delimiter, m_projection };
 		}
 
 		[[nodiscard]] constexpr iterator cbegin( ) const {
 			return iterator{
-			  std::begin( m_range ), m_last, m_delimiter, m_projection };
+			  std::begin( m_range ), last( ), m_delimiter, m_projection };
 		}
 
 		[[nodiscard]] constexpr iterator end( ) {
-			return iterator{ m_last, m_last, m_delimiter, m_projection };
+			auto const l = last( );
+			return iterator{ l, l, m_delimiter, m_projection };
 		}
 
 		[[nodiscard]] constexpr iterator end( ) const {
-			return iterator{ m_last, m_last, m_delimiter, m_projection };
+			auto const l = last( );
+			return iterator{ l, l, m_delimiter, m_projection };
 		}
 
 		[[nodiscard]] constexpr iterator cend( ) const {
-			return iterator{ m_last, m_last, m_delimiter, m_projection };
+			auto const l = last( );
+			return iterator{ l, l, m_delimiter, m_projection };
 		}
 	};
 	template<ForwardRange R, typename Delimiter>

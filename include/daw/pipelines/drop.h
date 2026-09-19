@@ -30,31 +30,37 @@ namespace daw::pipelines {
 		using iterator_last = typename base_t::iterator_last;
 		using const_iterator_last = typename base_t::const_iterator_last;
 		using daw_i_am_a_drop_view_class = void;
-		static_assert( daw::explicitly_convertible_to<iterator, const_iterator> );
 
 	private:
-		iterator m_first{ };
+		using difference_type = std::ptrdiff_t;
+		// How many leading elements are dropped.  An offset, unlike a cached
+		// iterator, stays valid when the view is copied or moved.
+		difference_type m_dropped = 0;
 
-		[[nodiscard]] static constexpr iterator
+		[[nodiscard]] static constexpr difference_type
 		drop_while( iterator first, iterator_last last, auto &&fn ) {
+			difference_type n = 0;
 			while( first != last ) {
 				if( not std::invoke( fn, as_const( *first ) ) ) {
 					break;
 				}
 				++first;
+				++n;
 			}
-			return first;
+			return n;
 		}
 
-		[[nodiscard]] static constexpr iterator
+		[[nodiscard]] static constexpr difference_type
 		drop_until( iterator first, iterator_last last, auto &&fn ) {
+			difference_type n = 0;
 			while( first != last ) {
 				if( std::invoke( fn, as_const( *first ) ) ) {
 					break;
 				}
 				++first;
+				++n;
 			}
-			return first;
+			return n;
 		}
 
 	public:
@@ -64,22 +70,22 @@ namespace daw::pipelines {
 		  daw::constructible<base_t> auto &&r, drop_while_t,
 		  InvocableAs<bool( range_const_reference_t<R> )> auto &&fn )
 		  : base_t( DAW_FWD( r ) )
-		  , m_first{
+		  , m_dropped{
 		      drop_while( base_t::begin( ), base_t::end( ), DAW_FWD( fn ) ) } {}
 
 		explicit constexpr drop_view(
 		  daw::constructible<base_t> auto &&r, drop_until_t,
 		  InvocableAs<bool( range_const_reference_t<R> )> auto &&fn )
 		  : base_t( DAW_FWD( r ) )
-		  , m_first{
+		  , m_dropped{
 		      drop_until( base_t::begin( ), base_t::end( ), DAW_FWD( fn ) ) } {}
 
 		[[nodiscard]] constexpr iterator begin( ) {
-			return m_first;
+			return std::next( base_t::begin( ), m_dropped );
 		}
 
 		[[nodiscard]] constexpr const_iterator begin( ) const {
-			return static_cast<const_iterator>( m_first );
+			return std::next( base_t::begin( ), m_dropped );
 		}
 
 		[[nodiscard]] constexpr iterator_last end( ) {

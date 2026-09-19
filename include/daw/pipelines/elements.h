@@ -9,9 +9,12 @@
 #pragma once
 
 #include "daw/cpp_17.h"
+#include "daw/daw_attributes.h"
+#include "daw/daw_forward_lvalue.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
 #include "daw/iterator/daw_arrow_proxy.h"
+#include "daw/pipelines/range_base.h"
 
 #include <type_traits>
 

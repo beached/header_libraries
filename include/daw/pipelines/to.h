@@ -10,9 +10,11 @@
 
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_move.h"
+#include "daw/pipelines/maybe.h"
 #include "daw/pipelines/view.h"
 #include "daw_concept_checker.h"
 
+#include <array>
 #include <iterator>
 #include <ranges>
 #include <type_traits>

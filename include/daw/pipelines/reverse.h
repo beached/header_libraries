@@ -12,8 +12,9 @@
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
 #include "daw/iterator/daw_reverse_iterator.h"
-#include "maybe_owning_range.h"
-#include "view.h"
+#include "daw/pipelines/maybe_owning_range.h"
+#include "daw/pipelines/move_next.h"
+#include "daw/pipelines/view.h"
 
 #include <utility>
 
@@ -29,23 +30,15 @@ namespace daw::pipelines {
 		  daw::reverse_iterator<typename base_t::const_iterator_last>;
 		using daw_i_am_a_reverse_view_class = void;
 
+		using base_t::is_owned;
+
 		[[nodiscard]] constexpr auto &get_range( ) &
 		  requires( not std::is_const_v<std::remove_reference_t<R>> ) {
 			return static_cast<base_t *>( this )->get_range( );
 		}
 
-		[[nodiscard]] constexpr auto &get_range( ) &&
-		  requires( not std::is_lvalue_reference_v<R> ) {
-			return std::move( *static_cast<base_t *>( this ) ).get_range( );
-		}
-
 		[[nodiscard]] constexpr auto const &get_range( ) const & {
 			return static_cast<base_t const *>( this )->get_range( );
-		}
-
-		[[nodiscard]] constexpr auto const &&
-		get_range( ) const &&requires( not std::is_lvalue_reference_v<R> ) {
-			return std::move( *static_cast<base_t const *>( this ) ).get_range( );
 		}
 
 		reverse_view( ) = default;
@@ -85,7 +78,7 @@ namespace daw::pipelines::pimpl {
 		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
 			auto first = std::begin( r );
 			auto const last = std::end( r );
-			auto it = daw::safe_next( first, last );
+			auto it = safe_move_next( first, last );
 			auto tail = it;
 
 			if constexpr( RandomRange<R> ) {
@@ -116,14 +109,7 @@ namespace daw::pipelines::pimpl {
 		template<BidirectionalRange R>
 		[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
 		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
-			if constexpr( requires {
-				              typename daw::remove_cvref_t<
-				                R>::daw_i_am_a_reverse_view_class;
-			              } ) {
-				return maybe_owning_range{ DAW_FWD( r ).get_range( ) };
-			} else {
-				return reverse_view<R>{ DAW_FWD( r ) };
-			}
+			return reverse_view<R>{ DAW_FWD( r ) };
 		}
 	};
 } // namespace daw::pipelines::pimpl

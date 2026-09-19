@@ -53,6 +53,17 @@ namespace daw::pipelines::pimpl {
 		DAW_NO_UNIQUE_ADDRESS Last m_last{ };
 		sub_iterator_t m_cur_first{ };
 
+		DAW_ATTRIB_INLINE constexpr void advance_to_non_empty_range( ) {
+			while( m_iter != m_last ) {
+				m_cur_first = std::begin( *m_iter );
+				if( m_cur_first != std::end( *m_iter ) ) {
+					return;
+				}
+				++m_iter;
+			}
+			m_cur_first = sub_iterator_t{ };
+		}
+
 		DAW_ATTRIB_INLINE constexpr void inc_range( ) {
 			assert( m_iter != m_last );
 			++m_iter;
@@ -68,7 +79,8 @@ namespace daw::pipelines::pimpl {
 			assert( m_cur_first != std::end( *m_iter ) );
 			++m_cur_first;
 			if( m_cur_first == std::end( *m_iter ) ) {
-				inc_range( );
+				++m_iter;
+				advance_to_non_empty_range( );
 			}
 		}
 
@@ -79,7 +91,9 @@ namespace daw::pipelines::pimpl {
 		  : m_iter( first )
 		  , m_last( last )
 		  , m_cur_first( m_iter == m_last ? sub_iterator_t{ }
-		                                  : std::begin( *m_iter ) ) {}
+		                                  : std::begin( *m_iter ) ) {
+			advance_to_non_empty_range( );
+		}
 
 		constexpr flatten_iterator &operator++( ) {
 			inc_sub_range( );
@@ -110,17 +124,17 @@ namespace daw::pipelines::pimpl {
 		operator==( flatten_iterator const &rhs ) const {
 			return m_iter == rhs.m_iter and m_cur_first == rhs.m_cur_first;
 		}
-
-		[[nodiscard]] constexpr bool
-		operator!=( flatten_iterator const &rhs ) const = default;
-
+		/*
+		    [[nodiscard]] constexpr bool
+		    operator!=( flatten_iterator const &rhs ) const = default;
+		*/
 		[[nodiscard]] constexpr bool operator==( end_t const &rhs ) const {
 			return m_iter == rhs.m_range_first;
 		}
-
-		[[nodiscard]] constexpr bool operator!=( end_t const &rhs ) const {
-			return m_iter != rhs.m_range_first;
-		}
+		/*
+		    [[nodiscard]] constexpr bool operator!=( end_t const &rhs ) const {
+		      return m_iter != rhs.m_range_first;
+		    }*/
 	};
 
 	template<ForwardRange R>

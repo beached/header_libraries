@@ -26,42 +26,40 @@ namespace daw::pipelines {
 		using iterator_last = typename base_t::iterator_last;
 		using const_iterator_last = typename base_t::const_iterator_last;
 		using daw_i_am_a_skip_view_class = void;
-		static_assert( daw::explicitly_convertible_to<iterator, const_iterator> );
 
 	private:
-		iterator m_first{ };
+		using difference_type = std::ptrdiff_t;
+		// How many leading elements are skipped.  An offset, unlike a cached
+		// iterator, stays valid when the view is copied or moved.
+		difference_type m_skipped = 0;
 
 	public:
 		skip_view( ) = default;
 
 		explicit constexpr skip_view( daw::constructible<base_t> auto &&r,
 		                              std::size_t how_many )
-		  : base_t( DAW_FWD( r ) )
-		  , m_first( base_t::begin( ) ) {
+		  : base_t( DAW_FWD( r ) ) {
+			auto first = base_t::begin( );
+			auto const last = base_t::end( );
 			if constexpr( RandomIterator<iterator> ) {
-				auto const range_size =
-				  pimpl::ranges_distance( m_first, base_t::end( ) );
-				auto const skip =
-				  std::min( { static_cast<std::ptrdiff_t>( how_many ), range_size } );
-				m_first = std::next( m_first, skip );
+				auto const range_size = pimpl::ranges_distance( first, last );
+				m_skipped =
+				  std::min( { static_cast<difference_type>( how_many ), range_size } );
 			} else {
 				// Input
-				auto const last = base_t::end( );
-				for( auto n = how_many; n > 0; --n ) {
-					if( m_first == last ) {
-						break;
-					}
-					++m_first;
+				for( ; how_many > 0 and first != last; --how_many ) {
+					++first;
+					++m_skipped;
 				}
 			}
 		}
 
 		[[nodiscard]] constexpr iterator begin( ) {
-			return m_first;
+			return std::next( base_t::begin( ), m_skipped );
 		}
 
 		[[nodiscard]] constexpr const_iterator begin( ) const {
-			return static_cast<const_iterator>( m_first );
+			return std::next( base_t::begin( ), m_skipped );
 		}
 
 		[[nodiscard]] constexpr iterator_last end( ) {

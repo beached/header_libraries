@@ -28,23 +28,15 @@ namespace daw::pipelines {
 		storage_t m_storage{ };
 
 	public:
+		static constexpr bool is_owned = storage_t::is_owned;
+
 		[[nodiscard]] constexpr auto &get_range( ) &
 		  requires( not std::is_const_v<std::remove_reference_t<R>> ) {
 			return m_storage.get( );
 		}
 
-		[[nodiscard]] constexpr auto &get_range( ) &&
-		  requires( not std::is_lvalue_reference_v<R> ) {
-			return std::move( m_storage ).get( );
-		}
-
 		[[nodiscard]] constexpr auto const &get_range( ) const & {
 			return m_storage.get( );
-		}
-
-		[[nodiscard]] constexpr auto const &&
-		get_range( ) const &&requires( not std::is_lvalue_reference_v<R> ) {
-			return std::move( m_storage ).get( );
 		}
 
 		explicit maybe_owning_range( ) = default;

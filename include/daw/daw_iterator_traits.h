@@ -216,4 +216,5 @@ namespace daw {
 		auto const last_dist = sz == 0 ? 0 : sz - 1;
 		return std::next( std::begin( r ), last_dist );
 	}
+
 } // namespace daw

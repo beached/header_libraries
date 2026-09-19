@@ -21,6 +21,7 @@
 #include <forward_list>
 #include <iterator>
 #include <map>
+#include <memory>
 #include <span>
 #include <string>
 #include <type_traits>
@@ -1113,6 +1114,263 @@ namespace tests {
 		daw_ensure( *position == 2 );
 		daw_ensure( *copied == 3 );
 	}
+
+	// A view must be re-iterable: every pass over the same view has to produce
+	// the same elements.  Catches views that keep state between passes.
+	template<typename View, typename T>
+	void check_repeatable_non_const( View &view,
+	                                 std::vector<T> const &expected ) {
+		auto r0 = pipeline( view, To<std::vector> );
+		daw_ensure( r0 == expected );
+		auto r1 = pipeline( view, To<std::vector> );
+		daw_ensure( r1 == expected );
+	}
+
+	// Same, and the const view must produce them too
+	template<typename View, typename T>
+	void check_repeatable( View &view, std::vector<T> const &expected ) {
+		check_repeatable_non_const( view, expected );
+		daw_ensure( pipeline( std::as_const( view ), To<std::vector> ) ==
+		            expected );
+	}
+
+	// A copy of a view must not refer to the object it was copied from
+	template<typename Make, typename T>
+	void check_copy_outlives_original( Make make,
+	                                   std::vector<T> const &expected ) {
+		using view_t = decltype( make( ) );
+		auto original = std::make_unique<view_t>( make( ) );
+		auto copy = *original;
+		original.reset( );
+		check_repeatable( copy, expected );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_views_are_repeatable( ) {
+		auto const dbl = []( int x ) {
+			return x * 2;
+		};
+		auto const even = []( int x ) {
+			return x % 2 == 0;
+		};
+		auto const lt3 = []( int x ) {
+			return x < 3;
+		};
+		auto values = std::array{ 1, 2, 3, 4, 5, 6 };
+		auto duplicates = std::array{ 1, 1, 2, 2, 3, 3 };
+
+		auto filtered = pipeline( values, Filter( even ) );
+		check_repeatable( filtered, std::vector{ 2, 4, 6 } );
+		auto mapped = pipeline( values, Filter( even ), Map( dbl ) );
+		check_repeatable( mapped, std::vector{ 4, 8, 12 } );
+		auto taken = pipeline( values, Take( 3 ) );
+		check_repeatable( taken, std::vector{ 1, 2, 3 } );
+		auto skipped = pipeline( values, Skip( 2 ) );
+		check_repeatable( skipped, std::vector{ 3, 4, 5, 6 } );
+		auto dropped = pipeline( values, DropWhile( lt3 ) );
+		check_repeatable( dropped, std::vector{ 3, 4, 5, 6 } );
+		auto uniqued = pipeline( duplicates, Unique );
+		check_repeatable( uniqued, std::vector{ 1, 2, 3 } );
+		auto reversed = pipeline( values, ReverseView );
+		check_repeatable( reversed, std::vector{ 6, 5, 4, 3, 2, 1 } );
+	}
+
+	// The source is owned by the view.  Moving the view into the next stage, or
+	// moving the finished view, must not leave anything pointing at the old
+	// object.  Run under ASan/UBSan to catch a dangling iterator that happens to
+	// read stale but plausible memory.
+	DAW_ATTRIB_NOINLINE void test_owned_source_views_survive_being_moved( ) {
+		auto const dbl = []( int x ) {
+			return x * 2;
+		};
+		auto const even = []( int x ) {
+			return x % 2 == 0;
+		};
+		auto const lt3 = []( int x ) {
+			return x < 3;
+		};
+
+		auto skipped =
+		  pipeline( std::array{ 1, 2, 3, 4, 5, 6 }, Skip( 2 ), Map( dbl ) );
+		check_repeatable( skipped, std::vector{ 6, 8, 10, 12 } );
+
+		auto dropped =
+		  pipeline( std::array{ 1, 2, 3, 4, 5, 6 }, DropWhile( lt3 ), Map( dbl ) );
+		check_repeatable( dropped, std::vector{ 6, 8, 10, 12 } );
+
+		auto taken = pipeline(
+		  iota_view<int>{ 1, 50 }, Filter( even ), Take( 3 ), Map( dbl ) );
+		check_repeatable( taken, std::vector{ 4, 8, 12 } );
+
+		auto original = pipeline( std::array{ 1, 2, 3, 4, 5, 6 }, Skip( 2 ) );
+		auto moved = std::move( original );
+		check_repeatable( moved, std::vector{ 3, 4, 5, 6 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_split_owned_source_survives_being_moved( ) {
+		auto piece_size = []( auto piece ) {
+			return static_cast<int>(
+			  std::distance( std::begin( piece ), std::end( piece ) ) );
+		};
+
+		// the owned string is moved into the next stage
+		auto sizes =
+		  pipeline( std::string( "ab,cde,f" ), Split( ',' ), Map( piece_size ) );
+		auto collected = std::vector<int>{ };
+		for( int n : sizes ) {
+			collected.push_back( n );
+		}
+		daw_ensure( collected == std::vector{ 2, 3, 1 } );
+
+		// the finished view is moved
+		auto original = pipeline( std::string( "ab,cde,f" ), Split( ',' ) );
+		auto moved = std::move( original );
+		collected.clear( );
+		for( auto piece : moved ) {
+			collected.push_back( piece_size( piece ) );
+		}
+		daw_ensure( collected == std::vector{ 2, 3, 1 } );
+	}
+
+	// Algorithms that only advance an iterator, e.g. std::distance or the size
+	// pass of a container's range constructor, must work without dereferencing
+	DAW_ATTRIB_NOINLINE void test_split_advances_without_dereferencing( ) {
+		auto text = std::string( "ab,cde,f" );
+		auto pieces = pipeline( text, Split( ',' ) );
+		daw_ensure( std::distance( pieces.begin( ), pieces.end( ) ) == 3 );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_owned_source_view_copy_outlives_original( ) {
+		auto const lt3 = []( int x ) {
+			return x < 3;
+		};
+		check_copy_outlives_original(
+		  [] {
+			  return pipeline( std::vector{ 1, 2, 3, 4, 5, 6 }, Take( 3 ) );
+		  },
+		  std::vector{ 1, 2, 3 } );
+		check_copy_outlives_original(
+		  [] {
+			  return pipeline( std::vector{ 1, 2, 3, 4, 5, 6 }, Skip( 2 ) );
+		  },
+		  std::vector{ 3, 4, 5, 6 } );
+		check_copy_outlives_original(
+		  [lt3] {
+			  return pipeline( std::vector{ 1, 2, 3, 4, 5, 6 }, DropWhile( lt3 ) );
+		  },
+		  std::vector{ 3, 4, 5, 6 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_take_over_empty_and_zero_sized_ranges( ) {
+		auto const never = []( int ) {
+			return false;
+		};
+		// Take( n ) over a range that turns out to be empty must end immediately
+		daw_ensure( pipeline( iota_view<int>{ 1, 50 },
+		                      Filter( never ),
+		                      Take( 4 ),
+		                      To<std::vector> ) == std::vector<int>{ } );
+		daw_ensure( pipeline( iota_view<int>{ 1, 50 },
+		                      Filter( never ),
+		                      Take( 0 ),
+		                      To<std::vector> ) == std::vector<int>{ } );
+		daw_ensure( pipeline( std::vector<int>{ }, Take( 3 ), To<std::vector> ) ==
+		            std::vector<int>{ } );
+		daw_ensure( pipeline( std::array{ 1, 2, 3 }, Take( 0 ), To<std::vector> ) ==
+		            std::vector<int>{ } );
+		daw_ensure( pipeline( std::vector<int>{ }, Skip( 3 ), To<std::vector> ) ==
+		            std::vector<int>{ } );
+		daw_ensure( pipeline( std::array{ 1, 2, 3 },
+		                      Skip( 100 ),
+		                      To<std::vector> ) == std::vector<int>{ } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_take_while_stops_at_first_failure( ) {
+		auto values = pipeline( iota_view<int>{ -5, 5 }, TakeWhile( []( int x ) {
+			                        return x < 0;
+		                        } ) );
+		check_repeatable( values, std::vector{ -5, -4, -3, -2, -1 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_take_until_stops_at_first_match( ) {
+		auto values = pipeline( iota_view<int>{ -5, 5 }, TakeUntil( []( int x ) {
+			                        return x > 0;
+		                        } ) );
+		check_repeatable( values, std::vector{ -5, -4, -3, -2, -1, 0 } );
+	}
+
+	// Once the predicate is satisfied the rest of the source must not be read
+	DAW_ATTRIB_NOINLINE void test_take_until_stops_reading_the_source( ) {
+		std::size_t visits = 0;
+		auto values = pipeline( iota_view<int>{ 0, 1000 },
+		                        Map( [&visits]( int x ) {
+			                        ++visits;
+			                        return x;
+		                        } ),
+		                        TakeUntil( []( int x ) {
+			                        return x > 10;
+		                        } ),
+		                        To<std::vector> );
+		daw_ensure( values.size( ) == 11 );
+		daw_ensure( visits < 100 );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_every_nth_element_is_repeatable( ) {
+		auto ranged = pipeline( iota_view<int>{ -5, 5 }, Every( 3 ) );
+		check_repeatable( ranged, std::vector{ -5, -2, 1, 4 } );
+
+		// the length is not a multiple of the step
+		auto values = std::array{ 1, 2, 3, 4, 5, 6 };
+		auto every_fourth = pipeline( values, Every( 4 ) );
+		check_repeatable( every_fourth, std::vector{ 1, 5 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_flatten_repeatable( ) {
+		using nested_t = std::vector<std::vector<int>>;
+		auto nested = nested_t{ { 1, 2 }, { 3 }, { 4, 5, 6 } };
+		auto flattened = pipeline( nested, Flatten );
+		check_repeatable_non_const( flattened, std::vector{ 1, 2, 3, 4, 5, 6 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_flatten_empty_outer_range( ) {
+		using nested_t = std::vector<std::vector<int>>;
+		daw_ensure( pipeline( nested_t{ }, Flatten, To<std::vector> ) ==
+		            std::vector<int>{ } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_flatten_skips_leading_empty_range( ) {
+		using nested_t = std::vector<std::vector<int>>;
+		auto nested = nested_t{ { }, { 1 } };
+		auto flattened = pipeline( nested, Flatten );
+		check_repeatable_non_const( flattened, std::vector{ 1 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_flatten_skips_middle_empty_range( ) {
+		using nested_t = std::vector<std::vector<int>>;
+		auto nested = nested_t{ { 1 }, { }, { 2 } };
+		auto flattened = pipeline( nested, Flatten );
+		check_repeatable_non_const( flattened, std::vector{ 1, 2 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_flatten_skips_consecutive_empty_ranges( ) {
+		using nested_t = std::vector<std::vector<int>>;
+		auto nested = nested_t{ { 1 }, { }, { }, { 2 } };
+		auto flattened = pipeline( nested, Flatten );
+		check_repeatable_non_const( flattened, std::vector{ 1, 2 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_flatten_skips_trailing_empty_range( ) {
+		using nested_t = std::vector<std::vector<int>>;
+		auto nested = nested_t{ { 1 }, { } };
+		auto flattened = pipeline( nested, Flatten );
+		check_repeatable_non_const( flattened, std::vector{ 1 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_flatten_all_ranges_empty( ) {
+		using nested_t = std::vector<std::vector<int>>;
+		auto nested = nested_t{ { }, { } };
+		auto flattened = pipeline( nested, Flatten );
+		daw_ensure( flattened.begin( ) == flattened.end( ) );
+	}
 } // namespace tests
 
 int main( ) {
@@ -1206,5 +1464,22 @@ int main( ) {
 	tests::test_concat_direct_multiple_arguments( );
 	tests::test_concat_direct_call_forwards_all_ranges_by_reference( );
 	tests::test_concat_heterogeneous_iterator_copy_preserves_position( );
+	tests::test_views_are_repeatable( );
+	tests::test_owned_source_views_survive_being_moved( );
+	tests::test_split_owned_source_survives_being_moved( );
+	tests::test_split_advances_without_dereferencing( );
+	tests::test_owned_source_view_copy_outlives_original( );
+	tests::test_take_over_empty_and_zero_sized_ranges( );
+	tests::test_take_while_stops_at_first_failure( );
+	tests::test_take_until_stops_at_first_match( );
+	tests::test_take_until_stops_reading_the_source( );
+	tests::test_every_nth_element_is_repeatable( );
+	tests::test_flatten_repeatable( );
+	tests::test_flatten_empty_outer_range( );
+	tests::test_flatten_skips_leading_empty_range( );
+	tests::test_flatten_skips_middle_empty_range( );
+	tests::test_flatten_skips_consecutive_empty_ranges( );
+	tests::test_flatten_skips_trailing_empty_range( );
+	tests::test_flatten_all_ranges_empty( );
 	daw::println( "Done" );
 }

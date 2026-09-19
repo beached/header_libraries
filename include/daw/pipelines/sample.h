@@ -10,6 +10,7 @@
 
 #include "daw/daw_bit_count.h"
 #include "daw/daw_ensure.h"
+#include "daw/daw_mutable_capture.h"
 #include "daw/pipelines/filter.h"
 #include "daw/pipelines/view.h"
 

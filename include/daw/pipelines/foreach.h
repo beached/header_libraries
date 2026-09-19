@@ -8,9 +8,11 @@
 
 #pragma once
 
+#include "daw/daw_attributes.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
 #include "daw/pipelines/pipeline_traits.h"
+#include "daw/pipelines/range_base.h"
 
 #include <functional>
 

@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/daw_attributes.h"
+#include "daw/daw_concepts.h"
 #include "daw/daw_ensure.h"
 #include "daw/daw_iterator_traits.h"
 
@@ -293,13 +294,13 @@ namespace daw::pipelines {
 
 		[[nodiscard]] constexpr bool
 		operator==( sized_iterator_end<First> const & ) const noexcept {
-			return m_count <= 0;
+			return m_count <= 0 or m_first == m_last;
 		}
 
 		[[nodiscard]] constexpr bool
 		operator==( sized_iterator_end<Last> const & ) const noexcept
 		  requires( not std::same_as<First, Last> ) {
-			return m_count <= 0;
+			return m_count <= 0 or m_first == m_last;
 		}
 	};
 } // namespace daw::pipelines

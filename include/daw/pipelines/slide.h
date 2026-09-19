@@ -14,6 +14,7 @@
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
 #include "daw/daw_remove_cvref.h"
+#include "daw/pipelines/move_next.h"
 #include "daw/pipelines/view.h"
 
 #include <cstddef>
@@ -38,7 +39,7 @@ namespace daw::pipelines::pimpl {
 
 		DAW_ATTRIB_INLINE constexpr void get_next( ) const {
 			if( not m_next_iter ) {
-				m_next_iter = daw::safe_next( m_iter, m_last, m_slide_size );
+				m_next_iter = safe_move_next( m_iter, m_last, m_slide_size );
 			}
 		}
 
@@ -65,7 +66,9 @@ namespace daw::pipelines::pimpl {
 		                                   std::size_t slide_size )
 		  : m_iter{ std::move( first ) }
 		  , m_slide_size( as<difference_type>( slide_size ) )
-		  , m_last{ std::move( last ) } {}
+		  , m_last{ std::move( last ) } {
+			daw_ensure( m_slide_size > 0 );
+		}
 
 		[[nodiscard]] constexpr iterator &base( ) {
 			return m_iter;
@@ -133,12 +136,16 @@ namespace daw::pipelines::pimpl {
 		explicit slide_view( ) = default;
 
 		explicit constexpr slide_view( daw::constructible<base_t> auto &&r )
+		  requires(
+		    not std::same_as<std::remove_cvref_t<decltype( r )>, slide_view> )
 		  : base_t{ DAW_FWD( r ) } {}
 
 		explicit constexpr slide_view( daw::constructible<base_t> auto &&r,
 		                               std::size_t slide_size )
 		  : base_t{ DAW_FWD( r ) }
-		  , m_slide_size{ slide_size } {}
+		  , m_slide_size{ slide_size } {
+			daw_ensure( m_slide_size > 0 );
+		}
 
 		constexpr iterator begin( ) {
 			return iterator{ base_t::rbegin( ), base_t::rend( ), m_slide_size };

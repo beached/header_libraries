@@ -16,6 +16,7 @@
 #include "daw/pipelines/view.h"
 
 #include <cstddef>
+#include <optional>
 
 namespace daw::pipelines::pimpl {
 	template<typename First, typename Last = First>
@@ -66,7 +67,9 @@ namespace daw::pipelines::pimpl {
 		                                   std::size_t chunk_size )
 		  : m_iter{ first }
 		  , m_last{ last }
-		  , m_chunk_size{ static_cast<difference_type>( chunk_size ) } {}
+		  , m_chunk_size{ static_cast<difference_type>( chunk_size ) } {
+			daw_ensure( m_chunk_size > 0 );
+		}
 
 		[[nodiscard]] constexpr iterator &base( ) {
 			return m_iter;
@@ -138,7 +141,9 @@ namespace daw::pipelines::pimpl {
 
 		explicit constexpr chunk_view( R r, std::size_t chunk_size )
 		  : base_t{ DAW_FWD( r ) }
-		  , m_chunk_size{ chunk_size } {}
+		  , m_chunk_size{ chunk_size } {
+			daw_ensure( m_chunk_size > 0 );
+		}
 
 		[[nodiscard]] constexpr iterator begin( ) {
 			return iterator{ base_t::rbegin( ), base_t::rend( ), m_chunk_size };

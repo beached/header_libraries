@@ -12,8 +12,10 @@
 #include "daw/daw_cxmath.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
+#include "daw/pipelines/range_base.h"
 
 #include <cstddef>
+#include <functional>
 #include <iterator>
 
 namespace daw::pipelines {

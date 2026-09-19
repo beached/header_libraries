@@ -10,6 +10,7 @@
 
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_tuple_forward.h"
+#include "map.h"
 #include "zip.h"
 
 #include <algorithm>

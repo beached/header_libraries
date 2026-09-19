@@ -36,7 +36,7 @@ namespace daw {
 		    ? std::is_lvalue_reference_v<U &&> and
 		        std::convertible_to<std::add_pointer_t<std::remove_reference_t<U>>,
 		                            storage_t>
-		    : daw::constructible<storage_t, U>;
+		    : std::constructible_from<storage_t, U>;
 
 		template<typename U>
 		[[nodiscard]] static constexpr storage_t make_storage( U &&value ) {
@@ -49,6 +49,8 @@ namespace daw {
 
 	public:
 		ref_storage( ) = default;
+
+		static constexpr bool is_owned = not std::is_lvalue_reference_v<T>;
 
 		template<typename U>
 		requires( can_store_v<U> ) explicit constexpr ref_storage( U &&value )
