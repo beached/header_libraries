@@ -36,6 +36,9 @@ namespace daw {
 	  typename std::iterator_traits<daw::remove_cvref_t<It>>::difference_type;
 
 	template<typename It>
+	using iter_size_t = typename daw::remove_cvref_t<It>::size_type;
+
+	template<typename It>
 	using iter_category_t =
 	  typename std::iterator_traits<daw::remove_cvref_t<It>>::iterator_category;
 
@@ -86,29 +89,6 @@ namespace daw {
 	concept RandomIterator =
 	  BidirectionalIterator<It> and
 	  IsIteratorTag<iter_category_t<It>, std::random_access_iterator_tag>;
-
-	/*
-	template<typename IteratorTag, typename... Its>
-	inline constexpr bool are_all_same_iterator_tag_v =
-	  ( IsIteratorTag<Its, IteratorTag> and ... );
-
-	  template<typename... ItCats>
-	  using common_iterator_category_t = std::conditional_t<
-	    are_all_same_iterator_tag_v<std::random_access_iterator_tag, ItCats...>,
-	    std::random_access_iterator_tag,
-	    std::conditional_t<
-	      are_all_same_iterator_tag_v<std::bidirectional_iterator_tag, ItCats...>,
-	      std::bidirectional_iterator_tag,
-	      std::conditional_t<
-	        are_all_same_iterator_tag_v<std::forward_iterator_tag, ItCats...>,
-	        std::forward_iterator_tag,
-	        std::conditional_t<
-	          are_all_same_iterator_tag_v<std::input_iterator_tag, ItCats...>,
-	          std::input_iterator_tag,
-	          std::conditional_t<
-	            are_all_same_iterator_tag_v<std::output_iterator_tag, ItCats...>,
-	            std::output_iterator_tag, void>>>>>;
-	*/
 
 	namespace iterator_traits_impl {
 		template<typename T, std::size_t>
@@ -184,6 +164,9 @@ namespace daw {
 	using range_value_t = iter_value_t<iterator_t<R>>;
 
 	template<Range R>
+	using range_difference_t = iter_difference_t<iterator_t<R>>;
+
+	template<Range R>
 	using range_reference_t = iter_reference_t<iterator_t<R>>;
 
 	template<Range R>
@@ -200,19 +183,47 @@ namespace daw {
 	concept InputRange = Range<R> and InputIterator<iterator_t<R>>;
 
 	template<typename R>
-	concept ForwardRange = Range<R> and ForwardIterator<iterator_t<R>>;
+	concept ForwardRange = InputRange<R> and ForwardIterator<iterator_t<R>>;
 
 	template<typename R>
 	concept BidirectionalRange =
-	  Range<R> and BidirectionalIterator<iterator_t<R>>;
+	  ForwardRange<R> and BidirectionalIterator<iterator_t<R>>;
 
 	template<typename R>
-	concept RandomRange = Range<R> and RandomIterator<iterator_t<R>>;
+	concept RandomRange = BidirectionalRange<R> and RandomIterator<iterator_t<R>>;
+
+	template<Range R>
+	[[nodiscard]] constexpr auto range_distance( R const &r ) {
+		if constexpr( daw::RandomRange<R> ) {
+			return std::end( r ) - std::begin( r );
+		} else {
+			std::ptrdiff_t d = 0;
+			auto f = std::begin( r );
+			auto const l = std::end( r );
+			while( f != l ) {
+				++f;
+				++d;
+			}
+			return d;
+		}
+	}
+
+	template<RandomRange R>
+	constexpr auto range_size( R const &r ) {
+		if constexpr( requires { r.size( ); } ) {
+			return r.size( );
+		} else {
+			return as_unsigned( std::end( r ) - std::begin( r ) );
+		}
+	}
+
+	template<Range R>
+	using range_size_t = DAW_TYPEOF( range_size( std::declval<R const &>( ) ) );
 
 	template<typename R>
 	[[nodiscard]] constexpr auto iter_last( R &&r ) {
 		static_assert( ForwardRange<R>, "R is not a ForwardRange" );
-		auto const sz = std::distance( std::begin( r ), std::end( r ) );
+		auto const sz = range_distance( r );
 		auto const last_dist = sz == 0 ? 0 : sz - 1;
 		return std::next( std::begin( r ), last_dist );
 	}

@@ -72,7 +72,7 @@ namespace daw::pipelines {
 
 		[[nodiscard]] constexpr std::size_t size( ) const
 		  requires( RandomIteratorTag<iterator_category> ) {
-			return static_cast<std::size_t>( daw::pipelines::pimpl::ranges_distance( first, last ) );
+			return pimpl::ranges_distance<std::size_t>( first, last );
 		}
 
 		[[nodiscard]] constexpr auto data( )
@@ -156,7 +156,7 @@ namespace daw::pipelines {
 
 		[[nodiscard]] constexpr difference_type operator-( view_t const &rhs ) const
 		  requires( RandomIteratorTag<iterator_category> ) {
-			return daw::pipelines::pimpl::ranges_distance( first, rhs.first );
+			return pimpl::ranges_distance<difference_type>( first, rhs.first );
 		}
 
 		[[nodiscard]] constexpr bool operator==( view_t const &rhs ) const {

@@ -11,9 +11,11 @@
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_ref_storage.h"
 #include "daw/daw_traits.h"
+#include "daw/pipelines/counted_source.h"
 #include "daw/pipelines/daw_concept_checker.h"
 #include "daw/pipelines/view.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <tuple>
 #include <utility>
@@ -44,7 +46,8 @@ namespace daw::pipelines {
 		template<Iterator... SentinelFors>
 		struct zip_iterator_end {
 			using iterator_category = std::input_iterator_tag;
-			using difference_type = std::ptrdiff_t;
+			using difference_type =
+			  widest_type_t<daw::iter_difference_t<SentinelFors>...>;
 			using value_type = pimpl::tuple_pair<daw::iter_value_t<SentinelFors>...>;
 			using reference =
 			  pimpl::tuple_pair<daw::iter_reference_t<SentinelFors>...>;
@@ -72,6 +75,39 @@ namespace daw::pipelines {
 			}
 		};
 
+		/// When every zipped range is random access with a known length, the
+		/// iterator counts the elements left in the shortest range instead of
+		/// comparing every iterator against the end of its range on each step
+		template<typename Last, typename... Iterators>
+		struct zip_counted : std::false_type {};
+
+		template<Iterator... SentinelFors, typename... Iterators>
+		requires( sizeof...( SentinelFors ) == sizeof...( Iterators ) ) //
+		  struct zip_counted<zip_iterator_end<SentinelFors...>, Iterators...>
+		  : std::bool_constant<( counted_source<Iterators, SentinelFors> and
+		                         ... )> {};
+
+		/// The parent is only needed to find the end of each range.  A counted
+		/// iterator knows how many elements are left, so it does not store it
+		struct zip_no_parent {
+			constexpr zip_no_parent( ) = default;
+			constexpr explicit zip_no_parent( void const * ) noexcept {}
+		};
+
+		template<bool>
+		struct zip_remaining {
+			constexpr void step( std::ptrdiff_t ) noexcept {}
+		};
+
+		template<>
+		struct zip_remaining<true> {
+			std::ptrdiff_t value = 0;
+
+			constexpr void step( std::ptrdiff_t n ) noexcept {
+				value -= n;
+			}
+		};
+
 		template<typename ZR, typename Last, Iterator... Iterators>
 		requires( requires { typename ZR::i_am_a_daw_zip_view_class; } ) //
 		  struct zip_iterator {
@@ -86,14 +122,18 @@ namespace daw::pipelines {
 			using reference = pimpl::tuple_pair<daw::iter_reference_t<Iterators>...>;
 			using const_reference =
 			  pimpl::tuple_pair<daw::iter_const_reference_t<Iterators>...>;
-			using difference_type = std::ptrdiff_t;
+			using difference_type =
+			  widest_type_t<std::iter_difference_t<Iterators>...>;
 			using i_am_a_daw_zip_iterator_class = void;
 
 			static constexpr std::size_t iter_types_size_v = sizeof...( Iterators );
+			static constexpr bool counted_v =
+			  pimpl::zip_counted<Last, Iterators...>::value;
 
 		private:
-			ZR *m_parent{ };
+			std::conditional_t<counted_v, pimpl::zip_no_parent, ZR *> m_parent{ };
 			iter_types_t m_iters{ };
+			DAW_NO_UNIQUE_ADDRESS pimpl::zip_remaining<counted_v> m_remaining{ };
 
 			static constexpr auto zip_indices = [] {
 				return std::make_index_sequence<sizeof...( Iterators )>{ };
@@ -102,16 +142,19 @@ namespace daw::pipelines {
 			template<std::size_t... Is>
 			constexpr void increment( std::index_sequence<Is...> ) {
 				(void)( ( ++std::get<Is>( m_iters ) ), ... );
+				m_remaining.step( 1 );
 			}
 
 			template<std::size_t... Is>
 			constexpr void decrement( std::index_sequence<Is...> ) {
 				(void)( ( --std::get<Is>( m_iters ) ), ... );
+				m_remaining.step( -1 );
 			}
 
 			template<std::size_t... Is>
 			constexpr void advance( difference_type n, std::index_sequence<Is...> ) {
 				(void)( ( std::advance( std::get<Is>( m_iters ), n ), ... ) );
+				m_remaining.step( n );
 			}
 
 			template<std::size_t... Is>
@@ -142,7 +185,13 @@ namespace daw::pipelines {
 			template<std::size_t... Is>
 			explicit constexpr zip_iterator( ZR *zr, std::index_sequence<Is...> )
 			  : m_parent( zr )
-			  , m_iters{ std::begin( std::get<Is>( zr->m_ranges ).get( ) )... } {}
+			  , m_iters{ std::begin( std::get<Is>( zr->m_ranges ).get( ) )... } {
+				if constexpr( counted_v ) {
+					m_remaining.value = std::min( { pimpl::counted_length(
+					  std::get<Is>( m_iters ),
+					  std::end( std::get<Is>( zr->m_ranges ).get( ) ) )... } );
+				}
+			}
 
 		public:
 			zip_iterator( ) = default;
@@ -158,12 +207,17 @@ namespace daw::pipelines {
 			}
 
 			[[nodiscard]] constexpr bool good( ) const {
-				daw_ensure( m_parent );
-				return [&]<std::size_t... Is>( std::index_sequence<Is...> ) {
-					return ( ( std::get<Is>( m_iters ) !=
-					           std::end( std::get<Is>( m_parent->m_ranges ).get( ) ) ) and
-					         ... );
-				}( std::make_index_sequence<sizeof...( Iterators )>{ } );
+				if constexpr( counted_v ) {
+					return m_remaining.value > 0;
+				} else {
+					daw_ensure( m_parent );
+					return [&]<std::size_t... Is>( std::index_sequence<Is...> ) {
+						return (
+						  ( std::get<Is>( m_iters ) !=
+						    std::end( std::get<Is>( m_parent->m_ranges ).get( ) ) ) and
+						  ... );
+					}( std::make_index_sequence<sizeof...( Iterators )>{ } );
+				}
 			}
 
 			[[nodiscard]] constexpr iter_types_t const &base( ) const {

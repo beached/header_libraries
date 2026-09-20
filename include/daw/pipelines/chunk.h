@@ -19,6 +19,38 @@
 #include <optional>
 
 namespace daw::pipelines::pimpl {
+	template<Iterator SentinelFor>
+	struct chunk_iterator_end {
+		using iterator_category =
+		  daw::common_iterator_category_t<std::forward_iterator_tag,
+		                                  daw::iterator_category_t<SentinelFor>>;
+		using difference_type = daw::iter_difference_t<SentinelFor>;
+		using value_type = std::common_type_t<iter_value_t<SentinelFor>>;
+		using reference = std::common_reference_t<iter_reference_t<SentinelFor>>;
+		using pointer = void;
+		using i_am_a_daw_chunk_iterator_end_class = void;
+
+		chunk_iterator_end( ) = default;
+
+		constexpr bool operator==( chunk_iterator_end const & ) const {
+			return true;
+		}
+
+		[[noreturn]] DAW_ATTRIB_NOINLINE inline value_type operator*( ) const {
+			std::terminate( );
+		}
+
+		[[noreturn]] DAW_ATTRIB_NOINLINE inline chunk_iterator_end &
+		operator++( ) const {
+			std::terminate( );
+		}
+
+		[[noreturn]] DAW_ATTRIB_NOINLINE inline chunk_iterator_end
+		operator++( int ) const {
+			std::terminate( );
+		}
+	};
+
 	template<typename First, typename Last = First>
 	struct chunk_iterator {
 		using iterator = First;
@@ -56,7 +88,7 @@ namespace daw::pipelines::pimpl {
 		}
 
 	public:
-		explicit chunk_iterator( ) = default;
+		chunk_iterator( ) = default;
 
 		explicit constexpr chunk_iterator( iterator first )
 		  : m_iter{ first }
@@ -77,6 +109,10 @@ namespace daw::pipelines::pimpl {
 
 		[[nodiscard]] constexpr const_iterator &base( ) const {
 			return m_iter;
+		}
+
+		[[nodiscard]] constexpr bool good( ) const {
+			return m_iter != m_last;
 		}
 
 		constexpr chunk_iterator &operator++( ) {
@@ -100,28 +136,35 @@ namespace daw::pipelines::pimpl {
 			return view_t<iterator>{ m_iter, *m_next_iter };
 		}
 
-		[[nodiscard]] constexpr bool
-		operator==( chunk_iterator const &rhs ) const noexcept {
+		[[nodiscard]] constexpr bool operator==( chunk_iterator const &rhs ) const {
 			return m_iter == rhs.m_iter;
 		}
 
 		[[nodiscard]] constexpr bool
-		operator!=( chunk_iterator const &rhs ) const noexcept = default;
+		operator==( chunk_iterator_end<First> const & ) const {
+			return not good( );
+		}
+
+		[[nodiscard]] constexpr bool
+		operator==( chunk_iterator_end<Last> const & ) const
+		  requires( not std::same_as<First, Last> ) {
+			return not good( );
+		}
 	};
 
 	template<ForwardRange R>
 	struct chunk_view
 	  : private stored_range_base_t<
 	      R, chunk_iterator<iterator_t<R>, iterator_end_t<R>>,
-	      chunk_iterator<iterator_end_t<R>>,
+	      chunk_iterator_end<iterator_end_t<R>>,
 	      chunk_iterator<const_iterator_t<R>, const_iterator_end_t<R>>,
-	      chunk_iterator<const_iterator_end_t<R>>> {
+	      chunk_iterator_end<const_iterator_end_t<R>>> {
 
 		using base_t = stored_range_base_t<
 		  R, chunk_iterator<iterator_t<R>, iterator_end_t<R>>,
-		  chunk_iterator<iterator_end_t<R>>,
+		  chunk_iterator_end<iterator_end_t<R>>,
 		  chunk_iterator<const_iterator_t<R>, const_iterator_end_t<R>>,
-		  chunk_iterator<const_iterator_end_t<R>>>;
+		  chunk_iterator_end<const_iterator_end_t<R>>>;
 
 		using iterator = typename base_t::iterator_first_t;
 		using const_iterator = typename base_t::const_iterator_first_t;
@@ -154,19 +197,15 @@ namespace daw::pipelines::pimpl {
 		}
 
 		[[nodiscard]] constexpr last_iterator end( ) {
-			return last_iterator{ base_t::rend( ), base_t::rend( ), m_chunk_size };
+			return last_iterator{ };
 		}
 
 		[[nodiscard]] constexpr const_last_iterator end( ) const {
-			return const_last_iterator{
-			  base_t::rend( ), base_t::rend( ), m_chunk_size };
+			return const_last_iterator{ };
 		}
 
 		[[nodiscard]] constexpr bool
 		operator==( chunk_view const &rhs ) const = default;
-
-		[[nodiscard]] constexpr bool
-		operator!=( chunk_view const &rhs ) const = default;
 	};
 	template<Range R>
 	chunk_view( R &&r ) -> chunk_view<daw::remove_rvalue_ref_t<R>>;

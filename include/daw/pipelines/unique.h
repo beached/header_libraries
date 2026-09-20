@@ -19,7 +19,7 @@ namespace daw::pipelines {
 	template<Iterator SentinelFor>
 	struct unique_iterator_end {
 		using iterator_category = std::input_iterator_tag;
-		using difference_type = std::ptrdiff_t;
+		using difference_type = daw::iter_difference_t<SentinelFor>;
 		using value_type = std::common_type_t<iter_value_t<SentinelFor>>;
 		using reference = std::common_reference_t<iter_reference_t<SentinelFor>>;
 		using pointer = void;
@@ -54,7 +54,7 @@ namespace daw::pipelines {
 		using iterator_category = std::forward_iterator_tag;
 		using reference = daw::iter_reference_t<First>;
 		using const_reference = daw::iter_const_reference_t<First>;
-		using difference_type = std::ptrdiff_t;
+		using difference_type = daw::iter_difference_t<First>;
 
 	private:
 		First m_first{ };

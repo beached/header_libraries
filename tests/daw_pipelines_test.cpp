@@ -488,11 +488,11 @@ namespace tests {
 			return l == r;
 		} );
 		static_assert( it != std::end( ary ) );
-		static_assert( std::distance( std::begin( ary ), it ) == 3 );
+		static_assert( std::ranges::distance( std::begin( ary ), it ) == 3 );
 
 		constexpr auto it2 = Find( ary, 2 );
 		static_assert( it2 != std::end( ary ) );
-		static_assert( std::distance( std::begin( ary ), it2 ) == 1 );
+		static_assert( std::ranges::distance( std::begin( ary ), it2 ) == 1 );
 		constexpr auto it3 = Find( 2 )( ary );
 		static_assert( it2 == it3 );
 	}
@@ -510,11 +510,11 @@ namespace tests {
 			return l.value == r.value;
 		} );
 		static_assert( it != std::end( ary ) );
-		static_assert( std::distance( std::begin( ary ), it ) == 3 );
+		static_assert( std::ranges::distance( std::begin( ary ), it ) == 3 );
 
 		constexpr auto it2 = Find( ary, 2, &Test::value );
 		static_assert( it2 != std::end( ary ) );
-		static_assert( std::distance( std::begin( ary ), it2 ) == 1 );
+		static_assert( std::ranges::distance( std::begin( ary ), it2 ) == 1 );
 		constexpr auto it3 = Find( 2, &Test::value )( ary );
 		static_assert( it2 == it3 );
 	}
@@ -1209,7 +1209,7 @@ namespace tests {
 	DAW_ATTRIB_NOINLINE void test_split_owned_source_survives_being_moved( ) {
 		auto piece_size = []( auto piece ) {
 			return static_cast<int>(
-			  std::distance( std::begin( piece ), std::end( piece ) ) );
+			  std::ranges::distance( std::begin( piece ), std::end( piece ) ) );
 		};
 
 		// the owned string is moved into the next stage
@@ -1231,12 +1231,13 @@ namespace tests {
 		daw_ensure( collected == std::vector{ 2, 3, 1 } );
 	}
 
-	// Algorithms that only advance an iterator, e.g. std::distance or the size
-	// pass of a container's range constructor, must work without dereferencing
+	// Algorithms that only advance an iterator, e.g. std::ranges::distance or the
+	// size pass of a container's range constructor, must work without
+	// dereferencing
 	DAW_ATTRIB_NOINLINE void test_split_advances_without_dereferencing( ) {
 		auto text = std::string( "ab,cde,f" );
 		auto pieces = pipeline( text, Split( ',' ) );
-		daw_ensure( std::distance( pieces.begin( ), pieces.end( ) ) == 3 );
+		daw_ensure( std::ranges::distance( pieces.begin( ), pieces.end( ) ) == 3 );
 	}
 
 	DAW_ATTRIB_NOINLINE void test_owned_source_view_copy_outlives_original( ) {

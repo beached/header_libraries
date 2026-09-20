@@ -27,7 +27,7 @@ namespace daw::pipelines::pimpl {
 
 		[[nodiscard]] constexpr auto operator( )( Range auto &&r ) const {
 			using result_type = typename Distribution::result_type;
-			static_assert( std::is_integral_v<result_type> );
+			static_assert( daw::is_integral_v<result_type> );
 			daw_ensure( m_number_to_keep < m_sample_size );
 			daw_ensure(
 			  std::cmp_less_equal( m_sample_size, max_value<result_type> ) );

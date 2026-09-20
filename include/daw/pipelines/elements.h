@@ -29,7 +29,7 @@ namespace daw::pipelines::pimpl {
 		  std::tuple_element_t<Index, daw::iter_const_reference_t<Iterator>>;
 		using pointer = arrow_proxy<reference>;
 		using const_pointer = arrow_proxy<const_reference>;
-		using difference_type = std::ptrdiff_t;
+		using difference_type = daw::iter_difference_t<Iterator>;
 		using size_type = std::size_t;
 
 	private:
@@ -221,7 +221,7 @@ namespace daw::pipelines::pimpl {
 		  std::tuple_element_t<Indices, daw::iter_const_reference_t<Iterator>>...>;
 		using pointer = arrow_proxy<reference>;
 		using const_pointer = arrow_proxy<const_reference>;
-		using difference_type = std::ptrdiff_t;
+		using difference_type = daw::iter_difference_t<Iterator>;
 		using size_type = std::size_t;
 
 	private:
@@ -338,14 +338,14 @@ namespace daw::pipelines::pimpl {
 		}
 
 		template<typename OtherIterator>
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
-		operator==( elements_iterator<OtherIterator, Indices...> const &rhs ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool operator==(
+		  elements_iterator<OtherIterator, Indices...> const &rhs ) const {
 			return m_iter == rhs.base( );
 		}
 
 		template<typename OtherIterator>
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
-		operator!=( elements_iterator<OtherIterator, Indices...> const &rhs ) const {
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool operator!=(
+		  elements_iterator<OtherIterator, Indices...> const &rhs ) const {
 			return m_iter != rhs.base( );
 		}
 

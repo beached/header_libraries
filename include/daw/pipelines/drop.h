@@ -29,10 +29,10 @@ namespace daw::pipelines {
 		using const_iterator = typename base_t::const_iterator;
 		using iterator_last = typename base_t::iterator_last;
 		using const_iterator_last = typename base_t::const_iterator_last;
+		using difference_type = daw::range_difference_t<R>;
 		using daw_i_am_a_drop_view_class = void;
 
 	private:
-		using difference_type = std::ptrdiff_t;
 		// How many leading elements are dropped.  An offset, unlike a cached
 		// iterator, stays valid when the view is copied or moved.
 		difference_type m_dropped = 0;

@@ -74,9 +74,8 @@ namespace daw::pipelines {
 		// Maybe used owned range
 		return [fun = DAW_FWD( fn )]<RandomRange R>(
 		         R &&r ) -> daw::remove_rvalue_ref_t<R> {
-			auto const sz =
-			  static_cast<std::size_t>( daw::pipelines::pimpl::ranges_distance(
-			    std::begin( r ), std::end( r ) ) );
+			auto const sz = pimpl::ranges_distance<std::size_t>( r );
+
 			for( std::size_t n = 0; n < sz; ++n ) {
 				(void)std::invoke( fun, r[n] );
 			}

@@ -46,7 +46,7 @@ namespace daw::pipelines::pimpl {
 	template<Iterator SentinelFor>
 	struct map_iterator_end {
 		using iterator_category = std::input_iterator_tag;
-		using difference_type = std::ptrdiff_t;
+		using difference_type = daw::iter_difference_t<SentinelFor>;
 		using value_type = std::common_type_t<iter_value_t<SentinelFor>>;
 		using reference = std::common_reference_t<iter_reference_t<SentinelFor>>;
 		using pointer = void;
@@ -98,7 +98,7 @@ namespace daw::pipelines::pimpl {
 		using value_type = std::remove_cvref_t<reference>;
 		using const_reference = reference;
 		using pointer = arrow_proxy<value_type>;
-		using difference_type = std::ptrdiff_t;
+		using difference_type = daw::iter_difference_t<I>;
 		using size_type = std::size_t;
 
 	private:

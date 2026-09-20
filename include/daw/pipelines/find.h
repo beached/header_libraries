@@ -83,8 +83,7 @@ namespace daw::pipelines::pimpl {
 			while( first != last ) {
 				ForwardIterator auto p0 = first;
 				Iterator auto plast = safe_move_next( first, last, FindWidth );
-				if( static_cast<std::size_t>( daw::pipelines::pimpl::ranges_distance(
-				      p0, plast ) ) < FindWidth ) {
+				if( pimpl::ranges_distance<std::size_t>( p0, plast ) < FindWidth ) {
 					return last;
 				}
 				if( finder<FindWidth>( needle, projection, p0 ) ) {

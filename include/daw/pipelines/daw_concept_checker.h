@@ -30,8 +30,8 @@ namespace daw {
 		check_movable<I>( );
 		static_assert( requires( I i ) { typename std::iter_difference_t<I>; } );
 		static_assert( requires { typename std::iter_difference_t<I>; } );
-		static_assert( std::is_integral_v<std::iter_difference_t<I>> );
-		static_assert( std::is_signed_v<std::iter_difference_t<I>> );
+		static_assert( daw::is_integral_v<std::iter_difference_t<I>> );
+		static_assert( daw::is_signed_v<std::iter_difference_t<I>> );
 		static_assert( requires( I i ) { { ++i }->std::same_as<I &>; } );
 		static_assert( requires( I i ) { i++; } );
 		return true;

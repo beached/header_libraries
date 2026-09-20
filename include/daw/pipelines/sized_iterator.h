@@ -23,7 +23,7 @@ namespace daw::pipelines {
 		using iterator_category =
 		  daw::common_iterator_category_t<std::forward_iterator_tag,
 		                                  daw::iterator_category_t<SentinelFor>>;
-		using difference_type = std::ptrdiff_t;
+		using difference_type = daw::iter_difference_t<SentinelFor>;
 		using value_type = std::common_type_t<iter_value_t<SentinelFor>>;
 		using reference = std::common_reference_t<iter_reference_t<SentinelFor>>;
 		using pointer = void;
@@ -59,7 +59,7 @@ namespace daw::pipelines {
 		using value_type = iter_value_t<First>;
 		using reference = iter_reference_t<First>;
 		using const_reference = iter_const_reference_t<First>;
-		using difference_type = std::ptrdiff_t;
+		using difference_type = daw::iter_difference_t<First>;
 
 	private:
 		First m_iter{ };
@@ -234,7 +234,7 @@ namespace daw::pipelines {
 		using value_type = iter_value_t<First>;
 		using reference = iter_reference_t<First>;
 		using const_reference = iter_const_reference_t<First>;
-		using difference_type = std::ptrdiff_t;
+		using difference_type = daw::iter_difference_t<First>;
 
 	private:
 		First m_first = First{ };

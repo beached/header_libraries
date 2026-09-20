@@ -34,10 +34,6 @@ namespace daw::pipelines::pimpl {
 		[[nodiscard]] DAW_ATTRIB_NOINLINE DAW_CPP23_STATIC_CALL_OP constexpr auto
 		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
 			using range_type = daw::remove_cvref_t<R>;
-			static_assert( check_sentinel_for<daw::iterator_end_t<range_type>,
-			                                  daw::iterator_t<range_type>>( ) );
-			static_assert( check_input_range<std::remove_cvref_t<R>>( ) );
-
 			static_assert(
 			  requires( iterator_t<range_type> it ) { Container( it, it ); },
 			  "To requires the container to be constructible from an iterator "

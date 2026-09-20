@@ -39,8 +39,10 @@ namespace daw::pipelines {
 
 		template<ForwardIterator... SentinelFors>
 		struct concat_iterator_end {
+			static_assert( sizeof...( SentinelFors ) > 0 );
 			using iterator_category = std::input_iterator_tag;
-			using difference_type = std::ptrdiff_t;
+			using difference_type =
+			  widest_type_t<daw::iter_difference_t<SentinelFors>...>;
 			using value_type = std::common_type_t<iter_value_t<SentinelFors>...>;
 			using reference =
 			  std::common_reference_t<iter_reference_t<SentinelFors>...>;
@@ -84,7 +86,8 @@ namespace daw::pipelines {
 			  range_reference_t<daw::remove_rvalue_ref_t<Ranges>>...>;
 			using const_reference = std::common_reference_t<
 			  range_const_reference_t<daw::remove_rvalue_ref_t<Ranges>>...>;
-			using difference_type = std::ptrdiff_t;
+			using difference_type =
+			  widest_type_t<daw::range_difference_t<Ranges>...>;
 			using i_am_a_daw_concat_iterator_class = void;
 
 		private:
@@ -198,7 +201,8 @@ namespace daw::pipelines {
 		  range_reference_t<daw::remove_rvalue_ref_t<Ranges>>...>;
 		using const_reference = std::common_reference_t<
 		  range_const_reference_t<daw::remove_rvalue_ref_t<Ranges>>...>;
-		using difference_type = std::ptrdiff_t;
+		using difference_type =
+		  widest_type_t<daw::range_difference_t<Ranges>...>;
 		using position_t = pimpl::variant_range_storage_t<
 		  view_t<iterator_t<Ranges>, iterator_end_t<Ranges>>...>;
 

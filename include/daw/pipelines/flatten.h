@@ -22,17 +22,36 @@
 #include <iterator>
 
 namespace daw::pipelines::pimpl {
-	template<typename It>
-	struct flatten_iterator_end_t {
-		using iterator_t = It;
-		using sub_iterator_t = daw::iterator_t<daw::iter_reference_t<iterator_t>>;
-		using iterator_category = std::forward_iterator_tag;
-		using value_type = daw::iter_value_t<sub_iterator_t>;
-		using reference = daw::iter_reference_t<sub_iterator_t>;
-		using const_reference = daw::iter_const_reference_t<sub_iterator_t>;
-		using difference_type = std::ptrdiff_t;
+	template<Iterator SentinelFor>
+	struct flatten_iterator_end {
+		using iterator_category =
+		  daw::common_iterator_category_t<std::forward_iterator_tag,
+		                                  daw::iterator_category_t<SentinelFor>>;
+		using difference_type = daw::iter_difference_t<SentinelFor>;
+		using value_type = std::common_type_t<iter_value_t<SentinelFor>>;
+		using reference = std::common_reference_t<iter_reference_t<SentinelFor>>;
+		using pointer = void;
+		using i_am_a_daw_flatten_iterator_end_class = void;
 
-		iterator_t m_range_first{ };
+		flatten_iterator_end( ) = default;
+
+		constexpr bool operator==( flatten_iterator_end const & ) const {
+			return true;
+		}
+
+		[[noreturn]] DAW_ATTRIB_NOINLINE inline value_type operator*( ) const {
+			std::terminate( );
+		}
+
+		[[noreturn]] DAW_ATTRIB_NOINLINE inline flatten_iterator_end &
+		operator++( ) const {
+			std::terminate( );
+		}
+
+		[[noreturn]] DAW_ATTRIB_NOINLINE inline flatten_iterator_end
+		operator++( int ) const {
+			std::terminate( );
+		}
 	};
 
 	template<typename First, typename Last = First>
@@ -43,12 +62,10 @@ namespace daw::pipelines::pimpl {
 		using value_type = daw::iter_value_t<sub_iterator_t>;
 		using reference = daw::iter_reference_t<sub_iterator_t>;
 		using const_reference = daw::iter_const_reference_t<sub_iterator_t>;
-		using difference_type = std::ptrdiff_t;
+		using difference_type = daw::iter_difference_t<First>;
 		using i_am_a_daw_flatten_iterator_class = void;
 
 	private:
-		using end_t = flatten_iterator_end_t<Last>;
-
 		iterator_t m_iter{ };
 		DAW_NO_UNIQUE_ADDRESS Last m_last{ };
 		sub_iterator_t m_cur_first{ };
@@ -95,6 +112,10 @@ namespace daw::pipelines::pimpl {
 			advance_to_non_empty_range( );
 		}
 
+		[[nodiscard]] constexpr bool good( ) const {
+			return m_iter != m_last;
+		}
+
 		constexpr flatten_iterator &operator++( ) {
 			inc_sub_range( );
 			return *this;
@@ -124,30 +145,27 @@ namespace daw::pipelines::pimpl {
 		operator==( flatten_iterator const &rhs ) const {
 			return m_iter == rhs.m_iter and m_cur_first == rhs.m_cur_first;
 		}
-		/*
-		    [[nodiscard]] constexpr bool
-		    operator!=( flatten_iterator const &rhs ) const = default;
-		*/
-		[[nodiscard]] constexpr bool operator==( end_t const &rhs ) const {
-			return m_iter == rhs.m_range_first;
-		}
-		/*
-		    [[nodiscard]] constexpr bool operator!=( end_t const &rhs ) const {
-		      return m_iter != rhs.m_range_first;
-		    }*/
-	};
 
+		[[nodiscard]] constexpr bool
+		operator==( flatten_iterator_end<First> const & ) const {
+			return not good( );
+		}
+	};
+} // namespace daw::pipelines::pimpl
+
+namespace daw::pipelines {
 	template<ForwardRange R>
 	struct flatten_view
-	  : private stored_range_base_t<R, flatten_iterator<iterator_t<R>>,
-	                                flatten_iterator<iterator_end_t<R>>,
-	                                flatten_iterator<const_iterator_t<R>>,
-	                                flatten_iterator<const_iterator_end_t<R>>> {
-		using base_t =
-		  stored_range_base_t<R, flatten_iterator<iterator_t<R>>,
-		                      flatten_iterator<iterator_end_t<R>>,
-		                      flatten_iterator<const_iterator_t<R>>,
-		                      flatten_iterator<const_iterator_end_t<R>>>;
+	  : private pimpl::stored_range_base_t<
+	      R, pimpl::flatten_iterator<iterator_t<R>, iterator_end_t<R>>,
+	      pimpl::flatten_iterator_end<iterator_t<R>>,
+	      pimpl::flatten_iterator<const_iterator_t<R>, const_iterator_end_t<R>>,
+	      pimpl::flatten_iterator_end<const_iterator_t<R>>> {
+		using base_t = pimpl::stored_range_base_t<
+		  R, pimpl::flatten_iterator<iterator_t<R>, iterator_end_t<R>>,
+		  pimpl::flatten_iterator_end<iterator_t<R>>,
+		  pimpl::flatten_iterator<const_iterator_t<R>, const_iterator_end_t<R>>,
+		  pimpl::flatten_iterator_end<const_iterator_t<R>>>;
 
 		using iterator = typename base_t::iterator_first_t;
 		using const_iterator = typename base_t::const_iterator_first_t;
@@ -171,12 +189,20 @@ namespace daw::pipelines::pimpl {
 			return const_iterator{ base_t::rbegin( ), base_t::rend( ) };
 		}
 
+		[[nodiscard]] constexpr const_iterator cbegin( ) const {
+			return const_iterator{ base_t::rbegin( ), base_t::rend( ) };
+		}
+
 		[[nodiscard]] constexpr last_iterator end( ) {
-			return last_iterator{ base_t::rend( ), base_t::rend( ) };
+			return last_iterator{ };
 		}
 
 		[[nodiscard]] constexpr const_last_iterator end( ) const {
-			return const_last_iterator{ base_t::rend( ), base_t::rend( ) };
+			return const_last_iterator{ };
+		}
+
+		[[nodiscard]] constexpr const_last_iterator cend( ) const {
+			return const_last_iterator{ };
 		}
 
 	private:
@@ -184,19 +210,14 @@ namespace daw::pipelines::pimpl {
 		using underlying_value_t = daw::range_value_t<underlying_range_t>;
 
 	public:
-		[[nodiscard]] constexpr bool operator==( flatten_view const &rhs ) const
-		  requires( std::equality_comparable<underlying_range_t>
-		              and std::equality_comparable<underlying_value_t> ) {
-			return static_cast<base_t const &>( *this ) ==
-			       static_cast<base_t const &>( rhs );
-		}
-
 		[[nodiscard]] constexpr bool
-		operator!=( flatten_view const &rhs ) const = default;
+		operator==( flatten_view const & ) const = default;
 	};
 	template<Range R>
 	flatten_view( R && ) -> flatten_view<daw::remove_rvalue_ref_t<R>>;
+} // namespace daw::pipelines
 
+namespace daw::pipelines::pimpl {
 	struct Flatten_t {
 		[[nodiscard]] DAW_ATTRIB_INLINE DAW_CPP23_STATIC_CALL_OP constexpr auto
 		operator( )( Range auto &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {

@@ -9,7 +9,9 @@
 #pragma once
 
 #include "daw/daw_arith_traits.h"
+#include "daw/daw_as.h"
 #include "daw/daw_concepts.h"
+#include "daw/daw_ensure.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/iterator/daw_arrow_proxy.h"
 #include "daw/pipelines/range_base.h"
@@ -24,62 +26,56 @@ namespace daw::pipelines {
 	struct iota_iterator {
 		using iterator_category = std::random_access_iterator_tag;
 		using value_type = T;
-		using reference = value_type &;
-		using const_reference = value_type const &;
-		using pointer = daw::arrow_proxy<value_type>;
-		using const_pointer = daw::arrow_proxy<value_type>;
-		using difference_type = std::ptrdiff_t;
-		using size_type = std::size_t;
+		using reference = value_type;
+		using const_reference = value_type;
+		using difference_type = daw::next_wider_t<daw::make_signed_t<T>>;
+		using size_type = daw::next_wider_t<daw::make_unsigned_t<T>>;
 
 	private:
-		T value = max_value<T>;
+		T m_value = max_value<T>;
 
 	public:
-		explicit iota_iterator( ) = default;
+		iota_iterator( ) = default;
 
-		explicit constexpr iota_iterator( T const &v )
-		  : value( v ) {}
+		explicit constexpr iota_iterator(
+		  daw::explicitly_convertible_to<T> auto &&value )
+		  : m_value( static_cast<T>( DAW_FWD( value ) ) ) {}
 
-		explicit constexpr iota_iterator( T &&v )
-		  : value( std::move( v ) ) {}
-
-		[[nodiscard]] constexpr value_type operator*( ) const {
-			return value;
-		}
-
-		[[nodiscard]] constexpr daw::arrow_proxy<value_type> operator->( ) const {
-			return daw::arrow_proxy<value_type>( operator*( ) );
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference operator*( ) const {
+			return m_value;
 		}
 
 		constexpr iota_iterator &operator++( ) {
-			++value;
-			return *this;
+			return *this += 1;
 		}
 
 		[[nodiscard]] constexpr iota_iterator operator++( int ) {
 			iota_iterator result = *this;
-			++value;
+			++m_value;
 			return result;
 		}
 
 		constexpr iota_iterator &operator--( ) {
-			--value;
-			return *this;
+			return *this -= 1;
 		}
 
 		[[nodiscard]] constexpr iota_iterator operator--( int ) {
 			iota_iterator result = *this;
-			--value;
+			--m_value;
 			return result;
 		}
 
-		constexpr iota_iterator &operator+=( difference_type n ) {
-			value += static_cast<value_type>( n );
+		DAW_ATTRIB_INLINE constexpr iota_iterator &operator+=( difference_type n ) {
+			// size_type is the unsigned type as wide as difference_type.  Adding in
+			// it wraps, where a signed sum could overflow for a large step
+			m_value = static_cast<T>( static_cast<size_type>( m_value ) +
+			                          static_cast<size_type>( n ) );
 			return *this;
 		}
 
-		constexpr iota_iterator &operator-=( difference_type n ) {
-			value -= static_cast<value_type>( n );
+		DAW_ATTRIB_INLINE constexpr iota_iterator &operator-=( difference_type n ) {
+			m_value = static_cast<T>( static_cast<size_type>( m_value ) -
+			                          static_cast<size_type>( n ) );
 			return *this;
 		}
 
@@ -109,62 +105,76 @@ namespace daw::pipelines {
 
 		[[nodiscard]] constexpr difference_type
 		operator-( iota_iterator const &i ) const {
-			return static_cast<difference_type>( value - i.value );
+			return as<difference_type>( m_value ) - as<difference_type>( i.m_value );
 		}
 
-		[[nodiscard]] constexpr value_type
-		operator[]( size_type n ) const noexcept {
-			return *( value + static_cast<difference_type>( n ) );
+		[[nodiscard]] constexpr reference
+		operator[]( difference_type n ) const noexcept {
+			return as<value_type>( static_cast<difference_type>( m_value ) + n );
 		}
 
 		[[nodiscard]] constexpr bool
 		operator==( iota_iterator const &rhs ) const = default;
 
-		[[nodiscard]] constexpr bool
-		operator!=( iota_iterator const &rhs ) const = default;
-
 		// clang-format off
 		[[nodiscard]] friend constexpr auto operator<=>
 		  ( iota_iterator const &lhs, iota_iterator const &rhs ) {
-			return lhs.value <=> rhs.value;
+			return lhs.m_value <=> rhs.m_value;
 		}
 		// clang-format on
 	};
 
 	template<typename T>
-	struct iota_view : private pimpl::range_base_t<iota_iterator<T>> {
-		using value_type = daw::iter_value_t<iota_iterator<T>>;
+	struct iota_view {
 		using iterator = iota_iterator<T>;
+		using difference_type = daw::iter_difference_t<iterator>;
+		using value_type = daw::iter_value_t<iterator>;
+		using size_type = daw::iter_size_t<iterator>;
 
 	private:
-		iota_iterator<T> m_first = iota_iterator<T>{ };
-		iota_iterator<T> m_last = iota_iterator<T>{ };
+		T m_first = { };
+		T m_last = max_value<T>;
 
 	public:
 		explicit iota_view( ) = default;
 
-		explicit constexpr iota_view( T last )
-		  : m_first( 0 )
-		  , m_last( last ) {}
+		explicit constexpr iota_view(
+		  daw::explicitly_convertible_to<T> auto &&last )
+		  : m_last{ static_cast<T>( DAW_FWD( last ) ) } {
+			daw_dbg_ensure( m_first <= m_last );
+		}
 
-		explicit constexpr iota_view( T first, T last )
-		  : m_first( first )
-		  , m_last( last ) {}
+		explicit constexpr iota_view(
+		  daw::explicitly_convertible_to<T> auto &&first,
+		  daw::explicitly_convertible_to<T> auto &&last )
+		  : m_first{ static_cast<T>( DAW_FWD( first ) ) }
+		  , m_last{ static_cast<T>( DAW_FWD( last ) ) } {
+			daw_dbg_ensure( m_first <= m_last );
+		}
 
 		[[nodiscard]] constexpr iterator begin( ) const {
-			return m_first;
+			return iterator{ m_first };
 		}
 
 		[[nodiscard]] constexpr iterator end( ) const {
-			return m_last;
+			return iterator{ m_last };
+		}
+
+		[[nodiscard]] constexpr bool empty( ) const {
+			return m_first == m_last;
+		}
+
+		[[nodiscard]] constexpr value_type
+		operator[]( difference_type n ) const noexcept {
+			daw_dbg_ensure( not empty( ) );
+			daw_dbg_ensure( std::cmp_less_equal( m_first, n ) );
+			daw_dbg_ensure( std::cmp_less( n, m_last ) );
+			return as<value_type>( static_cast<difference_type>( *begin( ) ) + n );
 		}
 
 		[[nodiscard]] constexpr bool operator==( iota_view const &rhs ) const {
 			return m_first == rhs.m_first and m_last == rhs.m_last;
 		}
-
-		[[nodiscard]] constexpr bool
-		operator!=( iota_view const &rhs ) const = default;
 	};
 	template<typename T>
 	iota_view( T ) -> iota_view<std::size_t>;

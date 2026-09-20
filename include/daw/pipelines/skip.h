@@ -28,7 +28,7 @@ namespace daw::pipelines {
 		using daw_i_am_a_skip_view_class = void;
 
 	private:
-		using difference_type = std::ptrdiff_t;
+		using difference_type = daw::range_difference_t<R>;
 		// How many leading elements are skipped.  An offset, unlike a cached
 		// iterator, stays valid when the view is copied or moved.
 		difference_type m_skipped = 0;

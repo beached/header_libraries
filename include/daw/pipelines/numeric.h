@@ -41,8 +41,7 @@ namespace daw::pipelines {
 				} else if constexpr( requires { r.size( ); } ) {
 					return r.size( );
 				} else {
-					return static_cast<std::size_t>(
-					  daw::pipelines::pimpl::ranges_distance( std::begin( r ), std::end( r ) ) );
+					return pimpl::ranges_distance<std::size_t>( r );
 				}
 			}
 		};

@@ -18,35 +18,25 @@
 #include <daw/stdinc/tuple_traits.h>
 
 namespace daw::pipelines::pimpl {
-	template<Range R>
-	[[nodiscard]] constexpr auto range_distance( R const &r ) {
-		if constexpr( daw::RandomRange<R> ) {
-			return std::end( r ) - std::begin( r );
-		} else {
-			std::ptrdiff_t d = 0;
-			auto f = std::begin( r );
-			auto const l = std::end( r );
-			while( f != l ) {
-				++f;
-				++d;
-			}
-			return d;
-		}
-	}
 
-	template<typename First, typename Last>
-	[[nodiscard]] constexpr std::ptrdiff_t ranges_distance( First first,
-	                                                        Last last ) {
+	template<typename Result = std::ptrdiff_t>
+	[[nodiscard]] constexpr Result ranges_distance( Iterator auto first,
+	                                                Iterator auto const &last ) {
 		if constexpr( requires { last - first; } ) {
-			return static_cast<std::ptrdiff_t>( last - first );
+			return static_cast<Result>( last - first );
 		} else {
-			std::ptrdiff_t d = 0;
+			Result d = Result{ };
 			while( first != last ) {
 				++first;
 				++d;
 			}
 			return d;
 		}
+	}
+
+	template<typename Result = std::ptrdiff_t>
+	[[nodiscard]] constexpr Result ranges_distance( Range auto const &r ) {
+		return ranges_distance<Result>( std::begin( r ), std::end( r ) );
 	}
 
 	template<typename First, typename Last = First>
@@ -57,6 +47,7 @@ namespace daw::pipelines::pimpl {
 
 		range_base_t( ) = default;
 	};
+
 	template<typename R>
 	concept RangeBase = requires {
 		typename daw::remove_cvref_t<R>::i_am_a_daw_pipelines_range_base_t;

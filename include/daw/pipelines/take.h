@@ -11,6 +11,7 @@
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_typeof.h"
+#include "daw/pipelines/counted_source.h"
 #include "daw/pipelines/filter.h"
 #include "daw/pipelines/maybe_owning_range.h"
 #include "daw/pipelines/sized_iterator.h"
@@ -43,7 +44,13 @@ namespace daw::pipelines {
 		template<typename It, typename F, typename L>
 		[[nodiscard]] constexpr It make_begin( F first, L last ) const {
 			if constexpr( RandomIterator<F> ) {
-				auto const range_size = pimpl::ranges_distance( first, last );
+				auto const range_size = [&] {
+					if constexpr( pimpl::counted_source<F, L> ) {
+						return pimpl::counted_length( first, last );
+					} else {
+						return pimpl::ranges_distance( first, last );
+					}
+				}( );
 				auto const take_size =
 				  std::min( { range_size, static_cast<std::ptrdiff_t>( m_how_many ) } );
 				return It{ std::move( first ), static_cast<std::size_t>( take_size ) };

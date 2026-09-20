@@ -30,7 +30,7 @@ namespace daw::pipelines::pimpl {
 		using iterator_category =
 		  daw::common_iterator_category_t<std::forward_iterator_tag,
 		                                  daw::iterator_category_t<SentinelFor>>;
-		using difference_type = std::ptrdiff_t;
+		using difference_type = daw::iter_difference_t<SentinelFor>;
 		using value_type = std::common_type_t<iter_value_t<SentinelFor>>;
 		using reference = std::common_reference_t<iter_reference_t<SentinelFor>>;
 		using pointer = void;
@@ -67,7 +67,7 @@ namespace daw::pipelines::pimpl {
 		using const_reference = daw::iter_const_reference_t<First>;
 		using pointer = daw::iter_pointer_t<First>;
 		using const_pointer = std::remove_pointer_t<pointer> const *;
-		using difference_type = std::ptrdiff_t;
+		using difference_type = daw::iter_difference_t<First>;
 		using i_am_a_daw_filter_iterator_class = void;
 
 	private:
