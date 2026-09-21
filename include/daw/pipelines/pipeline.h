@@ -39,9 +39,8 @@ namespace daw::pipelines::pimpl {
 	pipeline( std::tuple<Ts...> const &functions, R &&r, Ranges &&...ranges ) {
 		using std::get;
 		if constexpr( Idx > 0 ) {
-			auto &&param =
-			  pipeline<Idx - 1>( functions, DAW_FWD( r ), DAW_FWD( ranges )... );
-			return get<Idx>( functions )( DAW_FWD( param ) );
+			return get<Idx>( functions )(
+			  pipeline<Idx - 1>( functions, DAW_FWD( r ), DAW_FWD( ranges )... ) );
 		} else {
 			return get<0>( functions )( DAW_FWD( r ), DAW_FWD( ranges )... );
 		}

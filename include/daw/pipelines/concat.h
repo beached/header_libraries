@@ -9,12 +9,17 @@
 #pragma once
 
 #include "daw/cpp_17.h"
+#include "daw/daw_as.h"
+#include "daw/daw_concepts.h"
+#include "daw/daw_forward_like.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
 #include "daw/daw_traits.h"
 #include "daw/daw_visit.h"
+#include "daw/iterator/daw_checked_iterator_proxy.h"
+#include "daw/pipelines/daw_concept_checker.h"
 #include "daw/pipelines/pipeline_traits.h"
-#include "daw/pipelines/range.h"
+#include "daw/pipelines/view.h"
 
 #include <array>
 #include <tuple>
@@ -24,129 +29,283 @@
 
 namespace daw::pipelines {
 	template<ForwardRange... Ranges>
-	struct concat_view : range_base_t<concat_view<Ranges...>> {
-		static_assert( sizeof...( Ranges ) > 0,
+	struct concat_view;
+
+	namespace pimpl {
+		struct Concat_t;
+
+		template<typename CV, ForwardRange... Ranges>
+		struct concat_iterator;
+
+		template<ForwardIterator... SentinelFors>
+		struct concat_iterator_end {
+			static_assert( sizeof...( SentinelFors ) > 0 );
+			using iterator_category = std::input_iterator_tag;
+			using difference_type =
+			  widest_type_t<daw::iter_difference_t<SentinelFors>...>;
+			using value_type = std::common_type_t<iter_value_t<SentinelFors>...>;
+			using reference =
+			  std::common_reference_t<iter_reference_t<SentinelFors>...>;
+			using pointer = void;
+			using i_am_a_daw_concat_iterator_end_class = void;
+
+			concat_iterator_end( ) = default;
+
+			constexpr bool operator==( concat_iterator_end const & ) const {
+				return true;
+			}
+
+			[[noreturn]] DAW_ATTRIB_NOINLINE inline value_type operator*( ) const {
+				std::terminate( );
+			}
+
+			[[noreturn]] DAW_ATTRIB_NOINLINE inline concat_iterator_end &
+			operator++( ) const {
+				std::terminate( );
+			}
+
+			[[noreturn]] DAW_ATTRIB_NOINLINE inline concat_iterator_end
+			operator++( int ) const {
+				std::terminate( );
+			}
+		};
+
+		/// Iterates the ranges passed to `concat_view` in sequence. Holds a
+		/// pointer back to the view, which owns the storage for every range; the
+		/// iterator only tracks its own current position within that storage so
+		/// that copies (e.g. via operator++( int )) advance independently.
+		template<typename CV, ForwardRange... Ranges>
+		struct concat_iterator {
+			using iterator_category = std::forward_iterator_tag;
+
+			using types_t =
+			  std::tuple<daw::remove_cvrvref_t<daw::remove_rvalue_ref_t<Ranges>>...>;
+			using value_type =
+			  std::common_type_t<range_value_t<daw::remove_rvalue_ref_t<Ranges>>...>;
+			using reference = std::common_reference_t<
+			  range_reference_t<daw::remove_rvalue_ref_t<Ranges>>...>;
+			using const_reference = std::common_reference_t<
+			  range_const_reference_t<daw::remove_rvalue_ref_t<Ranges>>...>;
+			using difference_type =
+			  widest_type_t<daw::range_difference_t<Ranges>...>;
+			using i_am_a_daw_concat_iterator_class = void;
+
+		private:
+			using last_iterator =
+			  pimpl::concat_iterator_end<daw::iterator_end_t<Ranges>...>;
+			using last_const_iterator =
+			  pimpl::concat_iterator_end<daw::const_iterator_end_t<Ranges>...>;
+			using position_t = variant_range_storage_t<
+			  view_t<iterator_t<Ranges>, iterator_end_t<Ranges>>...>;
+
+			using cv_t = CV;
+			using cv_pointer_t = cv_t *;
+			using cv_const_pointer_t = cv_t const *;
+			using positions_t = std::array<position_t, cv_t::range_size>;
+
+			cv_pointer_t m_view{ };
+			positions_t m_positions = positions_t{ };
+			std::size_t m_index = cv_t::range_size;
+
+			template<std::size_t... Is>
+			[[nodiscard]] static constexpr positions_t
+			make_positions( cv_const_pointer_t view, std::index_sequence<Is...> ) {
+				return positions_t{
+				  position_t( view_t{ view->m_storage[Is].template get<Is>( ).rbegin( ),
+				                      view->m_storage[Is].template get<Is>( ).rend( ) },
+				              daw::constant_v<Is> )... };
+			}
+
+			constexpr void skip_empty_ranges( ) {
+				while( m_index < cv_t::range_size and
+				       m_positions[m_index].visit( []( auto const &r ) -> bool {
+					       return r.rbegin( ) == r.rend( );
+				       } ) ) {
+					++m_index;
+				}
+			}
+
+		public:
+			explicit constexpr concat_iterator( cv_pointer_t view )
+			  : m_view( view )
+			  , m_positions( make_positions(
+			      view, std::make_index_sequence<cv_t::range_size>{ } ) )
+			  , m_index( 0 ) {
+				skip_empty_ranges( );
+			}
+
+			concat_iterator( ) = default;
+
+			constexpr concat_iterator &operator++( ) {
+				m_positions[m_index].visit( []( auto &p ) {
+					(void)++p;
+				} );
+				skip_empty_ranges( );
+				return *this;
+			}
+
+			[[nodiscard]] constexpr concat_iterator operator++( int ) {
+				auto tmp = *this;
+				++( *this );
+				return tmp;
+			}
+
+			[[nodiscard]] constexpr bool good( ) const noexcept {
+				return m_index != cv_t::range_size;
+			}
+
+			[[nodiscard]] constexpr reference operator*( ) {
+				return m_positions[m_index].visit( []( auto &p ) -> reference {
+					return *p;
+				} );
+			}
+
+			[[nodiscard]] constexpr const_reference operator*( ) const {
+				return m_positions[m_index].visit(
+				  []( auto const &p ) -> const_reference {
+					  return *p;
+				  } );
+			}
+
+			[[nodiscard]] constexpr bool
+			operator==( concat_iterator const &rhs ) const noexcept {
+				return m_view == rhs.m_view and m_index == rhs.m_index and
+				       m_positions == rhs.m_positions;
+			}
+
+			[[nodiscard]] constexpr bool
+			operator==( last_iterator const & ) const noexcept {
+				return not good( );
+			}
+		};
+	} // namespace pimpl
+
+	template<ForwardRange... Ranges>
+	struct concat_view
+	  : pimpl::range_base_t<
+	      pimpl::concat_iterator<concat_view<Ranges...>, Ranges...>,
+	      pimpl::concat_iterator_end<daw::iterator_end_t<Ranges>...>> {
+		static constexpr std::size_t range_size = sizeof...( Ranges );
+		static_assert( range_size > 0,
 		               "concat_view requires at least one iterator specified" );
-		using iterator_category =
-		  common_iterator_category_t<range_category_t<Ranges>...>;
-		using types_t = std::tuple<daw::remove_cvrvref_t<Ranges>...>;
-		using value_type = std::common_type_t<range_value_t<Ranges>...>;
-		using reference = std::common_reference_t<range_reference_t<Ranges>...>;
-		using const_reference =
-		  std::common_reference_t<range_const_reference_t<Ranges>...>;
-		using difference_type = std::ptrdiff_t;
+
+		friend struct daw::pipelines::pimpl::Concat_t;
 		using i_am_a_daw_concat_view_class = void;
 
 	private:
-		using range_variant_t =
-		  std::variant<std::pair<iterator_t<Ranges>, iterator_t<Ranges>>...>;
+		using types_t =
+		  std::tuple<daw::remove_cvrvref_t<daw::remove_rvalue_ref_t<Ranges>>...>;
+		using value_type =
+		  std::common_type_t<range_value_t<daw::remove_rvalue_ref_t<Ranges>>...>;
+		using reference = std::common_reference_t<
+		  range_reference_t<daw::remove_rvalue_ref_t<Ranges>>...>;
+		using const_reference = std::common_reference_t<
+		  range_const_reference_t<daw::remove_rvalue_ref_t<Ranges>>...>;
+		using difference_type =
+		  widest_type_t<daw::range_difference_t<Ranges>...>;
+		using position_t = pimpl::variant_range_storage_t<
+		  view_t<iterator_t<Ranges>, iterator_end_t<Ranges>>...>;
 
-		std::array<range_variant_t, sizeof...( Ranges )> m_ranges;
-		std::size_t m_index = 0;
+		using iterator = pimpl::concat_iterator<concat_view, Ranges...>;
+		friend iterator;
+
+		using const_iterator = pimpl::concat_iterator<concat_view const, Ranges...>;
+		friend const_iterator;
+
+		using last_iterator =
+		  pimpl::concat_iterator_end<daw::iterator_end_t<Ranges>...>;
+		using last_const_iterator =
+		  pimpl::concat_iterator_end<daw::const_iterator_end_t<Ranges>...>;
+
+		using storage_t = pimpl::variant_range_storage_t<Ranges...>;
+
+		// mutable so that begin( ) can stay const (needed to model Range) while
+		// still handing out mutable iterators into owned/referenced storage.
+		mutable std::array<storage_t, range_size> m_storage{ };
 
 		template<std::size_t... Is>
-		static constexpr std::array<range_variant_t, sizeof...( Ranges )>
-		get_iter_pair( std::index_sequence<Is...>,
-		               std::tuple<Ranges...> &&ranges ) {
-			return std::array{
-			  range_variant_t( std::in_place_index_t<Is>{ },
-			                   std::begin( std::get<Is>( std::move( ranges ) ) ),
-			                   std::end( std::get<Is>( std::move( ranges ) ) ) )... };
-		}
+		explicit constexpr concat_view( std::index_sequence<Is...>,
+		                                Ranges... ranges )
+		  : m_storage{ storage_t{ DAW_FWD( ranges ), daw::constant_v<Is> }... } {}
 
 	public:
 		explicit concat_view( ) = default;
 
 		explicit constexpr concat_view( Ranges... ranges )
-		  : m_ranges(
-		      get_iter_pair( std::make_index_sequence<sizeof...( Ranges )>{ },
-		                     std::tuple{ std::move( ranges )... } ) ) {}
+		  : concat_view( std::make_index_sequence<range_size>{ },
+		                 DAW_FWD( ranges )... ) {}
 
-		concat_view begin( ) const {
-			return *this;
+		[[nodiscard]] constexpr iterator begin( ) noexcept {
+			return iterator{ this };
+		}
+		[[nodiscard]] constexpr const_iterator begin( ) const noexcept {
+			return const_iterator{ this };
 		}
 
-		concat_view end( ) const {
-			auto result = *this;
-			result.m_index = m_ranges.size( ) - 1;
-			for( auto &r : result.m_ranges ) {
-				daw::visit_nt( r, []( auto &p ) {
-					p.first = p.second;
-				} );
-			}
-			return result;
+		[[nodiscard]] constexpr last_iterator end( ) noexcept {
+			return last_iterator{ };
 		}
 
-		constexpr concat_view &operator++( ) {
-			daw::visit_nt( m_ranges[m_index], [&]( auto &p ) {
-				++p.first;
-				if( p.first == p.second ) {
-					++m_index;
+		[[nodiscard]] constexpr last_const_iterator end( ) const noexcept {
+			return last_const_iterator{ };
+		}
+
+		[[nodiscard]] constexpr bool operator==( concat_view const &rhs ) const {
+			for( std::size_t n = 0; n < m_storage.size( ); ++n ) {
+				if( m_storage[n] != rhs.m_storage[n] ) {
+					return false;
 				}
-			} );
-			return *this;
-		}
-
-		[[nodiscard]] constexpr concat_view operator++( int ) {
-			auto tmp = *this;
-			++( *this );
-			return tmp;
-		}
-
-		[[nodiscard]] constexpr reference operator*( ) noexcept {
-			return daw::visit_nt( m_ranges[m_index], []( auto &p ) -> reference {
-				return *p.first;
-			} );
-		}
-
-		[[nodiscard]] constexpr const_reference operator*( ) const noexcept {
-			return daw::visit_nt( m_ranges[m_index], []( auto &p ) -> reference {
-				return *p.first;
-			} );
-		}
-
-		[[nodiscard]] constexpr bool
-		operator==( concat_view const &rhs ) const noexcept {
-			return m_ranges == rhs.m_ranges;
-		}
-
-		[[nodiscard]] constexpr bool
-		operator!=( concat_view const &rhs ) const noexcept {
-			return m_ranges != rhs.m_ranges;
+			}
+			return true;
 		}
 	};
+	namespace pimpl {
+		template<typename>
+		consteval bool is_tuple_of_fwd_ranges( ) {
+			return false;
+		}
+
+		template<typename Tuple>
+		requires( daw::is_tuple_like_v<Tuple> ) //
+		  consteval bool is_tuple_of_fwd_ranges( ) {
+			return []<std::size_t... Is>( std::index_sequence<Is...> ) {
+				return ( ForwardRange<std::tuple_element_t<Is, Tuple>> and ... );
+			}( std::make_index_sequence<std::tuple_size_v<Tuple>>{ } );
+		}
+	} // namespace pimpl
 	template<typename... Ranges>
 	concat_view( Ranges &&... )
 	  -> concat_view<daw::remove_rvalue_ref_t<Ranges>...>;
 
 	namespace pimpl {
 		struct Concat_t {
-			template<typename R>
+			template<typename R, ForwardRange... Rs>
 			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
-			operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			operator( )( R &&r, Rs &&...rs ) DAW_CPP23_STATIC_CALL_OP_CONST {
 				using std::get;
-				if constexpr( requires {
-					              typename iterator_t<R>::i_am_a_daw_zip_iterator_class;
+				if constexpr( sizeof...( Rs ) == 0 and requires {
+					              typename daw::remove_cvref_t<
+					                R>::i_am_a_daw_zip_view_class;
 				              } ) {
 					return [&]<std::size_t... Is>( std::index_sequence<Is...> ) {
-						auto tp_first = std::begin( r ).base( );
-						auto tp_last = std::end( r ).base( );
-						return concat_view{ range_t{ get<Is>( std::move( tp_first ) ),
-						                             get<Is>( std::move( tp_last ) ) }... };
-					}( std::make_index_sequence<
-					         daw::remove_cvref_t<iterator_t<R>>::types_size_v>{ } );
-				} else {
-					static_assert( daw::is_tuple_like_v<daw::remove_cvref_t<R>> );
+						return concat_view{ std::get<Is>( r.m_ranges ).get( )... };
+					}( std::make_index_sequence<daw::remove_cvref_t<R>::range_count>{ } );
+				} else if constexpr( ( sizeof...( Rs ) == 0 ) and
+				                     daw::is_tuple_like_v<daw::remove_cvref_t<R>> and
+				                     pimpl::is_tuple_of_fwd_ranges<
+				                       daw::remove_cvref_t<R>>( ) ) {
+					static_assert( sizeof...( Rs ) == 0 );
 					return [&]<std::size_t... Is>( std::index_sequence<Is...> ) {
 						static_assert(
 						  ( Range<std::tuple_element_t<Is, daw::remove_cvref_t<R>>> and
 						    ... ),
 						  "Concat when passed a tuple expects a tuple of Ranges" );
-						return concat_view{
-						  range_t{ std::begin( get<Is>( DAW_FWD( r ) ) ),
-						           std::end( get<Is>( DAW_FWD( r ) ) ) }... };
+						return concat_view{ std::get<Is>( DAW_FWD( r ) )... };
 					}( std::make_index_sequence<
-					         daw::remove_cvref_t<R>::types_size_v>{ } );
+					         std::tuple_size_v<daw::remove_cvref_t<R>>>{ } );
+				} else {
+					static_assert( ForwardRange<R> );
+					return concat_view<R, Rs...>{ DAW_FWD( r ), DAW_FWD( rs )... };
 				}
 			}
 		};

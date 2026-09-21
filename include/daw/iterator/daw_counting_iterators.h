@@ -57,7 +57,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr forward_counting_iterator operator++( int ) {
+		[[nodiscard]] constexpr forward_counting_iterator operator++( int ) {
 			auto result = *this;
 			++m_iter;
 			++m_distance;
@@ -150,7 +150,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr bidirectional_counting_iterator operator++( int ) {
+		[[nodiscard]] constexpr bidirectional_counting_iterator operator++( int ) {
 			auto result = *this;
 			++m_iter;
 			++m_distance;
@@ -163,7 +163,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr bidirectional_counting_iterator operator--( int ) {
+		[[nodiscard]] constexpr bidirectional_counting_iterator operator--( int ) {
 			auto result = *this;
 			--m_iter;
 			--m_distance;

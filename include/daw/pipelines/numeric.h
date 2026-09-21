@@ -12,8 +12,10 @@
 #include "daw/daw_cxmath.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
+#include "daw/pipelines/range_base.h"
 
 #include <cstddef>
+#include <functional>
 #include <iterator>
 
 namespace daw::pipelines {
@@ -39,8 +41,7 @@ namespace daw::pipelines {
 				} else if constexpr( requires { r.size( ); } ) {
 					return r.size( );
 				} else {
-					return static_cast<std::size_t>(
-					  std::distance( std::begin( r ), std::end( r ) ) );
+					return pimpl::ranges_distance<std::size_t>( r );
 				}
 			}
 		};

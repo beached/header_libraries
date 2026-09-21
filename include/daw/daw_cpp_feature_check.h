@@ -259,3 +259,9 @@ inline constexpr bool daw_has_cx_cmath = false;
 #else
 #define DAW_CPP26_CX_ATOMIC inline
 #endif
+
+#if defined( __cpp_lib_containers_ranges )
+#if __cpp_lib_containers_ranges >= 202202L
+#define DAW_HAS_CPP23_FROM_RANGE 1
+#endif
+#endif

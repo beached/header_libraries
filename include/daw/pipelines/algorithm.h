@@ -12,7 +12,7 @@
 #include "daw/daw_forward_lvalue.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
-#include "daw/pipelines/range.h"
+#include "daw/pipelines/view.h"
 
 #include <algorithm>
 #include <functional>
@@ -30,20 +30,24 @@ namespace daw::pipelines {
 			DAW_NO_UNIQUE_ADDRESS Compare m_compare{ };
 			DAW_NO_UNIQUE_ADDRESS Projection m_projection{ };
 
-			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
-			operator( )( auto &&compare ) DAW_CPP23_STATIC_CALL_OP_CONST {
-				return Sort_t{ DAW_FWD( compare ) };
+			template<typename C, typename P = std::identity>
+			requires( not Range<C> ) //
+			  [[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+			  operator( )( C &&compare,
+			               P &&projection = P{ } ) DAW_CPP23_STATIC_CALL_OP_CONST {
+				return Sort_t<C>{ DAW_FWD( compare ), DAW_FWD( projection ) };
 			}
 
 			[[nodiscard]] constexpr decltype( auto )
 			operator( )( Sortable auto &&r ) const {
-				std::sort( std::begin( r ),
-				           std::end( r ),
-				           [&]( auto const &lhs, auto const &rhs ) {
-					           return std::invoke( m_compare,
-					                               std::invoke( m_projection, lhs ),
-					                               std::invoke( m_projection, rhs ) );
-				           } );
+				std::ranges::sort( std::begin( r ),
+				                   std::end( r ),
+				                   [&]( auto const &lhs, auto const &rhs ) {
+					                   return std::invoke(
+					                     m_compare,
+					                     std::invoke( m_projection, lhs ),
+					                     std::invoke( m_projection, rhs ) );
+				                   } );
 				return daw::forward_lvalue( r );
 			}
 		};
@@ -71,14 +75,14 @@ namespace daw::pipelines {
 			}
 
 			[[nodiscard]] constexpr auto operator( )( Range auto &&r ) const {
-				return std::max_element( std::begin( r ),
-				                         std::end( r ),
-				                         [&]( auto const &lhs, auto const &rhs ) {
-					                         return std::invoke(
-					                           m_compare,
-					                           std::invoke( m_projection, lhs ),
-					                           std::invoke( m_projection, rhs ) );
-				                         } );
+				return std::ranges::max_element(
+				  std::begin( r ),
+				  std::end( r ),
+				  [&]( auto const &lhs, auto const &rhs ) {
+					  return std::invoke( m_compare,
+					                      std::invoke( m_projection, lhs ),
+					                      std::invoke( m_projection, rhs ) );
+				  } );
 			}
 		};
 		Max_t( ) -> Max_t<>;
@@ -105,14 +109,14 @@ namespace daw::pipelines {
 			}
 
 			[[nodiscard]] constexpr auto operator( )( Range auto &&r ) const {
-				return std::min_element( std::begin( r ),
-				                         std::end( r ),
-				                         [&]( auto const &lhs, auto const &rhs ) {
-					                         return std::invoke(
-					                           m_compare,
-					                           std::invoke( m_projection, lhs ),
-					                           std::invoke( m_projection, rhs ) );
-				                         } );
+				return std::ranges::min_element(
+				  std::begin( r ),
+				  std::end( r ),
+				  [&]( auto const &lhs, auto const &rhs ) {
+					  return std::invoke( m_compare,
+					                      std::invoke( m_projection, lhs ),
+					                      std::invoke( m_projection, rhs ) );
+				  } );
 			}
 		};
 		Min_t( ) -> Min_t<>;
@@ -139,7 +143,7 @@ namespace daw::pipelines {
 			}
 
 			[[nodiscard]] constexpr auto operator( )( Range auto &&r ) const {
-				auto result = std::minmax_element(
+				auto result = std::ranges::minmax_element(
 				  std::begin( r ),
 				  std::end( r ),
 				  [&]( auto const &lhs, auto const &rhs ) {

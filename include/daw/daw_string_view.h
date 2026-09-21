@@ -464,7 +464,7 @@ namespace daw {
 				return lhs.value != rhs.value;
 			}
 
-			constexpr values_t get( ) const {
+			[[nodiscard]] constexpr values_t get( ) const {
 				return value;
 			}
 		};
@@ -496,11 +496,11 @@ namespace daw {
 				CharT const *m_data;
 				std::size_t m_size;
 
-				constexpr CharT const *data( ) const {
+				[[nodiscard]] constexpr CharT const *data( ) const {
 					return m_data;
 				}
 
-				constexpr std::size_t size( ) const {
+				[[nodiscard]] constexpr std::size_t size( ) const {
 					return m_size;
 				}
 			};
@@ -541,21 +541,22 @@ namespace daw {
 			c_str_proxy &operator=( c_str_proxy const & ) = delete;
 			c_str_proxy &operator=( c_str_proxy && ) = delete;
 
-			DAW_CPP20_CX_ALLOC CharT const *c_str( ) const noexcept {
+			[[nodiscard]] DAW_CPP20_CX_ALLOC CharT const *c_str( ) const noexcept {
 				return daw::visit_nt( m_str, []( auto const &s ) {
 					return s.data( );
 				} );
 			}
 
-			DAW_CPP20_CX_ALLOC CharT const *data( ) const noexcept {
+			[[nodiscard]] DAW_CPP20_CX_ALLOC CharT const *data( ) const noexcept {
 				return c_str( );
 			}
 
-			DAW_CPP20_CX_ALLOC operator CharT const *( ) const noexcept {
+			[[nodiscard]] DAW_CPP20_CX_ALLOC
+			operator CharT const *( ) const noexcept {
 				return c_str( );
 			}
 
-			DAW_CPP20_CX_ALLOC std::size_t size( ) const noexcept {
+			[[nodiscard]] DAW_CPP20_CX_ALLOC std::size_t size( ) const noexcept {
 				return daw::visit_nt( m_str, []( auto const &s ) {
 					return s.size( );
 				} );

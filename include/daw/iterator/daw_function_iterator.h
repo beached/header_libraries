@@ -51,7 +51,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr function_iterator &operator++( int ) noexcept {
+		[[nodiscard]] constexpr function_iterator &operator++( int ) noexcept {
 			return *this;
 		}
 	};

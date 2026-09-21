@@ -74,7 +74,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr find_iterator operator++( int ) & {
+		[[nodiscard]] constexpr find_iterator operator++( int ) & {
 			auto result = *this;
 			operator++( );
 			return result;

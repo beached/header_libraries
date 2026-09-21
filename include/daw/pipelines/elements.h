@@ -9,9 +9,13 @@
 #pragma once
 
 #include "daw/cpp_17.h"
+#include "daw/daw_as.h"
+#include "daw/daw_attributes.h"
+#include "daw/daw_forward_lvalue.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
 #include "daw/iterator/daw_arrow_proxy.h"
+#include "daw/pipelines/range_base.h"
 
 #include <type_traits>
 
@@ -26,7 +30,7 @@ namespace daw::pipelines::pimpl {
 		  std::tuple_element_t<Index, daw::iter_const_reference_t<Iterator>>;
 		using pointer = arrow_proxy<reference>;
 		using const_pointer = arrow_proxy<const_reference>;
-		using difference_type = std::ptrdiff_t;
+		using difference_type = daw::iter_difference_t<Iterator>;
 		using size_type = std::size_t;
 
 	private:
@@ -55,12 +59,12 @@ namespace daw::pipelines::pimpl {
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference
 		operator[]( size_type n ) requires( RandomIterator<Iterator> ) {
-			return raw_get( std::next( m_iter, static_cast<difference_type>( n ) ) );
+			return raw_get( std::next( m_iter, as<difference_type>( n ) ) );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_reference
 		operator[]( size_type n ) const requires( RandomIterator<Iterator> ) {
-			return raw_get( std::next( m_iter, static_cast<difference_type>( n ) ) );
+			return raw_get( std::next( m_iter, as<difference_type>( n ) ) );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference operator*( ) {
@@ -140,14 +144,16 @@ namespace daw::pipelines::pimpl {
 			return m_iter - rhs.m_iter;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
-		operator==( element_iterator const &lhs, element_iterator const &rhs ) {
-			return lhs.m_iter == rhs.m_iter;
+		template<typename OtherIterator>
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+		operator==( element_iterator<OtherIterator, Index> const &rhs ) const {
+			return m_iter == rhs.base( );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
-		operator!=( element_iterator const &lhs, element_iterator const &rhs ) {
-			return lhs.m_iter != rhs.m_iter;
+		template<typename OtherIterator>
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
+		operator!=( element_iterator<OtherIterator, Index> const &rhs ) const {
+			return m_iter != rhs.base( );
 		}
 
 		// clang-format off
@@ -161,7 +167,7 @@ namespace daw::pipelines::pimpl {
 
 	template<Range R, std::size_t Index>
 	struct element_view
-	  : range_base_t<
+	  : private pimpl::range_base_t<
 	      element_iterator<daw::iterator_t<std::remove_reference_t<R>>, Index>,
 	      element_iterator<daw::iterator_end_t<std::remove_reference_t<R>>,
 	                       Index>> {
@@ -216,7 +222,7 @@ namespace daw::pipelines::pimpl {
 		  std::tuple_element_t<Indices, daw::iter_const_reference_t<Iterator>>...>;
 		using pointer = arrow_proxy<reference>;
 		using const_pointer = arrow_proxy<const_reference>;
-		using difference_type = std::ptrdiff_t;
+		using difference_type = daw::iter_difference_t<Iterator>;
 		using size_type = std::size_t;
 
 	private:
@@ -247,12 +253,12 @@ namespace daw::pipelines::pimpl {
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference
 		operator[]( size_type n ) requires( RandomIterator<Iterator> ) {
-			return raw_get( std::next( m_iter, static_cast<difference_type>( n ) ) );
+			return raw_get( std::next( m_iter, as<difference_type>( n ) ) );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_reference
 		operator[]( size_type n ) const requires( RandomIterator<Iterator> ) {
-			return raw_get( std::next( m_iter, static_cast<difference_type>( n ) ) );
+			return raw_get( std::next( m_iter, as<difference_type>( n ) ) );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference operator*( ) {
@@ -332,14 +338,16 @@ namespace daw::pipelines::pimpl {
 			return m_iter - rhs.m_iter;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
-		operator==( elements_iterator const &lhs, elements_iterator const &rhs ) {
-			return lhs.m_iter == rhs.m_iter;
+		template<typename OtherIterator>
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool operator==(
+		  elements_iterator<OtherIterator, Indices...> const &rhs ) const {
+			return m_iter == rhs.base( );
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr friend bool
-		operator!=( elements_iterator const &lhs, elements_iterator const &rhs ) {
-			return lhs.m_iter != rhs.m_iter;
+		template<typename OtherIterator>
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool operator!=(
+		  elements_iterator<OtherIterator, Indices...> const &rhs ) const {
+			return m_iter != rhs.base( );
 		}
 
 		// clang-format off
@@ -353,7 +361,7 @@ namespace daw::pipelines::pimpl {
 
 	template<Range R, std::size_t... Indices>
 	struct elements_view
-	  : range_base_t<
+	  : private pimpl::range_base_t<
 	      elements_iterator<daw::iterator_t<std::remove_reference_t<R>>,
 	                        Indices...>,
 	      elements_iterator<daw::iterator_end_t<std::remove_reference_t<R>>,

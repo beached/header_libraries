@@ -73,8 +73,8 @@ namespace daw {
 		}
 
 		template<typename... Ts, std::size_t... Is>
-		static constexpr void
-		advance( std::tuple<Ts...> &tpl, std::index_sequence<Is...>, intmax_t n ) {
+		static constexpr void advance( std::tuple<Ts...> &tpl,
+		                               std::index_sequence<Is...>, intmax_t n ) {
 
 			::Unused( ( ( daw::advance( std::get<Is>( tpl ), n ), 0 ) + ... ) );
 		}
@@ -101,7 +101,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr zip_iterator operator++( int ) {
+		[[nodiscard]] constexpr zip_iterator operator++( int ) {
 			auto tmp = *this;
 			increment( m_values );
 			return tmp;
@@ -112,7 +112,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr zip_iterator operator--( int ) {
+		[[nodiscard]] constexpr zip_iterator operator--( int ) {
 			auto tmp = *this;
 			decrement( m_values );
 			return tmp;

@@ -111,6 +111,9 @@ namespace daw {
 	}; // use std::is_constructible_v<T, Args...>;
 	   // once clang supports it for aggregates
 
+	template<typename From, typename To>
+	concept constructible = constructible_from<To, From>;
+
 	template<typename T>
 	concept Pointers = std::is_pointer_v<T>;
 
@@ -464,5 +467,29 @@ namespace daw {
 	concept NothrowCallable = requires( Fn fn, Args... args ) {
 		{ fn( args... ) } noexcept;
 	};
+
+	template<typename T, typename U>
+	concept not_same_as = not same_as<T, U>;
+
+	namespace concept_impl {
+		template<typename Signature>
+		struct SignatureParts;
+
+		template<typename Result, typename Param>
+		struct SignatureParts<Result( Param )> {
+			using result_t = Result;
+			using param_t = Param;
+		};
+
+		template<typename Signature>
+		using sig_result_t = typename SignatureParts<Signature>::result_t;
+
+		template<typename Signature>
+		using sig_param_t = typename SignatureParts<Signature>::param_t;
+	} // namespace concept_impl
+	template<typename F, typename Signature>
+	concept InvocableAs =
+	  invocable_result<F, concept_impl::sig_result_t<Signature>,
+	                   concept_impl::sig_param_t<Signature>>;
 } // namespace daw
 #endif

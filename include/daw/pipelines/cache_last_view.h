@@ -10,7 +10,7 @@
 
 #include "daw/daw_iterator_traits.h"
 #include "daw/iterator/daw_arrow_proxy.h"
-#include "daw/pipelines/range.h"
+#include "daw/pipelines/view.h"
 
 #include <iterator>
 #include <optional>
@@ -59,7 +59,7 @@ namespace daw::pipelines {
 			return *this;
 		}
 
-		constexpr cache_last_iterator operator++( int ) {
+		[[nodiscard]] constexpr cache_last_iterator operator++( int ) {
 			auto result = *this;
 			operator++( );
 			return result;
@@ -73,13 +73,17 @@ namespace daw::pipelines {
 			return *this;
 		}
 
-		constexpr cache_last_iterator operator--( int ) requires(
+		[[nodiscard]] constexpr cache_last_iterator operator--( int ) requires(
 		  std::is_same_v<iterator_category, std::bidirectional_iterator_tag> ) {
 
 			auto result = *this;
 			operator--( );
 			return result;
 		}
+		[[nodiscard]] constexpr It const &base( ) const {
+			return m_iterator;
+		}
+
 		constexpr bool operator==( cache_last_iterator const &rhs ) const {
 			return m_iterator == rhs.m_iterator;
 		}
@@ -95,38 +99,43 @@ namespace daw::pipelines {
 		constexpr bool operator!=( It const &rhs ) const {
 			return m_iterator != rhs;
 		}
+
+		template<typename OtherIt>
+		constexpr bool operator==( cache_last_iterator<OtherIt> const &rhs ) const {
+			return m_iterator == rhs.base( );
+		}
+
+		template<typename OtherIt>
+		constexpr bool operator!=( cache_last_iterator<OtherIt> const &rhs ) const {
+			return m_iterator != rhs.base( );
+		}
 	};
 
 	template<Range R>
-	struct cache_last_view {
+	struct cache_last_view : private pimpl::stored_range_base_t<R> {
+		using base_t = pimpl::stored_range_base_t<R>;
 		using iterator_first_t = cache_last_iterator<daw::iterator_t<R>>;
 		using iterator_last_t = cache_last_iterator<daw::iterator_end_t<R>>;
 
-	private:
-		iterator_first_t m_first = iterator_first_t{ };
-		iterator_last_t m_last = iterator_last_t{ };
-
-	public:
-		cache_last_view( ) = default;
+		explicit cache_last_view( ) = default;
 
 		constexpr cache_last_view( std::convertible_to<R> auto &&r )
-		  : m_first( std::begin( r ) )
-		  , m_last( std::end( r ) ) {}
+		  : base_t( DAW_FWD( r ) ) {}
 
 		constexpr iterator_first_t begin( ) {
-			return m_first;
+			return iterator_first_t( base_t::rbegin( ) );
 		}
 
 		constexpr iterator_first_t begin( ) const {
-			return m_first;
+			return iterator_first_t( base_t::rbegin( ) );
 		}
 
 		constexpr iterator_last_t end( ) {
-			return m_last;
+			return iterator_last_t( base_t::rend( ) );
 		}
 
 		constexpr iterator_last_t end( ) const {
-			return m_last;
+			return iterator_last_t( base_t::rend( ) );
 		}
 	};
 

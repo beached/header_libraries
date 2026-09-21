@@ -13,6 +13,8 @@
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
+#include "daw/pipelines/move_next.h"
+#include "daw/pipelines/range_base.h"
 
 #include <complex>
 #include <cstddef>
@@ -40,7 +42,9 @@ namespace daw::pipelines::pimpl {
 			static_assert( std::invocable<Projection, decltype( *next )>,
 			               "Could not project iterators value_type" );
 			++it_current;
-			return finder<C - 1>( needle, projection, std::move( it_current ),
+			return finder<C - 1>( needle,
+			                      projection,
+			                      std::move( it_current ),
 			                      DAW_FWD( projected_values )...,
 			                      std::invoke( projection, *std::move( next ) ) );
 		}
@@ -78,9 +82,8 @@ namespace daw::pipelines::pimpl {
 			auto const last = std::end( r );
 			while( first != last ) {
 				ForwardIterator auto p0 = first;
-				Iterator auto plast = daw::safe_next( first, last, FindWidth );
-				if( static_cast<std::size_t>( std::distance( p0, plast ) ) <
-				    FindWidth ) {
+				Iterator auto plast = safe_move_next( first, last, FindWidth );
+				if( pimpl::ranges_distance<std::size_t>( p0, plast ) < FindWidth ) {
 					return last;
 				}
 				if( finder<FindWidth>( needle, projection, p0 ) ) {

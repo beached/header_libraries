@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw/daw_attributes.h"
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_move.h"
 #include "daw/daw_remove_cvref.h"

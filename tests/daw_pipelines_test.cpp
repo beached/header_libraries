@@ -18,8 +18,11 @@
 #include <daw/daw_string_view.h>
 
 #include <array>
+#include <forward_list>
 #include <iterator>
+#include <list>
 #include <map>
+#include <memory>
 #include <span>
 #include <string>
 #include <type_traits>
@@ -35,7 +38,8 @@ struct AlwaysTrue_t {
 	}
 };
 
-static_assert( std::forward_iterator<filter_view<char const *, AlwaysTrue_t>> );
+static_assert(
+  daw::ForwardRange<filter_view<daw::view<char const *>, AlwaysTrue_t>> );
 
 inline constexpr auto vowel =
   IsOneOf<'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'>;
@@ -49,16 +53,21 @@ inline constexpr auto to_lower = []( char c ) -> char {
 };
 
 namespace tests {
-	static constexpr auto prices = std::array{ 100, 200, 150, 180, 130 };
-	static constexpr auto costs = std::array{ 10, 20, 50, 40, 100 };
+	[[maybe_unused]] static constexpr auto prices =
+	  std::array{ 100, 200, 150, 180, 130 };
 
-	DAW_ATTRIB_NOINLINE void test001( ) {
+	[[maybe_unused]] static constexpr auto costs =
+	  std::array{ 10, 20, 50, 40, 100 };
+
+#if DAW_CPP_VERSION > 202002L
+	DAW_ATTRIB_NOINLINE void test_zip_view_to_map_matches_source_pairs( ) {
 		auto m1 = pipeline( zip_view( prices, costs ), To<std::map> );
 		daw_ensure( m1.size( ) == prices.size( ) );
 		for( std::size_t n = 0; n < prices.size( ); ++n ) {
 			daw_ensure( m1[prices[n]] == costs[n] );
 		}
 	}
+#endif
 
 	struct ToLetter_t {
 		DAW_CPP23_STATIC_CALL_OP constexpr char
@@ -77,7 +86,8 @@ namespace tests {
 	};
 	inline constexpr auto to_letter = ToLetter_t{ };
 
-	DAW_ATTRIB_NOINLINE void test002( ) {
+#if DAW_CPP_VERSION > 202002L
+	DAW_ATTRIB_NOINLINE void test_enumerate_and_enumerate_with_map_to_letters( ) {
 		constexpr auto pm2 = pipeline( Map( to_letter ), Enumerate, To<std::map> );
 		auto const m2 = pm2( iota_view( 0, 26 ) );
 		for( auto const &[k, v] : m2 ) {
@@ -96,8 +106,9 @@ namespace tests {
 			daw::dump( index * value );
 		}
 	}
+#endif
 
-	DAW_ATTRIB_NOINLINE void test003( ) {
+	DAW_ATTRIB_NOINLINE void test_string_pipeline_filter_sort_unique_sum( ) {
 
 		constexpr auto q = pipeline( Filter( Not( vowel ) ),
 		                             Take( 8 ),
@@ -113,7 +124,8 @@ namespace tests {
 		auto const out0 = q( "Hello World, How are you?" );
 		auto const out1 = q( "Blah blah blah, how is yah?" );
 		daw::println(
-		  "\ntest003: pipeline(\n\tFilter( Not( vowel ) ),\n\tTake( 8 ),\n\tMap( "
+		  "\ntest_string_pipeline_filter_sort_unique_sum: pipeline(\n\tFilter( "
+		  "Not( vowel ) ),\n\tTake( 8 ),\n\tMap( "
 		  "to_lower ),Filter( is_letter "
 		  "),\n\tTo<std::basic_string>,\n\tSort,\n\tUnique,\n\tMap( []( long "
 		  "long "
@@ -122,7 +134,8 @@ namespace tests {
 		daw::println( "\tinput 'Blah blah blah, how is yah?' - output {}", out1 );
 	}
 
-	DAW_ATTRIB_NOINLINE void test004( ) {
+	DAW_ATTRIB_NOINLINE void
+	test_pipeline_composed_as_stage_of_another_pipeline( ) {
 		constexpr auto p = pipeline( Filter( Not( vowel ) ),
 		                             Print,
 		                             Take( 8 ),
@@ -132,7 +145,8 @@ namespace tests {
 		                             Filter( is_letter ) );
 		constexpr auto p1 = pipeline( p, Take( 4 ) );
 		daw::println(
-		  "\ntest004: pipeline(Filter( Not( vowel ) ), Take( 8 ), Map( to_lower "
+		  "\ntest_pipeline_composed_as_stage_of_another_pipeline: pipeline(Filter( "
+		  "Not( vowel ) ), Take( 8 ), Map( to_lower "
 		  "), "
 		  "Filter( is_letter ) )" );
 		auto r0 = p1( "Hello World, How are you?" );
@@ -143,7 +157,7 @@ namespace tests {
 		              daw::fmt_range( r1 ) );
 	}
 
-	DAW_ATTRIB_NOINLINE void test005( ) {
+	DAW_ATTRIB_NOINLINE void test_pipeline_callable_reused_across_inputs( ) {
 		// Example from https://youtu.be/itnyR9j8y6E?t=404
 		constexpr auto p3 =
 		  pipeline( Map( []( auto i ) {
@@ -157,14 +171,16 @@ namespace tests {
 		            Map( &std::pair<std::size_t, std::string>::second ),
 		            Take( 4 ),
 		            To<std::array<std::string, 4>> );
-		auto const result = p3( iota_view( 1, 10001 ) );
-		daw::println( "\ntest005: input 1 to 10001 : output {}",
-		              daw::fmt_range( result ) );
+		auto const result = p3( iota_view<std::size_t>( 1, 10001 ) );
+		daw::println(
+		  "\ntest_pipeline_callable_reused_across_inputs: input 1 to 10001 : "
+		  "output {}",
+		  daw::fmt_range( result ) );
 	}
 
-	DAW_ATTRIB_NOINLINE void test006( ) {
+	DAW_ATTRIB_NOINLINE void test_pipeline_with_source_baked_in( ) {
 		auto const r2 =
-		  pipeline( iota_view( 1, 10001 ),
+		  pipeline( iota_view<std::size_t>( 1, 10001 ),
 		            Map( []( auto i ) {
 			            return std::pair{ i, std::to_string( i ) };
 		            } ),
@@ -175,11 +191,12 @@ namespace tests {
 		            } ),
 		            Map( &std::pair<std::size_t, std::string>::second ),
 		            Take( 4 ) );
-		daw::println( "\ntest006: input 1 to 10001 : output {}",
-		              daw::fmt_range( r2 ) );
+		daw::println(
+		  "\ntest_pipeline_with_source_baked_in: input 1 to 10001 : output {}",
+		  daw::fmt_range( r2 ) );
 	}
 
-	consteval void test007( ) {
+	consteval void test_consteval_filter_map_optional_count_to_iota( ) {
 		constexpr auto p4 = pipeline( Filter( []( int x ) {
 			                              return x % 2 == 0;
 		                              } ),
@@ -199,9 +216,10 @@ namespace tests {
 		daw_ensure( y == 2 );
 	}
 
-	DAW_ATTRIB_NOINLINE void test008( ) {
+	DAW_ATTRIB_NOINLINE void test_swizzle_tuple_elements( ) {
 		daw::println(
-		  "\ntest008: pipeline(\n\t\tMap( [](unsigned i) {{\n\t\t\treturn "
+		  "\ntest_swizzle_tuple_elements: pipeline(\n\t\tMap( [](unsigned i) "
+		  "{{\n\t\t\treturn "
 		  "std::tuple(i,to_letter(i));\n\t\t}} "
 		  "),\n\t\tPrint,\n\t\tSwizzle<1,0,0>,\n\t\tPrint\n\t)\n\tinput 0 to 52: "
 		  "output\n" );
@@ -214,10 +232,13 @@ namespace tests {
 		(void)tp0( iota_view<unsigned>( 0, 52 ) );
 	}
 
-	DAW_ATTRIB_NOINLINE void test009( ) {
+#if DAW_CPP_VERSION > 202002L
+	DAW_ATTRIB_NOINLINE void test_zip_more_appends_range_to_view_and_zip( ) {
 		daw::println(
-		  "\ntest009: pipeline( ZipMore( iota_view<char>( 'A', 'Z' ) ) )" );
-		constexpr auto tp1 = pipeline( ZipMore( iota_view<char>( 'A', 'Z' ) ) );
+		  "\ntest_zip_more_appends_range_to_view_and_zip: pipeline( ZipMore( "
+		  "iota_view<char>( 'A', 'Z' ) ) )" );
+		static constexpr auto tp1 =
+		  pipeline( ZipMore( iota_view<char>( 'A', 'Z' ) ) );
 
 		constexpr auto tp1r0 = tp1( iota_view<char>( 'a', 'z' ) );
 		daw::println( "\n\tinput: iota_view<char>( 'a', 'z' ): output\n{}",
@@ -255,8 +276,8 @@ namespace tests {
 		}
 	}
 
-	DAW_ATTRIB_NOINLINE void test010( ) {
-		daw::println( "\ntest010: fma test" );
+	DAW_ATTRIB_NOINLINE void test_fma_pipeline_matches_manual_computation( ) {
+		daw::println( "\ntest_fma_pipeline_matches_manual_computation: fma test" );
 		auto const make_random =
 		  pipeline( Map( [rnd = daw::RandomFloat<double>{ }]( auto ) mutable {
 			            auto result = rnd( );
@@ -283,31 +304,36 @@ namespace tests {
 		daw::do_not_optimize( o );
 		daw_ensure( a[0] != o[0] );
 	}
+#endif
 
-	DAW_ATTRIB_NOINLINE void test011( ) {
+	DAW_ATTRIB_NOINLINE void test_skip_then_take( ) {
 		constexpr auto a =
 		  std::array{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
 		constexpr auto p0 = pipeline( Skip( 1 ), Take( 5 ), To<std::vector> );
 		auto v0 = p0( a );
 		daw::println(
-		  "\ntest011: pipeline( a, Skip( 1 ), Take( 5 ), To<std::vector> "
+		  "\ntest_skip_then_take: pipeline( a, Skip( 1 ), Take( 5 ), "
+		  "To<std::vector> "
 		  "):\n\tinput: "
 		  "[1,2,3,4,5,6,7,8,9]\n\touput: {}",
 		  daw::fmt_range( v0 ) );
 	}
 
-	DAW_ATTRIB_INLINE void test012( ) {
+	DAW_ATTRIB_INLINE void test_iota_to_fixed_array_and_sum( ) {
 		auto v = pipeline( iota_view<int>( 1, 101 ), To<std::array<int, 100>> );
 		daw::do_not_optimize( v );
 		auto s = Sum( v );
 		daw::println(
-		  "\ntest012: pipeline( iota_view<int>( 1, 101 ), To<std::array<int, 100>> "
+		  "\ntest_iota_to_fixed_array_and_sum: pipeline( iota_view<int>( 1, 101 ), "
+		  "To<std::array<int, 100>> "
 		  ")\nSum: {} of\n{}",
 		  s,
 		  daw::fmt_range( v ) );
 	}
 
-	DAW_ATTRIB_NOINLINE void test013( ) {
+#if DAW_CPP_VERSION > 202002L
+	DAW_ATTRIB_NOINLINE void
+	test_pipeline_mapapply_clamp_concat_and_conversions( ) {
 		static constexpr auto const v = pipeline( zip_view( prices, costs ),
 		                                          MapApply( []( auto pr, auto co ) {
 			                                          return pr - co;
@@ -333,9 +359,11 @@ namespace tests {
 		auto va = to_array( daw::constant<std::size_t{ 15 }>{ }, v );
 		daw::println( "{}", daw::fmt_range( va ) );
 	}
+#endif
 
-	void test014( ) {
-		daw::println( "\ntest014 - naive vs Kahan FP summation" );
+	void test_kahan_vs_naive_summation( ) {
+		daw::println(
+		  "\ntest_kahan_vs_naive_summation - naive vs Kahan FP summation" );
 		auto da = std::array{ 1024.123,
 		                      0.000000013143,
 		                      0.0001123434,
@@ -361,54 +389,60 @@ namespace tests {
 		daw::println( "The naive sum is {:.19f}", s_naive );
 	}
 
-	DAW_ATTRIB_NOINLINE void test015( ) {
+	DAW_ATTRIB_NOINLINE void test_generate_n_to_fixed_array( ) {
 		constexpr auto a = pipeline( generate_n( 5,
 		                                         [i = 1]( ) mutable {
 			                                         return i++;
 		                                         } ),
 		                             To<std::array<std::size_t, 5>> );
 		daw::println(
-		  "\ntest015: pipeline( generate_n( 5, [&]{{return "
+		  "\ntest_generate_n_to_fixed_array: pipeline( generate_n( 5, [&]{{return "
 		  "i++;}}),To<std::array<std::size_t, 5>>);\n{}",
 		  daw::fmt_range{ a } );
 	}
 
-	DAW_ATTRIB_NOINLINE void test016( ) {
+	DAW_ATTRIB_NOINLINE void test_skip_elements( ) {
 		constexpr auto a =
 		  std::array{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
 		constexpr auto p0 = pipeline( Skip( 3 ), To<std::vector> );
 		auto v0 = p0( a );
 		daw::println(
-		  "\ntest016: pipeline( a, Skip( 3 ), To<std::vector> ):\n\tinput: "
+		  "\ntest_skip_elements: pipeline( a, Skip( 3 ), To<std::vector> "
+		  "):\n\tinput: "
 		  "[1,2,3,4,5,6,7,8,9]\n\touput: {}",
 		  daw::fmt_range( v0 ) );
 	}
 
-	DAW_ATTRIB_NOINLINE void test017( ) {
+	DAW_ATTRIB_NOINLINE void test_sample_from_iota_view( ) {
 		daw::println(
-		  "\ntest017: pipeline( iota_view<int>{{ -5, 5 }}, Sample( 4, 10 ) )" );
+		  "\ntest_sample_from_iota_view: pipeline( iota_view<int>{{ -5, 5 }}, "
+		  "Sample( 4, 10 ) )" );
 		auto const p = pipeline( iota_view<int>{ -5, 5 }, Print, Sample( 4, 10 ) );
 		daw::println( "{}", daw::fmt_range{ p } );
 	}
 
-	DAW_ATTRIB_NOINLINE void test018( ) {
-		daw::println( "\ntest018: pipeline( iota_view<int>{{ -5, 5 }}, Reverse )" );
+	DAW_ATTRIB_NOINLINE void test_reverse_iota_view( ) {
+		daw::println(
+		  "\ntest_reverse_iota_view: pipeline( iota_view<int>{{ -5, 5 }}, Reverse "
+		  ")" );
 		auto i = iota_view<int>{ -5, 5 };
 		daw::println( "\t{}", daw::fmt_range( i ) );
 		daw::println( "\treversed" );
-		daw::println( "\t{}", daw::fmt_range( Reverse( i ) ) );
+		daw::println( "\t{}", daw::fmt_range( ReverseView( i ) ) );
 	}
 
-	DAW_ATTRIB_NOINLINE void test019( ) {
+	DAW_ATTRIB_NOINLINE void test_every_nth_element( ) {
 		daw::println(
-		  "\ntest019: pipeline( iota_view<int>{{ -5, 5 }}, Every( 3 ) )" );
+		  "\ntest_every_nth_element: pipeline( iota_view<int>{{ -5, 5 }}, Every( 3 "
+		  ") )" );
 		auto const p = pipeline( iota_view<int>{ -5, 5 }, Print, Every( 3 ) );
 		daw::println( "{}", daw::fmt_range{ p } );
 	}
 
-	DAW_ATTRIB_NOINLINE void test020( ) {
+	DAW_ATTRIB_NOINLINE void test_take_until_predicate( ) {
 		daw::println(
-		  "\ntest020: pipeline( iota_view<int>{{ -5, 5 }}, TakeUntil( []( int x ) "
+		  "\ntest_take_until_predicate: pipeline( iota_view<int>{{ -5, 5 }}, "
+		  "TakeUntil( []( int x ) "
 		  "{{ return x > 0; }} ) ) )" );
 		daw::println( "\tin:  {}", daw::fmt_range{ iota_view<int>{ -5, 5 } } );
 		auto const p = pipeline( iota_view<int>{ -5, 5 }, TakeUntil( []( int x ) {
@@ -417,9 +451,10 @@ namespace tests {
 		daw::println( "\tout: {}", daw::fmt_range{ p } );
 	}
 
-	DAW_ATTRIB_NOINLINE void test021( ) {
+	DAW_ATTRIB_NOINLINE void test_take_while_predicate( ) {
 		daw::println(
-		  "\ntest021: pipeline( iota_view<int>{{ -5, 5 }}, TakeWhile( []( int x ) "
+		  "\ntest_take_while_predicate: pipeline( iota_view<int>{{ -5, 5 }}, "
+		  "TakeWhile( []( int x ) "
 		  "{{ return x < 0; }} ) ) )" );
 		daw::println( "\tin:  {}", daw::fmt_range{ iota_view<int>{ -5, 5 } } );
 		auto const p = pipeline( iota_view<int>{ -5, 5 }, TakeWhile( []( int x ) {
@@ -428,8 +463,9 @@ namespace tests {
 		daw::println( "\tout: {}", daw::fmt_range{ p } );
 	}
 
-	DAW_ATTRIB_NOINLINE void test022( ) {
-		daw::println( "\ntest022: pipeline( Print, Flatten, Print )" );
+	DAW_ATTRIB_NOINLINE void test_flatten_nested_iota_views( ) {
+		daw::println(
+		  "\ntest_flatten_nested_iota_views: pipeline( Print, Flatten, Print )" );
 		constexpr auto ary = std::array{ iota_view<int>{ 1, 2 },
 		                                 iota_view<int>{ 6, 10 },
 		                                 iota_view<int>{ 15, 17 } };
@@ -437,10 +473,11 @@ namespace tests {
 		(void)r;
 	}
 
-	DAW_ATTRIB_NOINLINE void test023( ) {
+	DAW_ATTRIB_NOINLINE void test_chunk_then_flatten_round_trip( ) {
 		static constexpr auto ary =
 		  To<std::array<std::size_t, 9>>( )( iota_view( 9 ) );
-		daw::println( "\ntest023: pipeline( Chunk( 3 ), Flatten )" );
+		daw::println(
+		  "\ntest_chunk_then_flatten_round_trip: pipeline( Chunk( 3 ), Flatten )" );
 		daw::println( "\tin:  {}", daw::fmt_range( ary ) );
 		constexpr auto p = pipeline( Chunk( 3 ), Print, Flatten );
 		auto r = p( ary );
@@ -449,22 +486,22 @@ namespace tests {
 		daw::println( "\tout: {}", daw::fmt_range( ary2 ) );
 	}
 
-	DAW_ATTRIB_NOINLINE void test024( ) {
+	DAW_ATTRIB_NOINLINE void test_find_if_and_find_on_array( ) {
 		static constexpr auto ary = std::array{ 1, 2, 3, 4, 4, 5, 6, 6, 7 };
 		constexpr auto it = FindIf<2>( ary, []( auto const &l, auto const &r ) {
 			return l == r;
 		} );
 		static_assert( it != std::end( ary ) );
-		static_assert( std::distance( std::begin( ary ), it ) == 3 );
+		static_assert( std::ranges::distance( std::begin( ary ), it ) == 3 );
 
 		constexpr auto it2 = Find( ary, 2 );
 		static_assert( it2 != std::end( ary ) );
-		static_assert( std::distance( std::begin( ary ), it2 ) == 1 );
+		static_assert( std::ranges::distance( std::begin( ary ), it2 ) == 1 );
 		constexpr auto it3 = Find( 2 )( ary );
 		static_assert( it2 == it3 );
 	}
 
-	DAW_ATTRIB_NOINLINE void test025( ) {
+	DAW_ATTRIB_NOINLINE void test_find_with_member_projection( ) {
 		struct Test {
 			int value;
 
@@ -477,19 +514,20 @@ namespace tests {
 			return l.value == r.value;
 		} );
 		static_assert( it != std::end( ary ) );
-		static_assert( std::distance( std::begin( ary ), it ) == 3 );
+		static_assert( std::ranges::distance( std::begin( ary ), it ) == 3 );
 
 		constexpr auto it2 = Find( ary, 2, &Test::value );
 		static_assert( it2 != std::end( ary ) );
-		static_assert( std::distance( std::begin( ary ), it2 ) == 1 );
+		static_assert( std::ranges::distance( std::begin( ary ), it2 ) == 1 );
 		constexpr auto it3 = Find( 2, &Test::value )( ary );
 		static_assert( it2 == it3 );
 	}
 
-	DAW_ATTRIB_NOINLINE void test026( ) {
+	DAW_ATTRIB_NOINLINE void test_slide_then_flatten( ) {
 		static constexpr auto ary =
 		  To<std::array<std::size_t, 9>>( )( iota_view( 9 ) );
-		daw::println( "\ntest026: pipeline( Slide( 3 ), Flatten )" );
+		daw::println(
+		  "\ntest_slide_then_flatten: pipeline( Slide( 3 ), Flatten )" );
 		daw::println( "\tin:  {}", daw::fmt_range( ary ) );
 		constexpr auto p = pipeline( Slide( 3 ), Print, Flatten );
 		auto r = p( ary );
@@ -500,7 +538,17 @@ namespace tests {
 		daw::println( "\tout: {}", daw::fmt_range( ary2 ) );
 	}
 
-	DAW_ATTRIB_NOINLINE void test027( ) {
+	DAW_ATTRIB_NOINLINE void test_slide_window_starts( ) {
+		auto const starts = pipeline( std::array{ 1, 2, 3, 4 },
+		                              Slide( 2 ),
+		                              Map( []( auto window ) {
+			                              return *window.begin( );
+		                              } ),
+		                              To<std::vector> );
+		daw_ensure( starts == std::vector{ 1, 2, 3 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_contains_string_view_array( ) {
 		static constexpr std::array ids = { "597216680271282192"_sv,
 		                                    "155149108183695360"_sv,
 		                                    "843841057833877588"_sv,
@@ -515,16 +563,18 @@ namespace tests {
 		static_assert( exists( y ) );
 	}
 
-	DAW_ATTRIB_NOINLINE void test028( ) {
+	DAW_ATTRIB_NOINLINE void test_dump_smoke_test( ) {
 		daw::dump( 1, 2, 3, 4 );
 	}
 
-	DAW_ATTRIB_NOINLINE void test029( ) {
+#if DAW_CPP_VERSION > 202002L
+	DAW_ATTRIB_NOINLINE void test_enumerate_from_offset( ) {
 		constexpr auto pm3 =
 		  pipeline( Map( to_letter ), EnumerateFrom( 2 ), To<std::map> );
 		auto const m3 = pm3( iota_view( 0, 26 ) );
 		daw::println(
-		  "\ntest029: pipeline( Map( to_letter ), EnumerateFrom( 2 ), "
+		  "\ntest_enumerate_from_offset: pipeline( Map( to_letter ), "
+		  "EnumerateFrom( 2 ), "
 		  "To<std::map> "
 		  ")\n{}",
 		  daw::fmt_range( m3 ) );
@@ -534,8 +584,9 @@ namespace tests {
 			daw::dump( index * value );
 		}
 	}
+#endif
 
-	DAW_ATTRIB_NOINLINE void test030( ) {
+	DAW_ATTRIB_NOINLINE void test_split_by_delimiter_and_trim( ) {
 		static constexpr auto comma_splitter =
 		  pipeline( Split( ',' ), Map( []( daw::Range auto r ) {
 			            return daw::string_view( r ).trim( );
@@ -544,11 +595,12 @@ namespace tests {
 
 		constexpr auto parts = comma_splitter( values );
 		daw::println(
-		  "test030: pipeline( Split( ',' ), \"1a, 2b, 3c, 4d, 5e\" )\n{}",
+		  "test_split_by_delimiter_and_trim: pipeline( Split( ',' ), \"1a, 2b, 3c, "
+		  "4d, 5e\" )\n{}",
 		  daw::fmt_range{ parts, "|" } );
 	}
 
-	DAW_ATTRIB_NOINLINE void test031( ) {
+	DAW_ATTRIB_NOINLINE void test_split_by_subsequence_delimiter( ) {
 		static constexpr auto nums_to_string =
 		  pipeline( Map( []( int n ) {
 			            assert( n >= 0 and n <= 9 );
@@ -567,18 +619,21 @@ namespace tests {
 		  splitter( daw::contiguous_view( data.data( ), 9U ) );
 
 		daw::println(
-		  "test031: pipeline( Split( {{3,4}} ), Map( nums_to_string ) ) with [1, "
+		  "test_split_by_subsequence_delimiter: pipeline( Split( {{3,4}} ), Map( "
+		  "nums_to_string ) ) with [1, "
 		  "2, 3, 4, 5, 6, 7, 8, 9]" );
 
 		daw::println( "{}", daw::fmt_range( parts ) );
 	}
 
-	DAW_ATTRIB_NOINLINE void test032( ) {
+#if DAW_CPP_VERSION > 202002L
+	DAW_ATTRIB_NOINLINE void test_curried_zip_stage_in_pipeline( ) {
 		static constexpr int arr1[] = { 0, 1, 2, 3, 4 };
 		static constexpr int arr2[] = { 0, 100, 200, 300, 400 };
 
 		constexpr auto zipped = pipeline( Zip, MapApply( std::plus<>{ } ) );
-		daw::println( "test032: Expecting: 0, 101, 202, 303, 404" );
+		daw::println(
+		  "test_curried_zip_stage_in_pipeline: Expecting: 0, 101, 202, 303, 404" );
 		for( auto p : zipped( arr1, arr2 ) ) {
 			daw::println( "{}", p );
 		}
@@ -594,34 +649,36 @@ namespace tests {
 			daw::println( "{}", p );
 		}
 	}
+#endif
 
 	constexpr bool is_control_or_space( const char c ) noexcept {
 		return static_cast<unsigned char>( c ) <= static_cast<unsigned char>( ' ' );
 	}
 
-	DAW_ATTRIB_NOINLINE void test033( ) {
-		constexpr daw::string_view s = " Hello ";
-		constexpr auto p = pipeline( s,
-		                             DropWhile( is_control_or_space ),
-		                             Reverse,
-		                             DropWhile( is_control_or_space ),
-		                             Reverse );
-		constexpr auto s2 = daw::string_view{ std::data( p ), std::size( p ) };
+	DAW_ATTRIB_NOINLINE void test_trim_both_ends_with_drop_while_reverse( ) {
+		static constexpr std::string_view s = " Hello ";
+		static constexpr auto p = pipeline( s,
+		                                    DropWhile( is_control_or_space ),
+		                                    ReverseView,
+		                                    DropWhile( is_control_or_space ),
+		                                    ReverseView,
+		                                    To<std::array<char, 6>> );
+		constexpr auto s2 = daw::string_view{ std::data( p ), std::size( p ) - 1 };
 		daw_ensure( s2 == "Hello" );
 	}
 
-	DAW_ATTRIB_NOINLINE void test034( ) {
+	DAW_ATTRIB_NOINLINE void test_trimmed_first_ref_returns_first_char( ) {
 		constexpr daw::string_view s = " Hello ";
 		constexpr auto p = pipeline( s,
 		                             DropWhile( is_control_or_space ),
-		                             Reverse,
+		                             ReverseView,
 		                             DropWhile( is_control_or_space ),
-		                             Reverse,
+		                             ReverseView,
 		                             FirstRef );
 		daw_ensure( p.has_value( ) and p.value( ) == 'H' );
 	}
 
-	DAW_ATTRIB_NOINLINE void test035( ) {
+	DAW_ATTRIB_NOINLINE void test_first_ref_reflects_mutation( ) {
 		char buff[] = "Hello";
 		auto p = pipeline( buff, FirstRef );
 		daw_ensure( p.has_value( ) and p.value( ) == 'H' );
@@ -629,18 +686,19 @@ namespace tests {
 		daw_ensure( p.value( ) == 'h' );
 	}
 
-	DAW_ATTRIB_NOINLINE void test036( ) {
+	DAW_ATTRIB_NOINLINE void test_trimmed_first_returns_first_char( ) {
 		constexpr daw::string_view s = " Hello ";
 		constexpr auto p = pipeline( s,
 		                             DropWhile( is_control_or_space ),
-		                             Reverse,
+		                             ReverseView,
 		                             DropWhile( is_control_or_space ),
-		                             Reverse,
+		                             ReverseView,
 		                             First );
 		daw_ensure( p.has_value( ) and p.value( ) == 'H' );
 	}
 
-	DAW_ATTRIB_NOINLINE DAW_CONSTEVAL void test037( ) {
+	DAW_ATTRIB_NOINLINE DAW_CONSTEVAL void
+	test_first_value_does_not_reflect_mutation( ) {
 		char buff[] = "Hello";
 		auto p = pipeline( buff, First );
 		daw_ensure( p.has_value( ) and p.value( ) == 'H' );
@@ -648,7 +706,7 @@ namespace tests {
 		daw_ensure( p.value( ) == 'H' );
 	}
 
-	DAW_ATTRIB_NOINLINE void test038( ) {
+	DAW_ATTRIB_NOINLINE void test_copy_sort_unique_pipeline( ) {
 		constexpr auto values = std::array{ 1, 5, 5, 10, 32 };
 		daw::do_not_optimize( values );
 		auto const unique_values =
@@ -657,7 +715,8 @@ namespace tests {
 		daw_ensure( unique_values == std::vector{ 1, 5, 10, 32 } );
 	}
 
-	DAW_ATTRIB_NOINLINE void test039( ) {
+#if DAW_CPP_VERSION > 202002L
+	DAW_ATTRIB_NOINLINE void test_elements_projection_returns_tuples( ) {
 		auto z0 = Zip( prices, costs );
 
 		auto e0 = Elements<1>( z0 );
@@ -676,7 +735,7 @@ namespace tests {
 		}
 	}
 
-	DAW_ATTRIB_NOINLINE void test040( ) {
+	DAW_ATTRIB_NOINLINE void test_element_projection_returns_values( ) {
 		auto z0 = Zip( prices, costs );
 
 		auto e0 = Element<1>( z0 );
@@ -694,8 +753,9 @@ namespace tests {
 			daw_ensure( eb1[n] == prices[n] );
 		}
 	}
+#endif
 
-	DAW_ATTRIB_NOINLINE void test041( ) {
+	DAW_ATTRIB_NOINLINE void test_cache_last_avoids_recomputation( ) {
 		constexpr auto values = std::array{ 1, 5, 5, 10, 32 };
 		auto cp = pipeline( values,
 		                    Map( []( int x ) {
@@ -714,60 +774,743 @@ namespace tests {
 		}
 	}
 
-	DAW_ATTRIB_NOINLINE void test042( ) {
+	DAW_ATTRIB_NOINLINE void test_map_function_pointer_projection( ) {
 		auto v = std::vector<std::string>{ "Hello", "World" };
 
 		auto mapper = Map( +[]( std::string &s ) -> char * {
 			return s.data( );
 		} );
 		auto m = mapper( v );
-		auto v2 = std::vector<char *>( std::begin( m ), std::end( m ) );
+		auto v2 = std::vector<char *>{ };
+		auto first = std::begin( m );
+		auto const last = std::end( m );
+		while( first != last ) {
+			v2.push_back( *first );
+			++first;
+		}
 		daw_ensure( v2.size( ) == v.size( ) );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_take_larger_than_forward_range( ) {
+		auto source = std::forward_list{ 1, 2, 3 };
+		auto result = pipeline( source, Take( 10 ), To<std::vector> );
+		daw_ensure( result == std::vector{ 1, 2, 3 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_take_from_empty_forward_range( ) {
+		auto empty =
+		  pipeline( std::forward_list<int>{ }, Take( 10 ), To<std::vector> );
+		daw_ensure( empty.empty( ) );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_take_zero_from_forward_range( ) {
+		auto source = std::forward_list{ 1, 2, 3 };
+		auto zero = pipeline( source, Take( 0 ), To<std::vector> );
+		daw_ensure( zero.empty( ) );
+	}
+
+	struct owned_value {
+		int value;
+	};
+
+	DAW_ATTRIB_NOINLINE void test_map_rvalue_projection_dereferences_as_value( ) {
+		auto source = std::array{ 1, 2, 3 };
+		auto mapped = pipeline( source,
+		                        Map( []( int value ) {
+			                        return owned_value{ value };
+		                        } ),
+		                        Map( []( owned_value &&value ) -> int && {
+			                        return std::move( value.value );
+		                        } ) );
+
+		using iterator = decltype( std::begin( mapped ) );
+		static_assert(
+		  std::is_same_v<decltype( *std::declval<iterator &>( ) ), int> );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_map_materializes_projected_prvalues( ) {
+		auto source = std::array{ 1, 2, 3 };
+		auto mapped = pipeline( source,
+		                        Map( []( int value ) {
+			                        return owned_value{ value };
+		                        } ),
+		                        Map( []( owned_value &&value ) -> int && {
+			                        return std::move( value.value );
+		                        } ) );
+		auto result = pipeline( mapped, To<std::vector> );
+		daw_ensure( result == std::vector{ 1, 2, 3 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_const_map_uses_const_iterator( ) {
+		auto const const_mapped =
+		  pipeline( std::vector{ 1, 2, 3 }, Map( []( int value ) {
+			            return value;
+		            } ) );
+		using const_iterator = decltype( std::begin( const_mapped ) );
+		static_assert(
+		  std::is_same_v<std::remove_cvref_t<
+		                   decltype( std::declval<const_iterator &>( ).base( ) )>,
+		                 std::vector<int>::const_iterator> );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_const_map_can_be_materialized( ) {
+		auto const const_mapped =
+		  pipeline( std::vector{ 1, 2, 3 }, Map( []( int value ) {
+			            return value;
+		            } ) );
+		auto const_result = pipeline( const_mapped, To<std::vector> );
+		daw_ensure( const_result == std::vector{ 1, 2, 3 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_map_after_const_unique_can_be_summed( ) {
+		auto const const_unique_mapped =
+		  pipeline( std::string{ "aabbcc" }, Unique, Map( []( char value ) {
+			            return static_cast<int>( value );
+		            } ) );
+		auto const unique_sum = pipeline( const_unique_mapped, Sum );
+		daw_ensure( unique_sum == 'a' + 'b' + 'c' );
+	}
+
+#if DAW_CPP_VERSION > 202002L
+	template<typename Zipped>
+	void verify_appended_ranges( Zipped const &zipped ) {
+		using reference = decltype( *std::begin( zipped ) );
+		using value = daw::remove_cvref_t<reference>;
+		static_assert( std::tuple_size_v<value> == 3 );
+		if constexpr( std::tuple_size_v<value> == 3 ) {
+			auto first = std::begin( zipped );
+			daw_ensure( std::get<0>( *first ) == 1 );
+			daw_ensure( std::get<1>( *first ) == 3 );
+			daw_ensure( std::get<2>( *first ) == 5 );
+		}
+	}
+
+	DAW_ATTRIB_NOINLINE void test_zip_more_appends_to_zip( ) {
+		auto const appended_to_zip = ZipMore( std::array{ 1, 2 } )(
+		  Zip( std::array{ 3, 4 }, std::array{ 5, 6 } ) );
+		verify_appended_ranges( appended_to_zip );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_zip_more_appends_to_tuple( ) {
+		auto const appended_to_tuple = ZipMore( std::array{ 1, 2 } )(
+		  std::tuple{ std::array{ 3, 4 }, std::array{ 5, 6 } } );
+		verify_appended_ranges( appended_to_tuple );
+	}
+#endif
+
+	DAW_ATTRIB_NOINLINE void test_concat_materializes_tied_ranges( ) {
+		auto first = std::array{ 1, 2, 3 };
+		auto second = std::array{ 4, 5 };
+		auto concatenated = Concat( std::tie( first, second ) );
+		auto result = pipeline( concatenated, To<std::vector> );
+		daw_ensure( result == std::vector{ 1, 2, 3, 4, 5 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_concat_preserves_references( ) {
+		auto first = std::array{ 1, 2, 3 };
+		auto second = std::array{ 4, 5 };
+		auto concatenated = Concat( std::tie( first, second ) );
+		*concatenated.begin( ) = 10;
+		daw_ensure( first.front( ) == 10 );
+	}
+
+#if DAW_CPP_VERSION > 202002L
+	DAW_ATTRIB_NOINLINE void test_concat_flattens_zip( ) {
+		auto const zipped = Zip( std::array{ 1, 2 }, std::array{ 3, 4 } );
+		auto zipped_result = pipeline( zipped, Concat, To<std::vector> );
+		daw_ensure( zipped_result == std::vector{ 1, 2, 3, 4 } );
+	}
+#endif
+
+	DAW_ATTRIB_NOINLINE void test_concat_skips_leading_empty_range( ) {
+		auto empty = std::array<int, 0>{ };
+		auto values = std::array{ 1, 2 };
+		auto leading_empty = Concat( std::tie( empty, values ) );
+		daw_ensure( *leading_empty.begin( ) == 1 );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_concat_iterator_copy_preserves_position( ) {
+		auto empty = std::array<int, 0>{ };
+		auto values = std::array{ 1, 2 };
+		auto concatenated = Concat( std::tie( empty, values ) );
+		auto copied_position = concatenated.begin( );
+		++copied_position;
+		auto copied_iterator = copied_position;
+		daw_ensure( *copied_iterator == 2 );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_concat_iterator_post_increment( ) {
+		auto empty = std::array<int, 0>{ };
+		auto values = std::array{ 1, 2 };
+		auto concatenated = Concat( std::tie( empty, values ) );
+		auto post_incremented = concatenated.begin( );
+		auto previous = post_incremented++;
+		daw_ensure( *previous == 1 );
+		daw_ensure( *post_incremented == 2 );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_concat_skips_middle_empty_range( ) {
+		auto first = std::array{ 1 };
+		auto empty = std::array<int, 0>{ };
+		auto last = std::array{ 2 };
+		auto concatenated = Concat( std::tie( first, empty, last ) );
+		auto flattened = pipeline( concatenated, To<std::vector> );
+		daw_ensure( flattened == std::vector{ 1, 2 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_concat_owns_rvalue_tuple_ranges( ) {
+		auto owned =
+		  Concat( std::tuple{ std::vector{ 1, 2 }, std::vector{ 3, 4 } } );
+		auto owned_values = pipeline( owned, To<std::vector> );
+		daw_ensure( owned_values == std::vector{ 1, 2, 3, 4 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_concat_heterogeneous_iterators_compare( ) {
+		auto first = std::array{ 1 };
+		auto forward_values = std::forward_list{ 2, 3 };
+		auto heterogeneous = Concat( std::tie( first, forward_values ) );
+		auto lhs = heterogeneous.begin( );
+		auto rhs = heterogeneous.begin( );
+		daw_ensure( lhs == rhs );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_concat_heterogeneous_end_iterators_compare( ) {
+		auto first = std::array{ 1 };
+		auto forward_values = std::forward_list{ 2, 3 };
+		auto heterogeneous = Concat( std::tie( first, forward_values ) );
+		auto lhs = heterogeneous.begin( );
+		auto rhs = heterogeneous.begin( );
+		while( lhs != heterogeneous.end( ) ) {
+			++lhs;
+		}
+		while( rhs != heterogeneous.end( ) ) {
+			++rhs;
+		}
+		daw_ensure( lhs == rhs );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_concat_view_equality( ) {
+		auto first_a = std::array{ 1, 2 };
+		auto second_a = std::array{ 3, 4 };
+		auto concatenated_a = Concat( std::tie( first_a, second_a ) );
+
+		auto first_b = std::array{ 1, 2 };
+		auto second_b = std::array{ 3, 4 };
+		auto concatenated_b = Concat( std::tie( first_b, second_b ) );
+
+		daw_ensure( concatenated_a == concatenated_b );
+		second_b[0] = 99;
+		daw_ensure( concatenated_a != concatenated_b );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_concat_view_equality_heterogeneous_ranges( ) {
+		auto array_a = std::array{ 1 };
+		auto list_a = std::forward_list{ 2, 3 };
+		auto concatenated_a = Concat( std::tie( array_a, list_a ) );
+
+		auto array_b = std::array{ 1 };
+		auto list_b = std::forward_list{ 2, 3 };
+		auto concatenated_b = Concat( std::tie( array_b, list_b ) );
+
+		daw_ensure( concatenated_a == concatenated_b );
+		list_b.front( ) = 42;
+		daw_ensure( concatenated_a != concatenated_b );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_concat_duplicate_range_types( ) {
+		// first and second are both std::vector<int>&, i.e. the same
+		// alternative type appears twice in the underlying variant.
+		auto first = std::vector{ 1, 2 };
+		auto second = std::vector{ 3, 4, 5 };
+		auto concatenated = Concat( std::tie( first, second ) );
+		auto result = pipeline( concatenated, To<std::vector> );
+		daw_ensure( result == std::vector{ 1, 2, 3, 4, 5 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void
+	test_concat_const_view_dereferences_const_reference( ) {
+		const std::array first{ 1, 2 };
+		const std::array second{ 3, 4 };
+		const auto concatenated = Concat( std::tie( first, second ) );
+		daw_ensure( *concatenated.begin( ) == 1 );
+		auto result = pipeline( concatenated, To<std::vector> );
+		daw_ensure( result == std::vector{ 1, 2, 3, 4 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_concat_all_ranges_empty( ) {
+		auto first = std::array<int, 0>{ };
+		auto second = std::array<int, 0>{ };
+		auto concatenated = Concat( std::tie( first, second ) );
+		daw_ensure( concatenated.begin( ) == concatenated.end( ) );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_concat_skips_trailing_empty_range( ) {
+		auto values = std::array{ 1, 2 };
+		auto empty = std::array<int, 0>{ };
+		auto concatenated = Concat( std::tie( values, empty ) );
+		auto result = pipeline( concatenated, To<std::vector> );
+		daw_ensure( result == std::vector{ 1, 2 } );
+
+		auto it = concatenated.begin( );
+		++it;
+		++it;
+		daw_ensure( it == concatenated.end( ) );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_concat_single_range( ) {
+		// std::vector has no tuple_size/tuple_element specialization, so
+		// (unlike std::array) it isn't tuple-like and is passed through
+		// as a single Range rather than being treated as a tuple of Ranges.
+		auto only = std::vector{ 1, 2, 3 };
+		auto concatenated = Concat( only );
+		auto result = pipeline( concatenated, To<std::vector> );
+		daw_ensure( result == std::vector{ 1, 2, 3 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_concat_single_range_array( ) {
+		// std::array IS tuple-like, but its elements (int) aren't Ranges,
+		// so Concat_t::operator()'s is_tuple_of_fwd_ranges check keeps it
+		// out of the tuple-of-ranges branch and passes it through as a
+		// single Range instead.
+		auto only = std::array{ 1, 2, 3 };
+		auto concatenated = Concat( only );
+		auto result = pipeline( concatenated, To<std::vector> );
+		daw_ensure( result == std::vector{ 1, 2, 3 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_concat_direct_multiple_arguments( ) {
+		auto first = std::vector{ 1, 2 };
+		auto second = std::vector{ 3 };
+		auto third = std::vector{ 4, 5 };
+		auto concatenated = Concat( first, second, third );
+		auto result = pipeline( concatenated, To<std::vector> );
+		daw_ensure( result == std::vector{ 1, 2, 3, 4, 5 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void
+	test_concat_direct_call_forwards_all_ranges_by_reference( ) {
+		// Concat_t::operator()( R &&r, Rs &&...rs ) forwards every
+		// argument, so mutating through the concatenated view is visible
+		// on both `first` and `second`, not just the first argument.
+		auto first = std::vector{ 1, 2 };
+		auto second = std::vector{ 3, 4 };
+		auto concatenated = Concat( first, second );
+
+		*concatenated.begin( ) = 10;
+		daw_ensure( first.front( ) == 10 );
+
+		auto tail = concatenated.begin( );
+		++tail;
+		++tail;
+		*tail = 99;
+		daw_ensure( second.front( ) == 99 );
+	}
+
+	DAW_ATTRIB_NOINLINE void
+	test_concat_heterogeneous_iterator_copy_preserves_position( ) {
+		auto first = std::array{ 1 };
+		auto forward_values = std::forward_list{ 2, 3 };
+		auto heterogeneous = Concat( std::tie( first, forward_values ) );
+		auto position = heterogeneous.begin( );
+		++position;
+		auto copied = position;
+		++copied;
+		daw_ensure( *position == 2 );
+		daw_ensure( *copied == 3 );
+	}
+
+	// A view must be re-iterable: every pass over the same view has to produce
+	// the same elements.  Catches views that keep state between passes.
+	template<typename View, typename T>
+	void check_repeatable_non_const( View &view,
+	                                 std::vector<T> const &expected ) {
+		auto r0 = pipeline( view, To<std::vector> );
+		daw_ensure( r0 == expected );
+		auto r1 = pipeline( view, To<std::vector> );
+		daw_ensure( r1 == expected );
+	}
+
+	// Same, and the const view must produce them too
+	template<typename View, typename T>
+	void check_repeatable( View &view, std::vector<T> const &expected ) {
+		check_repeatable_non_const( view, expected );
+		daw_ensure( pipeline( std::as_const( view ), To<std::vector> ) ==
+		            expected );
+	}
+
+	// A copy of a view must not refer to the object it was copied from
+	template<typename Make, typename T>
+	void check_copy_outlives_original( Make make,
+	                                   std::vector<T> const &expected ) {
+		using view_t = decltype( make( ) );
+		auto original = std::make_unique<view_t>( make( ) );
+		auto copy = *original;
+		original.reset( );
+		check_repeatable( copy, expected );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_views_are_repeatable( ) {
+		auto const dbl = []( int x ) {
+			return x * 2;
+		};
+		auto const even = []( int x ) {
+			return x % 2 == 0;
+		};
+		auto const lt3 = []( int x ) {
+			return x < 3;
+		};
+		auto values = std::array{ 1, 2, 3, 4, 5, 6 };
+		auto duplicates = std::array{ 1, 1, 2, 2, 3, 3 };
+
+		auto filtered = pipeline( values, Filter( even ) );
+		check_repeatable( filtered, std::vector{ 2, 4, 6 } );
+		auto mapped = pipeline( values, Filter( even ), Map( dbl ) );
+		check_repeatable( mapped, std::vector{ 4, 8, 12 } );
+		auto taken = pipeline( values, Take( 3 ) );
+		check_repeatable( taken, std::vector{ 1, 2, 3 } );
+		auto skipped = pipeline( values, Skip( 2 ) );
+		check_repeatable( skipped, std::vector{ 3, 4, 5, 6 } );
+		auto dropped = pipeline( values, DropWhile( lt3 ) );
+		check_repeatable( dropped, std::vector{ 3, 4, 5, 6 } );
+		auto uniqued = pipeline( duplicates, Unique );
+		check_repeatable( uniqued, std::vector{ 1, 2, 3 } );
+		auto reversed = pipeline( values, ReverseView );
+		check_repeatable( reversed, std::vector{ 6, 5, 4, 3, 2, 1 } );
+	}
+
+	// The source is owned by the view.  Moving the view into the next stage, or
+	// moving the finished view, must not leave anything pointing at the old
+	// object.  Run under ASan/UBSan to catch a dangling iterator that happens to
+	// read stale but plausible memory.
+	DAW_ATTRIB_NOINLINE void test_owned_source_views_survive_being_moved( ) {
+		auto const dbl = []( int x ) {
+			return x * 2;
+		};
+		auto const even = []( int x ) {
+			return x % 2 == 0;
+		};
+		auto const lt3 = []( int x ) {
+			return x < 3;
+		};
+
+		auto skipped =
+		  pipeline( std::array{ 1, 2, 3, 4, 5, 6 }, Skip( 2 ), Map( dbl ) );
+		check_repeatable( skipped, std::vector{ 6, 8, 10, 12 } );
+
+		auto dropped =
+		  pipeline( std::array{ 1, 2, 3, 4, 5, 6 }, DropWhile( lt3 ), Map( dbl ) );
+		check_repeatable( dropped, std::vector{ 6, 8, 10, 12 } );
+
+		auto taken = pipeline(
+		  iota_view<int>{ 1, 50 }, Filter( even ), Take( 3 ), Map( dbl ) );
+		check_repeatable( taken, std::vector{ 4, 8, 12 } );
+
+		auto original = pipeline( std::array{ 1, 2, 3, 4, 5, 6 }, Skip( 2 ) );
+		auto moved = std::move( original );
+		check_repeatable( moved, std::vector{ 3, 4, 5, 6 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_split_owned_source_survives_being_moved( ) {
+		auto piece_size = []( auto piece ) {
+			return static_cast<int>(
+			  std::ranges::distance( std::begin( piece ), std::end( piece ) ) );
+		};
+
+		// the owned string is moved into the next stage
+		auto sizes =
+		  pipeline( std::string( "ab,cde,f" ), Split( ',' ), Map( piece_size ) );
+		auto collected = std::vector<int>{ };
+		for( int n : sizes ) {
+			collected.push_back( n );
+		}
+		daw_ensure( collected == std::vector{ 2, 3, 1 } );
+
+		// the finished view is moved
+		auto original = pipeline( std::string( "ab,cde,f" ), Split( ',' ) );
+		auto moved = std::move( original );
+		collected.clear( );
+		for( auto piece : moved ) {
+			collected.push_back( piece_size( piece ) );
+		}
+		daw_ensure( collected == std::vector{ 2, 3, 1 } );
+	}
+
+	// Algorithms that only advance an iterator, e.g. std::ranges::distance or the
+	// size pass of a container's range constructor, must work without
+	// dereferencing
+	DAW_ATTRIB_NOINLINE void test_split_advances_without_dereferencing( ) {
+		auto text = std::string( "ab,cde,f" );
+		auto pieces = pipeline( text, Split( ',' ) );
+		daw_ensure( std::ranges::distance( pieces.begin( ), pieces.end( ) ) == 3 );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_owned_source_view_copy_outlives_original( ) {
+		auto const lt3 = []( int x ) {
+			return x < 3;
+		};
+		check_copy_outlives_original(
+		  [] {
+			  return pipeline( std::vector{ 1, 2, 3, 4, 5, 6 }, Take( 3 ) );
+		  },
+		  std::vector{ 1, 2, 3 } );
+		check_copy_outlives_original(
+		  [] {
+			  return pipeline( std::vector{ 1, 2, 3, 4, 5, 6 }, Skip( 2 ) );
+		  },
+		  std::vector{ 3, 4, 5, 6 } );
+		check_copy_outlives_original(
+		  [lt3] {
+			  return pipeline( std::vector{ 1, 2, 3, 4, 5, 6 }, DropWhile( lt3 ) );
+		  },
+		  std::vector{ 3, 4, 5, 6 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_take_over_empty_and_zero_sized_ranges( ) {
+		auto const never = []( int ) {
+			return false;
+		};
+		// Take( n ) over a range that turns out to be empty must end immediately
+		daw_ensure( pipeline( iota_view<int>{ 1, 50 },
+		                      Filter( never ),
+		                      Take( 4 ),
+		                      To<std::vector> ) == std::vector<int>{ } );
+		daw_ensure( pipeline( iota_view<int>{ 1, 50 },
+		                      Filter( never ),
+		                      Take( 0 ),
+		                      To<std::vector> ) == std::vector<int>{ } );
+		daw_ensure( pipeline( std::vector<int>{ }, Take( 3 ), To<std::vector> ) ==
+		            std::vector<int>{ } );
+		daw_ensure( pipeline( std::array{ 1, 2, 3 }, Take( 0 ), To<std::vector> ) ==
+		            std::vector<int>{ } );
+		daw_ensure( pipeline( std::vector<int>{ }, Skip( 3 ), To<std::vector> ) ==
+		            std::vector<int>{ } );
+		daw_ensure( pipeline( std::array{ 1, 2, 3 },
+		                      Skip( 100 ),
+		                      To<std::vector> ) == std::vector<int>{ } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_take_while_stops_at_first_failure( ) {
+		auto values = pipeline( iota_view<int>{ -5, 5 }, TakeWhile( []( int x ) {
+			                        return x < 0;
+		                        } ) );
+		check_repeatable( values, std::vector{ -5, -4, -3, -2, -1 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_take_until_stops_at_first_match( ) {
+		auto values = pipeline( iota_view<int>{ -5, 5 }, TakeUntil( []( int x ) {
+			                        return x > 0;
+		                        } ) );
+		check_repeatable( values, std::vector{ -5, -4, -3, -2, -1, 0 } );
+	}
+
+	// Once the predicate is satisfied the rest of the source must not be read
+	DAW_ATTRIB_NOINLINE void test_take_until_stops_reading_the_source( ) {
+		std::size_t visits = 0;
+		auto values = pipeline( iota_view<int>{ 0, 1000 },
+		                        Map( [&visits]( int x ) {
+			                        ++visits;
+			                        return x;
+		                        } ),
+		                        TakeUntil( []( int x ) {
+			                        return x > 10;
+		                        } ),
+		                        To<std::vector> );
+		daw_ensure( values.size( ) == 11 );
+		daw_ensure( visits < 100 );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_every_nth_element_is_repeatable( ) {
+		auto ranged = pipeline( iota_view<int>{ -5, 5 }, Every( 3 ) );
+		check_repeatable( ranged, std::vector{ -5, -2, 1, 4 } );
+
+		// the length is not a multiple of the step
+		auto values = std::array{ 1, 2, 3, 4, 5, 6 };
+		auto every_fourth = pipeline( values, Every( 4 ) );
+		check_repeatable( every_fourth, std::vector{ 1, 5 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_flatten_repeatable( ) {
+		using nested_t = std::vector<std::vector<int>>;
+		auto nested = nested_t{ { 1, 2 }, { 3 }, { 4, 5, 6 } };
+		auto flattened = pipeline( nested, Flatten );
+		check_repeatable_non_const( flattened, std::vector{ 1, 2, 3, 4, 5, 6 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_flatten_empty_outer_range( ) {
+		using nested_t = std::vector<std::vector<int>>;
+		daw_ensure( pipeline( nested_t{ }, Flatten, To<std::vector> ) ==
+		            std::vector<int>{ } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_flatten_skips_leading_empty_range( ) {
+		using nested_t = std::vector<std::vector<int>>;
+		auto nested = nested_t{ { }, { 1 } };
+		auto flattened = pipeline( nested, Flatten );
+		check_repeatable_non_const( flattened, std::vector{ 1 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_flatten_skips_middle_empty_range( ) {
+		using nested_t = std::vector<std::vector<int>>;
+		auto nested = nested_t{ { 1 }, { }, { 2 } };
+		auto flattened = pipeline( nested, Flatten );
+		check_repeatable_non_const( flattened, std::vector{ 1, 2 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_flatten_skips_consecutive_empty_ranges( ) {
+		using nested_t = std::vector<std::vector<int>>;
+		auto nested = nested_t{ { 1 }, { }, { }, { 2 } };
+		auto flattened = pipeline( nested, Flatten );
+		check_repeatable_non_const( flattened, std::vector{ 1, 2 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_flatten_skips_trailing_empty_range( ) {
+		using nested_t = std::vector<std::vector<int>>;
+		auto nested = nested_t{ { 1 }, { } };
+		auto flattened = pipeline( nested, Flatten );
+		check_repeatable_non_const( flattened, std::vector{ 1 } );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_flatten_all_ranges_empty( ) {
+		using nested_t = std::vector<std::vector<int>>;
+		auto nested = nested_t{ { }, { } };
+		auto flattened = pipeline( nested, Flatten );
+		daw_ensure( flattened.begin( ) == flattened.end( ) );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_map_random_access_range( ) {
+		constexpr auto p = pipeline( iota_view{ 2 }, Map( []( auto i ) {
+			                             return i * 2;
+		                             } ) );
+		static_assert( std::ranges::random_access_range<DAW_TYPEOF( p )> );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_sorting_after_to( ) {
+		auto const p = pipeline( To<std::vector>, Sort );
+		auto l = std::list{ 3, 2, 1 };
+		auto v = p( l );
+		static_assert( std::is_same_v<std::vector<int>, DAW_TYPEOF( v )> );
+		daw_ensure( std::is_sorted( std::begin( v ), std::end( v ) ) );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_sorting_after_to_with_cmp( ) {
+		auto const p = pipeline( To<std::vector>, Sort( std::less<>{ } ) );
+		auto l = std::list{ 3, 2, 1 };
+		auto v = p( l );
+		static_assert( std::is_same_v<std::vector<int>, DAW_TYPEOF( v )> );
+		daw_ensure( std::is_sorted( std::begin( v ), std::end( v ) ) );
 	}
 } // namespace tests
 
 int main( ) {
-	tests::test001( );
-	tests::test002( );
-	tests::test003( );
-	tests::test004( );
-	tests::test005( );
-	tests::test006( );
-	tests::test007( );
-	tests::test008( );
-	tests::test009( );
-	tests::test010( );
-	tests::test011( );
-	tests::test012( );
-	tests::test013( );
-	tests::test014( );
-	tests::test015( );
-	tests::test016( );
-	tests::test017( );
-	tests::test018( );
-	tests::test019( );
-	tests::test020( );
-	tests::test021( );
-	tests::test022( );
-	tests::test023( );
-	tests::test024( );
-	tests::test025( );
-	tests::test026( );
-	tests::test027( );
-	tests::test028( );
-	tests::test029( );
-	tests::test030( );
-	tests::test031( );
-	tests::test032( );
-	tests::test033( );
-	tests::test034( );
-	tests::test035( );
-	tests::test036( );
-	tests::test037( );
-	tests::test038( );
-	tests::test039( );
-	tests::test040( );
-	tests::test041( );
-	tests::test042( );
+#if DAW_CPP_VERSION > 202002L
+	tests::test_zip_view_to_map_matches_source_pairs( );
+	tests::test_enumerate_and_enumerate_with_map_to_letters( );
+#endif
+	tests::test_string_pipeline_filter_sort_unique_sum( );
+	tests::test_pipeline_composed_as_stage_of_another_pipeline( );
+	tests::test_pipeline_callable_reused_across_inputs( );
+	tests::test_pipeline_with_source_baked_in( );
+	tests::test_consteval_filter_map_optional_count_to_iota( );
+	tests::test_swizzle_tuple_elements( );
+#if DAW_CPP_VERSION > 202002L
+	tests::test_zip_more_appends_range_to_view_and_zip( );
+	tests::test_fma_pipeline_matches_manual_computation( );
+#endif
+	tests::test_skip_then_take( );
+	tests::test_iota_to_fixed_array_and_sum( );
+#if DAW_CPP_VERSION > 202002L
+	tests::test_pipeline_mapapply_clamp_concat_and_conversions( );
+#endif
+	tests::test_kahan_vs_naive_summation( );
+	tests::test_generate_n_to_fixed_array( );
+	tests::test_skip_elements( );
+	tests::test_sample_from_iota_view( );
+	tests::test_reverse_iota_view( );
+	tests::test_every_nth_element( );
+	tests::test_take_until_predicate( );
+	tests::test_take_while_predicate( );
+	tests::test_flatten_nested_iota_views( );
+	tests::test_chunk_then_flatten_round_trip( );
+	tests::test_find_if_and_find_on_array( );
+	tests::test_find_with_member_projection( );
+	tests::test_slide_then_flatten( );
+	tests::test_slide_window_starts( );
+	tests::test_contains_string_view_array( );
+	tests::test_dump_smoke_test( );
+#if DAW_CPP_VERSION > 202002L
+	tests::test_enumerate_from_offset( );
+#endif
+	tests::test_split_by_delimiter_and_trim( );
+	tests::test_split_by_subsequence_delimiter( );
+#if DAW_CPP_VERSION > 202002L
+	tests::test_curried_zip_stage_in_pipeline( );
+#endif
+	tests::test_trim_both_ends_with_drop_while_reverse( );
+	tests::test_trimmed_first_ref_returns_first_char( );
+	tests::test_first_ref_reflects_mutation( );
+	tests::test_trimmed_first_returns_first_char( );
+	tests::test_first_value_does_not_reflect_mutation( );
+	tests::test_copy_sort_unique_pipeline( );
+#if DAW_CPP_VERSION > 202002L
+	tests::test_elements_projection_returns_tuples( );
+	tests::test_element_projection_returns_values( );
+#endif
+	tests::test_cache_last_avoids_recomputation( );
+	tests::test_map_function_pointer_projection( );
+	tests::test_take_larger_than_forward_range( );
+	tests::test_take_from_empty_forward_range( );
+	tests::test_take_zero_from_forward_range( );
+	tests::test_map_rvalue_projection_dereferences_as_value( );
+	tests::test_map_materializes_projected_prvalues( );
+	tests::test_const_map_uses_const_iterator( );
+	tests::test_const_map_can_be_materialized( );
+	tests::test_map_after_const_unique_can_be_summed( );
+#if DAW_CPP_VERSION > 202002L
+	tests::test_zip_more_appends_to_zip( );
+	tests::test_zip_more_appends_to_tuple( );
+#endif
+	tests::test_concat_materializes_tied_ranges( );
+	tests::test_concat_preserves_references( );
+#if DAW_CPP_VERSION > 202002L
+	tests::test_concat_flattens_zip( );
+#endif
+	tests::test_concat_skips_leading_empty_range( );
+	tests::test_concat_iterator_copy_preserves_position( );
+	tests::test_concat_iterator_post_increment( );
+	tests::test_concat_skips_middle_empty_range( );
+	tests::test_concat_owns_rvalue_tuple_ranges( );
+	tests::test_concat_heterogeneous_iterators_compare( );
+	tests::test_concat_heterogeneous_end_iterators_compare( );
+	tests::test_concat_view_equality( );
+	tests::test_concat_view_equality_heterogeneous_ranges( );
+	tests::test_concat_duplicate_range_types( );
+	tests::test_concat_const_view_dereferences_const_reference( );
+	tests::test_concat_all_ranges_empty( );
+	tests::test_concat_skips_trailing_empty_range( );
+	tests::test_concat_single_range( );
+	tests::test_concat_single_range_array( );
+	tests::test_concat_direct_multiple_arguments( );
+	tests::test_concat_direct_call_forwards_all_ranges_by_reference( );
+	tests::test_concat_heterogeneous_iterator_copy_preserves_position( );
+	tests::test_views_are_repeatable( );
+	tests::test_owned_source_views_survive_being_moved( );
+	tests::test_split_owned_source_survives_being_moved( );
+	tests::test_split_advances_without_dereferencing( );
+	tests::test_owned_source_view_copy_outlives_original( );
+	tests::test_take_over_empty_and_zero_sized_ranges( );
+	tests::test_take_while_stops_at_first_failure( );
+	tests::test_take_until_stops_at_first_match( );
+	tests::test_take_until_stops_reading_the_source( );
+	tests::test_every_nth_element_is_repeatable( );
+	tests::test_flatten_repeatable( );
+	tests::test_flatten_empty_outer_range( );
+	tests::test_flatten_skips_leading_empty_range( );
+	tests::test_flatten_skips_middle_empty_range( );
+	tests::test_flatten_skips_consecutive_empty_ranges( );
+	tests::test_flatten_skips_trailing_empty_range( );
+	tests::test_flatten_all_ranges_empty( );
+	tests::test_map_random_access_range( );
+	tests::test_sorting_after_to( );
+	tests::test_sorting_after_to_with_cmp( );
 	daw::println( "Done" );
 }

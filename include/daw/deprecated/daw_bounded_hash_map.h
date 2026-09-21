@@ -105,7 +105,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr const_bounded_hash_map_iterator operator++( int ) {
+		[[nodiscard]] constexpr const_bounded_hash_map_iterator operator++( int ) {
 			auto result = *this;
 			operator++( );
 			return result;
@@ -119,7 +119,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr const_bounded_hash_map_iterator operator--( int ) {
+		[[nodiscard]] constexpr const_bounded_hash_map_iterator operator--( int ) {
 			auto result = *this;
 			operator--( );
 			return result;
@@ -196,7 +196,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr bounded_hash_map_iterator operator++( int ) {
+		[[nodiscard]] constexpr bounded_hash_map_iterator operator++( int ) {
 			auto result = *this;
 			operator++( );
 			return result;
@@ -210,7 +210,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr bounded_hash_map_iterator operator--( int ) {
+		[[nodiscard]] constexpr bounded_hash_map_iterator operator--( int ) {
 			auto result = *this;
 			operator--( );
 			return result;
@@ -454,14 +454,16 @@ namespace daw {
 		[[nodiscard]] constexpr size_type size( ) const {
 			using std::cbegin;
 			using std::cend;
-			return daw::algorithm::accumulate(
-			  cbegin( m_data ), cend( m_data ), size_type{ 0 },
-			  []( auto &&init, auto &&v ) {
-				  if( v ) {
-					  return DAW_FWD( init ) + size_type{ 1 };
-				  }
-				  return DAW_FWD( init );
-			  } );
+			return daw::algorithm::accumulate( cbegin( m_data ),
+			                                   cend( m_data ),
+			                                   size_type{ 0 },
+			                                   []( auto &&init, auto &&v ) {
+				                                   if( v ) {
+					                                   return DAW_FWD( init ) +
+					                                          size_type{ 1 };
+				                                   }
+				                                   return DAW_FWD( init );
+			                                   } );
 		}
 
 		[[nodiscard]] constexpr size_type empty( ) const {
@@ -500,17 +502,20 @@ namespace daw {
 		}
 
 		constexpr iterator end( ) {
-			return { std::data( m_data ), std::data( m_data ) + capacity( ),
+			return { std::data( m_data ),
+			         std::data( m_data ) + capacity( ),
 			         std::data( m_data ) + capacity( ) };
 		}
 
 		constexpr const_iterator end( ) const {
-			return { std::data( m_data ), std::data( m_data ) + capacity( ),
+			return { std::data( m_data ),
+			         std::data( m_data ) + capacity( ),
 			         std::data( m_data ) + capacity( ) };
 		}
 
 		constexpr const_iterator cend( ) const {
-			return { std::data( m_data ), std::data( m_data ) + capacity( ),
+			return { std::data( m_data ),
+			         std::data( m_data ) + capacity( ),
 			         std::data( m_data ) + capacity( ) };
 		}
 
@@ -519,8 +524,8 @@ namespace daw {
 			if( not idx ) {
 				return end( );
 			}
-			return { std::data( m_data ), std::data( m_data ) + capacity( ),
-			         m_data + *idx };
+			return {
+			  std::data( m_data ), std::data( m_data ) + capacity( ), m_data + *idx };
 		}
 
 		constexpr const_iterator find( Key const &key ) const {
@@ -528,8 +533,8 @@ namespace daw {
 			if( not idx ) {
 				return end( );
 			}
-			return { std::data( m_data ), std::data( m_data ) + capacity( ),
-			         m_data + *idx };
+			return {
+			  std::data( m_data ), std::data( m_data ) + capacity( ), m_data + *idx };
 		}
 
 		constexpr void erase( Key const &key ) {

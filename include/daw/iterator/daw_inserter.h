@@ -49,7 +49,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr inserter_iterator &operator++( int ) noexcept {
+		[[nodiscard]] constexpr inserter_iterator &operator++( int ) noexcept {
 			return *this;
 		}
 	};

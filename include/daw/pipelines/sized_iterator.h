@@ -8,7 +8,9 @@
 
 #pragma once
 
+#include "daw/daw_as.h"
 #include "daw/daw_attributes.h"
+#include "daw/daw_concepts.h"
 #include "daw/daw_ensure.h"
 #include "daw/daw_iterator_traits.h"
 
@@ -17,20 +19,52 @@
 #include <iterator>
 
 namespace daw::pipelines {
-	template<Iterator Iterator>
+	template<Iterator SentinelFor>
+	struct sized_iterator_end {
+		using iterator_category =
+		  daw::common_iterator_category_t<std::forward_iterator_tag,
+		                                  daw::iterator_category_t<SentinelFor>>;
+		using difference_type = daw::iter_difference_t<SentinelFor>;
+		using value_type = std::common_type_t<iter_value_t<SentinelFor>>;
+		using reference = std::common_reference_t<iter_reference_t<SentinelFor>>;
+		using pointer = void;
+		using i_am_a_daw_sized_iterator_end_class = void;
+
+		sized_iterator_end( ) = default;
+
+		constexpr bool operator==( sized_iterator_end const & ) const {
+			return true;
+		}
+
+		[[noreturn]] DAW_ATTRIB_NOINLINE inline value_type operator*( ) const {
+			std::terminate( );
+		}
+
+		[[noreturn]] DAW_ATTRIB_NOINLINE inline sized_iterator_end &
+		operator++( ) const {
+			std::terminate( );
+		}
+
+		[[noreturn]] DAW_ATTRIB_NOINLINE inline sized_iterator_end
+		operator++( int ) const {
+			std::terminate( );
+		}
+	};
+
+	template<Iterator First, Iterator Last = First>
 	struct sized_iterator;
 
-	template<ForwardIterator Iterator>
-	struct sized_iterator<Iterator> {
-		using iterator_category = iter_category_t<Iterator>;
-		using value_type = iter_value_t<Iterator>;
-		using reference = iter_reference_t<Iterator>;
-		using const_reference = iter_const_reference_t<Iterator>;
-		using difference_type = std::ptrdiff_t;
+	template<RandomIterator First, Iterator Last>
+	struct sized_iterator<First, Last> {
+		using iterator_category = iter_category_t<First>;
+		using value_type = iter_value_t<First>;
+		using reference = iter_reference_t<First>;
+		using const_reference = iter_const_reference_t<First>;
+		using difference_type = daw::iter_difference_t<First>;
 
 	private:
-		Iterator m_iter = Iterator{ };
-		difference_type m_count = 0;
+		First m_iter{ };
+		difference_type m_count{ };
 
 		constexpr void increment( ) {
 			--m_count;
@@ -51,11 +85,12 @@ namespace daw::pipelines {
 		}
 
 	public:
-		explicit sized_iterator( ) = default;
+		sized_iterator( ) = default;
 
-		explicit constexpr sized_iterator( Iterator first, std::size_t how_many )
-		  : m_iter( std::move( first ) )
-		  , m_count( static_cast<difference_type>( how_many ) ) {}
+		explicit constexpr sized_iterator( daw::constructible<First> auto &&first,
+		                                   std::size_t how_many )
+		  : m_iter( DAW_FWD( first ) )
+		  , m_count( as<difference_type>( how_many ) ) {}
 
 		[[nodiscard]] constexpr auto &base( ) {
 			return m_iter;
@@ -87,18 +122,35 @@ namespace daw::pipelines {
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
 		operator==( sized_iterator const &rhs ) const noexcept {
-			return m_count == rhs.m_count;
+			return m_count == rhs.m_count or m_iter == rhs.m_iter;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
-		operator!=( sized_iterator const &rhs ) const noexcept {
-			return m_count != rhs.m_count;
+		[[nodiscard]] constexpr bool
+		operator==( sized_iterator_end<First> const & ) const noexcept {
+			return m_count <= 0;
+		}
+
+		[[nodiscard]] constexpr bool
+		operator==( sized_iterator_end<Last> const & ) const noexcept
+		  requires( not std::same_as<First, Last> ) {
+			return m_count <= 0;
 		}
 
 		// clang-format off
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
 		operator<=>( sized_iterator const &rhs ) const noexcept {
 			return m_count <=> rhs.m_count;
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
+		operator<=>( sized_iterator_end<First> const & ) const noexcept {
+			return m_count <=> 0;
+		}
+
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
+		operator<=>( sized_iterator_end<Last> const & ) const noexcept
+		  requires( not std::same_as<First, Last> ) {
+			return m_count <=> 0;
 		}
 		// clang-format on
 
@@ -175,17 +227,19 @@ namespace daw::pipelines {
 		}
 	};
 
-	template<InputIterator Iterator>
-	struct sized_iterator<Iterator> {
-		using iterator_category = std::input_iterator_tag;
-		using value_type = iter_value_t<Iterator>;
-		using reference = iter_reference_t<Iterator>;
-		using const_reference = iter_const_reference_t<Iterator>;
-		using difference_type = std::ptrdiff_t;
+	template<InputIterator First, Iterator Last>
+	struct sized_iterator<First, Last> {
+		using iterator_category =
+		  daw::common_iterator_category_t<std::forward_iterator_tag,
+		                                  daw::iterator_category_t<First>>;
+		using value_type = iter_value_t<First>;
+		using reference = iter_reference_t<First>;
+		using const_reference = iter_const_reference_t<First>;
+		using difference_type = daw::iter_difference_t<First>;
 
 	private:
-		Iterator m_first = Iterator{ };
-		Iterator m_last = Iterator{ };
+		First m_first = First{ };
+		Last m_last = Last{ };
 		difference_type m_count = 0;
 
 		constexpr void increment( ) {
@@ -197,13 +251,14 @@ namespace daw::pipelines {
 		}
 
 	public:
-		explicit sized_iterator( ) = default;
+		sized_iterator( ) = default;
 
-		explicit constexpr sized_iterator( Iterator first, Iterator last,
+		explicit constexpr sized_iterator( daw::constructible<First> auto &&first,
+		                                   daw::constructible<Last> auto &&last,
 		                                   std::size_t how_many )
-		  : m_first( first )
-		  , m_last( last )
-		  , m_count( static_cast<difference_type>( how_many ) ) {}
+		  : m_first( DAW_FWD( first ) )
+		  , m_last( DAW_FWD( last ) )
+		  , m_count( as<difference_type>( how_many ) ) {}
 
 		[[nodiscard]] constexpr auto &base( ) {
 			return m_first;
@@ -238,10 +293,15 @@ namespace daw::pipelines {
 			return m_count == rhs.m_count;
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
-		operator!=( sized_iterator const &rhs ) const noexcept {
-			return m_count != rhs.m_count;
+		[[nodiscard]] constexpr bool
+		operator==( sized_iterator_end<First> const & ) const noexcept {
+			return m_count <= 0 or m_first == m_last;
+		}
+
+		[[nodiscard]] constexpr bool
+		operator==( sized_iterator_end<Last> const & ) const noexcept
+		  requires( not std::same_as<First, Last> ) {
+			return m_count <= 0 or m_first == m_last;
 		}
 	};
-
 } // namespace daw::pipelines

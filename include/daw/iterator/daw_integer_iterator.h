@@ -39,7 +39,8 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr integer_range_iterator operator++( int ) const noexcept {
+		[[nodiscard]] constexpr integer_range_iterator
+		operator++( int ) const noexcept {
 			integer_range_iterator tmp{ *this };
 			++current_value;
 			return tmp;

@@ -22,6 +22,7 @@ set( TEST_SOURCES
 		 daw_arith_traits_test.cpp
 		 daw_array_compare_test.cpp
 		 daw_array_test.cpp
+		 daw_as_test.cpp
 		 daw_ascii_test.cpp
 		 daw_assume_test.cpp
 		 daw_attributes_test.cpp
@@ -47,6 +48,7 @@ set( TEST_SOURCES
 		 daw_graph_algorithm_test.cpp
 		 daw_graph_test.cpp
 		 daw_hash_set_test.cpp
+		 daw_int_cmp_test.cpp
 		 daw_is_any_of_test.cpp
 		 daw_iterator_argument_iterator_test.cpp
 		 daw_iterator_back_inserter_test.cpp
@@ -154,24 +156,66 @@ set( CPP23_TEST_SOURCES
 		 )
 
 set( CPP20_TEST_SOURCES
-		 daw_atomic_wait_test.cpp
 		 daw_any_if_test.cpp
+		 daw_atomic_wait_test.cpp
 		 daw_bitset_helper_test.cpp
 		 daw_concepts_test.cpp
 		 daw_contiguous_view_test.cpp
+		 daw_fmt_concat_test.cpp
 		 daw_formatters_test.cpp
 		 daw_from_string_test.cpp
 		 daw_iter_view_test.cpp
-		 daw_mutable_function_ref_test.cpp
-		 daw_poly_value_test.cpp
 		 daw_maybe_unique_ptr_test.cpp
 		 daw_move_only_test.cpp
+		 daw_mutable_function_ref_test.cpp
 		 daw_named_params_test.cpp
 		 daw_observer_ptr_test.cpp
+		 daw_poly_value_test.cpp
+		 daw_ref_storage_test.cpp
 		 )
 
 set( CPP20_NOT_MSVC_TEST_SOURCES
+		 daw_pipelines_algorithm_test.cpp
+		 daw_pipelines_cache_last_view_test.cpp
+		 daw_pipelines_chunk_test.cpp
+		 daw_pipelines_concat_test.cpp
+		 daw_pipelines_copy_test.cpp
+		 daw_pipelines_countdown_test.cpp
+		 daw_pipelines_daw_concept_checker_test.cpp
+		 daw_pipelines_drop_test.cpp
+		 daw_pipelines_elements_test.cpp
+		 daw_pipelines_enumerate_test.cpp
+		 daw_pipelines_every_test.cpp
+		 daw_pipelines_filter_test.cpp
+		 daw_pipelines_find_test.cpp
+		 daw_pipelines_first_test.cpp
+		 daw_pipelines_flatten_test.cpp
+		 daw_pipelines_foreach_test.cpp
+		 daw_pipelines_generate_test.cpp
+		 daw_pipelines_iota_test.cpp
+		 daw_pipelines_map_test.cpp
+		 daw_pipelines_maybe_owning_range_test.cpp
+		 daw_pipelines_maybe_test.cpp
+		 daw_pipelines_move_next_test.cpp
+		 daw_pipelines_numeric_test.cpp
+		 daw_pipelines_pipeline_test.cpp
+		 daw_pipelines_pipeline_traits_test.cpp
+		 daw_pipelines_predicates_test.cpp
+		 daw_pipelines_print_test.cpp
+		 daw_pipelines_range_base_test.cpp
+		 daw_pipelines_reverse_test.cpp
+		 daw_pipelines_sample_test.cpp
+		 daw_pipelines_sized_iterator_test.cpp
+		 daw_pipelines_skip_test.cpp
+		 daw_pipelines_slide_test.cpp
+		 daw_pipelines_split_test.cpp
+		 daw_pipelines_swizzle_test.cpp
+		 daw_pipelines_take_test.cpp
 		 daw_pipelines_test.cpp
+		 daw_pipelines_to_test.cpp
+		 daw_pipelines_unique_test.cpp
+		 daw_pipelines_view_test.cpp
+		 daw_pipelines_zip_test.cpp
 		 vector_test.cpp
 		 )
 #NOT COMPLETED daw_iterator_split_iterator_test.cpp

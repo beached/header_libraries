@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "ciso646.h"
-#include "daw_cpp_feature_check.h"
+#include "daw/ciso646.h"
+#include "daw/daw_cpp_feature_check.h"
 
 #ifdef __has_cpp_attribute
 #define DAW_HAS_ATTRIBUTE( Attrib ) __has_cpp_attribute( Attrib )
@@ -156,4 +156,10 @@
 #define DAW_ATTRIB_ENABLE_IF( ... ) \
 	__attribute__( ( enable_if( __VA_ARGS__ ) ) )
 #endif
+#endif
+
+#if DAW_HAS_MSVC_VER_GTE( 1935 ) and DAW_HAS_ATTRIBUTE( msvc::intrinsic )
+#define DAW_ATTRIB_INTRINSIC [[msvc::intrinsic]]
+#else
+#define DAW_ATTRIB_INTRINSIC
 #endif

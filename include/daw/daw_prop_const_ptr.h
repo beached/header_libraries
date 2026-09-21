@@ -79,7 +79,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr prop_const_ptr &operator++( int ) {
+		[[nodiscard]] constexpr prop_const_ptr &operator++( int ) {
 			auto result = *this;
 			++m_ptr;
 			return result;
@@ -90,7 +90,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr prop_const_ptr &operator--( int ) {
+		[[nodiscard]] constexpr prop_const_ptr &operator--( int ) {
 			auto result = *this;
 			--m_ptr;
 			return result;

@@ -26,6 +26,7 @@ namespace daw {
 		using iterator_category =
 		  typename std::iterator_traits<Iterator>::iterator_category;
 		using i_am_a_daw_reverse_iterator = void;
+
 	private:
 		Iterator m_base{ };
 
@@ -78,7 +79,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr reverse_iterator operator++( int ) noexcept {
+		[[nodiscard]] constexpr reverse_iterator operator++( int ) noexcept {
 			reverse_iterator tmp{ *this };
 			--m_base;
 			return tmp;
@@ -89,7 +90,7 @@ namespace daw {
 			return *this;
 		}
 
-		constexpr reverse_iterator operator--( int ) noexcept {
+		[[nodiscard]] constexpr reverse_iterator operator--( int ) noexcept {
 			reverse_iterator tmp{ *this };
 			++m_base;
 			return tmp;

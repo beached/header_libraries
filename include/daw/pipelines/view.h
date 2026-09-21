@@ -10,16 +10,18 @@
 
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
+#include "daw/daw_visit.h"
 #include "daw/pipelines/range_base.h"
 
 #include <cstddef>
 #include <daw/stdinc/tuple_traits.h>
 #include <iterator>
 #include <type_traits>
+#include <variant>
 
 namespace daw::pipelines {
 	template<Iterator First, Iterator Last = First>
-	struct range_t : range_base_t<First, Last> {
+	struct view_t : private pimpl::range_base_t<First, Last> {
 		using i_am_a_daw_pipelines_range_t = void;
 		using iterator_category =
 		  common_iterator_category_t<iter_category_t<First>, iter_category_t<Last>>;
@@ -33,13 +35,14 @@ namespace daw::pipelines {
 		First first;
 		Last last;
 
-		range_t( ) = default;
-		constexpr range_t( First f, Last l )
+		explicit view_t( ) = default;
+
+		explicit constexpr view_t( First f, Last l )
 		  : first( std::move( f ) )
 		  , last( std::move( l ) ) {}
 
 		template<Range R>
-		constexpr range_t( R &&r )
+		explicit constexpr view_t( R &&r )
 		  : first( std::begin( r ) )
 		  , last( std::end( r ) ) {}
 
@@ -69,7 +72,7 @@ namespace daw::pipelines {
 
 		[[nodiscard]] constexpr std::size_t size( ) const
 		  requires( RandomIteratorTag<iterator_category> ) {
-			return static_cast<std::size_t>( std::distance( first, last ) );
+			return pimpl::ranges_distance<std::size_t>( first, last );
 		}
 
 		[[nodiscard]] constexpr auto data( )
@@ -92,45 +95,46 @@ namespace daw::pipelines {
 			return std::to_address( last );
 		}
 
-		constexpr range_t &operator++( ) {
+		constexpr view_t &operator++( ) {
 			++first;
 			return *this;
 		}
 
-		[[nodiscard]] range_t operator++( int ) {
+		[[nodiscard]] view_t operator++( int ) {
 			auto result = *this;
 			++first;
 			return result;
 		}
 
-		constexpr range_t &operator--( )
+		constexpr view_t &operator--( )
 		  requires( BidirectionalIteratorTag<iterator_category> ) {
 			--first;
 			return *this;
 		}
 
-		constexpr range_t operator--( int )
+		[[nodiscard]] constexpr view_t operator--( int )
 		  requires( BidirectionalIteratorTag<iterator_category> ) {
 			auto result = *this;
 			--first;
 			return result;
 		}
 
-		constexpr reference operator[]( difference_type idx )
+		[[nodiscard]] constexpr reference operator[]( difference_type idx )
 		  requires( RandomIteratorTag<iterator_category> ) {
 			return first[idx];
 		}
 
-		constexpr const_reference operator[]( difference_type idx ) const
+		[[nodiscard]] constexpr const_reference
+		operator[]( difference_type idx ) const
 		  requires( RandomIteratorTag<iterator_category> ) {
 			return first[idx];
 		}
 
-		constexpr reference operator*( ) {
+		[[nodiscard]] constexpr reference operator*( ) {
 			return *first;
 		}
 
-		constexpr const_reference operator*( ) const {
+		[[nodiscard]] constexpr const_reference operator*( ) const {
 			return *first;
 		}
 
@@ -150,20 +154,25 @@ namespace daw::pipelines {
 			}
 		}
 
-		constexpr difference_type operator-( range_t const &rhs ) const
+		[[nodiscard]] constexpr difference_type operator-( view_t const &rhs ) const
 		  requires( RandomIteratorTag<iterator_category> ) {
-			return std::distance( first, rhs.first );
+			return pimpl::ranges_distance<difference_type>( first, rhs.first );
 		}
 
-		constexpr bool operator==( range_t const &rhs ) const = default;
-		constexpr bool operator!=( range_t const &rhs ) const = default;
+		[[nodiscard]] constexpr bool operator==( view_t const &rhs ) const {
+			return first == rhs.first;
+		}
+
+		[[nodiscard]] constexpr bool operator!=( view_t const &rhs ) const {
+			return not( *this == rhs );
+		}
 		// clang-format off
-		constexpr auto operator<=>( range_t const &rhs ) const = default;
+		[[nodiscard]] constexpr auto operator<=>( view_t const &rhs ) const = default;
 		// clang-format on
 	};
 	template<typename I, typename L>
-	range_t( I, L ) -> range_t<I, L>;
+	view_t( I, L ) -> view_t<I, L>;
 
 	template<Range R>
-	range_t( R && ) -> range_t<iterator_t<R>, iterator_end_t<R>>;
+	view_t( R && ) -> view_t<iterator_t<R>, iterator_end_t<R>>;
 } // namespace daw::pipelines

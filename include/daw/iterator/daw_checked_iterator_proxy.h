@@ -76,7 +76,7 @@ namespace daw {
 			return *this;
 		}
 
-		checked_iterator_proxy_t operator++( int ) const {
+		[[nodiscard]] checked_iterator_proxy_t operator++( int ) const {
 			checked_iterator_proxy_t result{ *this };
 			++result;
 			return result;
@@ -92,7 +92,7 @@ namespace daw {
 			return *this;
 		}
 
-		checked_iterator_proxy_t operator--( int ) const {
+		[[nodiscard]] checked_iterator_proxy_t operator--( int ) const {
 			checked_iterator_proxy_t result{ *this };
 			--result;
 			return result;

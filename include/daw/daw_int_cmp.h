@@ -68,21 +68,21 @@ namespace daw {
 	         std::enable_if_t<daw::is_integral_v<T> and daw::is_integral_v<U>,
 	                          std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE constexpr bool cmp_greater( T t, U u ) noexcept {
-		return cmp_less( u, t );
+		return daw::cmp_less( u, t );
 	}
 
 	template<typename T, typename U,
 	         std::enable_if_t<daw::is_integral_v<T> and daw::is_integral_v<U>,
 	                          std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE constexpr bool cmp_less_equal( T t, U u ) noexcept {
-		return not cmp_less( u, t );
+		return not daw::cmp_less( u, t );
 	}
 
 	template<typename T, typename U,
 	         std::enable_if_t<daw::is_integral_v<T> and daw::is_integral_v<U>,
 	                          std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE constexpr bool cmp_greater_equal( T t, U u ) noexcept {
-		return not cmp_less( t, u );
+		return not daw::cmp_less( t, u );
 	}
 
 	template<typename R, typename T,
@@ -92,8 +92,8 @@ namespace daw {
 		if constexpr( std::is_same_v<R, T> ) {
 			return true;
 		} else {
-			return cmp_greater_equal( t, lowest_value<R> ) and
-			       cmp_less_equal( t, max_value<R> );
+			return daw::cmp_greater_equal( t, lowest_value<R> ) and
+			       daw::cmp_less_equal( t, max_value<R> );
 		}
 	}
 

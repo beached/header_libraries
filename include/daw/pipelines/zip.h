@@ -9,15 +9,27 @@
 #pragma once
 
 #include "daw/daw_iterator_traits.h"
+#include "daw/daw_ref_storage.h"
 #include "daw/daw_traits.h"
-#include "range.h"
+#include "daw/pipelines/counted_source.h"
+#include "daw/pipelines/daw_concept_checker.h"
+#include "daw/pipelines/view.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <tuple>
 #include <utility>
 
 namespace daw::pipelines {
+	template<Range... Ranges>
+	struct zip_view;
+
 	namespace pimpl {
+		template<std::size_t...>
+		struct Swizzle_t;
+
+		struct Concat_t;
+
 		template<typename... Ts>
 		struct tuple_pair_t {
 			using type = std::tuple<Ts...>;
@@ -30,223 +42,424 @@ namespace daw::pipelines {
 
 		template<typename... Ts>
 		using tuple_pair = typename tuple_pair_t<Ts...>::type;
-	} // namespace pimpl
-	template<Iterator... Iterators>
-	struct zip_iterator {
-		static_assert( sizeof...( Iterators ) > 0,
-		               "Empty zip iterator is unsupported" );
 
-		using iterator_category =
-		  daw::common_iterator_category_t<iter_category_t<Iterators>...>;
-		static_assert( not std::same_as<void, iterator_category> );
-		using types_t = pimpl::tuple_pair<Iterators...>;
-		static constexpr std::size_t types_size_v = sizeof...( Iterators );
-		using value_type = pimpl::tuple_pair<daw::iter_value_t<Iterators>...>;
-		using reference = pimpl::tuple_pair<daw::iter_reference_t<Iterators>...>;
-		using const_reference =
-		  pimpl::tuple_pair<daw::iter_const_reference_t<Iterators>...>;
-		using difference_type = std::ptrdiff_t;
-		using i_am_a_daw_zip_iterator_class = void;
+		template<Iterator... SentinelFors>
+		struct zip_iterator_end {
+			using iterator_category = std::input_iterator_tag;
+			using difference_type =
+			  widest_type_t<daw::iter_difference_t<SentinelFors>...>;
+			using value_type = pimpl::tuple_pair<daw::iter_value_t<SentinelFors>...>;
+			using reference =
+			  pimpl::tuple_pair<daw::iter_reference_t<SentinelFors>...>;
+			using pointer = void;
+			using i_am_a_daw_zip_iterator_end_class = void;
 
-	private:
-		types_t m_iters;
+			zip_iterator_end( ) = default;
 
-		static constexpr auto zip_indices = [] {
-			return std::make_index_sequence<sizeof...( Iterators )>{ };
+			constexpr bool operator==( zip_iterator_end const & ) const {
+				return true;
+			}
+
+			[[noreturn]] DAW_ATTRIB_NOINLINE inline value_type operator*( ) const {
+				std::terminate( );
+			}
+
+			[[noreturn]] DAW_ATTRIB_NOINLINE inline zip_iterator_end &
+			operator++( ) const {
+				std::terminate( );
+			}
+
+			[[noreturn]] DAW_ATTRIB_NOINLINE inline zip_iterator_end
+			operator++( int ) const {
+				std::terminate( );
+			}
 		};
 
-		template<std::size_t... Is>
-		constexpr void increment( std::index_sequence<Is...> ) {
-			(void)( ( ++std::get<Is>( m_iters ) ), ... );
-		}
+		/// When every zipped range is random access with a known length, the
+		/// iterator counts the elements left in the shortest range instead of
+		/// comparing every iterator against the end of its range on each step
+		template<typename Last, typename... Iterators>
+		struct zip_counted : std::false_type {};
 
-		template<std::size_t... Is>
-		constexpr void decrement( std::index_sequence<Is...> ) {
-			(void)( ( --std::get<Is>( m_iters ) ), ... );
-		}
+		template<Iterator... SentinelFors, typename... Iterators>
+		requires( sizeof...( SentinelFors ) == sizeof...( Iterators ) ) //
+		  struct zip_counted<zip_iterator_end<SentinelFors...>, Iterators...>
+		  : std::bool_constant<( counted_source<Iterators, SentinelFors> and
+		                         ... )> {};
 
-		template<std::size_t... Is>
-		constexpr void advance( difference_type n, std::index_sequence<Is...> ) {
-			(void)( ( std::advance( std::get<Is>( m_iters ), n ), ... ) );
-		}
+		/// The parent is only needed to find the end of each range.  A counted
+		/// iterator knows how many elements are left, so it does not store it
+		struct zip_no_parent {
+			constexpr zip_no_parent( ) = default;
+			constexpr explicit zip_no_parent( void const * ) noexcept {}
+		};
 
-		template<std::size_t... Is>
-		constexpr reference get_at( difference_type n, std::index_sequence<Is...> )
-		  requires( RandomIteratorTag<iterator_category> ) {
-			return reference{ *std::next( std::get<Is>( m_iters ), n )... };
-		}
+		template<bool>
+		struct zip_remaining {
+			constexpr void step( std::ptrdiff_t ) noexcept {}
+		};
 
-		template<std::size_t... Is>
-		constexpr const_reference get_at( difference_type n,
-		                                  std::index_sequence<Is...> ) const
-		  requires( RandomIteratorTag<iterator_category> ) {
-			return const_reference{ *std::next( std::get<Is>( m_iters ), n )... };
-		}
+		template<>
+		struct zip_remaining<true> {
+			std::ptrdiff_t value = 0;
 
-		template<size_t... Is>
-		[[nodiscard]] DAW_ATTRIB_FLATINLINE constexpr reference
-		get_items( std::index_sequence<Is...> ) noexcept {
-			return { *std::get<Is>( m_iters )... };
-		}
+			constexpr void step( std::ptrdiff_t n ) noexcept {
+				value -= n;
+			}
+		};
 
-		template<size_t... Is>
-		[[nodiscard]] DAW_ATTRIB_FLATINLINE constexpr const_reference
-		get_items( std::index_sequence<Is...> ) const noexcept {
-			return { *std::get<Is>( m_iters )... };
-		}
+		template<typename ZR, typename Last, Iterator... Iterators>
+		requires( requires { typename ZR::i_am_a_daw_zip_view_class; } ) //
+		  struct zip_iterator {
+			static_assert( sizeof...( Iterators ) > 0,
+			               "Empty zip iterator is unsupported" );
 
-	public:
-		explicit zip_iterator( ) = default;
+			using iterator_category =
+			  daw::common_iterator_category_t<daw::iter_category_t<Iterators>...>;
+			static_assert( not std::same_as<void, iterator_category> );
+			using iter_types_t = pimpl::tuple_pair<Iterators...>;
+			using value_type = pimpl::tuple_pair<daw::iter_value_t<Iterators>...>;
+			using reference = pimpl::tuple_pair<daw::iter_reference_t<Iterators>...>;
+			using const_reference =
+			  pimpl::tuple_pair<daw::iter_const_reference_t<Iterators>...>;
+			using difference_type =
+			  widest_type_t<std::iter_difference_t<Iterators>...>;
+			using i_am_a_daw_zip_iterator_class = void;
 
-		explicit constexpr zip_iterator( Iterators const &...its )
-		  : m_iters( std::move( its )... ) {}
+			static constexpr std::size_t iter_types_size_v = sizeof...( Iterators );
+			static constexpr bool counted_v =
+			  pimpl::zip_counted<Last, Iterators...>::value;
 
-		[[nodiscard]] constexpr types_t &base( ) {
-			return m_iters;
-		}
+		private:
+			std::conditional_t<counted_v, pimpl::zip_no_parent, ZR *> m_parent{ };
+			iter_types_t m_iters{ };
+			DAW_NO_UNIQUE_ADDRESS pimpl::zip_remaining<counted_v> m_remaining{ };
 
-		[[nodiscard]] constexpr types_t const &base( ) const {
-			return m_iters;
-		}
+			static constexpr auto zip_indices = [] {
+				return std::make_index_sequence<sizeof...( Iterators )>{ };
+			};
 
-		constexpr zip_iterator &operator++( ) {
-			increment( zip_indices( ) );
-			return *this;
-		}
+			template<std::size_t... Is>
+			constexpr void increment( std::index_sequence<Is...> ) {
+				(void)( ( ++std::get<Is>( m_iters ) ), ... );
+				m_remaining.step( 1 );
+			}
 
-		[[nodiscard]] constexpr zip_iterator operator++( int ) {
-			auto tmp = *this;
-			increment( zip_indices( ) );
-			return tmp;
-		}
+			template<std::size_t... Is>
+			constexpr void decrement( std::index_sequence<Is...> ) {
+				(void)( ( --std::get<Is>( m_iters ) ), ... );
+				m_remaining.step( -1 );
+			}
 
-		[[nodiscard]] constexpr reference operator*( ) noexcept {
-			return get_items( zip_indices( ) );
-		}
+			template<std::size_t... Is>
+			constexpr void advance( difference_type n, std::index_sequence<Is...> ) {
+				(void)( ( std::advance( std::get<Is>( m_iters ), n ), ... ) );
+				m_remaining.step( n );
+			}
 
-		[[nodiscard]] constexpr const_reference operator*( ) const noexcept {
-			return get_items( zip_indices( ) );
-		}
+			template<std::size_t... Is>
+			[[nodiscard]] constexpr reference get_at( difference_type n,
+			                                          std::index_sequence<Is...> )
+			  requires( RandomIteratorTag<iterator_category> ) {
+				return reference{ *std::next( std::get<Is>( m_iters ), n )... };
+			}
 
-		[[nodiscard]] constexpr bool
-		operator==( zip_iterator const &rhs ) const noexcept {
-			return m_iters == rhs.m_iters;
-		}
+			template<std::size_t... Is>
+			[[nodiscard]] constexpr const_reference
+			get_at( difference_type n, std::index_sequence<Is...> ) const
+			  requires( RandomIteratorTag<iterator_category> ) {
+				return const_reference{ *std::next( std::get<Is>( m_iters ), n )... };
+			}
 
-		[[nodiscard]] constexpr bool
-		operator!=( zip_iterator const &rhs ) const noexcept {
-			// we don't know if they are the same length.  Return false if any are
-			// equal
-			return [&]<std::size_t... Is>( std::index_sequence<Is...> ) -> bool {
-				using std::get;
-				auto result =
-				  ( ( get<Is>( m_iters ) == get<Is>( rhs.m_iters ) ) or ... );
-				return not result;
-			}( std::make_index_sequence<sizeof...( Iterators )>{ } );
-		}
+			template<size_t... Is>
+			[[nodiscard]] DAW_ATTRIB_FLATINLINE constexpr reference
+			get_items( std::index_sequence<Is...> ) noexcept {
+				return { *std::get<Is>( m_iters )... };
+			}
 
-		// clang-format off
-		[[nodiscard]] constexpr auto
-		operator<=>( zip_iterator const &rhs ) const noexcept {
-			return m_iters <=> rhs.m_iters;
-		}
-		// clang-format on
+			template<size_t... Is>
+			[[nodiscard]] DAW_ATTRIB_FLATINLINE constexpr const_reference
+			get_items( std::index_sequence<Is...> ) const noexcept {
+				return { *std::get<Is>( m_iters )... };
+			}
+			template<std::size_t... Is>
+			explicit constexpr zip_iterator( ZR *zr, std::index_sequence<Is...> )
+			  : m_parent( zr )
+			  , m_iters{ std::begin( std::get<Is>( zr->m_ranges ).get( ) )... } {
+				if constexpr( counted_v ) {
+					m_remaining.value = std::min( { pimpl::counted_length(
+					  std::get<Is>( m_iters ),
+					  std::end( std::get<Is>( zr->m_ranges ).get( ) ) )... } );
+				}
+			}
 
-		// bidirectional iterator interface
-		constexpr zip_iterator &operator--( )
-		  requires( BidirectionalIteratorTag<iterator_category> ) {
-			decrement( zip_indices( ) );
-			return *this;
-		}
+		public:
+			zip_iterator( ) = default;
 
-		[[nodiscard]] constexpr zip_iterator operator--( int )
-		  requires( BidirectionalIteratorTag<iterator_category> ) {
-			auto tmp = *this;
-			decrement( zip_indices( ) );
-			return tmp;
-		}
+			explicit zip_iterator( Last const & ) {}
 
-		// random access iterator interface
-		[[nodiscard]] constexpr reference operator[]( difference_type n )
-		  requires( RandomIteratorTag<iterator_category> ) {
-			return get_at( n, zip_indices( ) );
-		}
+			explicit constexpr zip_iterator( ZR *zr )
+			  : zip_iterator( zr,
+			                  std::make_index_sequence<sizeof...( Iterators )>{ } ) {}
 
-		[[nodiscard]] constexpr reference operator[]( difference_type n ) const
-		  requires( RandomIteratorTag<iterator_category> ) {
-			return get_at( n, zip_indices( ) );
-		}
+			[[nodiscard]] constexpr iter_types_t &base( ) {
+				return m_iters;
+			}
 
-		constexpr zip_iterator &operator+=( difference_type n )
-		  requires( RandomIteratorTag<iterator_category> ) {
-			advance( n, zip_indices( ) );
-			return *this;
-		}
+			[[nodiscard]] constexpr bool good( ) const {
+				if constexpr( counted_v ) {
+					return m_remaining.value > 0;
+				} else {
+					daw_ensure( m_parent );
+					return [&]<std::size_t... Is>( std::index_sequence<Is...> ) {
+						return (
+						  ( std::get<Is>( m_iters ) !=
+						    std::end( std::get<Is>( m_parent->m_ranges ).get( ) ) ) and
+						  ... );
+					}( std::make_index_sequence<sizeof...( Iterators )>{ } );
+				}
+			}
 
-		constexpr zip_iterator &operator-=( difference_type n )
-		  requires( RandomIteratorTag<iterator_category> ) {
-			advance( -n, zip_indices( ) );
-			return *this;
-		}
+			[[nodiscard]] constexpr iter_types_t const &base( ) const {
+				return m_iters;
+			}
 
-		friend constexpr zip_iterator operator+( zip_iterator lhs,
-		                                         difference_type n )
-		  requires( RandomIteratorTag<iterator_category> ) {
-			lhs += n;
-			return lhs;
-		}
+			constexpr zip_iterator &operator++( ) {
+				increment( zip_indices( ) );
+				return *this;
+			}
 
-		friend constexpr zip_iterator operator+( difference_type n,
-		                                         zip_iterator rhs )
-		  requires( RandomIteratorTag<iterator_category> ) {
-			rhs += n;
-			return rhs;
-		}
+			[[nodiscard]] constexpr zip_iterator operator++( int ) {
+				auto tmp = *this;
+				increment( zip_indices( ) );
+				return tmp;
+			}
 
-		friend constexpr zip_iterator operator-( zip_iterator lhs,
-		                                         difference_type n )
-		  requires( RandomIteratorTag<iterator_category> ) {
-			lhs -= n;
-			return lhs;
-		}
+			[[nodiscard]] constexpr reference operator*( ) noexcept {
+				return get_items( zip_indices( ) );
+			}
 
-		friend constexpr zip_iterator operator-( difference_type n,
-		                                         zip_iterator rhs )
-		  requires( RandomIteratorTag<iterator_category> ) {
-			rhs -= n;
-			return rhs;
-		}
+			[[nodiscard]] constexpr const_reference operator*( ) const noexcept {
+				return get_items( zip_indices( ) );
+			}
 
-		constexpr difference_type operator-( zip_iterator const &rhs ) const
-		  requires( RandomIteratorTag<iterator_category> ) {
-			return std::get<0>( m_iters ) - std::get<0>( rhs.m_iters );
-		}
-	};
+			[[nodiscard]] constexpr bool
+			operator==( zip_iterator const &rhs ) const noexcept {
+				return m_iters == rhs.m_iters;
+			}
 
-	template<Iterator... Iterators>
-	zip_iterator( Iterators... ) -> zip_iterator<Iterators...>;
+			[[nodiscard]] constexpr bool
+			operator!=( zip_iterator const &rhs ) const noexcept {
+				// we don't know if they are the same length.  Return false if any are
+				// equal
+				return [&]<std::size_t... Is>( std::index_sequence<Is...> ) -> bool {
+					using std::get;
+					auto result =
+					  ( ( get<Is>( m_iters ) == get<Is>( rhs.m_iters ) ) or ... );
+					return not result;
+				}( std::make_index_sequence<sizeof...( Iterators )>{ } );
+			}
+
+			// clang-format off
+			[[nodiscard]] constexpr auto operator<=>( zip_iterator const &rhs )
+			                                            const noexcept {
+				return m_iters <=> rhs.m_iters;
+			}
+			// clang-format on
+
+			[[nodiscard]] constexpr friend bool operator==( zip_iterator const &lhs,
+			                                                Last const & ) {
+				return not lhs.good( );
+			}
+
+			[[nodiscard]] constexpr friend bool operator!=( zip_iterator const &lhs,
+			                                                Last const & ) {
+				return lhs.good( );
+			}
+
+			[[nodiscard]] constexpr friend bool
+			operator==( Last const &, zip_iterator const &rhs ) {
+				return not rhs.good( );
+			}
+
+			[[nodiscard]] constexpr friend bool
+			operator!=( Last const &, zip_iterator const &rhs ) {
+				return rhs.good( );
+			}
+
+			// bidirectional iterator interface
+			constexpr zip_iterator &operator--( )
+			  requires( BidirectionalIteratorTag<iterator_category> ) {
+				decrement( zip_indices( ) );
+				return *this;
+			}
+
+			[[nodiscard]] constexpr zip_iterator operator--( int )
+			  requires( BidirectionalIteratorTag<iterator_category> ) {
+				auto tmp = *this;
+				decrement( zip_indices( ) );
+				return tmp;
+			}
+
+			// random access iterator interface
+			[[nodiscard]] constexpr reference operator[]( difference_type n )
+			  requires( RandomIteratorTag<iterator_category> ) {
+				return get_at( n, zip_indices( ) );
+			}
+
+			[[nodiscard]] constexpr reference operator[]( difference_type n ) const
+			  requires( RandomIteratorTag<iterator_category> ) {
+				return get_at( n, zip_indices( ) );
+			}
+
+			constexpr zip_iterator &operator+=( difference_type n )
+			  requires( RandomIteratorTag<iterator_category> ) {
+				advance( n, zip_indices( ) );
+				return *this;
+			}
+
+			constexpr zip_iterator &operator-=( difference_type n )
+			  requires( RandomIteratorTag<iterator_category> ) {
+				advance( -n, zip_indices( ) );
+				return *this;
+			}
+
+			friend constexpr zip_iterator operator+( zip_iterator lhs,
+			                                         difference_type n )
+			  requires( RandomIteratorTag<iterator_category> ) {
+				lhs += n;
+				return lhs;
+			}
+
+			friend constexpr zip_iterator operator+( difference_type n,
+			                                         zip_iterator rhs )
+			  requires( RandomIteratorTag<iterator_category> ) {
+				rhs += n;
+				return rhs;
+			}
+
+			friend constexpr zip_iterator operator-( zip_iterator lhs,
+			                                         difference_type n )
+			  requires( RandomIteratorTag<iterator_category> ) {
+				lhs -= n;
+				return lhs;
+			}
+
+			friend constexpr zip_iterator operator-( difference_type n,
+			                                         zip_iterator rhs )
+			  requires( RandomIteratorTag<iterator_category> ) {
+				rhs -= n;
+				return rhs;
+			}
+
+			constexpr difference_type operator-( zip_iterator const &rhs ) const
+			  requires( RandomIteratorTag<iterator_category> ) {
+				return std::get<0>( m_iters ) - std::get<0>( rhs.m_iters );
+			}
+		};
+	} // namespace pimpl
 
 	template<Range... Ranges>
 	struct zip_view {
-		using value_type = daw::iter_value_t<zip_iterator<iterator_t<Ranges>...>>;
-		using iterator = zip_iterator<iterator_t<Ranges>...>;
+		using i_am_a_daw_zip_view_class = void;
+		using ranges_t = std::tuple<daw::ref_storage<Ranges>...>;
+		using end_value_t = pimpl::tuple_pair<daw::range_value_t<Ranges>...>;
+		using last_iterator =
+		  pimpl::zip_iterator_end<daw::iterator_end_t<Ranges>...>;
+		using const_last_iterator =
+		  pimpl::zip_iterator_end<daw::const_iterator_end_t<Ranges>...>;
+		using iterator =
+		  pimpl::zip_iterator<zip_view, last_iterator, daw::iterator_t<Ranges>...>;
+		using const_iterator =
+		  pimpl::zip_iterator<zip_view const, const_last_iterator,
+		                      daw::const_iterator_t<Ranges>...>;
 
-		iterator m_first = iterator{ };
-		iterator m_last = iterator{ };
+		static constexpr std::size_t range_count = sizeof...( Ranges );
 
+		template<typename ZR, typename, Iterator...>
+		requires( requires { typename ZR::i_am_a_daw_zip_view_class; } ) //
+		  friend struct pimpl::zip_iterator;
+
+	private:
+		ranges_t m_ranges{ };
+		friend struct pimpl::Concat_t;
+
+	public:
 		explicit zip_view( ) = default;
 
-		template<Range... Rs>
-		explicit constexpr zip_view( Rs &&...rs )
-		  : m_first( ( std::begin( DAW_FWD( rs ) ) )... )
-		  , m_last( ( std::end( DAW_FWD( rs ) ) )... ) {}
+		explicit constexpr zip_view( Ranges... rs )
+		  : m_ranges{ DAW_FWD( rs )... } {}
 
-		[[nodiscard]] constexpr iterator begin( ) const {
-			return m_first;
+		[[nodiscard]] constexpr iterator begin( ) {
+			return iterator{ this };
 		}
 
-		[[nodiscard]] constexpr iterator end( ) const {
-			return m_last;
+		[[nodiscard]] constexpr const_iterator begin( ) const {
+			return const_iterator{ this };
+		}
+
+		[[nodiscard]] constexpr last_iterator end( ) {
+			return last_iterator{ };
+		}
+
+		[[nodiscard]] constexpr const_last_iterator end( ) const {
+			return const_last_iterator{ };
+		}
+
+		template<Range... NewRanges>
+		[[nodiscard]] constexpr auto append_ranges( NewRanges &&...nranges ) const {
+			return std::apply(
+			  [&]<typename... CRs>( CRs const &...current_ranges ) {
+				  return zip_view<typename CRs::type..., NewRanges...>{
+				    current_ranges.get( )..., DAW_FWD( nranges )... };
+			  },
+			  m_ranges );
+		}
+
+		template<Range...>
+		friend struct zip_view;
+
+		template<Range... NewRanges>
+		[[nodiscard]] constexpr auto
+		append_zip_view( zip_view<NewRanges...> const &zv ) const {
+			return std::apply(
+			  [&]( auto const &...current_ranges ) {
+				  return std::apply(
+				    [&]<typename... NRs>( NRs const &...next_ranges ) {
+					    return zip_view<Ranges..., NewRanges...>{
+					      current_ranges.get( )..., next_ranges.get( )... };
+				    },
+				    zv.m_ranges );
+			  },
+			  m_ranges );
+		}
+
+		template<std::size_t... Indices>
+		constexpr auto swizzle( ) && {
+			static_assert( std::max( { Indices... } ) < range_count,
+			               "Swizzle - Index that is beyond the number "
+			               "of zipped ranges" );
+
+			return zip_view{ std::move( std::get<Indices>( m_ranges ) ).get( )... };
+		}
+
+		template<std::size_t... Indices>
+		constexpr auto swizzle( ) const & {
+			static_assert( std::max( { Indices... } ) < range_count,
+			               "Swizzle - Index that is beyond the number "
+			               "of zipped ranges" );
+
+			return zip_view{ std::get<Indices>( m_ranges ).get( )... };
+		}
+
+		template<std::size_t... Indices>
+		constexpr auto swizzle( ) & {
+			return as_const( *this ).template swizzle<Indices...>( );
+		}
+
+		template<std::size_t... Indices>
+		constexpr auto swizzle( ) const && {
+			return as_const( *this ).template swizzle<Indices...>( );
 		}
 	};
 
@@ -276,30 +489,20 @@ namespace daw::pipelines {
 	/// merge them
 	template<Range... Ranges>
 	[[nodiscard]] constexpr auto ZipMore( Ranges &&...rs ) {
-		return [=]<Range R>( R &&r ) {
-			if constexpr( requires( R ) {
-				              typename iterator_t<R>::i_am_a_daw_zip_iterator_class;
+		return [v = zip_view{ DAW_FWD( rs )... }]<typename R>( R &&r ) {
+			if constexpr( requires {
+				              typename daw::remove_cvref_t<
+				                R>::i_am_a_daw_zip_view_class;
 			              } ) {
-				// zip_view
-				auto tp_first = std::begin( DAW_FWD( r ) ).base( );
-				auto tp_last = std::end( DAW_FWD( r ) ).base( );
-				static_assert( std::tuple_size_v<decltype( tp_first )> ==
-				                 std::tuple_size_v<decltype( tp_last )>,
-				               "There is a bug in zip_view.  The begin( ) and end( ) "
-				               "should have the same size" );
-				return [&]<std::size_t... Is>( std::index_sequence<Is...> ) {
-					return zip_view( rs...,
-					                 range_t{ std::get<Is>( std::move( tp_first ) ),
-					                          std::get<Is>( std::move( tp_last ) ) }... );
-				}( std::make_index_sequence<
-				         std::tuple_size_v<decltype( tp_first )>>{ } );
-			} else if constexpr( daw::is_tuple_like_v<range_value_t<R>> ) {
-				// tuple like.
-				return [&]<std::size_t... Is>( std::index_sequence<Is...> ) {
-					return zip_view( rs..., std::get<Is>( DAW_FWD( r ) )... );
-				}( std::make_index_sequence<std::tuple_size_v<DAW_TYPEOF( r )>>{ } );
+				return v.append_zip_view( DAW_FWD( r ) );
+			} else if constexpr( daw::is_tuple_like_v<R> ) {
+				return std::apply(
+				  [&]( auto &&...next_ranges ) {
+					  return v.append_ranges( DAW_FWD( next_ranges )... );
+				  },
+				  DAW_FWD( r ) );
 			} else {
-				return zip_view( rs..., DAW_FWD( r ) );
+				return v.append_ranges( DAW_FWD( r ) );
 			}
 		};
 	}

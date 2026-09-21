@@ -13,58 +13,95 @@
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
 #include "daw/daw_remove_cvref.h"
-#include "daw/pipelines/range.h"
+#include "daw/pipelines/view.h"
 
 #include <cstddef>
+#include <optional>
 
 namespace daw::pipelines::pimpl {
-	template<ForwardRange R>
-	struct chunk_view : range_base_t<chunk_view<R>> {
-		using iterator = daw::iterator_t<R>;
-		using const_iterator = daw::iterator_t<std::add_const_t<R>>;
-		using iterator_category = daw::range_category_t<R>;
-		using value_type = range_t<iterator>;
-		using reference = range_t<iterator>;
-		using const_reference = range_t<iterator>;
-		using difference_type = std::ptrdiff_t;
-		using i_am_a_daw_chunk_view_iterator_class = void;
+	template<Iterator SentinelFor>
+	struct chunk_iterator_end {
+		using iterator_category =
+		  daw::common_iterator_category_t<std::forward_iterator_tag,
+		                                  daw::iterator_category_t<SentinelFor>>;
+		using difference_type = daw::iter_difference_t<SentinelFor>;
+		using value_type = std::common_type_t<iter_value_t<SentinelFor>>;
+		using reference = std::common_reference_t<iter_reference_t<SentinelFor>>;
+		using pointer = void;
+		using i_am_a_daw_chunk_iterator_end_class = void;
 
-	private:
-		using m_range_t = daw::remove_cvrvref_t<R>;
-		m_range_t m_range{ };
-		iterator m_iter{ };
-		difference_type m_chunk_size = 1;
+		chunk_iterator_end( ) = default;
 
-		[[nodiscard]] constexpr auto ra_end( ) {
-			return std::end( m_range );
+		constexpr bool operator==( chunk_iterator_end const & ) const {
+			return true;
 		}
 
-		[[nodiscard]] constexpr auto ra_end( ) const {
-			return std::end( m_range );
+		[[noreturn]] DAW_ATTRIB_NOINLINE inline value_type operator*( ) const {
+			std::terminate( );
+		}
+
+		[[noreturn]] DAW_ATTRIB_NOINLINE inline chunk_iterator_end &
+		operator++( ) const {
+			std::terminate( );
+		}
+
+		[[noreturn]] DAW_ATTRIB_NOINLINE inline chunk_iterator_end
+		operator++( int ) const {
+			std::terminate( );
+		}
+	};
+
+	template<typename First, typename Last = First>
+	struct chunk_iterator {
+		using iterator = First;
+		using const_iterator = iterator;
+		using iterator_category = std::forward_iterator_tag;
+		using value_type = view_t<iterator>;
+		using reference = value_type;
+		using const_reference = value_type;
+		using difference_type = daw::iter_difference_t<iterator>;
+		using i_am_a_daw_chunk_iterator_class = void;
+
+	private:
+		iterator m_iter{ };
+		DAW_NO_UNIQUE_ADDRESS Last m_last{ };
+		difference_type m_chunk_size = 1;
+		mutable std::optional<iterator> m_next_iter{ };
+
+		[[nodiscard]] constexpr iterator find_next_iter( ) const {
+			auto result = m_iter;
+			auto n = m_chunk_size;
+			while( n > 0 and result != m_last ) {
+				--n;
+				++result;
+			}
+			return result;
 		}
 
 		constexpr void increment( ) {
-			auto const last = ra_end( );
-			auto n = m_chunk_size;
-			while( n > 0 and m_iter != last ) {
-				--n;
-				++m_iter;
+			if( m_next_iter ) {
+				m_iter = std::move( *m_next_iter );
+				m_next_iter.reset( );
+				return;
 			}
+			m_iter = find_next_iter( );
 		}
 
 	public:
-		explicit chunk_view( ) = default;
+		chunk_iterator( ) = default;
 
-		template<Range U>
-		requires( not std::same_as<std::remove_reference_t<U>, chunk_view> ) //
-		  explicit chunk_view( U &&r )
-		  : m_range{ DAW_FWD( r ) }
-		  , m_iter{ std::begin( m_range ) } {}
+		explicit constexpr chunk_iterator( iterator first )
+		  : m_iter{ first }
+		  , m_last{ first }
+		  , m_chunk_size{ 1 } {}
 
-		explicit constexpr chunk_view( Range auto &&r, std::size_t chunk_size )
-		  : m_range{ DAW_FWD( r ) }
-		  , m_iter{ std::begin( m_range ) }
-		  , m_chunk_size{ static_cast<difference_type>( chunk_size ) } {}
+		explicit constexpr chunk_iterator( iterator first, Last last,
+		                                   std::size_t chunk_size )
+		  : m_iter{ first }
+		  , m_last{ last }
+		  , m_chunk_size{ static_cast<difference_type>( chunk_size ) } {
+			daw_ensure( m_chunk_size > 0 );
+		}
 
 		[[nodiscard]] constexpr iterator &base( ) {
 			return m_iter;
@@ -74,52 +111,101 @@ namespace daw::pipelines::pimpl {
 			return m_iter;
 		}
 
-		constexpr chunk_view begin( ) {
-			return *this;
+		[[nodiscard]] constexpr bool good( ) const {
+			return m_iter != m_last;
 		}
 
-		constexpr chunk_view begin( ) const {
-			return *this;
-		}
-
-		constexpr chunk_view end( ) {
-			auto result = *this;
-			result.m_iter = ra_end( );
-			return result;
-		}
-
-		constexpr chunk_view end( ) const {
-			auto result = *this;
-			result.m_iter = ra_end( );
-			return result;
-		}
-
-		constexpr chunk_view &operator++( ) {
+		constexpr chunk_iterator &operator++( ) {
 			increment( );
 			return *this;
 		}
 
-		[[nodiscard]] constexpr chunk_view operator++( int ) {
+		[[nodiscard]] constexpr chunk_iterator operator++( int ) {
 			auto tmp = *this;
 			increment( );
 			return tmp;
 		}
 
-		[[nodiscard]] constexpr reference operator*( ) noexcept {
-			return range_t<iterator>{ m_iter, std::next( m_iter, m_chunk_size ) };
+		[[nodiscard]] constexpr reference operator*( ) {
+			m_next_iter = find_next_iter( );
+			return view_t<iterator>{ m_iter, *m_next_iter };
 		}
 
-		[[nodiscard]] constexpr const_reference operator*( ) const noexcept {
-			return range_t<iterator>{ m_iter, std::next( m_iter, m_chunk_size ) };
+		[[nodiscard]] constexpr const_reference operator*( ) const {
+			m_next_iter = find_next_iter( );
+			return view_t<iterator>{ m_iter, *m_next_iter };
 		}
 
-		[[nodiscard]] constexpr bool
-		operator==( chunk_view const &rhs ) const noexcept {
+		[[nodiscard]] constexpr bool operator==( chunk_iterator const &rhs ) const {
 			return m_iter == rhs.m_iter;
 		}
 
 		[[nodiscard]] constexpr bool
-		operator!=( chunk_view const &rhs ) const noexcept = default;
+		operator==( chunk_iterator_end<First> const & ) const {
+			return not good( );
+		}
+
+		[[nodiscard]] constexpr bool
+		operator==( chunk_iterator_end<Last> const & ) const
+		  requires( not std::same_as<First, Last> ) {
+			return not good( );
+		}
+	};
+
+	template<ForwardRange R>
+	struct chunk_view
+	  : private stored_range_base_t<
+	      R, chunk_iterator<iterator_t<R>, iterator_end_t<R>>,
+	      chunk_iterator_end<iterator_end_t<R>>,
+	      chunk_iterator<const_iterator_t<R>, const_iterator_end_t<R>>,
+	      chunk_iterator_end<const_iterator_end_t<R>>> {
+
+		using base_t = stored_range_base_t<
+		  R, chunk_iterator<iterator_t<R>, iterator_end_t<R>>,
+		  chunk_iterator_end<iterator_end_t<R>>,
+		  chunk_iterator<const_iterator_t<R>, const_iterator_end_t<R>>,
+		  chunk_iterator_end<const_iterator_end_t<R>>>;
+
+		using iterator = typename base_t::iterator_first_t;
+		using const_iterator = typename base_t::const_iterator_first_t;
+		using last_iterator = typename base_t::iterator_last_t;
+		using const_last_iterator = typename base_t::const_iterator_last_t;
+		using iterator_category = range_category_t<R>;
+		using i_am_a_daw_chunk_view_class = void;
+
+	private:
+		std::size_t m_chunk_size = 1;
+
+	public:
+		explicit chunk_view( ) = default;
+
+		explicit chunk_view( R r )
+		  : base_t{ DAW_FWD( r ) } {}
+
+		explicit constexpr chunk_view( R r, std::size_t chunk_size )
+		  : base_t{ DAW_FWD( r ) }
+		  , m_chunk_size{ chunk_size } {
+			daw_ensure( m_chunk_size > 0 );
+		}
+
+		[[nodiscard]] constexpr iterator begin( ) {
+			return iterator{ base_t::rbegin( ), base_t::rend( ), m_chunk_size };
+		}
+
+		[[nodiscard]] constexpr const_iterator begin( ) const {
+			return const_iterator{ base_t::rbegin( ), base_t::rend( ), m_chunk_size };
+		}
+
+		[[nodiscard]] constexpr last_iterator end( ) {
+			return last_iterator{ };
+		}
+
+		[[nodiscard]] constexpr const_last_iterator end( ) const {
+			return const_last_iterator{ };
+		}
+
+		[[nodiscard]] constexpr bool
+		operator==( chunk_view const &rhs ) const = default;
 	};
 	template<Range R>
 	chunk_view( R &&r ) -> chunk_view<daw::remove_rvalue_ref_t<R>>;
