@@ -6,9 +6,9 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include <daw/daw_as.h>
+#include "daw/daw_as.h"
+#include "daw/daw_ensure.h"
 
-#include <cassert>
 #include <string>
 #include <string_view>
 #include <type_traits>
@@ -44,8 +44,8 @@ namespace {
 
 	template<typename To, typename From>
 	struct can_as<To, From,
-	              std::void_t<decltype( daw::as<To>(
-	                std::declval<From>( ) ) )>> : std::true_type {};
+	              std::void_t<decltype( daw::as<To>( std::declval<From>( ) ) )>>
+	  : std::true_type {};
 
 	template<typename To, typename From>
 	inline constexpr bool can_as_v = can_as<To, From>::value;
@@ -70,11 +70,11 @@ namespace {
 int main( ) {
 	auto const text = std::string{ "hello" };
 	auto const view = daw::as<std::string_view>( text );
-	assert( view == "hello" );
-	assert( view.data( ) == text.data( ) );
+	daw_ensure( view == "hello" );
+	daw_ensure( view.data( ) == text.data( ) );
 
 	derived object;
 	derived *derived_ptr = &object;
 	base *base_ptr = daw::as<base *>( derived_ptr );
-	assert( base_ptr == &object );
+	daw_ensure( base_ptr == &object );
 }
