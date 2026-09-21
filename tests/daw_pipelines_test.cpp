@@ -20,6 +20,7 @@
 #include <array>
 #include <forward_list>
 #include <iterator>
+#include <list>
 #include <map>
 #include <memory>
 #include <span>
@@ -1380,6 +1381,13 @@ namespace tests {
 		static_assert( std::ranges::random_access_range<DAW_TYPEOF( p )> );
 	}
 
+	DAW_ATTRIB_NOINLINE void test_sorting_after_to( ) {
+		auto const p = pipeline( To<std::vector>, Sort );
+		auto l = std::list{ 3, 2, 1 };
+		auto v = p( l );
+		static_assert( std::is_same_v<std::vector<int>, DAW_TYPEOF( v )> );
+		daw_ensure( std::is_sorted( std::begin( v ), std::end( v ) ) );
+	}
 } // namespace tests
 
 int main( ) {
@@ -1491,5 +1499,6 @@ int main( ) {
 	tests::test_flatten_skips_trailing_empty_range( );
 	tests::test_flatten_all_ranges_empty( );
 	tests::test_map_random_access_range( );
+	tests::test_sorting_after_to( );
 	daw::println( "Done" );
 }
