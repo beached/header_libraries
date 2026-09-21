@@ -207,6 +207,10 @@ namespace daw {
 		}
 	}
 
+	[[nodiscard]] constexpr auto range_distance( Range auto &r ) {
+		return range_distance( std::begin( r ), std::end( r ) );
+	}
+
 	template<RandomRange R>
 	constexpr auto range_size( R const &r ) {
 		if constexpr( requires { r.size( ); } ) {
