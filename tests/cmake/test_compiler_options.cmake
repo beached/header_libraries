@@ -186,20 +186,25 @@ elseif( ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" )
 	endif()
 	message( STATUS "g++ ${CMAKE_CXX_COMPILER_VERSION} detected" )
 	add_compile_options( --param max-gcse-memory=260000000
-	                     -Wall
-	                     -Wextra
-	                     -pedantic
-	                     -pedantic-errors
-	                     -Wpedantic
-	                     -Wconversion
-	                     -Wduplicated-cond
-	                     -Wlogical-op
-	                     -Wold-style-cast
-	                     -Wshadow
-	                     -Wzero-as-null-pointer-constant
-	                     -Wconversion
-	                     )
+											 -Wall
+											 -Wextra
+											 -pedantic
+											 -pedantic-errors
+											 -Wpedantic
+											 -Wconversion
+											 -Wduplicated-cond
+											 -Wlogical-op
+											 -Wold-style-cast
+											 -Wshadow
+											 -Wzero-as-null-pointer-constant
+											 -Wconversion
+											 )
 	#-Wno-deprecated-declarations
+	if( CMAKE_CXX_COMPILER_VERSION VERSION_LESS 14 )
+		add_compile_options(
+				-Wno-maybe-uninitialized
+				)
+	endif()
 	if( DAW_WERROR )
 		add_compile_options( -Werror -pedantic-errors -ftrapv )
 	endif()
