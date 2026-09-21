@@ -96,7 +96,7 @@ namespace {
 	}
 
 	// The compiler must not be able to fold a check that is wrong into an error
-	// at compile time, so that the rest of the tests can still be run.  daw_ensure
+	// at compile time, so that the rest of the tests can still be run. daw_ensure
 	// on a constant does not fail when the program runs
 	inline volatile int opaque_zero = 0;
 
@@ -160,17 +160,17 @@ namespace {
 			countdown_ensure( *v.begin( ) == T{ 5 } );
 			countdown_ensure( walk( v ) == std::vector<T>{ 5, 4, 3, 2, 1 } );
 			countdown_ensure( countdown_view<T>( T{ 1 } ).begin( ) !=
-			            countdown_view<T>( T{ 1 } ).end( ) );
+			                  countdown_view<T>( T{ 1 } ).end( ) );
 			countdown_ensure( walk( countdown_view<T>( T{ 1 } ) ) ==
-			            std::vector<T>{ 1 } );
+			                  std::vector<T>{ 1 } );
 			countdown_ensure( countdown_view<T>( T{ 0 } ).empty( ) );
 			countdown_ensure( walk( countdown_view<T>( T{ 0 } ) ).empty( ) );
 			countdown_ensure( countdown_view<T>( T{ 5 } ) ==
-			            countdown_view<T>( T{ 5 }, T{ 0 } ) );
+			                  countdown_view<T>( T{ 5 }, T{ 0 } ) );
 		} );
 	}
 
-	// ---- Issue 1: the difference of two iterators had the wrong sign.  Advancing
+	// ---- Issue 1: the difference of two iterators had the wrong sign. Advancing
 	// is the positive direction, so end - begin is the length ----
 
 #if defined( DAW_HAS_INT128 )
@@ -224,36 +224,37 @@ namespace {
 			if constexpr( sizeof( wide_int_t ) > sizeof( T ) ) {
 				// the whole range of T
 				auto const v = countdown_view<T>( hi, lo );
-				auto const len = static_cast<wide_int_t>( hi ) -
-				                 static_cast<wide_int_t>( lo );
+				auto const len =
+				  static_cast<wide_int_t>( hi ) - static_cast<wide_int_t>( lo );
 				countdown_ensure( static_cast<wide_int_t>( v.end( ) - v.begin( ) ) ==
-				            len );
+				                  len );
 				countdown_ensure( static_cast<wide_int_t>( v.begin( ) - v.end( ) ) ==
-				            -len );
+				                  -len );
 			}
 			{
 				// what sizes a range is what fills a container from it
 				auto const v = countdown_view<T>( T{ 5 }, T{ 0 } );
 				countdown_ensure( pipeline( v, To<std::vector> ) ==
-				            std::vector<T>{ 5, 4, 3, 2, 1 } );
+				                  std::vector<T>{ 5, 4, 3, 2, 1 } );
 				countdown_ensure( pipeline( v, Take( 2 ), To<std::vector> ) ==
-				            std::vector<T>{ 5, 4 } );
+				                  std::vector<T>{ 5, 4 } );
 				countdown_ensure( pipeline( v, Every( 2 ), To<std::vector> ) ==
-				            std::vector<T>{ 5, 3, 1 } );
+				                  std::vector<T>{ 5, 3, 1 } );
 			}
 		} );
 	}
 
-	// ---- Issue 4: the asserts in the view's operator[] compared the index to the
-	// values.  The index is 0 <= n < length ----
+	// ---- Issue 4: the asserts in the view's operator[] compared the index to
+	// the values.  The index is 0 <= n < length ----
 
 	template<typename T>
 	void check_subscript( T high, T low ) {
 		auto const v = countdown_view<T>( high, low );
 		auto const expected = reference_countdown<T>( high, low );
 		for( std::size_t n = 0; n < expected.size( ); ++n ) {
-			countdown_ensure( v[static_cast<typename countdown_view<T>::difference_type>(
-			              n )] == expected[n] );
+			countdown_ensure(
+			  v[static_cast<typename countdown_view<T>::difference_type>( n )] ==
+			  expected[n] );
 		}
 	}
 
@@ -273,21 +274,27 @@ namespace {
 		} );
 	}
 
-	// ---- Issue 5: operator<=> on the view returns bool, where it is used it does
-	// not compile.  If the view is ordered the order must be a valid one, and if
-	// it is not ordered there is nothing to check ----
+	// ---- Issue 5: operator<=> on the view returns bool, where it is used it
+	// does not compile.  If the view is ordered the order must be a valid one,
+	// and if it is not ordered there is nothing to check ----
 	template<typename V, typename T>
 	void check_view_ordering( ) {
+		// clang-format off
 		if constexpr( requires( V const &a, V const &b ) { a <=> b; } ) {
+			// clang-format on
 			countdown_ensure( std::three_way_comparable<V> );
 			if constexpr( std::three_way_comparable<V> ) {
 				auto const a = V( T{ 5 }, T{ 0 } );
 				auto const b = V( T{ 5 }, T{ 2 } );
 				auto const c = V( T{ 6 }, T{ 0 } );
+				// clang-format off
 				countdown_ensure( ( a <=> a ) == 0 );
+				// clang-format on
 				// == and <=> must agree, a and b differ only in their low end
+				// clang-format off
 				countdown_ensure( ( a == b ) == ( ( a <=> b ) == 0 ) );
 				countdown_ensure( ( a == c ) == ( ( a <=> c ) == 0 ) );
+				// clang-format on
 				countdown_ensure( not( a < a ) );
 				countdown_ensure( ( a < b ) != ( b < a ) );
 				countdown_ensure( ( a < c ) != ( c < a ) );
@@ -302,8 +309,8 @@ namespace {
 		} );
 	}
 
-	// ---- Issue 6: operator* was m_value - 1, and that overflowed a signed int at
-	// the lowest value of T.  The iterator now holds the element, so there is
+	// ---- Issue 6: operator* was m_value - 1, and that overflowed a signed int
+	// at the lowest value of T.  The iterator now holds the element, so there is
 	// nothing in operator* to overflow.  A constant expression can not overflow,
 	// so this is not constant if it can, without needing a sanitizer ----
 	template<typename T>
@@ -413,11 +420,8 @@ namespace {
 		constexpr auto dmin = daw::min_value<diff_t>;
 		constexpr auto lo = std::numeric_limits<T>::min( );
 		constexpr auto hi = std::numeric_limits<T>::max( );
-		T const values[] = { static_cast<T>( lo + 1 ),
-		                     T{ 0 },
-		                     T{ 1 },
-		                     static_cast<T>( hi - 1 ),
-		                     hi };
+		T const values[] = {
+		  static_cast<T>( lo + 1 ), T{ 0 }, T{ 1 }, static_cast<T>( hi - 1 ), hi };
 		diff_t const steps[] = { dmin,
 		                         static_cast<diff_t>( dmin + 1 ),
 		                         diff_t{ -1 },
@@ -520,7 +524,7 @@ namespace {
 		countdown_ensure( walk( v ) == expected );
 		countdown_ensure( v.empty( ) == expected.empty( ) );
 		countdown_ensure( static_cast<std::size_t>( v.end( ) - v.begin( ) ) ==
-		            expected.size( ) );
+		                  expected.size( ) );
 		countdown_ensure( pipeline( v, To<std::vector> ) == expected );
 	}
 
@@ -542,8 +546,9 @@ namespace {
 		// the pipeline it is the reverse of
 		auto const expected =
 		  pipeline( iota_view<int>{ 4, 11 }, ReverseView, To<std::vector> );
-		countdown_ensure( pipeline( countdown_view<int>{ 10, 3 }, To<std::vector> ) ==
-		            expected );
+		static_assert( std::is_same_v<DAW_TYPEOF( expected ), std::vector<int>> );
+		countdown_ensure(
+		  pipeline( countdown_view<int>{ 10, 3 }, To<std::vector> ) == expected );
 		countdown_ensure( walk( countdown_view<int>{ 10, 3 } ) == expected );
 	}
 
@@ -555,7 +560,7 @@ namespace {
 		}
 		auto const first = pipeline( v, Take( 3 ), To<std::vector> );
 		countdown_ensure( first ==
-		            std::vector<int>{ INT_MAX, INT_MAX - 1, INT_MAX - 2 } );
+		                  std::vector<int>{ INT_MAX, INT_MAX - 1, INT_MAX - 2 } );
 		auto const strided = pipeline( v, Every( 1'000'000'000 ), To<std::vector> );
 		countdown_ensure( strided.size( ) == 5 );
 		countdown_ensure( strided.front( ) == INT_MAX );
@@ -574,11 +579,11 @@ namespace {
 		for_each_int( []( auto id ) {
 			using T = typename decltype( id )::type;
 			countdown_ensure( countdown_view<T>( T{ 5 }, T{ 2 } ) ==
-			            countdown_view<T>( T{ 5 }, T{ 2 } ) );
+			                  countdown_view<T>( T{ 5 }, T{ 2 } ) );
 			countdown_ensure( not( countdown_view<T>( T{ 5 }, T{ 2 } ) ==
-			                 countdown_view<T>( T{ 6 }, T{ 2 } ) ) );
+			                       countdown_view<T>( T{ 6 }, T{ 2 } ) ) );
 			countdown_ensure( not( countdown_view<T>( T{ 5 }, T{ 2 } ) ==
-			                 countdown_view<T>( T{ 5 }, T{ 3 } ) ) );
+			                       countdown_view<T>( T{ 5 }, T{ 3 } ) ) );
 		} );
 	}
 

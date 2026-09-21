@@ -102,9 +102,10 @@ namespace {
 
 	// The length does not fit in std::ptrdiff_t, so it is unbounded
 	void test_iota_view_unbounded_take( ) {
-		auto v =
-		  iota_view<std::size_t>{ 0, std::numeric_limits<std::size_t>::max( ) };
+		auto v = iota_view<std::size_t>{ 0, daw::max_value<std::size_t> };
 		auto const first = pipeline( v, Take( 3 ), To<std::vector> );
+		static_assert(
+		  std::is_same_v<DAW_TYPEOF( first ), std::vector<std::size_t>> );
 		daw_ensure( first == std::vector<std::size_t>{ 0, 1, 2 } );
 	}
 
