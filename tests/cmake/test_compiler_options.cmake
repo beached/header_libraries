@@ -67,6 +67,7 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 14 )
 				add_compile_options(
 						-Wno-c++20-attribute-extensions
+						-Wno-maybe-uninitialized
 						)
 			endif()
 			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 15 )
