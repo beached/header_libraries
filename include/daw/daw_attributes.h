@@ -159,7 +159,7 @@
 #endif
 
 #if DAW_HAS_MSVC_VER_GTE( 1935 ) and DAW_HAS_ATTRIBUTE( msvc::intrinsic )
-#define DAW_ATTRIB_INSTRINSIC [[msvc::intrinsic]]
+#define  [[msvc::intrinsic]]
 #else
-#define DAW_ATTRIB_INSTRINSIC
+#define
 #endif

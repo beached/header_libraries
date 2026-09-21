@@ -13,8 +13,8 @@
 
 namespace daw {
 	template<typename To, typename From>
-	[[nodiscard]] DAW_ATTRIB_INSTRINSIC DAW_ATTRIB_INLINE constexpr auto
-	as( From &&from ) -> decltype( static_cast<To>( DAW_FWD( from ) ) ) {
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto as( From &&from )
+	  -> decltype( static_cast<To>( DAW_FWD( from ) ) ) {
 		return static_cast<To>( DAW_FWD( from ) );
 	}
 } // namespace daw

@@ -198,9 +198,8 @@ namespace daw {
 	using make_unsigned_t = typename make_unsigned<T>::type;
 
 	template<typename T>
-	[[nodiscard]] DAW_ATTRIB_INLINE
-	  DAW_ATTRIB_INSTRINSIC constexpr make_unsigned_t<T>
-	  as_unsigned( T const &value ) {
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr make_unsigned_t<T>
+	as_unsigned( T const &value ) {
 		return static_cast<make_unsigned_t<T>>( value );
 	}
 
@@ -208,9 +207,8 @@ namespace daw {
 	using make_signed_t = typename make_signed<T>::type;
 
 	template<typename T>
-	[[nodiscard]] DAW_ATTRIB_INLINE
-	  DAW_ATTRIB_INSTRINSIC constexpr make_signed_t<T>
-	  as_signed( T const &value ) {
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr make_signed_t<T>
+	as_signed( T const &value ) {
 		return static_cast<make_signed_t<T>>( value );
 	}
 
@@ -250,7 +248,7 @@ namespace daw {
 	using try_make_unsigned_t =
 	  typename arith_traits_impl::try_make_unsigned<T>::type;
 	template<typename T>
-	[[nodiscard]] DAW_ATTRIB_INLINE DAW_ATTRIB_INSTRINSIC constexpr auto
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
 	try_as_unsigned( T const &value ) {
 		return static_cast<try_make_unsigned_t<T>>( value );
 	}
@@ -259,7 +257,7 @@ namespace daw {
 	using try_make_signed_t =
 	  typename arith_traits_impl::try_make_signed<T>::type;
 	template<typename T>
-	[[nodiscard]] DAW_ATTRIB_INLINE DAW_ATTRIB_INSTRINSIC constexpr auto
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
 	try_as_signed( T const &value ) {
 		return static_cast<try_make_signed_t<T>>( value );
 	}
@@ -389,7 +387,7 @@ namespace daw {
 	                     T>;
 
 	template<typename T>
-	[[nodiscard]] DAW_ATTRIB_INLINE DAW_ATTRIB_INSTRINSIC constexpr auto
+	[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
 	as_next_wider( T const &value ) {
 		return static_cast<next_wider_t<T>>( value );
 	}
