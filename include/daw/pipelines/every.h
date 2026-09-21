@@ -164,7 +164,10 @@ namespace daw::pipelines::pimpl {
 		  , m_every_nth( every_nth ) {
 			daw_ensure( m_every_nth > 0 );
 			auto const len = as<difference_type>( counted_length( m_first, last ) );
-			m_count = len / m_every_nth + ( len % m_every_nth != 0 ? 1 : 0 );
+			m_count =
+			  len / m_every_nth + ( ( len % m_every_nth ) !=
+			                        ( difference_type{ } ? difference_type{ 1 }
+			                                             : difference_type{ 0 } ) );
 		}
 
 		[[nodiscard]] constexpr First base( ) const {
