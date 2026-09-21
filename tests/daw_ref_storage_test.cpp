@@ -41,8 +41,8 @@ static_assert(
 static_assert( sizeof( daw::ref_storage<int &> ) == sizeof( int * ) );
 
 static_assert( std::default_initializable<daw::ref_storage<int>> );
-static_assert( not std::default_initializable<daw::ref_storage<int &>> );
-static_assert( daw::constructible<daw::ref_storage<std::string>,
+static_assert( std::default_initializable<daw::ref_storage<int &>> );
+static_assert( std::constructible_from<daw::ref_storage<std::string>,
                                        std::in_place_t, std::size_t, char> );
 
 constexpr bool test_value_storage( ) {
@@ -54,7 +54,9 @@ constexpr bool test_value_storage( ) {
 	auto larger = daw::ref_storage{ 8 };
 	return value == same and value != larger and value == 7 and 7 == value and
 	       const_value.get( ) == 7 and
+					// clang-format off
 	       ( value <=> 8 ) == std::strong_ordering::less;
+					// clang-format on
 }
 
 constexpr bool test_reference_storage( ) {
