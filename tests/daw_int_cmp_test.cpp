@@ -6,7 +6,8 @@
 // Official repository: https://github.com/beached/header_libraries
 //
 
-#include <daw/daw_int_cmp.h>
+#include "daw/daw_as.h"
+#include "daw/daw_int_cmp.h"
 
 #include <cstdint>
 #include <limits>
@@ -18,17 +19,17 @@ namespace {
 	inline constexpr bool can_compare_v = false;
 
 	template<typename T, typename U>
-	inline constexpr bool can_compare_v<
-	  T, U, std::void_t<decltype( daw::cmp_equal( std::declval<T>( ),
-	                                             std::declval<U>( ) ) )>> = true;
+	inline constexpr bool
+	  can_compare_v<T, U,
+	                std::void_t<decltype( daw::cmp_equal(
+	                  std::declval<T>( ), std::declval<U>( ) ) )>> = true;
 
 	template<typename T, typename U>
 	constexpr bool check_equal( T lhs, U rhs ) {
 		return daw::cmp_equal( lhs, rhs ) and daw::cmp_equal( rhs, lhs ) and
 		       not daw::cmp_not_equal( lhs, rhs ) and
 		       not daw::cmp_not_equal( rhs, lhs ) and
-		       not daw::cmp_less( lhs, rhs ) and
-		       not daw::cmp_less( rhs, lhs ) and
+		       not daw::cmp_less( lhs, rhs ) and not daw::cmp_less( rhs, lhs ) and
 		       not daw::cmp_greater( lhs, rhs ) and
 		       not daw::cmp_greater( rhs, lhs ) and
 		       daw::cmp_less_equal( lhs, rhs ) and
@@ -39,13 +40,10 @@ namespace {
 
 	template<typename T, typename U>
 	constexpr bool check_less( T lhs, U rhs ) {
-		return not daw::cmp_equal( lhs, rhs ) and
-		       not daw::cmp_equal( rhs, lhs ) and
-		       daw::cmp_not_equal( lhs, rhs ) and
-		       daw::cmp_not_equal( rhs, lhs ) and daw::cmp_less( lhs, rhs ) and
-		       not daw::cmp_less( rhs, lhs ) and
-		       not daw::cmp_greater( lhs, rhs ) and
-		       daw::cmp_greater( rhs, lhs ) and
+		return not daw::cmp_equal( lhs, rhs ) and not daw::cmp_equal( rhs, lhs ) and
+		       daw::cmp_not_equal( lhs, rhs ) and daw::cmp_not_equal( rhs, lhs ) and
+		       daw::cmp_less( lhs, rhs ) and not daw::cmp_less( rhs, lhs ) and
+		       not daw::cmp_greater( lhs, rhs ) and daw::cmp_greater( rhs, lhs ) and
 		       daw::cmp_less_equal( lhs, rhs ) and
 		       not daw::cmp_less_equal( rhs, lhs ) and
 		       not daw::cmp_greater_equal( lhs, rhs ) and
@@ -76,11 +74,9 @@ namespace {
 	static_assert( check_less( -1, 0U ) );
 	static_assert( check_less( -1LL, std::numeric_limits<unsigned>::max( ) ) );
 	static_assert( check_less( 7U, 8 ) );
-	static_assert(
-	  check_less( std::numeric_limits<int>::max( ),
-	              static_cast<unsigned long long>(
-	                std::numeric_limits<int>::max( ) ) +
-	                1ULL ) );
+	static_assert( check_less(
+	  std::numeric_limits<int>::max( ),
+	  daw::as<unsigned long long>( std::numeric_limits<int>::max( ) ) + 1ULL ) );
 	static_assert(
 	  check_less( std::numeric_limits<long long>::max( ),
 	              std::numeric_limits<unsigned long long>::max( ) ) );
@@ -108,12 +104,12 @@ namespace {
 	using int128 = daw::int128_t;
 	using uint128 = daw::uint128_t;
 
-	inline constexpr uint128 uint128_one = static_cast<uint128>( 1 );
+	inline constexpr uint128 uint128_one = daw::as<uint128>( 1 );
 	inline constexpr uint128 uint128_high = uint128_one << 100U;
-	inline constexpr int128 int128_high = static_cast<int128>( uint128_high );
+	inline constexpr int128 int128_high = daw::as<int128>( uint128_high );
 
 	static_assert( check_equal( int128_high, uint128_high ) );
-	static_assert( check_less( static_cast<int128>( -1 ), uint128{ 0 } ) );
+	static_assert( check_less( daw::as<int128>( -1 ), uint128{ 0 } ) );
 	static_assert( check_less( std::numeric_limits<std::uint64_t>::max( ),
 	                           uint128_high ) );
 	static_assert( check_less( std::numeric_limits<std::int64_t>::max( ),
@@ -125,10 +121,10 @@ namespace {
 	static_assert( daw::in_range<int128>( daw::max_value<int128> ) );
 	static_assert( daw::in_range<uint128>( daw::max_value<uint128> ) );
 	static_assert( not daw::in_range<int128>( daw::max_value<uint128> ) );
-	static_assert( not daw::in_range<uint128>( static_cast<int128>( -1 ) ) );
+	static_assert( not daw::in_range<uint128>( daw::as<int128>( -1 ) ) );
 	static_assert( not daw::in_range<std::uint64_t>( uint128_high ) );
 
-	static_assert( daw::signbit( static_cast<int128>( -1 ) ) );
+	static_assert( daw::signbit( daw::as<int128>( -1 ) ) );
 	static_assert( not daw::signbit( int128{ 0 } ) );
 	static_assert( not daw::signbit( daw::max_value<uint128> ) );
 #endif
