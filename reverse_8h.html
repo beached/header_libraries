@@ -77,6 +77,8 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#concepts">Concepts</a> &#124;
+<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">reverse.h File Reference</div></div>
 </div><!--header-->
@@ -85,14 +87,24 @@ $(function() {
 <code>#include &quot;<a class="el" href="daw__iterator__traits_8h_source.html">daw/daw_iterator_traits.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw/daw_move.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__reverse__iterator_8h_source.html">daw/iterator/daw_reverse_iterator.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="range_8h_source.html">range.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="counted__source_8h_source.html">daw/pipelines/counted_source.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="maybe__owning__range_8h_source.html">daw/pipelines/maybe_owning_range.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="move__next_8h_source.html">daw/pipelines/move_next.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="view_8h_source.html">daw/pipelines/view.h</a>&quot;</code><br />
 <code>#include &lt;utility&gt;</code><br />
 </div>
 <p><a href="reverse_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1reverse__index__iterator.html">daw::pipelines::pimpl::reverse_index_iterator&lt; First &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reverse iterator for a random access source of known length. It holds the start of the source and the index of the current element, so a reverse loop is a counted loop.  <a href="structdaw_1_1pipelines_1_1pimpl_1_1reverse__index__iterator.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_reverse__t.html">daw::pipelines::pimpl::Reverse_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1reverse__view.html">daw::pipelines::reverse_view&lt; R &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_reverse_view__t.html">daw::pipelines::pimpl::ReverseView_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -105,10 +117,23 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw_1_1pipelines_1_1pimpl" id="r_namespacedaw_1_1pipelines_1_1pimpl"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html">daw::pipelines::pimpl</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="concepts" name="concepts"></a>
+Concepts</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptdaw_1_1pipelines_1_1pimpl_1_1reverse__indexable.html">daw::pipelines::pimpl::reverse_indexable</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a00aa03cbf290d80edfed429e8ab17dd7" id="r_a00aa03cbf290d80edfed429e8ab17dd7"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> R &gt; </td></tr>
+<tr class="memitem:a00aa03cbf290d80edfed429e8ab17dd7"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a00aa03cbf290d80edfed429e8ab17dd7">daw::pipelines::reverse_view</a> (R &amp;&amp;) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1reverse__view.html">reverse_view</a>&lt; R &gt;</td></tr>
+<tr class="separator:a00aa03cbf290d80edfed429e8ab17dd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:aca251a1f1ef2a91ced70f5d174347770" id="r_aca251a1f1ef2a91ced70f5d174347770"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#aca251a1f1ef2a91ced70f5d174347770">daw::pipelines::Reverse</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_reverse__t.html">pimpl::Reverse_t</a>{ }</td></tr>
 <tr class="separator:aca251a1f1ef2a91ced70f5d174347770"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f2fc62ed5c676c16532a3240fffd65a" id="r_a7f2fc62ed5c676c16532a3240fffd65a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a7f2fc62ed5c676c16532a3240fffd65a">daw::pipelines::ReverseView</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_reverse_view__t.html">pimpl::ReverseView_t</a>{ }</td></tr>
+<tr class="separator:a7f2fc62ed5c676c16532a3240fffd65a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

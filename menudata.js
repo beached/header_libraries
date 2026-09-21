@@ -217,13 +217,16 @@ var menudata={children:[
 {text:":",url:"functions_rela.html#index_:"},
 {text:"b",url:"functions_rela_b.html#index_b"},
 {text:"c",url:"functions_rela_c.html#index_c"},
+{text:"d",url:"functions_rela_d.html#index_d"},
 {text:"g",url:"functions_rela_g.html#index_g"},
 {text:"m",url:"functions_rela_m.html#index_m"},
 {text:"o",url:"functions_rela_o.html#index_o"},
+{text:"p",url:"functions_rela_p.html#index_p"},
 {text:"s",url:"functions_rela_s.html#index_s"},
 {text:"t",url:"functions_rela_t.html#index_t"},
 {text:"u",url:"functions_rela_u.html#index_u"},
-{text:"v",url:"functions_rela_v.html#index_v"}]}]}]},
+{text:"v",url:"functions_rela_v.html#index_v"},
+{text:"z",url:"functions_rela_z.html#index_z"}]}]}]},
 {text:"Files",url:"files.html",children:[
 {text:"File List",url:"files.html"},
 {text:"File Members",url:"globals.html",children:[

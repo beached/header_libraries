@@ -84,8 +84,12 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="daw__iterator__traits_8h_source.html">daw/daw_iterator_traits.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__ref__storage_8h_source.html">daw/daw_ref_storage.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw/daw_traits.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="range_8h_source.html">range.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="counted__source_8h_source.html">daw/pipelines/counted_source.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__concept__checker_8h_source.html">daw/pipelines/daw_concept_checker.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="view_8h_source.html">daw/pipelines/view.h</a>&quot;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;tuple&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
@@ -98,7 +102,21 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1tuple__pair__t_3_01_ts_8_8_8_01_4.html">daw::pipelines::pimpl::tuple_pair_t&lt; Ts... &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1zip__iterator.html">daw::pipelines::zip_iterator&lt; Iterators &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1zip__counted.html">daw::pipelines::pimpl::zip_counted&lt; Last, Iterators &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">When every zipped range is random access with a known length, the iterator counts the elements left in the shortest range instead of comparing every iterator against the end of its range on each step.  <a href="structdaw_1_1pipelines_1_1pimpl_1_1zip__counted.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1zip__counted_3_01zip__iterator__end_3_01_sentinel_fors_8_8_8_01_4_00_01_iterators_8_8_8_01_4.html">daw::pipelines::pimpl::zip_counted&lt; zip_iterator_end&lt; SentinelFors... &gt;, Iterators... &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1zip__iterator.html">daw::pipelines::pimpl::zip_iterator&lt; ZR, Last, Iterators &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1zip__iterator__end.html">daw::pipelines::pimpl::zip_iterator_end&lt; SentinelFors &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1zip__no__parent.html">daw::pipelines::pimpl::zip_no_parent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The parent is only needed to find the end of each range. A counted iterator knows how many elements are left, so it does not store it.  <a href="structdaw_1_1pipelines_1_1pimpl_1_1zip__no__parent.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1zip__remaining.html">daw::pipelines::pimpl::zip_remaining&lt; bool &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1zip__remaining_3_01true_01_4.html">daw::pipelines::pimpl::zip_remaining&lt; true &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1_zip__t.html">daw::pipelines::Zip_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,9 +141,6 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2f5576e6930fa2290a0bb9806c9955b9" id="r_a2f5576e6930fa2290a0bb9806c9955b9"><td class="memTemplParams" colspan="2">template&lt;Iterator... Iterators&gt; </td></tr>
-<tr class="memitem:a2f5576e6930fa2290a0bb9806c9955b9"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a2f5576e6930fa2290a0bb9806c9955b9">daw::pipelines::zip_iterator</a> (Iterators...) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1zip__iterator.html">zip_iterator</a>&lt; Iterators... &gt;</td></tr>
-<tr class="separator:a2f5576e6930fa2290a0bb9806c9955b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2da09ddedb212d5fbecc4298adf4a4f" id="r_af2da09ddedb212d5fbecc4298adf4a4f"><td class="memTemplParams" colspan="2">template&lt;Range... Ranges&gt; </td></tr>
 <tr class="memitem:af2da09ddedb212d5fbecc4298adf4a4f"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#af2da09ddedb212d5fbecc4298adf4a4f">daw::pipelines::zip_view</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &amp;&amp;...) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1zip__view.html">zip_view</a>&lt; Ranges... &gt;</td></tr>
 <tr class="separator:af2da09ddedb212d5fbecc4298adf4a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>

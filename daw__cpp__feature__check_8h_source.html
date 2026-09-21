@@ -345,6 +345,12 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span><span class="preprocessor">#else</span></div>
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno"><a class="line" href="daw__cpp__feature__check_8h.html#a69838127dcf7bb9638b2ffc6a0869e59">  260</a></span><span class="preprocessor">#define DAW_CPP26_CX_ATOMIC inline</span></div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span><span class="preprocessor">#if defined( __cpp_lib_containers_ranges )</span></div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span><span class="preprocessor">#if __cpp_lib_containers_ranges &gt;= 202202L</span></div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span><span class="preprocessor">#define DAW_HAS_CPP23_FROM_RANGE 1</span></div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aciso646_8h_html"><div class="ttname"><a href="ciso646_8h.html">ciso646.h</a></div></div>
 <div class="ttc" id="adaw__cpp__feature__check_8h_html_a4a920f98bfa6246e269e1d49a08b3ef7"><div class="ttname"><a href="daw__cpp__feature__check_8h.html#a4a920f98bfa6246e269e1d49a08b3ef7">daw_has_cx_cmath</a></div><div class="ttdeci">constexpr bool daw_has_cx_cmath</div><div class="ttdef"><b>Definition</b> <a href="daw__cpp__feature__check_8h_source.html#l00144">daw_cpp_feature_check.h:144</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

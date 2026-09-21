@@ -81,13 +81,17 @@ $(function() {
   <div class="headertitle"><div class="title">take.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="daw__cpp__feature__check_8h_source.html">daw/daw_cpp_feature_check.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="daw__as_8h_source.html">daw/daw_as.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__cpp__feature__check_8h_source.html">daw/daw_cpp_feature_check.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__iterator__traits_8h_source.html">daw/daw_iterator_traits.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__typeof_8h_source.html">daw/daw_typeof.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="filter_8h_source.html">filter.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="range_8h_source.html">range.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="sized__iterator_8h_source.html">sized_iterator.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="skip_8h_source.html">skip.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="counted__source_8h_source.html">daw/pipelines/counted_source.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="filter_8h_source.html">daw/pipelines/filter.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="maybe__owning__range_8h_source.html">daw/pipelines/maybe_owning_range.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="sized__iterator_8h_source.html">daw/pipelines/sized_iterator.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="skip_8h_source.html">daw/pipelines/skip.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="view_8h_source.html">daw/pipelines/view.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__concept__checker_8h_source.html">daw_concept_checker.h</a>&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;iterator&gt;</code><br />
@@ -97,7 +101,14 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_take_until__t_1_1_make_while_fn__t.html">daw::pipelines::pimpl::TakeUntil_t&lt; Fn &gt;::MakeWhileFn_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_take__t.html">daw::pipelines::pimpl::Take_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1take__view.html">daw::pipelines::take_view&lt; R &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the source range and the requested count only. The sized iterators are built in <a class="el" href="structdaw_1_1pipelines_1_1take__view.html#a89866247503ed5f2128704c2d70a46b1">begin( )</a>, so they always refer to this object's current location and the view can be safely copied and moved, like <a class="el" href="structdaw_1_1pipelines_1_1map__view.html">map_view</a> and <a class="el" href="structdaw_1_1pipelines_1_1filter__view.html">filter_view</a>. Caching them at construction would leave their parent pointers dangling after a copy/move.  <a href="structdaw_1_1pipelines_1_1take__view.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1take__while__view.html">daw::pipelines::take_while_view&lt; R, Predicate &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_take_until__t.html">daw::pipelines::pimpl::TakeUntil_t&lt; Fn &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -118,6 +129,9 @@ Namespaces</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:a740e0e115f0ea756920059d85ad67847" id="r_a740e0e115f0ea756920059d85ad67847"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a740e0e115f0ea756920059d85ad67847">daw::pipelines::Take</a> (std::size_t how_many)</td></tr>
 <tr class="separator:a740e0e115f0ea756920059d85ad67847"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09aa6e281a0f50bc64e4cc91f7e22db1" id="r_a09aa6e281a0f50bc64e4cc91f7e22db1"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> R , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a> &gt; </td></tr>
+<tr class="memitem:a09aa6e281a0f50bc64e4cc91f7e22db1"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a09aa6e281a0f50bc64e4cc91f7e22db1">daw::pipelines::take_while_view</a> (R &amp;&amp;, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a>) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1take__while__view.html">take_while_view</a>&lt; R, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a> &gt;</td></tr>
+<tr class="separator:a09aa6e281a0f50bc64e4cc91f7e22db1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3f2b9d8df92bed98c4a6d769907a3d2" id="r_aa3f2b9d8df92bed98c4a6d769907a3d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#aa3f2b9d8df92bed98c4a6d769907a3d2">daw::pipelines::TakeUntil</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> &amp;&amp;fn)</td></tr>
 <tr class="separator:aa3f2b9d8df92bed98c4a6d769907a3d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c1b3a81bed3358d44b132bd1bd0cafd" id="r_a1c1b3a81bed3358d44b132bd1bd0cafd"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Fn</a> &gt; </td></tr>

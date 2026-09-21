@@ -13,5 +13,8 @@ var searchData=
   ['dependent_5ftype_10',['dependent_type',['../structdaw_1_1dependent__type.html',1,'daw']]],
   ['discard_5ft_11',['discard_t',['../structdaw_1_1discard__t.html',1,'daw']]],
   ['do_5fresize_5fand_5foverwrite_5ft_12',['do_resize_and_overwrite_t',['../structdaw_1_1do__resize__and__overwrite__t.html',1,'daw']]],
-  ['dont_5fclip_5fto_5fbounds_5ft_13',['dont_clip_to_bounds_t',['../structdaw_1_1dont__clip__to__bounds__t.html',1,'daw']]]
+  ['dont_5fclip_5fto_5fbounds_5ft_13',['dont_clip_to_bounds_t',['../structdaw_1_1dont__clip__to__bounds__t.html',1,'daw']]],
+  ['drop_5funtil_5ft_14',['drop_until_t',['../structdaw_1_1pipelines_1_1drop__until__t.html',1,'daw::pipelines']]],
+  ['drop_5fview_15',['drop_view',['../structdaw_1_1pipelines_1_1drop__view.html',1,'daw::pipelines']]],
+  ['drop_5fwhile_5ft_16',['drop_while_t',['../structdaw_1_1pipelines_1_1drop__while__t.html',1,'daw::pipelines']]]
 ];

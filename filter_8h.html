@@ -88,8 +88,8 @@ $(function() {
 <code>#include &quot;<a class="el" href="daw__print_8h_source.html">daw/daw_print.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__remove__cvref_8h_source.html">daw/daw_remove_cvref.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__typeof_8h_source.html">daw/daw_typeof.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="range_8h_source.html">daw/pipelines/range.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="range__base_8h_source.html">daw/pipelines/range_base.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="view_8h_source.html">daw/pipelines/view.h</a>&quot;</code><br />
 <code>#include &lt;concepts&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;iterator&gt;</code><br />
@@ -100,9 +100,13 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1filter__iterator.html">daw::pipelines::pimpl::filter_iterator&lt; FI, First &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1filter__iterator__end.html">daw::pipelines::pimpl::filter_iterator_end&lt; SentinelFor &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1filter__t.html">daw::pipelines::pimpl::filter_t&lt; Fn, Projection &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1filter__view.html">daw::pipelines::filter_view&lt; Iterator, Filter, Projection &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1filter__view.html">daw::pipelines::filter_view&lt; R, Fn, Projection &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -127,9 +131,14 @@ Functions</h2></td></tr>
 <tr class="memitem:aa191fb334656eb1e219e98b31786e3b4" id="r_aa191fb334656eb1e219e98b31786e3b4"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a> , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">P</a> &gt; </td></tr>
 <tr class="memitem:aa191fb334656eb1e219e98b31786e3b4"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#aa191fb334656eb1e219e98b31786e3b4">daw::pipelines::pimpl::filter_t</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">P</a>) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1filter__t.html">filter_t</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">P</a> &gt;</td></tr>
 <tr class="separator:aa191fb334656eb1e219e98b31786e3b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30115fdc81190f49a6c0b01b13f24bab" id="r_a30115fdc81190f49a6c0b01b13f24bab"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> I , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a> &gt; </td></tr>
-<tr class="memitem:a30115fdc81190f49a6c0b01b13f24bab"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a30115fdc81190f49a6c0b01b13f24bab">daw::pipelines::filter_view</a> (I, I, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a>) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1filter__view.html">filter_view</a>&lt; I, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a> &gt;</td></tr>
-<tr class="separator:a30115fdc81190f49a6c0b01b13f24bab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a83d0e62f51baa8011bcf95c75d1520" id="r_a1a83d0e62f51baa8011bcf95c75d1520"><td class="memTemplParams" colspan="2">template&lt;Range R, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a> &gt; <br />
+requires ( <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">not</a> Iterator&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a>&gt; )</td></tr>
+<tr class="memitem:a1a83d0e62f51baa8011bcf95c75d1520"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a1a83d0e62f51baa8011bcf95c75d1520">daw::pipelines::filter_view</a> (R &amp;&amp;, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a>) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1filter__view.html">filter_view</a>&lt; R, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a> &gt;</td></tr>
+<tr class="separator:a1a83d0e62f51baa8011bcf95c75d1520"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93ed99b915da133a25bcc7a1bc19456f" id="r_a93ed99b915da133a25bcc7a1bc19456f"><td class="memTemplParams" colspan="2">template&lt;Range R, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a> , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">P</a> &gt; <br />
+requires ( <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">not</a> Iterator&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a>&gt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">and</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">not</a> Iterator&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">P</a>&gt; )</td></tr>
+<tr class="memitem:a93ed99b915da133a25bcc7a1bc19456f"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a93ed99b915da133a25bcc7a1bc19456f">daw::pipelines::filter_view</a> (R &amp;&amp;, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">P</a>) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1filter__view.html">filter_view</a>&lt; <a class="el" href="namespacedaw.html#aaf8538a8a89cb447b98789ba8c4501b9">daw::remove_rvalue_ref_t</a>&lt; R &gt;, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">P</a> &gt;</td></tr>
+<tr class="separator:a93ed99b915da133a25bcc7a1bc19456f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

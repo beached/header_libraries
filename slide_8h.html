@@ -77,22 +77,35 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">slide.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="daw__algorithm_8h_source.html">daw/daw_algorithm.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__as_8h_source.html">daw/daw_as.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__attributes_8h_source.html">daw/daw_attributes.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__iterator__traits_8h_source.html">daw/daw_iterator_traits.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw/daw_move.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__remove__cvref_8h_source.html">daw/daw_remove_cvref.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="range_8h_source.html">range.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="counted__source_8h_source.html">daw/pipelines/counted_source.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="move__next_8h_source.html">daw/pipelines/move_next.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="view_8h_source.html">daw/pipelines/view.h</a>&quot;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;concepts&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 </div>
 <p><a href="slide_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1slide__index__iterator.html">daw::pipelines::pimpl::slide_index_iterator&lt; First, Last &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A random access source with a sized end knows how many windows there are up front, so the iterator only needs the window start, how many windows are left and the window length. There is no per step comparison against the end of the source, which lets the compiler see a counted loop.  <a href="structdaw_1_1pipelines_1_1pimpl_1_1slide__index__iterator.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1slide__iterator.html">daw::pipelines::pimpl::slide_iterator&lt; First, Last &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1slide__iterator__end.html">daw::pipelines::pimpl::slide_iterator_end&lt; SentinelFor &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_slide__t.html">daw::pipelines::pimpl::Slide_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1slide__view.html">daw::pipelines::pimpl::slide_view&lt; R &gt;</a></td></tr>
@@ -107,6 +120,12 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacedaw_1_1pipelines_1_1pimpl" id="r_namespacedaw_1_1pipelines_1_1pimpl"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html">daw::pipelines::pimpl</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a9e4b590eeabb940404ac13be42739ed0" id="r_a9e4b590eeabb940404ac13be42739ed0"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw_1_1pipelines.html#a8d08dce8ebf603a2f60061924844ea40">First</a> , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> Last &gt; </td></tr>
+<tr class="memitem:a9e4b590eeabb940404ac13be42739ed0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a9e4b590eeabb940404ac13be42739ed0">daw::pipelines::pimpl::slide_iterator_for</a> = std::conditional_t&lt; counted_source&lt; <a class="el" href="namespacedaw_1_1pipelines.html#a8d08dce8ebf603a2f60061924844ea40">First</a>, Last &gt;, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1slide__index__iterator.html">slide_index_iterator</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#a8d08dce8ebf603a2f60061924844ea40">First</a>, Last &gt;, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1slide__iterator.html">slide_iterator</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#a8d08dce8ebf603a2f60061924844ea40">First</a>, Last &gt; &gt;</td></tr>
+<tr class="separator:a9e4b590eeabb940404ac13be42739ed0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>

@@ -77,6 +77,8 @@ $(function() {
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="structdaw_1_1pipelines_1_1concat__view-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">daw::pipelines::concat_view&lt; Ranges &gt; Struct Template Reference</div></div>
 </div><!--header-->
@@ -89,33 +91,21 @@ Inheritance diagram for daw::pipelines::concat_view&lt; Ranges &gt;:</div>
  <div class="center">
   <img src="structdaw_1_1pipelines_1_1concat__view.png" usemap="#daw::pipelines::concat_5Fview_3C_20Ranges_20_3E_map" alt=""/>
   <map id="daw::pipelines::concat_5Fview_3C_20Ranges_20_3E_map" name="daw::pipelines::concat_5Fview_3C_20Ranges_20_3E_map">
-<area href="structdaw_1_1pipelines_1_1range__base__t.html" alt="daw::pipelines::range_base_t&lt; concat_view&lt; Ranges... &gt; &gt;" shape="rect" coords="0,0,347,24"/>
+<area href="structdaw_1_1pipelines_1_1pimpl_1_1range__base__t.html" alt="daw::pipelines::pimpl::range_base_t&lt; pimpl::concat_iterator&lt; concat_view&lt; Ranges... &gt;, Ranges... &gt;, pimpl::concat_iterator_end&lt; daw::iterator_end_t&lt; Ranges &gt;... &gt; &gt;" shape="rect" coords="0,0,955,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a5fa89fd17fb028735190574bab5136b6" id="r_a5fa89fd17fb028735190574bab5136b6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#a5fa89fd17fb028735190574bab5136b6">const_reference</a> = std::common_reference_t&lt; <a class="el" href="namespacedaw.html#af9980baddc0589d8e5c47c610e7f821b">range_const_reference_t</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;... &gt;</td></tr>
-<tr class="separator:a5fa89fd17fb028735190574bab5136b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5ad29aa1ba156e81b12f46ca4005fba" id="r_ae5ad29aa1ba156e81b12f46ca4005fba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#ae5ad29aa1ba156e81b12f46ca4005fba">difference_type</a> = std::ptrdiff_t</td></tr>
-<tr class="separator:ae5ad29aa1ba156e81b12f46ca4005fba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc4ed3fb8b263f682e75b99c180672a4" id="r_abc4ed3fb8b263f682e75b99c180672a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#abc4ed3fb8b263f682e75b99c180672a4">i_am_a_daw_concat_view_class</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">void</a></td></tr>
 <tr class="separator:abc4ed3fb8b263f682e75b99c180672a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4537dc96d40dd91d4c346debbedfecc" id="r_ac4537dc96d40dd91d4c346debbedfecc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#ac4537dc96d40dd91d4c346debbedfecc">iterator_category</a> = <a class="el" href="namespacedaw.html#a2ce38869c0642961b0eab71eeba2b1f5">common_iterator_category_t</a>&lt; <a class="el" href="namespacedaw.html#a8142ebdfa33885289f9c7553867fb85e">range_category_t</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;... &gt;</td></tr>
-<tr class="separator:ac4537dc96d40dd91d4c346debbedfecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44c220cd0736b122ed350eee5cdf786d" id="r_a44c220cd0736b122ed350eee5cdf786d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#a44c220cd0736b122ed350eee5cdf786d">reference</a> = std::common_reference_t&lt; <a class="el" href="namespacedaw.html#aff329656998b5e2a6acb3af2e5179a79">range_reference_t</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;... &gt;</td></tr>
-<tr class="separator:a44c220cd0736b122ed350eee5cdf786d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc2cff748bb6273802f4df1b950e4188" id="r_afc2cff748bb6273802f4df1b950e4188"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#afc2cff748bb6273802f4df1b950e4188">types_t</a> = std::tuple&lt; <a class="el" href="namespacedaw.html#ac121f9d4cd4e125708228d7d7d064da4">daw::remove_cvrvref_t</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;... &gt;</td></tr>
-<tr class="separator:afc2cff748bb6273802f4df1b950e4188"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3bcc18d5ef36ce001c5c7c478c011800" id="r_a3bcc18d5ef36ce001c5c7c478c011800"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#a3bcc18d5ef36ce001c5c7c478c011800">value_type</a> = std::common_type_t&lt; <a class="el" href="namespacedaw.html#a83a8522c74543a77742940eb9d4c864a">range_value_t</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;... &gt;</td></tr>
-<tr class="separator:a3bcc18d5ef36ce001c5c7c478c011800"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_types_structdaw_1_1pipelines_1_1range__base__t"><td colspan="2" onclick="javascript:toggleInherit('pub_types_structdaw_1_1pipelines_1_1range__base__t')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="structdaw_1_1pipelines_1_1range__base__t.html">daw::pipelines::range_base_t&lt; concat_view&lt; Ranges... &gt; &gt;</a></td></tr>
-<tr class="memitem:a8d64f79e3def459f1ca0228d4ebb085e inherit pub_types_structdaw_1_1pipelines_1_1range__base__t" id="r_a8d64f79e3def459f1ca0228d4ebb085e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1range__base__t.html#a8d64f79e3def459f1ca0228d4ebb085e">i_am_a_daw_pipelines_range_base_t</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">void</a></td></tr>
-<tr class="separator:a8d64f79e3def459f1ca0228d4ebb085e inherit pub_types_structdaw_1_1pipelines_1_1range__base__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae38082167d8615e752f262db8c7c7afa inherit pub_types_structdaw_1_1pipelines_1_1range__base__t" id="r_ae38082167d8615e752f262db8c7c7afa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1range__base__t.html#ae38082167d8615e752f262db8c7c7afa">iterator_first_t</a> = <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a>&lt; Ranges... &gt;</td></tr>
-<tr class="separator:ae38082167d8615e752f262db8c7c7afa inherit pub_types_structdaw_1_1pipelines_1_1range__base__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05f5941cc936311f8144ee3ea01eb64a inherit pub_types_structdaw_1_1pipelines_1_1range__base__t" id="r_a05f5941cc936311f8144ee3ea01eb64a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1range__base__t.html#a05f5941cc936311f8144ee3ea01eb64a">iterator_last_t</a> = <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a>&lt; Ranges... &gt;</td></tr>
-<tr class="separator:a05f5941cc936311f8144ee3ea01eb64a inherit pub_types_structdaw_1_1pipelines_1_1range__base__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_structdaw_1_1pipelines_1_1pimpl_1_1range__base__t"><td colspan="2" onclick="javascript:toggleInherit('pub_types_structdaw_1_1pipelines_1_1pimpl_1_1range__base__t')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1range__base__t.html">daw::pipelines::pimpl::range_base_t&lt; pimpl::concat_iterator&lt; concat_view&lt; Ranges... &gt;, Ranges... &gt;, pimpl::concat_iterator_end&lt; daw::iterator_end_t&lt; Ranges &gt;... &gt; &gt;</a></td></tr>
+<tr class="memitem:a61e9de976f91067b4c8299ce4bc9b690 inherit pub_types_structdaw_1_1pipelines_1_1pimpl_1_1range__base__t" id="r_a61e9de976f91067b4c8299ce4bc9b690"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1range__base__t.html#a61e9de976f91067b4c8299ce4bc9b690">i_am_a_daw_pipelines_range_base_t</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">void</a></td></tr>
+<tr class="separator:a61e9de976f91067b4c8299ce4bc9b690 inherit pub_types_structdaw_1_1pipelines_1_1pimpl_1_1range__base__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6e97d94a27fe98be903d7fe509781bc inherit pub_types_structdaw_1_1pipelines_1_1pimpl_1_1range__base__t" id="r_ac6e97d94a27fe98be903d7fe509781bc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1range__base__t.html#ac6e97d94a27fe98be903d7fe509781bc">iterator_first_t</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1concat__iterator.html">pimpl::concat_iterator</a>&lt; <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a>&lt; Ranges... &gt;, Ranges... &gt;</td></tr>
+<tr class="separator:ac6e97d94a27fe98be903d7fe509781bc inherit pub_types_structdaw_1_1pipelines_1_1pimpl_1_1range__base__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb6cde0058f5855be11f09e73216f616 inherit pub_types_structdaw_1_1pipelines_1_1pimpl_1_1range__base__t" id="r_aeb6cde0058f5855be11f09e73216f616"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1range__base__t.html#aeb6cde0058f5855be11f09e73216f616">iterator_last_t</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1concat__iterator__end.html">pimpl::concat_iterator_end</a>&lt; <a class="el" href="namespacedaw.html#aa3fd4737ea8d8c63396eb4fbdd5b041d">daw::iterator_end_t</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;... &gt;</td></tr>
+<tr class="separator:aeb6cde0058f5855be11f09e73216f616 inherit pub_types_structdaw_1_1pipelines_1_1pimpl_1_1range__base__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -123,67 +113,35 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab929d85e9a112469a92ef91268254d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77a864073a803e8670a4f627103c3d69" id="r_a77a864073a803e8670a4f627103c3d69"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#a77a864073a803e8670a4f627103c3d69">concat_view</a> (Ranges... <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">ranges</a>)</td></tr>
 <tr class="separator:a77a864073a803e8670a4f627103c3d69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4affd83f82b7492e87479835e09bf81a" id="r_a4affd83f82b7492e87479835e09bf81a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#a4affd83f82b7492e87479835e09bf81a">begin</a> () <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a></td></tr>
-<tr class="separator:a4affd83f82b7492e87479835e09bf81a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb182c2a8f6b5a63851c13d38c1d2785" id="r_afb182c2a8f6b5a63851c13d38c1d2785"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#afb182c2a8f6b5a63851c13d38c1d2785">end</a> () <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a></td></tr>
-<tr class="separator:afb182c2a8f6b5a63851c13d38c1d2785"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a588de9a180c193eb8a915583b526c6d9" id="r_a588de9a180c193eb8a915583b526c6d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#a588de9a180c193eb8a915583b526c6d9">operator!=</a> (<a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> &amp;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">rhs</a>) <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> noexcept</td></tr>
-<tr class="separator:a588de9a180c193eb8a915583b526c6d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e0fec36d0d81b6a7ec699d6b4de369e" id="r_a1e0fec36d0d81b6a7ec699d6b4de369e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#a5fa89fd17fb028735190574bab5136b6">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#a1e0fec36d0d81b6a7ec699d6b4de369e">operator*</a> () <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> noexcept</td></tr>
-<tr class="separator:a1e0fec36d0d81b6a7ec699d6b4de369e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4684f8fd92b4045ecaf90af6643ad100" id="r_a4684f8fd92b4045ecaf90af6643ad100"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#a44c220cd0736b122ed350eee5cdf786d">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#a4684f8fd92b4045ecaf90af6643ad100">operator*</a> () noexcept</td></tr>
-<tr class="separator:a4684f8fd92b4045ecaf90af6643ad100"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3b165428c2cbb18d1c31546b6b409de" id="r_ae3b165428c2cbb18d1c31546b6b409de"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#ae3b165428c2cbb18d1c31546b6b409de">operator++</a> ()</td></tr>
-<tr class="separator:ae3b165428c2cbb18d1c31546b6b409de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a112b673893da7307c1a48ea275c3f4d5" id="r_a112b673893da7307c1a48ea275c3f4d5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#a112b673893da7307c1a48ea275c3f4d5">operator++</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">int</a>)</td></tr>
-<tr class="separator:a112b673893da7307c1a48ea275c3f4d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94ca77e727ef37d0cce0ae261a0874d7" id="r_a94ca77e727ef37d0cce0ae261a0874d7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#a94ca77e727ef37d0cce0ae261a0874d7">operator==</a> (<a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> &amp;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">rhs</a>) <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> noexcept</td></tr>
-<tr class="separator:a94ca77e727ef37d0cce0ae261a0874d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structdaw_1_1pipelines_1_1range__base__t"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structdaw_1_1pipelines_1_1range__base__t')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structdaw_1_1pipelines_1_1range__base__t.html">daw::pipelines::range_base_t&lt; concat_view&lt; Ranges... &gt; &gt;</a></td></tr>
-<tr class="memitem:af9e9b690bbca0e89a5aca7f56627b1fd inherit pub_methods_structdaw_1_1pipelines_1_1range__base__t" id="r_af9e9b690bbca0e89a5aca7f56627b1fd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1range__base__t.html#af9e9b690bbca0e89a5aca7f56627b1fd">range_base_t</a> ()=<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">default</a></td></tr>
-<tr class="separator:af9e9b690bbca0e89a5aca7f56627b1fd inherit pub_methods_structdaw_1_1pipelines_1_1range__base__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab347c688947922c237f1dd46f103ab5e" id="r_ab347c688947922c237f1dd46f103ab5e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1concat__iterator.html">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#ab347c688947922c237f1dd46f103ab5e">begin</a> () <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> noexcept</td></tr>
+<tr class="separator:ab347c688947922c237f1dd46f103ab5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3902736b84ee7582fa1ab3ec8428dba" id="r_af3902736b84ee7582fa1ab3ec8428dba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1concat__iterator.html">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#af3902736b84ee7582fa1ab3ec8428dba">begin</a> () noexcept</td></tr>
+<tr class="separator:af3902736b84ee7582fa1ab3ec8428dba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ea276d4b2c0f2854f52061a2147c9d9" id="r_a5ea276d4b2c0f2854f52061a2147c9d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1concat__iterator__end.html">last_const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#a5ea276d4b2c0f2854f52061a2147c9d9">end</a> () <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> noexcept</td></tr>
+<tr class="separator:a5ea276d4b2c0f2854f52061a2147c9d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b7e946a2b05407cda9ee5834257eae5" id="r_a8b7e946a2b05407cda9ee5834257eae5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1concat__iterator__end.html">last_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#a8b7e946a2b05407cda9ee5834257eae5">end</a> () noexcept</td></tr>
+<tr class="separator:a8b7e946a2b05407cda9ee5834257eae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fd692faa8b67d5b9cedd57be7a90c71" id="r_a8fd692faa8b67d5b9cedd57be7a90c71"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#a8fd692faa8b67d5b9cedd57be7a90c71">operator==</a> (<a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> &amp;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">rhs</a>) <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a></td></tr>
+<tr class="separator:a8fd692faa8b67d5b9cedd57be7a90c71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_structdaw_1_1pipelines_1_1pimpl_1_1range__base__t"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structdaw_1_1pipelines_1_1pimpl_1_1range__base__t')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1range__base__t.html">daw::pipelines::pimpl::range_base_t&lt; pimpl::concat_iterator&lt; concat_view&lt; Ranges... &gt;, Ranges... &gt;, pimpl::concat_iterator_end&lt; daw::iterator_end_t&lt; Ranges &gt;... &gt; &gt;</a></td></tr>
+<tr class="memitem:a4bb6450a8a70ae242560eab8b55e20a7 inherit pub_methods_structdaw_1_1pipelines_1_1pimpl_1_1range__base__t" id="r_a4bb6450a8a70ae242560eab8b55e20a7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1range__base__t.html#a4bb6450a8a70ae242560eab8b55e20a7">range_base_t</a> ()=<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">default</a></td></tr>
+<tr class="separator:a4bb6450a8a70ae242560eab8b55e20a7 inherit pub_methods_structdaw_1_1pipelines_1_1pimpl_1_1range__base__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:ae568b336ec8c5369b67d380ecc0953b2" id="r_ae568b336ec8c5369b67d380ecc0953b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">static</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#ae568b336ec8c5369b67d380ecc0953b2">range_size</a> = sizeof...( <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> )</td></tr>
+<tr class="separator:ae568b336ec8c5369b67d380ecc0953b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a617c6001cddcf8f69458e2e848d282bf" id="r_a617c6001cddcf8f69458e2e848d282bf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">struct</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#a617c6001cddcf8f69458e2e848d282bf">daw::pipelines::pimpl::Concat_t</a></td></tr>
+<tr class="separator:a617c6001cddcf8f69458e2e848d282bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;ForwardRange... Ranges&gt;<br />
 struct daw::pipelines::concat_view&lt; Ranges &gt;</div>
-<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00027">27</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00184">184</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a5fa89fd17fb028735190574bab5136b6" name="a5fa89fd17fb028735190574bab5136b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5fa89fd17fb028735190574bab5136b6">&#9670;&#160;</a></span>const_reference</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ForwardRange... Ranges&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">daw::pipelines::concat_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;::const_reference =  std::common_reference_t&lt;<a class="el" href="namespacedaw.html#af9980baddc0589d8e5c47c610e7f821b">range_const_reference_t</a>&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a>&gt;...&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00035">35</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
-
-</div>
-</div>
-<a id="ae5ad29aa1ba156e81b12f46ca4005fba" name="ae5ad29aa1ba156e81b12f46ca4005fba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5ad29aa1ba156e81b12f46ca4005fba">&#9670;&#160;</a></span>difference_type</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ForwardRange... Ranges&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">daw::pipelines::concat_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;::difference_type =  std::ptrdiff_t</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00037">37</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
-
-</div>
-</div>
 <a id="abc4ed3fb8b263f682e75b99c180672a4" name="abc4ed3fb8b263f682e75b99c180672a4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abc4ed3fb8b263f682e75b99c180672a4">&#9670;&#160;</a></span>i_am_a_daw_concat_view_class</h2>
 
@@ -198,79 +156,7 @@ template&lt;ForwardRange... Ranges&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00038">38</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
-
-</div>
-</div>
-<a id="ac4537dc96d40dd91d4c346debbedfecc" name="ac4537dc96d40dd91d4c346debbedfecc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac4537dc96d40dd91d4c346debbedfecc">&#9670;&#160;</a></span>iterator_category</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ForwardRange... Ranges&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">daw::pipelines::concat_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;::iterator_category =  <a class="el" href="namespacedaw.html#a2ce38869c0642961b0eab71eeba2b1f5">common_iterator_category_t</a>&lt;<a class="el" href="namespacedaw.html#a8142ebdfa33885289f9c7553867fb85e">range_category_t</a>&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a>&gt;...&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00030">30</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
-
-</div>
-</div>
-<a id="a44c220cd0736b122ed350eee5cdf786d" name="a44c220cd0736b122ed350eee5cdf786d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a44c220cd0736b122ed350eee5cdf786d">&#9670;&#160;</a></span>reference</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ForwardRange... Ranges&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">daw::pipelines::concat_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;::reference =  std::common_reference_t&lt;<a class="el" href="namespacedaw.html#aff329656998b5e2a6acb3af2e5179a79">range_reference_t</a>&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a>&gt;...&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00034">34</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
-
-</div>
-</div>
-<a id="afc2cff748bb6273802f4df1b950e4188" name="afc2cff748bb6273802f4df1b950e4188"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc2cff748bb6273802f4df1b950e4188">&#9670;&#160;</a></span>types_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ForwardRange... Ranges&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">daw::pipelines::concat_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;::types_t =  std::tuple&lt;<a class="el" href="namespacedaw.html#ac121f9d4cd4e125708228d7d7d064da4">daw::remove_cvrvref_t</a>&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a>&gt;...&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00032">32</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
-
-</div>
-</div>
-<a id="a3bcc18d5ef36ce001c5c7c478c011800" name="a3bcc18d5ef36ce001c5c7c478c011800"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3bcc18d5ef36ce001c5c7c478c011800">&#9670;&#160;</a></span>value_type</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ForwardRange... Ranges&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">daw::pipelines::concat_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;::value_type =  std::common_type_t&lt;<a class="el" href="namespacedaw.html#a83a8522c74543a77742940eb9d4c864a">range_value_t</a>&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a>&gt;...&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00033">33</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00193">193</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
 
 </div>
 </div>
@@ -328,13 +214,13 @@ template&lt;ForwardRange... Ranges&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00060">60</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00234">234</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4affd83f82b7492e87479835e09bf81a" name="a4affd83f82b7492e87479835e09bf81a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4affd83f82b7492e87479835e09bf81a">&#9670;&#160;</a></span>begin()</h2>
+<a id="ab347c688947922c237f1dd46f103ab5e" name="ab347c688947922c237f1dd46f103ab5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab347c688947922c237f1dd46f103ab5e">&#9670;&#160;</a></span>begin() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -345,95 +231,7 @@ template&lt;ForwardRange... Ranges&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">daw::pipelines::concat_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;::begin </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00065">65</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
-
-</div>
-</div>
-<a id="afb182c2a8f6b5a63851c13d38c1d2785" name="afb182c2a8f6b5a63851c13d38c1d2785"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb182c2a8f6b5a63851c13d38c1d2785">&#9670;&#160;</a></span>end()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ForwardRange... Ranges&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">daw::pipelines::concat_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;::end </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00069">69</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
-
-</div>
-</div>
-<a id="a588de9a180c193eb8a915583b526c6d9" name="a588de9a180c193eb8a915583b526c6d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a588de9a180c193eb8a915583b526c6d9">&#9670;&#160;</a></span>operator!=()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ForwardRange... Ranges&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">daw::pipelines::concat_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;<a class="el" href="namespacedaw.html#a4b5346b91ffce4d929d08bf93694afec">::operator!</a>= </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> &amp;&#160;</td>
-          <td class="paramname"><em>rhs</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00114">114</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
-
-</div>
-</div>
-<a id="a1e0fec36d0d81b6a7ec699d6b4de369e" name="a1e0fec36d0d81b6a7ec699d6b4de369e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e0fec36d0d81b6a7ec699d6b4de369e">&#9670;&#160;</a></span>operator*() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ForwardRange... Ranges&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#a5fa89fd17fb028735190574bab5136b6">const_reference</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">daw::pipelines::concat_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">::operator</a>* </td>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1concat__iterator.html">const_iterator</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">daw::pipelines::concat_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;::begin </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -446,12 +244,12 @@ template&lt;ForwardRange... Ranges&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00102">102</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00241">241</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
 
 </div>
 </div>
-<a id="a4684f8fd92b4045ecaf90af6643ad100" name="a4684f8fd92b4045ecaf90af6643ad100"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4684f8fd92b4045ecaf90af6643ad100">&#9670;&#160;</a></span>operator*() <span class="overload">[2/2]</span></h2>
+<a id="af3902736b84ee7582fa1ab3ec8428dba" name="af3902736b84ee7582fa1ab3ec8428dba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3902736b84ee7582fa1ab3ec8428dba">&#9670;&#160;</a></span>begin() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -462,7 +260,7 @@ template&lt;ForwardRange... Ranges&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html#a44c220cd0736b122ed350eee5cdf786d">reference</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">daw::pipelines::concat_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">::operator</a>* </td>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1concat__iterator.html">iterator</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">daw::pipelines::concat_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;::begin </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -475,12 +273,12 @@ template&lt;ForwardRange... Ranges&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00096">96</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00238">238</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
 
 </div>
 </div>
-<a id="ae3b165428c2cbb18d1c31546b6b409de" name="ae3b165428c2cbb18d1c31546b6b409de"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae3b165428c2cbb18d1c31546b6b409de">&#9670;&#160;</a></span>operator++() <span class="overload">[1/2]</span></h2>
+<a id="a5ea276d4b2c0f2854f52061a2147c9d9" name="a5ea276d4b2c0f2854f52061a2147c9d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ea276d4b2c0f2854f52061a2147c9d9">&#9670;&#160;</a></span>end() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -491,25 +289,25 @@ template&lt;ForwardRange... Ranges&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a> &amp; <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">daw::pipelines::concat_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">::operator</a>++ </td>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1concat__iterator__end.html">last_const_iterator</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">daw::pipelines::concat_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;::end </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00080">80</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00249">249</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
 
 </div>
 </div>
-<a id="a112b673893da7307c1a48ea275c3f4d5" name="a112b673893da7307c1a48ea275c3f4d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a112b673893da7307c1a48ea275c3f4d5">&#9670;&#160;</a></span>operator++() <span class="overload">[2/2]</span></h2>
+<a id="a8b7e946a2b05407cda9ee5834257eae5" name="a8b7e946a2b05407cda9ee5834257eae5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b7e946a2b05407cda9ee5834257eae5">&#9670;&#160;</a></span>end() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -520,26 +318,25 @@ template&lt;ForwardRange... Ranges&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">daw::pipelines::concat_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">::operator</a>++ </td>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1concat__iterator__end.html">last_iterator</a> <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">daw::pipelines::concat_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;::end </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">int</a>&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00090">90</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00245">245</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
 
 </div>
 </div>
-<a id="a94ca77e727ef37d0cce0ae261a0874d7" name="a94ca77e727ef37d0cce0ae261a0874d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a94ca77e727ef37d0cce0ae261a0874d7">&#9670;&#160;</a></span>operator==()</h2>
+<a id="a8fd692faa8b67d5b9cedd57be7a90c71" name="a8fd692faa8b67d5b9cedd57be7a90c71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fd692faa8b67d5b9cedd57be7a90c71">&#9670;&#160;</a></span>operator==()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -559,12 +356,66 @@ template&lt;ForwardRange... Ranges&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00109">109</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00253">253</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Symbol Documentation</h2>
+<a id="a617c6001cddcf8f69458e2e848d282bf" name="a617c6001cddcf8f69458e2e848d282bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a617c6001cddcf8f69458e2e848d282bf">&#9670;&#160;</a></span>daw::pipelines::pimpl::Concat_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;ForwardRange... Ranges&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">friend</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">struct</a> <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_concat__t.html">daw::pipelines::pimpl::Concat_t</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00192">192</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="ae568b336ec8c5369b67d380ecc0953b2" name="ae568b336ec8c5369b67d380ecc0953b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae568b336ec8c5369b67d380ecc0953b2">&#9670;&#160;</a></span>range_size</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;ForwardRange... Ranges&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> std::size_t <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">daw::pipelines::concat_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;::range_size = sizeof...( <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> )</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00188">188</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
 
 </div>
 </div>

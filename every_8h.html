@@ -77,19 +77,33 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">every.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="filter_8h_source.html">daw/pipelines/filter.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="range_8h_source.html">daw/pipelines/range.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="daw__algorithm_8h_source.html">daw/daw_algorithm.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__as_8h_source.html">daw/daw_as.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__mutable__capture_8h_source.html">daw/daw_mutable_capture.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="counted__source_8h_source.html">daw/pipelines/counted_source.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="move__next_8h_source.html">daw/pipelines/move_next.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="view_8h_source.html">daw/pipelines/view.h</a>&quot;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 </div>
 <p><a href="every_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1every__index__iterator.html">daw::pipelines::pimpl::every_index_iterator&lt; First, Last &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Over a random access source of known length the selected elements are counted, so there is no comparison against the end of the source on each step.  <a href="structdaw_1_1pipelines_1_1pimpl_1_1every__index__iterator.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1every__iterator.html">daw::pipelines::pimpl::every_iterator&lt; First, Last &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1every__iterator__end.html">daw::pipelines::pimpl::every_iterator_end&lt; SentinelFor &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_every__t.html">daw::pipelines::pimpl::Every_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1every__view.html">daw::pipelines::every_view&lt; R &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -102,11 +116,20 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacedaw_1_1pipelines_1_1pimpl" id="r_namespacedaw_1_1pipelines_1_1pimpl"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html">daw::pipelines::pimpl</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a7551fd573668d647a4a2dccc43e8f988" id="r_a7551fd573668d647a4a2dccc43e8f988"><td class="memTemplParams" colspan="2">template&lt;Iterator First, Iterator Last&gt; </td></tr>
+<tr class="memitem:a7551fd573668d647a4a2dccc43e8f988"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a7551fd573668d647a4a2dccc43e8f988">daw::pipelines::pimpl::every_iterator_for</a> = std::conditional_t&lt; counted_source&lt; <a class="el" href="namespacedaw_1_1pipelines.html#a8d08dce8ebf603a2f60061924844ea40">First</a>, Last &gt;, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1every__index__iterator.html">every_index_iterator</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#a8d08dce8ebf603a2f60061924844ea40">First</a>, Last &gt;, <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1every__iterator.html">every_iterator</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#a8d08dce8ebf603a2f60061924844ea40">First</a>, Last &gt; &gt;</td></tr>
+<tr class="separator:a7551fd573668d647a4a2dccc43e8f988"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a39643257be0c370b2a63fc0ad4eed920" id="r_a39643257be0c370b2a63fc0ad4eed920"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a39643257be0c370b2a63fc0ad4eed920">daw::pipelines::Every</a> (std::size_t <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">select_every</a>)</td></tr>
-<tr class="memdesc:a39643257be0c370b2a63fc0ad4eed920"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a Range, output every Nth element.  <br /></td></tr>
-<tr class="separator:a39643257be0c370b2a63fc0ad4eed920"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1566797f5ddcb5c88c85d615c0dc5c0a" id="r_a1566797f5ddcb5c88c85d615c0dc5c0a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a1566797f5ddcb5c88c85d615c0dc5c0a">daw::pipelines::Every</a> (std::ptrdiff_t <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">every_nth</a>)</td></tr>
+<tr class="memdesc:a1566797f5ddcb5c88c85d615c0dc5c0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a Range, output every Nth element.  <br /></td></tr>
+<tr class="separator:a1566797f5ddcb5c88c85d615c0dc5c0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9997bbc95849bbb92f2d648b41667dd" id="r_aa9997bbc95849bbb92f2d648b41667dd"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> R &gt; </td></tr>
+<tr class="memitem:aa9997bbc95849bbb92f2d648b41667dd"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#aa9997bbc95849bbb92f2d648b41667dd">daw::pipelines::every_view</a> (R &amp;&amp;) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1every__view.html">every_view</a>&lt; R &gt;</td></tr>
+<tr class="separator:aa9997bbc95849bbb92f2d648b41667dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

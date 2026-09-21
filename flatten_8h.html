@@ -89,7 +89,7 @@ $(function() {
 <code>#include &quot;<a class="el" href="daw__remove__cvref_8h_source.html">daw/daw_remove_cvref.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw/daw_traits.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="pipeline__traits_8h_source.html">daw/pipelines/pipeline_traits.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="range_8h_source.html">daw/pipelines/range.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="view_8h_source.html">daw/pipelines/view.h</a>&quot;</code><br />
 <code>#include &lt;cassert&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;iterator&gt;</code><br />
@@ -98,11 +98,13 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1flatten__iterator.html">daw::pipelines::pimpl::flatten_iterator&lt; First, Last &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1flatten__iterator__end.html">daw::pipelines::pimpl::flatten_iterator_end&lt; SentinelFor &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_flatten__t.html">daw::pipelines::pimpl::Flatten_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1flatten__view.html">daw::pipelines::pimpl::flatten_view&lt; R &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1flatten__view__end__t.html">daw::pipelines::pimpl::flatten_view_end_t&lt; R &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1flatten__view.html">daw::pipelines::flatten_view&lt; R &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -117,9 +119,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aee1cb1dfe7fb594ee5c0f41fab7916fc" id="r_aee1cb1dfe7fb594ee5c0f41fab7916fc"><td class="memTemplParams" colspan="2">template&lt;Range R&gt; </td></tr>
-<tr class="memitem:aee1cb1dfe7fb594ee5c0f41fab7916fc"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#aee1cb1dfe7fb594ee5c0f41fab7916fc">daw::pipelines::pimpl::flatten_view</a> (R &amp;&amp;) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1flatten__view.html">flatten_view</a>&lt; <a class="el" href="namespacedaw.html#aaf8538a8a89cb447b98789ba8c4501b9">daw::remove_rvalue_ref_t</a>&lt; R &gt; &gt;</td></tr>
-<tr class="separator:aee1cb1dfe7fb594ee5c0f41fab7916fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6698b835b8b86ba691877ebc6bf9bc27" id="r_a6698b835b8b86ba691877ebc6bf9bc27"><td class="memTemplParams" colspan="2">template&lt;Range R&gt; </td></tr>
+<tr class="memitem:a6698b835b8b86ba691877ebc6bf9bc27"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a6698b835b8b86ba691877ebc6bf9bc27">daw::pipelines::flatten_view</a> (R &amp;&amp;) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1flatten__view.html">flatten_view</a>&lt; <a class="el" href="namespacedaw.html#aaf8538a8a89cb447b98789ba8c4501b9">daw::remove_rvalue_ref_t</a>&lt; R &gt; &gt;</td></tr>
+<tr class="separator:a6698b835b8b86ba691877ebc6bf9bc27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>

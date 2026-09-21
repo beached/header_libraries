@@ -83,12 +83,17 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="cpp__17_8h_source.html">daw/cpp_17.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__as_8h_source.html">daw/daw_as.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__concepts_8h_source.html">daw/daw_concepts.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__forward__like_8h_source.html">daw/daw_forward_like.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__iterator__traits_8h_source.html">daw/daw_iterator_traits.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__move_8h_source.html">daw/daw_move.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw/daw_traits.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__visit_8h_source.html">daw/daw_visit.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__checked__iterator__proxy_8h_source.html">daw/iterator/daw_checked_iterator_proxy.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__concept__checker_8h_source.html">daw/pipelines/daw_concept_checker.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="pipeline__traits_8h_source.html">daw/pipelines/pipeline_traits.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="range_8h_source.html">daw/pipelines/range.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="view_8h_source.html">daw/pipelines/view.h</a>&quot;</code><br />
 <code>#include &lt;array&gt;</code><br />
 <code>#include &lt;tuple&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
@@ -99,6 +104,11 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1concat__iterator.html">daw::pipelines::pimpl::concat_iterator&lt; CV, Ranges &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterates the ranges passed to <code><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a></code> in sequence. Holds a pointer back to the view, which owns the storage for every range; the iterator only tracks its own current position within that storage so that copies (e.g. via <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1concat__iterator.html#a98c8f1815eb40344c3cea8fd4434f350">operator++( int )</a>) advance independently.  <a href="structdaw_1_1pipelines_1_1pimpl_1_1concat__iterator.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1concat__iterator__end.html">daw::pipelines::pimpl::concat_iterator_end&lt; SentinelFors &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_concat__t.html">daw::pipelines::pimpl::Concat_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">daw::pipelines::concat_view&lt; Ranges &gt;</a></td></tr>
@@ -119,6 +129,13 @@ Functions</h2></td></tr>
 <tr class="memitem:a2c9d9613985333418afde428cc241d48" id="r_a2c9d9613985333418afde428cc241d48"><td class="memTemplParams" colspan="2">template&lt;typename... Ranges&gt; </td></tr>
 <tr class="memitem:a2c9d9613985333418afde428cc241d48"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a2c9d9613985333418afde428cc241d48">daw::pipelines::concat_view</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &amp;&amp;...) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1concat__view.html">concat_view</a>&lt; <a class="el" href="namespacedaw.html#aaf8538a8a89cb447b98789ba8c4501b9">daw::remove_rvalue_ref_t</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Ranges</a> &gt;... &gt;</td></tr>
 <tr class="separator:a2c9d9613985333418afde428cc241d48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0d10d677e21795072717b14e163d331" id="r_ac0d10d677e21795072717b14e163d331"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> &gt; </td></tr>
+<tr class="memitem:ac0d10d677e21795072717b14e163d331"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">consteval</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#ac0d10d677e21795072717b14e163d331">daw::pipelines::pimpl::is_tuple_of_fwd_ranges</a> ()</td></tr>
+<tr class="separator:ac0d10d677e21795072717b14e163d331"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2365a5926c3caa3a567f458255626c98" id="r_a2365a5926c3caa3a567f458255626c98"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Tuple</a> &gt; <br />
+requires ( <a class="el" href="namespacedaw.html#aabd59ef96aa8392ae4127f0a57336a9e">daw::is_tuple_like_v</a>&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Tuple</a>&gt; )</td></tr>
+<tr class="memitem:a2365a5926c3caa3a567f458255626c98"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">consteval</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a2365a5926c3caa3a567f458255626c98">daw::pipelines::pimpl::is_tuple_of_fwd_ranges</a> ()</td></tr>
+<tr class="separator:a2365a5926c3caa3a567f458255626c98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>

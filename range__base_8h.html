@@ -83,8 +83,12 @@ $(function() {
   <div class="headertitle"><div class="title">range_base.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="daw__iterator__traits_8h_source.html">daw/daw_iterator_traits.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="cpp__17_8h_source.html">daw/cpp_17.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__as_8h_source.html">daw/daw_as.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__constant_8h_source.html">daw/daw_constant.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__iterator__traits_8h_source.html">daw/daw_iterator_traits.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="daw__remove__cvref_8h_source.html">daw/daw_remove_cvref.h</a>&quot;</code><br />
+<code>#include &lt;<a class="el" href="daw__ref__storage_8h_source.html">daw/daw_ref_storage.h</a>&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;<a class="el" href="tuple__traits_8h_source.html">daw/stdinc/tuple_traits.h</a>&gt;</code><br />
 </div>
@@ -92,13 +96,17 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1range__base__t.html">daw::pipelines::range_base_t&lt; First, Last &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1range__base__t.html">daw::pipelines::pimpl::range_base_t&lt; First, Last &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1stored__range__base__t.html">daw::pipelines::pimpl::stored_range_base_t&lt; R, First, Last, CFirst, CLast &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1tuple__element_3_011_00_01_r_01_4.html">std::tuple_element&lt; 1, R &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1tuple__element_3_01_i_00_01_r_01_4.html">std::tuple_element&lt; I, R &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstd_1_1tuple__size_3_01_r_01_4.html">std::tuple_size&lt; R &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1variant__range__storage__t.html">daw::pipelines::pimpl::variant_range_storage_t&lt; Rs &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -108,24 +116,32 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacedaw_1_1pipelines" id="r_namespacedaw_1_1pipelines"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html">daw::pipelines</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacedaw_1_1pipelines_1_1pimpl" id="r_namespacedaw_1_1pipelines_1_1pimpl"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html">daw::pipelines::pimpl</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacestd" id="r_namespacestd"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestd.html">std</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="concepts" name="concepts"></a>
 Concepts</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptdaw_1_1pipelines_1_1_range_base.html">daw::pipelines::RangeBase</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptdaw_1_1pipelines_1_1pimpl_1_1_range_base.html">daw::pipelines::pimpl::RangeBase</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a0e2dbb85130f2565e539e626445bbb79" id="r_a0e2dbb85130f2565e539e626445bbb79"><td class="memTemplParams" colspan="2">template&lt;std::size_t I&gt; <br />
+<tr class="memitem:ad0841263ca07643709366553c9d194b0" id="r_ad0841263ca07643709366553c9d194b0"><td class="memTemplParams" colspan="2">template&lt;std::size_t I&gt; <br />
 requires ( I == 0 or I == 1 )</td></tr>
-<tr class="memitem:a0e2dbb85130f2565e539e626445bbb79"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestd.html#a0e2dbb85130f2565e539e626445bbb79">std::get</a> (<a class="el" href="conceptdaw_1_1pipelines_1_1_range_base.html">daw::pipelines::RangeBase</a> auto &amp;&amp;r)</td></tr>
-<tr class="separator:a0e2dbb85130f2565e539e626445bbb79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0841263ca07643709366553c9d194b0"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestd.html#ad0841263ca07643709366553c9d194b0">std::get</a> (<a class="el" href="conceptdaw_1_1pipelines_1_1pimpl_1_1_range_base.html">daw::pipelines::pimpl::RangeBase</a> auto &amp;&amp;r)</td></tr>
+<tr class="separator:ad0841263ca07643709366553c9d194b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30d148fb35ab27ee5563631b7b973d2d" id="r_a30d148fb35ab27ee5563631b7b973d2d"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Result</a>  = std::ptrdiff_t&gt; </td></tr>
+<tr class="memitem:a30d148fb35ab27ee5563631b7b973d2d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Result</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a30d148fb35ab27ee5563631b7b973d2d">daw::pipelines::pimpl::ranges_distance</a> (Iterator <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> first, Iterator <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> &amp;last)</td></tr>
+<tr class="separator:a30d148fb35ab27ee5563631b7b973d2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4b5dd8a41d091c8320f07da227400ff" id="r_ae4b5dd8a41d091c8320f07da227400ff"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Result</a>  = std::ptrdiff_t&gt; </td></tr>
+<tr class="memitem:ae4b5dd8a41d091c8320f07da227400ff"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Result</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#ae4b5dd8a41d091c8320f07da227400ff">daw::pipelines::pimpl::ranges_distance</a> (Range <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> &amp;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">r</a>)</td></tr>
+<tr class="separator:ae4b5dd8a41d091c8320f07da227400ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a7bd386994920a8416bb634017c430d43" id="r_a7bd386994920a8416bb634017c430d43"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="conceptdaw_1_1pipelines_1_1_range_base.html">daw::pipelines::RangeBase</a> R&gt; </td></tr>
+<tr class="memitem:a7bd386994920a8416bb634017c430d43" id="r_a7bd386994920a8416bb634017c430d43"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="conceptdaw_1_1pipelines_1_1pimpl_1_1_range_base.html">daw::pipelines::pimpl::RangeBase</a> R&gt; </td></tr>
 <tr class="memitem:a7bd386994920a8416bb634017c430d43"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestd.html#a7bd386994920a8416bb634017c430d43">std::tuple_size_v&lt; R &gt;</a> = 2</td></tr>
 <tr class="separator:a7bd386994920a8416bb634017c430d43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>

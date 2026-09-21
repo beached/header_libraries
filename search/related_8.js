@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['unique_5fptr_0',['unique_ptr',['../structdaw_1_1unique__ptr.html#a3d21dc360b62b01153b972dfed5d0feb',1,'daw::unique_ptr']]]
+  ['safe_5fpointer_0',['safe_pointer',['../structdaw_1_1memory_1_1safe__pointer.html#a52e672410c90dd30841e93cab0fddf1d',1,'daw::memory::safe_pointer::safe_pointer()'],['../structdaw_1_1memory_1_1safe__pointer_3_01_t_01_4.html#a52e672410c90dd30841e93cab0fddf1d',1,'daw::memory::safe_pointer&lt; T &gt;::safe_pointer()']]]
 ];

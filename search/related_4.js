@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['maybe_5funique_5fptr_0',['maybe_unique_ptr',['../structdaw_1_1maybe__unique__ptr.html#aa9cce807b6f6014135cbaa1f19820044',1,'daw::maybe_unique_ptr']]]
+  ['graph_5ft_0',['graph_t',['../classdaw_1_1node__id__t.html#aa2346613f7ae7bbde8fed3ccde78f8a9',1,'daw::node_id_t']]]
 ];

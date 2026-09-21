@@ -5,12 +5,13 @@ var searchData=
   ['base_2',['base',['../structstd_1_1formatter_3_01daw_1_1sv2_1_1basic__string__view_3_01_char_t_01_4_00_01_char_t_01_4.html#a93ceed97dff582c63ec4fac3840e1293',1,'std::formatter&lt; daw::sv2::basic_string_view&lt; CharT &gt;, CharT &gt;']]],
   ['base1_3',['Base1',['../structdaw_1_1compressed__pair.html#a32c8536a91dc82d1acf79dfdd54ce5e4',1,'daw::compressed_pair']]],
   ['base2_4',['Base2',['../structdaw_1_1compressed__pair.html#af54320d0e74942c15bd7123a2a0622c2',1,'daw::compressed_pair']]],
-  ['base_5ftype_5',['base_type',['../structdaw_1_1fwd__pack.html#af3fd28ffaf05a498f7358f275f64378e',1,'daw::fwd_pack']]],
-  ['bit_5fqueue_6',['bit_queue',['../namespacedaw.html#a6051e8d641ddce840180185ed5e5b0df',1,'daw']]],
-  ['bit_5fqueue_5fsource_5fnative_5fendian_7',['bit_queue_source_native_endian',['../namespacedaw.html#a0d635170acec897c9cc869869ca0700a',1,'daw']]],
-  ['bool_5fand_8',['bool_and',['../namespacedaw_1_1traits.html#ad8549cb942bc7f409ef6a4a001f44376',1,'daw::traits']]],
-  ['bool_5fconstant_9',['bool_constant',['../namespacedaw.html#aba8740674058543901e83038876e89e2',1,'daw']]],
-  ['bool_5for_10',['bool_or',['../namespacedaw_1_1traits.html#ab27207b053e2a3ea566b29743d69ade3',1,'daw::traits']]],
-  ['bounded_5farray_5ft_11',['bounded_array_t',['../namespacedaw.html#ab1c94cec55fa38853a96ee58e71eb260',1,'daw']]],
-  ['bounded_5fstring_12',['bounded_string',['../namespacedaw.html#af56b938e60bf95ac4bb28a10180cdd40',1,'daw']]]
+  ['base_5ft_5',['base_t',['../structdaw_1_1pipelines_1_1pimpl_1_1slide__view.html#a185b0e0d5e02fa210b6bb93e47de0467',1,'daw::pipelines::pimpl::slide_view::base_t'],['../structdaw_1_1pipelines_1_1unique__view.html#aba51de2d9eed4585012203770134560e',1,'daw::pipelines::unique_view::base_t'],['../structdaw_1_1pipelines_1_1take__while__view.html#a53ec6c35906b4ad532b354b914884842',1,'daw::pipelines::take_while_view::base_t'],['../structdaw_1_1pipelines_1_1take__view.html#a23e9335baa2ef1254a69d1fec51648d3',1,'daw::pipelines::take_view::base_t'],['../structdaw_1_1pipelines_1_1skip__view.html#a66f32c70a63ddbe8efffc9851ed1e727',1,'daw::pipelines::skip_view::base_t'],['../structdaw_1_1pipelines_1_1reverse__view.html#a42dd935ef1402aa28969a58f105bb7af',1,'daw::pipelines::reverse_view::base_t'],['../structdaw_1_1pipelines_1_1map__view.html#a8cf56ec1ab5d168d5e6754b66440da30',1,'daw::pipelines::map_view::base_t'],['../structdaw_1_1pipelines_1_1flatten__view.html#af927ed719c7f90e1b4aaf46605b15eb9',1,'daw::pipelines::flatten_view::base_t'],['../structdaw_1_1pipelines_1_1filter__view.html#a37a4a20a574eb2f92f877d50aeae13b4',1,'daw::pipelines::filter_view::base_t'],['../structdaw_1_1pipelines_1_1every__view.html#a3201fd114be9335a54c278756435cd11',1,'daw::pipelines::every_view::base_t'],['../structdaw_1_1pipelines_1_1drop__view.html#ace5cc092f11deb3a167030ad81d92a4a',1,'daw::pipelines::drop_view::base_t'],['../structdaw_1_1pipelines_1_1pimpl_1_1chunk__view.html#ad091f2d9ef30816f5d3667ab1e639135',1,'daw::pipelines::pimpl::chunk_view::base_t'],['../structdaw_1_1pipelines_1_1cache__last__view.html#a4614cc88cf4aa50eb4f9b3225605e66b',1,'daw::pipelines::cache_last_view::base_t']]],
+  ['base_5ftype_6',['base_type',['../structdaw_1_1fwd__pack.html#af3fd28ffaf05a498f7358f275f64378e',1,'daw::fwd_pack']]],
+  ['bit_5fqueue_7',['bit_queue',['../namespacedaw.html#a6051e8d641ddce840180185ed5e5b0df',1,'daw']]],
+  ['bit_5fqueue_5fsource_5fnative_5fendian_8',['bit_queue_source_native_endian',['../namespacedaw.html#a0d635170acec897c9cc869869ca0700a',1,'daw']]],
+  ['bool_5fand_9',['bool_and',['../namespacedaw_1_1traits.html#ad8549cb942bc7f409ef6a4a001f44376',1,'daw::traits']]],
+  ['bool_5fconstant_10',['bool_constant',['../namespacedaw.html#aba8740674058543901e83038876e89e2',1,'daw']]],
+  ['bool_5for_11',['bool_or',['../namespacedaw_1_1traits.html#ab27207b053e2a3ea566b29743d69ade3',1,'daw::traits']]],
+  ['bounded_5farray_5ft_12',['bounded_array_t',['../namespacedaw.html#ab1c94cec55fa38853a96ee58e71eb260',1,'daw']]],
+  ['bounded_5fstring_13',['bounded_string',['../namespacedaw.html#af56b938e60bf95ac4bb28a10180cdd40',1,'daw']]]
 ];
