@@ -33,16 +33,16 @@ namespace {
 		daw_ensure( diff( T{ 0 }, T{ 0 } ) == 0 );
 		daw_ensure( diff( T{ 10 }, T{ 0 } ) == 10 );
 		daw_ensure( diff( T{ 0 }, T{ 10 } ) == -10 );
-		daw_ensure( diff( hi, static_cast<T>( hi - 1 ) ) == 1 );
-		daw_ensure( diff( static_cast<T>( hi - 1 ), hi ) == -1 );
-		daw_ensure( diff( static_cast<T>( lo + 1 ), lo ) == 1 );
-		daw_ensure( diff( lo, static_cast<T>( lo + 1 ) ) == -1 );
+		daw_ensure( diff( hi, daw::as<T>( hi - 1 ) ) == 1 );
+		daw_ensure( diff( daw::as<T>( hi - 1 ), hi ) == -1 );
+		daw_ensure( diff( daw::as<T>( lo + 1 ), lo ) == 1 );
+		daw_ensure( diff( lo, daw::as<T>( lo + 1 ) ) == -1 );
 		if constexpr( sizeof( T ) < sizeof( std::ptrdiff_t ) ) {
 			// the whole range fits in std::ptrdiff_t
-			daw_ensure( diff( hi, lo ) == static_cast<std::ptrdiff_t>( hi ) -
-			                                static_cast<std::ptrdiff_t>( lo ) );
-			daw_ensure( diff( lo, hi ) == static_cast<std::ptrdiff_t>( lo ) -
-			                                static_cast<std::ptrdiff_t>( hi ) );
+			daw_ensure( diff( hi, lo ) == daw::as<std::ptrdiff_t>( hi ) -
+			                                daw::as<std::ptrdiff_t>( lo ) );
+			daw_ensure( diff( lo, hi ) == daw::as<std::ptrdiff_t>( lo ) -
+			                                daw::as<std::ptrdiff_t>( hi ) );
 		}
 	}
 
@@ -120,16 +120,14 @@ namespace {
 	// v + n wrapped around T, found without going through the iterator
 	template<typename T, typename N>
 	constexpr T reference_sum( T v, N n ) {
-		return static_cast<T>(
-		  static_cast<wide_uint_t>( static_cast<wide_int_t>( v ) ) +
-		  static_cast<wide_uint_t>( static_cast<wide_int_t>( n ) ) );
+		return daw::as<T>( daw::as<wide_uint_t>( daw::as<wide_int_t>( v ) ) +
+		                   daw::as<wide_uint_t>( daw::as<wide_int_t>( n ) ) );
 	}
 
 	template<typename T, typename N>
 	constexpr T reference_difference( T v, N n ) {
-		return static_cast<T>(
-		  static_cast<wide_uint_t>( static_cast<wide_int_t>( v ) ) -
-		  static_cast<wide_uint_t>( static_cast<wide_int_t>( n ) ) );
+		return daw::as<T>( daw::as<wide_uint_t>( daw::as<wide_int_t>( v ) ) -
+		                   daw::as<wide_uint_t>( daw::as<wide_int_t>( n ) ) );
 	}
 
 	// Constant evaluation rejects signed overflow, so these fail to compile if
@@ -151,10 +149,11 @@ namespace {
 	                  std::numeric_limits<std::int16_t>::min( ) ) ==
 	               reference_sum( std::int8_t{ -128 },
 	                              std::numeric_limits<std::int16_t>::min( ) ) );
-	static_assert( iota_iterator<std::int32_t>(
-	                 1 )[std::numeric_limits<std::uint64_t>::max( )] ==
-	               reference_sum( std::int32_t{ 1 },
-	                              std::numeric_limits<std::uint64_t>::max( ) ) );
+	static_assert(
+	  iota_iterator<std::int32_t>(
+	    1 )[daw::as_signed( std::numeric_limits<std::uint64_t>::max( ) )] ==
+	  reference_sum( std::int32_t{ 1 },
+	                 std::numeric_limits<std::uint64_t>::max( ) ) );
 
 	// Steps as large as the iterator's own difference_type allows.  The result
 	// wraps around T, the arithmetic that finds it must not overflow
@@ -167,18 +166,14 @@ namespace {
 		constexpr auto dmin = daw::min_value<diff_t>;
 		constexpr auto lo = std::numeric_limits<T>::min( );
 		constexpr auto hi = std::numeric_limits<T>::max( );
-		T const values[] = { lo,
-		                     static_cast<T>( lo + 1 ),
-		                     T{ 0 },
-		                     T{ 1 },
-		                     static_cast<T>( hi - 1 ),
-		                     hi };
+		T const values[] = {
+		  lo, daw::as<T>( lo + 1 ), T{ 0 }, T{ 1 }, daw::as<T>( hi - 1 ), hi };
 		diff_t const steps[] = { dmin,
-		                         static_cast<diff_t>( dmin + 1 ),
+		                         daw::as<diff_t>( dmin + 1 ),
 		                         diff_t{ -1 },
 		                         diff_t{ 0 },
 		                         diff_t{ 1 },
-		                         static_cast<diff_t>( dmax - 1 ),
+		                         daw::as<diff_t>( dmax - 1 ),
 		                         dmax };
 		for( T v : values ) {
 			for( diff_t n : steps ) {
@@ -196,8 +191,8 @@ namespace {
 				daw_ensure( *( n + it_t( v ) ) == reference_sum( v, n ) );
 				daw_ensure( *( it_t( v ) - n ) == reference_difference( v, n ) );
 				// the index is unsigned, a negative step is a huge index
-				auto const k = static_cast<size_t_>( n );
-				daw_ensure( it_t( v )[k] == reference_sum( v, k ) );
+				auto const k = daw::as<size_t_>( n );
+				daw_ensure( it_t( v )[daw::as_signed( k )] == reference_sum( v, k ) );
 			}
 		}
 	}
@@ -206,7 +201,7 @@ namespace {
 	// The arithmetic must keep every bit of a value wider than 64 bits
 	void test_iota_iterator_int128( ) {
 		using i128 = daw::int128_t;
-		auto const big = static_cast<i128>( 1 ) << 100;
+		auto const big = daw::as<i128>( 1 ) << 100;
 		auto at = []( i128 v ) {
 			return iota_iterator<i128>( v );
 		};
