@@ -85,8 +85,8 @@ namespace daw::pipelines::pimpl {
 		using i_am_a_daw_split_iterator_class = void;
 
 	private:
-		DAW_NO_UNIQUE_ADDRESS First m_first = First{ };
-		DAW_NO_UNIQUE_ADDRESS IteratorLast m_last = IteratorLast{ };
+		First m_first = First{ };
+		IteratorLast m_last = IteratorLast{ };
 		DAW_NO_UNIQUE_ADDRESS Delimiter m_delimiter{ };
 		DAW_NO_UNIQUE_ADDRESS Projection m_projection{ };
 		mutable std::optional<First> m_next = std::nullopt;
