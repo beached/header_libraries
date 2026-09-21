@@ -1372,6 +1372,14 @@ namespace tests {
 		auto flattened = pipeline( nested, Flatten );
 		daw_ensure( flattened.begin( ) == flattened.end( ) );
 	}
+
+	DAW_ATTRIB_NOINLINE void test_map_random_access_range( ) {
+		constexpr auto p = pipeline( iota_view{ 2 }, Map( []( auto i ) {
+			                             return i * 2;
+		                             } ) );
+		static_assert( std::ranges::random_access_range<DAW_TYPEOF( p )> );
+	}
+
 } // namespace tests
 
 int main( ) {
@@ -1482,5 +1490,6 @@ int main( ) {
 	tests::test_flatten_skips_consecutive_empty_ranges( );
 	tests::test_flatten_skips_trailing_empty_range( );
 	tests::test_flatten_all_ranges_empty( );
+	tests::test_map_random_access_range( );
 	daw::println( "Done" );
 }

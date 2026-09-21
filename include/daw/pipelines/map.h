@@ -273,7 +273,7 @@ namespace daw::pipelines::pimpl {
 		}
 
 		// clang-format off
-		[[nodiscard]] constexpr auto operator<=>( map_iterator const &rhs )
+		[[nodiscard]] constexpr auto operator<=>( map_iterator const &rhs ) const
 			requires( RandomIterator<iterator> ) {
 			return m_iter <=> rhs.m_iter;
 			}
