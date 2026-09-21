@@ -1388,6 +1388,14 @@ namespace tests {
 		static_assert( std::is_same_v<std::vector<int>, DAW_TYPEOF( v )> );
 		daw_ensure( std::is_sorted( std::begin( v ), std::end( v ) ) );
 	}
+
+	DAW_ATTRIB_NOINLINE void test_sorting_after_to_with_cmp( ) {
+		auto const p = pipeline( To<std::vector>, Sort( std::less<>{ } ) );
+		auto l = std::list{ 3, 2, 1 };
+		auto v = p( l );
+		static_assert( std::is_same_v<std::vector<int>, DAW_TYPEOF( v )> );
+		daw_ensure( std::is_sorted( std::begin( v ), std::end( v ) ) );
+	}
 } // namespace tests
 
 int main( ) {
@@ -1500,5 +1508,6 @@ int main( ) {
 	tests::test_flatten_all_ranges_empty( );
 	tests::test_map_random_access_range( );
 	tests::test_sorting_after_to( );
+	tests::test_sorting_after_to_with_cmp( );
 	daw::println( "Done" );
 }

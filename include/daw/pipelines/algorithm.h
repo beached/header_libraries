@@ -30,9 +30,12 @@ namespace daw::pipelines {
 			DAW_NO_UNIQUE_ADDRESS Compare m_compare{ };
 			DAW_NO_UNIQUE_ADDRESS Projection m_projection{ };
 
-			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
-			operator( )( auto &&compare ) DAW_CPP23_STATIC_CALL_OP_CONST {
-				return Sort_t{ DAW_FWD( compare ) };
+			template<typename C, typename P = std::identity>
+			requires( not Range<C> ) //
+			  [[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+			  operator( )( C &&compare,
+			               P &&projection = P{ } ) DAW_CPP23_STATIC_CALL_OP_CONST {
+				return Sort_t<C>{ DAW_FWD( compare ), DAW_FWD( projection ) };
 			}
 
 			[[nodiscard]] constexpr decltype( auto )
