@@ -287,14 +287,10 @@ namespace {
 				auto const a = V( T{ 5 }, T{ 0 } );
 				auto const b = V( T{ 5 }, T{ 2 } );
 				auto const c = V( T{ 6 }, T{ 0 } );
-				// clang-format off
-				countdown_ensure( ( a <=> a ) == 0 );
-				// clang-format on
+				countdown_ensure( ( a <=> a ) == 0
 				// == and <=> must agree, a and b differ only in their low end
-				// clang-format off
 				countdown_ensure( ( a == b ) == ( ( a <=> b ) == 0 ) );
 				countdown_ensure( ( a == c ) == ( ( a <=> c ) == 0 ) );
-				// clang-format on
 				countdown_ensure( not( a < a ) );
 				countdown_ensure( ( a < b ) != ( b < a ) );
 				countdown_ensure( ( a < c ) != ( c < a ) );
