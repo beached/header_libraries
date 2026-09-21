@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/cpp_17.h"
+#include "daw/daw_as.h"
 #include "daw/daw_constant.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_remove_cvref.h"
@@ -23,7 +24,7 @@ namespace daw::pipelines::pimpl {
 	[[nodiscard]] constexpr Result ranges_distance( Iterator auto first,
 	                                                Iterator auto const &last ) {
 		if constexpr( requires { last - first; } ) {
-			return static_cast<Result>( last - first );
+			return as<Result>( last - first );
 		} else {
 			Result d = Result{ };
 			while( first != last ) {

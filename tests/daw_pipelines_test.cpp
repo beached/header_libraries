@@ -167,7 +167,7 @@ namespace tests {
 		            Map( &std::pair<std::size_t, std::string>::second ),
 		            Take( 4 ),
 		            To<std::array<std::string, 4>> );
-		auto const result = p3( iota_view( 1, 10001 ) );
+		auto const result = p3( iota_view<std::size_t>( 1, 10001 ) );
 		daw::println(
 		  "\ntest_pipeline_callable_reused_across_inputs: input 1 to 10001 : "
 		  "output {}",
@@ -176,7 +176,7 @@ namespace tests {
 
 	DAW_ATTRIB_NOINLINE void test_pipeline_with_source_baked_in( ) {
 		auto const r2 =
-		  pipeline( iota_view( 1, 10001 ),
+		  pipeline( iota_view<std::size_t>( 1, 10001 ),
 		            Map( []( auto i ) {
 			            return std::pair{ i, std::to_string( i ) };
 		            } ),

@@ -8,8 +8,10 @@
 
 #pragma once
 
+#include "daw/daw_as.h"
 #include "daw/daw_bit_count.h"
 #include "daw/daw_ensure.h"
+#include "daw/daw_int_cmp.h"
 #include "daw/daw_mutable_capture.h"
 #include "daw/pipelines/filter.h"
 #include "daw/pipelines/view.h"
@@ -30,9 +32,9 @@ namespace daw::pipelines::pimpl {
 			static_assert( daw::is_integral_v<result_type> );
 			daw_ensure( m_number_to_keep < m_sample_size );
 			daw_ensure(
-			  std::cmp_less_equal( m_sample_size, max_value<result_type> ) );
-			auto distribution = Distribution{
-			  result_type{ 1 }, static_cast<result_type>( m_sample_size ) };
+			  daw::cmp_less_equal( m_sample_size, max_value<result_type> ) );
+			auto distribution =
+			  Distribution{ result_type{ 1 }, as<result_type>( m_sample_size ) };
 
 			return filter_view{ DAW_FWD( r ),
 			                    [engine = daw::mutable_capture{ m_engine },

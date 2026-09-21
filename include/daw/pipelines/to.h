@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw/daw_as.h"
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_move.h"
 #include "daw/pipelines/maybe.h"
@@ -112,14 +113,14 @@ namespace daw::pipelines::pimpl {
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr value_t
 	make_array_value( auto &first, auto const &last, std::size_t ) {
 		if( first != last ) {
-			return static_cast<value_t>( *first++ );
+			return as<value_t>( *first++ );
 		}
 		if constexpr( std::is_same_v<decltype( Default ), pimpl::UseTypeDefault> ) {
 			return value_t{ };
 		} else if constexpr( std::invocable<decltype( Default )> ) {
-			return static_cast<value_t>( Default( ) );
+			return as<value_t>( Default( ) );
 		} else {
-			return static_cast<value_t>( Default );
+			return as<value_t>( Default );
 		}
 	}
 

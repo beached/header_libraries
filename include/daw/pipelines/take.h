@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw/daw_as.h"
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_typeof.h"
@@ -52,8 +53,8 @@ namespace daw::pipelines {
 					}
 				}( );
 				auto const take_size =
-				  std::min( { range_size, static_cast<std::ptrdiff_t>( m_how_many ) } );
-				return It{ std::move( first ), static_cast<std::size_t>( take_size ) };
+				  std::min( { range_size, as<std::ptrdiff_t>( m_how_many ) } );
+				return It{ std::move( first ), as<std::size_t>( take_size ) };
 			} else {
 				return It{ std::move( first ), std::move( last ), m_how_many };
 			}

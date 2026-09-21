@@ -9,6 +9,7 @@
 //
 
 #include "daw/daw_algorithm.h"
+#include "daw/daw_as.h"
 #include "daw/daw_mutable_capture.h"
 #include "daw/pipelines/counted_source.h"
 #include "daw/pipelines/move_next.h"
@@ -64,14 +65,14 @@ namespace daw::pipelines::pimpl {
 	private:
 		First m_first{ };
 		DAW_NO_UNIQUE_ADDRESS Last m_last{ };
-		std::ptrdiff_t m_every_nth = 1;
+		difference_type m_every_nth = 1;
 
 	public:
 		every_iterator( ) = default;
 
 		explicit constexpr every_iterator( daw::constructible<First> auto &&first,
 		                                   daw::constructible<Last> auto &&last,
-		                                   std::ptrdiff_t every_nth )
+		                                   difference_type every_nth )
 		  : m_first( DAW_FWD( first ) )
 		  , m_last( DAW_FWD( last ) )
 		  , m_every_nth( every_nth ) {
@@ -149,20 +150,20 @@ namespace daw::pipelines::pimpl {
 
 	private:
 		First m_first{ };
-		std::ptrdiff_t m_idx = 0;   // the selected element we are on
-		std::ptrdiff_t m_count = 0; // how many elements are selected
-		std::ptrdiff_t m_every_nth = 1;
+		difference_type m_idx = 0;   // the selected element we are on
+		difference_type m_count = 0; // how many elements are selected
+		difference_type m_every_nth = 1;
 
 	public:
 		every_index_iterator( ) = default;
 
 		explicit constexpr every_index_iterator(
 		  daw::constructible<First> auto &&first,
-		  daw::constructible<Last> auto &&last, std::ptrdiff_t every_nth )
+		  daw::constructible<Last> auto &&last, difference_type every_nth )
 		  : m_first( DAW_FWD( first ) )
 		  , m_every_nth( every_nth ) {
 			daw_ensure( m_every_nth > 0 );
-			auto const len = counted_length( m_first, last );
+			auto const len = as<difference_type>( counted_length( m_first, last ) );
 			m_count = len / m_every_nth + ( len % m_every_nth != 0 ? 1 : 0 );
 		}
 
@@ -227,9 +228,10 @@ namespace daw::pipelines {
 	template<Range R>
 	struct every_view : private pimpl::stored_range_base_t<R> {
 		using base_t = pimpl::stored_range_base_t<R>;
+		using difference_type = daw::range_difference_t<R>;
 
 	private:
-		std::ptrdiff_t m_every_nth = 1;
+		difference_type m_every_nth = 1;
 
 	public:
 		using iterator =
@@ -241,7 +243,7 @@ namespace daw::pipelines {
 
 		explicit every_view( ) = default;
 
-		explicit constexpr every_view( Range auto &&r, std::ptrdiff_t every_nth )
+		explicit constexpr every_view( Range auto &&r, difference_type every_nth )
 		  : base_t( DAW_FWD( r ) )
 		  , m_every_nth( every_nth ) {}
 
@@ -276,7 +278,8 @@ namespace daw::pipelines::pimpl {
 
 		template<Range R>
 		[[nodiscard]] constexpr auto operator( )( R &&r ) const {
-			return every_view<R>{ DAW_FWD( r ), m_every_nth };
+			return every_view<R>{ DAW_FWD( r ),
+			                      as<range_difference_t<R>>( m_every_nth ) };
 		}
 	};
 } // namespace daw::pipelines::pimpl

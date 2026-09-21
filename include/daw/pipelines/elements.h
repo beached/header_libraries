@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/cpp_17.h"
+#include "daw/daw_as.h"
 #include "daw/daw_attributes.h"
 #include "daw/daw_forward_lvalue.h"
 #include "daw/daw_iterator_traits.h"
@@ -58,12 +59,12 @@ namespace daw::pipelines::pimpl {
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference
 		operator[]( size_type n ) requires( RandomIterator<Iterator> ) {
-			return raw_get( std::next( m_iter, static_cast<difference_type>( n ) ) );
+			return raw_get( std::next( m_iter, as<difference_type>( n ) ) );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_reference
 		operator[]( size_type n ) const requires( RandomIterator<Iterator> ) {
-			return raw_get( std::next( m_iter, static_cast<difference_type>( n ) ) );
+			return raw_get( std::next( m_iter, as<difference_type>( n ) ) );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference operator*( ) {
@@ -252,12 +253,12 @@ namespace daw::pipelines::pimpl {
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference
 		operator[]( size_type n ) requires( RandomIterator<Iterator> ) {
-			return raw_get( std::next( m_iter, static_cast<difference_type>( n ) ) );
+			return raw_get( std::next( m_iter, as<difference_type>( n ) ) );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_reference
 		operator[]( size_type n ) const requires( RandomIterator<Iterator> ) {
-			return raw_get( std::next( m_iter, static_cast<difference_type>( n ) ) );
+			return raw_get( std::next( m_iter, as<difference_type>( n ) ) );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference operator*( ) {

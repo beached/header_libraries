@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw/daw_as.h"
 #include "daw/daw_attributes.h"
 #include "daw/daw_concepts.h"
 #include "daw/daw_ensure.h"
@@ -89,7 +90,7 @@ namespace daw::pipelines {
 		explicit constexpr sized_iterator( daw::constructible<First> auto &&first,
 		                                   std::size_t how_many )
 		  : m_iter( DAW_FWD( first ) )
-		  , m_count( static_cast<difference_type>( how_many ) ) {}
+		  , m_count( as<difference_type>( how_many ) ) {}
 
 		[[nodiscard]] constexpr auto &base( ) {
 			return m_iter;
@@ -257,7 +258,7 @@ namespace daw::pipelines {
 		                                   std::size_t how_many )
 		  : m_first( DAW_FWD( first ) )
 		  , m_last( DAW_FWD( last ) )
-		  , m_count( static_cast<difference_type>( how_many ) ) {}
+		  , m_count( as<difference_type>( how_many ) ) {}
 
 		[[nodiscard]] constexpr auto &base( ) {
 			return m_first;

@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw/daw_as.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/pipelines/maybe_owning_range.h"
 #include "daw/pipelines/sized_iterator.h"
@@ -43,8 +44,7 @@ namespace daw::pipelines {
 			auto const last = base_t::end( );
 			if constexpr( RandomIterator<iterator> ) {
 				auto const range_size = pimpl::ranges_distance( first, last );
-				m_skipped =
-				  std::min( { static_cast<difference_type>( how_many ), range_size } );
+				m_skipped = std::min( { as<difference_type>( how_many ), range_size } );
 			} else {
 				// Input
 				for( ; how_many > 0 and first != last; --how_many ) {

@@ -48,6 +48,7 @@ set( TEST_SOURCES
 		 daw_graph_algorithm_test.cpp
 		 daw_graph_test.cpp
 		 daw_hash_set_test.cpp
+		 daw_int_cmp_test.cpp
 		 daw_is_any_of_test.cpp
 		 daw_iterator_argument_iterator_test.cpp
 		 daw_iterator_back_inserter_test.cpp
@@ -160,6 +161,7 @@ set( CPP20_TEST_SOURCES
 		 daw_pipelines_chunk_test.cpp
 		 daw_pipelines_concat_test.cpp
 		 daw_pipelines_copy_test.cpp
+		 daw_pipelines_countdown_test.cpp
 		 daw_pipelines_daw_concept_checker_test.cpp
 		 daw_pipelines_drop_test.cpp
 		 daw_pipelines_elements_test.cpp

@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "daw/daw_as.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
 #include "daw/daw_mutable_function_ref.h"
@@ -117,12 +118,12 @@ namespace daw::pipelines::pimpl {
 	private:
 		[[nodiscard]] constexpr decltype( auto ) raw_get( size_type n )
 		  requires( RandomIterator<iterator> ) {
-			return *( m_iter + static_cast<difference_type>( n ) );
+			return *( m_iter + as<difference_type>( n ) );
 		}
 
 		[[nodiscard]] constexpr decltype( auto ) raw_get( size_type n ) const
 		  requires( RandomIterator<iterator> ) {
-			return *( m_iter + static_cast<difference_type>( n ) );
+			return *( m_iter + as<difference_type>( n ) );
 		}
 
 		[[nodiscard]] constexpr decltype( auto ) do_project( auto &&v ) {
@@ -130,8 +131,7 @@ namespace daw::pipelines::pimpl {
 		}
 
 		[[nodiscard]] constexpr decltype( auto ) do_project( auto &&v ) const {
-			return std::invoke( static_cast<MI const *>( m_parent )->m_proj,
-			                    DAW_FWD( v ) );
+			return std::invoke( as<MI const *>( m_parent )->m_proj, DAW_FWD( v ) );
 		}
 
 		[[nodiscard]] constexpr decltype( auto ) do_func( auto &&v ) {
@@ -139,7 +139,7 @@ namespace daw::pipelines::pimpl {
 		}
 
 		[[nodiscard]] constexpr decltype( auto ) do_func( auto &&v ) const {
-			return std::invoke( static_cast<MI const *>( m_parent )->m_fn,
+			return std::invoke( as<MI const *>( m_parent )->m_fn,
 			                    do_project( DAW_FWD( v ) ) );
 		}
 
