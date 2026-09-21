@@ -287,7 +287,7 @@ namespace {
 				auto const a = V( T{ 5 }, T{ 0 } );
 				auto const b = V( T{ 5 }, T{ 2 } );
 				auto const c = V( T{ 6 }, T{ 0 } );
-				countdown_ensure( ( a <=> a ) == 0
+				countdown_ensure( ( a <=> a ) == 0 );
 				// == and <=> must agree, a and b differ only in their low end
 				countdown_ensure( ( a == b ) == ( ( a <=> b ) == 0 ) );
 				countdown_ensure( ( a == c ) == ( ( a <=> c ) == 0 ) );
