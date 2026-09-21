@@ -53,8 +53,11 @@ inline constexpr auto to_lower = []( char c ) -> char {
 };
 
 namespace tests {
-	static constexpr auto prices = std::array{ 100, 200, 150, 180, 130 };
-	static constexpr auto costs = std::array{ 10, 20, 50, 40, 100 };
+	[[maybe_unused]] static constexpr auto prices =
+	  std::array{ 100, 200, 150, 180, 130 };
+
+	[[maybe_unused]] static constexpr auto costs =
+	  std::array{ 10, 20, 50, 40, 100 };
 
 #if DAW_CPP_VERSION > 202002L
 	DAW_ATTRIB_NOINLINE void test_zip_view_to_map_matches_source_pairs( ) {
