@@ -13,15 +13,17 @@
 #include "daw/daw_iterator_traits.h"
 
 namespace daw::pipelines::pimpl {
-	constexpr auto safe_move_next( Iterator auto first, Iterator auto const &last,
-	                               std::ptrdiff_t n = 1 ) {
-		daw_ensure( n >= 0 );
+	template<Iterator First>
+	constexpr auto safe_move_next(
+	  First first, Iterator auto const &last,
+	  daw::iter_difference_t<First> n = daw::iter_difference_t<First>{ 1 } ) {
+		using diff_t = daw::iter_difference_t<First>;
+		daw_ensure( n >= diff_t{ 0 } );
 		if constexpr( std::is_base_of_v<std::random_access_iterator_tag,
-		                                iter_category_t<decltype( first )>> ) {
-			std::advance( first,
-			              std::min( { std::ranges::distance( first, last ), n } ) );
+		                                iter_category_t<First>> ) {
+			std::advance( first, std::min( { range_distance( first, last ), n } ) );
 		} else {
-			while( first != last and n > 0 ) {
+			while( first != last and n > diff_t{ 0 } ) {
 				++first;
 				--n;
 			}

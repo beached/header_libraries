@@ -192,16 +192,15 @@ namespace daw {
 	template<typename R>
 	concept RandomRange = BidirectionalRange<R> and RandomIterator<iterator_t<R>>;
 
-	template<Range R>
-	[[nodiscard]] constexpr auto range_distance( R const &r ) {
-		if constexpr( daw::RandomRange<R> ) {
-			return std::end( r ) - std::begin( r );
+	template<Iterator First>
+	[[nodiscard]] constexpr auto range_distance( First const &first,
+	                                             Iterator auto const &last ) {
+		if constexpr( daw::RandomIterator<First> ) {
+			return last - first;
 		} else {
-			std::ptrdiff_t d = 0;
-			auto f = std::begin( r );
-			auto const l = std::end( r );
-			while( f != l ) {
-				++f;
+			daw::iter_difference_t<First> d = 0;
+			while( first != last ) {
+				++first;
 				++d;
 			}
 			return d;
