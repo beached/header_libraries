@@ -36,7 +36,8 @@ namespace daw::pipelines {
 		};
 
 		template<typename... Ts>
-		requires( sizeof...( Ts ) == 2 ) struct tuple_pair_t<Ts...> {
+		requires( sizeof...( Ts ) == 2 )
+		struct tuple_pair_t<Ts...> {
 			using type = std::pair<Ts...>;
 		};
 
@@ -60,16 +61,15 @@ namespace daw::pipelines {
 				return true;
 			}
 
-			[[noreturn]] DAW_ATTRIB_NOINLINE inline value_type operator*( ) const {
+			[[noreturn]] DAW_ATTRIB_NOINLINE value_type operator*( ) const {
 				std::terminate( );
 			}
 
-			[[noreturn]] DAW_ATTRIB_NOINLINE inline zip_iterator_end &
-			operator++( ) const {
+			[[noreturn]] DAW_ATTRIB_NOINLINE zip_iterator_end &operator++( ) const {
 				std::terminate( );
 			}
 
-			[[noreturn]] DAW_ATTRIB_NOINLINE inline zip_iterator_end
+			[[noreturn]] DAW_ATTRIB_NOINLINE zip_iterator_end
 			operator++( int ) const {
 				std::terminate( );
 			}
@@ -82,8 +82,8 @@ namespace daw::pipelines {
 		struct zip_counted : std::false_type {};
 
 		template<Iterator... SentinelFors, typename... Iterators>
-		requires( sizeof...( SentinelFors ) == sizeof...( Iterators ) ) //
-		  struct zip_counted<zip_iterator_end<SentinelFors...>, Iterators...>
+		requires( sizeof...( SentinelFors ) == sizeof...( Iterators ) )
+		struct zip_counted<zip_iterator_end<SentinelFors...>, Iterators...>
 		  : std::bool_constant<( counted_source<Iterators, SentinelFors> and
 		                         ... )> {};
 
@@ -109,8 +109,8 @@ namespace daw::pipelines {
 		};
 
 		template<typename ZR, typename Last, Iterator... Iterators>
-		requires( requires { typename ZR::i_am_a_daw_zip_view_class; } ) //
-		  struct zip_iterator {
+		requires( requires { typename ZR::i_am_a_daw_zip_view_class; } )
+		struct zip_iterator {
 			static_assert( sizeof...( Iterators ) > 0,
 			               "Empty zip iterator is unsupported" );
 
@@ -160,14 +160,16 @@ namespace daw::pipelines {
 			template<std::size_t... Is>
 			[[nodiscard]] constexpr reference get_at( difference_type n,
 			                                          std::index_sequence<Is...> )
-			  requires( RandomIteratorTag<iterator_category> ) {
+			requires( RandomIteratorTag<iterator_category> )
+			{
 				return reference{ *std::next( std::get<Is>( m_iters ), n )... };
 			}
 
 			template<std::size_t... Is>
 			[[nodiscard]] constexpr const_reference
 			get_at( difference_type n, std::index_sequence<Is...> ) const
-			  requires( RandomIteratorTag<iterator_category> ) {
+			requires( RandomIteratorTag<iterator_category> )
+			{
 				return const_reference{ *std::next( std::get<Is>( m_iters ), n )... };
 			}
 
@@ -289,13 +291,15 @@ namespace daw::pipelines {
 
 			// bidirectional iterator interface
 			constexpr zip_iterator &operator--( )
-			  requires( BidirectionalIteratorTag<iterator_category> ) {
+			requires( BidirectionalIteratorTag<iterator_category> )
+			{
 				decrement( zip_indices( ) );
 				return *this;
 			}
 
 			[[nodiscard]] constexpr zip_iterator operator--( int )
-			  requires( BidirectionalIteratorTag<iterator_category> ) {
+			requires( BidirectionalIteratorTag<iterator_category> )
+			{
 				auto tmp = *this;
 				decrement( zip_indices( ) );
 				return tmp;
@@ -303,57 +307,66 @@ namespace daw::pipelines {
 
 			// random access iterator interface
 			[[nodiscard]] constexpr reference operator[]( difference_type n )
-			  requires( RandomIteratorTag<iterator_category> ) {
+			requires( RandomIteratorTag<iterator_category> )
+			{
 				return get_at( n, zip_indices( ) );
 			}
 
 			[[nodiscard]] constexpr reference operator[]( difference_type n ) const
-			  requires( RandomIteratorTag<iterator_category> ) {
+			requires( RandomIteratorTag<iterator_category> )
+			{
 				return get_at( n, zip_indices( ) );
 			}
 
 			constexpr zip_iterator &operator+=( difference_type n )
-			  requires( RandomIteratorTag<iterator_category> ) {
+			requires( RandomIteratorTag<iterator_category> )
+			{
 				advance( n, zip_indices( ) );
 				return *this;
 			}
 
 			constexpr zip_iterator &operator-=( difference_type n )
-			  requires( RandomIteratorTag<iterator_category> ) {
+			requires( RandomIteratorTag<iterator_category> )
+			{
 				advance( -n, zip_indices( ) );
 				return *this;
 			}
 
 			friend constexpr zip_iterator operator+( zip_iterator lhs,
 			                                         difference_type n )
-			  requires( RandomIteratorTag<iterator_category> ) {
+			requires( RandomIteratorTag<iterator_category> )
+			{
 				lhs += n;
 				return lhs;
 			}
 
 			friend constexpr zip_iterator operator+( difference_type n,
 			                                         zip_iterator rhs )
-			  requires( RandomIteratorTag<iterator_category> ) {
+			requires( RandomIteratorTag<iterator_category> )
+			{
 				rhs += n;
 				return rhs;
 			}
 
 			friend constexpr zip_iterator operator-( zip_iterator lhs,
 			                                         difference_type n )
-			  requires( RandomIteratorTag<iterator_category> ) {
+			requires( RandomIteratorTag<iterator_category> )
+			{
 				lhs -= n;
 				return lhs;
 			}
 
 			friend constexpr zip_iterator operator-( difference_type n,
 			                                         zip_iterator rhs )
-			  requires( RandomIteratorTag<iterator_category> ) {
+			requires( RandomIteratorTag<iterator_category> )
+			{
 				rhs -= n;
 				return rhs;
 			}
 
 			constexpr difference_type operator-( zip_iterator const &rhs ) const
-			  requires( RandomIteratorTag<iterator_category> ) {
+			requires( RandomIteratorTag<iterator_category> )
+			{
 				return std::get<0>( m_iters ) - std::get<0>( rhs.m_iters );
 			}
 		};
@@ -377,8 +390,8 @@ namespace daw::pipelines {
 		static constexpr std::size_t range_count = sizeof...( Ranges );
 
 		template<typename ZR, typename, Iterator...>
-		requires( requires { typename ZR::i_am_a_daw_zip_view_class; } ) //
-		  friend struct pimpl::zip_iterator;
+		requires( requires { typename ZR::i_am_a_daw_zip_view_class; } )
+		friend struct pimpl::zip_iterator;
 
 	private:
 		ranges_t m_ranges{ };

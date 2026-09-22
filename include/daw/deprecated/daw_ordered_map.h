@@ -83,9 +83,7 @@ namespace daw {
 		}
 	} // namespace ordered_map_impl
 	// Use linear searching for key, keep values in insertion order
-	template<typename Key,
-	         typename Value,
-	         typename Compare = std::less<Key>,
+	template<typename Key, typename Value, typename Compare = std::less<Key>,
 	         typename Allocator = std::allocator<std::pair<Key, Value>>,
 	         typename Container = std::vector<std::pair<Key, Value>, Allocator>>
 	struct ordered_map {
@@ -231,8 +229,7 @@ namespace daw {
 		  , m_compare( comp ) {}
 
 		template<typename InputIterator>
-		constexpr ordered_map( InputIterator first,
-		                       InputIterator last,
+		constexpr ordered_map( InputIterator first, InputIterator last,
 		                       key_compare const &comp = key_compare{ },
 		                       allocator_type const &alloc = allocator_type{ } )
 		  : m_compare( comp )
@@ -247,8 +244,7 @@ namespace daw {
 		}
 
 		template<typename InputIterator>
-		constexpr ordered_map( InputIterator first,
-		                       InputIterator last,
+		constexpr ordered_map( InputIterator first, InputIterator last,
 		                       allocator_type const &alloc = allocator_type{ } )
 		  : m_values( alloc ) {
 
@@ -302,9 +298,8 @@ namespace daw {
 		}
 		*/
 
-		template<
-		  typename P,
-		  daw::enable_when_t<std::is_constructible_v<value_type, P &&>> = nullptr>
+		template<typename P, daw::enable_when_t<
+		                       std::is_constructible_v<value_type, P &&>> = nullptr>
 		constexpr std::pair<iterator, bool> insert( P &&value ) {
 			auto pos = find( std::get<0>( value ) );
 			if( pos == end( ) ) {

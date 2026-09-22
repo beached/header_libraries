@@ -18,18 +18,19 @@
 namespace daw {
 #if defined( DAW_HAS_CPP20_CONCEPTS )
 	template<typename R, typename Fn, typename... Args>
-	concept is_callable_r_v = requires( Fn && fn, Args &&...args ) {
-		{ std::forward<Fn>( fn )( std::forward<Args>( args )... ) }
-		  ->std::convertible_to<R>;
+	concept is_callable_r_v = requires( Fn &&fn, Args &&...args ) {
+		{
+			std::forward<Fn>( fn )( std::forward<Args>( args )... )
+		} -> std::convertible_to<R>;
 	};
 
 	template<typename Fn, typename... Args>
-	concept is_callable_v = requires( Fn && fn, Args &&...args ) {
+	concept is_callable_v = requires( Fn &&fn, Args &&...args ) {
 		std::forward<Fn>( fn )( std::forward<Args>( args )... );
 	};
 
 	template<typename R, typename Fn, typename... Args>
-	concept is_nothrow_r_v = requires( Fn && fn, Args &&...args ) {
+	concept is_nothrow_r_v = requires( Fn &&fn, Args &&...args ) {
 		{
 			std::forward<Fn>( fn )( std::forward<Args>( args )... )
 		} noexcept -> std::convertible_to<R>;

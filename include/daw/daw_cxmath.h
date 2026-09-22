@@ -991,8 +991,7 @@ namespace daw::cxmath {
 	static_assert( not is_nan( daw::numeric_limits<float>::infinity( ) ) );
 
 #if defined( DAW_CX_BIT_CAST )
-	[[nodiscard]] constexpr double ldexp( double d,
-	                                      std::int32_t exponent ) {
+	[[nodiscard]] constexpr double ldexp( double d, std::int32_t exponent ) {
 		daw::UInt64 dint = DAW_BIT_CAST( daw::UInt64, 2.0 );
 		auto const new_exponent = static_cast<std::int32_t>(
 		  static_cast<std::uint32_t>( exponent ) + 1023U );

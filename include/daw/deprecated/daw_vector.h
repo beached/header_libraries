@@ -101,9 +101,12 @@ namespace daw {
 
 	private:
 		[[nodiscard]] static inline pointer allocate_raw( size_type count ) {
-			T *result =
-			  reinterpret_cast<T *>( ::mmap( nullptr, count, PROT_READ | PROT_WRITE,
-			                                 MAP_ANONYMOUS | MAP_PRIVATE, -1, 0 ) );
+			T *result = reinterpret_cast<T *>( ::mmap( nullptr,
+			                                           count,
+			                                           PROT_READ | PROT_WRITE,
+			                                           MAP_ANONYMOUS | MAP_PRIVATE,
+			                                           -1,
+			                                           0 ) );
 			if( DAW_UNLIKELY( not result ) ) {
 				DAW_THROW_OR_TERMINATE_NA( std::bad_alloc );
 			}
@@ -697,8 +700,8 @@ namespace daw {
 				return false;
 			}
 
-			return std::equal( m_first, m_size, rhs.m_first,
-			                   std::not_equal_to<value_type>{ } );
+			return std::equal(
+			  m_first, m_size, rhs.m_first, std::not_equal_to<value_type>{ } );
 		}
 	};
 

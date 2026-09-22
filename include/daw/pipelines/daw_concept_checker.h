@@ -32,7 +32,9 @@ namespace daw {
 		static_assert( requires { typename std::iter_difference_t<I>; } );
 		static_assert( daw::is_integral_v<std::iter_difference_t<I>> );
 		static_assert( daw::is_signed_v<std::iter_difference_t<I>> );
-		static_assert( requires( I i ) { { ++i }->std::same_as<I &>; } );
+		static_assert( requires( I i ) {
+			{ ++i } -> std::same_as<I &>;
+		} );
 		static_assert( requires( I i ) { i++; } );
 		return true;
 	}
@@ -40,7 +42,9 @@ namespace daw {
 	template<typename I>
 	DAW_CONSTEVAL bool check_input_or_output_iterator( ) {
 		static_assert( requires( I i ) { *i; } );
-		static_assert( requires( I i ) { { *i }->not_same_as<void>; } );
+		static_assert( requires( I i ) {
+			{ *i } -> not_same_as<void>;
+		} );
 		check_weakly_incrementable<I>( );
 		return true;
 	}
@@ -51,11 +55,12 @@ namespace daw {
 		static_assert( requires { typename std::iter_reference_t<I>; } );
 		static_assert( requires { typename std::iter_rvalue_reference_t<I>; } );
 		static_assert( requires( I const in ) {
-			{ *in }->std::same_as<std::iter_reference_t<I>>;
+			{ *in } -> std::same_as<std::iter_reference_t<I>>;
 		} );
 		static_assert( requires( I const in ) {
-			{ std::ranges::iter_move( in ) }
-			  ->std::same_as<std::iter_rvalue_reference_t<I>>;
+			{
+				std::ranges::iter_move( in )
+			} -> std::same_as<std::iter_rvalue_reference_t<I>>;
 		} );
 		static_assert( std::common_reference_with<std::iter_reference_t<I> &&,
 		                                          std::iter_value_t<I> &> );
@@ -88,19 +93,19 @@ namespace daw {
 	DAW_CONSTEVAL bool check_weakly_equality_comparible_with( ) {
 		static_assert( requires( std::remove_reference_t<T> const &t,
 		                         std::remove_reference_t<U> const &u ) {
-			{ t == u }->convertible_to<bool>;
+			{ t == u } -> convertible_to<bool>;
 		} );
 		static_assert( requires( std::remove_reference_t<T> const &t,
 		                         std::remove_reference_t<U> const &u ) {
-			{ t != u }->convertible_to<bool>;
+			{ t != u } -> convertible_to<bool>;
 		} );
 		static_assert( requires( std::remove_reference_t<T> const &t,
 		                         std::remove_reference_t<U> const &u ) {
-			{ u == t }->convertible_to<bool>;
+			{ u == t } -> convertible_to<bool>;
 		} );
 		static_assert( requires( std::remove_reference_t<T> const &t,
 		                         std::remove_reference_t<U> const &u ) {
-			{ u != t }->convertible_to<bool>;
+			{ u != t } -> convertible_to<bool>;
 		} );
 		return true;
 	}

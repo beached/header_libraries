@@ -30,7 +30,7 @@ namespace daw::pipelines::pimpl {
 	finder( Needle const &needle, Projection const &projection,
 	        ForwardIterator auto it_current,
 	        ProjectedValues &&...projected_values )
-	  requires( not InputIterator<Needle> and not InputIterator<Projection> ) //
+	requires( not InputIterator<Needle> and not InputIterator<Projection> )
 	{
 
 		static_assert( C >= 0 );
@@ -71,8 +71,8 @@ namespace daw::pipelines::pimpl {
 
 	template<std::size_t FindWidth, typename Needle,
 	         typename Projection = std::identity>
-	requires( FindWidth > 0 ) //
-	  struct FindIf_t {
+	requires( FindWidth > 0 )
+	struct FindIf_t {
 		DAW_NO_UNIQUE_ADDRESS Needle needle;
 		DAW_NO_UNIQUE_ADDRESS Projection projection;
 
@@ -103,35 +103,35 @@ namespace daw::pipelines {
 	/// FindWidth parameters of type range_value_type
 	template<std::size_t FindWidth = 1, typename Needle,
 	         typename Projection = std::identity>
-	requires( not Range<Needle> ) //
-	  [[nodiscard]] constexpr auto FindIf(
-	    Needle &&needle, Projection &&projection = Projection{ } ) {
+	requires( not Range<Needle> )
+	[[nodiscard]] constexpr auto
+	FindIf( Needle &&needle, Projection &&projection = Projection{ } ) {
 		return pimpl::FindIf_t<FindWidth, Needle, Projection>{
 		  DAW_FWD( needle ), DAW_FWD( projection ) };
 	}
 
 	template<typename Needle, typename Projection = std::identity>
-	requires( not Range<Needle> ) //
-	  [[nodiscard]] constexpr auto Find(
-	    Needle &&needle, Projection &&projection = Projection{ } ) {
+	requires( not Range<Needle> )
+	[[nodiscard]] constexpr auto Find( Needle &&needle,
+	                                   Projection &&projection = Projection{ } ) {
 		return pimpl::FindValue_t<Needle, Projection>{ DAW_FWD( needle ),
 		                                               DAW_FWD( projection ) };
 	}
 
 	template<std::size_t FindWidth = 1, Range R, typename Needle,
 	         typename Projection = std::identity>
-	requires( std::invocable<Projection, daw::range_reference_t<R>> ) //
-	  [[nodiscard]] constexpr auto FindIf(
-	    R &&r, Needle &&needle, Projection &&projection = Projection{ } ) {
+	requires( std::invocable<Projection, daw::range_reference_t<R>> )
+	[[nodiscard]] constexpr auto
+	FindIf( R &&r, Needle &&needle, Projection &&projection = Projection{ } ) {
 
 		return pimpl::FindIf_t<FindWidth, Needle, Projection>{
 		  DAW_FWD( needle ), DAW_FWD( projection ) }( DAW_FWD( r ) );
 	}
 
 	template<Range R, typename Needle, typename Projection = std::identity>
-	requires( std::invocable<Projection, daw::range_reference_t<R>> ) //
-	  [[nodiscard]] constexpr auto Find(
-	    R &&r, Needle &&needle, Projection &&projection = Projection{ } ) {
+	requires( std::invocable<Projection, daw::range_reference_t<R>> )
+	[[nodiscard]] constexpr auto Find( R &&r, Needle &&needle,
+	                                   Projection &&projection = Projection{ } ) {
 
 		return pimpl::FindValue_t<Needle, Projection>{
 		  DAW_FWD( needle ), DAW_FWD( projection ) }( DAW_FWD( r ) );

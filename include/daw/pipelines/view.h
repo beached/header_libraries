@@ -71,27 +71,32 @@ namespace daw::pipelines {
 		}
 
 		[[nodiscard]] constexpr std::size_t size( ) const
-		  requires( RandomIteratorTag<iterator_category> ) {
+		requires( RandomIteratorTag<iterator_category> )
+		{
 			return pimpl::ranges_distance<std::size_t>( first, last );
 		}
 
 		[[nodiscard]] constexpr auto data( )
-		  requires( std::contiguous_iterator<First> ) {
+		requires( std::contiguous_iterator<First> )
+		{
 			return std::to_address( first );
 		}
 
 		[[nodiscard]] constexpr auto data( ) const
-		  requires( std::contiguous_iterator<First> ) {
+		requires( std::contiguous_iterator<First> )
+		{
 			return std::to_address( first );
 		}
 
 		[[nodiscard]] constexpr auto data_end( )
-		  requires( std::contiguous_iterator<First> ) {
+		requires( std::contiguous_iterator<First> )
+		{
 			return std::to_address( last );
 		}
 
 		[[nodiscard]] constexpr auto data_end( ) const
-		  requires( std::contiguous_iterator<First> ) {
+		requires( std::contiguous_iterator<First> )
+		{
 			return std::to_address( last );
 		}
 
@@ -107,26 +112,30 @@ namespace daw::pipelines {
 		}
 
 		constexpr view_t &operator--( )
-		  requires( BidirectionalIteratorTag<iterator_category> ) {
+		requires( BidirectionalIteratorTag<iterator_category> )
+		{
 			--first;
 			return *this;
 		}
 
 		[[nodiscard]] constexpr view_t operator--( int )
-		  requires( BidirectionalIteratorTag<iterator_category> ) {
+		requires( BidirectionalIteratorTag<iterator_category> )
+		{
 			auto result = *this;
 			--first;
 			return result;
 		}
 
 		[[nodiscard]] constexpr reference operator[]( difference_type idx )
-		  requires( RandomIteratorTag<iterator_category> ) {
+		requires( RandomIteratorTag<iterator_category> )
+		{
 			return first[idx];
 		}
 
 		[[nodiscard]] constexpr const_reference
 		operator[]( difference_type idx ) const
-		  requires( RandomIteratorTag<iterator_category> ) {
+		requires( RandomIteratorTag<iterator_category> )
+		{
 			return first[idx];
 		}
 
@@ -155,7 +164,8 @@ namespace daw::pipelines {
 		}
 
 		[[nodiscard]] constexpr difference_type operator-( view_t const &rhs ) const
-		  requires( RandomIteratorTag<iterator_category> ) {
+		requires( RandomIteratorTag<iterator_category> )
+		{
 			return pimpl::ranges_distance<difference_type>( first, rhs.first );
 		}
 

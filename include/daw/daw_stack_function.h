@@ -249,9 +249,10 @@ namespace daw {
 		template<typename Func>
 		decltype( auto ) store_if_not_empty( Func &&f ) {
 			func_impl::validate_size<sizeof( std::decay_t<Func> ), MaxSize>( );
-			return func_impl::store_if_not_empty<MaxSize, function_base,
-			                                     function_child<Func>, empty_child>(
-			  DAW_FWD( f ) );
+			return func_impl::store_if_not_empty<MaxSize,
+			                                     function_base,
+			                                     function_child<Func>,
+			                                     empty_child>( DAW_FWD( f ) );
 		}
 
 	public:

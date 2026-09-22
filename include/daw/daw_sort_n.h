@@ -621,8 +621,11 @@ namespace daw {
 				m += delta;
 				if( len >= 1000 ) {
 					delta /= 2;
-					return sort_n_details::sort_5_impl( first, std::next( first, delta ),
-					                                    m, std::next( m, delta ), lm1,
+					return sort_n_details::sort_5_impl( first,
+					                                    std::next( first, delta ),
+					                                    m,
+					                                    std::next( m, delta ),
+					                                    lm1,
 					                                    comp );
 				}
 				return sort_n_details::sort_3_impl( first, m, lm1, comp );
@@ -704,8 +707,8 @@ namespace daw {
 			if( swap_count == 0 ) {
 				bool const fs =
 				  sort_n_details::insertion_sort_incomplete( first, i, comp );
-				if( sort_n_details::insertion_sort_incomplete( std::next( i ), last,
-				                                               comp ) ) {
+				if( sort_n_details::insertion_sort_incomplete(
+				      std::next( i ), last, comp ) ) {
 					if( fs ) {
 						return;
 					}
@@ -760,8 +763,8 @@ namespace daw {
 				++counts[static_cast<std::size_t>( ( *it ) % 10 )];
 				++d;
 			}
-			daw::algorithm::partial_sum( std::cbegin( counts ), std::cend( counts ),
-			                             std::begin( counts ) );
+			daw::algorithm::partial_sum(
+			  std::cbegin( counts ), std::cend( counts ), std::begin( counts ) );
 
 			if( is_ascend ) {
 				while( first_in != last_in ) {

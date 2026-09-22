@@ -146,8 +146,8 @@ namespace daw {
 		using std::begin;
 		using std::end;
 		auto const d = static_cast<ptrdiff_t>( distance );
-		algorithm_details::safe_advance_impl( begin( container ), it,
-		                                      end( container ), d );
+		algorithm_details::safe_advance_impl(
+		  begin( container ), it, end( container ), d );
 	}
 
 	/// @brief Advance Iterator within the bounds of container
@@ -167,8 +167,8 @@ namespace daw {
 		using std::begin;
 		using std::end;
 		auto const d = static_cast<ptrdiff_t>( distance );
-		algorithm_details::safe_advance_impl( begin( container ), it,
-		                                      end( container ), d );
+		algorithm_details::safe_advance_impl(
+		  begin( container ), it, end( container ), d );
 	}
 
 	/// @brief Advance iterator n steps forward but do not go past last.
@@ -903,10 +903,10 @@ namespace daw::algorithm {
 
 		traits::is_input_iterator_test<InputIterator1>( );
 		traits::is_input_iterator_test<InputIterator2>( );
-		traits::is_compare_test<Compare, decltype( *first1 ),
-		                        decltype( *first2 )>( );
-		traits::is_compare_test<Compare, decltype( *first2 ),
-		                        decltype( *first1 )>( );
+		traits::
+		  is_compare_test<Compare, decltype( *first1 ), decltype( *first2 )>( );
+		traits::
+		  is_compare_test<Compare, decltype( *first2 ), decltype( *first1 )>( );
 
 		while( ( first1 != last1 ) and ( first2 != last2 ) ) {
 			if( daw::invoke( comp, *first1, *first2 ) ) {
@@ -931,7 +931,8 @@ namespace daw::algorithm {
 
 		traits::is_input_iterator_test<InputIterator1>( );
 		traits::is_input_iterator_test<InputIterator2>( );
-		static_assert( std::is_invocable_v<LessCompare, decltype( *first1 ),
+		static_assert( std::is_invocable_v<LessCompare,
+		                                   decltype( *first1 ),
 		                                   decltype( *first2 )> );
 		static_assert(
 		  std::is_invocable_v<Equality, decltype( *first1 ), decltype( *first2 )> );
@@ -1234,8 +1235,8 @@ namespace daw::algorithm {
 
 		traits::is_input_iterator_test<InputIterator1>( );
 		traits::is_input_iterator_test<InputIterator2>( );
-		traits::is_compare_test<Compare, decltype( *first1 ),
-		                        decltype( *first2 )>( );
+		traits::
+		  is_compare_test<Compare, decltype( *first1 ), decltype( *first2 )>( );
 
 		while( ( first1 != last1 ) and ( first2 != last2 ) and
 		       daw::invoke( comp, *first1, *first2 ) ) {
@@ -1266,8 +1267,8 @@ namespace daw::algorithm {
 
 		traits::is_input_iterator_test<InputIterator1>( );
 		traits::is_input_iterator_test<InputIterator2>( );
-		traits::is_compare_test<Compare, decltype( *first1 ),
-		                        decltype( *first2 )>( );
+		traits::
+		  is_compare_test<Compare, decltype( *first1 ), decltype( *first2 )>( );
 
 		while( ( first1 != last1 ) and ( first2 != last2 ) and
 		       comp( *first1, *first2 ) ) {
@@ -1479,7 +1480,8 @@ namespace daw::algorithm {
 		traits::is_input_iterator_test<InputIterator1>( );
 		traits::is_input_iterator_test<InputIterator2>( );
 		traits::is_output_iterator_test<OutputIterator>( );
-		traits::is_binary_predicate_test<BinaryOperation, decltype( *first1 ),
+		traits::is_binary_predicate_test<BinaryOperation,
+		                                 decltype( *first1 ),
 		                                 decltype( *first2 )>( );
 
 		while( first1 != last1 ) {
@@ -1539,22 +1541,24 @@ namespace daw::algorithm {
 		               "requirements of the Iterator concept "
 		               "http://en.cppreference.com/w/cpp/concept/Iterator" );
 
-		static_assert(
-		  traits::is_binary_predicate_v<MapFunction, decltype( *first1 ),
-		                                decltype( *first2 )>,
-		  "BinaryOperation map_func passed take two values "
-		  "referenced by first. e.g map_func( *first1, "
-		  "*first2 ) must be valid" );
+		static_assert( traits::is_binary_predicate_v<MapFunction,
+		                                             decltype( *first1 ),
+		                                             decltype( *first2 )>,
+		               "BinaryOperation map_func passed take two values "
+		               "referenced by first. e.g map_func( *first1, "
+		               "*first2 ) must be valid" );
 
 		static_assert(
-		  traits::is_binary_predicate_v<ReduceFunction, T,
+		  traits::is_binary_predicate_v<ReduceFunction,
+		                                T,
 		                                decltype( map_func( *first1, *first2 ) )>,
 		  "BinaryOperation reduce_func must take two values referenced by first. "
 		  "e.g reduce_func( init, "
 		  "map_func( *first1, *first2 ) ) must be valid" );
 
 		while( first1 != last1 ) {
-			init = daw::invoke( reduce_func, std::move( init ),
+			init = daw::invoke( reduce_func,
+			                    std::move( init ),
 			                    daw::invoke( map_func, *first1, *first2 ) );
 			++first1;
 			++first2;
@@ -1836,8 +1840,8 @@ namespace daw::algorithm {
 	transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2,
 	                OutputIt first_out, Func func ) {
 
-		return cartesian_product_map( std::move( func ), first1, last1, first_out,
-		                              first2 );
+		return cartesian_product_map(
+		  std::move( func ), first1, last1, first_out, first2 );
 	}
 
 	template<typename InputIt1, typename InputIt2, typename InputIt3,
@@ -1846,8 +1850,8 @@ namespace daw::algorithm {
 	transform_many( InputIt1 first1, InputIt1 last1, InputIt2 first2,
 	                InputIt3 first3, OutputIt first_out, Func func ) {
 
-		return cartesian_product_map( std::move( func ), first1, last1, first_out,
-		                              first2, first3 );
+		return cartesian_product_map(
+		  std::move( func ), first1, last1, first_out, first2, first3 );
 	}
 
 	template<typename InputIt1, typename InputIt2, typename InputIt3,
@@ -1857,8 +1861,8 @@ namespace daw::algorithm {
 	                InputIt3 first3, InputIt4 first4, OutputIt first_out,
 	                Func func ) {
 
-		return cartesian_product_map( std::move( func ), first1, last1, first_out,
-		                              first2, first3, first4 );
+		return cartesian_product_map(
+		  std::move( func ), first1, last1, first_out, first2, first3, first4 );
 	}
 
 	template<typename InputIt1, typename InputIt2, typename InputIt3,
@@ -1869,8 +1873,14 @@ namespace daw::algorithm {
 	                InputIt3 first3, InputIt4 first4, InputIt4 first5,
 	                OutputIt first_out, Func func ) {
 
-		return cartesian_product_map( std::move( func ), first1, last1, first_out,
-		                              first2, first3, first4, first5 );
+		return cartesian_product_map( std::move( func ),
+		                              first1,
+		                              last1,
+		                              first_out,
+		                              first2,
+		                              first3,
+		                              first4,
+		                              first5 );
 	}
 
 	template<typename Function, typename Iterator1, typename LastType,
@@ -1992,7 +2002,9 @@ namespace daw::algorithm {
 		auto second = std::next( first );
 		auto second_last = std::prev( last );
 
-		auto result = std::mismatch( first, second_last, second,
+		auto result = std::mismatch( first,
+		                             second_last,
+		                             second,
 		                             [&comp]( auto const &lhs, auto const &rhs ) {
 			                             return not comp( rhs, lhs );
 		                             } )
@@ -2093,8 +2105,8 @@ namespace daw::algorithm {
 		result_t results{ };
 		while( first != last ) {
 			results = result_t{ preds( *first )... };
-			if( ::daw::algorithm::contains( std::begin( results ),
-			                                std::end( results ), true ) ) {
+			if( ::daw::algorithm::contains(
+			      std::begin( results ), std::end( results ), true ) ) {
 				break;
 			}
 			++first;

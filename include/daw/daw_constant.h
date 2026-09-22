@@ -27,24 +27,23 @@ namespace daw {
 		}
 
 		DAW_CPP23_STATIC_CALL_OP DAW_CONSTEVAL value_type operator( )( )
-		DAW_CPP23_STATIC_CALL_OP_CONST noexcept {
+		  DAW_CPP23_STATIC_CALL_OP_CONST noexcept {
 			return Value;
 		}
 	};
 
 	template<decltype( auto ) Value>
-	inline constexpr auto constant_v = constant<Value>{};
+	inline constexpr auto constant_v = constant<Value>{ };
 
 	namespace literals {
 		template<char... c>
 		DAW_CONSTEVAL auto operator""_c( ) {
 			static_assert( sizeof...( c ) != 0 );
 			constexpr auto buff_size = sizeof...( c ) + 1;
-			constexpr char buff[buff_size] = {c...};
+			constexpr char buff[buff_size] = { c... };
 			using result_t = unsigned long long;
-			constexpr auto result = parser::parse_unsigned_int<result_t>(
-				buff );
+			constexpr auto result = parser::parse_unsigned_int<result_t>( buff );
 			return daw::constant_v<result>;
 		}
-	}
+	} // namespace literals
 } // namespace daw

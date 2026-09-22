@@ -451,8 +451,7 @@ namespace daw {
 			  std::false_type( ), DAW_FWD( arg ), DAW_FWD( args )... );
 		}
 
-		template<typename OStream,
-		         typename T,
+		template<typename OStream, typename T,
 		         std::enable_if_t<daw::traits::is_ostream_like_lite_v<OStream>,
 		                          std::nullptr_t> = nullptr>
 		OStream &operator<<( OStream &os, CollectionRange<T> const &rng ) {

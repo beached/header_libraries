@@ -215,8 +215,8 @@ namespace daw::container {
 		  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
 		  "information" );
 
-		return std::partition( std::begin( container ), std::end( container ),
-		                       pred );
+		return std::partition(
+		  std::begin( container ), std::end( container ), pred );
 	}
 
 	template<typename Container, typename UnaryPredicate,
@@ -234,8 +234,8 @@ namespace daw::container {
 		  "http://en.cppreference.com/w/cpp/concept/Predicate for more "
 		  "information" );
 
-		return std::stable_partition( std::begin( container ),
-		                              std::end( container ), pred );
+		return std::stable_partition(
+		  std::begin( container ), std::end( container ), pred );
 	}
 
 	template<typename Container, typename T,
@@ -245,8 +245,8 @@ namespace daw::container {
 	  noexcept( std::accumulate( std::cbegin( container ), std::end( container ),
 	                             DAW_FWD( init ) ) ) ) {
 
-		return std::accumulate( std::cbegin( container ), std::cend( container ),
-		                        DAW_FWD( init ) );
+		return std::accumulate(
+		  std::cbegin( container ), std::cend( container ), DAW_FWD( init ) );
 	}
 
 	template<typename Container, typename T, typename BinaryOperation,
@@ -259,12 +259,13 @@ namespace daw::container {
 	                                                std::cend( container ),
 	                                                DAW_FWD( init ), oper ) ) ) {
 
-		static_assert( std::is_invocable_v<BinaryOperation, T,
+		static_assert( std::is_invocable_v<BinaryOperation,
+		                                   T,
 		                                   decltype( *std::cbegin( container ) )>,
 		               "Invalid BinaryOperation" );
 
-		return std::accumulate( std::cbegin( container ), std::cend( container ),
-		                        DAW_FWD( init ), oper );
+		return std::accumulate(
+		  std::cbegin( container ), std::cend( container ), DAW_FWD( init ), oper );
 	}
 
 	template<typename Container, typename UnaryOperator,
@@ -279,8 +280,10 @@ namespace daw::container {
 		  std::is_invocable_v<UnaryOperator, decltype( *std::cbegin( container ) )>,
 		  "UnaryOperator is not callable with the values stored in Container" );
 
-		return std::transform( std::cbegin( container ), std::cend( container ),
-		                       std::begin( container ), unary_operator );
+		return std::transform( std::cbegin( container ),
+		                       std::cend( container ),
+		                       std::begin( container ),
+		                       unary_operator );
 	}
 
 	template<typename Container, typename OutputIterator, typename UnaryOperator,
@@ -304,8 +307,10 @@ namespace daw::container {
 		                                     decltype( *first_out )>,
 		               "Output of UnaryOperator cannot be assigned to *first_out" );
 
-		return std::transform( std::cbegin( container ), std::cend( container ),
-		                       first_out, unary_operator );
+		return std::transform( std::cbegin( container ),
+		                       std::cend( container ),
+		                       first_out,
+		                       unary_operator );
 	}
 
 	template<typename Container, typename OutputIterator, typename UnaryOperator,
@@ -324,7 +329,9 @@ namespace daw::container {
 		  std::is_invocable_v<UnaryOperator, decltype( *std::cbegin( container ) )>,
 		  "UnaryOperator is not callable with the values stored in Container" );
 
-		std::transform( std::cbegin( container ), std::cend( container ), first_out,
+		std::transform( std::cbegin( container ),
+		                std::cend( container ),
+		                first_out,
 		                unary_operator );
 	}
 
@@ -364,8 +371,8 @@ namespace daw::container {
 		static_assert(
 		  traits::is_binary_predicate_v<Compare, value_type, value_type> );
 
-		return daw::algorithm::max_element( begin( container ), end( container ),
-		                                    compare );
+		return daw::algorithm::max_element(
+		  begin( container ), end( container ), compare );
 	}
 
 	template<typename Container, typename Compare,
@@ -383,8 +390,8 @@ namespace daw::container {
 		static_assert(
 		  traits::is_binary_predicate_v<Compare, value_type, value_type> );
 
-		return daw::algorithm::max_element( begin( container ), end( container ),
-		                                    compare );
+		return daw::algorithm::max_element(
+		  begin( container ), end( container ), compare );
 	}
 
 	template<typename Container, typename Value,
@@ -439,7 +446,7 @@ namespace daw::container {
 	constexpr void copy_n( Container const &source, size_t count,
 	                       OutputIterator destination ) {
 		auto src = std::cbegin( source );
-		count = ( daw::min )( count, daw::size( source ) );
+		count = (daw::min)( count, daw::size( source ) );
 		for( size_t n = 0; n < count; ++n ) {
 			*destination = *src;
 			++destination;
@@ -486,7 +493,7 @@ namespace daw::container {
 		  "information" );
 
 		auto src = std::cbegin( source );
-		count = ( daw::min )( count, daw::size( source ) );
+		count = (daw::min)( count, daw::size( source ) );
 		for( size_t n = 0; n < count; ++n ) {
 			if( pred( *src ) ) {
 				*destination = *src;
@@ -568,7 +575,7 @@ namespace daw::container {
 	/// @param destination a container to append to
 	template<typename Source, typename Destination>
 	constexpr void append( Source const &source, Destination &destination ) {
-		destination.insert( std::end( destination ), std::begin( source ),
-		                    std::end( source ) );
+		destination.insert(
+		  std::end( destination ), std::begin( source ), std::end( source ) );
 	}
 } // namespace daw::container

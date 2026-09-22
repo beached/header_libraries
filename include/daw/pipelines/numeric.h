@@ -75,9 +75,9 @@ namespace daw::pipelines {
 			DAW_NO_UNIQUE_ADDRESS Projection m_projection = Projection{ };
 
 			template<typename P>
-			requires( not Range<P> ) [[nodiscard]] DAW_CPP23_STATIC_CALL_OP
-			  constexpr auto
-			  operator( )( P &&proj ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			requires( not Range<P> )
+			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+			operator( )( P &&proj ) DAW_CPP23_STATIC_CALL_OP_CONST {
 				return SumKahanBabushkaNeumaier_t<daw::remove_cvrvref_t<P>>{
 				  DAW_FWD( proj ) };
 			}

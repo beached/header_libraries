@@ -11,43 +11,33 @@
 #include "daw/daw_cpp_feature_check.h"
 
 #if not defined( DAW_CPP20_REQUIRES )
-#if defined( DAW_HAS_CPP20_CONCEPTS  )
+#if defined( DAW_HAS_CPP20_CONCEPTS )
 #define DAW_CPP20_REQUIRES( ... ) requires( __VA_ARGS__ )
 #else
 #define DAW_CPP20_REQUIRES( ... )
 #endif
 #endif
 
-#if defined( DAW_HAS_CPP20_CONCEPTS  )
+#if defined( DAW_HAS_CPP20_CONCEPTS )
 #define DAW_MAKE_REQ_TRAIT( Name, /*ReqExpression*/... ) \
 	template<typename T>                                   \
-	inline constexpr bool Name = requires {                \
-		__VA_ARGS__;                                         \
-	}
+	inline constexpr bool Name = requires { __VA_ARGS__; }
 
 #define DAW_MAKE_REQ_TRAIT2( Name, /*ReqExpression*/... ) \
 	template<typename T, typename U>                        \
-	inline constexpr bool Name = requires {                 \
-		__VA_ARGS__;                                          \
-	}
+	inline constexpr bool Name = requires { __VA_ARGS__; }
 
 #define DAW_MAKE_REQ_TRAIT3( Name, /*ReqExpression*/... ) \
 	template<typename T, typename U, typename V>            \
-	inline constexpr bool Name = requires {                 \
-		__VA_ARGS__;                                          \
-	}
+	inline constexpr bool Name = requires { __VA_ARGS__; }
 
 #define DAW_MAKE_REQ_TRAIT_TYPE( Name, /*ReqExpression*/... ) \
 	template<typename T>                                        \
-	inline constexpr bool Name = requires {                     \
-		typename __VA_ARGS__;                                     \
-	}
+	inline constexpr bool Name = requires { typename __VA_ARGS__; }
 
 #define DAW_MAKE_REQ_TRAIT2D( Name, /*ReqExpression*/... ) \
 	template<typename T, typename U = T>                     \
-	inline constexpr bool Name = requires {                  \
-		__VA_ARGS__;                                           \
-	}
+	inline constexpr bool Name = requires { __VA_ARGS__; }
 #else
 #define DAW_MAKE_REQ_TRAIT( Name, /*ReqExpression*/... ) \
 	template<typename, typename = void>                    \

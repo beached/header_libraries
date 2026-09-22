@@ -58,9 +58,11 @@ namespace std {
 		formatter( ) = default;
 
 		template<class ParseContext>
-		constexpr ParseContext::iterator parse( ParseContext &ctx DAW_LIFETIME_BOUND ) {
+		constexpr ParseContext::iterator
+		parse( ParseContext &ctx DAW_LIFETIME_BOUND ) {
 			auto ctx_b = std::begin( ctx );
-			auto const ctx_sz = static_cast<std::size_t>( std::distance( std::begin( ctx ), std::end( ctx ) ) );
+			auto const ctx_sz = static_cast<std::size_t>(
+			  std::distance( std::begin( ctx ), std::end( ctx ) ) );
 			auto f = daw::basic_string_view( ctx_b, ctx_sz );
 			if( ctx.begin( ) == ctx.end( ) or *ctx.begin( ) == '}' ) {
 				flags = "{}";
@@ -114,14 +116,16 @@ namespace std {
 				  if( is_first ) {
 					  is_first = false;
 				  } else {
-					  out = std::copy( std::data( c.Separator ),
-					                   daw::data_end( c.Separator ), out );
+					  out = std::copy(
+					    std::data( c.Separator ), daw::data_end( c.Separator ), out );
 				  }
-				  out = std::vformat_to( out, std::string_view( flags ),
+				  out = std::vformat_to( out,
+				                         std::string_view( flags ),
 				                         std::make_format_args( get<Idx>( c.value ) ) );
 			  };
 			[&]<std::size_t... Is>( std::index_sequence<Is...> ) {
-				(void)( write_value( std::integral_constant<std::size_t, Is>{ } ), ...,
+				(void)( write_value( std::integral_constant<std::size_t, Is>{ } ),
+				        ...,
 				        1 );
 			}( std::make_index_sequence<std::tuple_size_v<T>>{ } );
 			out = std::copy( std::data( c.Right ), daw::data_end( c.Right ), out );

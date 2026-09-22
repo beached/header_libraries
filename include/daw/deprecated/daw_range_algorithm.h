@@ -30,8 +30,7 @@ namespace daw::algorithm {
 		return container;
 	}
 
-	template<typename Container,
-	         typename Compare,
+	template<typename Container, typename Compare,
 	         std::enable_if_t<traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	Container &sort( Container &container, Compare compare ) noexcept( noexcept(
@@ -58,13 +57,11 @@ namespace daw::algorithm {
 		return container;
 	}
 
-	template<typename Container,
-	         typename Compare,
+	template<typename Container, typename Compare,
 	         std::enable_if_t<traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	Container &stable_sort( Container &container, Compare compare ) noexcept(
-	  noexcept( std::stable_sort( std::begin( container ),
-	                              std::end( container ),
+	  noexcept( std::stable_sort( std::begin( container ), std::end( container ),
 	                              compare ) ) ) {
 
 		static_assert(
@@ -79,19 +76,17 @@ namespace daw::algorithm {
 		return container;
 	}
 
-	template<typename Container,
-	         typename Value,
+	template<typename Container, typename Value,
 	         std::enable_if_t<traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
-	decltype( auto )
-	find( Container &container, Value const &value ) noexcept( noexcept(
-	  std::find( std::begin( container ), std::end( container ), value ) ) ) {
+	decltype( auto ) find( Container &container, Value const &value ) noexcept(
+	  noexcept( std::find( std::begin( container ), std::end( container ),
+	                       value ) ) ) {
 
 		return std::find( std::begin( container ), std::end( container ), value );
 	}
 
-	template<typename Container,
-	         typename Value,
+	template<typename Container, typename Value,
 	         std::enable_if_t<traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto )
@@ -101,8 +96,7 @@ namespace daw::algorithm {
 		return std::find( std::begin( container ), std::end( container ), value );
 	}
 
-	template<typename Container,
-	         typename UnaryPredicate,
+	template<typename Container, typename UnaryPredicate,
 	         std::enable_if_t<traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto )
@@ -119,8 +113,7 @@ namespace daw::algorithm {
 		return std::find_if( std::begin( container ), std::end( container ), pred );
 	}
 
-	template<typename Container,
-	         typename UnaryPredicate,
+	template<typename Container, typename UnaryPredicate,
 	         std::enable_if_t<traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto )
@@ -175,20 +168,17 @@ namespace daw::algorithm {
 		  std::begin( container ), std::end( container ), std::move( init ) );
 	}
 
-	template<typename Container,
-	         typename T,
-	         typename BinaryOperator,
+	template<typename Container, typename T, typename BinaryOperator,
 	         std::enable_if_t<daw::traits::is_container_like_v<
 	                            std::remove_reference_t<Container>>,
 	                          std::nullptr_t> = nullptr>
-	constexpr T
-	accumulate( Container const &container, T init, BinaryOperator oper ) {
+	constexpr T accumulate( Container const &container, T init,
+	                        BinaryOperator oper ) {
 		return daw::algorithm::accumulate(
 		  std::begin( container ), std::end( container ), std::move( init ), oper );
 	}
 
-	template<typename Container,
-	         typename UnaryOperator,
+	template<typename Container, typename UnaryOperator,
 	         std::enable_if_t<traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	auto map( Container const &container, UnaryOperator unary_operator ) {
@@ -208,13 +198,10 @@ namespace daw::algorithm {
 		return result;
 	}
 
-	template<typename Container,
-	         typename OutputIterator,
-	         typename UnaryOperator,
+	template<typename Container, typename OutputIterator, typename UnaryOperator,
 	         std::enable_if_t<traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
-	void map( Container const &container,
-	          OutputIterator &first_out,
+	void map( Container const &container, OutputIterator &first_out,
 	          UnaryOperator
 	            unary_operator ) noexcept( noexcept( std::
 	                                                   transform(
@@ -238,13 +225,10 @@ namespace daw::algorithm {
 		                unary_operator );
 	}
 
-	template<typename Container,
-	         typename OutputIterator,
-	         typename UnaryOperator,
+	template<typename Container, typename OutputIterator, typename UnaryOperator,
 	         std::enable_if_t<traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
-	void map( Container const &container,
-	          OutputIterator &&first_out,
+	void map( Container const &container, OutputIterator &&first_out,
 	          UnaryOperator
 	            unary_operator ) noexcept( noexcept( std::
 	                                                   transform(
@@ -264,8 +248,7 @@ namespace daw::algorithm {
 	}
 
 	// max_element
-	template<typename Container,
-	         typename UnaryOperator,
+	template<typename Container, typename UnaryOperator,
 	         std::enable_if_t<traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto ) max_element( Container &container ) noexcept( noexcept(
@@ -274,9 +257,7 @@ namespace daw::algorithm {
 		return std::max_element( std::cbegin( container ), std::cend( container ) );
 	}
 
-	template<typename Container,
-	         typename OutputIterator,
-	         typename UnaryOperator,
+	template<typename Container, typename OutputIterator, typename UnaryOperator,
 	         std::enable_if_t<traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto ) max_element( Container const &container ) noexcept( noexcept(
@@ -285,14 +266,12 @@ namespace daw::algorithm {
 		return std::max_element( std::cbegin( container ), std::cend( container ) );
 	}
 
-	template<typename Container,
-	         typename Compare,
+	template<typename Container, typename Compare,
 	         std::enable_if_t<traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto )
 	max_element( Container &container, Compare compare ) noexcept(
-	  noexcept( std::max_element( std::begin( container ),
-	                              std::end( container ),
+	  noexcept( std::max_element( std::begin( container ), std::end( container ),
 	                              compare ) ) ) {
 
 		static_assert(
@@ -307,14 +286,12 @@ namespace daw::algorithm {
 		  std::begin( container ), std::end( container ), compare );
 	}
 
-	template<typename Container,
-	         typename Compare,
+	template<typename Container, typename Compare,
 	         std::enable_if_t<traits::is_container_like_v<Container>,
 	                          std::nullptr_t> = nullptr>
 	decltype( auto )
 	max_element( Container const &container, Compare compare ) noexcept(
-	  noexcept( std::max_element( std::begin( container ),
-	                              std::end( container ),
+	  noexcept( std::max_element( std::begin( container ), std::end( container ),
 	                              compare ) ) ) {
 
 		static_assert(
@@ -337,8 +314,7 @@ namespace daw::algorithm {
 	}
 
 	template<typename Container, typename Value, typename UnaryPredicate>
-	bool contains( Container const &container,
-	               Value const &value,
+	bool contains( Container const &container, Value const &value,
 	               UnaryPredicate pred ) {
 		auto pred2 = [&value, &pred]( Value const &val ) {
 			return pred( value, val );
@@ -362,8 +338,8 @@ namespace daw::algorithm {
 	}
 
 	template<typename InputIterator, typename UnaryPredicate>
-	auto
-	where( InputIterator first, InputIterator last, UnaryPredicate predicate ) {
+	auto where( InputIterator first, InputIterator last,
+	            UnaryPredicate predicate ) {
 		auto rng = make_range( first, last );
 		return where( rng, predicate );
 	}

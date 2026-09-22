@@ -98,7 +98,8 @@ namespace daw {
 
 		[[nodiscard]] std::size_t size( ) const noexcept {
 			return daw::algorithm::accumulate( std::begin( m_indices ),
-			                                   std::end( m_indices ), std::size_t{ },
+			                                   std::end( m_indices ),
+			                                   std::size_t{ },
 			                                   []( auto const &opt ) {
 				                                   return opt.has_value( ) ? 1U : 0U;
 			                                   } );

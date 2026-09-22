@@ -367,24 +367,24 @@ namespace daw {
 		static constexpr int
 		compare( basic_bounded_string<CharT, CapL> const &lhs,
 		         basic_bounded_string<CharT, CapR> const &rhs ) noexcept {
-			auto const str_compare = []( CharT const *p0, CharT const *p1,
-			                             size_t len ) {
-				auto const last = p0 + len;
-				while( p0 != last ) {
-					if( *p0 != *p1 ) {
-						if( *p0 < *p1 ) {
-							return -1;
-						}
-						return 1;
-					}
-					++p0;
-					++p1;
-				}
-				return 0;
-			};
+			auto const str_compare =
+			  []( CharT const *p0, CharT const *p1, size_t len ) {
+				  auto const last = p0 + len;
+				  while( p0 != last ) {
+					  if( *p0 != *p1 ) {
+						  if( *p0 < *p1 ) {
+							  return -1;
+						  }
+						  return 1;
+					  }
+					  ++p0;
+					  ++p1;
+				  }
+				  return 0;
+			  };
 
-			auto cmp = str_compare( lhs.data( ), rhs.data( ),
-			                        (daw::min)( lhs.size( ), rhs.size( ) ) );
+			auto cmp = str_compare(
+			  lhs.data( ), rhs.data( ), (daw::min)( lhs.size( ), rhs.size( ) ) );
 			if( cmp == 0 ) {
 				if( lhs.size( ) < rhs.size( ) ) {
 					return -1;
@@ -400,24 +400,24 @@ namespace daw {
 		static constexpr int compare( basic_bounded_string<CharT, CapL> const &lhs,
 		                              CharT const *rhs_ptr,
 		                              size_t rhs_size ) noexcept {
-			auto const str_compare = []( CharT const *p0, CharT const *p1,
-			                             size_t len ) {
-				auto const last = p0 + len;
-				while( p0 != last ) {
-					if( *p0 != *p1 ) {
-						if( *p0 < *p1 ) {
-							return -1;
-						}
-						return 1;
-					}
-					++p0;
-					++p1;
-				}
-				return 0;
-			};
+			auto const str_compare =
+			  []( CharT const *p0, CharT const *p1, size_t len ) {
+				  auto const last = p0 + len;
+				  while( p0 != last ) {
+					  if( *p0 != *p1 ) {
+						  if( *p0 < *p1 ) {
+							  return -1;
+						  }
+						  return 1;
+					  }
+					  ++p0;
+					  ++p1;
+				  }
+				  return 0;
+			  };
 
-			auto cmp = str_compare( lhs.data( ), rhs_ptr,
-			                        (daw::min)( lhs.size( ), rhs_size ) );
+			auto cmp = str_compare(
+			  lhs.data( ), rhs_ptr, (daw::min)( lhs.size( ), rhs_size ) );
 			if( cmp == 0 ) {
 				if( lhs.size( ) < rhs_size ) {
 					return -1;

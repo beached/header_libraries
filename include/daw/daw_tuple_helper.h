@@ -135,14 +135,14 @@ namespace daw {
 
 		template<typename... Ts, typename F>
 		constexpr void for_each( std::tuple<Ts...> const &t1, F &&f ) {
-			tuple_details::for_each( t1, DAW_FWD( f ),
-			                         std::index_sequence_for<Ts...>{ } );
+			tuple_details::for_each(
+			  t1, DAW_FWD( f ), std::index_sequence_for<Ts...>{ } );
 		}
 
 		template<typename... Ts, typename F>
 		constexpr void apply( std::tuple<Ts...> &t1, F &&f ) {
-			tuple_details::for_each( t1, DAW_FWD( f ),
-			                         std::index_sequence_for<Ts...>{ } );
+			tuple_details::for_each(
+			  t1, DAW_FWD( f ), std::index_sequence_for<Ts...>{ } );
 		}
 
 		namespace operators {
@@ -151,8 +151,10 @@ namespace daw {
 				         typename F>
 				constexpr bool apply_tuple( Result &&result, T1 &&op1, T2 &&op2,
 				                            F &&f ) {
-					::Unused( ( daw::invoke( DAW_FWD( f ), std::get<I>( result ),
-					                         std::get<I>( op1 ), std::get<I>( op2 ) ),
+					::Unused( ( daw::invoke( DAW_FWD( f ),
+					                         std::get<I>( result ),
+					                         std::get<I>( op1 ),
+					                         std::get<I>( op2 ) ),
 					            0 ) );
 					return true;
 				}
@@ -185,9 +187,10 @@ namespace daw {
 				template<size_t I, typename Result, typename T1, typename T, typename F>
 				constexpr bool apply_value2( Result &&result, T1 &&op1, T &&op2,
 				                             F &&f ) {
-					::Unused( ( daw::invoke( DAW_FWD( f ), std::get<I>( result ), op1,
-					                         std::get<I>( op2 ) ),
-					            0 ) );
+					::Unused(
+					  ( daw::invoke(
+					      DAW_FWD( f ), std::get<I>( result ), op1, std::get<I>( op2 ) ),
+					    0 ) );
 					return true;
 				}
 
@@ -211,8 +214,8 @@ namespace daw {
 				constexpr std::tuple<Ts...>
 				apply_tuple_value2( T const &op1, std::tuple<Ts...> const &op2, F f ) {
 					std::tuple<Ts...> result;
-					apply_value2( result, op1, op2, f,
-					              std::index_sequence_for<Ts...>{ } );
+					apply_value2(
+					  result, op1, op2, f, std::index_sequence_for<Ts...>{ } );
 					return result;
 				}
 
@@ -280,8 +283,8 @@ namespace daw {
 			template<typename... Op1, typename... Op2>
 			constexpr std::tuple<Op1...> operator+( std::tuple<Op1...> const &lhs,
 			                                        std::tuple<Op2...> const &rhs ) {
-				return tuple_details::apply_tuple_tuple( lhs, rhs,
-				                                         tuple_details::add_t::get( ) );
+				return tuple_details::apply_tuple_tuple(
+				  lhs, rhs, tuple_details::add_t::get( ) );
 			}
 
 			template<typename... Op1, typename T>
@@ -294,15 +297,15 @@ namespace daw {
 			template<typename... Op1, typename T>
 			constexpr std::tuple<Op1...> operator+( std::tuple<Op1...> const &lhs,
 			                                        T const &rhs ) {
-				return tuple_details::apply_tuple_value( lhs, rhs,
-				                                         tuple_details::add_t::get( ) );
+				return tuple_details::apply_tuple_value(
+				  lhs, rhs, tuple_details::add_t::get( ) );
 			}
 
 			template<typename... Op1, typename... Op2>
 			constexpr std::tuple<Op1...> operator-( std::tuple<Op1...> const &lhs,
 			                                        std::tuple<Op2...> const &rhs ) {
-				return tuple_details::apply_tuple_tuple( lhs, rhs,
-				                                         tuple_details::sub_t::get( ) );
+				return tuple_details::apply_tuple_tuple(
+				  lhs, rhs, tuple_details::sub_t::get( ) );
 			}
 
 			template<typename... Op1, typename T>
@@ -315,15 +318,15 @@ namespace daw {
 			template<typename... Op1, typename T>
 			constexpr std::tuple<Op1...> operator-( std::tuple<Op1...> const &lhs,
 			                                        T const &rhs ) {
-				return tuple_details::apply_tuple_value( lhs, rhs,
-				                                         tuple_details::sub_t::get( ) );
+				return tuple_details::apply_tuple_value(
+				  lhs, rhs, tuple_details::sub_t::get( ) );
 			}
 
 			template<typename... Op1, typename... Op2>
 			constexpr std::tuple<Op1...> operator*( std::tuple<Op1...> const &lhs,
 			                                        std::tuple<Op2...> const &rhs ) {
-				return tuple_details::apply_tuple_tuple( lhs, rhs,
-				                                         tuple_details::mul_t::get( ) );
+				return tuple_details::apply_tuple_tuple(
+				  lhs, rhs, tuple_details::mul_t::get( ) );
 			}
 
 			template<typename... Op1, typename T>
@@ -336,15 +339,15 @@ namespace daw {
 			template<typename... Op1, typename T>
 			constexpr std::tuple<Op1...> operator*( std::tuple<Op1...> const &lhs,
 			                                        T const &rhs ) {
-				return tuple_details::apply_tuple_value( lhs, rhs,
-				                                         tuple_details::mul_t::get( ) );
+				return tuple_details::apply_tuple_value(
+				  lhs, rhs, tuple_details::mul_t::get( ) );
 			}
 
 			template<typename... Op1, typename... Op2>
 			constexpr std::tuple<Op1...> operator/( std::tuple<Op1...> const &lhs,
 			                                        std::tuple<Op2...> const &rhs ) {
-				return tuple_details::apply_tuple_tuple( lhs, rhs,
-				                                         tuple_details::div_t::get( ) );
+				return tuple_details::apply_tuple_tuple(
+				  lhs, rhs, tuple_details::div_t::get( ) );
 			}
 
 			template<typename... Op1, typename T>
@@ -357,8 +360,8 @@ namespace daw {
 			template<typename... Op1, typename T>
 			constexpr std::tuple<Op1...> operator/( std::tuple<Op1...> const &lhs,
 			                                        T const &rhs ) {
-				return tuple_details::apply_tuple_value( lhs, rhs,
-				                                         tuple_details::div_t::get( ) );
+				return tuple_details::apply_tuple_value(
+				  lhs, rhs, tuple_details::div_t::get( ) );
 			}
 		} // namespace operators
 
@@ -439,7 +442,8 @@ namespace daw {
 		template<typename... Args, typename... Funcs>
 		constexpr void apply_at( std::tuple<Args...> const &tp, size_t index,
 		                         Funcs &&...funcs ) {
-			tuple_details::apply_at_impl( tp, index,
+			tuple_details::apply_at_impl( tp,
+			                              index,
 			                              daw::overload( DAW_FWD( funcs )... ),
 			                              std::index_sequence_for<Args...>{ } );
 		}
@@ -447,7 +451,8 @@ namespace daw {
 		template<typename... Args, typename... Funcs>
 		constexpr void apply_at( std::tuple<Args...> &tp, size_t index,
 		                         Funcs &&...funcs ) {
-			tuple_details::apply_at_impl( tp, index,
+			tuple_details::apply_at_impl( tp,
+			                              index,
 			                              daw::overload( DAW_FWD( funcs )... ),
 			                              std::index_sequence_for<Args...>{ } );
 		}
@@ -455,8 +460,8 @@ namespace daw {
 		template<typename... Args, typename... Funcs>
 		constexpr void apply_at( std::tuple<Args...> &&tp, size_t index,
 		                         Funcs &&...funcs ) {
-			tuple_details::apply_at_impl( std::move( tp ), index,
-			                              daw::overload( DAW_FWD( funcs )... ) );
+			tuple_details::apply_at_impl(
+			  std::move( tp ), index, daw::overload( DAW_FWD( funcs )... ) );
 		}
 
 		namespace tuple_details {
@@ -507,7 +512,8 @@ namespace daw {
 	template<typename... Ts>
 	constexpr auto forward_nontemp_as_tuple( Ts &&...values ) {
 		using tuple_t = std::tuple<conditional_t<std::is_rvalue_reference_v<Ts>,
-		                                         daw::remove_cvref_t<Ts>, Ts>...>;
+		                                         daw::remove_cvref_t<Ts>,
+		                                         Ts>...>;
 		return tuple_t{ DAW_FWD( values )... };
 	}
 } // namespace daw

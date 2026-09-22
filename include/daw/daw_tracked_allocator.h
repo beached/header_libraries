@@ -71,8 +71,8 @@ namespace daw::memory {
 		constexpr void construct( pointer &ptr, Args &&...args ) noexcept(
 		  std::is_nothrow_constructible_v<T, Args...> ) {
 			DAW_SAFE_POINTER_ENSURE( ptr );
-			std::allocator_traits<Allocator>::construct( alloc, ptr.get( ),
-			                                             DAW_FWD( args )... );
+			std::allocator_traits<Allocator>::construct(
+			  alloc, ptr.get( ), DAW_FWD( args )... );
 		}
 
 		constexpr void

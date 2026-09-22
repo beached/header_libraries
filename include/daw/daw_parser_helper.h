@@ -197,7 +197,8 @@ namespace daw::parser {
 	[[nodiscard]] constexpr auto value_in( T &&value, Container &&container )
 	  -> decltype( std::begin( container ) == std::end( container ) ) {
 
-		return std::find_if( std::begin( container ), std::end( container ),
+		return std::find_if( std::begin( container ),
+		                     std::end( container ),
 		                     [&]( auto const &v ) {
 			                     return is_a( value, v );
 		                     } ) == std::end( container );
@@ -268,8 +269,8 @@ namespace daw::parser {
 	template<typename T, typename Predicate, typename... Predicates>
 	constexpr void expect_true( T &&value, Predicate &&predicate,
 	                            Predicates &&...predicates ) {
-		if( not is_true( DAW_FWD( value ), DAW_FWD( predicate ),
-		                 DAW_FWD( predicates )... ) ) {
+		if( not is_true(
+		      DAW_FWD( value ), DAW_FWD( predicate ), DAW_FWD( predicates )... ) ) {
 
 			daw::exception::daw_throw<ParserException>( );
 		}
@@ -389,8 +390,8 @@ namespace daw::parser {
 		  until_value( first, last, DAW_FWD( divider ), DAW_FWD( dividers )... );
 		while( result ) {
 			endings.push_back( result.last );
-			result = until_value( result.last, last, DAW_FWD( divider ),
-			                      DAW_FWD( dividers )... );
+			result = until_value(
+			  result.last, last, DAW_FWD( divider ), DAW_FWD( dividers )... );
 		}
 		if( result.first != result.last ) {
 			endings.push_back( result.last );
@@ -521,7 +522,8 @@ namespace daw::parser {
 	                                   ForwardIterator last ) {
 		auto start = trim_left( first, last );
 		auto finish = trim_right( start.first, last );
-		return make_find_result( start.first, finish.last,
+		return make_find_result( start.first,
+		                         finish.last,
 		                         static_cast<bool>( start ) or
 		                           static_cast<bool>( finish ) );
 	}
@@ -548,7 +550,8 @@ namespace daw::parser {
 			}
 			bool result = true;
 			for( auto it = m_last_values.begin( );
-			     result and it != m_last_values.end( ); ++it ) {
+			     result and it != m_last_values.end( );
+			     ++it ) {
 				result = result and is_a( *( it ), '\r' );
 				++it;
 				result = result and is_a( *( it ), '\n' );
@@ -612,11 +615,13 @@ namespace daw::parser {
 		operator( )( ForwardIterator first, ForwardIterator last ) const {
 			auto result = make_find_result( first, last );
 
-			auto pos =
-			  std::search( result.first, result.last, m_to_match.begin( ),
-			               m_to_match.end( ), []( auto const &lhs, auto const &rhs ) {
-				               return is_a( lhs, rhs );
-			               } );
+			auto pos = std::search( result.first,
+			                        result.last,
+			                        m_to_match.begin( ),
+			                        m_to_match.end( ),
+			                        []( auto const &lhs, auto const &rhs ) {
+				                        return is_a( lhs, rhs );
+			                        } );
 
 			if( pos != result.last ) {
 				result.last = pos;
@@ -630,8 +635,8 @@ namespace daw::parser {
 	[[nodiscard]] auto matcher( Container const &container ) {
 		using value_t = daw::traits::root_type_t<decltype( *container.begin( ) )>;
 		std::vector<value_t> values;
-		std::copy( container.begin( ), container.end( ),
-		           std::back_inserter( values ) );
+		std::copy(
+		  container.begin( ), container.end( ), std::back_inserter( values ) );
 		return matcher_t<value_t>{ std::move( values ) };
 	}
 

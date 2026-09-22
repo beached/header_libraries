@@ -127,8 +127,7 @@ namespace daw {
 		//		template<class Function, typename... Args, typename =
 		// std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
-		template<class Function,
-		         typename... Args,
+		template<class Function, typename... Args,
 		         std::enable_if_t<std::is_invocable_v<Function, Args...>,
 		                          std::nullptr_t> = nullptr>
 		static checked_expected_t from_code( Function func, Args &&...args ) {
@@ -311,8 +310,8 @@ namespace daw {
 		// std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
 		template<class Function, typename Arg, typename... Args>
-		static checked_expected_t
-		from_code( Function func, Arg &&arg, Args &&...args ) {
+		static checked_expected_t from_code( Function func, Arg &&arg,
+		                                     Args &&...args ) {
 			try {
 				func( DAW_FWD( arg ), DAW_FWD( args )... );
 				return checked_expected_t{ true };
@@ -330,8 +329,7 @@ namespace daw {
 		//		template<class Function, typename... Args, typename =
 		// std::enable_if_t<is_callable_v<Function,
 		// Args...>>>
-		template<class Function,
-		         typename... Args,
+		template<class Function, typename... Args,
 		         typename result = decltype( std::declval<Function>( )(
 		           std::declval<Args>( )... ) )>
 		checked_expected_t( Function func, Args &&...args )

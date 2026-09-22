@@ -182,7 +182,8 @@ namespace daw {
 				  []( auto const &l, auto const &r ) {
 					  return l == r;
 				  },
-				  std::make_index_sequence<sizeof...( Vs )>{ }, rhs );
+				  std::make_index_sequence<sizeof...( Vs )>{ },
+				  rhs );
 			} else {
 				return false;
 			}
@@ -196,7 +197,8 @@ namespace daw {
 				  []( auto const &l, auto const &r ) {
 					  return l != r;
 				  },
-				  std::make_index_sequence<sizeof...( Vs )>{ }, rhs );
+				  std::make_index_sequence<sizeof...( Vs )>{ },
+				  rhs );
 			} else {
 				return true;
 			}
@@ -279,21 +281,24 @@ namespace daw {
 	template<typename F, typename... Ts>
 	inline constexpr decltype( auto ) apply( F &&f, tuple<Ts...> &t ) {
 		return tuple_apply_detail::apply_impl(
-		  DAW_FWD( f ), t,
+		  DAW_FWD( f ),
+		  t,
 		  std::make_index_sequence<std::tuple_size_v<tuple<Ts...>>>{ } );
 	}
 
 	template<typename F, typename... Ts>
 	inline constexpr decltype( auto ) apply( F &&f, tuple<Ts...> const &t ) {
 		return tuple_apply_detail::apply_impl(
-		  DAW_FWD( f ), t,
+		  DAW_FWD( f ),
+		  t,
 		  std::make_index_sequence<std::tuple_size_v<tuple<Ts...>>>{ } );
 	}
 
 	template<typename F, typename... Ts>
 	inline constexpr decltype( auto ) apply( F &&f, tuple<Ts...> &&t ) {
 		return tuple_apply_detail::apply_impl(
-		  DAW_FWD( f ), DAW_FWD( t ),
+		  DAW_FWD( f ),
+		  DAW_FWD( t ),
 		  std::make_index_sequence<
 		    std::tuple_size_v<std::remove_reference_t<tuple<Ts...>>>>{ } );
 	}
@@ -301,7 +306,8 @@ namespace daw {
 	template<typename F, typename... Ts>
 	inline constexpr decltype( auto ) apply( F &&f, tuple<Ts...> const &&t ) {
 		return tuple_apply_detail::apply_impl(
-		  DAW_FWD( f ), DAW_FWD( t ),
+		  DAW_FWD( f ),
+		  DAW_FWD( t ),
 		  std::make_index_sequence<
 		    std::tuple_size_v<std::remove_reference_t<tuple<Ts...>>>>{ } );
 	}

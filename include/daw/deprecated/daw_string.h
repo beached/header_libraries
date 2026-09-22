@@ -181,9 +181,8 @@ namespace daw::string {
 	}
 
 	template<typename Arg1, typename Arg2>
-	auto string_join( Arg1 const &arg1,
-	                  Arg2 const &arg2 ) -> decltype( to_string( arg1 ) +
-	                                                  to_string( arg2 ) ) {
+	auto string_join( Arg1 const &arg1, Arg2 const &arg2 )
+	  -> decltype( to_string( arg1 ) + to_string( arg2 ) ) {
 		return to_string( arg1 ) + to_string( arg2 );
 	}
 
@@ -286,8 +285,7 @@ namespace daw::string {
 		}
 	} // namespace string_details
 
-	template<typename CharT = char,
-	         typename Traits = std::char_traits<CharT>,
+	template<typename CharT = char, typename Traits = std::char_traits<CharT>,
 	         typename Allocator = std::allocator<CharT>>
 	auto trim_right_copy(
 	  std::basic_string<CharT, Traits, Allocator> const &str,
@@ -299,8 +297,7 @@ namespace daw::string {
 		return str.substr( 0, str.find_last_not_of( delimiters ) + 1 );
 	}
 
-	template<typename CharT = char,
-	         typename Traits = std::char_traits<CharT>,
+	template<typename CharT = char, typename Traits = std::char_traits<CharT>,
 	         typename Allocator = std::allocator<CharT>>
 	void
 	trim_right( std::basic_string<CharT, Traits, Allocator> &str,
@@ -312,8 +309,7 @@ namespace daw::string {
 		str = str.substr( 0, str.find_last_not_of( delimiters ) + 1 );
 	}
 
-	template<typename CharT = char,
-	         typename Traits = std::char_traits<CharT>,
+	template<typename CharT = char, typename Traits = std::char_traits<CharT>,
 	         typename Allocator = std::allocator<CharT>>
 	auto trim_left_copy(
 	  std::basic_string<CharT, Traits, Allocator> const &str,
@@ -325,8 +321,7 @@ namespace daw::string {
 		return str.substr( str.find_first_not_of( delimiters ) );
 	}
 
-	template<typename CharT = char,
-	         typename Traits = std::char_traits<CharT>,
+	template<typename CharT = char, typename Traits = std::char_traits<CharT>,
 	         typename Allocator = std::allocator<CharT>>
 	void
 	trim_left( std::basic_string<CharT, Traits, Allocator> &str,
@@ -343,8 +338,7 @@ namespace daw::string {
 		return StringType::npos != values.find( val );
 	}
 
-	template<typename CharT = char,
-	         typename Traits = std::char_traits<CharT>,
+	template<typename CharT = char, typename Traits = std::char_traits<CharT>,
 	         typename Allocator = std::allocator<CharT>>
 	void trim( std::basic_string<CharT, Traits, Allocator> &str,
 	           std::basic_string<CharT, Traits, Allocator> const &delimiters =
@@ -359,8 +353,7 @@ namespace daw::string {
 		str = str.substr( start, len );
 	}
 
-	template<typename CharT = char,
-	         typename Traits = std::char_traits<CharT>,
+	template<typename CharT = char, typename Traits = std::char_traits<CharT>,
 	         typename Allocator = std::allocator<CharT>>
 	auto
 	trim_copy( std::basic_string<CharT, Traits, Allocator> str,
@@ -370,8 +363,7 @@ namespace daw::string {
 		return str;
 	}
 
-	template<typename CharT = char,
-	         typename Traits = std::char_traits<CharT>,
+	template<typename CharT = char, typename Traits = std::char_traits<CharT>,
 	         typename Allocator = std::allocator<CharT>>
 	bool contains( std::basic_string<CharT, Traits, Allocator> const &str,
 	               std::basic_string<CharT, Traits, Allocator> const &match ) {
@@ -379,12 +371,10 @@ namespace daw::string {
 		       std::basic_string<CharT, Traits, Allocator>::npos;
 	}
 
-	template<typename CharT = char,
-	         typename traits = std::char_traits<CharT>,
+	template<typename CharT = char, typename traits = std::char_traits<CharT>,
 	         typename Alloc = std::allocator<CharT>>
 	void search_replace( std::basic_string<CharT, traits, Alloc> &in_str,
-	                     CharT const *search_for,
-	                     CharT const *replace_with ) {
+	                     CharT const *search_for, CharT const *replace_with ) {
 		struct {
 			inline auto operator( )( wchar_t const *ptr ) const noexcept {
 				return wcslen( ptr );
@@ -405,8 +395,7 @@ namespace daw::string {
 		}
 	}
 
-	template<typename CharT = char,
-	         typename traits = std::char_traits<CharT>,
+	template<typename CharT = char, typename traits = std::char_traits<CharT>,
 	         typename Alloc = std::allocator<CharT>>
 	auto search_replace_copy( std::basic_string<CharT, traits, Alloc> in_str,
 	                          CharT const *search_for,
@@ -420,8 +409,7 @@ namespace daw::string {
 		using can_construct_string =
 		  decltype( std::string( std::declval<Args>( )... ) );
 
-		template<typename CharT,
-		         typename Traits = std::char_traits<CharT>,
+		template<typename CharT, typename Traits = std::char_traits<CharT>,
 		         typename Allocator = std::allocator<CharT>>
 		struct BasicString {
 			using values_type = std::basic_string<CharT, Traits, Allocator>;
@@ -482,8 +470,7 @@ namespace daw::string {
 			}
 		}; // BasicString
 
-		template<typename OStream,
-		         typename CharT,
+		template<typename OStream, typename CharT,
 		         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
 		                          std::nullptr_t> = nullptr>
 		OStream &operator<<( OStream &os, BasicString<CharT> const &str ) {

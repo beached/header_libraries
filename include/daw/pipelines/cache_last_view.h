@@ -65,16 +65,20 @@ namespace daw::pipelines {
 			return result;
 		}
 
-		constexpr cache_last_iterator &operator--( ) requires(
-		  std::is_same_v<iterator_category, std::bidirectional_iterator_tag> ) {
+		constexpr cache_last_iterator &operator--( )
+		requires(
+		  std::is_same_v<iterator_category, std::bidirectional_iterator_tag> )
+		{
 
 			m_cached.reset( );
 			--m_iterator;
 			return *this;
 		}
 
-		[[nodiscard]] constexpr cache_last_iterator operator--( int ) requires(
-		  std::is_same_v<iterator_category, std::bidirectional_iterator_tag> ) {
+		[[nodiscard]] constexpr cache_last_iterator operator--( int )
+		requires(
+		  std::is_same_v<iterator_category, std::bidirectional_iterator_tag> )
+		{
 
 			auto result = *this;
 			operator--( );

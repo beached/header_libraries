@@ -115,8 +115,8 @@ namespace daw {
 	  std::reference_wrapper<
 	    Args>... args ) noexcept( std::is_nothrow_invocable_v<F, Args...> ) {
 
-		return cpp_17_details::INVOKE( DAW_FWD( f ), DAW_FWD( arg ),
-		                               DAW_FWD( args )... );
+		return cpp_17_details::INVOKE(
+		  DAW_FWD( f ), DAW_FWD( arg ), DAW_FWD( args )... );
 	}
 #else
 	template<typename F, typename... Args>
@@ -153,7 +153,8 @@ namespace daw {
 				return daw::invoke( DAW_FWD( f ) );
 			} else {
 				return cpp_17_details::apply_details(
-				  DAW_FWD( f ), DAW_FWD( t ),
+				  DAW_FWD( f ),
+				  DAW_FWD( t ),
 				  std::make_index_sequence<std::tuple_size_v<std::decay_t<Tuple>>>{ } );
 			}
 		} else {

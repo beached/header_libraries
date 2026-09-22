@@ -98,7 +98,8 @@ namespace daw {
 	    first, second,
 	    typename std::iterator_traits<Iterator>::iterator_category{ } ) ) ) {
 		return cpp_17_details::distance_impl(
-		  first, second,
+		  first,
+		  second,
 		  typename std::iterator_traits<Iterator>::iterator_category{ } );
 	}
 
@@ -110,7 +111,8 @@ namespace daw {
 	template<typename Iterator, typename Distance>
 	constexpr void advance( Iterator &it, Distance n ) {
 		cpp_17_details::advance(
-		  it, static_cast<ptrdiff_t>( n ),
+		  it,
+		  static_cast<ptrdiff_t>( n ),
 		  typename std::iterator_traits<Iterator>::iterator_category{ } );
 	}
 

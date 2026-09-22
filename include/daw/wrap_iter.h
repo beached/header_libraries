@@ -39,8 +39,8 @@ namespace daw {
 
 		template<typename U>
 		requires( std::is_convertible_v<U, iterator_type> and
-		          not std::is_same_v<Iterator, U> ) //
-		  constexpr wrap_iter( wrap_iter<U, Tag> const &u ) noexcept
+		          not std::is_same_v<Iterator, U> )
+		constexpr wrap_iter( wrap_iter<U, Tag> const &u ) noexcept
 		  : i( u.base( ) ) {}
 
 		constexpr reference operator*( ) const noexcept {

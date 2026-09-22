@@ -42,16 +42,15 @@ namespace daw::pipelines::pimpl {
 			return true;
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline value_type operator*( ) const {
+		[[noreturn]] DAW_ATTRIB_NOINLINE value_type operator*( ) const {
 			std::terminate( );
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline filter_iterator_end &
-		operator++( ) const {
+		[[noreturn]] DAW_ATTRIB_NOINLINE filter_iterator_end &operator++( ) const {
 			std::terminate( );
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline filter_iterator_end
+		[[noreturn]] DAW_ATTRIB_NOINLINE filter_iterator_end
 		operator++( int ) const {
 			std::terminate( );
 		}
@@ -203,19 +202,17 @@ namespace daw::pipelines {
 		explicit filter_view( ) = default;
 
 		template<Range R0, typename F>
-		requires(
-		  std::constructible_from<base_t, R0> and std::constructible_from<Fn, F> and
-		  not Iterator<F> ) //
-		  explicit constexpr filter_view( R0 &&r, F &&fn )
+		requires( std::constructible_from<base_t, R0> and
+		          std::constructible_from<Fn, F> and not Iterator<F> )
+		explicit constexpr filter_view( R0 &&r, F &&fn )
 		  : base_t( DAW_FWD( r ) )
 		  , m_fn{ DAW_FWD( fn ) } {}
 
 		template<Range R0, typename F, typename P>
-		requires(
-		  std::constructible_from<base_t, R0> and std::constructible_from<Fn, F> and
-		  not Iterator<F> and std::constructible_from<Projection, P> and
-		  not Iterator<P> ) //
-		  explicit constexpr filter_view( R0 &&r, F &&fn, P &&projection )
+		requires( std::constructible_from<base_t, R0> and
+		          std::constructible_from<Fn, F> and not Iterator<F> and
+		          std::constructible_from<Projection, P> and not Iterator<P> )
+		explicit constexpr filter_view( R0 &&r, F &&fn, P &&projection )
 		  : base_t( DAW_FWD( r ) )
 		  , m_fn{ DAW_FWD( fn ) }
 		  , m_proj( DAW_FWD( projection ) ) {}
@@ -239,12 +236,12 @@ namespace daw::pipelines {
 		constexpr bool operator==( filter_view const & ) const = default;
 	};
 	template<Range R, typename F>
-	requires( not Iterator<F> ) //
-	  filter_view( R &&, F ) -> filter_view<R, F>;
+	requires( not Iterator<F> )
+	filter_view( R &&, F ) -> filter_view<R, F>;
 
 	template<Range R, typename F, typename P>
-	requires( not Iterator<F> and not Iterator<P> ) //
-	  filter_view( R &&, F, P ) -> filter_view<daw::remove_rvalue_ref_t<R>, F, P>;
+	requires( not Iterator<F> and not Iterator<P> )
+	filter_view( R &&, F, P ) -> filter_view<daw::remove_rvalue_ref_t<R>, F, P>;
 
 	namespace pimpl {
 		template<typename Fn, typename Projection = std::identity>

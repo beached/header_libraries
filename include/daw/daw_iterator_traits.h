@@ -43,8 +43,8 @@ namespace daw {
 	  typename std::iterator_traits<daw::remove_cvref_t<It>>::iterator_category;
 
 	template<typename It>
-	concept Iterator = requires( It & it ) {
-		{ ++it }->std::same_as<It &>;
+	concept Iterator = requires( It &it ) {
+		{ ++it } -> std::same_as<It &>;
 		{ it++ };
 		{ *it };
 	};

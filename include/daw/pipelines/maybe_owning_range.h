@@ -31,7 +31,8 @@ namespace daw::pipelines {
 		static constexpr bool is_owned = storage_t::is_owned;
 
 		[[nodiscard]] constexpr auto &get_range( ) &
-		  requires( not std::is_const_v<std::remove_reference_t<R>> ) {
+		requires( not std::is_const_v<std::remove_reference_t<R>> )
+		{
 			return m_storage.get( );
 		}
 

@@ -14,8 +14,7 @@
 #include <string>
 
 namespace daw {
-	template<typename SanitizeFunction,
-	         typename charT,
+	template<typename SanitizeFunction, typename charT,
 	         typename traits = std::char_traits<charT>,
 	         typename Alloc = std::allocator<charT>>
 	struct basic_safe_string {
@@ -75,9 +74,7 @@ namespace daw {
 	template<typename SanitizeFunction>
 	using safe_u32string = basic_safe_string<SanitizeFunction, char32_t>;
 
-	template<typename SanitizeFunction,
-	         typename charT,
-	         typename traits,
+	template<typename SanitizeFunction, typename charT, typename traits,
 	         typename Alloc>
 	auto make_safe_string( std::basic_string<charT, traits, Alloc> unsafe_string,
 	                       SanitizeFunction &&sanitize_function ) {
@@ -85,8 +82,7 @@ namespace daw {
 		  std::move( unsafe_string ), DAW_FWD( sanitize_function ) };
 	}
 
-	template<typename SanitizeFunction,
-	         typename charT,
+	template<typename SanitizeFunction, typename charT,
 	         typename traits = std::char_traits<charT>,
 	         typename Alloc = std::allocator<charT>>
 	auto make_safe_string( charT const *const unsafe_cstring,

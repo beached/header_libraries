@@ -52,8 +52,8 @@ namespace daw::nparam {
 	/// @param opts user set options
 	/// @return The Option set in opts or def_value
 	template<Options Option, typename... Opts>
-	requires( Options<Opts...> ) constexpr auto get_opt( Option &&def_value,
-	                                                     Opts &&...vals ) {
+	requires( Options<Opts...> )
+	constexpr auto get_opt( Option &&def_value, Opts &&...vals ) {
 		if constexpr( sizeof...( Opts ) == 0 ) {
 			// No replacements found
 			return DAW_FWD( def_value ).value;

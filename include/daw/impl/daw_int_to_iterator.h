@@ -198,7 +198,8 @@ namespace daw {
 				value = -value;
 			}
 			for( auto p10 = pow10<Integer>( whole_log10<uint16_t>( value ) );
-			     p10 >= 1; p10 /= static_cast<Integer>( 10 ) ) {
+			     p10 >= 1;
+			     p10 /= static_cast<Integer>( 10 ) ) {
 
 				auto const tmp = value / p10;
 

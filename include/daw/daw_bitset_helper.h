@@ -36,10 +36,10 @@ namespace daw {
 	} // namespace create_bs_impl
 
 	template<std::size_t N, typename R>
-	requires( std::ranges::range<R>
-	            and daw::traits::IntegerEnum<std::ranges::range_value_t<R>> ) //
-	  DAW_ATTRIB_FLATTEN DAW_CPP23_CX_BITSET_FN
-	  auto create_bitset_from_set_positions( R const &r ) {
+	requires( std::ranges::range<R> and
+	          daw::traits::IntegerEnum<std::ranges::range_value_t<R>> )
+	DAW_ATTRIB_FLATTEN DAW_CPP23_CX_BITSET_FN auto
+	create_bitset_from_set_positions( R const &r ) {
 		return create_bs_impl::create_bitset_from_set_positions<N>( r );
 	}
 

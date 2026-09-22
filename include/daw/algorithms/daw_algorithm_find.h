@@ -31,10 +31,9 @@ namespace daw::algorithm {
 	}
 
 	template<typename InputIterator, typename ForwardIterator>
-	[[nodiscard]] constexpr InputIterator find_first_of( InputIterator first,
-	                                                     InputIterator last,
-	                                                     ForwardIterator sfirst,
-	                                                     ForwardIterator slast ) {
+	[[nodiscard]] constexpr InputIterator
+	find_first_of( InputIterator first, InputIterator last,
+	               ForwardIterator sfirst, ForwardIterator slast ) {
 
 		(void)daw::traits::is_input_iterator_test<InputIterator>( );
 		(void)daw::traits::is_forward_access_iterator_test<ForwardIterator>( );
@@ -50,11 +49,9 @@ namespace daw::algorithm {
 		return last;
 	}
 
-	template<typename InputIterator,
-	         typename InputIteratorLast,
+	template<typename InputIterator, typename InputIteratorLast,
 	         typename UnaryPredicate>
-	constexpr InputIterator find_if( InputIterator first,
-	                                 InputIteratorLast last,
+	constexpr InputIterator find_if( InputIterator first, InputIteratorLast last,
 	                                 UnaryPredicate &&unary_predicate ) {
 		daw::traits::is_input_iterator_test<InputIterator>( );
 		daw::traits::is_unary_predicate_test<UnaryPredicate, decltype( *first )>( );

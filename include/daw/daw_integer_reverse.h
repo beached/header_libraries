@@ -87,8 +87,11 @@ namespace daw::integers {
 	                                        std::uint32_t, std::uint64_t>,
 	           std::nullptr_t> = nullptr>
 	[[nodiscard]] DAW_ATTRIB_NOINLINE constexpr T reverse_bits( T ) {
-		static_assert( daw::traits::is_one_of_v<T, std::uint8_t, std::uint16_t,
-		                                        std::uint32_t, std::uint64_t>,
+		static_assert( daw::traits::is_one_of_v<T,
+		                                        std::uint8_t,
+		                                        std::uint16_t,
+		                                        std::uint32_t,
+		                                        std::uint64_t>,
 		               "Unsupported integer type for bit reversal" );
 	}
 } // namespace daw::integers

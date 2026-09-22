@@ -9,12 +9,12 @@
 #pragma once
 
 #include "daw/daw_attributes.h"
+#include "daw/daw_cpp20_concept.h"
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_is_detected.h"
 #include "daw/daw_move.h"
 #include "daw/daw_traits.h"
 #include "daw/impl/daw_make_trait.h"
-#include "daw/daw_cpp20_concept.h"
 
 #include <type_traits>
 

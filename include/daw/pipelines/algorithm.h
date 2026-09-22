@@ -31,10 +31,10 @@ namespace daw::pipelines {
 			DAW_NO_UNIQUE_ADDRESS Projection m_projection{ };
 
 			template<typename C, typename P = std::identity>
-			requires( not Range<C> ) //
-			  [[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
-			  operator( )( C &&compare,
-			               P &&projection = P{ } ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			requires( not Range<C> )
+			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+			operator( )( C &&compare,
+			             P &&projection = P{ } ) DAW_CPP23_STATIC_CALL_OP_CONST {
 				return Sort_t<C>{ DAW_FWD( compare ), DAW_FWD( projection ) };
 			}
 
@@ -66,11 +66,10 @@ namespace daw::pipelines {
 			DAW_NO_UNIQUE_ADDRESS Projection m_projection{ };
 
 			template<typename C, typename P = std::identity>
-			requires( not Range<C> ) //
-			  [[nodiscard]] DAW_CPP23_STATIC_CALL_OP
-			  constexpr auto operator( )( C &&compare,
-			                              P &&projection = Projection{ } )
-			    DAW_CPP23_STATIC_CALL_OP_CONST {
+			requires( not Range<C> )
+			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+			operator( )( C &&compare, P &&projection = Projection{ } )
+			  DAW_CPP23_STATIC_CALL_OP_CONST {
 				return Max_t{ DAW_FWD( compare ), DAW_FWD( projection ) };
 			}
 
@@ -100,11 +99,10 @@ namespace daw::pipelines {
 			DAW_NO_UNIQUE_ADDRESS Projection m_projection{ };
 
 			template<typename C, typename P = std::identity>
-			requires( not Range<C> ) //
-			  [[nodiscard]] DAW_CPP23_STATIC_CALL_OP
-			  constexpr auto operator( )( C &&compare,
-			                              P &&projection = Projection{ } )
-			    DAW_CPP23_STATIC_CALL_OP_CONST {
+			requires( not Range<C> )
+			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+			operator( )( C &&compare, P &&projection = Projection{ } )
+			  DAW_CPP23_STATIC_CALL_OP_CONST {
 				return Min_t{ DAW_FWD( compare ), DAW_FWD( projection ) };
 			}
 
@@ -134,11 +132,10 @@ namespace daw::pipelines {
 			DAW_NO_UNIQUE_ADDRESS Projection m_projection{ };
 
 			template<typename C, typename P = std::identity>
-			requires( not Range<C> ) //
-			  [[nodiscard]] DAW_CPP23_STATIC_CALL_OP
-			  constexpr auto operator( )( C &&compare,
-			                              P &&projection = Projection{ } )
-			    DAW_CPP23_STATIC_CALL_OP_CONST {
+			requires( not Range<C> )
+			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
+			operator( )( C &&compare, P &&projection = Projection{ } )
+			  DAW_CPP23_STATIC_CALL_OP_CONST {
 				return MinMax_t{ DAW_FWD( compare ), DAW_FWD( projection ) };
 			}
 

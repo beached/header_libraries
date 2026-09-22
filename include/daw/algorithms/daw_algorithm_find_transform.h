@@ -27,14 +27,11 @@ namespace daw::algorithm {
 	/// It minimizes the cost when the transformation is expensive and
 	/// only calls it once per element until the predicate returns true
 	/// on the transformed result
-	template<typename Iterator,
-	         typename IteratorLast,
-	         typename Func,
+	template<typename Iterator, typename IteratorLast, typename Func,
 	         typename Pred>
-	constexpr find_transform_result_t<Iterator> find_transform( Iterator first,
-	                                                            IteratorLast last,
-	                                                            Func &&func,
-	                                                            Pred &&pred ) {
+	constexpr find_transform_result_t<Iterator>
+	find_transform( Iterator first, IteratorLast last, Func &&func,
+	                Pred &&pred ) {
 		while( first != last ) {
 			auto result = func( *first );
 			if( pred( result ) ) {

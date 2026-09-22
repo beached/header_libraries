@@ -108,8 +108,8 @@ namespace daw::pipelines {
 	}
 
 	template<typename Fn, typename... Fns>
-	requires( not Range<Fn> ) //
-	  DAW_ATTRIB_FLATTEN constexpr auto pipeline( Fn &&fn, Fns &&...fns ) {
+	requires( not Range<Fn> )
+	DAW_ATTRIB_FLATTEN constexpr auto pipeline( Fn &&fn, Fns &&...fns ) {
 		// Store all passed functions as they must outlive the call to pipeline
 		return
 		  [tpfns = pimpl::make_tpfns<false>( DAW_FWD( fn ), DAW_FWD( fns )... )](

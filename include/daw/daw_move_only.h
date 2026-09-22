@@ -14,8 +14,8 @@
 
 namespace daw {
 	template<typename T>
-	requires( not std::is_reference_v<T> and
-	          not std::is_pointer_v<T> ) class move_only {
+	requires( not std::is_reference_v<T> and not std::is_pointer_v<T> )
+	class move_only {
 
 		T m_value;
 

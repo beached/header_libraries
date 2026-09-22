@@ -34,8 +34,8 @@ namespace daw {
 		  : m_ptr( ptr ) {}
 
 		template<typename B>
-		requires( not std::is_pointer_v<B> ) //
-		  explicit constexpr maybe_unique_ptr( pointer ptr, B owned ) noexcept
+		requires( not std::is_pointer_v<B> )
+		explicit constexpr maybe_unique_ptr( pointer ptr, B owned ) noexcept
 		  : m_ptr( ptr )
 		  , m_owned( owned ) {}
 
@@ -44,15 +44,15 @@ namespace daw {
 		  : m_ptr( ptr, DAW_FWD( deleter ) ) {}
 
 		template<explicitly_convertible_to<Deleter> D, typename B>
-		requires( not std::is_pointer_v<B> ) //
-		  explicit constexpr maybe_unique_ptr( pointer ptr, D &&deleter,
-		                                       B owned ) noexcept
+		requires( not std::is_pointer_v<B> )
+		explicit constexpr maybe_unique_ptr( pointer ptr, D &&deleter,
+		                                     B owned ) noexcept
 		  : m_ptr( ptr, DAW_FWD( deleter ) )
 		  , m_owned( owned ) {}
 
 		template<typename U>
-		requires( not std::is_same_v<T, U> ) //
-		  constexpr maybe_unique_ptr( U *p ) noexcept
+		requires( not std::is_same_v<T, U> )
+		constexpr maybe_unique_ptr( U *p ) noexcept
 		  : m_ptr( p ) {
 			static_assert( unique_ptr_details::is_safe_child_type_v<T, U>,
 			               "One cannot destruct U, if T does not have a virtual "
@@ -60,8 +60,8 @@ namespace daw {
 		}
 
 		template<typename U, typename B>
-		requires( not std::is_same_v<T, U> and not std::is_pointer_v<B> ) //
-		  constexpr maybe_unique_ptr( U *p, B owned ) noexcept
+		requires( not std::is_same_v<T, U> and not std::is_pointer_v<B> )
+		constexpr maybe_unique_ptr( U *p, B owned ) noexcept
 		  : m_ptr( p )
 		  , m_owned( owned ) {
 			static_assert( unique_ptr_details::is_safe_child_type_v<T, U>,
@@ -76,8 +76,8 @@ namespace daw {
 		  , m_owned( std::exchange( other.m_owned, true ) ) {}
 
 		template<typename U, typename D>
-		requires( not std::is_same_v<T, U> ) //
-		  constexpr maybe_unique_ptr( maybe_unique_ptr<U, D> &&other ) noexcept
+		requires( not std::is_same_v<T, U> )
+		constexpr maybe_unique_ptr( maybe_unique_ptr<U, D> &&other ) noexcept
 		  : Deleter( static_cast<D &&>( other ) )
 		  , m_ptr( other.release( ) )
 		  , m_owned( std::exchange( other.m_owned, true ) ) {
@@ -87,8 +87,8 @@ namespace daw {
 		}
 
 		template<typename U, typename D>
-		requires( not std::is_same_v<T, U> ) //
-		  constexpr maybe_unique_ptr( unique_ptr<U, D> &&other ) noexcept
+		requires( not std::is_same_v<T, U> )
+		constexpr maybe_unique_ptr( unique_ptr<U, D> &&other ) noexcept
 		  : Deleter( std::move( other ).get_deleter( ) )
 		  , m_ptr( other.release( ) ) {
 			static_assert( unique_ptr_details::is_safe_child_type_v<T, U>,
@@ -106,9 +106,9 @@ namespace daw {
 		}
 
 		template<typename U, typename D>
-		requires( not std::is_same_v<T, U> ) //
-		  constexpr maybe_unique_ptr &
-		  operator=( maybe_unique_ptr<U, D> &&rhs ) noexcept {
+		requires( not std::is_same_v<T, U> )
+		constexpr maybe_unique_ptr &
+		operator=( maybe_unique_ptr<U, D> &&rhs ) noexcept {
 			static_assert( unique_ptr_details::is_safe_child_type_v<T, U>,
 			               "One cannot destruct U, if T does not have a virtual "
 			               "destructor, and U being a child of T" );
@@ -118,8 +118,8 @@ namespace daw {
 		}
 
 		template<typename U, typename D>
-		requires( not std::is_same_v<T, U> ) //
-		  constexpr maybe_unique_ptr &operator=( unique_ptr<U, D> &&rhs ) noexcept {
+		requires( not std::is_same_v<T, U> )
+		constexpr maybe_unique_ptr &operator=( unique_ptr<U, D> &&rhs ) noexcept {
 			static_assert( unique_ptr_details::is_safe_child_type_v<T, U>,
 			               "One cannot destruct U, if T does not have a virtual "
 			               "destructor, and U being a child of T" );
@@ -202,7 +202,8 @@ namespace daw {
 		}
 
 		constexpr decltype( auto ) operator[]( std::size_t index ) const noexcept
-		  requires( requires { m_ptr[std::size_t{ }]; } ) {
+		requires( requires { m_ptr[std::size_t{ }]; } )
+		{
 			return m_ptr[index];
 		}
 

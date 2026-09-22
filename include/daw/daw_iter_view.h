@@ -96,12 +96,9 @@ namespace daw {
 		  , m_size( sz ) {}
 
 		template<typename Container>
-		requires(
-		  ( Containers<Container> or ContiguousContainer<Container> ) and
-		  not_cvref_of<
-		    iter_view,
-		    Container> ) explicit( ExplicitConv ) constexpr iter_view( Container &&
-		                                                                 c ) noexcept
+		requires( ( Containers<Container> or ContiguousContainer<Container> ) and
+		          not_cvref_of<iter_view, Container> )
+		explicit( ExplicitConv ) constexpr iter_view( Container &&c ) noexcept
 		  : m_first( std::begin( c ) )
 		  , m_last( std::end( c ) ) {}
 
@@ -384,8 +381,8 @@ namespace daw {
 
 		[[nodiscard]] friend constexpr bool operator<( iter_view const &x,
 		                                               iter_view const &y ) {
-			return std::lexicographical_compare( x.begin( ), x.end( ), y.begin( ),
-			                                     y.end( ) );
+			return std::lexicographical_compare(
+			  x.begin( ), x.end( ), y.begin( ), y.end( ) );
 		}
 
 		[[nodiscard]] friend constexpr bool operator>( iter_view const &x,

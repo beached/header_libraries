@@ -189,7 +189,8 @@ namespace daw {
 			constexpr std::size_t outter = location >> half_sz;
 			constexpr std::size_t inner = ( location << half_sz ) >> half_sz;
 			return daw::traits::identity<tuple2_element_t<
-			  inner, daw::remove_cvref_t<tuple2_element_t<outter, TupleTuple>>>>{ };
+			  inner,
+			  daw::remove_cvref_t<tuple2_element_t<outter, TupleTuple>>>>{ };
 		}
 		template<std::size_t location, typename TupleTuple>
 		using decode_get_type =
@@ -236,14 +237,16 @@ namespace daw {
 	inline constexpr decltype( auto ) apply( tuple2<Ts...> const &tp,
 	                                         Func &&fn ) {
 		return tuple2_impl::apply_impl(
-		  tp, DAW_FWD( fn ),
+		  tp,
+		  DAW_FWD( fn ),
 		  std::make_index_sequence<tuple2_size_v<tuple2<Ts...>>>{ } );
 	}
 
 	template<typename Func, typename... Ts>
 	inline constexpr decltype( auto ) apply( tuple2<Ts...> &tp, Func &&fn ) {
 		return tuple2_impl::apply_impl(
-		  tp, DAW_FWD( fn ),
+		  tp,
+		  DAW_FWD( fn ),
 		  std::make_index_sequence<tuple2_size_v<tuple2<Ts...>>>{ } );
 	}
 
@@ -251,14 +254,16 @@ namespace daw {
 	inline constexpr decltype( auto ) apply( tuple2<Ts...> const &&tp,
 	                                         Func &&fn ) {
 		return tuple2_impl::apply_impl(
-		  std::move( tp ), DAW_FWD( fn ),
+		  std::move( tp ),
+		  DAW_FWD( fn ),
 		  std::make_index_sequence<tuple2_size_v<tuple2<Ts...>>>{ } );
 	}
 
 	template<typename Func, typename... Ts>
 	inline constexpr decltype( auto ) apply( tuple2<Ts...> &&tp, Func &&fn ) {
 		return tuple2_impl::apply_impl(
-		  tp, std::move( fn ),
+		  tp,
+		  std::move( fn ),
 		  std::make_index_sequence<tuple2_size_v<tuple2<Ts...>>>{ } );
 	}
 } // namespace daw

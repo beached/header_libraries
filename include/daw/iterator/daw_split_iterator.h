@@ -174,8 +174,8 @@ namespace daw {
 		              DAW_FWD( splitter ) ) {}
 
 		constexpr split_it( ) noexcept
-		  : m_data{ { }, { } }
-		  , m_position{ { }, { } }
+		  : m_data{ { }, {} }
+		  , m_position{ { }, {} }
 		  , m_splitter{ } {}
 
 		~split_it( ) noexcept = default;
@@ -407,8 +407,8 @@ namespace daw {
 		              DAW_FWD( splitter ) ) {}
 
 		constexpr split_it( ) noexcept
-		  : m_data{ { }, { } }
-		  , m_position{ { }, { } }
+		  : m_data{ { }, {} }
+		  , m_position{ { }, {} }
 		  , m_splitter{ } {}
 
 		~split_it( ) noexcept = default;

@@ -116,8 +116,9 @@ namespace daw {
 				return str;
 			}
 
-			constexpr daw::string_view parse_to_value( daw::string_view str DAW_LIFETIME_BOUND,
-			                                           tag_t<daw::string_view> ) {
+			constexpr daw::string_view
+			parse_to_value( daw::string_view str DAW_LIFETIME_BOUND,
+			                tag_t<daw::string_view> ) {
 				daw::exception::precondition_check<empty_input_exception>(
 				  not str.empty( ) );
 
@@ -368,8 +369,9 @@ namespace daw {
 		constexpr decltype( auto )
 		apply_string_impl( std::tuple<Args...>, Callable &&callable,
 		                   daw::string_view str, Splitter &&splitter ) {
-			return std::apply( DAW_FWD( callable ), parser::parse_to<Args...>(
-			                                          str, DAW_FWD( splitter ) ) );
+			return std::apply(
+			  DAW_FWD( callable ),
+			  parser::parse_to<Args...>( str, DAW_FWD( splitter ) ) );
 		}
 	} // namespace impl
 
@@ -391,8 +393,8 @@ namespace daw {
 	                                          Splitter &&splitter ) {
 		using ftraits =
 		  typename daw::function_info<std::decay_t<Callable>>::decayed_args_tuple;
-		return impl::apply_string_impl( ftraits{ }, DAW_FWD( callable ), str,
-		                                DAW_FWD( splitter ) );
+		return impl::apply_string_impl(
+		  ftraits{ }, DAW_FWD( callable ), str, DAW_FWD( splitter ) );
 	}
 
 	/// @brief Apply the reified string as the types deducted from the Callable
@@ -407,8 +409,8 @@ namespace daw {
 	constexpr decltype( auto ) apply_string2( Callable &&callable,
 	                                          daw::string_view str,
 	                                          daw::string_view delemiter ) {
-		return apply_string2<Callable>( DAW_FWD( callable ), str,
-		                                parser::default_splitter{ delemiter } );
+		return apply_string2<Callable>(
+		  DAW_FWD( callable ), str, parser::default_splitter{ delemiter } );
 	}
 
 	/// @brief Apply the reified string as the types specified as Args... to the
@@ -452,8 +454,8 @@ namespace daw {
 	                                         daw::string_view str,
 	                                         daw::string_view delemiter ) {
 
-		return apply_string<Args...>( DAW_FWD( callable ), str,
-		                              parser::default_splitter{ delemiter } );
+		return apply_string<Args...>(
+		  DAW_FWD( callable ), str, parser::default_splitter{ delemiter } );
 	}
 
 	/// @brief Apply the reified string as the types specified as Arg to the
@@ -474,8 +476,8 @@ namespace daw {
 	constexpr decltype( auto ) apply_string( Callable &&callable,
 	                                         daw::string_view str ) {
 
-		return apply_string<Arg>( DAW_FWD( callable ), str,
-		                          parser::default_splitter{ " " } );
+		return apply_string<Arg>(
+		  DAW_FWD( callable ), str, parser::default_splitter{ " " } );
 	}
 
 	namespace parse_to_impl {

@@ -13,7 +13,7 @@
 
 namespace daw {
 	struct identity_function_t {
-		explicit identity_function_t() = default;
+		explicit identity_function_t( ) = default;
 
 		template<typename T>
 		DAW_CPP23_STATIC_CALL_OP constexpr T &&
@@ -22,5 +22,5 @@ namespace daw {
 		}
 	};
 
-	inline constexpr auto identity_function =	identity_function_t{};
+	inline constexpr auto identity_function = identity_function_t{ };
 } // namespace daw

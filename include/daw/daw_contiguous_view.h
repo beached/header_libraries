@@ -28,8 +28,8 @@ namespace daw {
 	struct contiguous_view;
 
 	template<typename T, bool ExplicitConv>
-	requires( not std::is_const_v<T> ) //
-	  struct contiguous_view<T, ExplicitConv> {
+	requires( not std::is_const_v<T> )
+	struct contiguous_view<T, ExplicitConv> {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
@@ -68,15 +68,15 @@ namespace daw {
 		  , m_last( first + sz ) {}
 
 		template<ContiguousContainerOf<value_type> Container>
-		requires( not_cvref_of<contiguous_view, Container> ) explicit(
-		  ExplicitConv ) constexpr contiguous_view( Container &&c ) noexcept
+		requires( not_cvref_of<contiguous_view, Container> )
+		explicit( ExplicitConv ) constexpr contiguous_view( Container &&c ) noexcept
 		  : m_first( std::data( c ) )
 		  , m_last( daw::data_end( c ) ) {}
 
 		template<ContiguousContainerOf<value_type> Container>
-		requires( not_cvref_of<contiguous_view, Container> ) explicit(
-		  ExplicitConv ) constexpr contiguous_view( Container &&c,
-		                                            std::size_t count ) noexcept
+		requires( not_cvref_of<contiguous_view, Container> )
+		explicit( ExplicitConv ) constexpr contiguous_view(
+		  Container &&c, std::size_t count ) noexcept
 		  : m_first( std::data( c ) )
 		  , m_last( std::next( m_first, static_cast<difference_type>( count ) ) ) {
 			daw_ensure( count <= std::size( c ) );
@@ -430,8 +430,8 @@ namespace daw {
 	};
 
 	template<typename T, bool ExplicitConv>
-	requires( std::is_const_v<T> ) //
-	  struct contiguous_view<T, ExplicitConv> {
+	requires( std::is_const_v<T> )
+	struct contiguous_view<T, ExplicitConv> {
 		using value_type = T;
 		using reference = value_type &;
 		using const_reference = value_type const &;
@@ -465,15 +465,15 @@ namespace daw {
 		  , m_last( first + sz ) {}
 
 		template<ContiguousContainerOf<value_type> Container>
-		requires( not_cvref_of<contiguous_view, Container> ) explicit(
-		  ExplicitConv ) constexpr contiguous_view( Container &&c ) noexcept
+		requires( not_cvref_of<contiguous_view, Container> )
+		explicit( ExplicitConv ) constexpr contiguous_view( Container &&c ) noexcept
 		  : m_first( std::data( c ) )
 		  , m_last( daw::data_end( c ) ) {}
 
 		template<ContiguousContainerOf<value_type> Container>
-		requires( not_cvref_of<contiguous_view, Container> ) explicit(
-		  ExplicitConv ) constexpr contiguous_view( Container &&c,
-		                                            std::size_t count )
+		requires( not_cvref_of<contiguous_view, Container> )
+		explicit( ExplicitConv ) constexpr contiguous_view( Container &&c,
+		                                                    std::size_t count )
 		  : m_first( std::data( c ) )
 		  , m_last( std::next( m_first, static_cast<difference_type>( count ) ) ) {
 			daw_ensure( count <= std::size( c ) );

@@ -49,10 +49,10 @@ namespace daw {
 	/// The two ranges cannot overlap
 	template<typename T, typename R>
 	requires(
-	  std::ranges::contiguous_range<R>
-	    and daw::explicitly_convertible_to<std::ranges::range_reference_t<R>, T> )
-	  [[nodiscard]] constexpr std::span<T> write_to_span( std::span<T> out,
-	                                                      R const &r ) {
+	  std::ranges::contiguous_range<R> and
+	  daw::explicitly_convertible_to<std::ranges::range_reference_t<R>, T> )
+	[[nodiscard]] constexpr std::span<T> write_to_span( std::span<T> out,
+	                                                    R const &r ) {
 		auto const sz = std::ranges::size( r );
 		daw_ensure( sz <= out.size( ) );
 		T *DAW_RESTRICT out_ptr = out.data( );
@@ -72,8 +72,8 @@ namespace daw {
 	/// The two ranges cannot overlap and str must have a trailing 0
 	template<typename T, std::size_t N>
 	requires( daw::explicitly_convertible_to<char, T> )
-	  [[nodiscard]] constexpr std::span<T> write_to_span_ntz(
-	    std::span<T> out, char const ( &str )[N] ) {
+	[[nodiscard]] constexpr std::span<T>
+	write_to_span_ntz( std::span<T> out, char const ( &str )[N] ) {
 		daw_ensure( str[N - 1] == '\0' );
 		auto const sz = N - 1;
 		daw_ensure( sz <= out.size( ) );
@@ -86,8 +86,8 @@ namespace daw {
 	}
 
 	template<typename T>
-	requires( not std::is_const_v<T> and not std::is_reference_v<T> ) //
-	  struct span_writer {
+	requires( not std::is_const_v<T> and not std::is_reference_v<T> )
+	struct span_writer {
 		using pointer = T *;
 		using const_pointer = T const *;
 		using reference = T &;
@@ -183,9 +183,9 @@ namespace daw {
 
 		template<typename R>
 		requires(
-		  std::ranges::contiguous_range<R> and daw::explicitly_convertible_to<
-		    std::ranges::range_reference_t<R>, T> ) //
-		  constexpr span_writer &write( this auto &self, R const &r ) {
+		  std::ranges::contiguous_range<R> and
+		  daw::explicitly_convertible_to<std::ranges::range_reference_t<R>, T> )
+		constexpr span_writer &write( this auto &self, R const &r ) {
 			auto const sz = std::ranges::size( r );
 			daw_ensure( sz <= self.m_size );
 			T *DAW_RESTRICT self_ptr = self.m_first;
@@ -198,9 +198,9 @@ namespace daw {
 		}
 
 		template<std::size_t N>
-		requires( daw::explicitly_convertible_to<char, T> ) //
-		  constexpr span_writer &write_ntz( this auto &self,
-		                                    char const ( &str )[N] ) {
+		requires( daw::explicitly_convertible_to<char, T> )
+		constexpr span_writer &write_ntz( this auto &self,
+		                                  char const ( &str )[N] ) {
 			daw_ensure( str[N - 1] == '\0' );
 			auto const sz = N - 1;
 			daw_ensure( sz <= self.m_size );

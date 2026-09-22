@@ -22,8 +22,8 @@ namespace daw::pipelines::pimpl {
 	template<typename First, typename Last>
 	concept counted_source =
 	  RandomIterator<First> and requires( First f, Last l ) {
-		{ l - f }->std::convertible_to<std::ptrdiff_t>;
-	};
+		  { l - f } -> std::convertible_to<std::ptrdiff_t>;
+	  };
 
 	/// The number of elements from first to last.  A distance that does not fit
 	/// in std::ptrdiff_t, e.g. an iota_view<std::size_t> that runs to the largest

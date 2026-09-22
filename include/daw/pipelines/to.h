@@ -162,7 +162,7 @@ namespace daw::pipelines {
 	/// std::array, from a Range or a single value
 	template<typename Container>
 	requires( not requires( Container c ) { pimpl::array_test( c ); } )
-	  [[nodiscard]] constexpr auto To( ) {
+	[[nodiscard]] constexpr auto To( ) {
 		return pimpl::ToContainer<Container>{ };
 	}
 
@@ -170,7 +170,7 @@ namespace daw::pipelines {
 	/// TODO: add single value method
 	template<typename Array, auto Default = pimpl::UseTypeDefault{ }>
 	requires( requires( Array a ) { pimpl::array_test( a ); } )
-	  [[nodiscard]] constexpr auto To( ) {
+	[[nodiscard]] constexpr auto To( ) {
 		return pimpl::ToArray<Array, Default>{ };
 	}
 } // namespace daw::pipelines
