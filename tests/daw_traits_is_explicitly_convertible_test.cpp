@@ -36,6 +36,10 @@ namespace {
 		MoveOnly( MoveOnly && ) = default;
 		MoveOnly( MoveOnly const & ) = delete;
 	};
+	// These get rid of unused warnings on some compilers
+	static_assert( not std::is_copy_constructible_v<MoveOnly> );
+	static_assert( std::is_move_constructible_v<MoveOnly> );
+	static_assert( std::is_default_constructible_v<MoveOnly> );
 
 	struct Base {
 		virtual ~Base( ) = default;
