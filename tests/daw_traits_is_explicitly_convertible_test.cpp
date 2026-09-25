@@ -44,6 +44,7 @@ namespace {
 
 	struct Abstract {
 		virtual void f( ) = 0;
+		virtual ~Abstract( ) = default;
 	};
 
 	enum class Color { red };
