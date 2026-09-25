@@ -81,8 +81,8 @@ $(function() {
 <p><code>#include &lt;<a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>&gt;</code></p>
 <h2 class="groupheader">Concept definition</h2>
 <div class="fragment"><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> It&gt;</div>
-<div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptdaw_1_1_iterator.html">daw::Iterator</a> =  <span class="keyword">requires</span>( It &amp; <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">it</a> ) {</div>
-<div class="line">    { ++<a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">it</a> }-&gt;std::same_as&lt;It &amp;&gt;;</div>
+<div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptdaw_1_1_iterator.html">daw::Iterator</a> =  <span class="keyword">requires</span>( It &amp;<a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">it</a> ) {</div>
+<div class="line">    { ++<a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">it</a> } -&gt; std::same_as&lt;It &amp;&gt;;</div>
 <div class="line">    { <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">it</a>++ };</div>
 <div class="line">    { *<a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">it</a> };</div>
 <div class="line">  }</div>

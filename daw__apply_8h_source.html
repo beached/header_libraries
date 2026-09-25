@@ -202,8 +202,8 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    std::reference_wrapper&lt;</div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>      Args&gt;... <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">args</a> ) <span class="keyword">noexcept</span>( std::is_nothrow_invocable_v&lt;<a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">F</a>, Args...&gt; ) {</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordflow">return</span> cpp_17_details::INVOKE( <a class="code hl_define" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ), <a class="code hl_define" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">arg</a> ),</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                                   <a class="code hl_define" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">args</a> )... );</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordflow">return</span> cpp_17_details::INVOKE(</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>      <a class="code hl_define" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ), <a class="code hl_define" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">arg</a> ), <a class="code hl_define" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">args</a> )... );</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  }</div>
 </div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="preprocessor">#else</span></div>
@@ -242,21 +242,22 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="namespacedaw.html#a1ddd23a6205b9580398f48300fe1592d">daw::invoke</a>( <a class="code hl_define" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ) );</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>      } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        <span class="keywordflow">return</span> cpp_17_details::apply_details(</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>          <a class="code hl_define" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ), <a class="code hl_define" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">t</a> ),</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>          std::make_index_sequence&lt;std::tuple_size_v&lt;std::decay_t&lt;Tuple&gt;&gt;&gt;{ } );</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>      }</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>      <span class="keyword">constexpr</span> std::size_t <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">tp_size</a> = std::tuple_size_v&lt;Tuple&gt;;</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span>( <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">tp_size</a> == 0 ) {</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        <span class="keywordflow">return</span> <a class="code hl_define" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f )( );</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        <span class="keywordflow">return</span> cpp_17_details::apply_impl2(</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>          <a class="code hl_define" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ), <a class="code hl_define" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">t</a> ), std::make_index_sequence&lt;tp_size&gt;{ } );</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>      }</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    }</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  }</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>          <a class="code hl_define" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ),</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>          <a class="code hl_define" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">t</a> ),</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>          std::make_index_sequence&lt;std::tuple_size_v&lt;std::decay_t&lt;Tuple&gt;&gt;&gt;{ } );</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>      }</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>      <span class="keyword">constexpr</span> std::size_t <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">tp_size</a> = std::tuple_size_v&lt;Tuple&gt;;</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>      <span class="keywordflow">if</span> <span class="keyword">constexpr</span>( <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">tp_size</a> == 0 ) {</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>        <span class="keywordflow">return</span> <a class="code hl_define" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f )( );</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>      } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        <span class="keywordflow">return</span> cpp_17_details::apply_impl2(</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>          <a class="code hl_define" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( f ), <a class="code hl_define" href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a>( <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">t</a> ), std::make_index_sequence&lt;tp_size&gt;{ } );</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>      }</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    }</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  }</div>
 </div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>} <span class="comment">// namespace daw</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>} <span class="comment">// namespace daw</span></div>
 <div class="ttc" id="acpp__17_8h_html"><div class="ttname"><a href="cpp__17_8h.html">cpp_17.h</a></div></div>
 <div class="ttc" id="adaw__move_8h_html_a46327bbb47123f9650c3b0e0ce807ec9"><div class="ttname"><a href="daw__move_8h.html#a46327bbb47123f9650c3b0e0ce807ec9">DAW_FWD</a></div><div class="ttdeci">#define DAW_FWD(...)</div><div class="ttdef"><b>Definition</b> <a href="daw__move_8h_source.html#l00032">daw_move.h:32</a></div></div>
 <div class="ttc" id="adaw__tuple__traits_8h_html"><div class="ttname"><a href="daw__tuple__traits_8h.html">daw_tuple_traits.h</a></div></div>
@@ -271,7 +272,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="anamespacedaw_html_ad8a64a646f74d139a882242dceee804e"><div class="ttname"><a href="namespacedaw.html#ad8a64a646f74d139a882242dceee804e">daw::nodiscard</a></div><div class="ttdeci">constexpr auto nodiscard</div><div class="ttdef"><b>Definition</b> <a href="daw__view__tags_8h_source.html#l00015">daw_view_tags.h:15</a></div></div>
 <div class="ttc" id="anamespacedaw_html_ad8b37b6c283ce451b25949269438de82"><div class="ttname"><a href="namespacedaw.html#ad8b37b6c283ce451b25949269438de82">daw::enable_if_t</a></div><div class="ttdeci">std::enable_if_t&lt; B, T &gt; enable_if_t</div><div class="ttdef"><b>Definition</b> <a href="daw__enable__if_8h_source.html#l00022">daw_enable_if.h:22</a></div></div>
 <div class="ttc" id="anamespacedaw_html_afdd716380bbe9de78f2a480fadbc670f"><div class="ttname"><a href="namespacedaw.html#afdd716380bbe9de78f2a480fadbc670f">daw::conjunction_v</a></div><div class="ttdeci">constexpr bool conjunction_v</div><div class="ttdef"><b>Definition</b> <a href="cpp__17_8h_source.html#l00033">cpp_17.h:33</a></div></div>
-<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="daw__enumerate__tuple_8h_source.html#l00088">daw_enumerate_tuple.h:88</a></div></div>
+<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="daw__enumerate__tuple_8h_source.html#l00086">daw_enumerate_tuple.h:86</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

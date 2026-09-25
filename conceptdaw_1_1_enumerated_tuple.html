@@ -81,14 +81,12 @@ $(function() {
 <p><code>#include &lt;<a class="el" href="daw__enumerate__tuple_8h_source.html">daw_enumerate_tuple.h</a>&gt;</code></p>
 <h2 class="groupheader">Concept definition</h2>
 <div class="fragment"><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptdaw_1_1_enumerated_tuple.html">daw::EnumeratedTuple</a> =  <span class="keyword">requires</span></div>
-<div class="line">  {</div>
-<div class="line">    <span class="keyword">typename</span> std::remove_cvref_t&lt;T&gt;::i_am_an_enumerated_tuple;</div>
-<div class="line">  }</div>
-<div class="ttc" id="aconceptdaw_1_1_enumerated_tuple_html"><div class="ttname"><a href="conceptdaw_1_1_enumerated_tuple.html">daw::EnumeratedTuple</a></div><div class="ttdef"><b>Definition</b> <a href="daw__enumerate__tuple_8h_source.html#l00043">daw_enumerate_tuple.h:43</a></div></div>
+<div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptdaw_1_1_enumerated_tuple.html">daw::EnumeratedTuple</a> = </div>
+<div class="line">    <span class="keyword">requires</span> { <span class="keyword">typename</span> std::remove_cvref_t&lt;T&gt;::i_am_an_enumerated_tuple; }</div>
+<div class="ttc" id="aconceptdaw_1_1_enumerated_tuple_html"><div class="ttname"><a href="conceptdaw_1_1_enumerated_tuple.html">daw::EnumeratedTuple</a></div><div class="ttdef"><b>Definition</b> <a href="daw__enumerate__tuple_8h_source.html#l00044">daw_enumerate_tuple.h:44</a></div></div>
 </div><!-- fragment --><a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="daw__enumerate__tuple_8h_source.html#l00043">43</a> of file <a class="el" href="daw__enumerate__tuple_8h_source.html">daw_enumerate_tuple.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__enumerate__tuple_8h_source.html#l00044">44</a> of file <a class="el" href="daw__enumerate__tuple_8h_source.html">daw_enumerate_tuple.h</a>.</p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

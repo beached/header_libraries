@@ -38,7 +38,7 @@ var searchData=
   ['always_5ffalse_35',['always_false',['../structdaw_1_1always__false.html#a1a5494ca166ab266c7a745401d72eeb3',1,'daw::always_false::always_false()'],['../structdaw_1_1always__false.html',1,'daw::always_false&lt;... &gt;']]],
   ['always_5ffalse_5fv_36',['always_false_v',['../namespacedaw.html#aba34456e7e98a226593bace7d7cbff5f',1,'daw']]],
   ['and_5fthen_37',['and_then',['../structdaw_1_1maybe__unique__ptr.html#a2232ded966913e511d34efacd6473140',1,'daw::maybe_unique_ptr::and_then()'],['../structdaw_1_1observer__ptr.html#a4d02edc1610396c5e7e72dcf73512db8',1,'daw::observer_ptr::and_then()'],['../structdaw_1_1unique__ptr.html#a9b5356f81a15d8b6e36e830c1bb5e3b4',1,'daw::unique_ptr::and_then()'],['../structdaw_1_1unique__ptr_3_01_t_0f_0e_00_01_deleter_01_4.html#af754fb09e7c638978cdce47cd7530e54',1,'daw::unique_ptr&lt; T[], Deleter &gt;::and_then()'],['../namespacedaw_1_1monadic__ptr.html#a6cebf1e52d2444bc8b92aad0e91f2416',1,'daw::monadic_ptr::and_then()']]],
-  ['any_5fif_38',['any_if',['../namespacedaw.html#a573094e05dcbf7a5096c55f969fbde9e',1,'daw']]],
+  ['any_5fif_38',['any_if',['../namespacedaw.html#a75ee3f5ea1870888d358fa8b2571c3be',1,'daw']]],
   ['any_5fof_39',['any_of',['../namespacedaw_1_1algorithm.html#a34e831e99ec1f0f3c7b138bb79df1ada',1,'daw::algorithm::any_of()'],['../namespacedaw.html#abb7a1d9129d0b893ceb0ae5fda07ad33',1,'daw::any_of']]],
   ['any_5fof_5ff_40',['any_of_f',['../namespacedaw.html#ab4f77ae777640ac86ce5a33203c69cd8',1,'daw']]],
   ['any_5fof_5ft_41',['any_of_t',['../structdaw_1_1any__of__t.html',1,'daw']]],
