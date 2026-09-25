@@ -77,8 +77,8 @@ namespace daw {
 				}
 			}
 			if constexpr( is_t_in_range_v<I + 1, T> ) {
-				return apply_at_impl<R, allow_empty, I + 1>( idx, DAW_FWD( t ),
-				                                             DAW_FWD( args )... );
+				return apply_at_impl<R, allow_empty, I + 1>(
+				  idx, DAW_FWD( t ), DAW_FWD( args )... );
 			}
 			std::abort( );
 		}

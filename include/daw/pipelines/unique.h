@@ -31,16 +31,15 @@ namespace daw::pipelines {
 			return true;
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline value_type operator*( ) const {
+		[[noreturn]] DAW_ATTRIB_NOINLINE value_type operator*( ) const {
 			std::terminate( );
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline unique_iterator_end &
-		operator++( ) const {
+		[[noreturn]] DAW_ATTRIB_NOINLINE unique_iterator_end &operator++( ) const {
 			std::terminate( );
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline unique_iterator_end
+		[[noreturn]] DAW_ATTRIB_NOINLINE unique_iterator_end
 		operator++( int ) const {
 			std::terminate( );
 		}
@@ -64,9 +63,9 @@ namespace daw::pipelines {
 		unique_iterator( ) = default;
 
 		template<ForwardIterator F, typename L>
-		requires( std::constructible_from<First, F>
-		            and std::constructible_from<Last, L> ) //
-		  explicit constexpr unique_iterator( F &&first, L &&last )
+		requires( std::constructible_from<First, F> and
+		          std::constructible_from<Last, L> )
+		explicit constexpr unique_iterator( F &&first, L &&last )
 		  : m_first( DAW_FWD( first ) )
 		  , m_last( DAW_FWD( last ) ) {}
 
@@ -143,8 +142,8 @@ namespace daw::pipelines {
 		explicit unique_view( ) = default;
 
 		template<ForwardRange FR>
-		requires( std::constructible_from<R, FR> ) //
-		  explicit constexpr unique_view( FR &&range )
+		requires( std::constructible_from<R, FR> )
+		explicit constexpr unique_view( FR &&range )
 		  : base_t( DAW_FWD( range ) ) {}
 
 		[[nodiscard]] constexpr iterator begin( ) {

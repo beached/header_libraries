@@ -96,17 +96,17 @@ namespace daw {
 		            Func, mutable_function_ref> and
 		          not std::is_const_v<Func> and
 		          mutable_function_ref_details::class_invocable_r<Result, Func &,
-		                                                          Params...> ) //
-		  constexpr mutable_function_ref( Func &func ) noexcept
+		                                                          Params...> )
+		constexpr mutable_function_ref( Func &func ) noexcept
 		  : m_data( static_cast<void *>( std::addressof( func ) ) )
 		  , m_thunk( obj_thunk<Func> ) {}
 
 		template<typename Func>
-		requires(
-		  mutable_function_ref_details::different_from<Func, mutable_function_ref>
-		    and mutable_function_ref_details::class_invocable_r<
-		      Result, Func const &, Params...> ) //
-		  constexpr mutable_function_ref( Func const &func ) noexcept
+		requires( mutable_function_ref_details::different_from<
+		            Func, mutable_function_ref> and
+		          mutable_function_ref_details::class_invocable_r<
+		            Result, Func const &, Params...> )
+		constexpr mutable_function_ref( Func const &func ) noexcept
 		  : m_data( static_cast<void const *>( std::addressof( func ) ) )
 		  , m_thunk( const_obj_thunk<Func> ) {}
 
@@ -116,8 +116,8 @@ namespace daw {
 		            Func, mutable_function_ref> and
 		          not std::is_const_v<Func> and
 		          mutable_function_ref_details::class_invocable_r<Result, Func &,
-		                                                          Params...> ) //
-		  constexpr mutable_function_ref( Func &&func ) noexcept
+		                                                          Params...> )
+		constexpr mutable_function_ref( Func &&func ) noexcept
 		  : m_data( static_cast<void *>( std::addressof( func ) ) )
 		  , m_thunk( obj_thunk<Func> ) {}
 
@@ -126,8 +126,8 @@ namespace daw {
 		            Func, mutable_function_ref> and
 		          not std::is_const_v<Func> and
 		          mutable_function_ref_details::class_invocable_r<Result, Func &,
-		                                                          Params...> ) //
-		  constexpr mutable_function_ref &operator=( Func &func ) noexcept {
+		                                                          Params...> )
+		constexpr mutable_function_ref &operator=( Func &func ) noexcept {
 			m_data = static_cast<void *>( std::addressof( func ) );
 			m_thunk = obj_thunk<Func>;
 			return *this;
@@ -135,10 +135,11 @@ namespace daw {
 
 		template<typename Func>
 		requires(
-		  mutable_function_ref_details::different_from<Func, mutable_function_ref>
-		    and mutable_function_ref_details::class_invocable_r<
-		      Result, Func const &, Params...> ) //
-		  constexpr mutable_function_ref &operator=( Func const &func ) noexcept {
+		  mutable_function_ref_details::different_from<Func,
+		                                               mutable_function_ref> and
+		  mutable_function_ref_details::class_invocable_r<Result, Func const &,
+		                                                  Params...> )
+		constexpr mutable_function_ref &operator=( Func const &func ) noexcept {
 			m_data = static_cast<void const *>( std::addressof( func ) );
 			m_thunk = const_obj_thunk<Func>;
 			return *this;
@@ -210,17 +211,17 @@ namespace daw {
 		            Func, mutable_function_ref> and
 		          not std::is_const_v<Func> and
 		          mutable_function_ref_details::class_invocable_r<void, Func &,
-		                                                          Params...> ) //
-		  constexpr mutable_function_ref( Func &func ) noexcept
+		                                                          Params...> )
+		constexpr mutable_function_ref( Func &func ) noexcept
 		  : m_data( static_cast<void *>( std::addressof( func ) ) )
 		  , m_thunk( obj_thunk<Func> ) {}
 
 		template<typename Func>
-		requires(
-		  mutable_function_ref_details::different_from<Func, mutable_function_ref>
-		    and mutable_function_ref_details::class_invocable_r<void, Func const &,
-		                                                        Params...> ) //
-		  constexpr mutable_function_ref( Func const &func ) noexcept
+		requires( mutable_function_ref_details::different_from<
+		            Func, mutable_function_ref> and
+		          mutable_function_ref_details::class_invocable_r<
+		            void, Func const &, Params...> )
+		constexpr mutable_function_ref( Func const &func ) noexcept
 		  : m_data( static_cast<void const *>( std::addressof( func ) ) )
 		  , m_thunk( const_obj_thunk<Func> ) {}
 
@@ -230,18 +231,18 @@ namespace daw {
 		            Func, mutable_function_ref> and
 		          not std::is_const_v<Func> and
 		          mutable_function_ref_details::class_invocable_r<void, Func &,
-		                                                          Params...> ) //
-		  constexpr mutable_function_ref( Func &&func ) noexcept
+		                                                          Params...> )
+		constexpr mutable_function_ref( Func &&func ) noexcept
 		  : m_data( static_cast<void *>( std::addressof( func ) ) )
 		  , m_thunk( obj_thunk<Func> ) {}
 
 		template<typename Func>
-		requires( mutable_function_ref_details::different_from<
-		            Func, mutable_function_ref> and
-		          not std::is_const_v<Func> and
-		          mutable_function_ref_details::class_invocable_r<void, Func &,
-		                                                          Params...> ) //
-		  constexpr mutable_function_ref &operator=( Func &func ) noexcept {
+		requires(
+		  mutable_function_ref_details::different_from<Func,
+		                                               mutable_function_ref> and
+		  not std::is_const_v<Func> and
+		  mutable_function_ref_details::class_invocable_r<void, Func &, Params...> )
+		constexpr mutable_function_ref &operator=( Func &func ) noexcept {
 			m_data = static_cast<void *>( std::addressof( func ) );
 			m_thunk = obj_thunk<Func>;
 			return *this;
@@ -249,10 +250,11 @@ namespace daw {
 
 		template<typename Func>
 		requires(
-		  mutable_function_ref_details::different_from<Func, mutable_function_ref>
-		    and mutable_function_ref_details::class_invocable_r<void, Func const &,
-		                                                        Params...> ) //
-		  constexpr mutable_function_ref &operator=( Func const &func ) noexcept {
+		  mutable_function_ref_details::different_from<Func,
+		                                               mutable_function_ref> and
+		  mutable_function_ref_details::class_invocable_r<void, Func const &,
+		                                                  Params...> )
+		constexpr mutable_function_ref &operator=( Func const &func ) noexcept {
 			m_data = static_cast<void const *>( std::addressof( func ) );
 			m_thunk = const_obj_thunk<Func>;
 			return *this;

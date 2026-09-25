@@ -33,9 +33,9 @@ namespace daw {
 	                                       remove_array_ref_t<T>>>
 	DAW_ATTRIB_FLATTEN constexpr auto
 	array_cmp( T &&lhs, T &&rhs, Compare const &cmp = Compare{ } ) {
-		using compare_result_t =
-		  std::invoke_result_t<Compare, std::remove_all_extents_t<U>,
-		                       std::remove_all_extents_t<U>>;
+		using compare_result_t = std::invoke_result_t<Compare,
+		                                              std::remove_all_extents_t<U>,
+		                                              std::remove_all_extents_t<U>>;
 		for( std::size_t n = 0; n < std::extent_v<U>; ++n ) {
 			auto r = [&] {
 				if constexpr( std::rank_v<U> > 1 ) {

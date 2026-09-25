@@ -450,8 +450,7 @@ namespace daw {
 		template<typename T>
 		constexpr bool is_range_reference_v = is_range_reference<T>::value;
 
-		template<typename OStream,
-		         typename Iterator,
+		template<typename OStream, typename Iterator,
 		         std::enable_if_t<daw::traits::is_ostream_like_lite_v<OStream>,
 		                          std::nullptr_t> = nullptr>
 		OStream &operator<<( OStream &os, ReferenceRange<Iterator> const &rng ) {

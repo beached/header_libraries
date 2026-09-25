@@ -34,16 +34,15 @@ namespace daw::pipelines::pimpl {
 			return true;
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline value_type operator*( ) const {
+		[[noreturn]] DAW_ATTRIB_NOINLINE value_type operator*( ) const {
 			std::terminate( );
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline every_iterator_end &
-		operator++( ) const {
+		[[noreturn]] DAW_ATTRIB_NOINLINE every_iterator_end &operator++( ) const {
 			std::terminate( );
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline every_iterator_end
+		[[noreturn]] DAW_ATTRIB_NOINLINE every_iterator_end
 		operator++( int ) const {
 			std::terminate( );
 		}

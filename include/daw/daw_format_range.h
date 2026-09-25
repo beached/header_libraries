@@ -67,7 +67,8 @@ namespace std {
 		constexpr typename ParseContext::iterator
 		parse( ParseContext &ctx DAW_LIFETIME_BOUND ) {
 			auto ctx_b = std::begin( ctx );
-			auto const ctx_sz = static_cast<std::size_t>( std::distance( std::begin( ctx ), std::end( ctx ) ) );
+			auto const ctx_sz = static_cast<std::size_t>(
+			  std::distance( std::begin( ctx ), std::end( ctx ) ) );
 			auto f = daw::basic_string_view( ctx_b, ctx_sz );
 			if( ctx.begin( ) == ctx.end( ) or *ctx.begin( ) == '}' ) {
 				flags = "{}";

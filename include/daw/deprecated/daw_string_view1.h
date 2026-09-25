@@ -597,24 +597,24 @@ namespace daw {
 			[[nodiscard]] static constexpr int
 			compare( basic_string_view<CharT, BL, ExL> lhs,
 			         basic_string_view<CharT, BR, ExR> rhs ) {
-				auto const str_compare = []( CharT const *p0, CharT const *p1,
-				                             std::size_t len ) {
-					auto const last = p0 + len;
-					while( p0 != last ) {
-						if( *p0 != *p1 ) {
-							if( *p0 < *p1 ) {
-								return -1;
-							}
-							return 1;
-						}
-						++p0;
-						++p1;
-					}
-					return 0;
-				};
+				auto const str_compare =
+				  []( CharT const *p0, CharT const *p1, std::size_t len ) {
+					  auto const last = p0 + len;
+					  while( p0 != last ) {
+						  if( *p0 != *p1 ) {
+							  if( *p0 < *p1 ) {
+								  return -1;
+							  }
+							  return 1;
+						  }
+						  ++p0;
+						  ++p1;
+					  }
+					  return 0;
+				  };
 
-				auto cmp = str_compare( lhs.data( ), rhs.data( ),
-				                        (std::min)( lhs.size( ), rhs.size( ) ) );
+				auto cmp = str_compare(
+				  lhs.data( ), rhs.data( ), (std::min)( lhs.size( ), rhs.size( ) ) );
 				if( cmp == 0 ) {
 					if( lhs.size( ) < rhs.size( ) ) {
 						return -1;
@@ -760,8 +760,8 @@ namespace daw {
 				if( pos >= size( ) or v.empty( ) ) {
 					return npos;
 				}
-				auto const iter = details::find_first_of( begin( ) + pos, end( ),
-				                                          v.begin( ), v.end( ), bp_eq );
+				auto const iter = details::find_first_of(
+				  begin( ) + pos, end( ), v.begin( ), v.end( ), bp_eq );
 
 				if( end( ) == iter ) {
 					return npos;
@@ -875,8 +875,8 @@ namespace daw {
 			to_string( ) const {
 				std::basic_string<CharT, Traits, Allocator> result;
 				result.reserve( size( ) );
-				daw::algorithm::copy_n( begin( ), std::back_inserter( result ),
-				                        size( ) );
+				daw::algorithm::copy_n(
+				  begin( ), std::back_inserter( result ), size( ) );
 				return result;
 			}
 #endif
@@ -904,8 +904,10 @@ namespace daw {
 					pos = size( ) - ( pos + 1U );
 				}
 				auto iter = std::find_first_of(
-				  std::next( rbegin( ), static_cast<difference_type>( pos ) ), rend( ),
-				  s.rbegin( ), s.rend( ) );
+				  std::next( rbegin( ), static_cast<difference_type>( pos ) ),
+				  rend( ),
+				  s.rbegin( ),
+				  s.rend( ) );
 				return iter == rend( ) ? npos : reverse_distance( rbegin( ), iter );
 			}
 
@@ -981,8 +983,11 @@ namespace daw {
 				}
 
 				const_iterator iter = details::find_first_not_of(
-				  begin( ) + pos, end( ), v.begin( ),
-				  std::next( v.begin( ), static_cast<ptrdiff_t>( v.size( ) ) ), bp_eq );
+				  begin( ) + pos,
+				  end( ),
+				  v.begin( ),
+				  std::next( v.begin( ), static_cast<ptrdiff_t>( v.size( ) ) ),
+				  bp_eq );
 				if( end( ) == iter ) {
 					return npos;
 				}
@@ -1443,8 +1448,8 @@ namespace daw {
 		operator+( std::basic_string<CharT, Traits, Allocator> lhs,
 		           daw::sv1::basic_string_view<CharT, Bounds, Ex> rhs ) {
 			lhs.reserve( lhs.size( ) + rhs.size( ) );
-			daw::algorithm::copy( rhs.begin( ), rhs.end( ),
-			                      std::back_inserter( lhs ) );
+			daw::algorithm::copy(
+			  rhs.begin( ), rhs.end( ), std::back_inserter( lhs ) );
 			return lhs;
 		}
 
@@ -1481,8 +1486,8 @@ namespace daw {
 		           std::basic_string<CharT, Traits, Allocator> const &rhs ) {
 			std::basic_string<CharT, Traits, Allocator> result;
 			result.reserve( lhs.size( ) + rhs.size( ) );
-			daw::algorithm::copy( lhs.begin( ), lhs.end( ),
-			                      std::back_inserter( result ) );
+			daw::algorithm::copy(
+			  lhs.begin( ), lhs.end( ), std::back_inserter( result ) );
 			result += rhs;
 			return result;
 		}

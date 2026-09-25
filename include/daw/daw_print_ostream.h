@@ -41,9 +41,10 @@ namespace daw {
 
 	template<typename... Args>
 	std::ostream &print_log( std::format_string<Args...> fmt, Args &&...args ) {
-		static_assert( ( has_std_formatter_specialization_v<Args> and ... ),
-		               "print_log requires a std::formatter specialization for each "
-		               "Arg type" );
+		static_assert(
+		  ( has_std_formatter_specialization_v<Args> and ... ),
+		  "print_log requires a std::formatter specialization for each "
+		  "Arg type" );
 		return daw::print(
 		  std::clog, "{}\n", std::format( std::move( fmt ), DAW_FWD( args )... ) );
 	}

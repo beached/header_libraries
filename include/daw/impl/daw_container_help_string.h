@@ -195,8 +195,8 @@ namespace daw::string_extract_impl {
 			S_copy_chars( _p, _k1.base( ), _k2.base( ) );
 		}
 
-		static void
-		S_copy_chars( CharT *_p, const_iterator _k1, const_iterator _k2 ) noexcept {
+		static void S_copy_chars( CharT *_p, const_iterator _k1,
+		                          const_iterator _k2 ) noexcept {
 			S_copy_chars( _p, _k1.base( ), _k2.base( ) );
 		}
 
@@ -204,8 +204,8 @@ namespace daw::string_extract_impl {
 			S_copy( _p, _k1, _k2 - _k1 );
 		}
 
-		static void
-		S_copy_chars( CharT *_p, const CharT *_k1, const CharT *_k2 ) noexcept {
+		static void S_copy_chars( CharT *_p, const CharT *_k1,
+		                          const CharT *_k2 ) noexcept {
 			S_copy( _p, _k1, _k2 - _k1 );
 		}
 
@@ -223,9 +223,7 @@ namespace daw::string_extract_impl {
 
 		void m_assign( const basic_string & );
 
-		void m_mutate( size_type _pos,
-		               size_type _len1,
-		               const CharT *_s,
+		void m_mutate( size_type _pos, size_type _len1, const CharT *_s,
 		               size_type _len2 );
 
 		void m_erase( size_type _pos, size_type _n );
@@ -237,8 +235,7 @@ namespace daw::string_extract_impl {
 		}
 
 		template<typename InIterator>
-		void m_construct( CharT const *beg,
-		                  CharT const *end,
+		void m_construct( CharT const *beg, CharT const *end,
 		                  std::random_access_iterator_tag ) {
 			auto const dnew = static_cast<size_type>( std::distance( beg, end ) );
 
@@ -275,9 +272,8 @@ namespace daw::string_extract_impl {
 		 *  @param  _str  Source string.
 		 */
 		basic_string( const basic_string &_str )
-		  : m_dataplus(
-		      m_local_data( ),
-		      Alloc_traits::_S_select_on_copy( _str.m_get_allocator( ) ) ) {
+		  : m_dataplus( m_local_data( ), Alloc_traits::_S_select_on_copy(
+		                                   _str.m_get_allocator( ) ) ) {
 			m_construct( _str.m_data( ),
 			             _str.m_data( ) + _str.length( ),
 			             std::forward_iterator_tag( ) );
@@ -291,8 +287,7 @@ namespace daw::string_extract_impl {
 		 *  @param  _pos  Index of first character to copy from.
 		 *  @param  _a  Allocator to use.
 		 */
-		basic_string( const basic_string &_str,
-		              size_type _pos,
+		basic_string( const basic_string &_str, size_type _pos,
 		              const Alloc &_a = Alloc( ) )
 		  : m_dataplus( m_local_data( ), _a ) {
 			const CharT *_start =
@@ -324,9 +319,7 @@ namespace daw::string_extract_impl {
 		 *  @param  _n  Number of characters to copy.
 		 *  @param  _a  Allocator to use.
 		 */
-		basic_string( const basic_string &_str,
-		              size_type _pos,
-		              size_type _n,
+		basic_string( const basic_string &_str, size_type _pos, size_type _n,
 		              const Alloc &_a )
 		  : m_dataplus( m_local_data( ), _a ) {
 			const CharT *_start =
@@ -746,8 +739,7 @@ namespace daw::string_extract_impl {
 #if __cplusplus > 201703L
 		[[deprecated( "use shrink_to_fit() instead" )]]
 #endif
-		void
-		reserve( );
+		void reserve( );
 
 		/**
 		 *  Erases the string, making it empty.
@@ -892,27 +884,20 @@ namespace daw::string_extract_impl {
 
 	private:
 		template<class Integer>
-		basic_string &m_replace_dispatch( const_iterator _i1,
-		                                  const_iterator _i2,
-		                                  Integer _n,
-		                                  Integer _val,
-		                                  __true_type ) {
+		basic_string &m_replace_dispatch( const_iterator _i1, const_iterator _i2,
+		                                  Integer _n, Integer _val, __true_type ) {
 			return m_replace_aux( _i1 - begin( ), _i2 - _i1, _n, _val );
 		}
 
 		template<class InputIterator>
-		basic_string &m_replace_dispatch( const_iterator _i1,
-		                                  const_iterator _i2,
-		                                  InputIterator _k1,
-		                                  InputIterator _k2,
+		basic_string &m_replace_dispatch( const_iterator _i1, const_iterator _i2,
+		                                  InputIterator _k1, InputIterator _k2,
 		                                  __false_type );
 
-		basic_string &
-		m_replace_aux( size_type _pos1, size_type _n1, size_type _n2, CharT _c );
+		basic_string &m_replace_aux( size_type _pos1, size_type _n1, size_type _n2,
+		                             CharT _c );
 
-		basic_string &m_replace( size_type _pos,
-		                         size_type _len1,
-		                         const CharT *_s,
+		basic_string &m_replace( size_type _pos, size_type _len1, const CharT *_s,
 		                         const size_type _len2 );
 
 		basic_string &m_append( const CharT *_s, size_type _n );

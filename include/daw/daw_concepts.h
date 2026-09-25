@@ -30,9 +30,8 @@ namespace daw {
 	 * convertible to type To.
 	 */
 	template<typename From, typename To>
-	concept explicitly_convertible_to = requires {
-		static_cast<To>( std::declval<From>( ) );
-	};
+	concept explicitly_convertible_to =
+	  requires { static_cast<To>( std::declval<From>( ) ); };
 
 	/***
 	 * @brief Given types From and To and an expression E whose type and value
@@ -106,10 +105,10 @@ namespace daw {
 	 */
 	template<typename To, typename... Args>
 	concept constructible_from =
-	  std::destructible<To> and requires( Args && ...args ) {
-		To{ DAW_FWD( args )... };
-	}; // use std::is_constructible_v<T, Args...>;
-	   // once clang supports it for aggregates
+	  std::destructible<To> and requires( Args &&...args ) {
+		  To{ DAW_FWD( args )... };
+	  }; // use std::is_constructible_v<T, Args...>;
+	     // once clang supports it for aggregates
 
 	template<typename From, typename To>
 	concept constructible = constructible_from<To, From>;
@@ -125,16 +124,16 @@ namespace daw {
 	};
 
 	template<typename T>
-	concept ContiguousContainer = requires( T && container ) {
-		{ std::data( container ) }->Pointers;
-		{ std::size( container ) }->convertible_to<std::size_t>;
+	concept ContiguousContainer = requires( T &&container ) {
+		{ std::data( container ) } -> Pointers;
+		{ std::size( container ) } -> convertible_to<std::size_t>;
 	};
 
 	template<typename T, typename U>
 	concept ContiguousContainerOf =
 	  ContiguousContainer<T> and requires( T container ) {
-		{ *std::data( container ) }->convertible_to<U>;
-	};
+		  { *std::data( container ) } -> convertible_to<U>;
+	  };
 
 	template<typename T>
 	concept StringLike =
@@ -182,7 +181,7 @@ namespace daw {
 	 * @tparam Args Arguments to call callable with
 	 */
 	template<typename Func, typename... Args>
-	concept invocable = requires( Func && f, Args &&...args ) {
+	concept invocable = requires( Func &&f, Args &&...args ) {
 		std::invoke( DAW_FWD( f ), DAW_FWD( args )... );
 	};
 
@@ -195,8 +194,8 @@ namespace daw {
 	  std::assignable_from<LHS, RHS>;
 #else
 	  std::is_lvalue_reference_v<LHS> and requires( LHS lhs, RHS &&rhs ) {
-		{ lhs = DAW_FWD( rhs ) }->std::same_as<LHS>;
-	};
+		  { lhs = DAW_FWD( rhs ) } -> std::same_as<LHS>;
+	  };
 #endif
 
 	/// @brief Satisfied if T is a reference type, or if it is an object type
@@ -215,9 +214,8 @@ namespace daw {
 	namespace swappable_test {
 		using namespace std;
 		template<typename T>
-		inline constexpr bool swappable_test = requires( T & a, T &b ) {
-			swap( a, b );
-		};
+		inline constexpr bool swappable_test =
+		  requires( T &a, T &b ) { swap( a, b ); };
 	} // namespace swappable_test
 #endif
 
@@ -249,11 +247,11 @@ namespace daw {
 	  std::weakly_incrementable<I>;
 #else
 	  movable<I> and requires( I i ) {
-		typename iter_difference_t<I>;
-		requires SignedStd<iter_difference_t<I>>;
-		{ ++i }->same_as<I &>;
-		i++;
-	};
+		  typename iter_difference_t<I>;
+		  requires SignedStd<iter_difference_t<I>>;
+		  { ++i } -> same_as<I &>;
+		  i++;
+	  };
 #endif
 
 	/***
@@ -265,8 +263,10 @@ namespace daw {
 	 * @tparam Args Arguments to call callable with
 	 */
 	template<typename Func, typename Result, typename... Args>
-	concept invocable_result = requires( Func && f, Args &&...args ) {
-		{ std::invoke( DAW_FWD( f ), DAW_FWD( args )... ) }->convertible_to<Result>;
+	concept invocable_result = requires( Func &&f, Args &&...args ) {
+		{
+			std::invoke( DAW_FWD( f ), DAW_FWD( args )... )
+		} -> convertible_to<Result>;
 	};
 
 	template<typename I>
@@ -275,9 +275,8 @@ namespace daw {
 	  std::input_or_output_iterator<I>;
 #else
 	  requires( I i ) {
-		{ *i };
-	}
-	and weakly_incrementable<I>;
+		  { *i };
+	  } and weakly_incrementable<I>;
 #endif
 
 	template<typename Out, typename T>
@@ -285,12 +284,13 @@ namespace daw {
 #if defined( __cpp_lib_concepts )
 	  std::indirectly_writable<Out, T>;
 #else
-	  requires( Out && o, T &&t ) {
-		*o = DAW_FWD( t );
-		*DAW_FWD( o ) = DAW_FWD( t );
-		const_cast<const iter_reference_t<Out> &&>( *o ) = DAW_FWD( t );
-		const_cast<const iter_reference_t<Out> &&>( *DAW_FWD( o ) ) = DAW_FWD( t );
-	};
+	  requires( Out &&o, T &&t ) {
+		  *o = DAW_FWD( t );
+		  *DAW_FWD( o ) = DAW_FWD( t );
+		  const_cast<const iter_reference_t<Out> &&>( *o ) = DAW_FWD( t );
+		  const_cast<const iter_reference_t<Out> &&>( *DAW_FWD( o ) ) =
+		    DAW_FWD( t );
+	  };
 #endif
 
 	template<typename Derived, typename Base>
@@ -305,8 +305,8 @@ namespace daw {
 #else
 	  input_or_output_iterator<I> and indirectly_writable<I, T> and
 	  requires( I i, T &&t ) {
-		*i++ = DAW_FWD( t ); // not required to be equality-preserving
-	};
+		  *i++ = DAW_FWD( t ); // not required to be equality-preserving
+	  };
 #endif
 
 	template<typename T>
@@ -353,8 +353,8 @@ namespace daw {
 	concept BackInsertableContainer =
 	  Containers<Container> and
 	  requires( Container c, typename Container::value_type const &v ) {
-		c.push_back( v );
-	};
+		  c.push_back( v );
+	  };
 
 #if not defined( __cpp_lib_concepts )
 	namespace concept_details {
@@ -368,20 +368,20 @@ namespace daw {
 	/// types
 	template<typename B>
 	concept boolean_testable =
-	  concept_details::boolean_testable_impl<B> and requires( B && b ) {
-		{ not DAW_FWD( b ) }->concept_details::boolean_testable_impl;
-	};
+	  concept_details::boolean_testable_impl<B> and requires( B &&b ) {
+		  { not DAW_FWD( b ) } -> concept_details::boolean_testable_impl;
+	  };
 
 	namespace concept_details {
 		template<typename T, typename U>
 		concept weakly_equality_comparable_with =
 		  requires( std::remove_reference_t<T> const &t,
 		            std::remove_reference_t<U> const &u ) {
-			{ t == u }->boolean_testable;
-			{ t != u }->boolean_testable;
-			{ u == t }->boolean_testable;
-			{ u != t }->boolean_testable;
-		};
+			  { t == u } -> boolean_testable;
+			  { t != u } -> boolean_testable;
+			  { u == t } -> boolean_testable;
+			  { u != t } -> boolean_testable;
+		  };
 	} // namespace concept_details
 #endif
 
@@ -415,9 +415,7 @@ namespace daw {
 	  std::is_move_constructible_v<typename Alloc::value_type>;
 
 	template<typename T>
-	concept default_constructible = requires {
-		T{ };
-	};
+	concept default_constructible = requires { T{ }; };
 
 	template<typename T, typename SpecificInt = void>
 	concept Integer = (same_as<SpecificInt, void> and std::is_integral_v<T>) or
@@ -450,13 +448,11 @@ namespace daw {
 
 	template<typename R, typename Fn, typename... Args>
 	concept Callable_r = requires( Fn fn, Args... args ) {
-		{ fn( args... ) }->convertible_to<R>;
+		{ fn( args... ) } -> convertible_to<R>;
 	};
 
 	template<typename Fn, typename... Args>
-	concept Callable = requires( Fn fn, Args... args ) {
-		fn( args... );
-	};
+	concept Callable = requires( Fn fn, Args... args ) { fn( args... ); };
 
 	template<typename R, typename Fn, typename... Args>
 	concept NothrowCallable_r = requires( Fn fn, Args... args ) {

@@ -94,37 +94,38 @@ namespace daw {
 	}
 }
 template<typename T, typename Allocator>
-struct StdVecStart : daw::pa::member_variable_wrapper<
-                       std::vector<T, Allocator>,
-                       typename std::vector<T, Allocator>::pointer> {};
+struct StdVecStart
+  : daw::pa::member_variable_wrapper<
+      std::vector<T, Allocator>, typename std::vector<T, Allocator>::pointer> {
+};
 template<typename T, typename Allocator>
 struct daw::pa::make_proxy<StdVecStart<T, Allocator>,
-                                   &std::vector<T, Allocator>::_M_start>;
+                           &std::vector<T, Allocator>::_M_start>;
 
 template<typename T, typename Allocator>
-struct StdVecFinish : daw::pa::member_variable_wrapper<
-                        std::vector<T, Allocator>,
-                        typename std::vector<T, Allocator>::pointer> {};
+struct StdVecFinish
+  : daw::pa::member_variable_wrapper<
+      std::vector<T, Allocator>, typename std::vector<T, Allocator>::pointer> {
+};
 template<typename T, typename Allocator>
 struct daw::pa::make_proxy<StdVecFinish<T, Allocator>,
-                                   &std::vector<T, Allocator>::_M_finish>;
+                           &std::vector<T, Allocator>::_M_finish>;
 
 template<typename T, typename Allocator>
-struct StdVecEndOfStorage : daw::pa::member_variable_wrapper<
-                              std::vector<T, Allocator>,
-                              typename std::vector<T, Allocator>::pointer> {};
+struct StdVecEndOfStorage
+  : daw::pa::member_variable_wrapper<
+      std::vector<T, Allocator>, typename std::vector<T, Allocator>::pointer> {
+};
 template<typename T, typename Allocator>
-struct daw::pa::make_proxy<
-  StdVecEndOfStorage<T, Allocator>,
-  &std::vector<T, Allocator>::_M_end_of_storage>;
+struct daw::pa::make_proxy<StdVecEndOfStorage<T, Allocator>,
+                           &std::vector<T, Allocator>::_M_end_of_storage>;
 
 template<typename T, typename Allocator>
 struct StdVecImpl
-  : daw::pa::member_variable_wrapper<std::vector<T, Allocator>,
-                                           Allocator> {};
+  : daw::pa::member_variable_wrapper<std::vector<T, Allocator>, Allocator> {};
 template<typename T, typename Allocator>
 struct daw::pa::make_proxy<StdVecImpl<T, Allocator>,
-                                   &std::vector<T, Allocator>::_M_impl>;
+                           &std::vector<T, Allocator>::_M_impl>;
 
 namespace daw {
 	namespace container_help_impl {
@@ -306,10 +307,8 @@ namespace daw {
 
 		explicit insert_into_container_t( ) = default;
 
-		constexpr void operator( )( std::vector<T, Allocator> &vec,
-		                            pointer buff,
-		                            alloc_type alloc,
-		                            std::size_t capacity,
+		constexpr void operator( )( std::vector<T, Allocator> &vec, pointer buff,
+		                            alloc_type alloc, std::size_t capacity,
 		                            std::size_t size ) const {
 			using vec_t = std::vector<T>;
 			using layout_t = container_help_impl::std_vector_layout<T, Allocator>;

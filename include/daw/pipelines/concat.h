@@ -55,16 +55,16 @@ namespace daw::pipelines {
 				return true;
 			}
 
-			[[noreturn]] DAW_ATTRIB_NOINLINE inline value_type operator*( ) const {
+			[[noreturn]] DAW_ATTRIB_NOINLINE value_type operator*( ) const {
 				std::terminate( );
 			}
 
-			[[noreturn]] DAW_ATTRIB_NOINLINE inline concat_iterator_end &
+			[[noreturn]] DAW_ATTRIB_NOINLINE concat_iterator_end &
 			operator++( ) const {
 				std::terminate( );
 			}
 
-			[[noreturn]] DAW_ATTRIB_NOINLINE inline concat_iterator_end
+			[[noreturn]] DAW_ATTRIB_NOINLINE concat_iterator_end
 			operator++( int ) const {
 				std::terminate( );
 			}
@@ -86,8 +86,7 @@ namespace daw::pipelines {
 			  range_reference_t<daw::remove_rvalue_ref_t<Ranges>>...>;
 			using const_reference = std::common_reference_t<
 			  range_const_reference_t<daw::remove_rvalue_ref_t<Ranges>>...>;
-			using difference_type =
-			  widest_type_t<daw::range_difference_t<Ranges>...>;
+			using difference_type = widest_type_t<daw::range_difference_t<Ranges>...>;
 			using i_am_a_daw_concat_iterator_class = void;
 
 		private:
@@ -201,8 +200,7 @@ namespace daw::pipelines {
 		  range_reference_t<daw::remove_rvalue_ref_t<Ranges>>...>;
 		using const_reference = std::common_reference_t<
 		  range_const_reference_t<daw::remove_rvalue_ref_t<Ranges>>...>;
-		using difference_type =
-		  widest_type_t<daw::range_difference_t<Ranges>...>;
+		using difference_type = widest_type_t<daw::range_difference_t<Ranges>...>;
 		using position_t = pimpl::variant_range_storage_t<
 		  view_t<iterator_t<Ranges>, iterator_end_t<Ranges>>...>;
 
@@ -266,8 +264,8 @@ namespace daw::pipelines {
 		}
 
 		template<typename Tuple>
-		requires( daw::is_tuple_like_v<Tuple> ) //
-		  consteval bool is_tuple_of_fwd_ranges( ) {
+		requires( daw::is_tuple_like_v<Tuple> )
+		consteval bool is_tuple_of_fwd_ranges( ) {
 			return []<std::size_t... Is>( std::index_sequence<Is...> ) {
 				return ( ForwardRange<std::tuple_element_t<Is, Tuple>> and ... );
 			}( std::make_index_sequence<std::tuple_size_v<Tuple>>{ } );

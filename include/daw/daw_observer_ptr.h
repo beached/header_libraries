@@ -34,9 +34,8 @@ namespace daw {
 		  : m_ptr( p ) {}
 
 		template<typename U>
-		requires( not std::same_as<T, U> and
-		          std::convertible_to<
-		            U *, T *> ) constexpr observer_ptr( observer_ptr<U> other )
+		requires( not std::same_as<T, U> and std::convertible_to<U *, T *> )
+		constexpr observer_ptr( observer_ptr<U> other )
 		  : m_ptr( other.m_ptr ) {}
 
 		constexpr observer_ptr &operator=( pointer p ) {
@@ -132,10 +131,10 @@ namespace daw {
 	};
 
 	template<typename A>
-	requires std::is_array_v<A> observer_ptr( A )
-	  -> observer_ptr<std::remove_extent_t<A>>;
+	requires std::is_array_v<A>
+	observer_ptr( A ) -> observer_ptr<std::remove_extent_t<A>>;
 
 	template<typename P>
-	requires std::is_pointer_v<P> observer_ptr( P )
-	  -> observer_ptr<std::remove_pointer_t<P>>;
+	requires std::is_pointer_v<P>
+	observer_ptr( P ) -> observer_ptr<std::remove_pointer_t<P>>;
 } // namespace daw

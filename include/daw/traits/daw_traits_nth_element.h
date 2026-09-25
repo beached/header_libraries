@@ -32,7 +32,7 @@ namespace daw::traits {
 #else
 	template<std::size_t Idx, typename... Ts>
 	using nth_element = typename decltype( nth_pack_element<Idx>(
-		daw::traits::identity<Ts>{}... ) )::type;
+	  daw::traits::identity<Ts>{ }... ) )::type;
 #endif
 	template<std::size_t Idx, typename... Ts>
 	using nth_type = nth_element<Idx, Ts...>;

@@ -124,13 +124,11 @@ namespace daw {
 			std::copy_n( first, m_size, m_data );
 		}
 
-		template<
-		  typename IteratorF,
-		  typename IteratorL,
-		  std::enable_if_t<
-		    (daw::traits::has_subtraction_operator_v<IteratorL, IteratorF> and
-		     daw::traits::is_iterator_v<IteratorF>),
-		    std::nullptr_t> = nullptr>
+		template<typename IteratorF, typename IteratorL,
+		         std::enable_if_t<(daw::traits::has_subtraction_operator_v<
+		                             IteratorL, IteratorF> and
+		                           daw::traits::is_iterator_v<IteratorF>),
+		                          std::nullptr_t> = nullptr>
 		fixed_array( IteratorF first, IteratorL last )
 		  : m_size( static_cast<size_type>( last - first ) )
 		  , m_data( new value_type[m_size] ) {
@@ -217,8 +215,8 @@ namespace daw {
 	fixed_array( std::in_place_type_t<T>, Ts... ) -> fixed_array<T>;
 
 	template<typename... Ts>
-	fixed_array( std::in_place_t,
-	             Ts... ) -> fixed_array<std::common_type_t<Ts...>>;
+	fixed_array( std::in_place_t, Ts... )
+	  -> fixed_array<std::common_type_t<Ts...>>;
 
 	template<typename T>
 	fixed_array( std::size_t, T ) -> fixed_array<T>;

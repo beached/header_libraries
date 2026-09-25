@@ -459,7 +459,8 @@ namespace daw::exception {
 	                                Message &&assert_message,
 	                                Predicate &&predicate ) {
 		assert_all_false<ExceptionType>(
-		  container, DAW_FWD( assert_message ),
+		  container,
+		  DAW_FWD( assert_message ),
 		  [pred = DAW_FWD( predicate )]( auto const &v ) {
 			  return not pred( v );
 		  } );

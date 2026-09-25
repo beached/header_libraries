@@ -10,9 +10,9 @@
 
 #include "ciso646.h"
 #include "cpp_17.h"
+#include "daw/daw_check_exceptions.h"
 #include "daw_assume.h"
 #include "daw_attributes.h"
-#include "daw/daw_check_exceptions.h"
 #include "daw_consteval.h"
 #include "daw_likely.h"
 #include "daw_move.h"
@@ -85,18 +85,20 @@ namespace daw {
 			return v.index( );
 		}
 
-	  DAW_MAKE_REQ_TRAIT( has_variant_npos, T::variant_npos );
-	  
-    template<typename Variant, std::enable_if_t<has_variant_npos<Variant>, std::nullptr_t> = nullptr> 
-	  DAW_ATTRIB_FLATINLINE constexpr bool is_empty( Variant const & v ) {
-		  return v.index( ) == Variant::variant_npos;
+		DAW_MAKE_REQ_TRAIT( has_variant_npos, T::variant_npos );
+
+		template<typename Variant, std::enable_if_t<has_variant_npos<Variant>,
+		                                            std::nullptr_t> = nullptr>
+		DAW_ATTRIB_FLATINLINE constexpr bool is_empty( Variant const &v ) {
+			return v.index( ) == Variant::variant_npos;
 		}
 
-    template<typename Variant, std::enable_if_t<not has_variant_npos<Variant>, std::nullptr_t> = nullptr> 
-	  DAW_ATTRIB_INLINE constexpr bool is_empty( Variant const & ) {
-      return false;
+		template<typename Variant, std::enable_if_t<not has_variant_npos<Variant>,
+		                                            std::nullptr_t> = nullptr>
+		DAW_ATTRIB_INLINE constexpr bool is_empty( Variant const & ) {
+			return false;
 		}
-	  
+
 		template<typename>
 		struct get_var_size;
 
@@ -138,8 +140,9 @@ namespace daw {
 		return DAW_FWD( vis )( get_nt<Base + Idx>( DAW_FWD( var ) ) )
 
 		template<std::size_t N, typename R, typename Variant, typename Visitor>
-		DAW_ATTRIB_FLATINLINE [[nodiscard]] inline constexpr R
-		visit_nt( Variant &&var, Visitor &&vis ) {
+		DAW_ATTRIB_FLATINLINE
+		  [[nodiscard]] inline constexpr R visit_nt( Variant &&var,
+		                                             Visitor &&vis ) {
 			constexpr std::size_t VSz = get_var_size_v<Variant>;
 			if constexpr( VSz - N >= 16 ) {
 				switch( get_index( var ) ) {
@@ -389,7 +392,7 @@ namespace daw {
 		  DAW_FWD( visitors )... )( get_nt<0>( DAW_FWD( var ) ) ) );
 
 		if( DAW_UNLIKELY( visit_details::is_empty( var ) ) ) {
-		  DAW_UNLIKELY_BRANCH
+			DAW_UNLIKELY_BRANCH
 			visit_details::visit_error( );
 		}
 		return daw::visit_details::visit_nt<0, result_t>(

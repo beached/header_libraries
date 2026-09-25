@@ -41,9 +41,9 @@ namespace daw {
 						typedef seq<S...> type;
 					};
 				} // namespace details
-			}   // namespace operators
-		}     // namespace parallel
-	}       // namespace range
+			} // namespace operators
+		} // namespace parallel
+	} // namespace range
 } // namespace daw
 
 #define DAW_PARALLEL_RANGE_GENERATE_VCLAUSE( clause_name )                    \
@@ -57,38 +57,35 @@ namespace daw {
 							std::tuple<Args...> clause_name##_args;                         \
                                                                               \
 							template<                                                       \
-							  typename Container,                                           \
-							  typename... ClauseArgs,                                       \
+							  typename Container, typename... ClauseArgs,                   \
 							  typename std::enable_if_t<not std::disjunction_v<             \
 							    daw::range::is_range_reference<Container>,                  \
 							    daw::range::is_range_collection<Container>>> * = nullptr,   \
 							  typename = void>                                              \
 							static auto                                                     \
-							  clause_name##_helper( Container const &container,             \
-							                        ClauseArgs &&...clause_args ) {         \
+							clause_name##_helper( Container const &container,               \
+							                      ClauseArgs &&...clause_args ) {           \
 								return from( container )                                      \
 								  .clause_name( DAW_FWD( clause_args )... );                  \
 							}                                                               \
                                                                               \
 							template<                                                       \
-							  typename Container,                                           \
-							  typename... ClauseArgs,                                       \
+							  typename Container, typename... ClauseArgs,                   \
 							  typename std::enable_if_t<                                    \
 							    daw::range::is_range_reference_v<Container>> * = nullptr>   \
 							static auto                                                     \
-							  clause_name##_helper( Container container,                    \
-							                        ClauseArgs &&...clause_args ) {         \
+							clause_name##_helper( Container container,                      \
+							                      ClauseArgs &&...clause_args ) {           \
 								return container.clause_name( DAW_FWD( clause_args )... );    \
 							}                                                               \
                                                                               \
 							template<                                                       \
-							  typename Container,                                           \
-							  typename... ClauseArgs,                                       \
+							  typename Container, typename... ClauseArgs,                   \
 							  typename std::enable_if_t<                                    \
 							    daw::range::is_range_collection_v<Container>> * = nullptr>  \
 							static auto                                                     \
-							  clause_name##_helper( Container const &container,             \
-							                        ClauseArgs &&...clause_args ) {         \
+							clause_name##_helper( Container const &container,               \
+							                      ClauseArgs &&...clause_args ) {           \
 								return container.clause_name( DAW_FWD( clause_args )... );    \
 							}                                                               \
                                                                               \

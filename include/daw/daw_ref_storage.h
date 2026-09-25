@@ -53,18 +53,19 @@ namespace daw {
 		static constexpr bool is_owned = not std::is_lvalue_reference_v<T>;
 
 		template<typename U>
-		requires( can_store_v<U> ) explicit constexpr ref_storage( U &&value )
+		requires( can_store_v<U> )
+		explicit constexpr ref_storage( U &&value )
 		  : m_storage( make_storage( DAW_FWD( value ) ) ) {}
 
 		template<typename... Args>
 		requires( not std::is_lvalue_reference_v<type> and
-		          std::constructible_from<storage_t, Args...> ) //
-		  explicit constexpr ref_storage( std::in_place_t, Args &&...args )
+		          std::constructible_from<storage_t, Args...> )
+		explicit constexpr ref_storage( std::in_place_t, Args &&...args )
 		  : m_storage( DAW_FWD( args )... ) {}
 
 		template<typename U>
-		requires( std::is_lvalue_reference_v<type> and can_store_v<U> ) //
-		  explicit constexpr ref_storage( std::in_place_t, U &&value )
+		requires( std::is_lvalue_reference_v<type> and can_store_v<U> )
+		explicit constexpr ref_storage( std::in_place_t, U &&value )
 		  : m_storage( make_storage( DAW_FWD( value ) ) ) {}
 
 		[[nodiscard]] constexpr bool good( ) const noexcept {
@@ -76,7 +77,8 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr type get( ) && noexcept
-		  requires( not std::is_lvalue_reference_v<type> ) {
+		requires( not std::is_lvalue_reference_v<type> )
+		{
 			return std::move( m_storage );
 		}
 
@@ -111,7 +113,8 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr bool operator==( ref_storage const &rhs ) const
-		  requires( std::equality_comparable<type> ) {
+		requires( std::equality_comparable<type> )
+		{
 			if( not good( ) ) {
 				return not rhs.good( );
 			}
@@ -122,7 +125,8 @@ namespace daw {
 		}
 
 		[[nodiscard]] constexpr bool operator==( const_reference rhs ) const
-		  requires( std::equality_comparable<type> ) {
+		requires( std::equality_comparable<type> )
+		{
 			if( not good( ) ) {
 				return false;
 			}

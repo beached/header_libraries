@@ -70,8 +70,8 @@ namespace daw::pipelines {
 		explicit take_view( ) = default;
 
 		template<Range R0>
-		requires( std::constructible_from<base_t, R0> ) //
-		  explicit constexpr take_view( R0 &&r, std::size_t how_many )
+		requires( std::constructible_from<base_t, R0> )
+		explicit constexpr take_view( R0 &&r, std::size_t how_many )
 		  : base_t( DAW_FWD( r ) )
 		  , m_how_many( how_many ) {}
 

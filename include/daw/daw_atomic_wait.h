@@ -112,8 +112,8 @@ namespace daw {
 			auto const is_timed_out = current_time >= final_time;
 			return is_timed_out;
 		};
-		(void)atomic_impl::poll_with_backoff( atomic_impl::timed_backoff_policy,
-		                                      poll_fn, rel_time );
+		(void)atomic_impl::poll_with_backoff(
+		  atomic_impl::timed_backoff_policy, poll_fn, rel_time );
 		if( current == old ) {
 			return wait_status::timeout;
 		}
@@ -148,8 +148,8 @@ namespace daw {
 	  std::chrono::time_point<Clock, Duration> const &timeout_time,
 	  std::memory_order order = std::memory_order_acquire ) {
 
-		return daw::atomic_wait_for( object, std::move( old ),
-		                             timeout_time - Clock::now( ), order );
+		return daw::atomic_wait_for(
+		  object, std::move( old ), timeout_time - Clock::now( ), order );
 	}
 
 	/**
@@ -233,8 +233,8 @@ namespace daw {
 			auto const is_timed_out = current_time >= final_time;
 			return is_timed_out;
 		};
-		(void)atomic_impl::poll_with_backoff( atomic_impl::timed_backoff_policy,
-		                                      poll_fn, rel_time );
+		(void)atomic_impl::poll_with_backoff(
+		  atomic_impl::timed_backoff_policy, poll_fn, rel_time );
 		if( predicate( current_value ) ) {
 			return wait_status::found;
 		}
@@ -270,8 +270,8 @@ namespace daw {
 	  std::atomic<T> const *object, Fn<bool( T )> auto &&predicate,
 	  std::chrono::time_point<Clock, Duration> const &timeout_time,
 	  std::memory_order order = std::memory_order_acquire ) {
-		return daw::atomic_wait_if_for( object, std::move( predicate ),
-		                                timeout_time - Clock::now( ), order );
+		return daw::atomic_wait_if_for(
+		  object, std::move( predicate ), timeout_time - Clock::now( ), order );
 	}
 
 	template<typename T>
@@ -331,7 +331,8 @@ namespace daw {
 		  [&desired_value]( T const &current_value ) {
 			  return current_value == desired_value;
 		  },
-		  rel_time, order );
+		  rel_time,
+		  order );
 	}
 
 	/**
@@ -366,7 +367,8 @@ namespace daw {
 		  [&desired_value]( T const &current_value ) {
 			  return current_value == desired_value;
 		  },
-		  timeout_time - Clock::now( ), order );
+		  timeout_time - Clock::now( ),
+		  order );
 	}
 
 } // namespace daw

@@ -171,7 +171,8 @@ namespace daw::pipelines {
 		using base_t::is_owned;
 
 		[[nodiscard]] constexpr auto &get_range( ) &
-		  requires( not std::is_const_v<std::remove_reference_t<R>> ) {
+		requires( not std::is_const_v<std::remove_reference_t<R>> )
+		{
 			return static_cast<base_t *>( this )->get_range( );
 		}
 

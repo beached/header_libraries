@@ -40,16 +40,15 @@ namespace daw::pipelines::pimpl {
 			return true;
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline value_type operator*( ) const {
+		[[noreturn]] DAW_ATTRIB_NOINLINE value_type operator*( ) const {
 			std::terminate( );
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline slide_iterator_end &
-		operator++( ) const {
+		[[noreturn]] DAW_ATTRIB_NOINLINE slide_iterator_end &operator++( ) const {
 			std::terminate( );
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline slide_iterator_end
+		[[noreturn]] DAW_ATTRIB_NOINLINE slide_iterator_end
 		operator++( int ) const {
 			std::terminate( );
 		}
@@ -243,8 +242,7 @@ namespace daw::pipelines::pimpl {
 		explicit slide_view( ) = default;
 
 		explicit constexpr slide_view( daw::constructible<base_t> auto &&r )
-		  requires(
-		    not std::same_as<std::remove_cvref_t<decltype( r )>, slide_view> )
+		requires( not std::same_as<std::remove_cvref_t<decltype( r )>, slide_view> )
 		  : base_t{ DAW_FWD( r ) } {}
 
 		explicit constexpr slide_view( daw::constructible<base_t> auto &&r,

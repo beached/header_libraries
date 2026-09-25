@@ -58,12 +58,16 @@ namespace daw::pipelines::pimpl {
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference
-		operator[]( size_type n ) requires( RandomIterator<Iterator> ) {
+		operator[]( size_type n )
+		requires( RandomIterator<Iterator> )
+		{
 			return raw_get( std::next( m_iter, as<difference_type>( n ) ) );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_reference
-		operator[]( size_type n ) const requires( RandomIterator<Iterator> ) {
+		operator[]( size_type n ) const
+		requires( RandomIterator<Iterator> )
+		{
 			return raw_get( std::next( m_iter, as<difference_type>( n ) ) );
 		}
 
@@ -98,33 +102,40 @@ namespace daw::pipelines::pimpl {
 		}
 
 		DAW_ATTRIB_INLINE constexpr element_iterator &operator--( )
-		  requires( BidirectionalIterator<Iterator> ) {
+		requires( BidirectionalIterator<Iterator> )
+		{
 			--m_iter;
 			return *this;
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr element_iterator operator--( int )
-		  requires( BidirectionalIterator<Iterator> ) {
+		requires( BidirectionalIterator<Iterator> )
+		{
 			element_iterator result = *this;
 			--m_iter;
 			return result;
 		}
 
 		DAW_ATTRIB_INLINE constexpr element_iterator &
-		operator+=( difference_type n ) requires( RandomIterator<Iterator> ) {
+		operator+=( difference_type n )
+		requires( RandomIterator<Iterator> )
+		{
 			m_iter += n;
 			return *this;
 		}
 
 		DAW_ATTRIB_INLINE constexpr element_iterator &
-		operator-=( difference_type n ) requires( RandomIterator<Iterator> ) {
+		operator-=( difference_type n )
+		requires( RandomIterator<Iterator> )
+		{
 			m_iter -= n;
 			return *this;
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr element_iterator
 		operator+( difference_type n ) const noexcept
-		  requires( RandomIterator<Iterator> ) {
+		requires( RandomIterator<Iterator> )
+		{
 			element_iterator result = *this;
 			m_iter += n;
 			return result;
@@ -132,7 +143,8 @@ namespace daw::pipelines::pimpl {
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr element_iterator
 		operator-( difference_type n ) const noexcept
-		  requires( RandomIterator<Iterator> ) {
+		requires( RandomIterator<Iterator> )
+		{
 			element_iterator result = *this;
 			m_iter -= n;
 			return result;
@@ -140,7 +152,8 @@ namespace daw::pipelines::pimpl {
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr difference_type
 		operator-( element_iterator const &rhs )
-		  requires( RandomIterator<Iterator> ) {
+		requires( RandomIterator<Iterator> )
+		{
 			return m_iter - rhs.m_iter;
 		}
 
@@ -252,12 +265,16 @@ namespace daw::pipelines::pimpl {
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference
-		operator[]( size_type n ) requires( RandomIterator<Iterator> ) {
+		operator[]( size_type n )
+		requires( RandomIterator<Iterator> )
+		{
 			return raw_get( std::next( m_iter, as<difference_type>( n ) ) );
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr const_reference
-		operator[]( size_type n ) const requires( RandomIterator<Iterator> ) {
+		operator[]( size_type n ) const
+		requires( RandomIterator<Iterator> )
+		{
 			return raw_get( std::next( m_iter, as<difference_type>( n ) ) );
 		}
 
@@ -292,33 +309,41 @@ namespace daw::pipelines::pimpl {
 		}
 
 		DAW_ATTRIB_INLINE constexpr elements_iterator &operator--( )
-		  requires( BidirectionalIterator<Iterator> ) {
+		requires( BidirectionalIterator<Iterator> )
+		{
 			--m_iter;
 			return *this;
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr elements_iterator
-		operator--( int ) requires( BidirectionalIterator<Iterator> ) {
+		operator--( int )
+		requires( BidirectionalIterator<Iterator> )
+		{
 			elements_iterator result = *this;
 			--m_iter;
 			return result;
 		}
 
 		DAW_ATTRIB_INLINE constexpr elements_iterator &
-		operator+=( difference_type n ) requires( RandomIterator<Iterator> ) {
+		operator+=( difference_type n )
+		requires( RandomIterator<Iterator> )
+		{
 			m_iter += n;
 			return *this;
 		}
 
 		DAW_ATTRIB_INLINE constexpr elements_iterator &
-		operator-=( difference_type n ) requires( RandomIterator<Iterator> ) {
+		operator-=( difference_type n )
+		requires( RandomIterator<Iterator> )
+		{
 			m_iter -= n;
 			return *this;
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr elements_iterator
 		operator+( difference_type n ) const noexcept
-		  requires( RandomIterator<Iterator> ) {
+		requires( RandomIterator<Iterator> )
+		{
 			elements_iterator result = *this;
 			m_iter += n;
 			return result;
@@ -326,7 +351,8 @@ namespace daw::pipelines::pimpl {
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr elements_iterator
 		operator-( difference_type n ) const noexcept
-		  requires( RandomIterator<Iterator> ) {
+		requires( RandomIterator<Iterator> )
+		{
 			elements_iterator result = *this;
 			m_iter -= n;
 			return result;
@@ -334,7 +360,8 @@ namespace daw::pipelines::pimpl {
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr difference_type
 		operator-( elements_iterator const &rhs )
-		  requires( RandomIterator<Iterator> ) {
+		requires( RandomIterator<Iterator> )
+		{
 			return m_iter - rhs.m_iter;
 		}
 

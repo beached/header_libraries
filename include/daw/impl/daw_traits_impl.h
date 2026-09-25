@@ -13,10 +13,10 @@
 #include "daw/daw_empty.h"
 #include "daw/daw_move.h"
 #include "daw/daw_remove_cvref.h"
+#include "daw/impl/daw_make_trait.h"
 #include "daw/traits/daw_traits_identity.h"
 #include "daw/traits/daw_traits_nth_element.h"
 #include "daw/traits/daw_traits_pack_list.h"
-#include "daw/impl/daw_make_trait.h"
 
 #include <cstddef>
 #include <daw/stdinc/data_access.h>
@@ -93,9 +93,8 @@ namespace daw {
 
 		DAW_MAKE_REQ_TRAIT( has_integer_subscript_v, std::declval<T>( )[0U] );
 
-		DAW_MAKE_REQ_TRAIT(
-		  has_size_memberfn_v,
-		  std::declval<size_t &>( ) = std::declval<T>( ).size( ) );
+		DAW_MAKE_REQ_TRAIT( has_size_memberfn_v, std::declval<size_t &>( ) =
+		                                           std::declval<T>( ).size( ) );
 
 		DAW_MAKE_REQ_TRAIT(
 		  has_empty_memberfn_v,
@@ -136,8 +135,7 @@ namespace daw {
 
 		template<typename Iterator, typename T>
 		inline constexpr bool is_assignable_iterator_v<
-		  Iterator,
-		  T,
+		  Iterator, T,
 		  std::void_t<decltype( *std::declval<Iterator>( ) =
 		                          std::declval<T>( ) )>> = true;
 
@@ -218,9 +216,8 @@ namespace daw {
 
 		template<typename Function>
 		struct void_function<
-		  Function,
-		  std::enable_if_t<std::is_default_constructible_v<Function>,
-		                   std::nullptr_t>> {
+		  Function, std::enable_if_t<std::is_default_constructible_v<Function>,
+		                             std::nullptr_t>> {
 
 			Function function;
 
@@ -253,9 +250,8 @@ namespace daw {
 
 		template<typename Function>
 		struct void_function<
-		  Function,
-		  std::enable_if_t<not std::is_default_constructible_v<Function>,
-		                   std::nullptr_t>> {
+		  Function, std::enable_if_t<not std::is_default_constructible_v<Function>,
+		                             std::nullptr_t>> {
 
 			Function function;
 

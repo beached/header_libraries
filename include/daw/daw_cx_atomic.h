@@ -189,7 +189,8 @@ namespace daw {
 		DAW_ATTRIB_FLATINLINE constexpr value_type
 		fetch_add( this auto &self, value_type arg,
 		           std::memory_order m = std::memory_order::seq_cst ) noexcept
-		  requires( not std::same_as<bool, value_type> ) {
+		requires( not std::same_as<bool, value_type> )
+		{
 			if consteval {
 				(void)m;
 				auto result = self.m_value;
@@ -203,7 +204,8 @@ namespace daw {
 		DAW_ATTRIB_FLATINLINE constexpr value_type
 		fetch_sub( this auto &self, value_type arg,
 		           std::memory_order m = std::memory_order::seq_cst ) noexcept
-		  requires( not std::same_as<bool, value_type> ) {
+		requires( not std::same_as<bool, value_type> )
+		{
 			if consteval {
 				(void)m;
 				auto result = self.m_value;
@@ -216,7 +218,8 @@ namespace daw {
 
 		DAW_ATTRIB_FLATINLINE constexpr value_type
 		operator+=( this auto &self, value_type arg ) noexcept
-		  requires( not std::same_as<bool, value_type> ) {
+		requires( not std::same_as<bool, value_type> )
+		{
 			if consteval {
 				return self.m_value += arg;
 			} else {
@@ -226,7 +229,8 @@ namespace daw {
 
 		DAW_ATTRIB_FLATINLINE constexpr value_type
 		operator-=( this auto &self, value_type arg ) noexcept
-		  requires( not std::same_as<bool, value_type> ) {
+		requires( not std::same_as<bool, value_type> )
+		{
 			if consteval {
 				return self.m_value -= arg;
 			} else {
@@ -236,8 +240,9 @@ namespace daw {
 
 		DAW_ATTRIB_FLATINLINE constexpr value_type
 		operator++( this auto &self ) noexcept
-		  requires( std::is_integral_v<value_type> and
-		            not std::same_as<bool, value_type> ) {
+		requires( std::is_integral_v<value_type> and
+		          not std::same_as<bool, value_type> )
+		{
 			if consteval {
 				return ++self.m_value;
 			} else {
@@ -247,8 +252,9 @@ namespace daw {
 
 		DAW_ATTRIB_FLATINLINE constexpr value_type operator++( this auto &self,
 		                                                       int ) noexcept
-		  requires( std::is_integral_v<value_type> and
-		            not std::same_as<bool, value_type> ) {
+		requires( std::is_integral_v<value_type> and
+		          not std::same_as<bool, value_type> )
+		{
 			if consteval {
 				return self.m_value++;
 			} else {
@@ -258,8 +264,9 @@ namespace daw {
 
 		DAW_ATTRIB_FLATINLINE constexpr value_type
 		operator--( this auto &self ) noexcept
-		  requires( std::is_integral_v<value_type> and
-		            not std::same_as<bool, value_type> ) {
+		requires( std::is_integral_v<value_type> and
+		          not std::same_as<bool, value_type> )
+		{
 			if consteval {
 				return --self.m_value;
 			} else {
@@ -269,8 +276,9 @@ namespace daw {
 
 		DAW_ATTRIB_FLATINLINE constexpr value_type operator--( this auto &self,
 		                                                       int ) noexcept
-		  requires( std::is_integral_v<value_type> and
-		            not std::same_as<bool, value_type> ) {
+		requires( std::is_integral_v<value_type> and
+		          not std::same_as<bool, value_type> )
+		{
 			if consteval {
 				return self.m_value--;
 			} else {
@@ -281,8 +289,9 @@ namespace daw {
 		DAW_ATTRIB_FLATINLINE constexpr value_type
 		fetch_and( this auto &self, value_type arg,
 		           std::memory_order m = std::memory_order::seq_cst ) noexcept
-		  requires( std::is_integral_v<value_type> and
-		            not std::same_as<bool, value_type> ) {
+		requires( std::is_integral_v<value_type> and
+		          not std::same_as<bool, value_type> )
+		{
 			if consteval {
 				(void)m;
 				auto result = self.m_value;
@@ -296,8 +305,9 @@ namespace daw {
 		DAW_ATTRIB_FLATINLINE constexpr value_type
 		fetch_or( this auto &self, value_type arg,
 		          std::memory_order m = std::memory_order::seq_cst ) noexcept
-		  requires( std::is_integral_v<value_type> and
-		            not std::same_as<bool, value_type> ) {
+		requires( std::is_integral_v<value_type> and
+		          not std::same_as<bool, value_type> )
+		{
 			if consteval {
 				(void)m;
 				auto result = self.m_value;
@@ -311,8 +321,9 @@ namespace daw {
 		DAW_ATTRIB_FLATINLINE constexpr value_type
 		fetch_xor( this auto &self, value_type arg,
 		           std::memory_order m = std::memory_order::seq_cst ) noexcept
-		  requires( std::is_integral_v<value_type> and
-		            not std::same_as<bool, value_type> ) {
+		requires( std::is_integral_v<value_type> and
+		          not std::same_as<bool, value_type> )
+		{
 			if consteval {
 				(void)m;
 				auto result = self.m_value;
@@ -325,8 +336,9 @@ namespace daw {
 
 		DAW_ATTRIB_FLATINLINE constexpr value_type operator&=( this auto &self,
 		                                                       value_type arg )
-		  requires( std::is_integral_v<value_type> and
-		            not std::same_as<bool, value_type> ) {
+		requires( std::is_integral_v<value_type> and
+		          not std::same_as<bool, value_type> )
+		{
 			if consteval {
 				return self.m_value &= arg;
 			} else {
@@ -336,8 +348,9 @@ namespace daw {
 
 		DAW_ATTRIB_FLATINLINE constexpr value_type operator|=( this auto &self,
 		                                                       value_type arg )
-		  requires( std::is_integral_v<value_type> and
-		            not std::same_as<bool, value_type> ) {
+		requires( std::is_integral_v<value_type> and
+		          not std::same_as<bool, value_type> )
+		{
 			if consteval {
 				return self.m_value |= arg;
 			} else {
@@ -347,8 +360,9 @@ namespace daw {
 
 		DAW_ATTRIB_FLATINLINE constexpr value_type operator^=( this auto &self,
 		                                                       value_type arg )
-		  requires( std::is_integral_v<value_type> and
-		            not std::same_as<bool, value_type> ) {
+		requires( std::is_integral_v<value_type> and
+		          not std::same_as<bool, value_type> )
+		{
 			if consteval {
 				return self.m_value ^= arg;
 			} else {

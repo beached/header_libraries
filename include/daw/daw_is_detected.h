@@ -8,9 +8,9 @@
 
 #pragma once
 
+#include "daw/daw_cpp20_concept.h"
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/traits/daw_traits_is_same.h"
-#include "daw/daw_cpp20_concept.h"
 
 #include <daw/stdinc/integral_constant.h>
 #include <daw/stdinc/is_convertible.h>
@@ -35,9 +35,7 @@ namespace daw {
 
 #if defined( DAW_HAS_CPP20_CONCEPTS )
 	template<template<class...> class Op, class... Args>
-	concept is_detected_v = requires {
-		typename Op<Args...>;
-	};
+	concept is_detected_v = requires { typename Op<Args...>; };
 #endif
 	namespace is_detect_details {
 		template<class Default, class AlwaysVoid, template<class...> class Op,

@@ -46,8 +46,8 @@ namespace daw {
 	template<typename... Args>
 	DAW_ATTRIB_NOINLINE void println( FILE *f, std::format_string<Args...> fmt,
 	                                  Args &&...args ) {
-		daw::print( f, "{}\n",
-		            std::format( std::move( fmt ), DAW_FWD( args )... ) );
+		daw::print(
+		  f, "{}\n", std::format( std::move( fmt ), DAW_FWD( args )... ) );
 	}
 
 	template<typename... Args>
@@ -60,8 +60,8 @@ namespace daw {
 	template<typename... Args>
 	DAW_ATTRIB_NOINLINE void println( std::format_string<Args...> fmt,
 	                                  Args &&...args ) {
-		daw::print( stdout, "{}\n",
-		            std::format( std::move( fmt ), DAW_FWD( args )... ) );
+		daw::print(
+		  stdout, "{}\n", std::format( std::move( fmt ), DAW_FWD( args )... ) );
 	}
 
 	template<typename... Args>

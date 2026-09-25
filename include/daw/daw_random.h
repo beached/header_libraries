@@ -102,8 +102,8 @@ namespace daw {
 
 		Result result{ };
 		result.resize( count );
-		random_fill<IntType, typename Result::value_type>( result.begin( ),
-		                                                   result.end( ), a, b );
+		random_fill<IntType, typename Result::value_type>(
+		  result.begin( ), result.end( ), a, b );
 		return result;
 	}
 

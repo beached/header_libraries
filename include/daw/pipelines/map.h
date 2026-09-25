@@ -59,17 +59,15 @@ namespace daw::pipelines::pimpl {
 			return true;
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline value_type operator*( ) const {
+		[[noreturn]] DAW_ATTRIB_NOINLINE value_type operator*( ) const {
 			std::terminate( );
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline map_iterator_end &
-		operator++( ) const {
+		[[noreturn]] DAW_ATTRIB_NOINLINE map_iterator_end &operator++( ) const {
 			std::terminate( );
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline map_iterator_end
-		operator++( int ) const {
+		[[noreturn]] DAW_ATTRIB_NOINLINE map_iterator_end operator++( int ) const {
 			std::terminate( );
 		}
 	};
@@ -110,19 +108,21 @@ namespace daw::pipelines::pimpl {
 		map_iterator( ) = default;
 
 		template<Iterator First>
-		requires( std::constructible_from<iterator, First> ) //
-		  explicit constexpr map_iterator( MI *parent, First &&first )
+		requires( std::constructible_from<iterator, First> )
+		explicit constexpr map_iterator( MI *parent, First &&first )
 		  : m_parent( parent )
 		  , m_iter( DAW_FWD( first ) ) {}
 
 	private:
 		[[nodiscard]] constexpr decltype( auto ) raw_get( size_type n )
-		  requires( RandomIterator<iterator> ) {
+		requires( RandomIterator<iterator> )
+		{
 			return *( m_iter + as<difference_type>( n ) );
 		}
 
 		[[nodiscard]] constexpr decltype( auto ) raw_get( size_type n ) const
-		  requires( RandomIterator<iterator> ) {
+		requires( RandomIterator<iterator> )
+		{
 			return *( m_iter + as<difference_type>( n ) );
 		}
 
@@ -157,12 +157,14 @@ namespace daw::pipelines::pimpl {
 		}
 
 		[[nodiscard]] constexpr reference operator[]( size_type n )
-		  requires( RandomIterator<iterator> ) {
+		requires( RandomIterator<iterator> )
+		{
 			return do_func( raw_get( n ) );
 		}
 
 		[[nodiscard]] constexpr reference operator[]( size_type n ) const
-		  requires( RandomIterator<iterator> ) {
+		requires( RandomIterator<iterator> )
+		{
 			return do_func( raw_get( n ) );
 		}
 
@@ -194,73 +196,84 @@ namespace daw::pipelines::pimpl {
 		}
 
 		constexpr map_iterator &operator--( )
-		  requires( BidirectionalIterator<iterator> ) {
+		requires( BidirectionalIterator<iterator> )
+		{
 			--m_iter;
 			return *this;
 		}
 
 		[[nodiscard]] constexpr map_iterator operator--( int )
-		  requires( BidirectionalIterator<iterator> ) {
+		requires( BidirectionalIterator<iterator> )
+		{
 			map_iterator result = *this;
 			--m_iter;
 			return result;
 		}
 
 		constexpr map_iterator &operator+=( difference_type n )
-		  requires( RandomIterator<iterator> ) {
+		requires( RandomIterator<iterator> )
+		{
 			m_iter += n;
 			return *this;
 		}
 
 		constexpr map_iterator &operator-=( difference_type n )
-		  requires( RandomIterator<iterator> ) {
+		requires( RandomIterator<iterator> )
+		{
 			m_iter -= n;
 			return *this;
 		}
 
 		[[nodiscard]] friend constexpr map_iterator
 		operator+( map_iterator lhs, difference_type n ) noexcept
-		  requires( RandomIterator<iterator> ) {
+		requires( RandomIterator<iterator> )
+		{
 			lhs += n;
 			return lhs;
 		}
 
 		[[nodiscard]] friend constexpr map_iterator
 		operator+( difference_type n, map_iterator rhs ) noexcept
-		  requires( RandomIterator<iterator> ) {
+		requires( RandomIterator<iterator> )
+		{
 			rhs += n;
 			return rhs;
 		}
 
 		[[nodiscard]] friend constexpr map_iterator
 		operator-( map_iterator lhs, difference_type n ) noexcept
-		  requires( RandomIterator<iterator> ) {
+		requires( RandomIterator<iterator> )
+		{
 			lhs -= n;
 			return lhs;
 		}
 
 		[[nodiscard]] friend constexpr map_iterator
 		operator-( difference_type n, map_iterator rhs ) noexcept
-		  requires( RandomIterator<iterator> ) {
+		requires( RandomIterator<iterator> )
+		{
 			rhs -= n;
 			return rhs;
 		}
 
 		[[nodiscard]] constexpr difference_type
 		operator-( map_iterator const &rhs ) const
-		  requires( RandomIterator<iterator> ) {
+		requires( RandomIterator<iterator> )
+		{
 			return m_iter - rhs.m_iter;
 		}
 
 		[[nodiscard]] constexpr difference_type
 		operator-( last_iterator const & ) const
-		  requires( RandomIterator<iterator> ) {
+		requires( RandomIterator<iterator> )
+		{
 			return m_iter - m_parent->rend( );
 		}
 
 		[[nodiscard]] friend constexpr difference_type
 		operator-( last_iterator const &, map_iterator const &rhs )
-		  requires( RandomIterator<iterator> ) {
+		requires( RandomIterator<iterator> )
+		{
 			return rhs.m_parent->rend( ) - rhs.m_iter;
 		}
 
@@ -322,19 +335,17 @@ namespace daw::pipelines {
 		explicit map_view( ) = default;
 
 		template<Range R0, typename F>
-		requires(
-		  std::constructible_from<base_t, R0> and std::constructible_from<Fn, F> and
-		  not Iterator<F> ) //
-		  explicit constexpr map_view( R0 &&r, F &&fn )
+		requires( std::constructible_from<base_t, R0> and
+		          std::constructible_from<Fn, F> and not Iterator<F> )
+		explicit constexpr map_view( R0 &&r, F &&fn )
 		  : base_t( DAW_FWD( r ) )
 		  , m_fn{ DAW_FWD( fn ) } {}
 
 		template<Range R0, typename F, typename P>
-		requires(
-		  std::constructible_from<base_t, R0> and std::constructible_from<Fn, F> and
-		  not Iterator<F> and std::constructible_from<Projection, P> and
-		  not Iterator<P> ) //
-		  explicit constexpr map_view( R0 &&r, F &&fn, P &&projection )
+		requires( std::constructible_from<base_t, R0> and
+		          std::constructible_from<Fn, F> and not Iterator<F> and
+		          std::constructible_from<Projection, P> and not Iterator<P> )
+		explicit constexpr map_view( R0 &&r, F &&fn, P &&projection )
 		  : base_t( DAW_FWD( r ) )
 		  , m_fn{ DAW_FWD( fn ) }
 		  , m_proj( DAW_FWD( projection ) ) {}
@@ -356,12 +367,12 @@ namespace daw::pipelines {
 		}
 	};
 	template<Range R, typename F>
-	requires( not Iterator<F> ) //
-	  map_view( R &&, F ) -> map_view<R, F>;
+	requires( not Iterator<F> )
+	map_view( R &&, F ) -> map_view<R, F>;
 
 	template<Range R, typename F, typename P>
-	requires( not Iterator<F> and not Iterator<P> ) //
-	  map_view( R &&, F, P ) -> map_view<R, F, P>;
+	requires( not Iterator<F> and not Iterator<P> )
+	map_view( R &&, F, P ) -> map_view<R, F, P>;
 
 	namespace pimpl {
 		template<typename Fn, typename Projection = std::identity>

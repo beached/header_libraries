@@ -101,7 +101,8 @@ namespace daw::pipelines::pimpl {
 
 		[[nodiscard]] constexpr bool
 		operator==( stored_range_base_t const &rhs ) const
-		  requires( std::equality_comparable<daw::remove_cvref_t<R>> ) {
+		requires( std::equality_comparable<daw::remove_cvref_t<R>> )
+		{
 			return get( ) == rhs.get( );
 		}
 
@@ -220,7 +221,8 @@ namespace std {
 
 	template<std::size_t I>
 	constexpr auto get( daw::pipelines::pimpl::RangeBase auto &&r )
-	  requires( I == 0 or I == 1 ) {
+	requires( I == 0 or I == 1 )
+	{
 		if constexpr( I == 0 ) {
 			return DAW_FWD( r ).begin( );
 		} else {

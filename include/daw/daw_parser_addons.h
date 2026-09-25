@@ -26,8 +26,8 @@ namespace daw::parser {
 
 		bool has_decimal = false;
 		auto const is_last = [&has_decimal]( auto const &v ) {
-			if(is_a( '.', v )) {
-				if(has_decimal) {
+			if( is_a( '.', v ) ) {
+				if( has_decimal ) {
 					return true;
 				}
 				has_decimal = true;
@@ -41,35 +41,33 @@ namespace daw::parser {
 
 	template<typename R>
 	constexpr R from_num_char( char c ) {
-		auto r = static_cast<unsigned>(static_cast<unsigned char>(c)) - static_cast<
-			         unsigned>(static_cast<unsigned char>('0'));
-		return static_cast<R>(r);
+		auto r = static_cast<unsigned>( static_cast<unsigned char>( c ) ) -
+		         static_cast<unsigned>( static_cast<unsigned char>( '0' ) );
+		return static_cast<R>( r );
 	}
 
 	template<typename ForwardIterator, typename Result>
 	constexpr void parse_unsigned_int( ForwardIterator first,
 	                                   ForwardIterator last, Result &result ) {
-		result = Result{};
+		result = Result{ };
 		auto count = std::numeric_limits<Result>::digits10;
 
 		daw::exception::precondition_check<ParserOutOfRangeException>(
-			'-' != *first,
-			"Negative values are unsupported" );
+		  '-' != *first, "Negative values are unsupported" );
 
-		for(; first != last and count > 0; ++first, --count) {
-			result *= Result{10};
+		for( ; first != last and count > 0; ++first, --count ) {
+			result *= Result{ 10 };
 			Result const val = from_num_char<Result>( *first );
 			result += val;
 		}
 		daw::exception::precondition_check<ParserOutOfRangeException>(
-			first == last,
-			"Not enough room to store number" );
+		  first == last, "Not enough room to store number" );
 	}
 
 	template<typename Result, typename ForwardIterator>
 	constexpr Result parse_unsigned_int( ForwardIterator first,
 	                                     ForwardIterator last ) {
-		Result result = Result{};
+		Result result = Result{ };
 		parse_unsigned_int( first, last, result );
 		return result;
 	}
@@ -77,36 +75,35 @@ namespace daw::parser {
 	template<typename Result>
 	constexpr Result parse_unsigned_int( daw::not_null<char const *> cstring ) {
 		daw::not_null<char const *> last = cstring;
-		while(*last) {
+		while( *last ) {
 			++last;
 		}
-		Result result = Result{};
+		Result result = Result{ };
 		parse_unsigned_int( cstring, last, result );
 		return result;
 	}
-
 
 	template<typename ForwardIterator, typename Result>
 	constexpr void parse_int( ForwardIterator first, ForwardIterator last,
 	                          Result &result ) {
 		bool is_neg = false;
-		if('-' == *first) {
+		if( '-' == *first ) {
 			daw::exception::precondition_check<ParserOutOfRangeException>(
-				std::numeric_limits<Result>::is_signed,
-				"Negative values are unsupported with unsigned Result" );
+			  std::numeric_limits<Result>::is_signed,
+			  "Negative values are unsupported with unsigned Result" );
 
 			is_neg = true;
 			++first;
 		}
 		result = parse_unsigned_int<Result>( first, last );
-		if(is_neg) {
-			result *= static_cast<Result>(-1);
+		if( is_neg ) {
+			result *= static_cast<Result>( -1 );
 		}
 	}
 
 	template<typename Result, typename ForwardIterator>
 	constexpr Result parse_int( ForwardIterator first, ForwardIterator last ) {
-		Result result = Result{};
+		Result result = Result{ };
 		parse_int( first, last, result );
 		return result;
 	}
@@ -118,14 +115,14 @@ namespace daw::parser {
 		auto quote_char = *first;
 
 		daw::exception::precondition_check<ParserException>(
-			is_quote( quote_char ) );
+		  is_quote( quote_char ) );
 
 		auto it = result.first;
 		auto last_it = it;
 		++it;
 		bool found = false;
-		while(it != last) {
-			if(( found = is_a( *it, quote_char ) ) and !is_escape( *last_it )) {
+		while( it != last ) {
+			if( ( found = is_a( *it, quote_char ) ) and !is_escape( *last_it ) ) {
 				break;
 			}
 			last_it = it;

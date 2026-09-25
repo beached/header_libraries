@@ -36,16 +36,15 @@ namespace daw::pipelines {
 			return true;
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline value_type operator*( ) const {
+		[[noreturn]] DAW_ATTRIB_NOINLINE value_type operator*( ) const {
 			std::terminate( );
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline sized_iterator_end &
-		operator++( ) const {
+		[[noreturn]] DAW_ATTRIB_NOINLINE sized_iterator_end &operator++( ) const {
 			std::terminate( );
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline sized_iterator_end
+		[[noreturn]] DAW_ATTRIB_NOINLINE sized_iterator_end
 		operator++( int ) const {
 			std::terminate( );
 		}
@@ -132,7 +131,8 @@ namespace daw::pipelines {
 
 		[[nodiscard]] constexpr bool
 		operator==( sized_iterator_end<Last> const & ) const noexcept
-		  requires( not std::same_as<First, Last> ) {
+		requires( not std::same_as<First, Last> )
+		{
 			return m_count <= 0;
 		}
 
@@ -156,13 +156,15 @@ namespace daw::pipelines {
 
 		// bidirectional iterator interface
 		constexpr sized_iterator &operator--( )
-		  requires( BidirectionalIteratorTag<iterator_category> ) {
+		requires( BidirectionalIteratorTag<iterator_category> )
+		{
 			decrement( );
 			return *this;
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr sized_iterator operator--( int )
-		  requires( BidirectionalIteratorTag<iterator_category> ) {
+		requires( BidirectionalIteratorTag<iterator_category> )
+		{
 			auto tmp = *this;
 			decrement( );
 			return tmp;
@@ -171,58 +173,67 @@ namespace daw::pipelines {
 		// random access iterator interface
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference
 		operator[]( difference_type n )
-		  requires( RandomIteratorTag<iterator_category> ) {
+		requires( RandomIteratorTag<iterator_category> )
+		{
 			return m_iter[n];
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr reference
 		operator[]( difference_type n ) const
-		  requires( RandomIteratorTag<iterator_category> ) {
+		requires( RandomIteratorTag<iterator_category> )
+		{
 			return m_iter[n];
 		}
 
 		constexpr sized_iterator &operator+=( difference_type n )
-		  requires( RandomIteratorTag<iterator_category> ) {
+		requires( RandomIteratorTag<iterator_category> )
+		{
 			advance( n );
 			return *this;
 		}
 
 		constexpr sized_iterator &operator-=( difference_type n )
-		  requires( RandomIteratorTag<iterator_category> ) {
+		requires( RandomIteratorTag<iterator_category> )
+		{
 			advance( -n );
 			return *this;
 		}
 
 		friend constexpr sized_iterator operator+( sized_iterator lhs,
 		                                           difference_type n )
-		  requires( RandomIteratorTag<iterator_category> ) {
+		requires( RandomIteratorTag<iterator_category> )
+		{
 			lhs += n;
 			return lhs;
 		}
 
 		friend constexpr sized_iterator operator+( difference_type n,
 		                                           sized_iterator rhs )
-		  requires( RandomIteratorTag<iterator_category> ) {
+		requires( RandomIteratorTag<iterator_category> )
+		{
 			rhs += n;
 			return rhs;
 		}
 
 		friend constexpr sized_iterator operator-( sized_iterator lhs,
 		                                           difference_type n )
-		  requires( RandomIteratorTag<iterator_category> ) {
+		requires( RandomIteratorTag<iterator_category> )
+		{
 			lhs -= n;
 			return lhs;
 		}
 
 		friend constexpr sized_iterator operator-( difference_type n,
 		                                           sized_iterator rhs )
-		  requires( RandomIteratorTag<iterator_category> ) {
+		requires( RandomIteratorTag<iterator_category> )
+		{
 			rhs -= n;
 			return rhs;
 		}
 
 		constexpr difference_type operator-( sized_iterator const &rhs ) const
-		  requires( RandomIteratorTag<iterator_category> ) {
+		requires( RandomIteratorTag<iterator_category> )
+		{
 			return rhs.m_count - m_count;
 		}
 	};
@@ -300,7 +311,8 @@ namespace daw::pipelines {
 
 		[[nodiscard]] constexpr bool
 		operator==( sized_iterator_end<Last> const & ) const noexcept
-		  requires( not std::same_as<First, Last> ) {
+		requires( not std::same_as<First, Last> )
+		{
 			return m_count <= 0 or m_first == m_last;
 		}
 	};

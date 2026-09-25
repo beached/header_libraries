@@ -295,8 +295,8 @@ namespace daw::memory {
 	};
 
 	template<typename T>
-	requires(
-	  std::is_same_v<std::remove_const_t<T>, void> ) struct safe_pointer<T> {
+	requires( std::is_same_v<std::remove_const_t<T>, void> )
+	struct safe_pointer<T> {
 		using difference_type = std::ptrdiff_t;
 		using size_type = std::size_t;
 		using value_type = T;
@@ -454,8 +454,8 @@ namespace std {
 		}
 
 		template<typename U>
-		requires( std::is_constructible_v<U *, T *> ) using rebind =
-		  daw::memory::safe_pointer<U>;
+		requires( std::is_constructible_v<U *, T *> )
+		using rebind = daw::memory::safe_pointer<U>;
 
 		static constexpr element_type *to_address( pointer p ) noexcept {
 			return p.get( );

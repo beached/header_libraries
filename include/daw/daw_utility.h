@@ -291,8 +291,8 @@ namespace daw {
 
 	template<typename T, typename Pred>
 	[[nodiscard]] auto find_all_where( T const &values, Pred predicate ) {
-		return find_all_where( std::cbegin( values ), std::cend( values ),
-		                       predicate );
+		return find_all_where(
+		  std::cbegin( values ), std::cend( values ), predicate );
 	}
 
 	[[nodiscard]] constexpr char AsciiUpper( char chr ) noexcept {
@@ -314,20 +314,20 @@ namespace daw {
 	template<typename CharType, typename Traits, typename Allocator>
 	[[nodiscard]] constexpr auto
 	AsciiUpper( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
-		daw::algorithm::map( str.cbegin( ), str.cend( ), str.begin( ),
-		                     []( CharType c ) noexcept {
-			                     return AsciiUpper( c );
-		                     } );
+		daw::algorithm::map(
+		  str.cbegin( ), str.cend( ), str.begin( ), []( CharType c ) noexcept {
+			  return AsciiUpper( c );
+		  } );
 		return std::move( str );
 	}
 
 	template<typename CharType, typename Traits, typename Allocator>
 	[[nodiscard]] constexpr auto
 	AsciiLower( std::basic_string<CharType, Traits, Allocator> str ) noexcept {
-		daw::algorithm::map( str.cbegin( ), str.cend( ), str.begin( ),
-		                     []( CharType c ) noexcept {
-			                     return AsciiLower( c );
-		                     } );
+		daw::algorithm::map(
+		  str.cbegin( ), str.cend( ), str.begin( ), []( CharType c ) noexcept {
+			  return AsciiLower( c );
+		  } );
 		return std::move( str );
 	}
 
@@ -385,8 +385,8 @@ namespace daw {
 	template<typename Container, typename Item>
 	[[nodiscard]] constexpr auto index_of( Container const &container,
 	                                       Item const &item ) noexcept {
-		auto const pos = daw::algorithm::find( std::begin( container ),
-		                                       std::end( container ), item );
+		auto const pos = daw::algorithm::find(
+		  std::begin( container ), std::end( container ), item );
 		return std::distance( std::begin( container ), pos );
 	}
 
@@ -911,8 +911,8 @@ namespace daw {
 
 	template<typename Function, typename... Args>
 	constexpr void pack_apply( std::size_t N, Function &&func, Args &&...args ) {
-		utility_details::utility_details<0>( N, DAW_FWD( func ),
-		                                     DAW_FWD( args )... );
+		utility_details::utility_details<0>(
+		  N, DAW_FWD( func ), DAW_FWD( args )... );
 	}
 
 	template<typename T, bool AllowDownSignCast = false, typename U>
@@ -954,5 +954,5 @@ namespace daw {
 	}
 
 	template<typename T>
-	inline constexpr T * null_v = static_cast<T*>( nullptr );
+	inline constexpr T *null_v = static_cast<T *>( nullptr );
 } // namespace daw

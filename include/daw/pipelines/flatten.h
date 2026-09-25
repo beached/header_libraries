@@ -39,16 +39,15 @@ namespace daw::pipelines::pimpl {
 			return true;
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline value_type operator*( ) const {
+		[[noreturn]] DAW_ATTRIB_NOINLINE value_type operator*( ) const {
 			std::terminate( );
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline flatten_iterator_end &
-		operator++( ) const {
+		[[noreturn]] DAW_ATTRIB_NOINLINE flatten_iterator_end &operator++( ) const {
 			std::terminate( );
 		}
 
-		[[noreturn]] DAW_ATTRIB_NOINLINE inline flatten_iterator_end
+		[[noreturn]] DAW_ATTRIB_NOINLINE flatten_iterator_end
 		operator++( int ) const {
 			std::terminate( );
 		}
@@ -176,9 +175,8 @@ namespace daw::pipelines {
 		explicit flatten_view( ) = default;
 
 		template<Range U>
-		requires( not std::same_as<std::remove_cvref_t<U>,
-		                           flatten_view> ) //
-		  explicit constexpr flatten_view( U &&r )
+		requires( not std::same_as<std::remove_cvref_t<U>, flatten_view> )
+		explicit constexpr flatten_view( U &&r )
 		  : base_t( DAW_FWD( r ) ) {}
 
 		[[nodiscard]] constexpr iterator begin( ) {

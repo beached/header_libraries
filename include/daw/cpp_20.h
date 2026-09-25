@@ -63,9 +63,7 @@ namespace daw {
 #if defined( DAW_HAS_CPP20_CONCEPTS )
 		template<typename T>
 		inline constexpr bool has_pointer_traits_to_address_v =
-		  requires( T const &p ) {
-			std::pointer_traits<T>::to_address( p );
-		};
+		  requires( T const &p ) { std::pointer_traits<T>::to_address( p ); };
 #else
 		template<typename T, typename = void>
 		inline constexpr bool has_pointer_traits_to_address_v = false;

@@ -23,10 +23,9 @@ namespace daw {
 
 	namespace details {
 		template<class ForwardIt1, class ForwardIt2>
-		[[nodiscard]] constexpr ForwardIt1 search( ForwardIt1 first,
-		                                           ForwardIt1 last,
-		                                           ForwardIt2 s_first,
-		                                           ForwardIt2 s_last ) {
+		[[nodiscard]] constexpr ForwardIt1
+		search( ForwardIt1 first, ForwardIt1 last, ForwardIt2 s_first,
+		        ForwardIt2 s_last ) {
 			for( ;; ++first ) {
 				ForwardIt1 it = first;
 				for( ForwardIt2 s_it = s_first;; ++it, ++s_it ) {
@@ -44,11 +43,9 @@ namespace daw {
 		}
 
 		template<class ForwardIt1, class ForwardIt2, class BinaryPredicate>
-		[[nodiscard]] constexpr ForwardIt1 search( ForwardIt1 first,
-		                                           ForwardIt1 last,
-		                                           ForwardIt2 s_first,
-		                                           ForwardIt2 s_last,
-		                                           BinaryPredicate p ) {
+		[[nodiscard]] constexpr ForwardIt1
+		search( ForwardIt1 first, ForwardIt1 last, ForwardIt2 s_first,
+		        ForwardIt2 s_last, BinaryPredicate p ) {
 			for( ;; ++first ) {
 				ForwardIt1 it = first;
 				for( ForwardIt2 s_it = s_first;; ++it, ++s_it ) {
@@ -83,8 +80,8 @@ namespace daw {
 		}
 
 		template<typename SizeT, typename CharT>
-		[[nodiscard]] constexpr SizeT
-		sstrlen( CharT const *const str, SizeT count, SizeT npos ) noexcept {
+		[[nodiscard]] constexpr SizeT sstrlen( CharT const *const str, SizeT count,
+		                                       SizeT npos ) noexcept {
 #ifndef __GNUC__
 			// Bug in C++ says this isn't a constexpr
 			if( nullptr == str ) {
@@ -98,11 +95,9 @@ namespace daw {
 		}
 
 		template<typename InputIt, typename ForwardIt, typename BinaryPredicate>
-		[[nodiscard]] constexpr InputIt find_first_of( InputIt first,
-		                                               InputIt last,
-		                                               ForwardIt s_first,
-		                                               ForwardIt s_last,
-		                                               BinaryPredicate p ) {
+		[[nodiscard]] constexpr InputIt
+		find_first_of( InputIt first, InputIt last, ForwardIt s_first,
+		               ForwardIt s_last, BinaryPredicate p ) {
 			static_assert(
 			  traits::is_binary_prdicate_v<
 			    BinaryPredicate,
@@ -122,11 +117,9 @@ namespace daw {
 		}
 
 		template<typename InputIt, typename ForwardIt, typename BinaryPredicate>
-		[[nodiscard]] constexpr InputIt find_first_not_of( InputIt first,
-		                                                   InputIt last,
-		                                                   ForwardIt s_first,
-		                                                   ForwardIt s_last,
-		                                                   BinaryPredicate p ) {
+		[[nodiscard]] constexpr InputIt
+		find_first_not_of( InputIt first, InputIt last, ForwardIt s_first,
+		                   ForwardIt s_last, BinaryPredicate p ) {
 			static_assert(
 			  traits::is_binary_prdicate_v<
 			    BinaryPredicate,
@@ -152,8 +145,8 @@ namespace daw {
 		}
 
 		template<typename CharT>
-		[[nodiscard]] constexpr int
-		compare( CharT const *l_ptr, CharT const *r_ptr, std::size_t sz ) {
+		[[nodiscard]] constexpr int compare( CharT const *l_ptr, CharT const *r_ptr,
+		                                     std::size_t sz ) {
 			return std::char_traits<CharT>::compare( l_ptr, r_ptr, sz );
 		}
 
@@ -213,9 +206,7 @@ namespace daw {
 			}
 		}
 
-		template<typename OStream,
-		         typename CharT,
-		         typename Bounds,
+		template<typename OStream, typename CharT, typename Bounds,
 		         std::ptrdiff_t Ex,
 		         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
 		                          std::nullptr_t> = nullptr>
@@ -240,9 +231,7 @@ namespace daw {
 			}
 		}
 
-		template<typename CharT,
-		         size_t Capacity,
-		         typename OStream,
+		template<typename CharT, size_t Capacity, typename OStream,
 		         std::enable_if_t<daw::traits::is_ostream_like_v<OStream, CharT>,
 		                          std::nullptr_t> = nullptr>
 		void

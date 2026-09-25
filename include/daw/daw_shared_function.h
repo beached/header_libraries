@@ -169,8 +169,8 @@ public:                                                                 \
 
 	template<cvref_t CVRef, bool IsNoExcept, typename R, typename... Params,
 	         typename Fn>
-	requires( std::is_class_v<std::remove_cvref_t<Fn>> ) //
-	  constexpr auto make_fn_storage( Fn &&fn ) {
+	requires( std::is_class_v<std::remove_cvref_t<Fn>> )
+	constexpr auto make_fn_storage( Fn &&fn ) {
 		return new shared_function_storage<std::remove_cvref_t<Fn>,
 		                                   CVRef,
 		                                   IsNoExcept,
@@ -180,8 +180,8 @@ public:                                                                 \
 
 	template<cvref_t CVRef, bool IsNoExcept, typename R, typename... Params,
 	         typename Fn>
-	requires( not std::is_class_v<std::remove_cvref_t<Fn>> ) //
-	  constexpr auto make_fn_storage( Fn fn ) {
+	requires( not std::is_class_v<std::remove_cvref_t<Fn>> )
+	constexpr auto make_fn_storage( Fn fn ) {
 		if constexpr( std::is_pointer_v<Fn> ) {
 			if( not fn ) {
 				return daw::null_v<
@@ -250,9 +250,9 @@ public:                                                                 \
 
 	public:
 		template<typename Fn>
-		requires( not std::is_same_v<shared_function_base,
-		                             std::remove_cvref_t<Fn>> ) //
-		  explicit constexpr shared_function_base( Fn &&fn )
+		requires(
+		  not std::is_same_v<shared_function_base, std::remove_cvref_t<Fn>> )
+		explicit constexpr shared_function_base( Fn &&fn )
 		  : m_storage(
 		      make_fn_storage<CVRef, IsNoExcept, R, Params...>( DAW_FWD( fn ) ) ) {}
 

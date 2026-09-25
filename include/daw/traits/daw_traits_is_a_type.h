@@ -51,24 +51,18 @@ namespace daw::traits {
 #undef GENERATE_IS_STD_CONTAINER2
 
 	template<typename T>
-	using is_single_item_container = std::disjunction<is_vector<T>,
-	                                                  is_list<T>,
-	                                                  is_set<T>,
-	                                                  is_deque<T>,
-	                                                  is_unordered_set<T>>;
+	using is_single_item_container =
+	  std::disjunction<is_vector<T>, is_list<T>, is_set<T>, is_deque<T>,
+	                   is_unordered_set<T>>;
 
 	template<typename T>
 	inline constexpr bool is_single_item_container_v =
 	  is_single_item_container<T>::value;
 
 	template<typename T>
-	using is_container = std::disjunction<is_vector<T>,
-	                                      is_list<T>,
-	                                      is_set<T>,
-	                                      is_deque<T>,
-	                                      is_unordered_set<T>,
-	                                      is_map<T>,
-	                                      is_unordered_map<T>>;
+	using is_container =
+	  std::disjunction<is_vector<T>, is_list<T>, is_set<T>, is_deque<T>,
+	                   is_unordered_set<T>, is_map<T>, is_unordered_map<T>>;
 
 	template<typename T>
 	inline constexpr bool is_container_v = is_container<T>::value;

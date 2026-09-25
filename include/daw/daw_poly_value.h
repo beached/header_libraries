@@ -47,8 +47,8 @@ namespace daw {
 
 		public:
 			template<typename... Args>
-			requires( not traits::is_first_type_v<poly_value_storage, Args...> ) //
-			  constexpr poly_value_storage( Args &&...args )
+			requires( not traits::is_first_type_v<poly_value_storage, Args...> )
+			constexpr poly_value_storage( Args &&...args )
 			  : m_value( DAW_FWD( args )... ) {}
 
 			constexpr std::unique_ptr<poly_value_storage_base<Base>>
@@ -73,9 +73,9 @@ namespace daw {
 		};
 
 		template<typename Base, typename T = Base, typename... Args>
-		requires std::is_base_of_v<Base, T> //
-		  constexpr std::unique_ptr<poly_value_storage_base<Base>>
-		  create( Args &&...args ) {
+		requires std::is_base_of_v<Base, T>
+		constexpr std::unique_ptr<poly_value_storage_base<Base>>
+		create( Args &&...args ) {
 			return std::unique_ptr<poly_value_storage_base<Base>>(
 			  new poly_value_storage<Base, T>( DAW_FWD( args )... ) );
 		}
@@ -93,18 +93,19 @@ namespace daw {
 		  m_storage{ };
 
 	public:
-		constexpr poly_value( ) requires( std::is_default_constructible_v<Base> )
+		constexpr poly_value( )
+		requires( std::is_default_constructible_v<Base> )
 		  : m_storage( poly_value_impl::create<Base>( ) ) {}
 
 		template<typename T>
-		requires std::is_base_of_v<Base, daw::remove_cvref_t<T>> //
-		  constexpr poly_value( T &&value )
+		requires std::is_base_of_v<Base, daw::remove_cvref_t<T>>
+		constexpr poly_value( T &&value )
 		  : m_storage( poly_value_impl::create<Base, std::remove_cvref_t<T>>(
 		      DAW_FWD( value ) ) ) {}
 
 		template<typename T, typename... Args>
-		requires std::is_base_of_v<Base, daw::remove_cvref_t<T>> //
-		  constexpr poly_value( construct_emplace_t<T>, Args &&...args )
+		requires std::is_base_of_v<Base, daw::remove_cvref_t<T>>
+		constexpr poly_value( construct_emplace_t<T>, Args &&...args )
 		  : m_storage( poly_value_impl::create<Base, std::remove_cvref_t<T>>(
 		      DAW_FWD( args )... ) ) {}
 
@@ -132,14 +133,14 @@ namespace daw {
 
 		template<typename Child>
 		requires( std::is_base_of_v<Base, Child> and
-		          not std::is_same_v<Base, Child> ) //
-		  poly_value( poly_value<Child> const &other )
+		          not std::is_same_v<Base, Child> )
+		poly_value( poly_value<Child> const &other )
 		  : m_storage( other.m_storage->copy( ) ) {}
 
 		template<typename Child>
 		requires( std::is_base_of_v<Base, Child> and
-		          not std::is_same_v<Base, Child> ) //
-		  poly_value( poly_value<Child> &&other )
+		          not std::is_same_v<Base, Child> )
+		poly_value( poly_value<Child> &&other )
 		  : m_storage( other.m_storage->move( ) ) {}
 
 		Base const *get( ) const {

@@ -55,8 +55,7 @@ namespace daw {
 						std::tuple<Args...> clause_name##_args;                            \
                                                                                \
 						template<                                                          \
-						  typename Container,                                              \
-						  typename... ClauseArgs,                                          \
+						  typename Container, typename... ClauseArgs,                      \
 						  typename std::enable_if_t<daw::all_true_v<                       \
 						    !daw::range::is_range_reference_v<Container>,                  \
 						    !daw::range::is_range_collection_v<Container>>> * = nullptr,   \
@@ -68,8 +67,7 @@ namespace daw {
 						}                                                                  \
                                                                                \
 						template<                                                          \
-						  typename Container,                                              \
-						  typename... ClauseArgs,                                          \
+						  typename Container, typename... ClauseArgs,                      \
 						  typename std::enable_if_t<                                       \
 						    daw::range::is_range_reference_v<Container>> * = nullptr>      \
 						static auto clause_name##_helper( Container container,             \
@@ -78,8 +76,7 @@ namespace daw {
 						}                                                                  \
                                                                                \
 						template<                                                          \
-						  typename Container,                                              \
-						  typename... ClauseArgs,                                          \
+						  typename Container, typename... ClauseArgs,                      \
 						  typename std::enable_if_t<                                       \
 						    daw::range::is_range_collection_v<Container>> * = nullptr>     \
 						static auto clause_name##_helper( Container const &container,      \
@@ -111,7 +108,7 @@ namespace daw {
                                                                                \
 					public:                                                              \
 						clause_name##_t( std::tuple<Args...> &&args )                      \
-						  : clause_name##_args( std::move( args ) ) {}                    \
+						  : clause_name##_args( std::move( args ) ) {}                     \
                                                                                \
 						template<typename Container>                                       \
 						auto operator( )( Container &&container ) const {                  \

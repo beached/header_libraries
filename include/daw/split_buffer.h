@@ -31,7 +31,8 @@ namespace daw::si_impl {
 	template<typename Alloc>
 	constexpr void swap_allocator( Alloc &a1, Alloc &a2 ) noexcept {
 		swap_allocator(
-		  a1, a2,
+		  a1,
+		  a2,
 		  std::bool_constant<
 		    std::allocator_traits<Alloc>::propagate_on_container_swap::value>{ } );
 	}
@@ -117,8 +118,8 @@ namespace daw {
 			}
 		}
 
-		explicit constexpr split_buffer( split_buffer &&c ) //
-		  noexcept( std::is_nothrow_move_constructible_v<allocator_type> )
+		explicit constexpr split_buffer( split_buffer &&c ) noexcept(
+		  std::is_nothrow_move_constructible_v<allocator_type> )
 		  : first_( std::move( c.first_ ) )
 		  , begin_( std::move( c.begin_ ) )
 		  , end_( std::move( c.end_ ) )
@@ -146,11 +147,10 @@ namespace daw {
 			}
 		}
 
-		constexpr split_buffer &operator=( split_buffer &&c ) //
-		  noexcept(
-		    (alloc_traits::propagate_on_container_move_assignment::value and
-		     std::is_nothrow_move_assignable_v<allocator_type>) or
-		    not alloc_traits::propagate_on_container_move_assignment::value ) {
+		constexpr split_buffer &operator=( split_buffer &&c ) noexcept(
+		  (alloc_traits::propagate_on_container_move_assignment::value and
+		   std::is_nothrow_move_assignable_v<allocator_type>) or
+		  not alloc_traits::propagate_on_container_move_assignment::value ) {
 			clear( );
 			shrink_to_fit( );
 			first_ = c.first_;
@@ -158,8 +158,9 @@ namespace daw {
 			end_ = c.end_;
 			end_cap( ) = c.end_cap( );
 			move_assign_alloc(
-			  c, bool_constant<
-			       alloc_traits::propagate_on_container_move_assignment::value>{ } );
+			  c,
+			  bool_constant<
+			    alloc_traits::propagate_on_container_move_assignment::value>{ } );
 			c.first_ = nullptr;
 			c.begin_ = nullptr;
 			c.end_ = nullptr;
@@ -321,8 +322,8 @@ namespace daw {
 					std::swap( end_cap( ), t.end_cap( ) );
 				}
 			}
-			alloc_traits::construct( alloc( ), std::to_address( begin_ - 1 ),
-			                         std::move( x ) );
+			alloc_traits::construct(
+			  alloc( ), std::to_address( begin_ - 1 ), std::move( x ) );
 			--begin_;
 		}
 
@@ -345,8 +346,8 @@ namespace daw {
 					std::swap( end_cap( ), t.end_cap( ) );
 				}
 			}
-			alloc_traits::construct( alloc( ), std::to_address( end_ ),
-			                         std::move( x ) );
+			alloc_traits::construct(
+			  alloc( ), std::to_address( end_ ), std::move( x ) );
 			++end_;
 		}
 
@@ -370,8 +371,8 @@ namespace daw {
 					std::swap( end_cap( ), t.end_cap( ) );
 				}
 			}
-			alloc_traits::construct( alloc( ), std::to_address( end_ ),
-			                         DAW_FWD( args )... );
+			alloc_traits::construct(
+			  alloc( ), std::to_address( end_ ), DAW_FWD( args )... );
 			++end_;
 		}
 
@@ -418,8 +419,8 @@ namespace daw {
 					auto const new_cap = std::max<size_type>( 2 * old_cap, 8 );
 					split_buffer buf( new_cap, 0, a );
 					for( pointer p = begin_; p != end_; ++p, ++buf.end_ ) {
-						alloc_traits::construct( buf.alloc( ), std::to_address( buf.end_ ),
-						                         std::move( *p ) );
+						alloc_traits::construct(
+						  buf.alloc( ), std::to_address( buf.end_ ), std::move( *p ) );
 					}
 					swap( buf );
 				}
@@ -471,9 +472,9 @@ namespace daw {
 			end_ = new_last;
 		}
 
-		constexpr void swap( split_buffer &x ) //
-		  noexcept( not alloc_traits::propagate_on_container_swap::value or
-		            std::is_nothrow_swappable_v<alloc_rr> ) {
+		constexpr void swap( split_buffer &x ) noexcept(
+		  not alloc_traits::propagate_on_container_swap::value or
+		  std::is_nothrow_swappable_v<alloc_rr> ) {
 			std::swap( first_, x.first_ );
 			std::swap( begin_, x.begin_ );
 			std::swap( end_, x.end_ );

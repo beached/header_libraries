@@ -18,6 +18,4 @@ namespace daw {
 		move_only_base( move_only_base const & ) = delete;
 		move_only_base &operator=( move_only_base const & ) = delete;
 	};
-}
-
-
+} // namespace daw
