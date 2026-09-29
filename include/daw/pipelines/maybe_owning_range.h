@@ -18,9 +18,9 @@ namespace daw::pipelines {
 	template<Range R>
 	struct maybe_owning_range {
 		using iterator = daw::iterator_t<R>;
-		using const_iterator = daw::const_iterator_t<R>;
+		using const_iterator = daw::const_iterator_or_t<R>;
 		using iterator_last = daw::iterator_end_t<R>;
-		using const_iterator_last = daw::const_iterator_end_t<R>;
+		using const_iterator_last = daw::const_iterator_end_or_t<R>;
 		using i_am_a_daw_maybe_owning_range = void;
 
 	private:
@@ -50,7 +50,9 @@ namespace daw::pipelines {
 			return iterator{ std::begin( m_storage.get( ) ) };
 		}
 
-		[[nodiscard]] constexpr const_iterator begin( ) const {
+		[[nodiscard]] constexpr const_iterator begin( ) const
+		requires( ConstRange<R> )
+		{
 			return const_iterator{ std::begin( m_storage.get( ) ) };
 		}
 
@@ -58,7 +60,9 @@ namespace daw::pipelines {
 			return iterator_last{ std::end( m_storage.get( ) ) };
 		}
 
-		[[nodiscard]] constexpr const_iterator_last end( ) const {
+		[[nodiscard]] constexpr const_iterator_last end( ) const
+		requires( ConstRange<R> )
+		{
 			return const_iterator_last{ std::end( m_storage.get( ) ) };
 		}
 

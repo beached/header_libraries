@@ -84,7 +84,9 @@ namespace daw::pipelines {
 			return std::next( base_t::begin( ), m_dropped );
 		}
 
-		[[nodiscard]] constexpr const_iterator begin( ) const {
+		[[nodiscard]] constexpr const_iterator begin( ) const
+		requires( ConstRange<R> )
+		{
 			return std::next( base_t::begin( ), m_dropped );
 		}
 
@@ -92,7 +94,9 @@ namespace daw::pipelines {
 			return base_t::end( );
 		}
 
-		[[nodiscard]] constexpr const_iterator_last end( ) const {
+		[[nodiscard]] constexpr const_iterator_last end( ) const
+		requires( ConstRange<R> )
+		{
 			return base_t::end( );
 		}
 

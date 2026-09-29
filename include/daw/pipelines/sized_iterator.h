@@ -119,9 +119,12 @@ namespace daw::pipelines {
 			return *m_iter;
 		}
 
+		// Only the count is compared, as with the end.  A second comparison of the
+		// underlying iterator stops GCC from seeing a counted loop, so it does not
+		// vectorize copies between two sized_iterators
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr bool
 		operator==( sized_iterator const &rhs ) const noexcept {
-			return m_count == rhs.m_count or m_iter == rhs.m_iter;
+			return m_count == rhs.m_count;
 		}
 
 		[[nodiscard]] constexpr bool
@@ -136,21 +139,23 @@ namespace daw::pipelines {
 			return m_count <= 0;
 		}
 
+		// m_count is the number of elements left, so a later position has a
+		// smaller count.  The comparisons are reversed from comparing the counts
 		// clang-format off
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
 		operator<=>( sized_iterator const &rhs ) const noexcept {
-			return m_count <=> rhs.m_count;
+			return rhs.m_count <=> m_count;
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
 		operator<=>( sized_iterator_end<First> const & ) const noexcept {
-			return m_count <=> 0;
+			return difference_type{ 0 } <=> m_count;
 		}
 
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr auto
 		operator<=>( sized_iterator_end<Last> const & ) const noexcept
 		  requires( not std::same_as<First, Last> ) {
-			return m_count <=> 0;
+			return difference_type{ 0 } <=> m_count;
 		}
 		// clang-format on
 
@@ -235,6 +240,32 @@ namespace daw::pipelines {
 		requires( RandomIteratorTag<iterator_category> )
 		{
 			return rhs.m_count - m_count;
+		}
+
+		// The count of elements left is the distance to the end.  This makes the
+		// end a sized sentinel, so the size of a take_view is known in O(1)
+		[[nodiscard]] friend constexpr difference_type
+		operator-( sized_iterator_end<First> const &, sized_iterator const &rhs ) {
+			return rhs.m_count;
+		}
+
+		[[nodiscard]] friend constexpr difference_type
+		operator-( sized_iterator const &lhs, sized_iterator_end<First> const & ) {
+			return -lhs.m_count;
+		}
+
+		[[nodiscard]] friend constexpr difference_type
+		operator-( sized_iterator_end<Last> const &, sized_iterator const &rhs )
+		requires( not std::same_as<First, Last> )
+		{
+			return rhs.m_count;
+		}
+
+		[[nodiscard]] friend constexpr difference_type
+		operator-( sized_iterator const &lhs, sized_iterator_end<Last> const & )
+		requires( not std::same_as<First, Last> )
+		{
+			return -lhs.m_count;
 		}
 	};
 

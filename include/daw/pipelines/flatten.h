@@ -56,7 +56,11 @@ namespace daw::pipelines::pimpl {
 	template<typename First, typename Last = First>
 	struct flatten_iterator {
 		using iterator_t = First;
-		using sub_iterator_t = daw::iterator_t<daw::iter_value_t<iterator_t>>;
+		// From what the outer iterator refers to, not its value type.  Over a
+		// const outer range the inner ranges are const, and begin( ) on them gives
+		// their const_iterator
+		using sub_iterator_t = daw::iterator_t<
+		  std::remove_reference_t<daw::iter_reference_t<iterator_t>>>;
 		using iterator_category = std::forward_iterator_tag;
 		using value_type = daw::iter_value_t<sub_iterator_t>;
 		using reference = daw::iter_reference_t<sub_iterator_t>;
@@ -158,13 +162,13 @@ namespace daw::pipelines {
 	  : private pimpl::stored_range_base_t<
 	      R, pimpl::flatten_iterator<iterator_t<R>, iterator_end_t<R>>,
 	      pimpl::flatten_iterator_end<iterator_t<R>>,
-	      pimpl::flatten_iterator<const_iterator_t<R>, const_iterator_end_t<R>>,
-	      pimpl::flatten_iterator_end<const_iterator_t<R>>> {
+	      pimpl::flatten_iterator<const_iterator_or_t<R>, const_iterator_end_or_t<R>>,
+	      pimpl::flatten_iterator_end<const_iterator_or_t<R>>> {
 		using base_t = pimpl::stored_range_base_t<
 		  R, pimpl::flatten_iterator<iterator_t<R>, iterator_end_t<R>>,
 		  pimpl::flatten_iterator_end<iterator_t<R>>,
-		  pimpl::flatten_iterator<const_iterator_t<R>, const_iterator_end_t<R>>,
-		  pimpl::flatten_iterator_end<const_iterator_t<R>>>;
+		  pimpl::flatten_iterator<const_iterator_or_t<R>, const_iterator_end_or_t<R>>,
+		  pimpl::flatten_iterator_end<const_iterator_or_t<R>>>;
 
 		using iterator = typename base_t::iterator_first_t;
 		using const_iterator = typename base_t::const_iterator_first_t;
@@ -183,11 +187,15 @@ namespace daw::pipelines {
 			return iterator{ base_t::rbegin( ), base_t::rend( ) };
 		}
 
-		[[nodiscard]] constexpr const_iterator begin( ) const {
+		[[nodiscard]] constexpr const_iterator begin( ) const
+		requires( ConstRange<R> )
+		{
 			return const_iterator{ base_t::rbegin( ), base_t::rend( ) };
 		}
 
-		[[nodiscard]] constexpr const_iterator cbegin( ) const {
+		[[nodiscard]] constexpr const_iterator cbegin( ) const
+		requires( ConstRange<R> )
+		{
 			return const_iterator{ base_t::rbegin( ), base_t::rend( ) };
 		}
 
@@ -195,11 +203,15 @@ namespace daw::pipelines {
 			return last_iterator{ };
 		}
 
-		[[nodiscard]] constexpr const_last_iterator end( ) const {
+		[[nodiscard]] constexpr const_last_iterator end( ) const
+		requires( ConstRange<R> )
+		{
 			return const_last_iterator{ };
 		}
 
-		[[nodiscard]] constexpr const_last_iterator cend( ) const {
+		[[nodiscard]] constexpr const_last_iterator cend( ) const
+		requires( ConstRange<R> )
+		{
 			return const_last_iterator{ };
 		}
 

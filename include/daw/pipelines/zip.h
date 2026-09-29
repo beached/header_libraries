@@ -94,16 +94,16 @@ namespace daw::pipelines {
 			constexpr explicit zip_no_parent( void const * ) noexcept {}
 		};
 
-		template<bool>
+		template<bool, typename difference_type>
 		struct zip_remaining {
-			constexpr void step( std::ptrdiff_t ) noexcept {}
+			constexpr void step( difference_type ) noexcept {}
 		};
 
-		template<>
-		struct zip_remaining<true> {
-			std::ptrdiff_t value = 0;
+		template<typename difference_type>
+		struct zip_remaining<true, difference_type> {
+			difference_type value = 0;
 
-			constexpr void step( std::ptrdiff_t n ) noexcept {
+			constexpr void step( difference_type n ) noexcept {
 				value -= n;
 			}
 		};
@@ -133,7 +133,8 @@ namespace daw::pipelines {
 		private:
 			std::conditional_t<counted_v, pimpl::zip_no_parent, ZR *> m_parent{ };
 			iter_types_t m_iters{ };
-			DAW_NO_UNIQUE_ADDRESS pimpl::zip_remaining<counted_v> m_remaining{ };
+			DAW_NO_UNIQUE_ADDRESS pimpl::zip_remaining<counted_v, difference_type>
+			  m_remaining{ };
 
 			static constexpr auto zip_indices = [] {
 				return std::make_index_sequence<sizeof...( Iterators )>{ };
@@ -369,6 +370,23 @@ namespace daw::pipelines {
 			{
 				return std::get<0>( m_iters ) - std::get<0>( rhs.m_iters );
 			}
+
+			// A counted iterator knows how many elements are left, which is the
+			// distance to the end.  This makes the end a sized sentinel, so the size
+			// of the zip is known in O(1)
+			[[nodiscard]] friend constexpr difference_type
+			operator-( Last const &, zip_iterator const &rhs )
+			requires( counted_v )
+			{
+				return static_cast<difference_type>( rhs.m_remaining.value );
+			}
+
+			[[nodiscard]] friend constexpr difference_type
+			operator-( zip_iterator const &lhs, Last const & )
+			requires( counted_v )
+			{
+				return -static_cast<difference_type>( lhs.m_remaining.value );
+			}
 		};
 	} // namespace pimpl
 
@@ -380,12 +398,12 @@ namespace daw::pipelines {
 		using last_iterator =
 		  pimpl::zip_iterator_end<daw::iterator_end_t<Ranges>...>;
 		using const_last_iterator =
-		  pimpl::zip_iterator_end<daw::const_iterator_end_t<Ranges>...>;
+		  pimpl::zip_iterator_end<daw::const_iterator_end_or_t<Ranges>...>;
 		using iterator =
 		  pimpl::zip_iterator<zip_view, last_iterator, daw::iterator_t<Ranges>...>;
 		using const_iterator =
 		  pimpl::zip_iterator<zip_view const, const_last_iterator,
-		                      daw::const_iterator_t<Ranges>...>;
+		                      daw::const_iterator_or_t<Ranges>...>;
 
 		static constexpr std::size_t range_count = sizeof...( Ranges );
 
@@ -407,7 +425,9 @@ namespace daw::pipelines {
 			return iterator{ this };
 		}
 
-		[[nodiscard]] constexpr const_iterator begin( ) const {
+		[[nodiscard]] constexpr const_iterator begin( ) const
+		requires( ( ConstRange<Ranges> and ... ) )
+		{
 			return const_iterator{ this };
 		}
 
@@ -415,8 +435,22 @@ namespace daw::pipelines {
 			return last_iterator{ };
 		}
 
-		[[nodiscard]] constexpr const_last_iterator end( ) const {
+		[[nodiscard]] constexpr const_last_iterator end( ) const
+		requires( ( ConstRange<Ranges> and ... ) )
+		{
 			return const_last_iterator{ };
+		}
+
+		/// The shortest range sets the size
+		[[nodiscard]] constexpr std::size_t size( ) const
+		requires( ( pimpl::known_size_range<Ranges> and ... ) )
+		{
+			return std::apply(
+			  []( auto const &...rs ) {
+				  return std::min(
+				    { pimpl::ranges_distance<std::size_t>( rs.get( ) )... } );
+			  },
+			  m_ranges );
 		}
 
 		template<Range... NewRanges>
@@ -447,13 +481,42 @@ namespace daw::pipelines {
 			  m_ranges );
 		}
 
+	private:
+		template<std::size_t Index>
+		using range_at_t = std::tuple_element_t<Index, std::tuple<Ranges...>>;
+
+		// A const zip hands out const access to the ranges it refers to, and
+		// copies of the ranges it owns
+		template<std::size_t Index>
+		using const_range_at_t =
+		  std::conditional_t<std::is_lvalue_reference_v<range_at_t<Index>>,
+		                     std::remove_reference_t<range_at_t<Index>> const &,
+		                     range_at_t<Index>>;
+
+		// An owned range can only be moved out once.  When its index is repeated,
+		// copy it instead
+		template<std::size_t Index, std::size_t... Indices>
+		constexpr decltype( auto ) swizzle_take( ) {
+			constexpr auto uses = ( std::size_t{ Indices == Index } + ... );
+			if constexpr( daw::ref_storage<range_at_t<Index>>::is_owned and
+			              uses == 1 ) {
+				return std::move( std::get<Index>( m_ranges ) ).get( );
+			} else {
+				return std::get<Index>( m_ranges ).get( );
+			}
+		}
+
+	public:
+		// The result type is named, as zip_view{ ... } in here is this class and
+		// not a deduction
 		template<std::size_t... Indices>
 		constexpr auto swizzle( ) && {
 			static_assert( std::max( { Indices... } ) < range_count,
 			               "Swizzle - Index that is beyond the number "
 			               "of zipped ranges" );
 
-			return zip_view{ std::move( std::get<Indices>( m_ranges ) ).get( )... };
+			return zip_view<range_at_t<Indices>...>{
+			  swizzle_take<Indices, Indices...>( )... };
 		}
 
 		template<std::size_t... Indices>
@@ -462,12 +525,18 @@ namespace daw::pipelines {
 			               "Swizzle - Index that is beyond the number "
 			               "of zipped ranges" );
 
-			return zip_view{ std::get<Indices>( m_ranges ).get( )... };
+			return zip_view<const_range_at_t<Indices>...>{
+			  std::get<Indices>( m_ranges ).get( )... };
 		}
 
 		template<std::size_t... Indices>
 		constexpr auto swizzle( ) & {
-			return as_const( *this ).template swizzle<Indices...>( );
+			static_assert( std::max( { Indices... } ) < range_count,
+			               "Swizzle - Index that is beyond the number "
+			               "of zipped ranges" );
+
+			return zip_view<range_at_t<Indices>...>{
+			  std::get<Indices>( m_ranges ).get( )... };
 		}
 
 		template<std::size_t... Indices>

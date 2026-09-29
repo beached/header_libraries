@@ -95,7 +95,8 @@ namespace daw::pipelines::pimpl {
 		                                    daw::constructible<First> auto &&first )
 		  : m_parent{ parent }
 		  , m_first( DAW_FWD( first ) ) {
-			while( good( ) and not filter( *m_first ) ) {
+			auto const last = m_parent->raw_end( );
+			while( m_first != last and not filter( *m_first ) ) {
 				++m_first;
 			}
 		}
@@ -133,8 +134,9 @@ namespace daw::pipelines::pimpl {
 		}
 
 		constexpr filter_iterator &operator++( ) {
+			auto const last = m_parent->raw_end( );
 			++m_first;
-			while( good( ) and not filter( *m_first ) ) {
+			while( m_first != last and not filter( *m_first ) ) {
 				++m_first;
 			}
 			return *this;
@@ -166,15 +168,15 @@ namespace daw::pipelines {
 	      pimpl::filter_iterator<filter_view<R, Fn, Projection>, iterator_t<R>>,
 	      pimpl::filter_iterator_end<iterator_t<R>>,
 	      pimpl::filter_iterator<filter_view<R, Fn, Projection> const,
-	                             const_iterator_t<R>>,
-	      pimpl::filter_iterator_end<const_iterator_t<R>>> {
+	                             const_iterator_or_t<R>>,
+	      pimpl::filter_iterator_end<const_iterator_or_t<R>>> {
 
 		using base_t = pimpl::stored_range_base_t<
 		  R, //
 		  pimpl::filter_iterator<filter_view, iterator_t<R>>,
 		  pimpl::filter_iterator_end<iterator_t<R>>,
-		  pimpl::filter_iterator<filter_view const, const_iterator_t<R>>,
-		  pimpl::filter_iterator_end<const_iterator_t<R>>>;
+		  pimpl::filter_iterator<filter_view const, const_iterator_or_t<R>>,
+		  pimpl::filter_iterator_end<const_iterator_or_t<R>>>;
 
 		using i_am_a_daw_filter_view_class = void;
 
@@ -191,7 +193,9 @@ namespace daw::pipelines {
 			return base_t::rend( );
 		}
 
-		[[nodiscard]] constexpr auto raw_end( ) const {
+		[[nodiscard]] constexpr auto raw_end( ) const
+		requires( ConstRange<R> )
+		{
 			return base_t::rend( );
 		}
 
@@ -221,7 +225,9 @@ namespace daw::pipelines {
 			return iterator( this, base_t::rbegin( ) );
 		}
 
-		[[nodiscard]] constexpr const_iterator begin( ) const {
+		[[nodiscard]] constexpr const_iterator begin( ) const
+		requires( ConstRange<R> )
+		{
 			return const_iterator( this, base_t::rbegin( ) );
 		}
 
@@ -229,7 +235,9 @@ namespace daw::pipelines {
 			return iterator_last{ };
 		}
 
-		[[nodiscard]] constexpr const_iterator_last end( ) const {
+		[[nodiscard]] constexpr const_iterator_last end( ) const
+		requires( ConstRange<R> )
+		{
 			return const_iterator_last{ };
 		}
 

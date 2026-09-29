@@ -35,10 +35,28 @@ namespace daw::pipelines::pimpl {
 		}
 	}
 
+	/// Prefer the range's own size( ).  Ranges like std::list and std::map know
+	/// their size but cannot subtract iterators, so they would otherwise be
+	/// walked.  Taken by forwarding reference, as a Range may only be iterable
+	/// when not const
 	template<typename Result = std::ptrdiff_t>
-	[[nodiscard]] constexpr Result ranges_distance( Range auto const &r ) {
-		return ranges_distance<Result>( std::begin( r ), std::end( r ) );
+	[[nodiscard]] constexpr Result ranges_distance( Range auto &&r ) {
+		if constexpr( requires { r.size( ); } ) {
+			return as<Result>( r.size( ) );
+		} else {
+			return ranges_distance<Result>( std::begin( r ), std::end( r ) );
+		}
 	}
+
+	/// A range whose size is known without walking it.  It has a size( )
+	/// member, or its end can be subtracted from its begin.  ranges_distance is
+	/// O(1) for these
+	template<typename R>
+	concept known_size_range =
+	  Range<R> and ( requires( daw::remove_cvref_t<R> const &r ) { r.size( ); } or
+	                 requires( daw::remove_cvref_t<R> const &r ) {
+		                 std::end( r ) - std::begin( r );
+	                 } );
 
 	template<typename First, typename Last = First>
 	struct range_base_t {
@@ -56,8 +74,8 @@ namespace daw::pipelines::pimpl {
 
 	template<Range R, typename First = iterator_t<R>,
 	         typename Last = iterator_end_t<R>,
-	         typename CFirst = const_iterator_t<R>,
-	         typename CLast = const_iterator_end_t<R>>
+	         typename CFirst = const_iterator_or_t<R>,
+	         typename CLast = const_iterator_end_or_t<R>>
 	struct stored_range_base_t : private pimpl::range_base_t<First, Last> {
 		using daw_range_base_t = range_base_t<First, Last>;
 		using iterator_first_t = typename daw_range_base_t::iterator_first_t;
@@ -87,7 +105,9 @@ namespace daw::pipelines::pimpl {
 			return std::begin( get( ) );
 		}
 
-		[[nodiscard]] constexpr decltype( auto ) rbegin( ) const {
+		[[nodiscard]] constexpr decltype( auto ) rbegin( ) const
+		requires( ConstRange<R> )
+		{
 			return std::begin( get( ) );
 		}
 
@@ -95,7 +115,9 @@ namespace daw::pipelines::pimpl {
 			return std::end( get( ) );
 		}
 
-		[[nodiscard]] constexpr decltype( auto ) rend( ) const {
+		[[nodiscard]] constexpr decltype( auto ) rend( ) const
+		requires( ConstRange<R> )
+		{
 			return std::end( get( ) );
 		}
 

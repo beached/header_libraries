@@ -35,9 +35,10 @@ namespace daw::pipelines::pimpl {
 				return DAW_FWD( r ).template swizzle<Indices...>( );
 			} else if constexpr( is_tuple_like_v<range_value_t<R>> ) {
 				using std::get;
-				static_assert( std::max( { Indices... } ) <
-				                 std::tuple_size_v<range_reference_t<R>>,
-				               "Swizzle - Index out of range of tuple type" );
+				static_assert(
+				  std::max( { Indices... } ) <
+				    std::tuple_size_v<daw::remove_cvref_t<range_reference_t<R>>>,
+				  "Swizzle - Index out of range of tuple type" );
 				return map_view{ DAW_FWD( r ), []( auto &&v ) {
 					                return daw::forward_nonrvalue_as_tuple(
 					                  get<Indices>( DAW_FWD( v ) )... );
