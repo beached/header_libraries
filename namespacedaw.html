@@ -536,6 +536,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1nonesuch.html">nonesuch</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdaw_1_1nonpropagating__cache.html">nonpropagating_cache</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A cache that is never copied or moved. Copying or moving it gives an empty cache, moving also empties the source, and assigning to it empties it. A view can then cache something like begin( ) that would be invalid in a copy of the view. Filling it requires a non-const cache, as filling a const one would not be safe when used from several threads.  <a href="classdaw_1_1nonpropagating__cache.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1not__null.html">not_null</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1not__null__value__type.html">not_null_value_type</a></td></tr>
@@ -732,9 +735,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1value__ptr.html">value_ptr</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1vector.html">vector</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1_vector.html">Vector</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1vector.html">vector</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1view.html">view</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -782,6 +785,9 @@ Concepts</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptdaw_1_1_random_iterator.html">RandomIterator</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptdaw_1_1_range.html">Range</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptdaw_1_1_const_range.html">ConstRange</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A Range that can also be iterated when const. Ranges like std::ranges::filter_view and std::ranges::istream_view only have a non-const begin( ), as begin( ) does work that is cached. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptdaw_1_1_input_range.html">InputRange</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -850,9 +856,16 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a1777c07797fee008950562151c5073e3" id="r_a1777c07797fee008950562151c5073e3"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
 <tr class="memitem:a1777c07797fee008950562151c5073e3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a1777c07797fee008950562151c5073e3">conjunction_t</a> = std::bool_constant&lt; <a class="el" href="namespacedaw.html#afdd716380bbe9de78f2a480fadbc670f">conjunction_v</a>&lt; Ts... &gt; &gt;</td></tr>
 <tr class="separator:a1777c07797fee008950562151c5073e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1be92072bd8fb8ae7ab8c1dca624afe" id="r_af1be92072bd8fb8ae7ab8c1dca624afe"><td class="memTemplParams" colspan="2">template&lt;Range R&gt; </td></tr>
+<tr class="memitem:af1be92072bd8fb8ae7ab8c1dca624afe"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#af1be92072bd8fb8ae7ab8c1dca624afe">const_iterator_end_or_t</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> iter_traits_impl::const_iterators_or&lt; R &gt;::last</td></tr>
+<tr class="separator:af1be92072bd8fb8ae7ab8c1dca624afe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63f376e4fa1438458d755c18885fa6fd" id="r_a63f376e4fa1438458d755c18885fa6fd"><td class="memTemplParams" colspan="2">template&lt;Range R&gt; </td></tr>
 <tr class="memitem:a63f376e4fa1438458d755c18885fa6fd"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a63f376e4fa1438458d755c18885fa6fd">const_iterator_end_t</a> = <a class="el" href="daw__typeof_8h.html#acddf9b5f979a91ce8deb198be4008f94">DAW_TYPEOF</a>(std::cend(std::declval&lt; R <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> &amp; &gt;()))</td></tr>
 <tr class="separator:a63f376e4fa1438458d755c18885fa6fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae91605d99c4c314e191bb30d2d472c0c" id="r_ae91605d99c4c314e191bb30d2d472c0c"><td class="memTemplParams" colspan="2">template&lt;Range R&gt; </td></tr>
+<tr class="memitem:ae91605d99c4c314e191bb30d2d472c0c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ae91605d99c4c314e191bb30d2d472c0c">const_iterator_or_t</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> iter_traits_impl::const_iterators_or&lt; R &gt;::first</td></tr>
+<tr class="memdesc:ae91605d99c4c314e191bb30d2d472c0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The const iterator types of R when it is a ConstRange, otherwise its non-const iterator types. A view over R can then always name its const iterator types. Its const begin( )/end( ) must be constrained on ConstRange&lt;R&gt; so the non-const fallback is never used.  <br /></td></tr>
+<tr class="separator:ae91605d99c4c314e191bb30d2d472c0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd8eb7cd0b708e27d2c44f658f5c083c" id="r_abd8eb7cd0b708e27d2c44f658f5c083c"><td class="memTemplParams" colspan="2">template&lt;Range R&gt; </td></tr>
 <tr class="memitem:abd8eb7cd0b708e27d2c44f658f5c083c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#abd8eb7cd0b708e27d2c44f658f5c083c">const_iterator_t</a> = <a class="el" href="daw__typeof_8h.html#acddf9b5f979a91ce8deb198be4008f94">DAW_TYPEOF</a>(std::cbegin(std::declval&lt; R <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> &amp; &gt;()))</td></tr>
 <tr class="separator:abd8eb7cd0b708e27d2c44f658f5c083c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5286,6 +5299,24 @@ template&lt;typename... Ts&gt; </div>
 
 </div>
 </div>
+<a id="af1be92072bd8fb8ae7ab8c1dca624afe" name="af1be92072bd8fb8ae7ab8c1dca624afe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1be92072bd8fb8ae7ab8c1dca624afe">&#9670;&#160;</a></span>const_iterator_end_or_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;Range R&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="namespacedaw.html#af1be92072bd8fb8ae7ab8c1dca624afe">daw::const_iterator_end_or_t</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typedef</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> iter_traits_impl::const_iterators_or&lt;R&gt;::last</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00197">197</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
+
+</div>
+</div>
 <a id="a63f376e4fa1438458d755c18885fa6fd" name="a63f376e4fa1438458d755c18885fa6fd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a63f376e4fa1438458d755c18885fa6fd">&#9670;&#160;</a></span>const_iterator_end_t</h2>
 
@@ -5301,6 +5332,26 @@ template&lt;Range R&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00160">160</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
+
+</div>
+</div>
+<a id="ae91605d99c4c314e191bb30d2d472c0c" name="ae91605d99c4c314e191bb30d2d472c0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae91605d99c4c314e191bb30d2d472c0c">&#9670;&#160;</a></span>const_iterator_or_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;Range R&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a> <a class="el" href="namespacedaw.html#ae91605d99c4c314e191bb30d2d472c0c">daw::const_iterator_or_t</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typedef</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> iter_traits_impl::const_iterators_or&lt;R&gt;::first</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The const iterator types of R when it is a ConstRange, otherwise its non-const iterator types. A view over R can then always name its const iterator types. Its const begin( )/end( ) must be constrained on ConstRange&lt;R&gt; so the non-const fallback is never used. </p>
+
+<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00193">193</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
 
 </div>
 </div>
@@ -6928,7 +6979,7 @@ template&lt;Range R&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00176">176</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00213">213</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
 
 </div>
 </div>
@@ -6946,7 +6997,7 @@ template&lt;Range R&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00173">173</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00210">210</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
 
 </div>
 </div>
@@ -6964,7 +7015,7 @@ template&lt;Range R&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00167">167</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00204">204</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
 
 </div>
 </div>
@@ -6982,7 +7033,7 @@ template&lt;Range R&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00170">170</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00207">207</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
 
 </div>
 </div>
@@ -7000,7 +7051,7 @@ template&lt;Range R&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00224">224</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00261">261</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
 
 </div>
 </div>
@@ -7018,7 +7069,7 @@ template&lt;Range R&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00164">164</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00201">201</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
 
 </div>
 </div>
@@ -13700,7 +13751,7 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00178">178</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00215">215</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
 
 </div>
 </div>
@@ -17440,7 +17491,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00227">227</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00264">264</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
 
 </div>
 </div>
@@ -48552,7 +48603,7 @@ template&lt;Iterator First&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00196">196</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00233">233</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
 
 </div>
 </div>
@@ -48580,7 +48631,7 @@ template&lt;Iterator First&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00210">210</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00247">247</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
 
 </div>
 </div>
@@ -48610,7 +48661,7 @@ template&lt;RandomRange R&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00215">215</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="daw__iterator__traits_8h_source.html#l00252">252</a> of file <a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>.</p>
 
 </div>
 </div>

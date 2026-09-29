@@ -81,7 +81,7 @@ $(function() {
 <p><code>#include &lt;<a class="el" href="daw__iterator__traits_8h_source.html">daw_iterator_traits.h</a>&gt;</code></p>
 <h2 class="groupheader">Concept definition</h2>
 <div class="fragment"><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> R&gt;</div>
-<div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptdaw_1_1_range.html">daw::Range</a> =  <span class="keyword">requires</span>( R <span class="keyword">const</span> &amp;<a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">r</a> ) {</div>
+<div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptdaw_1_1_range.html">daw::Range</a> =  <span class="keyword">requires</span>( R &amp;&amp;<a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">r</a> ) {</div>
 <div class="line">    { std::begin( <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">r</a> ) };</div>
 <div class="line">    { std::end( <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">r</a> ) };</div>
 <div class="line">  }</div>

@@ -272,13 +272,16 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1zip__remaining.html">zip_remaining</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1zip__remaining_3_01true_01_4.html">zip_remaining&lt; true &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1zip__remaining_3_01true_00_01difference__type_01_4.html">zip_remaining&lt; true, difference_type &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="concepts" name="concepts"></a>
 Concepts</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptdaw_1_1pipelines_1_1pimpl_1_1counted__source.html">counted_source</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A random access iterator whose distance to the end is known in O(1). A view over such a source can count the elements it has left instead of comparing against the end on every step. That lets the compiler see a counted loop, and vectorize it. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptdaw_1_1pipelines_1_1pimpl_1_1known__size__range.html">known_size_range</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A range whose size is known without walking it. It has a size( ) member, or its end can be subtracted from its begin. ranges_distance is O(1) for these. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptdaw_1_1pipelines_1_1pimpl_1_1_range_base.html">RangeBase</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -429,9 +432,10 @@ requires ( <a class="el" href="namespacedaw.html#aabd59ef96aa8392ae4127f0a57336a
 <tr class="memitem:a30d148fb35ab27ee5563631b7b973d2d" id="r_a30d148fb35ab27ee5563631b7b973d2d"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Result</a>  = std::ptrdiff_t&gt; </td></tr>
 <tr class="memitem:a30d148fb35ab27ee5563631b7b973d2d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Result</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a30d148fb35ab27ee5563631b7b973d2d">ranges_distance</a> (Iterator <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> first, Iterator <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> &amp;last)</td></tr>
 <tr class="separator:a30d148fb35ab27ee5563631b7b973d2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4b5dd8a41d091c8320f07da227400ff" id="r_ae4b5dd8a41d091c8320f07da227400ff"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Result</a>  = std::ptrdiff_t&gt; </td></tr>
-<tr class="memitem:ae4b5dd8a41d091c8320f07da227400ff"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Result</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#ae4b5dd8a41d091c8320f07da227400ff">ranges_distance</a> (Range <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> &amp;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">r</a>)</td></tr>
-<tr class="separator:ae4b5dd8a41d091c8320f07da227400ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa449faf04a278aefac48edc19ace32fb" id="r_aa449faf04a278aefac48edc19ace32fb"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Result</a>  = std::ptrdiff_t&gt; </td></tr>
+<tr class="memitem:aa449faf04a278aefac48edc19ace32fb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Result</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#aa449faf04a278aefac48edc19ace32fb">ranges_distance</a> (Range <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> &amp;&amp;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">r</a>)</td></tr>
+<tr class="memdesc:aa449faf04a278aefac48edc19ace32fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prefer the range's own <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a>. Ranges like std::list and std::map know their size but cannot subtract iterators, so they would otherwise be walked. Taken by forwarding reference, as a Range may only be iterable when not const.  <br /></td></tr>
+<tr class="separator:aa449faf04a278aefac48edc19ace32fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0fde24eadc94762e206002a8309ed629" id="r_a0fde24eadc94762e206002a8309ed629"><td class="memTemplParams" colspan="2">template&lt;Iterator First&gt; </td></tr>
 <tr class="memitem:a0fde24eadc94762e206002a8309ed629"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1pimpl.html#a0fde24eadc94762e206002a8309ed629">safe_move_next</a> (<a class="el" href="namespacedaw_1_1pipelines.html#a8d08dce8ebf603a2f60061924844ea40">First</a> first, Iterator <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> &amp;last, <a class="el" href="namespacedaw.html#a312c1dd4f43e3bf78fc55da8a113de93">daw::iter_difference_t</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#a8d08dce8ebf603a2f60061924844ea40">First</a> &gt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">n</a>=<a class="el" href="namespacedaw.html#a312c1dd4f43e3bf78fc55da8a113de93">daw::iter_difference_t</a>&lt; <a class="el" href="namespacedaw_1_1pipelines.html#a8d08dce8ebf603a2f60061924844ea40">First</a> &gt;{ 1 })</td></tr>
 <tr class="separator:a0fde24eadc94762e206002a8309ed629"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1103,7 +1107,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00262">262</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00277">277</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
 
 </div>
 </div>
@@ -1125,7 +1129,7 @@ requires ( <a class="el" href="namespacedaw.html#aabd59ef96aa8392ae4127f0a57336a
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00268">268</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="concat_8h_source.html#l00283">283</a> of file <a class="el" href="concat_8h_source.html">concat.h</a>.</p>
 
 </div>
 </div>
@@ -1191,7 +1195,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="to_8h_source.html#l00114">114</a> of file <a class="el" href="to_8h_source.html">to.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="to_8h_source.html#l00134">134</a> of file <a class="el" href="to_8h_source.html">to.h</a>.</p>
 
 </div>
 </div>
@@ -1707,8 +1711,8 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 
 </div>
 </div>
-<a id="ae4b5dd8a41d091c8320f07da227400ff" name="ae4b5dd8a41d091c8320f07da227400ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae4b5dd8a41d091c8320f07da227400ff">&#9670;&#160;</a></span>ranges_distance() <span class="overload">[2/2]</span></h2>
+<a id="aa449faf04a278aefac48edc19ace32fb" name="aa449faf04a278aefac48edc19ace32fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa449faf04a278aefac48edc19ace32fb">&#9670;&#160;</a></span>ranges_distance() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1721,7 +1725,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
         <tr>
           <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Result</a> daw::pipelines::pimpl::ranges_distance </td>
           <td>(</td>
-          <td class="paramtype">Range <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> &amp;&#160;</td>
+          <td class="paramtype">Range <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> &amp;&amp;&#160;</td>
           <td class="paramname"><em>r</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1733,7 +1737,9 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="range__base_8h_source.html#l00039">39</a> of file <a class="el" href="range__base_8h_source.html">range_base.h</a>.</p>
+<p>Prefer the range's own <a class="el" href="namespacedaw.html#a68c9530c0281d1d5c4f62bc8712229d4">size( )</a>. Ranges like std::list and std::map know their size but cannot subtract iterators, so they would otherwise be walked. Taken by forwarding reference, as a Range may only be iterable when not const. </p>
+
+<p class="definition">Definition at line <a class="el" href="range__base_8h_source.html#l00043">43</a> of file <a class="el" href="range__base_8h_source.html">range_base.h</a>.</p>
 
 </div>
 </div>

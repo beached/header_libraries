@@ -9,8 +9,8 @@ var searchData=
   ['zip_5fiterator_5fend_6',['zip_iterator_end',['../structdaw_1_1pipelines_1_1pimpl_1_1zip__iterator__end.html',1,'daw::pipelines::pimpl']]],
   ['zip_5fno_5fparent_7',['zip_no_parent',['../structdaw_1_1pipelines_1_1pimpl_1_1zip__no__parent.html',1,'daw::pipelines::pimpl']]],
   ['zip_5fremaining_8',['zip_remaining',['../structdaw_1_1pipelines_1_1pimpl_1_1zip__remaining.html',1,'daw::pipelines::pimpl']]],
-  ['zip_5fremaining_3c_20counted_5fv_20_3e_9',['zip_remaining&lt; counted_v &gt;',['../structdaw_1_1pipelines_1_1pimpl_1_1zip__remaining.html',1,'daw::pipelines::pimpl']]],
-  ['zip_5fremaining_3c_20true_20_3e_10',['zip_remaining&lt; true &gt;',['../structdaw_1_1pipelines_1_1pimpl_1_1zip__remaining_3_01true_01_4.html',1,'daw::pipelines::pimpl']]],
+  ['zip_5fremaining_3c_20counted_5fv_2c_20difference_5ftype_20_3e_9',['zip_remaining&lt; counted_v, difference_type &gt;',['../structdaw_1_1pipelines_1_1pimpl_1_1zip__remaining.html',1,'daw::pipelines::pimpl']]],
+  ['zip_5fremaining_3c_20true_2c_20difference_5ftype_20_3e_10',['zip_remaining&lt; true, difference_type &gt;',['../structdaw_1_1pipelines_1_1pimpl_1_1zip__remaining_3_01true_00_01difference__type_01_4.html',1,'daw::pipelines::pimpl']]],
   ['zip_5ft_11',['Zip_t',['../structdaw_1_1pipelines_1_1_zip__t.html',1,'daw::pipelines']]],
   ['zip_5fview_12',['zip_view',['../structdaw_1_1pipelines_1_1zip__view.html',1,'daw::pipelines']]]
 ];
