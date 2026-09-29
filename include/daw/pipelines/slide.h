@@ -219,14 +219,14 @@ namespace daw::pipelines::pimpl {
 	  : private stored_range_base_t<
 	      R, slide_iterator_for<iterator_t<R>, iterator_end_t<R>>,
 	      slide_iterator_end<iterator_t<R>>,
-	      slide_iterator_for<const_iterator_t<R>, const_iterator_end_t<R>>,
-	      slide_iterator_end<const_iterator_t<R>>> {
+	      slide_iterator_for<const_iterator_or_t<R>, const_iterator_end_or_t<R>>,
+	      slide_iterator_end<const_iterator_or_t<R>>> {
 
 		using base_t = stored_range_base_t<
 		  R, slide_iterator_for<iterator_t<R>, iterator_end_t<R>>,
 		  slide_iterator_end<iterator_t<R>>,
-		  slide_iterator_for<const_iterator_t<R>, const_iterator_end_t<R>>,
-		  slide_iterator_end<const_iterator_t<R>>>;
+		  slide_iterator_for<const_iterator_or_t<R>, const_iterator_end_or_t<R>>,
+		  slide_iterator_end<const_iterator_or_t<R>>>;
 
 		using iterator = typename base_t::iterator_first_t;
 		using const_iterator = typename base_t::const_iterator_first_t;
@@ -256,7 +256,9 @@ namespace daw::pipelines::pimpl {
 			return iterator{ base_t::rbegin( ), base_t::rend( ), m_slide_size };
 		}
 
-		constexpr const_iterator begin( ) const {
+		constexpr const_iterator begin( ) const
+		requires( ConstRange<R> )
+		{
 			return const_iterator{ base_t::rbegin( ), base_t::rend( ), m_slide_size };
 		}
 
@@ -264,8 +266,22 @@ namespace daw::pipelines::pimpl {
 			return last_iterator{ };
 		}
 
-		constexpr const_last_iterator end( ) const {
+		constexpr const_last_iterator end( ) const
+		requires( ConstRange<R> )
+		{
 			return const_last_iterator{ };
+		}
+
+		/// A range shorter than the window has one short window, and an empty
+		/// range has none
+		[[nodiscard]] constexpr std::size_t size( ) const
+		requires( known_size_range<R> )
+		{
+			auto const n = ranges_distance<std::size_t>( base_t::get( ) );
+			if( n == 0 ) {
+				return 0;
+			}
+			return n >= m_slide_size ? n - m_slide_size + 1 : 1;
 		}
 
 		[[nodiscard]] constexpr bool

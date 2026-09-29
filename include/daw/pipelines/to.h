@@ -35,43 +35,63 @@ namespace daw::pipelines::pimpl {
 		[[nodiscard]] DAW_ATTRIB_NOINLINE DAW_CPP23_STATIC_CALL_OP constexpr auto
 		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
 			using range_type = daw::remove_cvref_t<R>;
-			static_assert(
-			  requires( iterator_t<range_type> it ) { Container( it, it ); },
-			  "To requires the container to be constructible from an iterator "
-			  "pair" );
+
 			if constexpr( std::is_same_v<iterator_t<range_type>,
 			                             iterator_end_t<range_type>> ) {
+				static_assert(
+				  requires( iterator_t<range_type> it ) { Container( it, it ); },
+				  "To requires the container to be constructible from an iterator "
+				  "pair" );
 				return Container( std::begin( r ), std::end( r ) );
 			} else {
 #if defined( DAW_HAS_CPP23_FROM_RANGE )
-				return Container( std::from_range, DAW_FWD( r ) );
-#else
-				auto first = std::begin( r );
-				auto last = std::end( r );
-				auto result = [] {
-					if constexpr( requires {
-						              typename Container<range_value_t<range_type>>;
-					              } ) {
-						return Container<range_value_t<range_type>>{ };
-					} else {
-						using value_t = range_value_t<range_type>;
-						using key_t = std::remove_cvref_t<std::tuple_element_t<0, value_t>>;
-						using mapped_t =
-						  std::remove_cvref_t<std::tuple_element_t<1, value_t>>;
-						return Container<key_t, mapped_t>{ };
-					}
-				}( );
-				if constexpr(
-				  RandomIterator<iterator_t<R>> and requires { last - first; } and
-				  requires { result.reserve( std::size_t{ 1 } ); } ) {
-					result.reserve( as<std::size_t>( last - first ) );
-				}
-				while( first != last ) {
-					result.insert( std::end( result ), *first );
-					++first;
-				}
-				return result;
+				if constexpr( requires {
+					              Container( std::from_range, DAW_FWD( r ) );
+				              } ) {
+					return Container( std::from_range, DAW_FWD( r ) );
+				} else
 #endif
+				  if constexpr( RandomRange<R> ) {
+					auto first = std::begin( r );
+					auto last = std::next( first, std::ranges::distance( r ) );
+					return Container( first, last );
+				} else if constexpr( std::copyable<daw::iterator_t<R>> ) {
+					using first_t = daw::iterator_t<R>;
+					using last_t = daw::iterator_end_t<R>;
+					using it_t = std::common_iterator<first_t, last_t>;
+					return Container( it_t( std::begin( r ) ), it_t( std::end( r ) ) );
+				} else {
+					auto first = std::begin( r );
+					auto last = std::end( r );
+					auto result = [] {
+						if constexpr( requires {
+							              typename Container<iter_value_t<decltype( first )>>;
+						              } ) {
+							return Container<daw::range_value_t<range_type>>{ };
+						} else {
+							using value_t = daw::range_value_t<range_type>;
+							static_assert( requires {
+								std::get<0>( *first );
+								std::get<1>( *first );
+							} );
+							using key_t =
+							  std::remove_cvref_t<std::tuple_element_t<0, value_t>>;
+							using mapped_t =
+							  std::remove_cvref_t<std::tuple_element_t<1, value_t>>;
+							return Container<key_t, mapped_t>{ };
+						}
+					}( );
+					if constexpr(
+					  RandomIterator<iterator_t<R>> and requires { last - first; } and
+					  requires { result.reserve( std::size_t{ 1 } ); } ) {
+						result.reserve( as<std::size_t>( last - first ) );
+					}
+					while( first != last ) {
+						result.insert( std::end( result ), *first );
+						++first;
+					}
+					return result;
+				}
 			}
 		}
 

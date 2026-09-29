@@ -93,7 +93,7 @@ namespace daw::pipelines {
 			using last_iterator =
 			  pimpl::concat_iterator_end<daw::iterator_end_t<Ranges>...>;
 			using last_const_iterator =
-			  pimpl::concat_iterator_end<daw::const_iterator_end_t<Ranges>...>;
+			  pimpl::concat_iterator_end<daw::const_iterator_end_or_t<Ranges>...>;
 			using position_t = variant_range_storage_t<
 			  view_t<iterator_t<Ranges>, iterator_end_t<Ranges>>...>;
 
@@ -213,7 +213,7 @@ namespace daw::pipelines {
 		using last_iterator =
 		  pimpl::concat_iterator_end<daw::iterator_end_t<Ranges>...>;
 		using last_const_iterator =
-		  pimpl::concat_iterator_end<daw::const_iterator_end_t<Ranges>...>;
+		  pimpl::concat_iterator_end<daw::const_iterator_end_or_t<Ranges>...>;
 
 		using storage_t = pimpl::variant_range_storage_t<Ranges...>;
 
@@ -236,7 +236,9 @@ namespace daw::pipelines {
 		[[nodiscard]] constexpr iterator begin( ) noexcept {
 			return iterator{ this };
 		}
-		[[nodiscard]] constexpr const_iterator begin( ) const noexcept {
+		[[nodiscard]] constexpr const_iterator begin( ) const noexcept
+		requires( ( ConstRange<Ranges> and ... ) )
+		{
 			return const_iterator{ this };
 		}
 
@@ -244,8 +246,21 @@ namespace daw::pipelines {
 			return last_iterator{ };
 		}
 
-		[[nodiscard]] constexpr last_const_iterator end( ) const noexcept {
+		[[nodiscard]] constexpr last_const_iterator end( ) const noexcept
+		requires( ( ConstRange<Ranges> and ... ) )
+		{
 			return last_const_iterator{ };
+		}
+
+		/// The sum of the sizes of the concatenated ranges
+		[[nodiscard]] constexpr std::size_t size( ) const
+		requires( ( pimpl::known_size_range<Ranges> and ... ) )
+		{
+			return [&]<std::size_t... Is>( std::index_sequence<Is...> ) {
+				return ( pimpl::ranges_distance<std::size_t>(
+				           m_storage[Is].template get<Is>( ).get( ) ) +
+				         ... );
+			}( std::make_index_sequence<range_size>{ } );
 		}
 
 		[[nodiscard]] constexpr bool operator==( concat_view const &rhs ) const {

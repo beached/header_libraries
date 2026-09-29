@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/daw_concepts.h"
+#include "daw/daw_ensure.h"
 #include "daw/daw_move.h"
 
 #include <concepts>
@@ -28,7 +29,11 @@ namespace daw {
 		  std::is_rvalue_reference_v<T>, std::remove_cvref_t<T>,
 		  std::conditional_t<std::is_reference_v<T>,
 		                     std::add_pointer_t<std::remove_reference_t<T>>, T>>;
-		storage_t m_storage{ };
+		// No default member initializer.  Some ranges, like a
+		// std::ranges::filter_view over a ref_view, are not default
+		// constructible, and a default member initializer is checked when a
+		// std::tuple of ref_storage asks if it is default constructible
+		storage_t m_storage;
 
 		template<typename U>
 		static constexpr bool can_store_v =
@@ -48,7 +53,9 @@ namespace daw {
 		}
 
 	public:
-		ref_storage( ) = default;
+		constexpr ref_storage( )
+		requires( std::default_initializable<storage_t> )
+		  : m_storage{ } {}
 
 		static constexpr bool is_owned = not std::is_lvalue_reference_v<T>;
 

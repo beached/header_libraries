@@ -58,7 +58,9 @@ namespace daw::pipelines {
 			return std::next( base_t::begin( ), m_skipped );
 		}
 
-		[[nodiscard]] constexpr const_iterator begin( ) const {
+		[[nodiscard]] constexpr const_iterator begin( ) const
+		requires( ConstRange<R> )
+		{
 			return std::next( base_t::begin( ), m_skipped );
 		}
 
@@ -66,12 +68,24 @@ namespace daw::pipelines {
 			return base_t::end( );
 		}
 
-		[[nodiscard]] constexpr const_iterator_last end( ) const {
+		[[nodiscard]] constexpr const_iterator_last end( ) const
+		requires( ConstRange<R> )
+		{
 			return base_t::end( );
 		}
 
-		[[nodiscard]] constexpr bool
-		operator==( skip_view const & ) const = default;
+		[[nodiscard]] constexpr std::size_t size( ) const
+		requires( pimpl::known_size_range<R> )
+		{
+			return pimpl::ranges_distance<std::size_t>( base_t::get_range( ) ) -
+			       as<std::size_t>( m_skipped );
+		}
+
+		[[nodiscard]] constexpr bool operator==( skip_view const &rhs ) const {
+			return static_cast<base_t const &>( *this ) ==
+			         static_cast<base_t const &>( rhs ) and
+			       m_skipped == rhs.m_skipped;
+		}
 	};
 	template<typename R>
 	skip_view( R && ) -> skip_view<R>;

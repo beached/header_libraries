@@ -303,9 +303,9 @@ namespace daw::pipelines {
 	                          iterator_end_t<R>, Fn, Projection>,
 	      pimpl::map_iterator_end<iterator_end_t<R>>,
 	      pimpl::map_iterator<map_view<R, Fn, Projection> const,
-	                          const_iterator_t<R>, const_iterator_end_t<R>, Fn,
+	                          const_iterator_or_t<R>, const_iterator_end_or_t<R>, Fn,
 	                          Projection>,
-	      pimpl::map_iterator_end<const_iterator_end_t<R>>> {
+	      pimpl::map_iterator_end<const_iterator_end_or_t<R>>> {
 
 		using base_t = pimpl::stored_range_base_t<
 		  R, //
@@ -313,9 +313,9 @@ namespace daw::pipelines {
 		                      iterator_end_t<R>, Fn, Projection>,
 		  pimpl::map_iterator_end<iterator_end_t<R>>,
 		  pimpl::map_iterator<map_view<R, Fn, Projection> const,
-		                      const_iterator_t<R>, const_iterator_end_t<R>, Fn,
+		                      const_iterator_or_t<R>, const_iterator_end_or_t<R>, Fn,
 		                      Projection>,
-		  pimpl::map_iterator_end<const_iterator_end_t<R>>>;
+		  pimpl::map_iterator_end<const_iterator_end_or_t<R>>>;
 
 		using typename base_t::const_iterator_first_t;
 		using typename base_t::const_iterator_last_t;
@@ -354,7 +354,9 @@ namespace daw::pipelines {
 			return iterator_first_t( this, base_t::rbegin( ) );
 		}
 
-		[[nodiscard]] constexpr const_iterator_first_t begin( ) const {
+		[[nodiscard]] constexpr const_iterator_first_t begin( ) const
+		requires( ConstRange<R> )
+		{
 			return const_iterator_first_t( this, base_t::rbegin( ) );
 		}
 
@@ -362,8 +364,16 @@ namespace daw::pipelines {
 			return iterator_last_t{ };
 		}
 
-		[[nodiscard]] constexpr const_iterator_last_t end( ) const {
+		[[nodiscard]] constexpr const_iterator_last_t end( ) const
+		requires( ConstRange<R> )
+		{
 			return const_iterator_last_t{ };
+		}
+
+		[[nodiscard]] constexpr std::size_t size( ) const
+		requires( pimpl::known_size_range<R> )
+		{
+			return pimpl::ranges_distance<std::size_t>( base_t::get( ) );
 		}
 	};
 	template<Range R, typename F>

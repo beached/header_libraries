@@ -33,13 +33,12 @@ namespace daw::pipelines {
 		};
 
 		struct count_t {
+			// Not R const &, a Range may only be iterable when not const
 			template<typename R>
 			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr std::size_t
-			operator( )( R const &r ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
 				if constexpr( not Range<R> ) {
 					return 1;
-				} else if constexpr( requires { r.size( ); } ) {
-					return r.size( );
 				} else {
 					return pimpl::ranges_distance<std::size_t>( r );
 				}
@@ -50,8 +49,7 @@ namespace daw::pipelines {
 		struct CountIf_t {
 			DAW_NO_UNIQUE_ADDRESS Fn fn;
 
-			[[nodiscard]] constexpr std::size_t
-			operator( )( Range auto const &r ) const {
+			[[nodiscard]] constexpr std::size_t operator( )( Range auto &&r ) const {
 				std::size_t result = 0;
 				for( auto const &v : r ) {
 					result += static_cast<std::size_t>( fn( v ) );

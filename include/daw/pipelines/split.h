@@ -174,9 +174,9 @@ namespace daw::pipelines {
 		                                       Delimiter, Projection>;
 		using iterator_last = pimpl::split_iterator_end<iterator_t<R>>;
 		using const_iterator =
-		  pimpl::split_iterator<const_iterator_t<R>, const_iterator_end_t<R>,
+		  pimpl::split_iterator<const_iterator_or_t<R>, const_iterator_end_or_t<R>,
 		                        Delimiter, Projection>;
-		using const_iterator_last = pimpl::split_iterator_end<const_iterator_t<R>>;
+		using const_iterator_last = pimpl::split_iterator_end<const_iterator_or_t<R>>;
 
 		DAW_NO_UNIQUE_ADDRESS Delimiter m_delimiter{ };
 		DAW_NO_UNIQUE_ADDRESS Projection m_projection = Projection{ };
@@ -219,12 +219,16 @@ namespace daw::pipelines {
 			return iterator{ base_t::begin( ), last( ), m_delimiter, m_projection };
 		}
 
-		[[nodiscard]] constexpr const_iterator begin( ) const {
+		[[nodiscard]] constexpr const_iterator begin( ) const
+		requires( ConstRange<R> )
+		{
 			return const_iterator{
 			  base_t::begin( ), last( ), m_delimiter, m_projection };
 		}
 
-		[[nodiscard]] constexpr const_iterator cbegin( ) const {
+		[[nodiscard]] constexpr const_iterator cbegin( ) const
+		requires( ConstRange<R> )
+		{
 			return const_iterator{
 			  base_t::begin( ), last( ), m_delimiter, m_projection };
 		}
@@ -233,11 +237,15 @@ namespace daw::pipelines {
 			return iterator_last{ };
 		}
 
-		[[nodiscard]] constexpr const_iterator_last end( ) const {
+		[[nodiscard]] constexpr const_iterator_last end( ) const
+		requires( ConstRange<R> )
+		{
 			return const_iterator_last{ };
 		}
 
-		[[nodiscard]] constexpr const_iterator_last cend( ) const {
+		[[nodiscard]] constexpr const_iterator_last cend( ) const
+		requires( ConstRange<R> )
+		{
 			return const_iterator_last{ };
 		}
 	};

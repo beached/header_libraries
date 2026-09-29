@@ -239,9 +239,9 @@ namespace daw::pipelines {
 		using iterator =
 		  pimpl::every_iterator_for<iterator_t<R>, iterator_end_t<R>>;
 		using const_iterator =
-		  pimpl::every_iterator_for<const_iterator_t<R>, const_iterator_end_t<R>>;
+		  pimpl::every_iterator_for<const_iterator_or_t<R>, const_iterator_end_or_t<R>>;
 		using iterator_last = pimpl::every_iterator_end<iterator_t<R>>;
-		using const_iterator_last = pimpl::every_iterator_end<const_iterator_t<R>>;
+		using const_iterator_last = pimpl::every_iterator_end<const_iterator_or_t<R>>;
 
 		explicit every_view( ) = default;
 
@@ -253,7 +253,9 @@ namespace daw::pipelines {
 			return iterator{ base_t::rbegin( ), base_t::rend( ), m_every_nth };
 		}
 
-		[[nodiscard]] constexpr const_iterator begin( ) const {
+		[[nodiscard]] constexpr const_iterator begin( ) const
+		requires( ConstRange<R> )
+		{
 			return const_iterator{ base_t::rbegin( ), base_t::rend( ), m_every_nth };
 		}
 
@@ -261,8 +263,19 @@ namespace daw::pipelines {
 			return iterator_last{ };
 		}
 
-		[[nodiscard]] constexpr const_iterator_last end( ) const {
+		[[nodiscard]] constexpr const_iterator_last end( ) const
+		requires( ConstRange<R> )
+		{
 			return const_iterator_last{ };
+		}
+
+		/// Every nth element starting with the first, so the count rounds up
+		[[nodiscard]] constexpr std::size_t size( ) const
+		requires( pimpl::known_size_range<R> )
+		{
+			auto const n = pimpl::ranges_distance<std::size_t>( base_t::get( ) );
+			auto const step = as<std::size_t>( m_every_nth );
+			return ( n + step - 1 ) / step;
 		}
 	};
 	template<typename R>

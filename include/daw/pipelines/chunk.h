@@ -157,14 +157,14 @@ namespace daw::pipelines::pimpl {
 	  : private stored_range_base_t<
 	      R, chunk_iterator<iterator_t<R>, iterator_end_t<R>>,
 	      chunk_iterator_end<iterator_end_t<R>>,
-	      chunk_iterator<const_iterator_t<R>, const_iterator_end_t<R>>,
-	      chunk_iterator_end<const_iterator_end_t<R>>> {
+	      chunk_iterator<const_iterator_or_t<R>, const_iterator_end_or_t<R>>,
+	      chunk_iterator_end<const_iterator_end_or_t<R>>> {
 
 		using base_t = stored_range_base_t<
 		  R, chunk_iterator<iterator_t<R>, iterator_end_t<R>>,
 		  chunk_iterator_end<iterator_end_t<R>>,
-		  chunk_iterator<const_iterator_t<R>, const_iterator_end_t<R>>,
-		  chunk_iterator_end<const_iterator_end_t<R>>>;
+		  chunk_iterator<const_iterator_or_t<R>, const_iterator_end_or_t<R>>,
+		  chunk_iterator_end<const_iterator_end_or_t<R>>>;
 
 		using iterator = typename base_t::iterator_first_t;
 		using const_iterator = typename base_t::const_iterator_first_t;
@@ -192,7 +192,9 @@ namespace daw::pipelines::pimpl {
 			return iterator{ base_t::rbegin( ), base_t::rend( ), m_chunk_size };
 		}
 
-		[[nodiscard]] constexpr const_iterator begin( ) const {
+		[[nodiscard]] constexpr const_iterator begin( ) const
+		requires( ConstRange<R> )
+		{
 			return const_iterator{ base_t::rbegin( ), base_t::rend( ), m_chunk_size };
 		}
 
@@ -200,8 +202,18 @@ namespace daw::pipelines::pimpl {
 			return last_iterator{ };
 		}
 
-		[[nodiscard]] constexpr const_last_iterator end( ) const {
+		[[nodiscard]] constexpr const_last_iterator end( ) const
+		requires( ConstRange<R> )
+		{
 			return const_last_iterator{ };
+		}
+
+		/// The last chunk can be short, so the count rounds up
+		[[nodiscard]] constexpr std::size_t size( ) const
+		requires( known_size_range<R> )
+		{
+			auto const n = ranges_distance<std::size_t>( base_t::get( ) );
+			return ( n + m_chunk_size - 1 ) / m_chunk_size;
 		}
 
 		[[nodiscard]] constexpr bool

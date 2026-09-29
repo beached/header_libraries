@@ -23,11 +23,13 @@ namespace daw::pipelines::pimpl {
 	template<Iterator Iterator, std::size_t Index>
 	struct element_iterator {
 		using iterator_category = daw::iter_category_t<Iterator>;
-		using value_type =
-		  std::tuple_element_t<Index, daw::iter_reference_t<Iterator>>;
-		using reference = value_type;
-		using const_reference =
-		  std::tuple_element_t<Index, daw::iter_const_reference_t<Iterator>>;
+		// Over a range of tuple values, like zip, the element can be a reference.
+		// value_type must be an object type for this to be an iterator
+		using reference = std::tuple_element_t<
+		  Index, daw::remove_cvref_t<daw::iter_reference_t<Iterator>>>;
+		using value_type = daw::remove_cvref_t<reference>;
+		using const_reference = std::tuple_element_t<
+		  Index, daw::remove_cvref_t<daw::iter_const_reference_t<Iterator>>>;
 		using pointer = arrow_proxy<reference>;
 		using const_pointer = arrow_proxy<const_reference>;
 		using difference_type = daw::iter_difference_t<Iterator>;
@@ -137,7 +139,7 @@ namespace daw::pipelines::pimpl {
 		requires( RandomIterator<Iterator> )
 		{
 			element_iterator result = *this;
-			m_iter += n;
+			result.m_iter += n;
 			return result;
 		}
 
@@ -146,15 +148,33 @@ namespace daw::pipelines::pimpl {
 		requires( RandomIterator<Iterator> )
 		{
 			element_iterator result = *this;
-			m_iter -= n;
+			result.m_iter -= n;
 			return result;
 		}
 
+		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr element_iterator
+		operator+( difference_type n, element_iterator const &rhs ) noexcept
+		requires( RandomIterator<Iterator> )
+		{
+			return rhs + n;
+		}
+
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr difference_type
-		operator-( element_iterator const &rhs )
+		operator-( element_iterator const &rhs ) const
 		requires( RandomIterator<Iterator> )
 		{
 			return m_iter - rhs.m_iter;
+		}
+
+		// Distance to an element iterator over another iterator type, e.g. the
+		// end of a range with a sentinel.  When the underlying iterators know
+		// their distance, so does this view
+		template<typename OtherIterator>
+		requires( not std::same_as<Iterator, OtherIterator> and
+		          requires( Iterator const &l, OtherIterator const &r ) { l - r; } )
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr difference_type
+		operator-( element_iterator<OtherIterator, Index> const &rhs ) const {
+			return static_cast<difference_type>( m_iter - rhs.base( ) );
 		}
 
 		template<typename OtherIterator>
@@ -180,36 +200,56 @@ namespace daw::pipelines::pimpl {
 
 	template<Range R, std::size_t Index>
 	struct element_view
-	  : private pimpl::range_base_t<
-	      element_iterator<daw::iterator_t<std::remove_reference_t<R>>, Index>,
-	      element_iterator<daw::iterator_end_t<std::remove_reference_t<R>>,
-	                       Index>> {
-		using range_t = std::remove_reference_t<R>;
-		using daw_range_base_t =
-		  range_base_t<element_iterator<daw::iterator_t<range_t>, Index>,
-		               element_iterator<daw::iterator_end_t<range_t>, Index>>;
+	  : private pimpl::stored_range_base_t<
+	      R, //
+	      pimpl::element_iterator<daw::iterator_t<R>, Index>,
+	      pimpl::element_iterator<daw::iterator_end_t<R>, Index>,
+	      pimpl::element_iterator<daw::const_iterator_or_t<R>, Index>,
+	      pimpl::element_iterator<daw::const_iterator_end_or_t<R>, Index>> {
 
-		using typename daw_range_base_t::iterator_first_t;
-		using typename daw_range_base_t::iterator_last_t;
+		using base_t = pimpl::stored_range_base_t<
+		  R, //
+		  pimpl::element_iterator<daw::iterator_t<R>, Index>,
+		  pimpl::element_iterator<daw::iterator_end_t<R>, Index>,
+		  pimpl::element_iterator<daw::const_iterator_or_t<R>, Index>,
+		  pimpl::element_iterator<daw::const_iterator_end_or_t<R>, Index>>;
+
+		using typename base_t::const_iterator_first_t;
+		using typename base_t::const_iterator_last_t;
+		using typename base_t::iterator_first_t;
+		using typename base_t::iterator_last_t;
 
 		using value_type = daw::iter_value_t<iterator_first_t>;
 
-		iterator_first_t m_first = iterator_first_t{ };
-		iterator_last_t m_last = iterator_last_t{ };
+		element_view( ) = default;
 
-		explicit element_view( ) = default;
+		explicit constexpr element_view( daw::constructible<base_t> auto &&r )
+		  : base_t( DAW_FWD( r ) ) {}
 
-		template<daw::Range U>
-		explicit constexpr element_view( U &&r )
-		  : m_first( std::begin( daw::forward_lvalue<U>( r ) ) )
-		  , m_last( std::end( daw::forward_lvalue<U>( r ) ) ) {}
-
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr iterator_first_t begin( ) const {
-			return m_first;
+		[[nodiscard]] constexpr iterator_first_t begin( ) {
+			return iterator_first_t{ base_t::rbegin( ) };
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr iterator_last_t end( ) const {
-			return m_last;
+		[[nodiscard]] constexpr const_iterator_first_t begin( ) const
+		requires( ConstRange<R> )
+		{
+			return const_iterator_first_t{ base_t::rbegin( ) };
+		}
+
+		[[nodiscard]] constexpr iterator_last_t end( ) {
+			return iterator_last_t{ base_t::rend( ) };
+		}
+
+		[[nodiscard]] constexpr const_iterator_last_t end( ) const
+		requires( ConstRange<R> )
+		{
+			return const_iterator_last_t{ base_t::rend( ) };
+		}
+
+		[[nodiscard]] constexpr std::size_t size( ) const
+		requires( pimpl::known_size_range<R> )
+		{
+			return pimpl::ranges_distance<std::size_t>( base_t::get( ) );
 		}
 	};
 
@@ -221,18 +261,18 @@ namespace daw::pipelines::pimpl {
 		DAW_CPP23_STATIC_CALL_OP constexpr auto
 		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
 			return element_view<daw::remove_rvalue_ref_t<R>, Index>{
-			  daw::forward_lvalue<R>( r ) };
+			  DAW_FWD( r ) };
 		}
 	};
 
 	template<Iterator Iterator, std::size_t... Indices>
 	struct elements_iterator {
 		using iterator_category = daw::iter_category_t<Iterator>;
-		using value_type = std::tuple<
-		  std::tuple_element_t<Indices, daw::iter_reference_t<Iterator>>...>;
+		using value_type = std::tuple<std::tuple_element_t<
+		  Indices, daw::remove_cvref_t<daw::iter_reference_t<Iterator>>>...>;
 		using reference = value_type;
-		using const_reference = std::tuple<
-		  std::tuple_element_t<Indices, daw::iter_const_reference_t<Iterator>>...>;
+		using const_reference = std::tuple<std::tuple_element_t<
+		  Indices, daw::remove_cvref_t<daw::iter_const_reference_t<Iterator>>>...>;
 		using pointer = arrow_proxy<reference>;
 		using const_pointer = arrow_proxy<const_reference>;
 		using difference_type = daw::iter_difference_t<Iterator>;
@@ -249,8 +289,9 @@ namespace daw::pipelines::pimpl {
 	private:
 		template<typename I>
 		[[nodiscard]] DAW_ATTRIB_INLINE static constexpr auto raw_get( I &&iter ) {
-			using result_t =
-			  std::tuple<std::tuple_element_t<Indices, daw::iter_reference_t<I>>...>;
+			using result_t = std::tuple<
+			  std::tuple_element_t<Indices,
+			                       daw::remove_cvref_t<daw::iter_reference_t<I>>>...>;
 			auto &&r = *DAW_FWD( iter );
 			return result_t{ std::get<Indices>( r )... };
 		}
@@ -345,7 +386,7 @@ namespace daw::pipelines::pimpl {
 		requires( RandomIterator<Iterator> )
 		{
 			elements_iterator result = *this;
-			m_iter += n;
+			result.m_iter += n;
 			return result;
 		}
 
@@ -354,15 +395,33 @@ namespace daw::pipelines::pimpl {
 		requires( RandomIterator<Iterator> )
 		{
 			elements_iterator result = *this;
-			m_iter -= n;
+			result.m_iter -= n;
 			return result;
 		}
 
+		[[nodiscard]] DAW_ATTRIB_INLINE friend constexpr elements_iterator
+		operator+( difference_type n, elements_iterator const &rhs ) noexcept
+		requires( RandomIterator<Iterator> )
+		{
+			return rhs + n;
+		}
+
 		[[nodiscard]] DAW_ATTRIB_INLINE constexpr difference_type
-		operator-( elements_iterator const &rhs )
+		operator-( elements_iterator const &rhs ) const
 		requires( RandomIterator<Iterator> )
 		{
 			return m_iter - rhs.m_iter;
+		}
+
+		// Distance to an element iterator over another iterator type, e.g. the
+		// end of a range with a sentinel.  When the underlying iterators know
+		// their distance, so does this view
+		template<typename OtherIterator>
+		requires( not std::same_as<Iterator, OtherIterator> and
+		          requires( Iterator const &l, OtherIterator const &r ) { l - r; } )
+		[[nodiscard]] DAW_ATTRIB_INLINE constexpr difference_type
+		operator-( elements_iterator<OtherIterator, Indices...> const &rhs ) const {
+			return static_cast<difference_type>( m_iter - rhs.base( ) );
 		}
 
 		template<typename OtherIterator>
@@ -388,37 +447,56 @@ namespace daw::pipelines::pimpl {
 
 	template<Range R, std::size_t... Indices>
 	struct elements_view
-	  : private pimpl::range_base_t<
-	      elements_iterator<daw::iterator_t<std::remove_reference_t<R>>,
-	                        Indices...>,
-	      elements_iterator<daw::iterator_end_t<std::remove_reference_t<R>>,
-	                        Indices...>> {
-		using range_t = std::remove_reference_t<R>;
-		using daw_range_base_t =
-		  range_base_t<elements_iterator<daw::iterator_t<range_t>, Indices...>,
-		               elements_iterator<daw::iterator_end_t<range_t>, Indices...>>;
+	  : private pimpl::stored_range_base_t<
+	      R, //
+	      pimpl::elements_iterator<daw::iterator_t<R>, Indices...>,
+	      pimpl::elements_iterator<daw::iterator_end_t<R>, Indices...>,
+	      pimpl::elements_iterator<daw::const_iterator_or_t<R>, Indices...>,
+	      pimpl::elements_iterator<daw::const_iterator_end_or_t<R>, Indices...>> {
 
-		using typename daw_range_base_t::iterator_first_t;
-		using typename daw_range_base_t::iterator_last_t;
+		using base_t = pimpl::stored_range_base_t<
+		  R, //
+		  pimpl::elements_iterator<daw::iterator_t<R>, Indices...>,
+		  pimpl::elements_iterator<daw::iterator_end_t<R>, Indices...>,
+		  pimpl::elements_iterator<daw::const_iterator_or_t<R>, Indices...>,
+		  pimpl::elements_iterator<daw::const_iterator_end_or_t<R>, Indices...>>;
+
+		using typename base_t::const_iterator_first_t;
+		using typename base_t::const_iterator_last_t;
+		using typename base_t::iterator_first_t;
+		using typename base_t::iterator_last_t;
 
 		using value_type = daw::iter_value_t<iterator_first_t>;
 
-		iterator_first_t m_first = iterator_first_t{ };
-		iterator_last_t m_last = iterator_last_t{ };
+		elements_view( ) = default;
 
-		explicit elements_view( ) = default;
+		explicit constexpr elements_view( daw::constructible<base_t> auto &&r )
+		  : base_t( DAW_FWD( r ) ) {}
 
-		template<daw::Range U>
-		explicit constexpr elements_view( U &&r )
-		  : m_first( std::begin( daw::forward_lvalue<U>( r ) ) )
-		  , m_last( std::end( daw::forward_lvalue<U>( r ) ) ) {}
-
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr iterator_first_t begin( ) const {
-			return m_first;
+		[[nodiscard]] constexpr iterator_first_t begin( ) {
+			return iterator_first_t{ base_t::rbegin( ) };
 		}
 
-		[[nodiscard]] DAW_ATTRIB_INLINE constexpr iterator_last_t end( ) const {
-			return m_last;
+		[[nodiscard]] constexpr const_iterator_first_t begin( ) const
+		requires( ConstRange<R> )
+		{
+			return const_iterator_first_t{ base_t::rbegin( ) };
+		}
+
+		[[nodiscard]] constexpr iterator_last_t end( ) {
+			return iterator_last_t{ base_t::rend( ) };
+		}
+
+		[[nodiscard]] constexpr const_iterator_last_t end( ) const
+		requires( ConstRange<R> )
+		{
+			return const_iterator_last_t{ base_t::rend( ) };
+		}
+
+		[[nodiscard]] constexpr std::size_t size( ) const
+		requires( pimpl::known_size_range<R> )
+		{
+			return pimpl::ranges_distance<std::size_t>( base_t::get( ) );
 		}
 	};
 
@@ -430,7 +508,7 @@ namespace daw::pipelines::pimpl {
 		DAW_CPP23_STATIC_CALL_OP constexpr auto
 		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
 			return elements_view<daw::remove_rvalue_ref_t<R>, Indices...>{
-			  daw::forward_lvalue<R>( r ) };
+			  DAW_FWD( r ) };
 		}
 	};
 

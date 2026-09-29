@@ -195,7 +195,9 @@ namespace daw::pipelines {
 			}
 		}
 
-		[[nodiscard]] constexpr const_iterator begin( ) const {
+		[[nodiscard]] constexpr const_iterator begin( ) const
+		requires( ConstRange<R> )
+		{
 			if constexpr( counted_const_v ) {
 				auto first = base_t::begin( );
 				auto const len = pimpl::counted_length( first, base_t::end( ) );
@@ -213,7 +215,9 @@ namespace daw::pipelines {
 			}
 		}
 
-		[[nodiscard]] constexpr const_iterator_last end( ) const {
+		[[nodiscard]] constexpr const_iterator_last end( ) const
+		requires( ConstRange<R> )
+		{
 			if constexpr( counted_const_v ) {
 				return const_iterator_last{ base_t::begin( ), -1 };
 			} else {

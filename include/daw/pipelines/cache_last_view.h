@@ -130,7 +130,9 @@ namespace daw::pipelines {
 			return iterator_first_t( base_t::rbegin( ) );
 		}
 
-		constexpr iterator_first_t begin( ) const {
+		constexpr iterator_first_t begin( ) const
+		requires( ConstRange<R> )
+		{
 			return iterator_first_t( base_t::rbegin( ) );
 		}
 
@@ -138,8 +140,16 @@ namespace daw::pipelines {
 			return iterator_last_t( base_t::rend( ) );
 		}
 
-		constexpr iterator_last_t end( ) const {
+		constexpr iterator_last_t end( ) const
+		requires( ConstRange<R> )
+		{
 			return iterator_last_t( base_t::rend( ) );
+		}
+
+		[[nodiscard]] constexpr std::size_t size( ) const
+		requires( pimpl::known_size_range<R> )
+		{
+			return pimpl::ranges_distance<std::size_t>( base_t::get( ) );
 		}
 	};
 

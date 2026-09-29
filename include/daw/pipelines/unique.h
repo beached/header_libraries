@@ -125,14 +125,14 @@ namespace daw::pipelines {
 	  : private pimpl::stored_range_base_t<
 	      R, unique_iterator<iterator_t<R>, iterator_end_t<R>>,
 	      unique_iterator_end<iterator_end_t<R>>,
-	      unique_iterator<const_iterator_t<R>, const_iterator_end_t<R>>,
-	      unique_iterator_end<const_iterator_end_t<R>>> {
+	      unique_iterator<const_iterator_or_t<R>, const_iterator_end_or_t<R>>,
+	      unique_iterator_end<const_iterator_end_or_t<R>>> {
 
 		using base_t = pimpl::stored_range_base_t<
 		  R, unique_iterator<iterator_t<R>, iterator_end_t<R>>,
 		  unique_iterator_end<iterator_end_t<R>>,
-		  unique_iterator<const_iterator_t<R>, const_iterator_end_t<R>>,
-		  unique_iterator_end<const_iterator_end_t<R>>>;
+		  unique_iterator<const_iterator_or_t<R>, const_iterator_end_or_t<R>>,
+		  unique_iterator_end<const_iterator_end_or_t<R>>>;
 
 		using iterator = typename base_t::iterator_first_t;
 		using iterator_last = typename base_t::iterator_last_t;
@@ -150,7 +150,9 @@ namespace daw::pipelines {
 			return iterator{ base_t::rbegin( ), base_t::rend( ) };
 		}
 
-		[[nodiscard]] constexpr const_iterator begin( ) const {
+		[[nodiscard]] constexpr const_iterator begin( ) const
+		requires( ConstRange<R> )
+		{
 			return const_iterator{ base_t::rbegin( ), base_t::rend( ) };
 		}
 
@@ -158,7 +160,9 @@ namespace daw::pipelines {
 			return iterator_last{ };
 		}
 
-		[[nodiscard]] constexpr const_iterator_last end( ) const {
+		[[nodiscard]] constexpr const_iterator_last end( ) const
+		requires( ConstRange<R> )
+		{
 			return const_iterator_last{ };
 		}
 

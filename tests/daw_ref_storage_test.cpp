@@ -12,6 +12,7 @@
 #include <compare>
 #include <memory>
 #include <string>
+#include <tuple>
 #include <type_traits>
 #include <utility>
 
@@ -44,6 +45,33 @@ static_assert( std::default_initializable<daw::ref_storage<int>> );
 static_assert( std::default_initializable<daw::ref_storage<int &>> );
 static_assert( std::constructible_from<daw::ref_storage<std::string>,
                                        std::in_place_t, std::size_t, char> );
+
+// A type that cannot be default constructed, like a std::ranges::filter_view
+// over a ref_view, can still be stored.  ref_storage is then not default
+// constructible either, and a std::tuple of it can still ask
+struct NoDefault {
+	int value;
+	constexpr explicit NoDefault( int v )
+	  : value( v ) {}
+};
+static_assert( not std::default_initializable<daw::ref_storage<NoDefault>> );
+static_assert( std::constructible_from<daw::ref_storage<NoDefault>, NoDefault> );
+static_assert( not std::default_initializable<
+               std::tuple<daw::ref_storage<NoDefault>, daw::ref_storage<int>>> );
+
+constexpr bool test_no_default_storage( ) {
+	auto value = daw::ref_storage<NoDefault>{ NoDefault{ 5 } };
+	return value.get( ).value == 5;
+}
+static_assert( test_no_default_storage( ) );
+
+// A default constructed ref_storage is value initialized
+constexpr bool test_default_storage_is_value_initialized( ) {
+	auto value = daw::ref_storage<int>{ };
+	auto reference = daw::ref_storage<int &>{ };
+	return value.get( ) == 0 and not reference.good( );
+}
+static_assert( test_default_storage_is_value_initialized( ) );
 
 constexpr bool test_value_storage( ) {
 	auto value = daw::ref_storage{ 42 };

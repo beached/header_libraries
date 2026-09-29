@@ -141,7 +141,7 @@ namespace daw {
 	              test( std::declval<Its const &>( )... ) )>;
 
 	template<typename R>
-	concept Range = requires( R const &r ) {
+	concept Range = requires( R &&r ) {
 		{ std::begin( r ) };
 		{ std::end( r ) };
 	};
@@ -159,6 +159,43 @@ namespace daw {
 	template<Range R>
 	using const_iterator_end_t =
 	  DAW_TYPEOF( std::cend( std::declval<R const &>( ) ) );
+
+	/// A Range that can also be iterated when const.  Ranges like
+	/// std::ranges::filter_view and std::ranges::istream_view only have a
+	/// non-const begin( ), as begin( ) does work that is cached
+	template<typename R>
+	concept ConstRange =
+	  Range<R> and requires( std::remove_reference_t<R> const &r ) {
+		{ std::begin( r ) };
+		{ std::end( r ) };
+	};
+
+	namespace iter_traits_impl {
+		template<Range R>
+		struct const_iterators_or {
+			using first = iterator_t<R>;
+			using last = iterator_end_t<R>;
+		};
+
+		template<Range R>
+		requires( ConstRange<R> )
+		struct const_iterators_or<R> {
+			using first = const_iterator_t<R>;
+			using last = const_iterator_end_t<R>;
+		};
+	} // namespace iter_traits_impl
+
+	/// The const iterator types of R when it is a ConstRange, otherwise its
+	/// non-const iterator types.  A view over R can then always name its const
+	/// iterator types.  Its const begin( )/end( ) must be constrained on
+	/// ConstRange<R> so the non-const fallback is never used
+	template<Range R>
+	using const_iterator_or_t =
+	  typename iter_traits_impl::const_iterators_or<R>::first;
+
+	template<Range R>
+	using const_iterator_end_or_t =
+	  typename iter_traits_impl::const_iterators_or<R>::last;
 
 	template<Range R>
 	using range_value_t = iter_value_t<iterator_t<R>>;

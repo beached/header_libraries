@@ -198,6 +198,7 @@ set( CPP20_NOT_MSVC_TEST_SOURCES
 		 daw_pipelines_maybe_owning_range_test.cpp
 		 daw_pipelines_maybe_test.cpp
 		 daw_pipelines_move_next_test.cpp
+		 daw_pipelines_nonpropagating_cache_test.cpp
 		 daw_pipelines_numeric_test.cpp
 		 daw_pipelines_pipeline_test.cpp
 		 daw_pipelines_pipeline_traits_test.cpp

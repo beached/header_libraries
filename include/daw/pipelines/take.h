@@ -63,9 +63,9 @@ namespace daw::pipelines {
 	public:
 		using iterator = sized_t<iterator_t<R>, iterator_end_t<R>>;
 		using const_iterator =
-		  sized_t<const_iterator_t<R>, const_iterator_end_t<R>>;
+		  sized_t<const_iterator_or_t<R>, const_iterator_end_or_t<R>>;
 		using iterator_last = sized_iterator_end<iterator_t<R>>;
-		using const_iterator_last = sized_iterator_end<const_iterator_t<R>>;
+		using const_iterator_last = sized_iterator_end<const_iterator_or_t<R>>;
 
 		explicit take_view( ) = default;
 
@@ -79,7 +79,9 @@ namespace daw::pipelines {
 			return make_begin<iterator>( base_t::rbegin( ), base_t::rend( ) );
 		}
 
-		[[nodiscard]] constexpr const_iterator begin( ) const {
+		[[nodiscard]] constexpr const_iterator begin( ) const
+		requires( ConstRange<R> )
+		{
 			return make_begin<const_iterator>( base_t::rbegin( ), base_t::rend( ) );
 		}
 
@@ -87,8 +89,17 @@ namespace daw::pipelines {
 			return iterator_last{ };
 		}
 
-		[[nodiscard]] constexpr const_iterator_last end( ) const {
+		[[nodiscard]] constexpr const_iterator_last end( ) const
+		requires( ConstRange<R> )
+		{
 			return const_iterator_last{ };
+		}
+
+		[[nodiscard]] constexpr std::size_t size( ) const
+		requires( pimpl::known_size_range<R> )
+		{
+			return std::min(
+			  { pimpl::ranges_distance<std::size_t>( base_t::get( ) ), m_how_many } );
 		}
 	};
 
@@ -110,7 +121,7 @@ namespace daw::pipelines {
 
 	public:
 		using iterator = daw::iterator_t<R>;
-		using const_iterator = daw::const_iterator_t<R>;
+		using const_iterator = daw::const_iterator_or_t<R>;
 		using iterator_last = iterator;
 		using const_iterator_last = const_iterator;
 
@@ -126,7 +137,9 @@ namespace daw::pipelines {
 			return base_t::rbegin( );
 		}
 
-		[[nodiscard]] constexpr const_iterator begin( ) const {
+		[[nodiscard]] constexpr const_iterator begin( ) const
+		requires( ConstRange<R> )
+		{
 			return base_t::rbegin( );
 		}
 
@@ -135,7 +148,9 @@ namespace daw::pipelines {
 			  base_t::rbegin( ), base_t::rend( ), m_predicate );
 		}
 
-		[[nodiscard]] constexpr const_iterator_last end( ) const {
+		[[nodiscard]] constexpr const_iterator_last end( ) const
+		requires( ConstRange<R> )
+		{
 			return make_last<const_iterator_last>(
 			  base_t::rbegin( ), base_t::rend( ), m_predicate );
 		}
