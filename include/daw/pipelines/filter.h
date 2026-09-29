@@ -95,7 +95,8 @@ namespace daw::pipelines::pimpl {
 		                                    daw::constructible<First> auto &&first )
 		  : m_parent{ parent }
 		  , m_first( DAW_FWD( first ) ) {
-			while( good( ) and not filter( *m_first ) ) {
+			auto const last = m_parent->raw_end( );
+			while( m_first != last and not filter( *m_first ) ) {
 				++m_first;
 			}
 		}
@@ -133,8 +134,9 @@ namespace daw::pipelines::pimpl {
 		}
 
 		constexpr filter_iterator &operator++( ) {
+			auto const last = m_parent->raw_end( );
 			++m_first;
-			while( good( ) and not filter( *m_first ) ) {
+			while( m_first != last and not filter( *m_first ) ) {
 				++m_first;
 			}
 			return *this;
