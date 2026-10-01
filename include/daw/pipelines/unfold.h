@@ -62,7 +62,12 @@ namespace daw::pipelines {
 	template<typename State, typename Fn>
 	struct unfold_iterator {
 		using step_type = std::invoke_result_t<Fn const &, State const &>;
-		using iterator_category = std::input_iterator_tag;
+		static constexpr bool is_forward =
+		  std::copyable<step_type> and std::equality_comparable<step_type>;
+		using iterator_concept =
+		  std::conditional_t<is_forward, std::forward_iterator_tag,
+		                     std::input_iterator_tag>;
+		using iterator_category = iterator_concept;
 		using value_type = typename step_type::value_type::first_type;
 		using reference = value_type const &;
 		using pointer = value_type const *;
