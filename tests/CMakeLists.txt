@@ -215,6 +215,7 @@ set( CPP20_NOT_MSVC_TEST_SOURCES
 		 daw_pipelines_take_test.cpp
 		 daw_pipelines_test.cpp
 		 daw_pipelines_to_test.cpp
+		 daw_pipelines_unfold_test.cpp
 		 daw_pipelines_unique_test.cpp
 		 daw_pipelines_view_test.cpp
 		 daw_pipelines_zip_test.cpp
