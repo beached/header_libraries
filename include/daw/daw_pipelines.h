@@ -38,6 +38,7 @@
 #include "daw/pipelines/swizzle.h"
 #include "daw/pipelines/take.h"
 #include "daw/pipelines/to.h"
+#include "daw/pipelines/unfold.h"
 #include "daw/pipelines/unique.h"
 #include "daw/pipelines/view.h"
 #include "daw/pipelines/zip.h"
