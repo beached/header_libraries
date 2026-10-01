@@ -143,6 +143,14 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1take__while__view.html">take_while_view</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1unfold__iterator.html">unfold_iterator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fn: State -&gt; std::optional&lt;std::pair&lt;T, State&gt;&gt; nullopt ends the range, otherwise first is the element and second the next state.  <a href="structdaw_1_1pipelines_1_1unfold__iterator.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1unfold__iterator__end.html">unfold_iterator_end</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The end of an unfold. Like <a class="el" href="structdaw_1_1pipelines_1_1sized__iterator__end.html">sized_iterator_end</a>, it models Iterator only so that views requiring Iterator&lt;ILast&gt; accept it; it is never dereferenced or advanced.  <a href="structdaw_1_1pipelines_1_1unfold__iterator__end.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1unfold__view.html">unfold_view</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1unique__iterator.html">unique_iterator</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1unique__iterator__end.html">unique_iterator_end</a></td></tr>
@@ -336,6 +344,11 @@ requires ( <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cca
 <tr class="memitem:a740a6fce38e376052f82f3c4a564ace3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a740a6fce38e376052f82f3c4a564ace3">To</a> ()</td></tr>
 <tr class="memdesc:a740a6fce38e376052f82f3c4a564ace3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a std::array from a Range TODO: add single value method.  <br /></td></tr>
 <tr class="separator:a740a6fce38e376052f82f3c4a564ace3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae793659f91d9566ad13eb848ec3849d1" id="r_ae793659f91d9566ad13eb848ec3849d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#ae793659f91d9566ad13eb848ec3849d1">Unfold</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> &amp;&amp;fn)</td></tr>
+<tr class="separator:ae793659f91d9566ad13eb848ec3849d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bebe811b29be082e4b8416b6adfe622" id="r_a9bebe811b29be082e4b8416b6adfe622"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">State</a> , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Fn</a> &gt; </td></tr>
+<tr class="memitem:a9bebe811b29be082e4b8416b6adfe622"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a9bebe811b29be082e4b8416b6adfe622">unfold_view</a> (<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">State</a> &amp;&amp;, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Fn</a> &amp;&amp;) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1unfold__view.html">unfold_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">State</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Fn</a> &gt;</td></tr>
+<tr class="separator:a9bebe811b29be082e4b8416b6adfe622"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad69361a83b29701e978946cf76a44283" id="r_ad69361a83b29701e978946cf76a44283"><td class="memTemplParams" colspan="2">template&lt;ForwardRange R&gt; </td></tr>
 <tr class="memitem:ad69361a83b29701e978946cf76a44283"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#ad69361a83b29701e978946cf76a44283">unique_view</a> (R &amp;&amp;) -&gt; <a class="el" href="structdaw_1_1pipelines_1_1unique__view.html">unique_view</a>&lt; R &gt;</td></tr>
 <tr class="separator:ad69361a83b29701e978946cf76a44283"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2189,6 +2202,64 @@ requires ( <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cca
 <p>Construct a std::array from a Range TODO: add single value method. </p>
 
 <p class="definition">Definition at line <a class="el" href="to_8h_source.html#l00193">193</a> of file <a class="el" href="to_8h_source.html">to.h</a>.</p>
+
+</div>
+</div>
+<a id="ae793659f91d9566ad13eb848ec3849d1" name="ae793659f91d9566ad13eb848ec3849d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae793659f91d9566ad13eb848ec3849d1">&#9670;&#160;</a></span>Unfold()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> daw::pipelines::Unfold </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>fn</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="unfold_8h_source.html#l00195">195</a> of file <a class="el" href="unfold_8h_source.html">unfold.h</a>.</p>
+
+</div>
+</div>
+<a id="a9bebe811b29be082e4b8416b6adfe622" name="a9bebe811b29be082e4b8416b6adfe622"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bebe811b29be082e4b8416b6adfe622">&#9670;&#160;</a></span>unfold_view()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">State</a> , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Fn</a> &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structdaw_1_1pipelines_1_1unfold__view.html">daw::pipelines::unfold_view</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">State</a> &amp;&amp;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Fn</a> &amp;&amp;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt;  <a class="el" href="structdaw_1_1pipelines_1_1unfold__view.html">unfold_view</a>&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">State</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Fn</a> &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
