@@ -44,8 +44,23 @@ namespace tests {
 	static_assert( test_constexpr_unfold( ) );
 
 	using count_range_t = decltype( Unfold( count_to_five )( 0 ) );
-	static_assert( std::ranges::input_range<count_range_t> );
+	static_assert( std::ranges::forward_range<count_range_t> );
+	static_assert( not std::ranges::bidirectional_range<count_range_t> );
 	static_assert( not std::ranges::sized_range<count_range_t> );
+
+	void test_forward_iteration( ) {
+		auto range = Unfold( count_to_five )( 0 );
+		auto first = range.begin( );
+		auto second = first;
+
+		daw_ensure( first == second );
+		++first;
+		daw_ensure( *first == 1 );
+		daw_ensure( *second == 0 );
+
+		++second;
+		daw_ensure( first == second );
+	}
 
 	void test_empty_range( ) {
 		auto range = Unfold( []( int )
@@ -160,6 +175,8 @@ namespace tests {
 			}
 			return std::pair{ *current, std::make_unique<int>( *current + 1 ) };
 		} )( std::make_unique<int>( 0 ) );
+		static_assert( std::ranges::input_range<decltype( range )> );
+		static_assert( not std::ranges::forward_range<decltype( range )> );
 
 		auto iterator = range.begin( );
 		daw_ensure( *iterator == 0 );
@@ -173,6 +190,7 @@ namespace tests {
 } // namespace tests
 
 int main( ) {
+	tests::test_forward_iteration( );
 	tests::test_empty_range( );
 	tests::test_lvalue_seed_is_referenced( );
 	tests::test_lvalue_callable_is_referenced( );
