@@ -1368,6 +1368,36 @@ namespace daw {
 		daw_expecting( result, "    "_sv );
 	}
 
+	void daw_pop_back_while_sv_test_001( ) {
+		daw::sv2::string_view sv = "This is a test    ";
+		auto result = sv.pop_back_while( ' ' );
+		daw_expecting( sv, "This is a test"_sv );
+		daw_expecting( result, "    "_sv );
+	}
+
+	void daw_pop_back_while_sv_test_002( ) {
+		daw::sv2::string_view sv = "This is a test \t\n";
+		auto result = sv.pop_back_while( " \t\n" );
+		daw_expecting( sv, "This is a test"_sv );
+		daw_expecting( result, " \t\n"_sv );
+	}
+
+	void daw_pop_back_while_pred_test_001( ) {
+		daw::sv2::string_view sv = "test123";
+		auto result = sv.pop_back_while( []( char c ) {
+			return c >= '0' and c <= '9';
+		} );
+		daw_expecting( sv, "test"_sv );
+		daw_expecting( result, "123"_sv );
+
+		daw::sv2::string_view all = "123";
+		daw_expecting( all.pop_back_while( []( char c ) {
+			return c >= '0' and c <= '9';
+		} ),
+		               "123"_sv );
+		daw_expecting( all.empty( ), true );
+	}
+
 	void daw_pop_front_test_001( ) {
 		daw::sv2::string_view sv = "This is a test";
 		auto result = sv.pop_front( );
@@ -1716,6 +1746,50 @@ namespace daw {
 		daw_expecting( sz, 5 );
 	}
 
+	void daw_remove_suffix_until_test_001( ) {
+		daw::sv2::string_view sv = "0123456789";
+		sv.remove_suffix_until( '5' );
+		daw_expecting( sv, "01234"_sv );
+	}
+
+	void daw_remove_suffix_until_test_002( ) {
+		daw::sv2::string_view sv = "0123456789";
+		sv.remove_suffix_until( '5', daw::nodiscard );
+		daw_expecting( sv, "012345"_sv );
+	}
+
+	void daw_remove_suffix_until_test_003( ) {
+		daw::sv2::string_view sv = "left::middle::right";
+		sv.remove_suffix_until( "::" );
+		daw_expecting( sv, "left::middle"_sv );
+
+		daw::sv2::string_view retained = "left::middle::right";
+		retained.remove_suffix_until( "::", daw::nodiscard );
+		daw_expecting( retained, "left::middle::"_sv );
+	}
+
+	void daw_remove_suffix_until_test_004( ) {
+		daw::sv2::string_view sv = "abc1def2ghi";
+		sv.remove_suffix_until( []( char c ) {
+			return c >= '0' and c <= '9';
+		} );
+		daw_expecting( sv, "abc1def"_sv );
+
+		daw::sv2::string_view retained = "abc1def2ghi";
+		retained.remove_suffix_until(
+		  []( char c ) {
+			  return c >= '0' and c <= '9';
+		  },
+		  daw::nodiscard );
+		daw_expecting( retained, "abc1def2"_sv );
+	}
+
+	void daw_remove_suffix_until_test_005( ) {
+		daw::sv2::string_view sv = "test";
+		sv.remove_suffix_until( 'x' );
+		daw_expecting( sv.empty( ), true );
+	}
+
 	struct FooSV {
 		using iterator = char const *;
 		using size_type = std::size_t;
@@ -1834,6 +1908,47 @@ namespace daw {
 		daw_expecting( sv != sv2, true );
 		daw_expecting( sv2, "Hello" );
 	}
+
+	void daw_trim_characters( ) {
+		daw::sv2::string_view sv = " \t,;Hello, world;\n ";
+		auto const *const original_data = sv.data( );
+		auto &result = sv.trim( " \t\n,;" );
+		daw_expecting( std::addressof( result ), std::addressof( sv ) );
+		daw_expecting( sv, "Hello, world" );
+		daw_expecting( sv.data( ), original_data + 4 );
+	}
+
+	void daw_trim_characters_copy( ) {
+		daw::sv2::string_view sv = "...Hello!?";
+		auto const result = sv.trim_copy( ".!?" );
+		daw_expecting( result, "Hello" );
+		daw_expecting( sv, "...Hello!?" );
+	}
+
+	void daw_trim_characters_edge_cases( ) {
+		daw::sv2::string_view no_matches = "Hello";
+		no_matches.trim( ".!?" );
+		daw_expecting( no_matches, "Hello" );
+
+		daw::sv2::string_view all_matches = ".!?..!";
+		all_matches.trim( ".!?" );
+		daw_expecting( all_matches.empty( ), true );
+
+		daw::sv2::string_view empty_set = "Hello";
+		empty_set.trim( "" );
+		daw_expecting( empty_set, "Hello" );
+
+		daw::sv2::string_view empty = "";
+		empty.trim( ".!?" );
+		daw_expecting( empty.empty( ), true );
+	}
+
+	constexpr bool daw_trim_characters_constexpr( ) {
+		daw::sv2::string_view sv = "--value++";
+		return sv.trim_copy( "+-" ) == "value" and
+		       sv.trim( "+-" ) == "value";
+	}
+	static_assert( daw_trim_characters_constexpr( ) );
 
 	namespace daw_array_ctad_impl {
 		template<typename S>
@@ -2172,6 +2287,9 @@ int main( )
 	daw::daw_pop_front_until_sv_test_001( );
 	daw::daw_pop_front_while_sv_test_001( );
 	daw::daw_pop_front_while_sv_test_002( );
+	daw::daw_pop_back_while_sv_test_001( );
+	daw::daw_pop_back_while_sv_test_002( );
+	daw::daw_pop_back_while_pred_test_001( );
 	daw::daw_pop_back_count_test_001( );
 	daw::daw_pop_back_until_sv_test_001( );
 	daw::daw_pop_back_until_sv_test_002( );
@@ -2201,6 +2319,11 @@ int main( )
 	daw::daw_remove_prefix_until_test_004( );
 	daw::daw_remove_suffix_while_test_001( );
 	daw::daw_remove_suffix_while_test_002( );
+	daw::daw_remove_suffix_until_test_001( );
+	daw::daw_remove_suffix_until_test_002( );
+	daw::daw_remove_suffix_until_test_003( );
+	daw::daw_remove_suffix_until_test_004( );
+	daw::daw_remove_suffix_until_test_005( );
 	daw::daw_arbutrary_string_view_list_001( );
 	daw::daw_trim_prefix_test_001( );
 	daw::daw_trim_prefix_test_002( );
@@ -2220,6 +2343,9 @@ int main( )
 #endif
 	daw::daw_trim( );
 	daw::daw_trim_copy( );
+	daw::daw_trim_characters( );
+	daw::daw_trim_characters_copy( );
+	daw::daw_trim_characters_edge_cases( );
 	daw::daw_array_ctad( );
 	daw::daw_find_first_match( );
 #if defined( DAW_HAS_CPP20_3WAY_COMPARE )

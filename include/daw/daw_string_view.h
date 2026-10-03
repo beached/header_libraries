@@ -1379,6 +1379,45 @@ namespace daw {
 				return result;
 			}
 
+			/// @brief Searches backwards for the first non-match of where, returns
+			/// the matching suffix, then removes it from the string_view
+			/// @param where The character to extract
+			/// @return substring after the last non-matching character
+			[[nodiscard]] constexpr basic_string_view pop_back_while( CharT where ) {
+				auto const pos = find_last_not_of( where );
+				auto const count =
+				  pos == npos ? size( ) : static_cast<size_type>( size( ) - pos - 1U );
+				return pop_back( count );
+			}
+
+			/// @brief Searches backwards for the first character not in where,
+			/// returns the matching suffix, then removes it from the string_view
+			/// @param where The characters to extract
+			/// @return substring after the last non-matching character
+			[[nodiscard]] constexpr basic_string_view
+			pop_back_while( basic_string_view where ) {
+				auto const pos = find_last_not_of( where );
+				auto const count =
+				  pos == npos ? size( ) : static_cast<size_type>( size( ) - pos - 1U );
+				return pop_back( count );
+			}
+
+			/// @brief Searches backwards until pred is false, returns the matching
+			/// suffix, then removes it from the string_view
+			/// @tparam UnaryPredicate A predicate taking a single CharT
+			/// @param pred Predicate identifying characters to extract
+			/// @return substring after the last character where pred is false
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
+			[[nodiscard]] constexpr basic_string_view
+			  pop_back_while( UnaryPredicate pred ) {
+				auto const pos = find_last_not_of_if( std::move( pred ) );
+				auto const count =
+				  pos == npos ? size( ) : static_cast<size_type>( size( ) - pos - 1U );
+				return pop_back( count );
+			}
+
 			/// @brief searches for last where, returns substring between
 			/// where and end, then pops off the substring
 			/// @param where string to split on and remove from back
@@ -1795,6 +1834,80 @@ namespace daw {
 			                                                    nodiscard_t ) {
 				auto pos = find_if( pred );
 				dec_front( (std::min)( { size( ), pos } ) );
+				return *this;
+			}
+
+			/// @brief Searches backwards for where and removes it and everything
+			/// after it
+			/// @param where Character to find and consume
+			/// @return A reference to the current string_view object
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_suffix_until( CharT where ) {
+				auto const pos = rfind( where );
+				resize( pos == npos ? 0U : pos );
+				return *this;
+			}
+
+			/// @brief Searches backwards for where and removes everything after it
+			/// @param where Character to find and retain
+			/// @return A reference to the current string_view object
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_suffix_until( CharT where, nodiscard_t ) {
+				auto const pos = rfind( where );
+				resize( pos == npos ? 0U : pos + 1U );
+				return *this;
+			}
+
+			/// @brief Searches backwards for where and removes it and everything
+			/// after it
+			/// @param where String to find and consume
+			/// @return A reference to the current string_view object
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_suffix_until( basic_string_view where ) {
+				auto const pos = rfind( where );
+				resize( pos == npos ? 0U : pos );
+				return *this;
+			}
+
+			/// @brief Searches backwards for where and removes everything after it
+			/// @param where String to find and retain
+			/// @return A reference to the current string_view object
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_suffix_until( basic_string_view where, nodiscard_t ) {
+				auto const pos = rfind( where );
+				resize( pos == npos ? 0U : pos + where.size( ) );
+				return *this;
+			}
+
+			/// @brief Removes the suffix starting at the last position where pred is
+			/// true
+			/// @tparam UnaryPredicate A predicate taking a single CharT
+			/// @param pred Predicate identifying where to stop
+			/// @return A reference to the current string_view object
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
+			DAW_ATTRIB_INLINE constexpr basic_string_view &remove_suffix_until(
+			  UnaryPredicate pred ) {
+				auto const pos = find_last_of_if( pred );
+				resize( pos == npos ? 0U : pos );
+				return *this;
+			}
+
+			/// @brief Removes the suffix after the last position where pred is true
+			/// @tparam UnaryPredicate A predicate taking a single CharT
+			/// @param pred Predicate identifying where to stop
+			/// @return A reference to the current string_view object
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
+			DAW_ATTRIB_INLINE
+			  constexpr basic_string_view &remove_suffix_until( UnaryPredicate pred,
+			                                                    nodiscard_t ) {
+				auto const pos = find_last_of_if( pred );
+				resize( pos == npos
+				          ? 0U
+				          : pos + sv2_details::find_predicate_result_size( pred ) );
 				return *this;
 			}
 
@@ -2532,13 +2645,12 @@ namespace daw {
 				return find_first_not_of( basic_string_view<CharT>( s, N - 1 ), 0 );
 			}
 
-			[[nodiscard]] constexpr bool
-			all_of( basic_string_view v, size_type pos = 0 ) const {
+			[[nodiscard]] constexpr bool all_of( basic_string_view v,
+			                                     size_type pos = 0 ) const {
 				return find_first_not_of( v, pos ) == npos;
 			}
 
-			[[nodiscard]] constexpr bool all_of( CharT c,
-			                                     size_type pos = 0 ) const {
+			[[nodiscard]] constexpr bool all_of( CharT c, size_type pos = 0 ) const {
 				return find_first_not_of( c, pos ) == npos;
 			}
 
@@ -2858,6 +2970,13 @@ namespace daw {
 				return *this;
 			}
 
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_prefix_while( basic_string_view characters ) noexcept {
+				auto const pos = find_first_not_of( characters );
+				remove_prefix( pos );
+				return *this;
+			}
+
 			constexpr basic_string_view &trim_prefix( ) noexcept {
 				remove_prefix_while( is_space{ } );
 				return *this;
@@ -2886,6 +3005,13 @@ namespace daw {
 				return *this;
 			}
 
+			DAW_ATTRIB_INLINE constexpr basic_string_view &
+			remove_suffix_while( basic_string_view characters ) noexcept {
+				auto const pos = find_last_not_of( characters );
+				resize( pos + 1U );
+				return *this;
+			}
+
 			constexpr basic_string_view &trim_suffix( ) noexcept {
 				remove_suffix_while( is_space{ } );
 				return *this;
@@ -2906,6 +3032,20 @@ namespace daw {
 			[[nodiscard]] constexpr basic_string_view trim_copy( ) const noexcept {
 				auto result = trim_prefix_copy( );
 				result.trim_suffix( );
+				return result;
+			}
+
+			constexpr basic_string_view &
+			trim( basic_string_view while_this ) noexcept {
+				(void)remove_prefix_while( while_this );
+				(void)remove_suffix_while( while_this );
+				return *this;
+			}
+
+			[[nodiscard]] constexpr basic_string_view
+			trim_copy( basic_string_view while_this ) const noexcept {
+				auto result = *this;
+				result.trim( while_this );
 				return result;
 			}
 
