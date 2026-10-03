@@ -82,9 +82,10 @@ $(function() {
   <div class="headertitle"><div class="title">daw_read_file.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="ciso646_8h_source.html">ciso646.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__attributes_8h_source.html">daw_attributes.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw_traits.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="ciso646_8h_source.html">daw/ciso646.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__attributes_8h_source.html">daw/daw_attributes.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__string__view_8h_source.html">daw/daw_string_view.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="daw__traits_8h_source.html">daw/daw_traits.h</a>&quot;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cstdio&gt;</code><br />
 <code>#include &lt;exception&gt;</code><br />
@@ -92,6 +93,7 @@ $(function() {
 <code>#include &lt;iostream&gt;</code><br />
 <code>#include &lt;optional&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
+<code>#include &lt;string_view&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
 </div>
 <p><a href="daw__read__file_8h_source.html">Go to the source code of this file.</a></p>
@@ -109,11 +111,11 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa66ea8d8f8c53d28ca5d0fe01afc36d3" id="r_aa66ea8d8f8c53d28ca5d0fe01afc36d3"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> CharT  = char&gt; </td></tr>
-<tr class="memitem:aa66ea8d8f8c53d28ca5d0fe01afc36d3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> std::optional&lt; std::basic_string&lt; CharT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aa66ea8d8f8c53d28ca5d0fe01afc36d3">daw::read_file</a> (std::string <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> &amp;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">path</a>)</td></tr>
-<tr class="separator:aa66ea8d8f8c53d28ca5d0fe01afc36d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3d7cb74aa8da4c99c6b19767974adb3" id="r_ad3d7cb74aa8da4c99c6b19767974adb3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad3d7cb74aa8da4c99c6b19767974adb3">daw::read_file</a> (std::string <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">const</a> &amp;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">path</a>, <a class="el" href="structdaw_1_1terminate__on__read__file__error__t.html">terminate_on_read_file_error_t</a>)</td></tr>
-<tr class="separator:ad3d7cb74aa8da4c99c6b19767974adb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0b956adbe6cedb537c1333e61e5a141" id="r_ab0b956adbe6cedb537c1333e61e5a141"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> CharT  = char&gt; </td></tr>
+<tr class="memitem:ab0b956adbe6cedb537c1333e61e5a141"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="daw__attributes_8h.html#aa015e705db99dcfd51884620baf0d55c">DAW_ATTRIB_NOINLINE</a> std::optional&lt; std::basic_string&lt; CharT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ab0b956adbe6cedb537c1333e61e5a141">daw::read_file</a> (daw::string_view <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">path</a>)</td></tr>
+<tr class="separator:ab0b956adbe6cedb537c1333e61e5a141"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a827115b7d85cb4b616403452d94a5681" id="r_a827115b7d85cb4b616403452d94a5681"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a827115b7d85cb4b616403452d94a5681">daw::read_file</a> (daw::string_view <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">path</a>, <a class="el" href="structdaw_1_1terminate__on__read__file__error__t.html">terminate_on_read_file_error_t</a>)</td></tr>
+<tr class="separator:a827115b7d85cb4b616403452d94a5681"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
