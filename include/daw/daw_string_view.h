@@ -2324,6 +2324,14 @@ namespace daw {
 				return static_cast<size_type>( std::distance( begin( ), iter ) );
 			}
 
+			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,
+			                                                     CharT )>
+			DAW_REQ_UNARY_PRED_REQ( UnaryPredicate, CharT )
+			[[nodiscard]] constexpr bool all_of_if( UnaryPredicate pred,
+			                                        size_type pos = 0 ) const {
+				return find_first_not_of_if( std::move( pred ), pos ) == npos;
+			}
+
 			[[nodiscard]] constexpr size_type
 			find_first_of( CharT c, size_type pos = 0 ) const {
 				// Searching for a single character is exactly what find( ) does,
@@ -2522,6 +2530,45 @@ namespace daw {
 			[[nodiscard]] constexpr size_type
 			find_first_not_of( CharT const ( &&s )[N] ) const {
 				return find_first_not_of( basic_string_view<CharT>( s, N - 1 ), 0 );
+			}
+
+			[[nodiscard]] constexpr bool
+			all_of( basic_string_view v, size_type pos = 0 ) const {
+				return find_first_not_of( v, pos ) == npos;
+			}
+
+			[[nodiscard]] constexpr bool all_of( CharT c,
+			                                     size_type pos = 0 ) const {
+				return find_first_not_of( c, pos ) == npos;
+			}
+
+			[[nodiscard]] constexpr bool all_of( const_pointer s, size_type pos,
+			                                     size_type count ) const {
+				return find_first_not_of( s, pos, count ) == npos;
+			}
+
+			[[nodiscard]] constexpr bool all_of( const_pointer s,
+			                                     size_type pos ) const {
+				return find_first_not_of( s, pos ) == npos;
+			}
+
+			template<size_type N>
+			[[nodiscard]] constexpr bool all_of( CharT const ( &&s )[N],
+			                                     size_type pos ) const {
+				daw_dbg_ensure( s[N - 1] == CharT{ } );
+				return find_first_not_of( basic_string_view<CharT>( s, N - 1 ), pos ) ==
+				       npos;
+			}
+
+			[[nodiscard]] constexpr bool all_of( const_pointer s ) const {
+				return find_first_not_of( s ) == npos;
+			}
+
+			template<size_type N>
+			[[nodiscard]] constexpr bool all_of( CharT const ( &&s )[N] ) const {
+				daw_dbg_ensure( s[N - 1] == CharT{ } );
+				return find_first_not_of( basic_string_view<CharT>( s, N - 1 ), 0 ) ==
+				       npos;
 			}
 
 			template<typename UnaryPredicate DAW_REQ_UNARY_PRED( UnaryPredicate,

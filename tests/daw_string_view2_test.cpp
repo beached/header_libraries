@@ -286,6 +286,45 @@ namespace daw {
 		daw_expecting( daw::sv2::string_view::npos, pos );
 	}
 
+	constexpr bool daw_string_view_all_of_tests( ) {
+		using daw::sv2::string_view;
+
+		constexpr string_view empty{ };
+		constexpr string_view repeated = "aaaa";
+		constexpr string_view mixed = "abca";
+
+		return empty.all_of( 'a' ) and repeated.all_of( 'a' ) and
+		       not mixed.all_of( 'a' ) and mixed.all_of( 'a', mixed.size( ) ) and
+		       mixed.all_of( string_view{ "abc" } ) and
+		       not mixed.all_of( string_view{ "ab" } ) and
+		       mixed.all_of( "abc" ) and not mixed.all_of( "ab" ) and
+		       mixed.all_of( "a", 3 ) and mixed.all_of( "a", 3, 1 ) and
+		       not mixed.all_of( "a", 2, 1 ) and empty.all_of( "" ) and
+		       not repeated.all_of( "" );
+	}
+
+	constexpr bool daw_string_view_all_of_if_tests( ) {
+		using daw::sv2::string_view;
+		auto const is_lower = []( char c ) {
+			return c >= 'a' and c <= 'z';
+		};
+
+		return string_view{ }.all_of_if( is_lower ) and
+		       string_view{ "lower" }.all_of_if( is_lower ) and
+		       not string_view{ "lower1" }.all_of_if( is_lower ) and
+		       string_view{ "1lower" }.all_of_if( is_lower, 1 ) and
+		       string_view{ "1" }.all_of_if( is_lower, 1 );
+	}
+
+	static_assert( daw_string_view_all_of_tests( ) );
+	static_assert( daw_string_view_all_of_if_tests( ) );
+
+	static_assert( [] {
+		daw::sv2::string_view const sv = "abca";
+		char const chars[] = "ab";
+		return sv.find_first_not_of( std::move( chars ) ) == 2;
+	}( ) );
+
 	void daw_string_view_find_first_of_001( ) {
 		daw::sv2::string_view const a = "abcdefghijklm";
 		auto pos = a.find_first_of( "def" );
