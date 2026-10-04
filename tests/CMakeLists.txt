@@ -151,7 +151,6 @@ set( DEPRECATED_TEST_SOURCES
 
 
 set( CPP23_TEST_SOURCES
-		 daw_cfile_ptr_test.cpp
 		 daw_cx_atomic_test.cpp
 		 daw_enumerate_tuple_test.cpp
 		 daw_shared_function_test.cpp
