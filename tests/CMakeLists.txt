@@ -28,6 +28,7 @@ set( TEST_SOURCES
 		 daw_attributes_test.cpp
 		 daw_benchmark_test.cpp
 		 daw_bounded_vector_test.cpp
+		 daw_cfile_ptr_test.cpp
 		 daw_constant_test.cpp
 		 daw_container_algorithm_test.cpp
 		 daw_contract_test.cpp
@@ -150,6 +151,7 @@ set( DEPRECATED_TEST_SOURCES
 
 
 set( CPP23_TEST_SOURCES
+		 daw_cfile_ptr_test.cpp
 		 daw_cx_atomic_test.cpp
 		 daw_enumerate_tuple_test.cpp
 		 daw_shared_function_test.cpp
@@ -227,7 +229,6 @@ set( CPP20_NOT_MSVC_TEST_SOURCES
 
 set( NOT_MSVC_TEST_SOURCES
 		 daw_can_constant_evaluate_test.cpp
-		 daw_cfile_ptr_test.cpp
 		 daw_parser_helper_test.cpp
 		 daw_piecewise_factory_test.cpp
 		 daw_tuple2_test.cpp
