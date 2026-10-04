@@ -28,7 +28,6 @@ set( TEST_SOURCES
 		 daw_attributes_test.cpp
 		 daw_benchmark_test.cpp
 		 daw_bounded_vector_test.cpp
-		 daw_cfile_ptr_test.cpp
 		 daw_constant_test.cpp
 		 daw_container_algorithm_test.cpp
 		 daw_contract_test.cpp
@@ -161,6 +160,7 @@ set( CPP20_TEST_SOURCES
 		 daw_any_if_test.cpp
 		 daw_atomic_wait_test.cpp
 		 daw_bitset_helper_test.cpp
+		 daw_cfile_ptr_test.cpp
 		 daw_concepts_test.cpp
 		 daw_contiguous_view_test.cpp
 		 daw_fmt_concat_test.cpp
