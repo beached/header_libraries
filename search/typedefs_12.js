@@ -6,5 +6,6 @@ var searchData=
   ['u32string_5fview_3',['u32string_view',['../namespacedaw_1_1sv2.html#a760d2625c59e2203f1865fed89c5965a',1,'daw::sv2::u32string_view'],['../namespacedaw_1_1sv1.html#a1ab7788ce69296615d0e905f9185bbd9',1,'daw::sv1::u32string_view']]],
   ['uint_4',['UInt',['../namespacedaw.html#adf9463cf53dd448fc2bf6fc47da1efd8',1,'daw']]],
   ['uintn_5ft_5',['uintN_t',['../namespacedaw.html#acf0bd853db2d9386092cf9329d151059',1,'daw']]],
-  ['unexpectedenumvalue_6',['UnexpectedEnumValue',['../namespacedaw_1_1exception.html#a7259ce0d8444d81123d9f94c02ab0c63',1,'daw::exception']]]
+  ['unexpectedenumvalue_6',['UnexpectedEnumValue',['../namespacedaw_1_1exception.html#a7259ce0d8444d81123d9f94c02ab0c63',1,'daw::exception']]],
+  ['unique_5ffile_5fptr_7',['unique_file_ptr',['../namespacedaw.html#a121d2df09f5c762a10f61884a99652f2',1,'daw']]]
 ];
