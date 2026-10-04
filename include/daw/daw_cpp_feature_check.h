@@ -265,3 +265,9 @@ inline constexpr bool daw_has_cx_cmath = false;
 #define DAW_HAS_CPP23_FROM_RANGE 1
 #endif
 #endif
+
+#if defined( __cpp_lib_string_resize_and_overwrite )
+#if __cpp_lib_string_resize_and_overwrite >= 202110L
+#define DAW_HAS_CPP23_STR_RESIZE_OVERWRITE 1
+#endif
+#endif

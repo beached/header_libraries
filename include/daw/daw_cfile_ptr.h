@@ -31,6 +31,44 @@ namespace daw {
 
 	[[nodiscard]] inline unique_file_ptr
 	open_cfile( daw::string_view const path, char const *DAW_RESTRICT modes ) {
-		return unique_file_ptr( std::fopen( path.get_c_str( ).c_str( ), modes ) );
+#if defined( _MSC_VER )
+		FILE *f = nullptr;
+		auto err = fopen_s( &f, path.get_c_str( ).c_str( ), modes );
+		if( err or not f ) {
+			return unique_file_ptr{ };
+		}
+#else
+		FILE *f = fopen( path.get_c_str( ).c_str( ), modes );
+		if( not f ) {
+			return unique_file_ptr{ };
+		}
+#endif
+		return unique_file_ptr( f );
 	}
+#if defined( _MSC_VER )
+	namespace wcfile_impl {
+		struct wcfile_deleter {
+			wcfile_deleter( ) = default;
+
+			DAW_CPP23_STATIC_CALL_OP inline void
+			operator( )( std::FILE *fp ) DAW_CPP23_STATIC_CALL_OP_CONST noexcept {
+				std::fclose( fp );
+			}
+		};
+	} // namespace wcfile_impl
+
+	using unique_wfile_ptr =
+	  daw::unique_ptr<std::FILE, wcfile_impl::wcfile_deleter>;
+
+	[[nodiscard]] inline unique_wfile_ptr
+	open_wcfile( daw::wstring_view const path,
+	             wchar_t const *DAW_RESTRICT modes ) {
+		FILE *f = nullptr;
+		auto err = _wfopen_s( &f, path.get_c_str( ).c_str( ), modes );
+		if( err or not f ) {
+			return unique_wfile_ptr{ };
+		}
+		return unique_wfile_ptr( f );
+	}
+#endif
 } // namespace daw
