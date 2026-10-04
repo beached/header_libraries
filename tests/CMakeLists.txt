@@ -160,7 +160,6 @@ set( CPP20_TEST_SOURCES
 		 daw_any_if_test.cpp
 		 daw_atomic_wait_test.cpp
 		 daw_bitset_helper_test.cpp
-		 daw_cfile_ptr_test.cpp
 		 daw_concepts_test.cpp
 		 daw_contiguous_view_test.cpp
 		 daw_fmt_concat_test.cpp
@@ -228,6 +227,7 @@ set( CPP20_NOT_MSVC_TEST_SOURCES
 
 set( NOT_MSVC_TEST_SOURCES
 		 daw_can_constant_evaluate_test.cpp
+		 daw_cfile_ptr_test.cpp
 		 daw_parser_helper_test.cpp
 		 daw_piecewise_factory_test.cpp
 		 daw_tuple2_test.cpp
