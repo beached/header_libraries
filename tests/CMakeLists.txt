@@ -258,7 +258,7 @@ target_compile_options( daw_test INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/permissive
 
 set( all_tests ${TEST_SOURCES} )
 
-if( NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
+if( NOT MSVC )
 	list( APPEND all_tests ${NOT_MSVC_TEST_SOURCES} )
 endif()
 
