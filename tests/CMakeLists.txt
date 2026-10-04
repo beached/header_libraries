@@ -227,6 +227,7 @@ set( CPP20_NOT_MSVC_TEST_SOURCES
 
 set( NOT_MSVC_TEST_SOURCES
 		 daw_can_constant_evaluate_test.cpp
+		 daw_cfile_ptr_test.cpp
 		 daw_parser_helper_test.cpp
 		 daw_piecewise_factory_test.cpp
 		 daw_tuple2_test.cpp
@@ -257,7 +258,7 @@ target_compile_options( daw_test INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/permissive
 
 set( all_tests ${TEST_SOURCES} )
 
-if( NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
+if( NOT MSVC )
 	list( APPEND all_tests ${NOT_MSVC_TEST_SOURCES} )
 endif()
 
@@ -265,6 +266,7 @@ foreach( CUR_TEST IN LISTS all_tests )
 	string( REPLACE ".cpp" "" CUR_TEST_NAME ${CUR_TEST} )
 	add_executable( "${CUR_TEST_NAME}" "${CUR_TEST}" )
 	target_link_libraries( ${CUR_TEST_NAME} PRIVATE daw_test )
+	target_compile_features( ${CUR_TEST_NAME} PUBLIC cxx_std_17 )
 	add_test( ${CUR_TEST_NAME}_test ${CUR_TEST_NAME} )
 	add_dependencies( ${PROJECT_NAME}_full ${CUR_TEST_NAME} )
 endforeach()
@@ -284,6 +286,7 @@ foreach( CUR_TEST IN LISTS DEPRECATED_TEST_SOURCES )
 	else()
 		add_executable( "${CUR_TEST_NAME}" EXCLUDE_FROM_ALL "deprecated/${CUR_TEST}" )
 	endif()
+	target_compile_features( ${CUR_TEST_NAME} PUBLIC cxx_std_17 )
 	target_link_libraries( ${CUR_TEST_NAME} PRIVATE daw_test )
 endforeach()
 
