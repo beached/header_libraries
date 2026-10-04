@@ -28,6 +28,7 @@ set( TEST_SOURCES
 		 daw_attributes_test.cpp
 		 daw_benchmark_test.cpp
 		 daw_bounded_vector_test.cpp
+		 daw_cfile_ptr_test.cpp
 		 daw_constant_test.cpp
 		 daw_container_algorithm_test.cpp
 		 daw_contract_test.cpp
@@ -265,6 +266,7 @@ foreach( CUR_TEST IN LISTS all_tests )
 	string( REPLACE ".cpp" "" CUR_TEST_NAME ${CUR_TEST} )
 	add_executable( "${CUR_TEST_NAME}" "${CUR_TEST}" )
 	target_link_libraries( ${CUR_TEST_NAME} PRIVATE daw_test )
+	target_compile_features( ${CUR_TEST_NAME} PUBLIC cxx_std_17 )
 	add_test( ${CUR_TEST_NAME}_test ${CUR_TEST_NAME} )
 	add_dependencies( ${PROJECT_NAME}_full ${CUR_TEST_NAME} )
 endforeach()
@@ -284,6 +286,7 @@ foreach( CUR_TEST IN LISTS DEPRECATED_TEST_SOURCES )
 	else()
 		add_executable( "${CUR_TEST_NAME}" EXCLUDE_FROM_ALL "deprecated/${CUR_TEST}" )
 	endif()
+	target_compile_features( ${CUR_TEST_NAME} PUBLIC cxx_std_17 )
 	target_link_libraries( ${CUR_TEST_NAME} PRIVATE daw_test )
 endforeach()
 
