@@ -177,8 +177,7 @@ namespace daw::cxmath {
 		  std::enable_if_t<is_matching_v<Real, UInt>, std::nullptr_t> = nullptr>
 		[[nodiscard]] inline constexpr std::int32_t get_exponent_impl( UInt dint ) {
 			UInt raw_exp = dint & exponent_mask_v<Real>;
-			return static_cast<std::int32_t>( raw_exp >>
-			                                  exponent_start_bit_v<Real> ) -
+			return as<std::int32_t>( raw_exp >> exponent_start_bit_v<Real> ) -
 			       exponent_bias_v<Real>;
 		}
 
@@ -191,7 +190,7 @@ namespace daw::cxmath {
 				return DAW_BIT_CAST( UInt, Real{ 1.0 } );
 			}
 			exp += exponent_bias_v<Real>;
-			UInt new_exp = static_cast<UInt>( exp ) << exponent_start_bit_v<Real>;
+			UInt new_exp = as<UInt>( exp ) << exponent_start_bit_v<Real>;
 			dint &= not_exponent_mask_v<Real>;
 			dint |= new_exp;
 			return dint;
@@ -263,8 +262,8 @@ namespace daw::cxmath {
 		}
 
 		constexpr fp_classes fp_classify_impl( daw::UInt64 dint ) {
-			auto lx = static_cast<std::uint32_t>( dint & 0x0000'0000'FFFF'FFFFULL );
-			auto hx = static_cast<std::uint32_t>( dint >> 32U );
+			auto lx = as<std::uint32_t>( dint & 0x0000'0000'FFFF'FFFFULL );
+			auto hx = as<std::uint32_t>( dint >> 32U );
 			lx |= hx & 0x000F'FFFFUL;
 			hx &= 0x7FF0'0000UL;
 			if( ( hx | lx ) == 0 ) {
@@ -284,12 +283,12 @@ namespace daw::cxmath {
 	} // namespace cxmath_impl
 
 	template<typename Float>
-	inline constexpr auto sqrt2 = static_cast<Float>(
-	  1.4142135623730950488016887242096980785696718753769480L );
+	inline constexpr auto sqrt2 =
+	  as<Float>( 1.4142135623730950488016887242096980785696718753769480L );
 
 	template<typename Float>
-	inline constexpr auto sqrt0_5 = static_cast<Float>(
-	  0.7071067811865475244008443621048490392848359376884740L );
+	inline constexpr auto sqrt0_5 =
+	  as<Float>( 0.7071067811865475244008443621048490392848359376884740L );
 
 	namespace cxmath_impl {
 		template<typename Float>
@@ -303,11 +302,11 @@ namespace daw::cxmath {
 			Float result = 1.0;
 
 			while( as<std::size_t>( exp ) >= max_shft ) {
-				result *= static_cast<Float>( max_value<std::size_t> );
+				result *= as<Float>( max_value<std::size_t> );
 				exp -= as<std::intmax_t>( max_shft );
 			}
 			if( exp > 0 ) {
-				result *= as<Float>( 1ULL << static_cast<size_t>( exp ) );
+				result *= as<Float>( 1ULL << as<size_t>( exp ) );
 			}
 			if( is_neg and result != 0.0 ) {
 				result = as<Float>( 1.0 ) / result;
@@ -340,14 +339,14 @@ namespace daw::cxmath {
 			Float result = 1.0;
 
 			while( exp >= max_spow ) {
-				result *= static_cast<Float>( pow10_impl<max_spow>( ) );
+				result *= as<Float>( pow10_impl<max_spow>( ) );
 				exp -= max_spow;
 			}
 			if( exp > 0 ) {
-				result *= static_cast<Float>( pow10_impl( exp ) );
+				result *= as<Float>( pow10_impl( exp ) );
 			}
 			if( is_neg and result != 0.0 ) {
-				result = static_cast<Float>( 1.0 ) / result;
+				result = as<Float>( 1.0 ) / result;
 			}
 			return result;
 		}
@@ -377,37 +376,41 @@ namespace daw::cxmath {
 
 		template<typename Float>
 		[[nodiscard]] constexpr auto calc_fpow10s( ) noexcept {
-			intmax_t const min_e = daw::numeric_limits<Float>::min_exponent10;
-			intmax_t const max_e = daw::numeric_limits<Float>::max_exponent10;
-			std::array<Float, max_e - min_e> result{ };
-			intmax_t n = max_e - min_e;
+			constexpr auto min_e =
+			  as<std::intmax_t>( daw::numeric_limits<Float>::min_exponent10 );
+			constexpr auto max_e =
+			  as<std::intmax_t>( daw::numeric_limits<Float>::max_exponent10 );
+			auto result = std::array<Float, as<std::size_t>( max_e - min_e )>{ };
+			auto n = max_e - min_e;
 			while( n-- > 0 ) {
-				result[static_cast<size_t>( n )] = fpow10_impl2<Float>( n + min_e );
+				result[as<std::size_t>( n )] = fpow10_impl2<Float>( n + min_e );
 			}
 			return result;
 		}
 
 		template<typename Integer>
 		[[nodiscard]] constexpr auto calc_pow10s( ) noexcept {
-			std::array<Integer, daw::numeric_limits<Integer>::digits10> result{ };
-			intmax_t n = daw::numeric_limits<Integer>::digits10;
+			auto result = std::array<Integer,
+			                         as<std::size_t>(
+			                           daw::numeric_limits<Integer>::digits10 )>{ };
+			auto n = as<std::intmax_t>( daw::numeric_limits<Integer>::digits10 );
 			while( n-- > 0 ) {
-				result[static_cast<size_t>( n )] = pow10_impl2<Integer>( n );
+				result[as<std::size_t>( n )] = pow10_impl2<Integer>( n );
 			}
 			return result;
 		}
 
 		template<typename Float>
 		class [[nodiscard]] pow2_t {
-			static constexpr std::array const m_tbl = calc_pow2s<Float>( );
+			static constexpr std::array m_tbl = calc_pow2s<Float>( );
 
 		public:
 			template<typename Result = Float>
 			[[nodiscard]] static constexpr Result get( std::int64_t pos ) {
-				auto const zero = static_cast<intmax_t>( m_tbl.size( ) / 2ULL );
-				auto const index = static_cast<std::size_t>( zero + pos );
+				constexpr auto zero = as<std::intmax_t>( m_tbl.size( ) / 2ULL );
+				auto const index = as<std::size_t>( zero + pos );
 				daw_dbg_ensure( index < m_tbl.size( ) );
-				return static_cast<Result>( m_tbl[index] );
+				return as<Result>( m_tbl[index] );
 			}
 		};
 
@@ -418,10 +421,10 @@ namespace daw::cxmath {
 		public:
 			template<typename Result = Float>
 			[[nodiscard]] static constexpr Result get( std::int64_t pos ) {
-				auto const zero = static_cast<std::int64_t>( m_tbl.size( ) / 2ULL );
-				auto const index = static_cast<size_t>( zero + pos );
+				auto const zero = as<std::int64_t>( m_tbl.size( ) / 2ULL );
+				auto const index = as<size_t>( zero + pos );
 				daw_dbg_ensure( index < m_tbl.size( ) );
-				return static_cast<Result>( m_tbl[index] );
+				return as<Result>( m_tbl[index] );
 			}
 		};
 
@@ -433,7 +436,7 @@ namespace daw::cxmath {
 			template<typename Result = Integer>
 			[[nodiscard]] static constexpr Result get( std::size_t pos ) {
 				daw_dbg_ensure( pos < m_tbl.size( ) );
-				return static_cast<Result>( m_tbl[pos] );
+				return as<Result>( m_tbl[pos] );
 			}
 		};
 	} // namespace cxmath_impl
@@ -477,8 +480,8 @@ namespace daw::cxmath {
 	                                             std::nullptr_t> = nullptr>
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr std::uint32_t
 	count_leading_zeroes( Unsigned u ) {
-		return static_cast<std::uint32_t>(
-		  __builtin_clzg( u, static_cast<int>( daw::bit_count_v<Unsigned> ) ) );
+		return as<std::uint32_t>(
+		  __builtin_clzg( u, as<int>( daw::bit_count_v<Unsigned> ) ) );
 	}
 #else
 
@@ -486,26 +489,26 @@ namespace daw::cxmath {
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr unsigned
 	count_leading_zeroes( unsigned v ) noexcept {
 		if( v != 0U ) {
-			return static_cast<unsigned>( __builtin_clz( v ) );
+			return as<unsigned>( __builtin_clz( v ) );
 		}
-		return static_cast<unsigned>( bit_count_v<unsigned> );
+		return as<unsigned>( bit_count_v<unsigned> );
 	}
 
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr unsigned
 	count_leading_zeroes( unsigned long v ) noexcept {
 		if( v != 0U ) {
-			return static_cast<unsigned>( __builtin_clzl( v ) );
+			return as<unsigned>( __builtin_clzl( v ) );
 		}
-		return static_cast<unsigned>( bit_count_v<unsigned long> );
+		return as<unsigned>( bit_count_v<unsigned long> );
 	}
 
 #if DAW_HAS_BUILTIN( __builtin_clzll )
 	[[nodiscard]] DAW_ATTRIB_INLINE constexpr unsigned
 	count_leading_zeroes( unsigned long long v ) noexcept {
 		if( v != 0U ) {
-			return static_cast<unsigned>( __builtin_clzll( v ) );
+			return as<unsigned>( __builtin_clzll( v ) );
 		}
-		return static_cast<unsigned>( bit_count_v<unsigned long long> );
+		return as<unsigned>( bit_count_v<unsigned long long> );
 	}
 #else
 	[[nodiscard]] DAW_ATTRIB_INLINE inline constexpr unsigned
@@ -513,13 +516,13 @@ namespace daw::cxmath {
 		if( v == 0 ) {
 			return 64U;
 		}
-		auto high = static_cast<std::uint32_t>( v >> 32U );
+		auto high = as<std::uint32_t>( v >> 32U );
 		if( high != 0 ) {
-			return static_cast<std::uint32_t>( __builtin_clz( high ) );
+			return as<std::uint32_t>( __builtin_clz( high ) );
 		}
-		auto low = static_cast<std::uint32_t>( v );
+		auto low = as<std::uint32_t>( v );
 		if( low != 0 ) {
-			return 32U + static_cast<std::uint32_t>( __builtin_clz( low ) );
+			return 32U + as<std::uint32_t>( __builtin_clz( low ) );
 		}
 		return 64U;
 	}
@@ -548,7 +551,7 @@ namespace daw::cxmath {
 		v |= v >> 32U;
 		v = ( v >> 1U ) + 1U;
 
-		return 63U - static_cast<std::uint32_t>(
+		return 63U - as<std::uint32_t>(
 		               bit_position[( v * 0x021'8a39'2cd3'd5dbf ) >> 58U] ); // [3]
 	}
 #endif
@@ -558,10 +561,9 @@ namespace daw::cxmath {
 		if( v == 0 ) {
 			return 128U;
 		}
-		auto const h =
-		  count_leading_zeros( static_cast<std::uint64_t>( v >> 64ULL ) );
+		auto const h = count_leading_zeros( as<std::uint64_t>( v >> 64ULL ) );
 		if( h == 64U ) {
-			return count_leading_zeros( static_cast<std::uint64_t>( v ) );
+			return count_leading_zeros( as<std::uint64_t>( v ) );
 		}
 		return h;
 	}
@@ -569,12 +571,12 @@ namespace daw::cxmath {
 #endif
 	[[nodiscard]] DAW_ATTRIB_FLATINLINE inline constexpr unsigned
 	count_leading_zeroes( daw::UInt32 v ) noexcept {
-		return count_leading_zeroes( static_cast<std::uint32_t>( v ) );
+		return count_leading_zeroes( as<std::uint32_t>( v ) );
 	}
 
 	[[nodiscard]] DAW_ATTRIB_FLATINLINE inline constexpr unsigned
 	count_leading_zeroes( daw::UInt64 v ) noexcept {
-		return count_leading_zeroes( static_cast<std::uint64_t>( v ) );
+		return count_leading_zeroes( as<std::uint64_t>( v ) );
 	}
 
 	namespace cxmath_impl {
@@ -614,10 +616,9 @@ namespace daw::cxmath {
 				return 64U;
 			}
 			if( ( v & 0xFFFF'FFFFU ) == 0 ) {
-				return 32 + count_trailing_zeros_cx32(
-				              static_cast<std::uint32_t>( v >> 32U ) );
+				return 32 + count_trailing_zeros_cx32( as<std::uint32_t>( v >> 32U ) );
 			}
-			return count_trailing_zeros_cx32( static_cast<std::uint32_t>( v ) );
+			return count_trailing_zeros_cx32( as<std::uint32_t>( v ) );
 		}
 
 		template<typename T>
@@ -635,11 +636,11 @@ namespace daw::cxmath {
 #if defined( DAW_HAS_CPP20_BITOPS )
 	[[nodiscard]] constexpr std::uint32_t
 	count_trailing_zeros( std::uint32_t v ) noexcept {
-		return static_cast<std::uint32_t>( std::countr_zero( v ) );
+		return as<std::uint32_t>( std::countr_zero( v ) );
 	}
 	[[nodiscard]] constexpr std::uint32_t
 	count_trailing_zeros( std::uint64_t v ) noexcept {
-		return static_cast<std::uint32_t>( std::countr_zero( v ) );
+		return as<std::uint32_t>( std::countr_zero( v ) );
 	}
 #elif DAW_HAS_BUILTIN( __builtin_ctz ) or defined( __GNUC__ ) or \
   defined( __bultin_ctz )
@@ -650,14 +651,11 @@ namespace daw::cxmath {
 			return 32U;
 		}
 #if INT_MAX == 2147483647LL
-		return static_cast<std::uint32_t>(
-		  __builtin_ctz( static_cast<unsigned>( v ) ) );
+		return as<std::uint32_t>( __builtin_ctz( as<unsigned>( v ) ) );
 #elif LONG_MAX == 2147483647LL
-		return static_cast<std::uint32_t>(
-		  __builtin_ctzl( static_cast<unsigned long>( v ) ) );
+		return as<std::uint32_t>( __builtin_ctzl( as<unsigned long>( v ) ) );
 #elif LLONG_MAX == 2147483647LL
-		return static_cast<std::uint32_t>(
-		  __builtin_ctzll( static_cast<unsigned long long>( v ) ) );
+		return as<std::uint32_t>( __builtin_ctzll( as<unsigned long long>( v ) ) );
 #else
 #error Unsupported int sizes
 #endif
@@ -669,14 +667,11 @@ namespace daw::cxmath {
 			return 64U;
 		}
 #if INT_MAX == 9223372036854775807LL
-		return static_cast<std::uint32_t>(
-		  __builtin_ctz( static_cast<unsigned>( v ) ) );
+		return as<std::uint32_t>( __builtin_ctz( as<unsigned>( v ) ) );
 #elif LONG_MAX == 9223372036854775807LL
-		return static_cast<std::uint32_t>(
-		  __builtin_ctzl( static_cast<unsigned long>( v ) ) );
+		return as<std::uint32_t>( __builtin_ctzl( as<unsigned long>( v ) ) );
 #elif LLONG_MAX == 9223372036854775807LL
-		return static_cast<std::uint32_t>(
-		  __builtin_ctzll( static_cast<unsigned long long>( v ) ) );
+		return as<std::uint32_t>( __builtin_ctzll( as<unsigned long long>( v ) ) );
 #else
 #error Unsupported int sizes
 #endif
@@ -689,7 +684,7 @@ namespace daw::cxmath {
 		if( DAW_IS_CONSTANT_EVALUATED( ) ) {
 			return cxmath_impl::count_trailing_zeros_cx( v );
 		} else {
-			return static_cast<std::uint32_t>( _tzcnt_u32( v ) );
+			return as<std::uint32_t>( _tzcnt_u32( v ) );
 		}
 #else
 		return cxmath_impl::count_trailing_zeros_cx( v );
@@ -702,7 +697,7 @@ namespace daw::cxmath {
 		if( DAW_IS_CONSTANT_EVALUATED( ) ) {
 			return cxmath_impl::count_trailing_zeros_cx( v );
 		} else {
-			return static_cast<std::uint32_t>( _tzcnt_u64( v ) );
+			return as<std::uint32_t>( _tzcnt_u64( v ) );
 		}
 #else
 		return cxmath_impl::count_trailing_zeros_cx( v );
@@ -748,7 +743,7 @@ namespace daw::cxmath {
 		return cxmath_impl::get_exponent_impl<Real>( uint );
 #else
 		if( f == 0.0f ) {
-			return static_cast<std::int32_t>( 0 );
+			return as<std::int32_t>( 0 );
 		}
 		if( f > max_value<Real> ) {
 			// inf
@@ -770,12 +765,12 @@ namespace daw::cxmath {
 			exponent -= 41;
 		}
 
-		auto const a = static_cast<std::uint64_t>( abs_f * 0x1p-64f );
-		auto lz = static_cast<int32_t>( count_leading_zeroes( a ) );
+		auto const a = as<std::uint64_t>( abs_f * 0x1p-64f );
+		auto lz = as<int32_t>( count_leading_zeroes( a ) );
 		exponent -= lz;
 
 		if( exponent >= 0 ) {
-			return static_cast<std::int32_t>( exponent - 127 );
+			return as<std::int32_t>( exponent - 127 );
 		}
 		return std::nullopt;
 #endif
@@ -869,14 +864,13 @@ namespace daw::cxmath {
 			}
 
 			[[nodiscard]] constexpr uint8_t raw_exponent( ) const noexcept {
-				return static_cast<uint8_t>(
+				return as<uint8_t>(
 				  ( 0b0111'1111'1000'0000'0000'0000'0000'0000 & m_raw_value ) >> 23U );
 			}
 
 			[[nodiscard]] constexpr std::int16_t exponent( ) const noexcept {
 				std::int16_t const bias = 127;
-				return static_cast<std::int16_t>(
-				  static_cast<std::int16_t>( raw_exponent( ) ) - bias );
+				return as<std::int16_t>( as<std::int16_t>( raw_exponent( ) ) - bias );
 			}
 
 			[[nodiscard]] constexpr std::uint32_t raw_significand( ) const noexcept {
@@ -940,8 +934,8 @@ namespace daw::cxmath {
 				exponent -= 41;
 			}
 
-			auto const a = static_cast<std::uint64_t>( abs_f * 0x1p-64f );
-			auto lz = static_cast<int32_t>( count_leading_zeroes( a ) );
+			auto const a = as<std::uint64_t>( abs_f * 0x1p-64f );
+			auto lz = as<int32_t>( count_leading_zeroes( a ) );
 			exponent -= lz;
 
 			if( exponent <= 0 ) {
@@ -950,10 +944,9 @@ namespace daw::cxmath {
 			}
 
 			auto significand =
-			  static_cast<std::uint32_t>( ( a << ( lz + 1 ) ) >> ( 64 - 23 ) ); // [3]
-			return { ( static_cast<std::uint32_t>( sign ? 1U : 0U ) << 31U ) |
-			           ( static_cast<std::uint32_t>( exponent ) << 23U ) |
-			           significand,
+			  as<std::uint32_t>( ( a << ( lz + 1 ) ) >> ( 64 - 23 ) ); // [3]
+			return { ( as<std::uint32_t>( sign ? 1U : 0U ) << 31U ) |
+			           ( as<std::uint32_t>( exponent ) << 23U ) | significand,
 			         f };
 #endif
 		}
@@ -996,10 +989,10 @@ namespace daw::cxmath {
 #if defined( DAW_CX_BIT_CAST )
 	[[nodiscard]] constexpr double ldexp( double d, std::int32_t exponent ) {
 		daw::UInt64 dint = DAW_BIT_CAST( daw::UInt64, 2.0 );
-		auto const new_exponent = static_cast<std::int32_t>(
-		  static_cast<std::uint32_t>( exponent ) + 1023U );
+		auto const new_exponent =
+		  as<std::int32_t>( as<std::uint32_t>( exponent ) + 1023U );
 		daw_dbg_ensure( exponent < new_exponent );
-		daw::UInt64 new_exp = static_cast<daw::UInt64>( new_exponent );
+		daw::UInt64 new_exp = as<daw::UInt64>( new_exponent );
 		constexpr daw::UInt64 remove_mask{ ~0x7FF0'0000'0000'0000ULL };
 		double result =
 		  DAW_BIT_CAST( double, ( dint & remove_mask ) | ( new_exp << 52U ) );
@@ -1096,14 +1089,13 @@ namespace daw::cxmath {
 			return r;
 		}
 		std::int32_t const N = *exp;
-		Real const f = static_cast<Real>( cxmath_impl::fexp3( r, 0, N ) );
+		Real const f = as<Real>( cxmath_impl::fexp3( r, 0, N ) );
 #endif
-		Real y0 =
-		  ( static_cast<Real>( 0.41731 ) + ( static_cast<Real>( 0.59016 ) * f ) );
+		Real y0 = ( as<Real>( 0.41731 ) + ( as<Real>( 0.59016 ) * f ) );
 		// Round 1
-		y0 = static_cast<Real>( 0.5 ) * ( y0 + ( f / y0 ) );
+		y0 = as<Real>( 0.5 ) * ( y0 + ( f / y0 ) );
 		if constexpr( not std::is_same_v<Real, float> ) {
-			y0 = static_cast<Real>( 0.5 ) * ( y0 + ( f / y0 ) );
+			y0 = as<Real>( 0.5 ) * ( y0 + ( f / y0 ) );
 		}
 
 		// Final Round
@@ -1235,9 +1227,9 @@ namespace daw::cxmath {
 	namespace cxmath_impl {
 		inline constexpr double adj_ulp_imp( std::uint64_t i, int adj ) {
 			if( adj < 0 ) {
-				i -= static_cast<std::uint64_t>( -adj );
+				i -= as<std::uint64_t>( -adj );
 			} else {
-				i += static_cast<std::uint64_t>( adj );
+				i += as<std::uint64_t>( adj );
 			}
 			return DAW_BIT_CAST( double, i );
 		}
@@ -1319,21 +1311,19 @@ namespace daw::cxmath {
 		static_assert( std::is_integral_v<Integer>,
 		               "Only integer types are allowed" );
 		if constexpr( sizeof( Integer ) <= sizeof( int ) ) {
-			return __builtin_popcount( static_cast<unsigned>( i ) );
+			return __builtin_popcount( as<unsigned>( i ) );
 		} else if constexpr( sizeof( Integer ) == sizeof( long ) ) {
-			return __builtin_popcountl( static_cast<unsigned long>( i ) );
+			return __builtin_popcountl( as<unsigned long>( i ) );
 #if defined( DAW_HAS_INT128 )
 		} else if constexpr( sizeof( Integer ) == sizeof( daw::int128_t ) ) {
-			auto const lo =
-			  static_cast<std::uint64_t>( static_cast<daw::uint128_t>( i ) );
-			auto const hi =
-			  static_cast<std::uint64_t>( static_cast<daw::uint128_t>( i ) >> 64 );
+			auto const lo = as<std::uint64_t>( as<daw::uint128_t>( i ) );
+			auto const hi = as<std::uint64_t>( as<daw::uint128_t>( i ) >> 64 );
 			return __builtin_popcountll( lo ) + __builtin_popcountll( hi );
 #endif
 		} else {
 			static_assert( sizeof( Integer ) == sizeof( long long ),
 			               "Unexpected integer size" );
-			return __builtin_popcountll( static_cast<unsigned long long>( i ) );
+			return __builtin_popcountll( as<unsigned long long>( i ) );
 		}
 	}
 #else
@@ -1341,17 +1331,17 @@ namespace daw::cxmath {
 	DAW_ATTRIB_INLINE int constexpr popcount( Integer i ) {
 		auto ui = [i] {
 			if constexpr( sizeof( Integer ) <= sizeof( int ) ) {
-				return static_cast<unsigned>( i );
+				return as<unsigned>( i );
 			} else if constexpr( sizeof( Integer ) == sizeof( long ) ) {
-				return static_cast<unsigned long>( i );
+				return as<unsigned long>( i );
 #if defined( DAW_HAS_INT128 )
 			} else if constexpr( sizeof( Integer ) == sizeof( daw::int128_t ) ) {
-				return static_cast<daw::uint128_t>( i );
+				return as<daw::uint128_t>( i );
 #endif
 			} else {
 				static_assert( sizeof( Integer ) == sizeof( long long ),
 				               "Unexpected integer size" );
-				return static_cast<unsigned long long>( i );
+				return as<unsigned long long>( i );
 			}
 		}( );
 		int count = 0;
@@ -1367,14 +1357,14 @@ namespace daw::cxmath {
 	  typename..., typename Integer,
 	  std::enable_if_t<std::is_integral_v<Integer>, std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE constexpr auto to_unsigned( Integer value ) {
-		return static_cast<daw::make_unsigned_t<Integer>>( value );
+		return as<daw::make_unsigned_t<Integer>>( value );
 	}
 
 	template<
 	  typename..., typename Integer,
 	  std::enable_if_t<std::is_integral_v<Integer>, std::nullptr_t> = nullptr>
 	DAW_ATTRIB_INLINE constexpr auto to_signed( Integer value ) {
-		return static_cast<daw::make_signed_t<Integer>>( value );
+		return as<daw::make_signed_t<Integer>>( value );
 	}
 
 	inline constexpr std::uint64_t powers_of_ten[19] = {
@@ -1399,11 +1389,10 @@ namespace daw::cxmath {
 	  10'000'000'000'000'000'000ull };
 
 	constexpr int count_digits( std::uint64_t value ) {
-		auto b = -static_cast<std::uint32_t>( value > 0 ) &
-		         ( 63 - count_leading_zeroes( value ) );
+		auto b =
+		  -as<std::uint32_t>( value > 0 ) & ( 63 - count_leading_zeroes( value ) );
 		auto a = ( b * 77 ) / 256;
-		return static_cast<int>(
-		  1 + a + static_cast<std::uint32_t>( value >= powers_of_ten[a] ) );
+		return as<int>( 1 + a + as<std::uint32_t>( value >= powers_of_ten[a] ) );
 	}
 	static_assert( count_digits( 1'000'000ULL ) == 7 );
 
@@ -1421,9 +1410,9 @@ namespace daw::cxmath {
 			              std::is_signed_v<T> == std::is_signed_v<U> ) {
 				return t == u;
 			} else if constexpr( std::is_signed_v<T> ) {
-				return t >= T{ 0 } and static_cast<std::make_unsigned_t<T>>( t ) == u;
+				return t >= T{ 0 } and as<std::make_unsigned_t<T>>( t ) == u;
 			} else {
-				return u >= U{ 0 } and t == static_cast<std::make_unsigned_t<U>>( u );
+				return u >= U{ 0 } and t == as<std::make_unsigned_t<U>>( u );
 			}
 
 #if defined( DAW_HAS_MSVC )
@@ -1458,9 +1447,9 @@ namespace daw::cxmath {
 			              std::is_signed_v<T> == std::is_signed_v<U> ) {
 				return t < u;
 			} else if constexpr( std::is_signed_v<T> ) {
-				return t < 0 or static_cast<std::make_unsigned_t<T>>( t ) < u;
+				return t < 0 or as<std::make_unsigned_t<T>>( t ) < u;
 			} else {
-				return u >= 0 and t < static_cast<std::make_unsigned_t<U>>( u );
+				return u >= 0 and t < as<std::make_unsigned_t<U>>( u );
 			}
 #if defined( DAW_HAS_MSVC )
 #pragma warning( pop )

@@ -198,6 +198,7 @@ elseif( ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" )
 											 -Wshadow
 											 -Wzero-as-null-pointer-constant
 											 -Wconversion
+											 -Wsign-conversion
 											 )
 	#-Wno-deprecated-declarations
 	if( CMAKE_CXX_COMPILER_VERSION VERSION_LESS 14 )
