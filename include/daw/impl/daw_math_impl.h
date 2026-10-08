@@ -9,6 +9,7 @@
 #pragma once
 
 #include "daw/ciso646.h"
+#include "daw/daw_ensure.h"
 #include "daw/daw_move.h"
 
 #include <cstddef>
@@ -92,5 +93,21 @@ namespace daw {
 		} else {
 			return val1;
 		}
+	}
+
+	template<typename T>
+	constexpr auto( min )( std::initializer_list<T> values ) {
+		auto first = std::begin( values );
+		auto const last = std::end( values );
+		daw_ensure( first != last );
+		T min_value = *first++;
+		while( first != last ) {
+			auto const v = *first;
+			if( v < min_value ) {
+				min_value = v;
+			}
+			++first;
+		}
+		return min_value;
 	}
 } // namespace daw

@@ -10,6 +10,7 @@
 
 #include "daw/ciso646.h"
 #include "daw/daw_arith_traits.h"
+#include "daw/daw_as.h"
 #include "daw/daw_assume.h"
 #include "daw/daw_attributes.h"
 #include "daw/daw_bit_cast.h"
@@ -295,21 +296,21 @@ namespace daw::cxmath {
 		[[nodiscard]] constexpr Float pow2_impl2( intmax_t exp ) noexcept {
 			bool is_neg = exp < 0;
 			exp = is_neg ? -exp : exp;
-			auto const max_shft =
-			  (daw::min)( static_cast<size_t>(
-			                daw::numeric_limits<Float>::max_exponent10 ),
-			              bit_count_v<std::size_t> );
+			std::size_t const max_shft =
+			  (daw::min)( { as<std::size_t>(
+			                  daw::numeric_limits<Float>::max_exponent10 ),
+			                bit_count_v<std::size_t> } );
 			Float result = 1.0;
 
-			while( static_cast<std::size_t>( exp ) >= max_shft ) {
+			while( as<std::size_t>( exp ) >= max_shft ) {
 				result *= static_cast<Float>( max_value<std::size_t> );
-				exp -= max_shft;
+				exp -= as<std::intmax_t>( max_shft );
 			}
 			if( exp > 0 ) {
-				result *= static_cast<Float>( 1ULL << static_cast<size_t>( exp ) );
+				result *= as<Float>( 1ULL << static_cast<size_t>( exp ) );
 			}
 			if( is_neg and result != 0.0 ) {
-				result = static_cast<Float>( 1.0 ) / result;
+				result = as<Float>( 1.0 ) / result;
 			}
 			return result;
 		}
@@ -362,12 +363,14 @@ namespace daw::cxmath {
 
 		template<typename Float>
 		[[nodiscard]] constexpr auto calc_pow2s( ) noexcept {
-			intmax_t const min_e = daw::numeric_limits<Float>::min_exponent10;
-			intmax_t const max_e = daw::numeric_limits<Float>::max_exponent10;
-			std::array<Float, max_e - min_e> result{ };
-			intmax_t n = max_e - min_e;
+			constexpr auto min_e =
+			  as<std::intmax_t>( daw::numeric_limits<Float>::min_exponent10 );
+			constexpr auto max_e =
+			  as<std::intmax_t>( daw::numeric_limits<Float>::max_exponent10 );
+			auto result = std::array<Float, as<std::size_t>( max_e - min_e )>{ };
+			auto n = max_e - min_e;
 			while( n-- > 0 ) {
-				result[static_cast<size_t>( n )] = pow2_impl2<Float>( n + min_e );
+				result[as<std::size_t>( n )] = pow2_impl2<Float>( n + min_e );
 			}
 			return result;
 		}
