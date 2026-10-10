@@ -16,40 +16,40 @@
 namespace daw::traits {
 #if defined( DAW_HAS_CPP20_CONCEPTS )
 	template<typename T>
-	inline constexpr bool is_ostream_like_lite_v = requires( T const &stream ) {
+	inline constexpr bool is_istream_like_lite_v = requires( T const &stream ) {
 		typename T::char_type;
-		T::adjustfield;
-		stream.fill( );
 		stream.good( );
 		stream.width( );
 		stream.flags( );
 	};
 
 	template<typename T, typename CharT>
-	inline constexpr bool has_write_member_v = requires( T &stream ) {
-		stream.write( static_cast<CharT const *>( nullptr ), int{ } );
+	inline constexpr bool has_read_member_v = requires( T &stream ) {
+		stream.read( static_cast<CharT *>( nullptr ), int{ } );
 	};
 #else
 	template<typename, typename = void>
-	inline constexpr bool is_ostream_like_lite_v = false;
+	inline constexpr bool is_istream_like_lite_v = false;
 
 	template<typename T>
-	inline constexpr bool is_ostream_like_lite_v<
-	  T, std::void_t<typename T::char_type, decltype( T::adjustfield ),
-	                 decltype( std::declval<T const &>( ).fill( ) ),
+	inline constexpr bool is_istream_like_lite_v<
+	  T, std::void_t<typename T::char_type,
 	                 decltype( std::declval<T const &>( ).good( ) ),
 	                 decltype( std::declval<T const &>( ).width( ) ),
 	                 decltype( std::declval<T const &>( ).flags( ) )>> = true;
+
 	template<typename T, typename CharT, typename = void>
-	inline constexpr bool has_write_member_v = false;
+	inline constexpr bool has_read_member_v = false;
 
 	template<typename T, typename CharT>
-	inline constexpr bool has_write_member_v<
-	  T, CharT,
-	  std::void_t<decltype( std::declval<T &>( ).write(
-	    std::declval<CharT const *>( ), std::declval<int>( ) ) )>> = true;
+	inline constexpr bool
+	  has_read_member_v<T, CharT,
+	                    std::void_t<decltype( std::declval<T &>( ).read(
+	                      std::declval<CharT *>( ), std::declval<int>( ) ) )>> =
+	    true;
 #endif
+
 	template<typename T, typename CharT>
-	inline constexpr bool is_ostream_like_v =
-	  is_ostream_like_lite_v<T> and has_write_member_v<T, CharT>;
+	inline constexpr bool is_istream_like_v =
+	  is_istream_like_lite_v<T> and has_read_member_v<T, CharT>;
 } // namespace daw::traits

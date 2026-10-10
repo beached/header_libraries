@@ -102,6 +102,7 @@ set( TEST_SOURCES
 		 daw_string_view2_test.cpp
 		 daw_take_test.cpp
 		 daw_traits_is_explicitly_convertible_test.cpp
+		 daw_traits_is_stream_like_test.cpp
 		 daw_traits_test.cpp
 		 daw_tuple_helper_test.cpp
 		 daw_tuple_test.cpp
