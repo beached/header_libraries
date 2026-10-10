@@ -8,7 +8,7 @@
 
 #pragma once
 
-// #include "daw/daw_cpp_feature_check.h"
+#include "daw/daw_cpp_feature_check.h"
 
 #if not defined( DAW_HAS_CPP20_CONCEPTS )
 #include "daw/stdinc/declval.h"
