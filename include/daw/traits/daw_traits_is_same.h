@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <daw/stdinc/integral_constant.h>
+#include "daw/stdinc/integral_constant.h"
 
 namespace daw {
 	template<typename T, typename U>

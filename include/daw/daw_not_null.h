@@ -15,11 +15,11 @@
 #include "daw/daw_likely.h"
 #include "daw/impl/daw_make_trait.h"
 
+#include "daw/stdinc/compare_fn.h"
+#include "daw/stdinc/hash.h"
+#include "daw/stdinc/iterator_traits.h"
 #include <cassert>
 #include <cstddef>
-#include <daw/stdinc/compare_fn.h>
-#include <daw/stdinc/hash.h>
-#include <daw/stdinc/iterator_traits.h>
 #include <exception>
 #include <type_traits>
 

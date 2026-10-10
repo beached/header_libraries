@@ -29,12 +29,12 @@
 #include "daw/impl/daw_math_impl.h"
 #include "daw/traits/daw_traits_identity.h"
 
+#include "daw/stdinc/compare_fn.h"
+#include "daw/stdinc/data_access.h"
+#include "daw/stdinc/range_access.h"
 #include <algorithm>
 #include <array>
 #include <cstddef>
-#include <daw/stdinc/compare_fn.h>
-#include <daw/stdinc/data_access.h>
-#include <daw/stdinc/range_access.h>
 #include <iterator>
 #include <optional>
 #include <type_traits>

@@ -15,8 +15,8 @@
 #include "daw_remove_cvref.h"
 #include "traits/daw_traits_is_same.h"
 
+#include "daw/stdinc/in_place.h"
 #include <cstddef>
-#include <daw/stdinc/in_place.h>
 #include <stdexcept>
 #include <type_traits>
 

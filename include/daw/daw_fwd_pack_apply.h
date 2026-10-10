@@ -17,11 +17,11 @@
 #include "daw/traits/daw_traits_nth_element.h"
 #include "daw/traits/daw_traits_pack_list.h"
 
+#include "daw/stdinc/integer_sequence.h"
+#include "daw/stdinc/move_fwd_exch.h"
+#include "daw/stdinc/remove_cvref.h"
+#include "daw/stdinc/tuple_traits.h"
 #include <cstddef>
-#include <daw/stdinc/integer_sequence.h>
-#include <daw/stdinc/move_fwd_exch.h>
-#include <daw/stdinc/remove_cvref.h>
-#include <daw/stdinc/tuple_traits.h>
 #include <type_traits>
 
 namespace daw {

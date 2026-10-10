@@ -37,15 +37,15 @@
 #include "daw/traits/daw_traits_conditional.h"
 #include "daw/traits/daw_traits_is_ostream_like.h"
 
+#include "daw/stdinc/data_access.h"
+#include "daw/stdinc/hash.h"
+#include "daw/stdinc/iterator_traits.h"
+#include "daw/stdinc/min_and_max.h"
+#include "daw/stdinc/reverse_iterator.h"
 #include <cstddef>
 #include <cstdlib>
 #include <cstring>
 #include <cwchar>
-#include <daw/stdinc/data_access.h>
-#include <daw/stdinc/hash.h>
-#include <daw/stdinc/iterator_traits.h>
-#include <daw/stdinc/min_and_max.h>
-#include <daw/stdinc/reverse_iterator.h>
 #include <exception>
 #include <limits>
 #include <stdexcept>

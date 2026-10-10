@@ -17,11 +17,11 @@
 #include "daw/impl/daw_is_string_view_like.h"
 #include "daw/traits/daw_traits_conditional.h"
 
+#include "daw/stdinc/data_access.h"
+#include "daw/stdinc/enable_if.h"
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
-#include <daw/stdinc/data_access.h>
-#include <daw/stdinc/enable_if.h>
 
 namespace daw {
 	namespace fnv1a_impl {

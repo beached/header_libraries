@@ -12,8 +12,8 @@
 #include "daw_attributes.h"
 #include "daw_move.h"
 
+#include "daw/stdinc/integer_sequence.h"
 #include <cstddef>
-#include <daw/stdinc/integer_sequence.h>
 #include <type_traits>
 
 namespace daw::algorithm {

@@ -12,8 +12,8 @@
 #include "daw_ignored.h"
 #include "daw_move.h"
 
+#include "daw/stdinc/integer_sequence.h"
 #include <cstddef>
-#include <daw/stdinc/integer_sequence.h>
 
 namespace daw {
 	namespace nth_pack_element_impl {

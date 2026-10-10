@@ -123,7 +123,7 @@ namespace daw::pipelines {
 			using const_reference =
 			  pimpl::tuple_pair<daw::iter_const_reference_t<Iterators>...>;
 			using difference_type =
-			  widest_type_t<std::iter_difference_t<Iterators>...>;
+			  widest_type_t<std::ptrdiff_t, std::iter_difference_t<Iterators>...>;
 			using i_am_a_daw_zip_iterator_class = void;
 
 			static constexpr std::size_t iter_types_size_v = sizeof...( Iterators );
@@ -133,8 +133,8 @@ namespace daw::pipelines {
 		private:
 			std::conditional_t<counted_v, pimpl::zip_no_parent, ZR *> m_parent{ };
 			iter_types_t m_iters{ };
-			DAW_NO_UNIQUE_ADDRESS pimpl::zip_remaining<counted_v, difference_type>
-			  m_remaining{ };
+			DAW_NO_UNIQUE_ADDRESS
+			pimpl::zip_remaining<counted_v, difference_type> m_remaining{ };
 
 			static constexpr auto zip_indices = [] {
 				return std::make_index_sequence<sizeof...( Iterators )>{ };
