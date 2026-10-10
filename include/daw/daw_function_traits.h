@@ -10,8 +10,8 @@
 
 #include "traits/daw_traits_remove_cvref.h"
 
+#include "daw/stdinc/integer_sequence.h"
 #include <cstddef>
-#include <daw/stdinc/integer_sequence.h>
 #include <tuple>
 
 namespace daw::func {

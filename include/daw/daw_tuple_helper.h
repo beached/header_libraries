@@ -16,9 +16,9 @@
 #include "daw_utility.h"
 #include "traits/daw_traits_conditional.h"
 
+#include "daw/stdinc/integer_sequence.h"
+#include "daw/stdinc/reference_wrapper.h"
 #include <cstddef>
-#include <daw/stdinc/integer_sequence.h>
-#include <daw/stdinc/reference_wrapper.h>
 #include <iostream>
 #include <ostream>
 #include <tuple>

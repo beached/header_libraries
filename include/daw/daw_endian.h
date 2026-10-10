@@ -13,9 +13,9 @@
 #include "daw_constant.h"
 #include "daw_cpp_feature_check.h"
 
+#include "daw/stdinc/enable_if.h"
 #include <cstddef>
 #include <cstdint>
-#include <daw/stdinc/enable_if.h>
 
 namespace daw {
 	enum class endian {

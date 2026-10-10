@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include <daw/daw_bit_cast.h>
-#include <daw/daw_move.h>
+#include "daw/daw_bit_cast.h"
+#include "daw/daw_move.h"
 
 #include <functional>
 

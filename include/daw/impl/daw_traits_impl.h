@@ -18,11 +18,11 @@
 #include "daw/traits/daw_traits_nth_element.h"
 #include "daw/traits/daw_traits_pack_list.h"
 
+#include "daw/stdinc/data_access.h"
+#include "daw/stdinc/declval.h"
+#include "daw/stdinc/iterator_traits.h"
+#include "daw/stdinc/range_access.h"
 #include <cstddef>
-#include <daw/stdinc/data_access.h>
-#include <daw/stdinc/declval.h>
-#include <daw/stdinc/iterator_traits.h>
-#include <daw/stdinc/range_access.h>
 #include <type_traits>
 
 namespace daw {

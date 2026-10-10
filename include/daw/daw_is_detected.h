@@ -12,9 +12,9 @@
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/traits/daw_traits_is_same.h"
 
-#include <daw/stdinc/integral_constant.h>
-#include <daw/stdinc/is_convertible.h>
-#include <daw/stdinc/void_t.h>
+#include "daw/stdinc/integral_constant.h"
+#include "daw/stdinc/is_convertible.h"
+#include "daw/stdinc/void_t.h"
 
 namespace daw {
 	template<template<typename...> typename, typename...>

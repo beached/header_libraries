@@ -8,9 +8,11 @@
 
 #pragma once
 
+// #include "daw/daw_cpp_feature_check.h"
+
 #if not defined( DAW_HAS_CPP20_CONCEPTS )
-#include <daw/stdinc/declval.h>
-#include <daw/stdinc/void_t.h>
+#include "daw/stdinc/declval.h"
+#include "daw/stdinc/void_t.h"
 #endif
 
 namespace daw::traits {

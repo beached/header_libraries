@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <daw/stdinc/integer_sequence.h>
+#include "daw/stdinc/integer_sequence.h"
 
 namespace daw::traits {
 	template<typename>
