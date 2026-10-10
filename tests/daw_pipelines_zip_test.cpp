@@ -13,6 +13,7 @@
 #include <daw/daw_pipelines.h>
 
 #include <cstddef>
+#include <cstdint>
 #include <forward_list>
 #include <iterator>
 #include <list>
@@ -62,6 +63,10 @@ namespace tests {
 	DAW_ATTRIB_NOINLINE void test_zip_of_iota_is_sized( ) {
 		ensure_sized(
 		  zip_view( iota_view<int>( 0, 10 ), iota_view<int>( 5, 10 ) ), 5 );
+		ensure_sized(
+		  zip_view( iota_view<std::int8_t>( 0, 10 ),
+		            iota_view<std::int8_t>( 5, 10 ) ),
+		  5 );
 	}
 
 	DAW_ATTRIB_NOINLINE void test_enumerate_is_sized( ) {
