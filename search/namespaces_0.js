@@ -43,6 +43,7 @@ var searchData=
   ['daw_3a_3atraits_5fis_5fsv_40',['traits_is_sv',['../namespacedaw_1_1traits__is__sv.html',1,'daw']]],
   ['daw_3a_3atuple_41',['tuple',['../namespacedaw_1_1tuple.html',1,'daw']]],
   ['daw_3a_3atuple_3a_3aoperators_42',['operators',['../namespacedaw_1_1tuple_1_1operators.html',1,'daw::tuple']]],
-  ['daw_3a_3aunique_5fptr_5fdel_43',['unique_ptr_del',['../namespacedaw_1_1unique__ptr__del.html',1,'daw']]],
-  ['daw_3a_3autility_44',['utility',['../namespacedaw_1_1utility.html',1,'daw']]]
+  ['daw_3a_3auintliterals_43',['UIntLiterals',['../namespacedaw_1_1_u_int_literals.html',1,'daw']]],
+  ['daw_3a_3aunique_5fptr_5fdel_44',['unique_ptr_del',['../namespacedaw_1_1unique__ptr__del.html',1,'daw']]],
+  ['daw_3a_3autility_45',['utility',['../namespacedaw_1_1utility.html',1,'daw']]]
 ];
