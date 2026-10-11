@@ -124,7 +124,7 @@ namespace daw::pipelines {
 			using const_reference =
 			  pimpl::tuple_pair<daw::iter_const_reference_t<Iterators>...>;
 			using difference_type =
-			  widest_type_t<std::ptrdiff_t, std::iter_difference_t<Iterators>...>;
+			  widest_type_t<std::iter_difference_t<Iterators>...>;
 			using i_am_a_daw_zip_iterator_class = void;
 
 			static constexpr std::size_t iter_types_size_v = sizeof...( Iterators );
