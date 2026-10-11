@@ -3312,7 +3312,7 @@ namespace std {
 	};
 } // namespace std
 
-namespace daw {
+namespace daw::UIntLiterals {
 	constexpr UInt64 operator""_u64( unsigned long long value ) {
 		return static_cast<UInt64>( value );
 	}
@@ -3334,4 +3334,4 @@ namespace daw {
 		  ( value < static_cast<unsigned long long>( max_value<std::uint8_t> ) ) );
 		return static_cast<UInt8>( value );
 	}
-} // namespace daw
+} // namespace daw::UIntLiterals
