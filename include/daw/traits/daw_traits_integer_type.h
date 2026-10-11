@@ -8,15 +8,17 @@
 
 #pragma once
 
+#include "daw/daw_arith_traits.h"
+
 #include <type_traits>
 
 namespace daw::traits {
 	template<typename T>
-	concept IntegerEnum = std::is_integral_v<T> or std::is_enum_v<T>;
+	concept IntegerEnum = daw::is_integral_v<T> or std::is_enum_v<T>;
 	// Get the underlying type or integral type passed
 	template<IntegerEnum T>
 	using integral_type_t =
-	  typename std::conditional_t<std::is_enum_v<T>, std::underlying_type<T>,
-	                              std::type_identity<T>>::type;
+	  std::conditional_t<std::is_enum_v<T>, std::underlying_type<T>,
+	                     std::type_identity<T>>::type;
 
 } // namespace daw::traits
