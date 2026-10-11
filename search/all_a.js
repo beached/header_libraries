@@ -76,7 +76,7 @@ var searchData=
   ['integer_5frange_5fiterator_73',['integer_range_iterator',['../structdaw_1_1integer__range__iterator.html',1,'daw::integer_range_iterator&lt; T &gt;'],['../structdaw_1_1integer__range__iterator.html#a089f4473adfaa59c80473ec12d8c7a3f',1,'daw::integer_range_iterator::integer_range_iterator()=default'],['../structdaw_1_1integer__range__iterator.html#aef414623a872e1f4a70269aa49872a82',1,'daw::integer_range_iterator::integer_range_iterator(value_type start_value) noexcept']]],
   ['integer_5fsequence_2eh_74',['integer_sequence.h',['../integer__sequence_8h.html',1,'']]],
   ['integral_5fconstant_2eh_75',['integral_constant.h',['../integral__constant_8h.html',1,'']]],
-  ['integral_5ftype_5ft_76',['integral_type_t',['../namespacedaw_1_1traits.html#a4c70cfb3fd3dd6a98b862775ed77e7d9',1,'daw::traits']]],
+  ['integral_5ftype_5ft_76',['integral_type_t',['../namespacedaw_1_1traits.html#a68dea87af2fe2b8a8ca33aa166cbf994',1,'daw::traits']]],
   ['intn_5ft_77',['intN_t',['../namespacedaw.html#adccc87538bcac65a3e8d3effa944b66d',1,'daw']]],
   ['intxp_78',['intxp',['../namespacedaw_1_1cxmath.html#ad8d93d8609e32716a9784d441157a8e8',1,'daw::cxmath']]],
   ['invalid_5finput_5fexception_79',['invalid_input_exception',['../structdaw_1_1parser_1_1invalid__input__exception.html',1,'daw::parser']]],

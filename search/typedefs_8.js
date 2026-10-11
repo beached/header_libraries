@@ -42,7 +42,7 @@ var searchData=
   ['index_5fconstant_39',['index_constant',['../namespacedaw.html#a154129ce0132a086d84a3207b31a925f',1,'daw']]],
   ['index_5ft_40',['index_t',['../structdaw_1_1enumerate__tuple__element__t.html#a8e8e7df3e4b74aafe120586ef83e73bb',1,'daw::enumerate_tuple_element_t::index_t'],['../structstd_1_1tuple__element_3_01_i_00_01_e_t_01_4.html#ab48583c0535c9a817adc500467cfaa42',1,'std::tuple_element&lt; I, ET &gt;::index_t'],['../structdaw_1_1enumerated__tuple__t.html#a4b2ac523f99ced93ff1a72a4d78e5c1e',1,'daw::enumerated_tuple_t::index_t']]],
   ['int_5ffor_5ffloat_5ft_41',['int_for_float_t',['../namespacedaw_1_1math.html#a9fd408b2d93ffda01619b40b3df1a448',1,'daw::math']]],
-  ['integral_5ftype_5ft_42',['integral_type_t',['../namespacedaw_1_1traits.html#a4c70cfb3fd3dd6a98b862775ed77e7d9',1,'daw::traits']]],
+  ['integral_5ftype_5ft_42',['integral_type_t',['../namespacedaw_1_1traits.html#a68dea87af2fe2b8a8ca33aa166cbf994',1,'daw::traits']]],
   ['intn_5ft_43',['intN_t',['../namespacedaw.html#adccc87538bcac65a3e8d3effa944b66d',1,'daw']]],
   ['invoke_5fresult_5ft_44',['invoke_result_t',['../namespacedaw_1_1traits.html#a68f692eebcaaf2c1b6dcecf3624bd938',1,'daw::traits']]],
   ['is_5falways_5fequal_45',['is_always_equal',['../structdaw_1_1memory_1_1tracked__allocator.html#a152a9d87bcf283d102265eae234e04b0',1,'daw::memory::tracked_allocator']]],
