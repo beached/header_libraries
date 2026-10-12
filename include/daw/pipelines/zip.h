@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "daw/daw_arith_traits.h"
+#include "daw/daw_int_cmp.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_ref_storage.h"
 #include "daw/daw_traits.h"
@@ -191,9 +193,15 @@ namespace daw::pipelines {
 			  : m_parent( zr )
 			  , m_iters{ std::begin( std::get<Is>( zr->m_ranges ).get( ) )... } {
 				if constexpr( counted_v ) {
-					m_remaining.value = std::min( { pimpl::counted_length(
+					auto const len = std::min( { pimpl::counted_length(
 					  std::get<Is>( m_iters ),
 					  std::end( std::get<Is>( zr->m_ranges ).get( ) ) )... } );
+					// An unbounded length must saturate, not truncate, when
+					// difference_type is narrower than std::ptrdiff_t
+					constexpr auto max_len = daw::max_value<difference_type>;
+					m_remaining.value = daw::cmp_less( max_len, len )
+					                      ? max_len
+					                      : static_cast<difference_type>( len );
 				}
 			}
 
@@ -386,7 +394,8 @@ namespace daw::pipelines {
 			operator-( zip_iterator const &lhs, Last const & )
 			requires( counted_v )
 			{
-				return -static_cast<difference_type>( lhs.m_remaining.value );
+				// Unary minus promotes types narrower than int, so cast the result back
+				return static_cast<difference_type>( -lhs.m_remaining.value );
 			}
 		};
 	} // namespace pimpl

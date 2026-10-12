@@ -1064,6 +1064,90 @@ namespace daw {
 	void tc021comparison( ) {
 		daw::sv2::string_view view = "Hello World";
 
+		// Comparisons must use the same overload set as construction.  In
+		// particular, character arrays must retain their bounds instead of
+		// decaying to pointers and being measured with strlen.
+		{
+			static constexpr char bounded_array[] = { 'H', 'i' };
+			constexpr daw::sv2::string_view bounded_view( bounded_array );
+			static_assert( bounded_array == bounded_view );
+			static_assert( bounded_view == bounded_array );
+			static_assert( not( bounded_array != bounded_view ) );
+			static_assert( not( bounded_view != bounded_array ) );
+
+			static constexpr char embedded_zero[] = { 'a', '\0', 'b', '\0' };
+			constexpr daw::sv2::string_view embedded_zero_view( embedded_zero );
+			static_assert( embedded_zero == embedded_zero_view );
+			static_assert( embedded_zero_view == embedded_zero );
+			static_assert( embedded_zero == daw::sv2::string_view( "a\0b", 3 ) );
+			static_assert( embedded_zero != daw::sv2::string_view( "a" ) );
+
+			static_assert( bounded_view.compare( bounded_array ) == 0 );
+			static_assert( embedded_zero_view.compare( embedded_zero ) == 0 );
+			static_assert( bounded_view.compare( 0, 2, bounded_array ) == 0 );
+			static_assert( bounded_view.compare( 0, 2, "Hix", 2 ) == 0 );
+
+			// Ordering must agree with equality
+			static_assert( not( bounded_array < bounded_view ) );
+			static_assert( not( bounded_view < bounded_array ) );
+			static_assert( bounded_array <= bounded_view );
+			static_assert( bounded_array >= bounded_view );
+			static_assert( not( embedded_zero < embedded_zero_view ) );
+			static_assert( not( embedded_zero > embedded_zero_view ) );
+			static_assert( daw::sv2::string_view( "a" ) < embedded_zero );
+		}
+
+		// Fixed size buffers keep their bounds; only the final zero is dropped
+		{
+			char buf[8] = { 'a', 'b', 'c' };
+			daw::sv2::string_view const abc = "abc";
+			daw_ensure( buf != abc );
+			daw_ensure( abc < buf );
+			daw_ensure( not( buf <= abc ) );
+			daw_ensure( abc.compare( buf ) < 0 );
+			char const *p = buf;
+			daw_ensure( p == abc );
+			daw_ensure( abc.compare( p ) == 0 );
+		}
+
+		// Searching members must also construct their argument like the
+		// constructor does
+		{
+			static constexpr char xy[] = { 'x', 'y' };
+			static constexpr char x_zero[] = { 'x', '\0', '\0' };
+			constexpr daw::sv2::string_view s = "axby";
+			static_assert( s.find( xy ) == s.npos );
+			static_assert( s.contains( "by" ) );
+			static_assert( s.contains( "a", 1 ) == false );
+			static_assert( s.rfind( xy ) == s.npos );
+			static_assert( s.search( xy ) == s.npos );
+			static_assert( s.search_last( xy ) == s.npos );
+			static_assert( s.find_first_of( xy ) == 1 );
+			static_assert( s.find_last_of( xy ) == 3 );
+			static_assert( s.find_first_not_of( "ax" ) == 2 );
+			static_assert( s.find_last_not_of( xy ) == 2 );
+			static_assert( not s.all_of( xy ) );
+			static_assert( daw::sv2::string_view( "xyyx" ).all_of( xy ) );
+			static_assert( not s.starts_with( xy ) );
+			static_assert( daw::sv2::string_view( "xy" ).ends_with( xy ) );
+
+			// The embedded zero is part of the needle
+			constexpr daw::sv2::string_view zs( "x\0y", 3 );
+			static_assert( zs.find( x_zero ) == 0 );
+			static_assert( zs.starts_with( x_zero ) );
+			static_assert( zs.find_first_not_of( x_zero ) == 2 );
+			static_assert( not zs.all_of( x_zero ) );
+
+			// Pointers are still measured with strlen and explicit counts are
+			// honoured
+			char const *p = "by";
+			daw_ensure( s.find( p ) == 2 );
+			daw_ensure( s.ends_with( p ) );
+			daw_ensure( s.find( "bz", 0, 1 ) == 2 );
+			daw_ensure( s.find_first_not_of( "ax", 0, 1 ) == 1 );
+			daw_ensure( s.all_of( "axby!", 0, 4 ) );
+		}
+
 		puts( "Is equal" );
 		{
 			puts( "Returns true for equal string views" );
