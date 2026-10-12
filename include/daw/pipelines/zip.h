@@ -394,7 +394,8 @@ namespace daw::pipelines {
 			operator-( zip_iterator const &lhs, Last const & )
 			requires( counted_v )
 			{
-				return -static_cast<difference_type>( lhs.m_remaining.value );
+				// Unary minus promotes types narrower than int, so cast the result back
+				return static_cast<difference_type>( -lhs.m_remaining.value );
 			}
 		};
 	} // namespace pimpl
