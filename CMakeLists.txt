@@ -9,13 +9,12 @@
 cmake_minimum_required( VERSION 3.14 )
 
 project( "daw-header-libraries"
-         VERSION "2.137.0"
+         VERSION "2.138.0"
          DESCRIPTION "Various headers"
          HOMEPAGE_URL "https://github.com/beached/header_libraries"
          LANGUAGES C CXX
          )
 
-set( CMAKE_CXX_STANDARD 17 CACHE STRING "The C++ standard whose features are requested." )
 set( DAW_TARGET_HEADER_LIBRARIES ON CACHE STRING "Flag to indicate that library is included" )
 
 option( DAW_ENABLE_TESTING "Build unit tests" OFF )
