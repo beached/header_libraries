@@ -12,12 +12,11 @@ var searchData=
   ['discard_9',['discard',['../namespacedaw.html#a07857cd33c009a6a985b008ff1519d9f',1,'daw']]],
   ['disjunction_5fv_10',['disjunction_v',['../namespacedaw.html#a601a752b7a1a60c5b438e2534c50734c',1,'daw']]],
   ['do_5fresize_5fand_5foverwrite_11',['do_resize_and_overwrite',['../namespacedaw.html#a542565e0e4c562c45e79c873c7467e4e',1,'daw']]],
-  ['does_5fvalidity_5fcheck_5fv_12',['does_validity_check_v',['../namespacedaw_1_1unique__ptr__del.html#a6ede956f778f49970f0869ac630bcb89',1,'daw::unique_ptr_del']]],
-  ['dont_5fclip_5fto_5fbounds_13',['dont_clip_to_bounds',['../namespacedaw.html#a130802b299cf0231f0911bd5f922d66c',1,'daw']]],
-  ['dpow10_5fv_14',['dpow10_v',['../namespacedaw_1_1cxmath.html#a69da9cccfe3ea839527a7c34b80a9ae3',1,'daw::cxmath']]],
-  ['dpow2_5fv_15',['dpow2_v',['../namespacedaw_1_1cxmath.html#a6678b00bddac238c10795d942abb39c7',1,'daw::cxmath']]],
-  ['drop_5funtil_16',['drop_until',['../namespacedaw_1_1pipelines.html#acd8c1ee084ad14d7d147e3537c4672f9',1,'daw::pipelines']]],
-  ['drop_5fwhile_17',['drop_while',['../namespacedaw_1_1pipelines.html#a801deb65f4197c1422c834840eb987cd',1,'daw::pipelines']]],
-  ['dynamic_5fstring_5fsize_18',['dynamic_string_size',['../namespacedaw_1_1sv1.html#a34c2ca7222e57ddd2ec2331eda9709bc',1,'daw::sv1']]],
-  ['dynamicextent_19',['DynamicExtent',['../namespacedaw.html#a8c5165d63ef6e51257f9887621d1ab0e',1,'daw']]]
+  ['dont_5fclip_5fto_5fbounds_12',['dont_clip_to_bounds',['../namespacedaw.html#a130802b299cf0231f0911bd5f922d66c',1,'daw']]],
+  ['dpow10_5fv_13',['dpow10_v',['../namespacedaw_1_1cxmath.html#a69da9cccfe3ea839527a7c34b80a9ae3',1,'daw::cxmath']]],
+  ['dpow2_5fv_14',['dpow2_v',['../namespacedaw_1_1cxmath.html#a6678b00bddac238c10795d942abb39c7',1,'daw::cxmath']]],
+  ['drop_5funtil_15',['drop_until',['../namespacedaw_1_1pipelines.html#acd8c1ee084ad14d7d147e3537c4672f9',1,'daw::pipelines']]],
+  ['drop_5fwhile_16',['drop_while',['../namespacedaw_1_1pipelines.html#a801deb65f4197c1422c834840eb987cd',1,'daw::pipelines']]],
+  ['dynamic_5fstring_5fsize_17',['dynamic_string_size',['../namespacedaw_1_1sv1.html#a34c2ca7222e57ddd2ec2331eda9709bc',1,'daw::sv1']]],
+  ['dynamicextent_18',['DynamicExtent',['../namespacedaw.html#a8c5165d63ef6e51257f9887621d1ab0e',1,'daw']]]
 ];
