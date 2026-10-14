@@ -136,9 +136,10 @@ namespace daw::copyable_function_details {
 		}
 	}( );
 
-	template<typename Fn, typename Signature, cvref_t CVRef, bool IsNoExcept,
-	         typename R, typename... Args>
+	template<typename Fn, typename Function, typename Signature, cvref_t CVRef,
+	         bool IsNoExcept, typename R, typename... Args>
 	concept compatible_function = requires {
+		requires not std::is_same_v<std::remove_cvref_t<Fn>, Function>;
 		requires not std::is_same_v<std::remove_cvref_t<Fn>,
 		                            copyable_function<Signature>>;
 		requires not is_in_place_type<std::remove_cvref_t<Fn>>::value;
@@ -253,7 +254,8 @@ namespace daw::copyable_function_details {
 		constexpr function_impl( std::nullptr_t ) noexcept {}
 
 		template<typename Fn>
-		requires compatible_function<Fn, Signature, CVRef, IsNoExcept, R, Args...>
+		requires compatible_function<Fn, function_impl, Signature, CVRef, IsNoExcept,
+		                             R, Args...>
 		constexpr function_impl( Fn &&fn ) {
 			using function_t = std::decay_t<Fn>;
 			if( not is_null_target<function_t>( fn ) ) {
@@ -299,7 +301,8 @@ namespace daw::copyable_function_details {
 		}
 
 		template<typename Fn>
-		requires compatible_function<Fn, Signature, CVRef, IsNoExcept, R, Args...>
+		requires compatible_function<Fn, function_impl, Signature, CVRef, IsNoExcept,
+		                             R, Args...>
 		constexpr function_impl &operator=( Fn &&fn ) {
 			function_impl( DAW_FWD( fn ) ).swap( *this );
 			return *this;
