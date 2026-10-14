@@ -142,7 +142,10 @@ namespace daw::copyable_function_details {
 		requires not std::is_same_v<std::remove_cvref_t<Fn>,
 		                            copyable_function<Signature>>;
 		requires not is_in_place_type<std::remove_cvref_t<Fn>>::value;
-		requires is_callable_from_v<CVRef, IsNoExcept, R, std::decay_t<Fn>,
+		requires is_callable_from_v<CVRef,
+		                            IsNoExcept,
+		                            R,
+		                            std::decay_t<Fn>,
 		                            Args...>;
 		requires std::is_constructible_v<std::decay_t<Fn>, Fn>;
 		requires std::is_copy_constructible_v<std::decay_t<Fn>>;
