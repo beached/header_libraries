@@ -8,11 +8,11 @@
 
 #pragma once
 
-#include "cpp_20.h"
-#include "daw_cpp_feature_check.h"
-#include "daw_exchange.h"
-#include "daw_monadic_pointer_ops.h"
-#include "daw_move.h"
+#include "daw/cpp_20.h"
+#include "daw/daw_cpp_feature_check.h"
+#include "daw/daw_exchange.h"
+#include "daw/daw_monadic_pointer_ops.h"
+#include "daw/daw_move.h"
 
 #include <cstddef>
 #include <functional>
@@ -29,7 +29,6 @@ namespace daw {
 	template<typename T>
 	struct default_deleter {
 		using pointer = T *;
-		using does_validity_check = void;
 		static constexpr pointer default_pointer_value = nullptr;
 
 		explicit default_deleter( ) = default;
@@ -54,7 +53,6 @@ namespace daw {
 	template<typename T>
 	struct default_deleter<T[]> {
 		using pointer = T *;
-		using does_validity_check = void;
 		static constexpr pointer default_pointer_value = nullptr;
 
 		explicit default_deleter( ) = default;
@@ -65,13 +63,34 @@ namespace daw {
 	};
 
 	namespace unique_ptr_del {
+		template<typename T, typename Pointer, typename = void>
+		inline constexpr bool has_is_valid_v = false;
+
+		template<typename T, typename Pointer>
+		inline constexpr bool
+		  has_is_valid_v<T, Pointer,
+		                 std::void_t<decltype( std::declval<T>( ).is_valid(
+		                   std::declval<Pointer const &>( ) ) )>> = true;
+
 		template<typename T, typename = void>
-		inline constexpr bool does_validity_check_v = false;
+		inline constexpr bool has_default_pointer_value_v = false;
 
 		template<typename T>
-		inline constexpr bool
-		  does_validity_check_v<T, std::void_t<typename T::does_validity_check>> =
-		    true;
+		inline constexpr bool has_default_pointer_value_v<
+		  T, std::void_t<decltype( T::default_pointer_value )>> = true;
+
+		template<typename D, typename Pointer>
+		constexpr bool validity_checker( D &&deleter,
+		                                 Pointer const &pointer ) noexcept {
+			using deleter_t = daw::remove_cvref_t<D>;
+			if constexpr( has_is_valid_v<D &&, Pointer> ) {
+				return static_cast<bool>( DAW_FWD( deleter ).is_valid( pointer ) );
+			} else if constexpr( has_default_pointer_value_v<deleter_t> ) {
+				return pointer != deleter_t::default_pointer_value;
+			} else {
+				return static_cast<bool>( pointer );
+			}
+		}
 
 		template<typename T, typename, typename = void>
 		struct pointer_type {
@@ -193,9 +212,10 @@ namespace daw {
 		}
 
 		constexpr void reset( ) noexcept {
-			if( unique_ptr_del::does_validity_check_v<Deleter> or m_ptr ) {
-				get_deleter( )( daw::exchange(
-				  m_ptr, unique_ptr_del::default_pointer_value_v<T, Deleter> ) );
+			auto old_ptr = daw::exchange(
+			  m_ptr, unique_ptr_del::default_pointer_value_v<T, Deleter> );
+			if( unique_ptr_del::validity_checker( get_deleter( ), old_ptr ) ) {
+				get_deleter( )( std::move( old_ptr ) );
 			}
 		}
 
@@ -221,7 +241,7 @@ namespace daw {
 		}
 
 		explicit constexpr operator bool( ) const noexcept {
-			return static_cast<bool>( m_ptr );
+			return unique_ptr_del::validity_checker( get_deleter( ), m_ptr );
 		}
 
 		constexpr void swap( unique_ptr &other ) noexcept {
@@ -340,9 +360,10 @@ namespace daw {
 		}
 
 		constexpr void reset( ) noexcept {
-			if( unique_ptr_del::does_validity_check_v<Deleter> or m_ptr ) {
-				get_deleter( )( daw::exchange(
-				  m_ptr, unique_ptr_del::default_pointer_value_v<T, Deleter> ) );
+			auto old_ptr = daw::exchange(
+			  m_ptr, unique_ptr_del::default_pointer_value_v<T, Deleter> );
+			if( unique_ptr_del::validity_checker( get_deleter( ), old_ptr ) ) {
+				get_deleter( )( std::move( old_ptr ) );
 			}
 		}
 
@@ -359,7 +380,7 @@ namespace daw {
 		}
 
 		explicit constexpr operator bool( ) const noexcept {
-			return static_cast<bool>( m_ptr );
+			return unique_ptr_del::validity_checker( get_deleter( ), m_ptr );
 		}
 
 		constexpr void swap( unique_ptr &other ) noexcept {
