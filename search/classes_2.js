@@ -66,10 +66,11 @@ var searchData=
   ['contract_63',['contract',['../classdaw_1_1contract.html',1,'daw']]],
   ['copiable_5funique_5fptr_64',['copiable_unique_ptr',['../structdaw_1_1copiable__unique__ptr.html',1,'daw']]],
   ['copy_5ft_65',['Copy_t',['../structdaw_1_1pipelines_1_1pimpl_1_1_copy__t.html',1,'daw::pipelines::pimpl']]],
-  ['count_5ft_66',['count_t',['../structdaw_1_1pipelines_1_1pimpl_1_1count__t.html',1,'daw::pipelines::pimpl']]],
-  ['countable_5fresource_5ft_67',['countable_resource_t',['../classdaw_1_1countable__resource__t.html',1,'daw']]],
-  ['countdown_5fiterator_68',['countdown_iterator',['../structdaw_1_1pipelines_1_1countdown__iterator.html',1,'daw::pipelines']]],
-  ['countdown_5fview_69',['countdown_view',['../structdaw_1_1pipelines_1_1countdown__view.html',1,'daw::pipelines']]],
-  ['countif_5ft_70',['CountIf_t',['../structdaw_1_1pipelines_1_1pimpl_1_1_count_if__t.html',1,'daw::pipelines::pimpl']]],
-  ['cstring_71',['CString',['../classdaw_1_1_c_string.html',1,'daw']]]
+  ['copyable_5ffunction_66',['copyable_function',['../classdaw_1_1copyable__function.html',1,'daw']]],
+  ['count_5ft_67',['count_t',['../structdaw_1_1pipelines_1_1pimpl_1_1count__t.html',1,'daw::pipelines::pimpl']]],
+  ['countable_5fresource_5ft_68',['countable_resource_t',['../classdaw_1_1countable__resource__t.html',1,'daw']]],
+  ['countdown_5fiterator_69',['countdown_iterator',['../structdaw_1_1pipelines_1_1countdown__iterator.html',1,'daw::pipelines']]],
+  ['countdown_5fview_70',['countdown_view',['../structdaw_1_1pipelines_1_1countdown__view.html',1,'daw::pipelines']]],
+  ['countif_5ft_71',['CountIf_t',['../structdaw_1_1pipelines_1_1pimpl_1_1_count_if__t.html',1,'daw::pipelines::pimpl']]],
+  ['cstring_72',['CString',['../classdaw_1_1_c_string.html',1,'daw']]]
 ];

@@ -290,8 +290,8 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    storage_t *m_storage = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    <span class="keyword">explicit</span> <span class="keyword">constexpr</span> weak_shared_function_base( storage_t *<a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">storage</a> )</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>      : m_storage( <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">storage</a> ) {}</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    <span class="keyword">explicit</span> <span class="keyword">constexpr</span> weak_shared_function_base( storage_t *storage )</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>      : m_storage( storage ) {}</div>
 <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    <span class="keyword">constexpr</span> weak_shared_function_base(</div>
@@ -335,8 +335,8 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>      shared_function_storage_base&lt;<a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">CVRef</a>, <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">IsNoExcept</a>, R, <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Params</a>...&gt;;</div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    storage_t *m_storage = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> </div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    <span class="keyword">constexpr</span> shared_function_base( storage_t *<a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">storage</a> )</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>      : m_storage( <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">storage</a> ) {}</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    <span class="keyword">constexpr</span> shared_function_base( storage_t *storage )</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>      : m_storage( storage ) {}</div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Fn&gt;</div>
