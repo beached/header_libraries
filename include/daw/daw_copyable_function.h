@@ -136,6 +136,49 @@ namespace daw::copyable_function_details {
 		}
 	}( );
 
+	template<typename Fn, typename Signature, cvref_t CVRef, bool IsNoExcept,
+	         typename R, typename... Args>
+	concept compatible_function = [] {
+		using function_t = std::decay_t<Fn>;
+		if constexpr( std::is_same_v<std::remove_cvref_t<Fn>,
+		                             copyable_function<Signature>> or
+		              is_in_place_type<std::remove_cvref_t<Fn>>::value ) {
+			return false;
+		} else {
+			return is_callable_from_v<CVRef, IsNoExcept, R, function_t, Args...> and
+			       std::is_constructible_v<function_t, Fn> and
+			       std::is_copy_constructible_v<function_t>;
+		}
+	}( );
+
+	template<typename T, cvref_t CVRef, bool IsNoExcept, typename R,
+	         typename... Args>
+	concept compatible_in_place_function =
+	  std::is_same_v<T, std::decay_t<T>> and std::is_copy_constructible_v<T> and
+	  is_callable_from_v<CVRef, IsNoExcept, R, T, Args...>;
+
+	template<typename T, typename... ConstructorArgs>
+	concept constructible_function =
+	  std::is_constructible_v<T, ConstructorArgs...>;
+
+	template<typename T, typename U, typename... ConstructorArgs>
+	concept initializer_list_constructible_function =
+	  std::is_constructible_v<T, std::initializer_list<U> &, ConstructorArgs...>;
+
+	template<cvref_t CVRef, typename Self>
+	concept compatible_function_self = valid_self_v<CVRef, Self>;
+
+	template<typename Function, typename Base, typename Fn>
+	concept assignable_function = [] {
+		if constexpr( std::is_same_v<std::remove_cvref_t<Fn>, Function> ) {
+			return false;
+		} else {
+			return requires( Base &base, Fn &&fn ) {
+				base.operator=( DAW_FWD( fn ) );
+			};
+		}
+	}( );
+
 	template<typename Fn>
 	constexpr bool is_null_target( Fn const &fn ) noexcept {
 		if constexpr( std::is_pointer_v<Fn> or std::is_member_pointer_v<Fn> ) {
@@ -215,13 +258,7 @@ namespace daw::copyable_function_details {
 		constexpr function_impl( std::nullptr_t ) noexcept {}
 
 		template<typename Fn>
-		requires(
-		  not std::is_same_v<std::remove_cvref_t<Fn>,
-		                     copyable_function<Signature>> and
-		  not is_in_place_type<std::remove_cvref_t<Fn>>::value and
-		  is_callable_from_v<CVRef, IsNoExcept, R, std::decay_t<Fn>, Args...> and
-		  std::is_constructible_v<std::decay_t<Fn>, Fn> and
-		  std::is_copy_constructible_v<std::decay_t<Fn>> )
+		requires compatible_function<Fn, Signature, CVRef, IsNoExcept, R, Args...>
 		constexpr function_impl( Fn &&fn ) {
 			using function_t = std::decay_t<Fn>;
 			if( not is_null_target<function_t>( fn ) ) {
@@ -230,21 +267,17 @@ namespace daw::copyable_function_details {
 		}
 
 		template<typename T, typename... ConstructorArgs>
-		requires( std::is_same_v<T, std::decay_t<T>> and
-		          std::is_constructible_v<T, ConstructorArgs...> and
-		          std::is_copy_constructible_v<T> and
-		          is_callable_from_v<CVRef, IsNoExcept, R, T, Args...> )
+		requires( compatible_in_place_function<T, CVRef, IsNoExcept, R, Args...> and
+		          constructible_function<T, ConstructorArgs...> )
 		explicit constexpr function_impl( std::in_place_type_t<T>,
 		                                  ConstructorArgs &&...args ) {
 			emplace<T>( DAW_FWD( args )... );
 		}
 
 		template<typename T, typename U, typename... ConstructorArgs>
-		requires( std::is_same_v<T, std::decay_t<T>> and
-		          std::is_constructible_v<T, std::initializer_list<U> &,
-		                                  ConstructorArgs...> and
-		          std::is_copy_constructible_v<T> and
-		          is_callable_from_v<CVRef, IsNoExcept, R, T, Args...> )
+		requires(
+		  compatible_in_place_function<T, CVRef, IsNoExcept, R, Args...> and
+		  initializer_list_constructible_function<T, U, ConstructorArgs...> )
 		explicit constexpr function_impl( std::in_place_type_t<T>,
 		                                  std::initializer_list<U> values,
 		                                  ConstructorArgs &&...args ) {
@@ -271,16 +304,14 @@ namespace daw::copyable_function_details {
 		}
 
 		template<typename Fn>
-		requires( not std::is_same_v<std::remove_cvref_t<Fn>,
-		                             copyable_function<Signature>> and
-		          std::is_constructible_v<function_impl, Fn> )
+		requires compatible_function<Fn, Signature, CVRef, IsNoExcept, R, Args...>
 		constexpr function_impl &operator=( Fn &&fn ) {
 			function_impl( DAW_FWD( fn ) ).swap( *this );
 			return *this;
 		}
 
 		template<typename Self>
-		requires( valid_self_v<CVRef, Self &&> )
+		requires compatible_function_self<CVRef, Self &&>
 		constexpr R operator( )( this Self &&self,
 		                         Args... args ) noexcept( IsNoExcept ) {
 			daw_dbg_ensure( self.m_storage );
@@ -390,10 +421,8 @@ namespace daw {
 		}
 
 		template<typename Fn>
-		requires( not std::is_same_v<std::remove_cvref_t<Fn>, copyable_function> and
-		          requires( base_t &base, Fn &&fn ) {
-			          base.operator=( DAW_FWD( fn ) );
-		          } )
+		requires copyable_function_details::assignable_function<copyable_function,
+		                                                        base_t, Fn>
 		constexpr copyable_function &operator=( Fn &&fn ) {
 			base_t::operator=( DAW_FWD( fn ) );
 			return *this;
