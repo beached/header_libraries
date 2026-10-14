@@ -28,7 +28,73 @@ struct Child : Base {
 	  : Base( v ) {}
 };
 
+struct sentinel_deleter {
+	using pointer = int;
+	static constexpr pointer default_pointer_value = -1;
+	static inline int delete_count = 0;
+
+	void operator( )( pointer ) const noexcept {
+		++delete_count;
+	}
+};
+
+struct validity_checking_deleter {
+	using pointer = int;
+	static constexpr pointer default_pointer_value = -1;
+	static inline int delete_count = 0;
+
+	constexpr bool is_valid( pointer p ) const noexcept {
+		return p >= 0;
+	}
+
+	void operator( )( pointer ) const noexcept {
+		++delete_count;
+	}
+};
+
+static_assert(
+  daw::unique_ptr_del::default_pointer_value_v<int, sentinel_deleter> == -1 );
+static_assert( daw::unique_ptr_del::default_pointer_value_v<
+                 int, validity_checking_deleter> == -1 );
+static_assert( not daw::unique_ptr_del::validity_checker( sentinel_deleter{ },
+                                                         -1 ) );
+static_assert(
+  daw::unique_ptr_del::validity_checker( sentinel_deleter{ }, 0 ) );
+static_assert( not daw::unique_ptr_del::validity_checker(
+  validity_checking_deleter{ }, -2 ) );
+static_assert( daw::unique_ptr_del::validity_checker(
+  validity_checking_deleter{ }, 0 ) );
+
+void test_validity_checks( ) {
+	sentinel_deleter::delete_count = 0;
+	{
+		daw::unique_ptr<int, sentinel_deleter> p( 0 );
+		assert( p );
+		p.reset( );
+		assert( not p );
+		assert( sentinel_deleter::delete_count == 1 );
+		p.reset( );
+		assert( sentinel_deleter::delete_count == 1 );
+	}
+
+	validity_checking_deleter::delete_count = 0;
+	{
+		daw::unique_ptr<int, validity_checking_deleter> p( -2 );
+		assert( not p );
+		p.reset( );
+		assert( p.get( ) == validity_checking_deleter::default_pointer_value );
+		p.reset( 0 );
+		assert( p );
+		p.reset( );
+		assert( not p );
+		assert( validity_checking_deleter::delete_count == 1 );
+		p.reset( );
+		assert( validity_checking_deleter::delete_count == 1 );
+	}
+}
+
 int main( ) {
+	test_validity_checks( );
 	auto a1 = daw::make_unique<int>( 5 );
 	assert( a1 );
 	assert( *a1 == 5 );
