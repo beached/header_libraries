@@ -12,6 +12,7 @@
 
 #include <tuple>
 #include <type_traits>
+#include <utility>
 
 namespace daw::pipelines::traits {
 
@@ -23,32 +24,41 @@ namespace daw::pipelines::traits {
 	  std::invocable<Fn, Params...> and
 	  not std::same_as<void, std::invoke_result_t<Fn, Params...>>;
 
+	template<typename Fn, typename Arg, std::size_t... Is>
+	consteval bool is_applicable_impl( std::index_sequence<Is...> ) {
+		return std::invocable<
+		  Fn, decltype( std::get<Is>( std::declval<Arg>( ) ) )...>;
+	}
+
 	template<typename Fn, typename Arg>
-	inline constexpr bool is_applicable_v = false;
-
-	template<typename Fn, typename... Ts>
-	inline constexpr bool is_applicable_v<Fn, std::tuple<Ts...>> =
-	  std::invocable<Fn, Ts...>;
-
-	template<typename Fn, typename T0, typename T1>
-	inline constexpr bool is_applicable_v<Fn, std::pair<T0, T1>> =
-	  std::invocable<Fn, T0, T1>;
+	inline constexpr bool is_applicable_v = [] {
+		using tuple_t = std::remove_cvref_t<Arg>;
+		if constexpr( requires { typename std::tuple_size<tuple_t>::type; } ) {
+			return is_applicable_impl<Fn, Arg>(
+			  std::make_index_sequence<std::tuple_size_v<tuple_t>>{ } );
+		} else {
+			return false;
+		}
+	}( );
 
 	template<std::size_t, typename T>
 	using ignore_num = T;
 
+	template<typename Fn, typename Arg, typename IndexSequence>
+	struct apply_result_impl;
+
+	template<typename Fn, typename Arg, std::size_t... Is>
+	struct apply_result_impl<Fn, Arg, std::index_sequence<Is...>> {
+		using type = std::invoke_result_t<
+		  Fn, decltype( std::get<Is>( std::declval<Arg>( ) ) )...>;
+	};
+
 	template<typename Fn, typename Arg>
-	struct apply_result {};
-
-	template<typename Fn, typename... Ts>
-	struct apply_result<Fn, std::tuple<Ts...>> {
-		using type = std::invoke_result_t<Fn, Ts...>;
-	};
-
-	template<typename Fn, typename T0, typename T1>
-	struct apply_result<Fn, std::pair<T0, T1>> {
-		using type = std::invoke_result_t<Fn, T0, T1>;
-	};
+	struct apply_result
+	  : apply_result_impl<
+	      Fn,
+	      Arg,
+	      std::make_index_sequence<std::tuple_size_v<std::remove_cvref_t<Arg>>>> {};
 
 	template<typename Fn, typename Arg>
 	using apply_result_t = typename apply_result<Fn, Arg>::type;
