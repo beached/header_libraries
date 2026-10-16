@@ -78,6 +78,7 @@ $(function() {
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#concepts">Concepts</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">daw::pipelines::traits Namespace Reference</div></div>
 </div><!--header-->
@@ -87,9 +88,9 @@ $(function() {
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1traits_1_1apply__result.html">apply_result</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1traits_1_1apply__result_3_01_fn_00_01std_1_1pair_3_01_t0_00_01_t1_01_4_01_4.html">apply_result&lt; Fn, std::pair&lt; T0, T1 &gt; &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>apply_result_impl</b></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdaw_1_1pipelines_1_1traits_1_1apply__result_3_01_fn_00_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4.html">apply_result&lt; Fn, std::tuple&lt; Ts... &gt; &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>apply_result_impl&lt; Fn, Arg, std::index_sequence&lt; Is... &gt; &gt;</b></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="concepts" name="concepts"></a>
@@ -112,11 +113,17 @@ Typedefs</h2></td></tr>
 <tr class="memitem:acfbc856686b06d0f3e93ff1fb82fcbd5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">using</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1traits.html#acfbc856686b06d0f3e93ff1fb82fcbd5">ignore_num</a> = T</td></tr>
 <tr class="separator:acfbc856686b06d0f3e93ff1fb82fcbd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ab1ba41a3e4357813fd3143a88c675a8e" id="r_ab1ba41a3e4357813fd3143a88c675a8e"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Fn</a> , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Arg</a> , std::size_t... Is&gt; </td></tr>
+<tr class="memitem:ab1ba41a3e4357813fd3143a88c675a8e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">consteval</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1traits.html#ab1ba41a3e4357813fd3143a88c675a8e">is_applicable_impl</a> (std::index_sequence&lt; Is... &gt;)</td></tr>
+<tr class="separator:ab1ba41a3e4357813fd3143a88c675a8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a83602c5834666d164bf17ed99df1fa21" id="r_a83602c5834666d164bf17ed99df1fa21"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Fn</a> , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Arg</a> &gt; </td></tr>
-<tr class="memitem:a83602c5834666d164bf17ed99df1fa21"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1traits.html#a83602c5834666d164bf17ed99df1fa21">is_applicable_v</a> = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">false</a></td></tr>
-<tr class="separator:a83602c5834666d164bf17ed99df1fa21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa95a25e7488858d3ac27aa01e1743a39" id="r_aa95a25e7488858d3ac27aa01e1743a39"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Fn</a> , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Arg</a> &gt; </td></tr>
+<tr class="memitem:aa95a25e7488858d3ac27aa01e1743a39"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines_1_1traits.html#aa95a25e7488858d3ac27aa01e1743a39">is_applicable_v</a></td></tr>
+<tr class="separator:aa95a25e7488858d3ac27aa01e1743a39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a8b424d101ae69a23e6326b5581489cee" name="a8b424d101ae69a23e6326b5581489cee"></a>
@@ -133,7 +140,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pipeline__traits_8h_source.html#l00054">54</a> of file <a class="el" href="pipeline__traits_8h_source.html">pipeline_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pipeline__traits_8h_source.html#l00064">64</a> of file <a class="el" href="pipeline__traits_8h_source.html">pipeline_traits.h</a>.</p>
 
 </div>
 </div>
@@ -151,13 +158,36 @@ template&lt;std::size_t , <a class="el" href="namespacedaw.html#a9dd289d6deb8833
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pipeline__traits_8h_source.html#l00038">38</a> of file <a class="el" href="pipeline__traits_8h_source.html">pipeline_traits.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pipeline__traits_8h_source.html#l00045">45</a> of file <a class="el" href="pipeline__traits_8h_source.html">pipeline_traits.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="ab1ba41a3e4357813fd3143a88c675a8e" name="ab1ba41a3e4357813fd3143a88c675a8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1ba41a3e4357813fd3143a88c675a8e">&#9670;&#160;</a></span>is_applicable_impl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Fn</a> , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Arg</a> , std::size_t... Is&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">consteval</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a> daw::pipelines::traits::is_applicable_impl </td>
+          <td>(</td>
+          <td class="paramtype">std::index_sequence&lt; Is... &gt;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="pipeline__traits_8h_source.html#l00028">28</a> of file <a class="el" href="pipeline__traits_8h_source.html">pipeline_traits.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a83602c5834666d164bf17ed99df1fa21" name="a83602c5834666d164bf17ed99df1fa21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a83602c5834666d164bf17ed99df1fa21">&#9670;&#160;</a></span>is_applicable_v</h2>
+<a id="aa95a25e7488858d3ac27aa01e1743a39" name="aa95a25e7488858d3ac27aa01e1743a39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa95a25e7488858d3ac27aa01e1743a39">&#9670;&#160;</a></span>is_applicable_v</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -168,7 +198,7 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a> daw::pipelines::traits::is_applicable_v&lt; <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Fn</a>, std::tuple&lt; Ts... &gt; &gt; = <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">false</a></td>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">bool</a> daw::pipelines::traits::is_applicable_v</td>
         </tr>
       </table>
   </td>
@@ -177,8 +207,18 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="pipeline__traits_8h_source.html#l00027">27</a> of file <a class="el" href="pipeline__traits_8h_source.html">pipeline_traits.h</a>.</p>
+<b>Initial value:</b><div class="fragment"><div class="line">= [] {</div>
+<div class="line">    <span class="keyword">using </span>tuple_t = std::remove_cvref_t&lt;Arg&gt;;</div>
+<div class="line">    <span class="keywordflow">if</span> <span class="keyword">constexpr</span>( <span class="keyword">requires</span> { <span class="keyword">typename</span> std::tuple_size&lt;tuple_t&gt;::type; } ) {</div>
+<div class="line">      <span class="keywordflow">return</span> <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">is_applicable_impl&lt;Fn, Arg&gt;</a>(</div>
+<div class="line">        std::make_index_sequence&lt;std::tuple_size_v&lt;tuple_t&gt;&gt;{ } );</div>
+<div class="line">    } <span class="keywordflow">else</span> {</div>
+<div class="line">      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line">    }</div>
+<div class="line">  }( )</div>
+<div class="ttc" id="anamespacedaw_html_a9dd289d6deb8833d9a8363e8827ccad8"><div class="ttname"><a href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">daw::void_t</a></div><div class="ttdeci">void void_t</div><div class="ttdef"><b>Definition</b> <a href="daw__traits_8h_source.html#l00934">daw_traits.h:934</a></div></div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="pipeline__traits_8h_source.html#l00034">34</a> of file <a class="el" href="pipeline__traits_8h_source.html">pipeline_traits.h</a>.</p>
 
 </div>
 </div>

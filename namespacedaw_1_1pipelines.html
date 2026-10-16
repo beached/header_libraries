@@ -397,6 +397,9 @@ Variables</h2></td></tr>
 <tr class="separator:a7a574abcc08d9ff5552770eec661d7fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d1482351d2c877702d4f7dea01db5a3" id="r_a0d1482351d2c877702d4f7dea01db5a3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a0d1482351d2c877702d4f7dea01db5a3">Flatten</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_flatten__t.html">pimpl::Flatten_t</a>{ }</td></tr>
 <tr class="separator:a0d1482351d2c877702d4f7dea01db5a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11cac30e68a5fe22b4e09f6959545dda" id="r_a11cac30e68a5fe22b4e09f6959545dda"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
+<tr class="memitem:a11cac30e68a5fe22b4e09f6959545dda"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a11cac30e68a5fe22b4e09f6959545dda">FromTuple</a> = <a class="el" href="namespacedaw_1_1pipelines.html#a744be75639ccf8fa623f11769e9d4be9">MapApply</a>( <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_from_tuple_fn.html">pimpl::FromTupleFn</a>&lt;T&gt;{ } )</td></tr>
+<tr class="separator:a11cac30e68a5fe22b4e09f6959545dda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19d0d1dd9a86c9d6f2ce518cf48f78b5" id="r_a19d0d1dd9a86c9d6f2ce518cf48f78b5"><td class="memTemplParams" colspan="2">template&lt;auto... haystack&gt; </td></tr>
 <tr class="memitem:a19d0d1dd9a86c9d6f2ce518cf48f78b5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw_1_1pipelines.html#a19d0d1dd9a86c9d6f2ce518cf48f78b5">IsOneOf</a> = <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1is__one__of__t.html">pimpl::is_one_of_t</a>&lt;haystack...&gt;{ }</td></tr>
 <tr class="separator:a19d0d1dd9a86c9d6f2ce518cf48f78b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2663,6 +2666,32 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="flatten_8h_source.html#l00240">240</a> of file <a class="el" href="flatten_8h_source.html">flatten.h</a>.</p>
+
+</div>
+</div>
+<a id="a11cac30e68a5fe22b4e09f6959545dda" name="a11cac30e68a5fe22b4e09f6959545dda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11cac30e68a5fe22b4e09f6959545dda">&#9670;&#160;</a></span>FromTuple</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">constexpr</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">auto</a> daw::pipelines::FromTuple = <a class="el" href="namespacedaw_1_1pipelines.html#a744be75639ccf8fa623f11769e9d4be9">MapApply</a>( <a class="el" href="structdaw_1_1pipelines_1_1pimpl_1_1_from_tuple_fn.html">pimpl::FromTupleFn</a>&lt;T&gt;{ } )</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="map_8h_source.html#l00512">512</a> of file <a class="el" href="map_8h_source.html">map.h</a>.</p>
 
 </div>
 </div>
