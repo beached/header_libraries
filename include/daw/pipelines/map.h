@@ -303,8 +303,8 @@ namespace daw::pipelines {
 	                          iterator_end_t<R>, Fn, Projection>,
 	      pimpl::map_iterator_end<iterator_end_t<R>>,
 	      pimpl::map_iterator<map_view<R, Fn, Projection> const,
-	                          const_iterator_or_t<R>, const_iterator_end_or_t<R>, Fn,
-	                          Projection>,
+	                          const_iterator_or_t<R>, const_iterator_end_or_t<R>,
+	                          Fn, Projection>,
 	      pimpl::map_iterator_end<const_iterator_end_or_t<R>>> {
 
 		using base_t = pimpl::stored_range_base_t<
@@ -313,8 +313,8 @@ namespace daw::pipelines {
 		                      iterator_end_t<R>, Fn, Projection>,
 		  pimpl::map_iterator_end<iterator_end_t<R>>,
 		  pimpl::map_iterator<map_view<R, Fn, Projection> const,
-		                      const_iterator_or_t<R>, const_iterator_end_or_t<R>, Fn,
-		                      Projection>,
+		                      const_iterator_or_t<R>, const_iterator_end_or_t<R>,
+		                      Fn, Projection>,
 		  pimpl::map_iterator_end<const_iterator_end_or_t<R>>>;
 
 		using typename base_t::const_iterator_first_t;
@@ -438,7 +438,7 @@ namespace daw::pipelines {
 				               "with apply and the range_reference_t" );
 				auto func = m_func;
 				return map_view{ DAW_FWD( r ), [=]( auto &&tp ) {
-					                return std::apply( func, tp );
+					                return std::apply( func, DAW_FWD( tp ) );
 				                } };
 			}
 		};
@@ -496,4 +496,18 @@ namespace daw::pipelines {
 		                      daw::remove_rvalue_ref_t<Compare>>{
 		  DAW_FWD( lo ), DAW_FWD2( hi ), DAW_FWD( compare ) };
 	}
+	namespace pimpl {
+		template<typename T>
+		struct FromTupleFn {
+			explicit FromTupleFn( ) = default;
+			template<typename... Args>
+			requires( std::is_constructible_v<T, Args...> )
+			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr T
+			operator( )( Args &&...args ) DAW_CPP23_STATIC_CALL_OP_CONST {
+				return T( DAW_FWD( args )... );
+			}
+		};
+	} // namespace pimpl
+	template<typename T>
+	inline constexpr auto FromTuple = MapApply( pimpl::FromTupleFn<T>{ } );
 } // namespace daw::pipelines

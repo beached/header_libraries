@@ -12,11 +12,16 @@
 #include <daw/daw_ensure.h>
 #include <daw/daw_pipelines.h>
 
+#include <array>
+#include <concepts>
 #include <cstddef>
 #include <forward_list>
 #include <iterator>
 #include <list>
+#include <memory>
 #include <ranges>
+#include <string>
+#include <tuple>
 #include <vector>
 
 namespace tests {
@@ -108,6 +113,67 @@ namespace tests {
 		static_assert( has_const_begin<decltype( r )> );
 		daw_ensure( *std::begin( r ) == 2 );
 	}
+
+	struct tuple_record {
+		int number;
+		std::string text;
+
+		friend bool operator==( tuple_record const &,
+		                        tuple_record const & ) = default;
+	};
+	static_assert(
+	  std::invocable<pimpl::FromTupleFn<tuple_record>, int, std::string> );
+	static_assert(
+	  not std::invocable<pimpl::FromTupleFn<tuple_record>, std::string> );
+
+	DAW_ATTRIB_NOINLINE void test_from_tuple_constructs_values( ) {
+		auto values = std::vector<std::tuple<int, std::string>>{
+		  { 1, "one" }, { 2, "two" }, { 3, "three" } };
+		auto const result =
+		  pipeline( values, FromTuple<tuple_record>, To<std::vector> );
+
+		daw_ensure( ( result == std::vector<tuple_record>{
+		                          { 1, "one" }, { 2, "two" }, { 3, "three" } } ) );
+	}
+
+	struct reference_record {
+		int &value;
+	};
+
+	DAW_ATTRIB_NOINLINE void test_from_tuple_preserves_references( ) {
+		auto value = 17;
+		auto values = std::array{ std::tie( value ) };
+		auto result = pipeline( values, FromTuple<reference_record> );
+
+		( *result.begin( ) ).value = 42;
+		daw_ensure( value == 42 );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_from_tuple_as_reusable_stage( ) {
+		constexpr auto make_records =
+		  pipeline( FromTuple<tuple_record>, To<std::vector> );
+		auto const result =
+		  make_records( std::array{ std::tuple{ 4, std::string{ "four" } },
+		                            std::tuple{ 5, std::string{ "five" } } } );
+
+		daw_ensure(
+		  ( result == std::vector<tuple_record>{ { 4, "four" }, { 5, "five" } } ) );
+	}
+
+	struct owning_record {
+		std::unique_ptr<int> value;
+	};
+
+	DAW_ATTRIB_NOINLINE void test_from_tuple_forwards_temporary_elements( ) {
+		auto tuples = std::array{ 6, 7 } | std::views::transform( []( int value ) {
+			              return std::tuple{ std::make_unique<int>( value ) };
+		              } );
+		auto result = pipeline( tuples, FromTuple<owning_record>, To<std::vector> );
+
+		daw_ensure( result.size( ) == 2 );
+		daw_ensure( *result[0].value == 6 );
+		daw_ensure( *result[1].value == 7 );
+	}
 } // namespace tests
 
 int main( ) {
@@ -116,4 +182,8 @@ int main( ) {
 	tests::test_map_has_no_size_over_unsized_range( );
 	tests::test_map_of_filter_view( );
 	tests::test_map_keeps_const_begin( );
+	tests::test_from_tuple_constructs_values( );
+	tests::test_from_tuple_preserves_references( );
+	tests::test_from_tuple_as_reusable_stage( );
+	tests::test_from_tuple_forwards_temporary_elements( );
 }
