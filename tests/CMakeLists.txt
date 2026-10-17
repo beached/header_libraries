@@ -238,12 +238,13 @@ set( NOT_MSVC_TEST_SOURCES
 #not included in CI as they are not ready
 set( DEV_TEST_SOURCES
 		 daw_bind_args_at_test.cpp
-		 daw_container_help_test.cpp
 		 daw_bit_queues_test.cpp
 		 daw_bit_test.cpp
+		 daw_container_help_test.cpp
 		 daw_min_perfect_hash_test.cpp
 		 daw_range_algorithm_test.cpp
 		 daw_sort_n_test.cpp
+		 daw_static_warn_if_test.cpp
 		 daw_tracked_allocator_test.cpp
 		 )
 
