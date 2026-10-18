@@ -843,8 +843,8 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span>        <a class="code hl_struct" href="structdaw_1_1sv2_1_1zero__terminated__t.html">zero_terminated_t</a> ) noexcept</div>
 <div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span>        : m_first( <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">s</a> )</div>
 <div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span>        , m_last( count ) {</div>
-<div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span>        <a class="code hl_define" href="daw__exception_8h.html#add83b8d4d62e12ed50596c174f29d047">DAW_DBG_PRECONDITION_CHECK</a>( <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">s</a> != <span class="keyword">nullptr</span> <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">or</a> count == 0,</div>
-<div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span>                                    <span class="stringliteral">&quot;[s, s+counbt) must be a valid range&quot;</span> );</div>
+<div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span>        <a class="code hl_define" href="daw__string__view_8h.html#a6c5254bc4658c74fe1aa1b38fbe5cba8">DAW_DBG_STRING_VIEW_PRECOND_CHECK</a>(</div>
+<div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span>          <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">s</a> != <span class="keyword">nullptr</span> <a class="code hl_typedef" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">or</a> count == 0, <span class="stringliteral">&quot;[s, s+counbt) must be a valid range&quot;</span> );</div>
 <div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span>        m_last = set_zero_terminated( m_first, m_last );</div>
 <div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span>      }</div>
 </div>
@@ -3036,7 +3036,6 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="adaw__ensure_8h_html"><div class="ttname"><a href="daw__ensure_8h.html">daw_ensure.h</a></div></div>
 <div class="ttc" id="adaw__ensure_8h_html_a0088a942f2fca813d80eeed16b32a2f3"><div class="ttname"><a href="daw__ensure_8h.html#a0088a942f2fca813d80eeed16b32a2f3">daw_dbg_ensure</a></div><div class="ttdeci">#define daw_dbg_ensure(...)</div><div class="ttdef"><b>Definition</b> <a href="daw__ensure_8h_source.html#l00090">daw_ensure.h:90</a></div></div>
 <div class="ttc" id="adaw__exception_8h_html"><div class="ttname"><a href="daw__exception_8h.html">daw_exception.h</a></div></div>
-<div class="ttc" id="adaw__exception_8h_html_add83b8d4d62e12ed50596c174f29d047"><div class="ttname"><a href="daw__exception_8h.html#add83b8d4d62e12ed50596c174f29d047">DAW_DBG_PRECONDITION_CHECK</a></div><div class="ttdeci">#define DAW_DBG_PRECONDITION_CHECK(Except,...)</div><div class="ttdef"><b>Definition</b> <a href="daw__exception_8h_source.html#l00508">daw_exception.h:508</a></div></div>
 <div class="ttc" id="adaw__fnv1a__hash_8h_html"><div class="ttname"><a href="daw__fnv1a__hash_8h.html">daw_fnv1a_hash.h</a></div></div>
 <div class="ttc" id="adaw__is__constant__evaluated_8h_html"><div class="ttname"><a href="daw__is__constant__evaluated_8h.html">daw_is_constant_evaluated.h</a></div></div>
 <div class="ttc" id="adaw__likely_8h_html"><div class="ttname"><a href="daw__likely_8h.html">daw_likely.h</a></div></div>
