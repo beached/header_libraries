@@ -80,6 +80,7 @@ set( TEST_SOURCES
 		 daw_nth_pack_element_test.cpp
 		 daw_optional_test.cpp
 		 daw_ordered_map_test.cpp
+		 daw_out_ptr_test.cpp
 		 daw_overload_test.cpp
 		 daw_parse_args_test.cpp
 		 daw_parse_to_test.cpp
