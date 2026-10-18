@@ -57,10 +57,15 @@ namespace daw {
 			return m_ptr;
 		}
 
-		constexpr pointer *get_out( ) {
+		[[deprecated(
+		  "use daw::out_ptr as get_out is only safe for an uninitialized "
+		  "observer_ptr" )]] constexpr pointer *
+		get_out( ) {
+			daw_ensure( not m_ptr );
 			return &m_ptr;
 		}
 
+	public:
 		constexpr explicit operator bool( ) const {
 			return static_cast<bool>( m_ptr );
 		}

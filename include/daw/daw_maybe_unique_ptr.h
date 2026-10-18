@@ -179,6 +179,9 @@ namespace daw {
 			return m_ptr.get( );
 		}
 
+		[[deprecated(
+		  "use daw::out_ptr as get_out is only safe for an uninitialized "
+		  "maybe_unique_ptr" )]]
 		constexpr pointer *get_out( ) noexcept {
 			return m_ptr.get_out( );
 		}

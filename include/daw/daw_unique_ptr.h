@@ -228,6 +228,9 @@ namespace daw {
 			return m_ptr;
 		}
 
+		[[deprecated(
+		  "use daw::out_ptr as get_out is only safe for an uninitialized "
+		  "unique_ptr" )]]
 		constexpr pointer *get_out( ) noexcept {
 			return std::addressof( m_ptr );
 		}
