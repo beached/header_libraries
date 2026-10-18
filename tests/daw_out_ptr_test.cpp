@@ -73,7 +73,7 @@ namespace {
 		auto p = std::unique_ptr<int>( );
 		auto const was_empty_during_call = [&] {
 			bool result = false;
-			(void)( make_int( daw::out_ptr( p ), 3 ), result = not p );
+			(void)( (void)make_int( daw::out_ptr( p ), 3 ), result = not p );
 			return result;
 		}( );
 		daw_ensure( was_empty_during_call );
