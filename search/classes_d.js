@@ -9,5 +9,6 @@ var searchData=
   ['optional_3c_20value_5ftype_20_3e_6',['optional&lt; value_type &gt;',['../structdaw_1_1optional.html',1,'daw']]],
   ['optional_5fpoly_7',['optional_poly',['../structdaw_1_1optional__poly.html',1,'daw']]],
   ['ordered_5fmap_8',['ordered_map',['../structdaw_1_1ordered__map.html',1,'daw']]],
-  ['overload_9',['overload',['../structdaw_1_1overload.html',1,'daw']]]
+  ['out_5fptr_5ft_9',['out_ptr_t',['../structdaw_1_1out__ptr__t.html',1,'daw']]],
+  ['overload_10',['overload',['../structdaw_1_1overload.html',1,'daw']]]
 ];
