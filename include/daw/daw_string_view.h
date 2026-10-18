@@ -724,8 +724,8 @@ namespace daw {
 			  zero_terminated_t ) noexcept
 			  : m_first( s )
 			  , m_last( count ) {
-				DAW_DBG_PRECONDITION_CHECK( s != nullptr or count == 0,
-				                            "[s, s+counbt) must be a valid range" );
+				DAW_DBG_STRING_VIEW_PRECOND_CHECK(
+				  s != nullptr or count == 0, "[s, s+counbt) must be a valid range" );
 				m_last = set_zero_terminated( m_first, m_last );
 			}
 
