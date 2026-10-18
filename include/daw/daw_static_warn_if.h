@@ -17,7 +17,8 @@
 	do {                                                           \
 		_Pragma( "GCC diagnostic push" );                            \
 		_Pragma( "GCC diagnostic warning \"-Wattribute-warning\"" ); \
-		if( __builtin_constant_p( Bool ) and Bool ) {                \
+		if( __builtin_constant_p( static_cast<bool>( Bool ) ) and    \
+		    static_cast<bool>( Bool ) ) {                            \
 			[]( ) __attribute__( ( warning( Message ) ) ) {}( );       \
 		}                                                            \
 		_Pragma( "GCC diagnostic pop" )                              \
