@@ -153,8 +153,11 @@
 
 #if defined( DAW_HAS_CLANG )
 #if __has_attribute( enable_if )
-#define DAW_ATTRIB_ENABLE_IF( ... ) \
-	__attribute__( ( enable_if( __VA_ARGS__ ) ) )
+#define DAW_ATTRIB_ENABLE_IF( ... )                             \
+	_Pragma( "clang diagnostic push" )                       /**/ \
+	  _Pragma( "clang diagnostic ignored \"-Wgcc-compat\"" ) /**/ \
+	  __attribute__( ( enable_if( __VA_ARGS__ ) ) )          /**/ \
+	  _Pragma( "clang diagnostic pop" )
 #endif
 #endif
 
