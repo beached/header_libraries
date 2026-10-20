@@ -23,10 +23,12 @@
 #define DAW_CX_DTOR constexpr
 #define DAW_CPP20_CX_DTOR constexpr
 #define DAW_CPP20_CX_ALLOC constexpr
+#define DAW_CPP20_CX_ALLOC2 constexpr
 #else
 #define DAW_CX_DTOR inline
 #define DAW_CPP20_CX_DTOR inline
 #define DAW_CPP20_CX_ALLOC inline
+#define DAW_CPP20_CX_ALLOC2 
 #endif
 
 #if defined( __cpp_lib_three_way_comparison )
