@@ -1490,4 +1490,13 @@ namespace daw::cxmath {
 		}
 	};
 	inline constexpr auto cmp_greater_equal = cmp_greater_equal_t{ };
+
+	///
+	/// @tparam Integer  an integer or integer like type
+	/// @param x value to reset lowest set bit
+	/// @return x with lowest set bit unset
+	template<typename Integer>
+	DAW_ATTRIB_INLINE constexpr Integer blsr( Integer x ) {
+		return x &= x - Integer{ 1 };
+	}
 } // namespace daw::cxmath
