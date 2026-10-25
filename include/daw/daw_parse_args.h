@@ -259,7 +259,6 @@ namespace daw {
 			return result;
 		}
 
-	public:
 		[[nodiscard]] constexpr std::optional<std::uint64_t>
 		as_unsigned( ) const noexcept {
 			if( not *this ) {
@@ -299,6 +298,7 @@ namespace daw {
 			return value.data( ) != nullptr;
 		}
 
+	public:
 		template<typename Integer = int>
 		[[nodiscard]] constexpr std::optional<Integer> as_int( ) const noexcept {
 			static_assert( std::is_integral_v<Integer> );

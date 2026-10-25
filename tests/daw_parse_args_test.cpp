@@ -33,11 +33,11 @@ namespace {
 	}
 
 	void ensure_unsigned( char *text, std::optional<std::uint64_t> expected ) {
-		daw_ensure( parse_argument( text ).as_unsigned( ) == expected );
+		daw_ensure( parse_argument( text ).as_int<std::uint64_t>( ) == expected );
 	}
 
 	void ensure_signed( char *text, std::optional<std::int64_t> expected ) {
-		daw_ensure( parse_argument( text ).as_signed( ) == expected );
+		daw_ensure( parse_argument( text ).as_int<std::int64_t>( ) == expected );
 	}
 } // namespace
 
