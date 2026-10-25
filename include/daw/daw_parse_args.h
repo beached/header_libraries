@@ -503,11 +503,20 @@ namespace daw {
 			return m_arguments[idx];
 		}
 
-		[[nodiscard]] constexpr std::optional<daw::string_view>
-		operator[]( daw::string_view name ) const {
+		[[nodiscard]] constexpr std::optional<Argument>
+		get_argument( daw::string_view name ) const {
 			auto const pos = find_argument_position( name );
 			if( pos ) {
-				return m_arguments[*pos].value;
+				return m_arguments[*pos];
+			}
+			return std::nullopt;
+		}
+
+		[[nodiscard]] constexpr std::optional<daw::string_view>
+		operator[]( daw::string_view name ) const {
+			auto a = get_argument( name );
+			if( a ) {
+				return a->value;
 			}
 			return std::nullopt;
 		}
