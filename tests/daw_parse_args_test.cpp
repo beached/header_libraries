@@ -19,11 +19,15 @@
 static_assert(
   std::is_same_v<
     typename std::iterator_traits<daw::argv_iterator>::iterator_category,
-    std::random_access_iterator_tag> );
+		std::input_iterator_tag> );
 static_assert(
   std::is_same_v<
     typename std::iterator_traits<daw::args_iterator>::iterator_category,
-    std::random_access_iterator_tag> );
+		std::input_iterator_tag> );
+#if defined( __cpp_lib_concepts )
+static_assert( std::random_access_iterator<daw::argv_iterator> );
+static_assert( std::random_access_iterator<daw::args_iterator> );
+#endif
 
 namespace {
 	[[nodiscard]] daw::Argument parse_argument( char *text ) {

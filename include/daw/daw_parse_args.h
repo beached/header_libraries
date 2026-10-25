@@ -36,7 +36,8 @@ namespace daw {
 		};
 
 	public:
-		using iterator_category = std::random_access_iterator_tag;
+		using iterator_concept = std::random_access_iterator_tag;
+		using iterator_category = std::input_iterator_tag;
 		using value_type = daw::string_view;
 		using reference = value_type;
 		using pointer = arrow_proxy;
@@ -334,7 +335,8 @@ namespace daw {
 		};
 
 	public:
-		using iterator_category = std::random_access_iterator_tag;
+		using iterator_concept = std::random_access_iterator_tag;
+		using iterator_category = std::input_iterator_tag;
 		using value_type = Argument;
 		using reference = value_type;
 		using pointer = arrow_proxy;
@@ -570,7 +572,7 @@ namespace daw {
 			if( pos == end( ) ) {
 				return std::nullopt;
 			}
-			return static_cast<size_type>( std::distance( begin( ), pos ) );
+			return static_cast<size_type>( pos - begin( ) );
 		}
 
 		[[nodiscard]] constexpr std::optional<size_type>
@@ -581,7 +583,7 @@ namespace daw {
 			if( pos == end( ) ) {
 				return std::nullopt;
 			}
-			return static_cast<size_type>( std::distance( begin( ), pos ) );
+			return static_cast<size_type>( pos - begin( ) );
 		}
 
 		[[nodiscard]] constexpr bool has_named_argument( ) const {
