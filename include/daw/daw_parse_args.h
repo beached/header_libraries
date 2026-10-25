@@ -208,7 +208,9 @@ namespace daw {
 		friend class ::daw::Arguments;
 		friend class ::daw::args_iterator;
 
-		constexpr Argument( daw::string_view args ) {
+		explicit constexpr Argument( ) = default;
+
+		explicit constexpr Argument( daw::string_view args ) {
 			if( args.starts_with( "--" ) ) {
 				// We are a named argument, starting with '--'
 				args.remove_prefix( 2 );
@@ -226,7 +228,11 @@ namespace daw {
 		}
 
 	public:
-		[[nodiscard]] DAW_CPP20_CX_ALLOC std::string as_string( ) const {
+		[[nodiscard]] DAW_CPP20_CX_ALLOC std::optional<std::string>
+		as_string( ) const {
+			if( not *this ) {
+				return std::nullopt;
+			}
 			return std::string( value );
 		}
 
@@ -254,10 +260,16 @@ namespace daw {
 
 	public:
 		[[nodiscard]] std::optional<std::uint64_t> as_unsigned( ) const noexcept {
+			if( not *this ) {
+				return std::nullopt;
+			}
 			return parse_unsigned( value );
 		}
 
 		[[nodiscard]] std::optional<std::int64_t> as_signed( ) const noexcept {
+			if( not *this ) {
+				return std::nullopt;
+			}
 			auto sv = value;
 			if( sv.empty( ) ) {
 				return std::nullopt;
@@ -278,6 +290,10 @@ namespace daw {
 				return min_value<std::int64_t>;
 			}
 			return std::nullopt;
+		}
+
+		explicit constexpr operator bool( ) const {
+			return value.data( ) != nullptr;
 		}
 	};
 
@@ -503,20 +519,20 @@ namespace daw {
 			return m_arguments[idx];
 		}
 
-		[[nodiscard]] constexpr std::optional<Argument>
+		[[nodiscard]] constexpr Argument
 		get_argument( daw::string_view name ) const {
 			auto const pos = find_argument_position( name );
 			if( pos ) {
 				return m_arguments[*pos];
 			}
-			return std::nullopt;
+			return Argument( );
 		}
 
 		[[nodiscard]] constexpr std::optional<daw::string_view>
 		operator[]( daw::string_view name ) const {
 			auto a = get_argument( name );
 			if( a ) {
-				return a->value;
+				return a.value;
 			}
 			return std::nullopt;
 		}
