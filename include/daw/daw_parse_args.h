@@ -8,12 +8,13 @@
 
 #pragma once
 
+#include "daw/algorithms/daw_algorithm_find.h"
 #include "daw/ciso646.h"
 #include "daw/cpp_20.h"
 #include "daw/daw_arith_traits.h"
 #include "daw/daw_as.h"
+#include "daw/daw_cxmath.h"
 #include "daw/daw_string_view.h"
-#include "daw_cxmath.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -566,9 +567,10 @@ namespace daw {
 
 		[[nodiscard]] constexpr std::optional<size_type>
 		find_argument_position( daw::string_view name ) const {
-			auto pos = std::find_if( begin( ), end( ), [name]( Argument const &arg ) {
-				return arg.name == name;
-			} );
+			auto pos = daw::algorithm::find_if(
+			  begin( ), end( ), [name]( Argument const &arg ) {
+				  return arg.name == name;
+			  } );
 			if( pos == end( ) ) {
 				return std::nullopt;
 			}
@@ -577,9 +579,10 @@ namespace daw {
 
 		[[nodiscard]] constexpr std::optional<size_type>
 		first_named_argument( ) const {
-			auto pos = std::find_if( begin( ), end( ), []( Argument const &arg ) {
-				return not arg.name.empty( );
-			} );
+			auto pos =
+			  daw::algorithm::find_if( begin( ), end( ), []( Argument const &arg ) {
+				  return not arg.name.empty( );
+			  } );
 			if( pos == end( ) ) {
 				return std::nullopt;
 			}
