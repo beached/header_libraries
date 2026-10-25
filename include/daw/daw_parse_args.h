@@ -13,6 +13,7 @@
 #include "daw/daw_arith_traits.h"
 #include "daw/daw_as.h"
 #include "daw/daw_string_view.h"
+#include "daw_cxmath.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -237,7 +238,7 @@ namespace daw {
 		}
 
 	private:
-		[[nodiscard]] static std::optional<std::uint64_t>
+		[[nodiscard]] static constexpr std::optional<std::uint64_t>
 		parse_unsigned( daw::string_view sv ) noexcept {
 			if( sv.empty( ) ) {
 				return std::nullopt;
@@ -259,14 +260,16 @@ namespace daw {
 		}
 
 	public:
-		[[nodiscard]] std::optional<std::uint64_t> as_unsigned( ) const noexcept {
+		[[nodiscard]] constexpr std::optional<std::uint64_t>
+		as_unsigned( ) const noexcept {
 			if( not *this ) {
 				return std::nullopt;
 			}
 			return parse_unsigned( value );
 		}
 
-		[[nodiscard]] std::optional<std::int64_t> as_signed( ) const noexcept {
+		[[nodiscard]] constexpr std::optional<std::int64_t>
+		as_signed( ) const noexcept {
 			if( not *this ) {
 				return std::nullopt;
 			}
@@ -294,6 +297,28 @@ namespace daw {
 
 		explicit constexpr operator bool( ) const {
 			return value.data( ) != nullptr;
+		}
+
+		template<typename Integer = int>
+		[[nodiscard]] constexpr std::optional<Integer> as_int( ) const noexcept {
+			static_assert( std::is_integral_v<Integer> );
+			auto const v = [this] {
+				if constexpr( std::is_signed_v<Integer> ) {
+					return as_signed( );
+				} else {
+					return as_unsigned( );
+				}
+			}( );
+			if( not v ) {
+				return std::nullopt;
+			}
+			if( daw::cxmath::cmp_less( *v, lowest_value<Integer> ) ) {
+				return std::nullopt;
+			}
+			if( daw::cxmath::cmp_greater( *v, max_value<Integer> ) ) {
+				return std::nullopt;
+			}
+			return as<Integer>( *v );
 		}
 	};
 
