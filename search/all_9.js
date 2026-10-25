@@ -16,7 +16,7 @@ var searchData=
   ['has_5fmake_5fsigned_5fv_13',['has_make_signed_v',['../namespacedaw.html#a65d89cd269a0f0c17fce85bbe1ba67a6',1,'daw']]],
   ['has_5fmake_5funsigned_5fv_14',['has_make_unsigned_v',['../namespacedaw.html#a938cdce20af89ea78bbc6f3c45e61a87',1,'daw']]],
   ['has_5fmutable_5fpointer_15',['has_mutable_pointer',['../structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#a891a710ec39819d43b69cf4ce5b52b3f',1,'daw::span&lt; T, std::enable_if_t&lt; std::is_const_v&lt; T &gt; &gt; &gt;::has_mutable_pointer'],['../structdaw_1_1span_3_01_t_00_01std_1_1enable__if__t_3_01not_01std_1_1is__const__v_3_01_t_01_4_01_4_01_4.html#af389d8336dc1e570366bdfb0c65443aa',1,'daw::span&lt; T, std::enable_if_t&lt; not std::is_const_v&lt; T &gt; &gt; &gt;::has_mutable_pointer']]],
-  ['has_5fnamed_5fargument_16',['has_named_argument',['../classdaw_1_1_arguments.html#a2607db341529e367890dea5141be0ddb',1,'daw::Arguments']]],
+  ['has_5fnamed_5fargument_16',['has_named_argument',['../classdaw_1_1_arguments.html#abd2ed87fada6b77bd13ae26c6adc4cd7',1,'daw::Arguments']]],
   ['has_5fnode_17',['has_node',['../structdaw_1_1bounded__graph__t.html#a6ebd152cd32f9b34e7110c7c8cd1ace4',1,'daw::bounded_graph_t::has_node()'],['../structdaw_1_1graph__t.html#aa6c262c4d1c183faf4bf88fe440fc6aa',1,'daw::graph_t::has_node()']]],
   ['has_5fop_5feq_5fv_18',['has_op_eq_v',['../namespacedaw_1_1traits_1_1operators.html#a6ade542ba5684b587afc34112011edcd',1,'daw::traits::operators']]],
   ['has_5fop_5fge_5fv_19',['has_op_ge_v',['../namespacedaw_1_1traits_1_1operators.html#a75193a58a9b087dc2dbb63d61a0b84a0',1,'daw::traits::operators']]],
