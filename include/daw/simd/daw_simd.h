@@ -36,8 +36,10 @@
 #include "daw/simd/daw_simd_avx512.h"
 #elif defined( __AVX2__ ) or defined( _M_AVX2 )
 #include "daw/simd/daw_simd_avx2.h"
-#elif defined( __SSE4_2__ ) or defined( __AVX__ ) or defined( _M_X64 ) or \
-  ( defined( _M_IX86_FP ) and _M_IX86_FP >= 2 )
+#elif defined( __SSE4_2__ ) or defined( __AVX__ )
+// SSE4.2 is the minimum.  With MSVC this means /arch:SSE4.2 (__SSE4_2__) or
+// /arch:AVX and above (__AVX__).  _M_X64/_M_IX86_FP only promise SSE2 so they
+// cannot be used here
 #include "daw/simd/daw_simd_sse42.h"
 #endif
 
