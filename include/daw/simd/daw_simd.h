@@ -177,8 +177,9 @@ namespace daw::simd_impl {
 	 * those past the count have unspecified values.  Not stopping at the count
 	 * keeps the stores free of branches on it.  With the event bits of a block
 	 * and its offset this lists the event positions.  A byte compress of the
-	 * lane numbers where the target has one, groups of eight set bits
-	 * otherwise.
+	 * lane numbers where the target has one, groups of set bits otherwise:
+	 * eight at a time, except aarch64's four (its ctz is two instructions, so
+	 * groups of eight overshoot more than they amortize).
 	 */
 	DAW_ATTRIB_INLINE std::size_t flatten_bits( std::uint64_t bits,
 	                                            std::uint32_t base,
@@ -202,6 +203,22 @@ namespace daw::simd_impl {
 			store( 1, _mm512_extracti32x4_epi32( packed, 1 ) );
 			store( 2, _mm512_extracti32x4_epi32( packed, 2 ) );
 			store( 3, _mm512_extracti32x4_epi32( packed, 3 ) );
+		}
+#elif defined( __aarch64__ )
+		// rbit+clz (ctz) is 2 instructions on aarch64, unlike x86's single
+		// tzcnt, so the group-of-8 overshoot below is not free here: JSON
+		// blocks usually have well under 8 events, so most of its ctz's would
+		// be wasted.  Groups of 4 cut that waste while still amortizing the
+		// loop's control overhead across more than one element; measured on
+		// real NEON hardware, this beats group sizes 1, 2, 8 and 16.
+		for( std::size_t entry = 0; entry < count; entry += 4U ) {
+			for( std::size_t n = 0; n < 4U; ++n ) {
+				auto const lane =
+				  static_cast<std::uint32_t>( daw::cxmath::count_trailing_zeros(
+				    bits | ( std::uint64_t{ 1 } << 63U ) ) );
+				output[entry + n] = base + lane;
+				bits = daw::cxmath::blsr( bits );
+			}
 		}
 #else
 		// The top bit keeps the trailing zero count defined once bits runs out
