@@ -261,21 +261,6 @@ add_library( daw_test INTERFACE )
 target_link_libraries( daw_test INTERFACE daw::header_libraries )
 target_compile_options( daw_test INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/permissive-> )
 
-# Enable the SIMD paths(SSE4.2 minimum on x86) in tests
-if( MSVC )
-	# Covers MSVC and clang-cl.  There is no native option and /arch:AVX is
-	# the lowest level that is accepted for both x86 and x64 and defines __AVX__
-	if( CMAKE_SYSTEM_PROCESSOR MATCHES "(x86)|(X86)|(amd64)|(AMD64)" )
-		target_compile_options( daw_test INTERFACE /arch:AVX )
-	endif()
-else()
-	include( CheckCXXCompilerFlag )
-	check_cxx_compiler_flag( -march=native DAW_HAS_MARCH_NATIVE )
-	if( DAW_HAS_MARCH_NATIVE )
-		target_compile_options( daw_test INTERFACE -march=native )
-	endif()
-endif()
-
 set( all_tests ${TEST_SOURCES} )
 
 if( NOT MSVC )
@@ -368,3 +353,20 @@ foreach( CUR_TEST IN LISTS DEV_TEST_SOURCES )
 	endif()
 	target_link_libraries( ${CUR_TEST_NAME} PRIVATE daw_test )
 endforeach()
+
+# Enable the SIMD paths(SSE4.2 minimum on x86) in tests
+if( MSVC )
+	# Covers MSVC and clang-cl.  There is no native option and /arch:AVX is
+	# the lowest level that is accepted for both x86 and x64 and defines __AVX__
+	if( CMAKE_SYSTEM_PROCESSOR MATCHES "(x86)|(X86)|(amd64)|(AMD64)" )
+		target_compile_options( daw_simd_test INTERFACE /arch:AVX )
+	endif()
+else()
+	include( CheckCXXCompilerFlag )
+	check_cxx_compiler_flag( -march=native DAW_HAS_MARCH_NATIVE )
+	if( DAW_HAS_MARCH_NATIVE )
+		target_compile_options( daw_simd_test INTERFACE -march=native )
+	endif()
+endif()
+
+
