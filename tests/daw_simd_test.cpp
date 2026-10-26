@@ -7,8 +7,8 @@
 //
 // Checks the operations daw::simd_impl adds to the SIMD backends against
 // scalar references: compress_bits, prefix_xor and flatten_bits, whichever
-// instruction implements them, mask compression/decompression, and lookup16
-// on every byte value.
+// instruction implements them, mask compression/decompression, packing the
+// masks of a 64 byte block, and lookup16 on every byte value.
 
 
 #include "daw/simd/daw_simd.h"
@@ -19,6 +19,7 @@
 #include <cstdint>
 #include <random>
 #include <string>
+#include <utility>
 
 #if defined( DAW_HAS_SIMD )
 namespace {
@@ -151,6 +152,42 @@ namespace {
 		}
 	}
 
+	template<std::size_t... Is>
+	auto split_masks( std::uint64_t bits, std::index_sequence<Is...> ) {
+		using simd_type = daw::simd::vec<char>;
+		constexpr auto lanes = static_cast<std::size_t>( simd_type::size( ) );
+		constexpr auto valid_bits = ~std::uint64_t{ 0 } >> ( 64U - lanes );
+		return std::array<typename simd_type::mask_type, sizeof...( Is )>{
+		  daw::simd::decompress_mask( ( bits >> ( Is * lanes ) ) &
+		                              valid_bits )... };
+	}
+
+	void check_pack_masks( std::uint64_t bits ) {
+		using simd_type = daw::simd::vec<char>;
+		constexpr auto lanes = static_cast<std::size_t>( simd_type::size( ) );
+		auto const masks =
+		  split_masks( bits, std::make_index_sequence<64U / lanes>{ } );
+		if( daw::simd::pack_masks( masks ) != bits ) {
+			daw_ensure_error( true,
+			                  "pack_masks differs for " + std::to_string( bits ) );
+		}
+	}
+
+	template<typename Rng>
+	void check_pack_masks( Rng &rng ) {
+		check_pack_masks( 0 );
+		check_pack_masks( ~std::uint64_t{ 0 } );
+		for( unsigned n = 0; n < 64U; ++n ) {
+			// Each lane of each mask on its own
+			check_pack_masks( std::uint64_t{ 1 } << n );
+			check_pack_masks( ~( std::uint64_t{ 1 } << n ) );
+		}
+		for( int n = 0; n < 100'000; ++n ) {
+			check_pack_masks( rng( ) );
+			check_pack_masks( rng( ) & rng( ) & rng( ) );
+		}
+	}
+
 	template<typename Rng>
 	void check_lookup16( Rng &rng ) {
 		using simd_type = daw::simd::vec<char>;
@@ -188,6 +225,7 @@ int main( ) {
 	check_prefix_xor( rng );
 	check_flatten_bits( rng );
 	check_mask_conversion( rng );
+	check_pack_masks( rng );
 	check_lookup16( rng );
 }
 #else

@@ -15,6 +15,7 @@
 
 #include <immintrin.h>
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
@@ -48,6 +49,13 @@ namespace daw::simd_impl::avx2 {
 
 	[[nodiscard]] inline std::uint64_t compress_mask( mask value ) noexcept {
 		return value.to_ullong( );
+	}
+
+	/// The masks of the vectors of a 64 byte block as one integer, bit
+	/// 32 * k + n is lane n of masks[k]
+	[[nodiscard]] inline std::uint64_t
+	pack_masks( std::array<mask, 2> const &masks ) noexcept {
+		return masks[0].to_ullong( ) | ( masks[1].to_ullong( ) << 32U );
 	}
 
 	[[nodiscard]] inline mask decompress_mask( std::uint64_t bits ) noexcept {

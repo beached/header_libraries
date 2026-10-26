@@ -15,6 +15,7 @@
 
 #include <arm_neon.h>
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
@@ -22,24 +23,13 @@
 
 namespace daw::simd_impl::neon {
 	namespace details {
+		/// The bit of each lane within its half
+		alignas( 16 ) inline constexpr std::uint8_t bit_values[16] = {
+		  0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80,
+		  0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };
+
 		[[nodiscard]] inline std::uint64_t
 		to_bits( uint8x16_t comparison ) noexcept {
-			alignas( 16 ) static constexpr std::uint8_t bit_values[16] = { 0x01,
-			                                                               0x02,
-			                                                               0x04,
-			                                                               0x08,
-			                                                               0x10,
-			                                                               0x20,
-			                                                               0x40,
-			                                                               0x80,
-			                                                               0x01,
-			                                                               0x02,
-			                                                               0x04,
-			                                                               0x08,
-			                                                               0x10,
-			                                                               0x20,
-			                                                               0x40,
-			                                                               0x80 };
 			auto const bits = vandq_u8( comparison, vld1q_u8( bit_values ) );
 			auto const pairs = vpaddlq_u8( bits );
 			auto const quads = vpaddlq_u16( pairs );
@@ -82,33 +72,41 @@ namespace daw::simd_impl::neon {
 		[[nodiscard]] friend mask operator!( mask value ) noexcept {
 			return mask( vmvnq_u8( value.m_value ) );
 		}
+
+		friend std::uint64_t pack_masks( std::array<mask, 4> const &masks ) noexcept;
 	};
+
+	/// The masks of the four vectors of a 64 byte block as one integer, bit
+	/// 16 * k + n is lane n of masks[k].  Reducing the four together takes
+	/// about a quarter of the instructions of four to_ullong calls
+	[[nodiscard]] inline std::uint64_t
+	pack_masks( std::array<mask, 4> const &masks ) noexcept {
+#if defined( __aarch64__ )
+		auto const weights = vld1q_u8( details::bit_values );
+		// Each pairwise add halves the bytes of a vector, the last leaves two
+		// bytes of lane bits per mask in mask order
+		auto const sum01 = vpaddq_u8( vandq_u8( masks[0].m_value, weights ),
+		                              vandq_u8( masks[1].m_value, weights ) );
+		auto const sum23 = vpaddq_u8( vandq_u8( masks[2].m_value, weights ),
+		                              vandq_u8( masks[3].m_value, weights ) );
+		auto const sum0123 = vpaddq_u8( sum01, sum23 );
+		return vgetq_lane_u64(
+		  vreinterpretq_u64_u8( vpaddq_u8( sum0123, sum0123 ) ), 0 );
+#else
+		return masks[0].to_ullong( ) | ( masks[1].to_ullong( ) << 16U ) |
+		       ( masks[2].to_ullong( ) << 32U ) | ( masks[3].to_ullong( ) << 48U );
+#endif
+	}
 
 	[[nodiscard]] inline std::uint64_t compress_mask( mask value ) noexcept {
 		return value.to_ullong( );
 	}
 
 	[[nodiscard]] inline mask decompress_mask( std::uint64_t bits ) noexcept {
-		alignas( 16 ) static constexpr std::uint8_t bit_values[16] = { 0x01,
-		                                                               0x02,
-		                                                               0x04,
-		                                                               0x08,
-		                                                               0x10,
-		                                                               0x20,
-		                                                               0x40,
-		                                                               0x80,
-		                                                               0x01,
-		                                                               0x02,
-		                                                               0x04,
-		                                                               0x08,
-		                                                               0x10,
-		                                                               0x20,
-		                                                               0x40,
-		                                                               0x80 };
 		auto const bytes =
 		  vcombine_u8( vdup_n_u8( static_cast<std::uint8_t>( bits ) ),
 		               vdup_n_u8( static_cast<std::uint8_t>( bits >> 8U ) ) );
-		auto const values = vld1q_u8( bit_values );
+		auto const values = vld1q_u8( details::bit_values );
 		return mask( vceqq_u8( vandq_u8( bytes, values ), values ) );
 	}
 
