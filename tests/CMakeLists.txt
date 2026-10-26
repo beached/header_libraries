@@ -95,6 +95,7 @@ set( TEST_SOURCES
 		 daw_rw_ref_test.cpp
 		 daw_scope_guard_test.cpp
 		 daw_simple_array_test.cpp
+		 daw_simd_test.cpp
 		 daw_sip_hash_test.cpp
 		 daw_size_literals_test.cpp
 		 daw_span_test.cpp
