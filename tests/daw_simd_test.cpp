@@ -19,6 +19,7 @@
 #include <cstring>
 #include <cstddef>
 #include <cstdint>
+#include <iostream>
 #include <random>
 #include <string>
 #include <utility>
@@ -366,5 +367,7 @@ int main( ) {
 	check_vec128( rng );
 }
 #else
-int main( ) {}
+int main( ) {
+	std::cout << "SIMD not enabled\n";
+}
 #endif
