@@ -8,13 +8,15 @@
 // Checks the operations daw::simd_impl adds to the SIMD backends against
 // scalar references: compress_bits, prefix_xor and flatten_bits, whichever
 // instruction implements them, mask compression/decompression, packing the
-// masks of a 64 byte block, and lookup16 on every byte value.
+// masks of a 64 byte block, lookup16 on every byte value, and the vec128
+// arithmetic.
 
 
 #include "daw/simd/daw_simd.h"
 #include "daw/daw_ensure_error.h"
 
 #include <array>
+#include <cstring>
 #include <cstddef>
 #include <cstdint>
 #include <random>
@@ -188,6 +190,140 @@ namespace {
 		}
 	}
 
+
+	template<typename T, std::size_t... Is>
+	std::array<T, sizeof...( Is )> lanes_of( daw::simd::vec128<T> v,
+	                                        std::index_sequence<Is...> ) {
+		return { v.template get<Is>( )... };
+	}
+
+	template<typename T>
+	std::array<T, 16 / sizeof( T )> lanes_of( daw::simd::vec128<T> v ) {
+		return lanes_of( v, std::make_index_sequence<16 / sizeof( T )>{ } );
+	}
+
+	template<typename T>
+	std::array<T, 16 / sizeof( T )> lanes_in( std::array<unsigned char, 16> const &bytes ) {
+		std::array<T, 16 / sizeof( T )> result{ };
+		std::memcpy( result.data( ), bytes.data( ), 16 );
+		return result;
+	}
+
+	template<typename T, typename Rng>
+	void check_vec128_add_sub( Rng &rng ) {
+		using vec_t = daw::simd::vec128<T>;
+		for( int n = 0; n < 10'000; ++n ) {
+			std::array<unsigned char, 16> a{ }, b{ };
+			for( auto &c : a ) {
+				c = static_cast<unsigned char>( rng( ) );
+			}
+			for( auto &c : b ) {
+				c = static_cast<unsigned char>( rng( ) );
+			}
+			auto const la = lanes_in<T>( a );
+			auto const lb = lanes_in<T>( b );
+			auto const sum = lanes_of( vec_t::load( a.data( ) ) + vec_t::load( b.data( ) ) );
+			auto const diff = lanes_of( vec_t::load( a.data( ) ) - vec_t::load( b.data( ) ) );
+			for( std::size_t i = 0; i < la.size( ); ++i ) {
+				if( not( sum[i] == static_cast<T>( la[i] + lb[i] ) ) ) {
+				daw_ensure_error( true, "vec128 operator+ differs" );
+			}
+				if( not( diff[i] == static_cast<T>( la[i] - lb[i] ) ) ) {
+				daw_ensure_error( true, "vec128 operator- differs" );
+			}
+			}
+		}
+	}
+
+	template<typename Rng>
+	void check_vec128( Rng &rng ) {
+		using v8 = daw::simd::vec128<std::uint8_t>;
+		using v16 = daw::simd::vec128<std::uint16_t>;
+		using v32 = daw::simd::vec128<std::uint32_t>;
+		check_vec128_add_sub<std::uint8_t>( rng );
+		check_vec128_add_sub<std::uint16_t>( rng );
+		check_vec128_add_sub<std::uint32_t>( rng );
+
+		// Broadcast, pattern and load_low
+		for( auto l : lanes_of( v16( 0xBEEF ) ) ) {
+			if( not( l == 0xBEEF ) ) {
+				daw_ensure_error( true, "vec128 broadcast differs" );
+			}
+		}
+		auto const pat = lanes_of( v32::pattern( 7U, 0xFFFF'FFFFU ) );
+		for( std::size_t i = 0; i < pat.size( ); ++i ) {
+			if( not( pat[i] == ( i % 2 == 0 ? 7U : 0xFFFF'FFFFU ) ) ) {
+				daw_ensure_error( true, "vec128 pattern differs" );
+			}
+		}
+		std::array<unsigned char, 16> bytes{ };
+		for( std::size_t i = 0; i < bytes.size( ); ++i ) {
+			bytes[i] = static_cast<unsigned char>( 0xA0U + i );
+		}
+		auto const low = lanes_of( v8::load_low( bytes.data( ) ) );
+		for( std::size_t i = 0; i < low.size( ); ++i ) {
+			if( not( low[i] == ( i < 8 ? bytes[i] : 0 ) ) ) {
+				daw_ensure_error( true, "vec128 load_low differs" );
+			}
+		}
+
+		for( int n = 0; n < 100'000; ++n ) {
+			// 8 bit lanes: weights < 128, pair sums <= 32767
+			std::array<unsigned char, 16> v{ }, w{ };
+			for( std::size_t i = 0; i < 16; ++i ) {
+				v[i] = static_cast<unsigned char>( rng( ) );
+				w[i] = static_cast<unsigned char>( rng( ) % 64U );
+			}
+			if( n == 0 ) {
+				v.fill( 0xFF );
+				w.fill( 63 );
+			}
+			auto const r8 = lanes_of( mul_add_pairs( v8::load( v.data( ) ), v8::load( w.data( ) ) ) );
+			for( std::size_t i = 0; i < r8.size( ); ++i ) {
+				auto const expected = static_cast<std::uint16_t>(
+				  v[2 * i] * w[2 * i] + v[2 * i + 1] * w[2 * i + 1] );
+				if( not( r8[i] == expected ) ) {
+				daw_ensure_error( true, "vec128 8 bit mul_add_pairs differs" );
+			}
+			}
+
+			// 16 bit lanes: every lane < 32768
+			std::array<std::uint16_t, 8> v16s{ }, w16s{ };
+			for( std::size_t i = 0; i < 8; ++i ) {
+				v16s[i] = static_cast<std::uint16_t>( rng( ) & 0x7FFFU );
+				w16s[i] = static_cast<std::uint16_t>( rng( ) & 0x7FFFU );
+			}
+			if( n == 0 ) {
+				v16s.fill( 0x7FFF );
+				w16s.fill( 0x7FFF );
+			}
+			auto const r16 = lanes_of( mul_add_pairs( v16::load( v16s.data( ) ), v16::load( w16s.data( ) ) ) );
+			for( std::size_t i = 0; i < r16.size( ); ++i ) {
+				auto const expected = static_cast<std::uint32_t>(
+				  std::uint32_t{ v16s[2 * i] } * w16s[2 * i] +
+				  std::uint32_t{ v16s[2 * i + 1] } * w16s[2 * i + 1] );
+				if( not( r16[i] == expected ) ) {
+				daw_ensure_error( true, "vec128 16 bit mul_add_pairs differs" );
+			}
+			}
+
+			// pack: every lane < 2^31
+			std::array<std::uint32_t, 4> p32{ };
+			for( std::size_t i = 0; i < 4; ++i ) {
+				auto const r = static_cast<std::uint32_t>( rng( ) );
+				p32[i] = ( n % 2 == 0 ? r & 0x7FFF'FFFFU : r & 0x1FFFFU );
+			}
+			auto const packed = lanes_of( pack( v32::load( p32.data( ) ) ) );
+			for( std::size_t i = 0; i < packed.size( ); ++i ) {
+				auto const source = p32[i % 4];
+				auto const expected = static_cast<std::uint16_t>( source > 0xFFFFU ? 0xFFFFU : source );
+				if( not( packed[i] == expected ) ) {
+				daw_ensure_error( true, "vec128 pack differs" );
+			}
+			}
+		}
+	}
+
 	template<typename Rng>
 	void check_lookup16( Rng &rng ) {
 		using simd_type = daw::simd::vec<char>;
@@ -227,6 +363,7 @@ int main( ) {
 	check_mask_conversion( rng );
 	check_pack_masks( rng );
 	check_lookup16( rng );
+	check_vec128( rng );
 }
 #else
 int main( ) {}

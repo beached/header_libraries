@@ -280,21 +280,27 @@ namespace daw::simd_impl {
 	}
 } // namespace daw::simd_impl
 
+#include "daw/simd/daw_simd_vec128.h"
+
 #if defined( DAW_HAS_NEON_SIMD )
 namespace daw::simd_impl::neon {
 	using simd_impl::load_aligned_block;
+	using simd_impl::vec128;
 }
 #elif defined( DAW_HAS_AVX512_SIMD )
 namespace daw::simd_impl::avx512 {
 	using simd_impl::load_aligned_block;
+	using simd_impl::vec128;
 }
 #elif defined( DAW_HAS_AVX2_SIMD )
 namespace daw::simd_impl::avx2 {
 	using simd_impl::load_aligned_block;
+	using simd_impl::vec128;
 }
 #elif defined( DAW_HAS_SSE42_SIMD )
 namespace daw::simd_impl::sse42 {
 	using simd_impl::load_aligned_block;
+	using simd_impl::vec128;
 }
 #endif
 
