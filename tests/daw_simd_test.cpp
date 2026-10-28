@@ -267,6 +267,33 @@ namespace {
 				daw_ensure_error( true, "vec128 load_low differs" );
 			}
 		}
+		if( not( v8::load_low( bytes.data( ) ).low64( ) == 0xA7A6'A5A4'A3A2'A1A0ULL ) ) {
+			daw_ensure_error( true, "vec128 low64 differs" );
+		}
+
+		for( int n = 0; n < 10'000; ++n ) {
+			std::array<unsigned char, 16> a{ }, b{ };
+			for( auto &c : a ) {
+				c = static_cast<unsigned char>( rng( ) );
+			}
+			for( auto &c : b ) {
+				c = static_cast<unsigned char>( rng( ) );
+			}
+			auto const r8 = lanes_of( sub_sat( v8::load( a.data( ) ), v8::load( b.data( ) ) ) );
+			for( std::size_t i = 0; i < r8.size( ); ++i ) {
+				if( not( r8[i] == ( a[i] > b[i] ? a[i] - b[i] : 0 ) ) ) {
+					daw_ensure_error( true, "vec128 8 bit sub_sat differs" );
+				}
+			}
+			auto const la = lanes_in<std::uint16_t>( a );
+			auto const lb = lanes_in<std::uint16_t>( b );
+			auto const r16 = lanes_of( sub_sat( v16::load( a.data( ) ), v16::load( b.data( ) ) ) );
+			for( std::size_t i = 0; i < r16.size( ); ++i ) {
+				if( not( r16[i] == ( la[i] > lb[i] ? la[i] - lb[i] : 0 ) ) ) {
+					daw_ensure_error( true, "vec128 16 bit sub_sat differs" );
+				}
+			}
+		}
 
 		for( int n = 0; n < 100'000; ++n ) {
 			// 8 bit lanes: weights < 128, pair sums <= 32767

@@ -269,5 +269,39 @@ namespace daw::simd_impl {
 			return vec128<std::uint16_t>( _mm_packus_epi32( v.m_value, v.m_value ) );
 #endif
 		}
+
+		/// Lanewise lhs - rhs, or 0 where rhs is larger.  For 8 and 16 bit lanes
+		[[nodiscard]] DAW_ATTRIB_INLINE friend vec128 sub_sat( vec128 lhs,
+		                                                       vec128 rhs ) noexcept {
+			static_assert( sizeof( T ) < 4, "sub_sat is for 8 and 16 bit lanes" );
+#if defined( DAW_HAS_NEON_SIMD )
+			if constexpr( sizeof( T ) == 1 ) {
+				return vec128( vqsubq_u8( lhs.m_value, rhs.m_value ) );
+			} else {
+				return vec128( vreinterpretq_u8_u16( vqsubq_u16( lhs.u16( ), rhs.u16( ) ) ) );
+			}
+#else
+			if constexpr( sizeof( T ) == 1 ) {
+				return vec128( _mm_subs_epu8( lhs.m_value, rhs.m_value ) );
+			} else {
+				return vec128( _mm_subs_epu16( lhs.m_value, rhs.m_value ) );
+			}
+#endif
+		}
+
+		/// The low 8 bytes as one integer, byte 0 least significant
+		[[nodiscard]] DAW_ATTRIB_INLINE std::uint64_t low64( ) const noexcept {
+#if defined( DAW_HAS_NEON_SIMD )
+			return vgetq_lane_u64( vreinterpretq_u64_u8( m_value ), 0 );
+#elif defined( __x86_64__ ) or defined( _M_X64 )
+			return static_cast<std::uint64_t>( _mm_cvtsi128_si64( m_value ) );
+#else
+			return static_cast<std::uint64_t>(
+			         static_cast<std::uint32_t>( _mm_cvtsi128_si32( m_value ) ) ) |
+			       ( static_cast<std::uint64_t>( static_cast<std::uint32_t>(
+			           _mm_extract_epi32( m_value, 1 ) ) )
+			         << 32U );
+#endif
+		}
 	};
 } // namespace daw::simd_impl
