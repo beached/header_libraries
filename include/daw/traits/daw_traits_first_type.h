@@ -12,10 +12,11 @@
 
 namespace daw::traits {
 #if defined( DAW_CPP26_PACK_INDEXING )
-	// clang-format off
-	template<typename...Ts>
+	_Pragma( "clang diagnostic push" );
+	_Pragma( "clang diagnostic ignored \"-Wc++26-extensions\"" );
+	template<typename... Ts>
 	using first_type = Ts...[0];
-	// clang-format on
+	_Pragma( "clang diagnostic pop" );
 #else
 	namespace traits_details {
 		template<typename T, typename...>

@@ -23,8 +23,11 @@
 namespace daw::traits {
 #if defined( DAW_CPP26_PACK_INDEXING )
 	// clang-format off
+	_Pragma( "clang diagnostic push" );
+	_Pragma( "clang diagnostic ignored \"-Wc++26-extensions\"" );
 	template<std::size_t Idx, typename...Ts>
   using nth_element = Ts...[Idx];
+	_Pragma( "clang diagnostic pop" );
 	// clang-format on
 #elif DAW_HAS_BUILTIN( __type_pack_element )
 	template<std::size_t I, typename... Ts>

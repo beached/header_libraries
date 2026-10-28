@@ -85,13 +85,18 @@ namespace daw {
 		  : m_ptr( ptr ) {}
 
 #if defined( DAW_HAS_CPP26_DELETED_REASON )
-		DAW_ATTRIB_INLINE constexpr not_null( pointer_const_reference ptr ) noexcept
+		_Pragma( "clang diagnostic push" )
+		  _Pragma( "clang diagnostic ignored \"-Wc++26-extensions\"" )
+		    DAW_ATTRIB_INLINE
+		  constexpr not_null( pointer_const_reference ptr ) noexcept
 		  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( ptr ) and ptr == null_value,
 		                        "Unexpected null value" ) =
 		    delete( "Unexpected null value" );
+		_Pragma( "clang diagnostic pop" )
 #endif
 
-		DAW_ATTRIB_INLINE constexpr not_null( pointer_const_reference ptr ) noexcept
+		  DAW_ATTRIB_INLINE
+		  constexpr not_null( pointer_const_reference ptr ) noexcept
 		  DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( ptr ), " " )
 		  : m_ptr( ptr ) {
 			if( DAW_UNLIKELY( ptr == null_value ) ) {
@@ -109,15 +114,18 @@ namespace daw {
 		}
 
 #if defined( DAW_HAS_CPP26_DELETED_REASON )
-		DAW_ATTRIB_INLINE constexpr not_null &
-		operator=( pointer_const_reference ptr ) noexcept
+		_Pragma( "clang diagnostic push" )
+		  _Pragma( "clang diagnostic ignored \"-Wc++26-extensions\"" )
+		    DAW_ATTRIB_INLINE
+		  constexpr not_null &operator=( pointer_const_reference ptr ) noexcept
 		  DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( ptr ) and ptr == null_value,
 		                        "Unexpected null value" ) =
 		    delete( "Unexpected null value" );
+		_Pragma( "clang diagnostic pop" )
 #endif
 
-		DAW_ATTRIB_INLINE constexpr not_null &
-		operator=( pointer_const_reference ptr ) noexcept
+		  DAW_ATTRIB_INLINE
+		  constexpr not_null &operator=( pointer_const_reference ptr ) noexcept
 		  DAW_ATTRIB_ENABLE_IF( not __builtin_constant_p( ptr ), " " ) {
 			m_ptr = ptr;
 			if( DAW_UNLIKELY( ptr == null_value ) ) {
