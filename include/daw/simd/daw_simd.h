@@ -221,19 +221,27 @@ namespace daw::simd_impl {
 			}
 		}
 #else
-		// The top bit keeps the trailing zero count defined once bits runs out
 		for( std::size_t entry = 0; entry < count; entry += 8U ) {
 			for( std::size_t n = 0; n < 8U; ++n ) {
-				auto lane =
+#if defined( __BMI__ ) and ( defined( __x86_64__ ) or defined( _M_X64 ) )
+				// tzcnt is 64 once bits runs out
+				auto value =
+				  base + static_cast<std::uint32_t>( _tzcnt_u64( bits ) );
+#else
+				// The top bit keeps the trailing zero count defined once bits runs
+				// out
+				auto value =
+				  base +
 				  static_cast<std::uint32_t>( daw::cxmath::count_trailing_zeros(
 				    bits | ( std::uint64_t{ 1 } << 63U ) ) );
-#if defined( __clang__ )
-				// Otherwise clang combines the stores into vector code emulating the
-				// trailing zero count, which is slower than the scalar count.  It
-				// emits no instructions.
-				__asm__( "" : "+r"( lane ) );
 #endif
-				output[entry + n] = base + lane;
+#if defined( __clang__ )
+				// Otherwise clang combines the stores into vector code, emulating the
+				// trailing zero count or inserting each value into a vector, both
+				// slower than scalar stores.  It emits no instructions.
+				__asm__( "" : "+r"( value ) );
+#endif
+				output[entry + n] = value;
 				bits = daw::cxmath::blsr( bits );
 			}
 		}

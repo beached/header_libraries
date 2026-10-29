@@ -39,6 +39,10 @@
 #endif
 
 namespace daw::cxmath {
+#if defined( __clang__ )
+	_Pragma( "clang diagnostic push" );
+	_Pragma( "clang diagnostic ignored \"-Wc++23-extensions\"" );
+#endif
 	enum class fp_classes { normal, zero, subnormal, nan, infinity };
 
 	namespace cxmath_impl {
@@ -1499,4 +1503,7 @@ namespace daw::cxmath {
 	DAW_ATTRIB_INLINE constexpr Integer blsr( Integer x ) {
 		return x &= x - Integer{ 1 };
 	}
+#if defined( __clang__ )
+	_Pragma( "clang diagnostic pop" ) //
+#endif
 } // namespace daw::cxmath
