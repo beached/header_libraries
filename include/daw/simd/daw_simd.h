@@ -221,8 +221,15 @@ namespace daw::simd_impl {
 			}
 		}
 #else
-		for( std::size_t entry = 0; entry < count; entry += 8U ) {
-			for( std::size_t n = 0; n < 8U; ++n ) {
+#if defined( DAW_HAS_AVX2_SIMD )
+		// JSON blocks mostly have 4 to 12 events, with AVX2 groups of four
+		// overshoot less and are 4-7% faster than groups of eight
+		constexpr std::size_t group_size = 4U;
+#else
+		constexpr std::size_t group_size = 8U;
+#endif
+		for( std::size_t entry = 0; entry < count; entry += group_size ) {
+			for( std::size_t n = 0; n < group_size; ++n ) {
 #if defined( __BMI__ ) and ( defined( __x86_64__ ) or defined( _M_X64 ) )
 				// tzcnt is 64 once bits runs out
 				auto value =
@@ -241,7 +248,14 @@ namespace daw::simd_impl {
 				// slower than scalar stores.  It emits no instructions.
 				__asm__( "" : "+r"( value ) );
 #endif
+#if defined( DAW_HAS_AVX2_SIMD ) and not defined( __clang__ ) and \
+  defined( __GNUC__ ) and defined( __x86_64__ )
+				// GCC combines the stores even when the value is hidden, so the store
+				// itself is hidden
+				__asm__( "movl %k1, %0" : "=m"( output[entry + n] ) : "r"( value ) );
+#else
 				output[entry + n] = value;
+#endif
 				bits = daw::cxmath::blsr( bits );
 			}
 		}
