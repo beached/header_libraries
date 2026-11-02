@@ -12,11 +12,14 @@
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/impl/daw_int128_check.h"
 
-#if not defined( DAW_NO_INT128 )
-#if DAW_CPP_VERSION >= 202002L and DAW_HAS_MSVC_VER_GTE( 1932 )
+// The MSVC STL's 128 bit integers.  _MSC_VER is checked directly, not with
+// DAW_HAS_MSVC_VER_GTE, so clang-cl, which uses the same STL, has them too
+#if not defined( DAW_NO_INT128 ) and not defined( DAW_HAS_INT128 ) and \
+  defined( _MSC_VER ) and __has_include( <__msvc_int128.hpp> )
+#if DAW_CPP_VERSION >= 202002L and _MSC_VER >= 1932
 // Earlier versions only supported C++20
 #define DAW_HAS_MSVC_INT128
-#elif DAW_HAS_MSVC_VER_GTE( 1934 )
+#elif _MSC_VER >= 1934
 #define DAW_HAS_MSVC_INT128
 #endif
 #endif
