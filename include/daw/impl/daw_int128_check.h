@@ -15,7 +15,11 @@
 #endif
 #elif defined( DAW_HAS_INT128 )
 #elif defined( __SIZEOF_INT128__ )
-#if ( defined( __clang__ ) and not defined( _WIN32 ) ) or    \
+// clang-cl targets the MSVC runtime, which lacks the 128 bit division helpers
+// (__udivti3...) unless clang's builtins library is linked; it uses
+// std::_Unsigned128 from daw_msvc_int128.h instead.  Clang targeting MinGW
+// links libgcc or compiler-rt, which have them
+#if ( defined( __clang__ ) and not defined( _MSC_VER ) ) or  \
   ( defined( __CUDACC__ ) and __CUDACC_VER_MAJOR__ >= 9 ) or \
   ( defined( __GNUC__ ) and not defined( __clang__ ) and     \
     not defined( __CUDACC__ ) )

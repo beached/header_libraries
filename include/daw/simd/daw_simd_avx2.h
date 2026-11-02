@@ -15,6 +15,7 @@
 
 #include <immintrin.h>
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
@@ -48,6 +49,13 @@ namespace daw::simd_impl::avx2 {
 
 	[[nodiscard]] inline std::uint64_t compress_mask( mask value ) noexcept {
 		return value.to_ullong( );
+	}
+
+	/// The masks of the vectors of a 64 byte block as one integer, bit
+	/// 32 * k + n is lane n of masks[k]
+	[[nodiscard]] inline std::uint64_t
+	pack_masks( std::array<mask, 2> const &masks ) noexcept {
+		return masks[0].to_ullong( ) | ( masks[1].to_ullong( ) << 32U );
 	}
 
 	[[nodiscard]] inline mask decompress_mask( std::uint64_t bits ) noexcept {
@@ -109,11 +117,6 @@ namespace daw::simd_impl::avx2 {
 		explicit vec( __m256i value ) noexcept
 		  : m_value( value ) {}
 
-		[[nodiscard]] static __m256i order_bytes( __m256i value ) noexcept {
-			return _mm256_xor_si256( value,
-			                         _mm256_set1_epi8( static_cast<char>( 0x80 ) ) );
-		}
-
 	public:
 		using value_type = T;
 		using mask_type = mask;
@@ -129,20 +132,14 @@ namespace daw::simd_impl::avx2 {
 			return mask( _mm256_cmpeq_epi8( lhs.m_value, rhs.m_value ) );
 		}
 
+		// Unsigned, lhs >= rhs exactly when it is their maximum
 		[[nodiscard]] friend mask operator>=( vec lhs, vec rhs ) noexcept {
-			auto const ordered_lhs = order_bytes( lhs.m_value );
-			auto const ordered_rhs = order_bytes( rhs.m_value );
-			return mask(
-			  _mm256_or_si256( _mm256_cmpgt_epi8( ordered_lhs, ordered_rhs ),
-			                   _mm256_cmpeq_epi8( lhs.m_value, rhs.m_value ) ) );
+			return mask( _mm256_cmpeq_epi8( _mm256_max_epu8( lhs.m_value, rhs.m_value ), lhs.m_value ) );
 		}
 
+		// Unsigned, lhs <= rhs exactly when it is their minimum
 		[[nodiscard]] friend mask operator<=( vec lhs, vec rhs ) noexcept {
-			auto const ordered_lhs = order_bytes( lhs.m_value );
-			auto const ordered_rhs = order_bytes( rhs.m_value );
-			return mask(
-			  _mm256_or_si256( _mm256_cmpgt_epi8( ordered_rhs, ordered_lhs ),
-			                   _mm256_cmpeq_epi8( lhs.m_value, rhs.m_value ) ) );
+			return mask( _mm256_cmpeq_epi8( _mm256_min_epu8( lhs.m_value, rhs.m_value ), lhs.m_value ) );
 		}
 
 		[[nodiscard]] friend vec operator|( vec lhs, vec rhs ) noexcept {

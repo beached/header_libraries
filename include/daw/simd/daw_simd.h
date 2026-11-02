@@ -177,8 +177,9 @@ namespace daw::simd_impl {
 	 * those past the count have unspecified values.  Not stopping at the count
 	 * keeps the stores free of branches on it.  With the event bits of a block
 	 * and its offset this lists the event positions.  A byte compress of the
-	 * lane numbers where the target has one, groups of eight set bits
-	 * otherwise.
+	 * lane numbers where the target has one, groups of set bits otherwise:
+	 * eight at a time, except aarch64's four (its ctz is two instructions, so
+	 * groups of eight overshoot more than they amortize).
 	 */
 	DAW_ATTRIB_INLINE std::size_t flatten_bits( std::uint64_t bits,
 	                                            std::uint32_t base,
@@ -203,20 +204,58 @@ namespace daw::simd_impl {
 			store( 2, _mm512_extracti32x4_epi32( packed, 2 ) );
 			store( 3, _mm512_extracti32x4_epi32( packed, 3 ) );
 		}
-#else
-		// The top bit keeps the trailing zero count defined once bits runs out
-		for( std::size_t entry = 0; entry < count; entry += 8U ) {
-			for( std::size_t n = 0; n < 8U; ++n ) {
-				auto lane =
+#elif defined( __aarch64__ )
+		// rbit+clz (ctz) is 2 instructions on aarch64, unlike x86's single
+		// tzcnt, so the group-of-8 overshoot below is not free here: JSON
+		// blocks usually have well under 8 events, so most of its ctz's would
+		// be wasted.  Groups of 4 cut that waste while still amortizing the
+		// loop's control overhead across more than one element; measured on
+		// real NEON hardware, this beats group sizes 1, 2, 8 and 16.
+		for( std::size_t entry = 0; entry < count; entry += 4U ) {
+			for( std::size_t n = 0; n < 4U; ++n ) {
+				auto const lane =
 				  static_cast<std::uint32_t>( daw::cxmath::count_trailing_zeros(
 				    bits | ( std::uint64_t{ 1 } << 63U ) ) );
-#if defined( __clang__ )
-				// Otherwise clang combines the stores into vector code emulating the
-				// trailing zero count, which is slower than the scalar count.  It
-				// emits no instructions.
-				__asm__( "" : "+r"( lane ) );
-#endif
 				output[entry + n] = base + lane;
+				bits = daw::cxmath::blsr( bits );
+			}
+		}
+#else
+#if defined( DAW_HAS_AVX2_SIMD )
+		// JSON blocks mostly have 4 to 12 events, with AVX2 groups of four
+		// overshoot less and are 4-7% faster than groups of eight
+		constexpr std::size_t group_size = 4U;
+#else
+		constexpr std::size_t group_size = 8U;
+#endif
+		for( std::size_t entry = 0; entry < count; entry += group_size ) {
+			for( std::size_t n = 0; n < group_size; ++n ) {
+#if defined( __BMI__ ) and ( defined( __x86_64__ ) or defined( _M_X64 ) )
+				// tzcnt is 64 once bits runs out
+				auto value =
+				  base + static_cast<std::uint32_t>( _tzcnt_u64( bits ) );
+#else
+				// The top bit keeps the trailing zero count defined once bits runs
+				// out
+				auto value =
+				  base +
+				  static_cast<std::uint32_t>( daw::cxmath::count_trailing_zeros(
+				    bits | ( std::uint64_t{ 1 } << 63U ) ) );
+#endif
+#if defined( __clang__ )
+				// Otherwise clang combines the stores into vector code, emulating the
+				// trailing zero count or inserting each value into a vector, both
+				// slower than scalar stores.  It emits no instructions.
+				__asm__( "" : "+r"( value ) );
+#endif
+#if defined( DAW_HAS_AVX2_SIMD ) and not defined( __clang__ ) and \
+  defined( __GNUC__ ) and defined( __x86_64__ )
+				// GCC combines the stores even when the value is hidden, so the store
+				// itself is hidden
+				__asm__( "movl %k1, %0" : "=m"( output[entry + n] ) : "r"( value ) );
+#else
+				output[entry + n] = value;
+#endif
 				bits = daw::cxmath::blsr( bits );
 			}
 		}
@@ -280,21 +319,27 @@ namespace daw::simd_impl {
 	}
 } // namespace daw::simd_impl
 
+#include "daw/simd/daw_simd_vec128.h"
+
 #if defined( DAW_HAS_NEON_SIMD )
 namespace daw::simd_impl::neon {
 	using simd_impl::load_aligned_block;
+	using simd_impl::vec128;
 }
 #elif defined( DAW_HAS_AVX512_SIMD )
 namespace daw::simd_impl::avx512 {
 	using simd_impl::load_aligned_block;
+	using simd_impl::vec128;
 }
 #elif defined( DAW_HAS_AVX2_SIMD )
 namespace daw::simd_impl::avx2 {
 	using simd_impl::load_aligned_block;
+	using simd_impl::vec128;
 }
 #elif defined( DAW_HAS_SSE42_SIMD )
 namespace daw::simd_impl::sse42 {
 	using simd_impl::load_aligned_block;
+	using simd_impl::vec128;
 }
 #endif
 

@@ -16,16 +16,22 @@
 #include <iostream>
 #include <string_view>
 
-
-
 #if defined( DAW_ATTRIB_ENABLE_IF )
 #if defined( DAW_HAS_CPP26_DELETED_REASON )
+
+#if defined( __clang__ )
+_Pragma( "clang diagnostic push" );
+_Pragma( "clang diagnostic ignored \"-Wc++26-extensions\"" );
+#endif
 template<typename StringView>
 [[noreturn]] DAW_ATTRIB_NOINLINE inline void
 daw_ensure_error( bool b, StringView &&msg )
   DAW_ATTRIB_ENABLE_IF( __builtin_constant_p( b ) and not b,
                         "ensure check failed" ) =
     delete( "ensure check failed" );
+#if defined( __clang__ )
+_Pragma( "clang diagnostic pop" );
+#endif
 #endif
 template<typename StringView>
 [[noreturn]] DAW_ATTRIB_NOINLINE inline void
@@ -51,5 +57,3 @@ daw_ensure_error( bool, StringView &&msg ) {
 	std::terminate( );
 }
 #endif
-
-
