@@ -4172,6 +4172,10 @@ requires std::is_pointer_v&lt;P&gt;</td></tr>
 <tr class="separator:abdc98a0ccc6108ff3573a0c9495681ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e5b47c9b584593f96c35f1907a2d259" id="r_a1e5b47c9b584593f96c35f1907a2d259"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedaw.html#a1e5b47c9b584593f96c35f1907a2d259">reseed</a> (std::default_random_engine::result_type value)</td></tr>
 <tr class="separator:a1e5b47c9b584593f96c35f1907a2d259"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad90b630a9876ec0aabb6712d7b5bce03" id="r_ad90b630a9876ec0aabb6712d7b5bce03"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> Allocator , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Func</a> &gt; </td></tr>
+<tr class="memitem:ad90b630a9876ec0aabb6712d7b5bce03"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#ad90b630a9876ec0aabb6712d7b5bce03">resize_and_overwrite</a> (std::vector&lt; T, Allocator &gt; &amp;vec, std::size_t <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">new_size</a>, <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Func</a> &amp;&amp;func)</td></tr>
+<tr class="memdesc:ad90b630a9876ec0aabb6712d7b5bce03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls func with storage for new_size elements and adopts the returned size.  <br /></td></tr>
+<tr class="separator:ad90b630a9876ec0aabb6712d7b5bce03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacfb2f8e9836904c38fee02ace8b56cb" id="r_aacfb2f8e9836904c38fee02ace8b56cb"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T &gt; </td></tr>
 <tr class="memitem:aacfb2f8e9836904c38fee02ace8b56cb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedaw.html#aacfb2f8e9836904c38fee02ace8b56cb">return_buffer</a> (T *ptr) noexcept</td></tr>
 <tr class="separator:aacfb2f8e9836904c38fee02ace8b56cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -48928,6 +48932,56 @@ template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827cc
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="daw__random_8h_source.html#l00056">56</a> of file <a class="el" href="daw__random_8h_source.html">daw_random.h</a>.</p>
+
+</div>
+</div>
+<a id="ad90b630a9876ec0aabb6712d7b5bce03" name="ad90b630a9876ec0aabb6712d7b5bce03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad90b630a9876ec0aabb6712d7b5bce03">&#9670;&#160;</a></span>resize_and_overwrite()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> T , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> Allocator , <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">typename</a> <a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Func</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t daw::resize_and_overwrite </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; T, Allocator &gt; &amp;&#160;</td>
+          <td class="paramname"><em>vec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>new_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacedaw.html#a9dd289d6deb8833d9a8363e8827ccad8">Func</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>func</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calls func with storage for new_size elements and adopts the returned size. </p>
+<p>Existing elements in [0, min(old_size, new_size)) remain alive. Func must construct every new element in [old_size, result), must return a value no greater than new_size, and must not throw after constructing an element. The optional Allocator&amp; argument refers to a copy of vec.get_allocator().</p>
+<p>This relies on implementation-specific vector layouts. It supports the three-pointer layouts used by libstdc++, libc++, and the Microsoft STL, along with libc++'s opt-in pointer/size/capacity layout. It deliberately does not support std::vector&lt;bool&gt; or fancy allocator pointer types. </p>
+
+<p class="definition">Definition at line <a class="el" href="vector__resize__and__overwrite_8h_source.html#l00361">361</a> of file <a class="el" href="vector__resize__and__overwrite_8h_source.html">vector_resize_and_overwrite.h</a>.</p>
 
 </div>
 </div>

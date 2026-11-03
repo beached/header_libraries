@@ -115,5 +115,7 @@ var searchData=
   ['daw_5funsafe_5fbuffer_5ffunc_5fstart_112',['DAW_UNSAFE_BUFFER_FUNC_START',['../daw__compiler__fixups_8h.html#a36b599f1320cec1a28af5b5c4ae15ce1',1,'daw_compiler_fixups.h']]],
   ['daw_5funsafe_5fbuffer_5ffunc_5fstop_113',['DAW_UNSAFE_BUFFER_FUNC_STOP',['../daw__compiler__fixups_8h.html#a4c7dc0ab87f2d36a26c75a9840ca71e3',1,'daw_compiler_fixups.h']]],
   ['daw_5fuse_5fexceptions_114',['DAW_USE_EXCEPTIONS',['../daw__check__exceptions_8h.html#acb091b6e137c30bab837f6ce01482b68',1,'daw_check_exceptions.h']]],
-  ['daw_5fvisit_5fcase_115',['DAW_VISIT_CASE',['../daw__visit_8h.html#aef6d11f0973b8c09c066f14a7cdb896f',1,'daw_visit.h']]]
+  ['daw_5fvector_5fresize_5fglibcxx_5fsanitize_5fstd_5fallocator_115',['DAW_VECTOR_RESIZE_GLIBCXX_SANITIZE_STD_ALLOCATOR',['../vector__resize__and__overwrite_8h.html#a1fb18817fe56f01ebc9d252b17f50040',1,'vector_resize_and_overwrite.h']]],
+  ['daw_5fvector_5fresize_5fglibcxx_5fsanitize_5fvector_116',['DAW_VECTOR_RESIZE_GLIBCXX_SANITIZE_VECTOR',['../vector__resize__and__overwrite_8h.html#a978d1ea5172c9b22d7ab9c194026e699',1,'vector_resize_and_overwrite.h']]],
+  ['daw_5fvisit_5fcase_117',['DAW_VISIT_CASE',['../daw__visit_8h.html#aef6d11f0973b8c09c066f14a7cdb896f',1,'daw_visit.h']]]
 ];
