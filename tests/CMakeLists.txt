@@ -124,6 +124,7 @@ set( TEST_SOURCES
 		 daw_zipcontainer_test.cpp
 		 sbo_test.cpp
 		 static_hash_table_test.cpp
+		 vector_resize_and_overwrite_test.cpp
 		 )
 
 set( DEPRECATED_TEST_SOURCES
