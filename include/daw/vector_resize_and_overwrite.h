@@ -8,6 +8,10 @@
 
 #pragma once
 
+#include "daw/cpp_17.h"
+#include "daw/daw_ensure.h"
+#include "daw/daw_move.h"
+
 #include <cassert>
 #include <cstddef>
 #include <cstring>
@@ -334,12 +338,12 @@ namespace daw {
 		invoke( Func &&func, T *ptr, std::size_t size, Allocator &alloc ) {
 			if constexpr( std::
 			                is_invocable_v<Func &&, T *, std::size_t, Allocator &> ) {
-				return std::invoke( std::forward<Func>( func ), ptr, size, alloc );
+				return std::invoke( DAW_FWD( func ), ptr, size, alloc );
 			} else {
 				static_assert( std::is_invocable_v<Func &&, T *, std::size_t>,
 				               "Func must be invocable as (T*, size_t) or "
 				               "(T*, size_t, Allocator&)" );
-				return std::invoke( std::forward<Func>( func ), ptr, size );
+				return std::invoke( DAW_FWD( func ), ptr, size );
 			}
 		}
 	} // namespace vector_resize_and_overwrite_impl
@@ -375,7 +379,7 @@ namespace daw {
 		    vec, old_size, new_size );
 		auto alloc = vec.get_allocator( );
 		auto const result_value = vector_resize_and_overwrite_impl::invoke(
-		  std::forward<Func>( func ), vec.data( ), new_size, alloc );
+		  DAW_FWD( func ), vec.data( ), new_size, alloc );
 		static_assert( std::is_convertible_v<decltype( result_value ), std::size_t>,
 		               "Func must return a value convertible to size_t" );
 		auto const result = static_cast<std::size_t>( result_value );
@@ -397,6 +401,38 @@ namespace daw {
 		}
 		annotation_guard.commit( result );
 		return result;
+	}
+
+	template<typename T, typename Allocator, typename Func>
+	[[nodiscard]] inline std::size_t
+	resize_and_append( std::vector<T, Allocator> &vec,
+	                   std::size_t additional_size, Func &&func ) {
+		auto const old_size = vec.size( );
+		auto const new_size = old_size + additional_size;
+		daw_ensure( additional_size <= vec.max_size( ) - old_size );
+		return resize_and_overwrite(
+		  vec, new_size, [&]( T *ptr, std::size_t size, Allocator &alloc ) {
+			  if constexpr( std::is_invocable_v<Func &&,
+			                                    T *,
+			                                    std::size_t,
+			                                    Allocator &> ) {
+				  auto r = std::invoke( DAW_FWD( func ),
+				                        ptr + static_cast<std::ptrdiff_t>( old_size ),
+				                        size - old_size,
+				                        alloc );
+				  daw_ensure( r <= new_size );
+				  return r + old_size;
+			  } else {
+				  static_assert( std::is_invocable_v<Func &&, T *, std::size_t>,
+				                 "Func must be invocable as (T*, size_t) or "
+				                 "(T*, size_t, Allocator&)" );
+				  auto r = std::invoke( DAW_FWD( func ),
+				                        ptr + static_cast<std::ptrdiff_t>( old_size ),
+				                        size - old_size );
+				  daw_ensure( r <= new_size );
+				  return r + old_size;
+			  }
+		  } );
 	}
 } // namespace daw
 
