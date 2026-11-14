@@ -14,6 +14,7 @@
 #include "daw/pipelines/iota.h"
 #include "daw/pipelines/zip.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <limits>
 
@@ -21,43 +22,53 @@ namespace daw::pipelines::pimpl {
 	template<typename EnumType = std::size_t>
 	struct Enumerate_t {
 
-		template<ForwardRange R>
+		template<ForwardRange R, ForwardRange... Rs>
 		[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
-		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
-			return zip_view<iota_view<EnumType>, R>(
-			  iota_view<EnumType>( EnumType{ }, max_value<EnumType> ), DAW_FWD( r ) );
-		}
-
-		template<RandomRange R>
-		[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
-		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
-			return zip_view<iota_view<EnumType>, R>(
-			  iota_view<EnumType>( EnumType{ }, ranges_distance<EnumType>( r ) ),
-			  DAW_FWD( r ) );
+		operator( )( R &&r, Rs &&...rs ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			if constexpr( RandomRange<R> and ( RandomRange<Rs> and ... ) ) {
+				auto const sz = std::min( { ranges_distance<EnumType>( r ),
+				                            ranges_distance<EnumType>( rs )... } );
+				return zip_view<iota_view<EnumType>, R, Rs...>(
+				  iota_view<EnumType>( EnumType{ }, sz ),
+				  DAW_FWD( r ),
+				  DAW_FWD( rs )... );
+			} else {
+				return zip_view<iota_view<EnumType>, R, Rs...>(
+				  iota_view<EnumType>( EnumType{ }, max_value<EnumType> ),
+				  DAW_FWD( r ),
+				  DAW_FWD( rs )... );
+			}
 		}
 	};
 
 	template<typename EnumType = std::size_t>
 	struct EnumerateFrom_t {
 		EnumType offset = EnumType{ };
-		template<ForwardRange R>
-		[[nodiscard]] constexpr auto operator( )( R &&r ) const {
-			return zip_view<iota_view<EnumType>, R>(
-			  iota_view<EnumType>( offset, max_value<EnumType> ), DAW_FWD( r ) );
+		template<ForwardRange R, ForwardRange... Rs>
+		[[nodiscard]] constexpr auto operator( )( R &&r, Rs &&...rs ) const {
+			return zip_view<iota_view<EnumType>, R, Rs...>(
+			  iota_view<EnumType>( offset, max_value<EnumType> ),
+			  DAW_FWD( r ),
+			  DAW_FWD( rs )... );
 		}
 	};
 
 	template<typename EnumType = std::size_t>
 	struct EnumerateApply_t {
-		template<ForwardRange R>
+		template<ForwardRange R, ForwardRange... Rs>
 		[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
-		operator( )( R &&r ) DAW_CPP23_STATIC_CALL_OP_CONST {
-			if constexpr( RandomRange<R> ) {
-				auto const sz = pimpl::ranges_distance<EnumType>( r );
-				return ZipMore( iota_view<EnumType>( EnumType{ }, sz ), DAW_FWD( r ) );
+		operator( )( R &&r, Rs &&...rs ) DAW_CPP23_STATIC_CALL_OP_CONST {
+			if constexpr( RandomRange<R> and ( RandomRange<Rs> and ... ) ) {
+				auto const sz =
+				  std::min( { pimpl::ranges_distance<EnumType>( r ),
+					            pimpl::ranges_distance<EnumType>( rs )... } );
+				return ZipMore( iota_view<EnumType>( EnumType{ }, sz ),
+				                DAW_FWD( r ),
+				                DAW_FWD( rs )... );
 			} else {
 				return ZipMore( iota_view<EnumType>( EnumType{ }, max_value<EnumType> ),
-				                DAW_FWD( r ) );
+				                DAW_FWD( r ),
+				                DAW_FWD( rs )... );
 			}
 		}
 	};
