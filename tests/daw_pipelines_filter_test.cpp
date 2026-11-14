@@ -15,6 +15,7 @@
 #include <iterator>
 #include <list>
 #include <optional>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -28,6 +29,15 @@ namespace tests {
 	template<typename R>
 	std::vector<int> collect( R &&r ) {
 		auto result = std::vector<int>{ };
+		for( auto it = std::begin( r ); it != std::end( r ); ++it ) {
+			result.push_back( *it );
+		}
+		return result;
+	}
+
+	template<typename T, typename R>
+	std::vector<T> collect_as( R &&r ) {
+		auto result = std::vector<T>{ };
 		for( auto it = std::begin( r ); it != std::end( r ); ++it ) {
 			result.push_back( *it );
 		}
@@ -81,6 +91,65 @@ namespace tests {
 		daw_ensure( std::begin( r ) == std::end( r ) );
 		daw_ensure( std::begin( r ) == std::end( r ) );
 	}
+
+	DAW_ATTRIB_NOINLINE void test_filter_apply_values( ) {
+		using value_t = std::tuple<int, int>;
+		auto values = std::vector<value_t>{
+		  { 1, 2 }, { 2, 2 }, { 3, 4 }, { 5, 5 }
+		};
+		auto r = pipeline( values, FilterApply( []( int lhs, int rhs ) {
+			                   return lhs == rhs;
+		                   } ) );
+		daw_ensure(
+		  ( collect_as<value_t>( r ) ==
+		    std::vector<value_t>{ { 2, 2 }, { 5, 5 } } ) );
+	}
+
+	DAW_ATTRIB_NOINLINE void
+	test_filter_apply_const_reference_and_const_traversal( ) {
+		using value_t = std::tuple<int, int>;
+		auto values = std::vector<value_t>{
+		  { 1, 2 }, { 2, 2 }, { 3, 4 }, { 5, 5 }
+		};
+		auto r = pipeline(
+		  values, FilterApply( []( int const &lhs, int const &rhs ) {
+			  return lhs == rhs;
+		  } ) );
+		auto const &cr = r;
+		auto const expected = std::vector<value_t>{ { 2, 2 }, { 5, 5 } };
+		daw_ensure( collect_as<value_t>( cr ) == expected );
+		daw_ensure( collect_as<value_t>( cr ) == expected );
+	}
+
+	struct mutable_equal {
+		std::size_t calls = 0;
+
+		bool operator( )( int lhs, int rhs ) {
+			++calls;
+			return lhs == rhs;
+		}
+	};
+
+	DAW_ATTRIB_NOINLINE void test_filter_apply_mutable_predicate( ) {
+		using value_t = std::tuple<int, int>;
+		auto values = std::vector<value_t>{ { 1, 2 }, { 2, 2 }, { 3, 4 } };
+		auto r = pipeline( values, FilterApply( mutable_equal{ } ) );
+		daw_ensure( ( collect_as<value_t>( r ) ==
+		              std::vector<value_t>{ { 2, 2 } } ) );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_filter_apply_pair( ) {
+		using value_t = std::pair<int, int>;
+		auto values = std::vector<value_t>{
+		  { 1, 2 }, { 2, 2 }, { 3, 4 }, { 5, 5 }
+		};
+		auto r = pipeline( values, FilterApply( []( int lhs, int rhs ) {
+			                   return lhs == rhs;
+		                   } ) );
+		daw_ensure(
+		  ( collect_as<value_t>( r ) ==
+		    std::vector<value_t>{ { 2, 2 }, { 5, 5 } } ) );
+	}
 } // namespace tests
 
 int main( ) {
@@ -89,4 +158,8 @@ int main( ) {
 	tests::test_filter_copy_of_owning_view( );
 	tests::test_filter_move_of_owning_view( );
 	tests::test_filter_no_match( );
+	tests::test_filter_apply_values( );
+	tests::test_filter_apply_const_reference_and_const_traversal( );
+	tests::test_filter_apply_mutable_predicate( );
+	tests::test_filter_apply_pair( );
 }

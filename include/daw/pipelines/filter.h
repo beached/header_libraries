@@ -22,6 +22,7 @@
 #include <cstddef>
 #include <iterator>
 #include <optional>
+#include <tuple>
 #include <utility>
 
 namespace daw::pipelines::pimpl {
@@ -29,7 +30,7 @@ namespace daw::pipelines::pimpl {
 	struct filter_iterator_end {
 		using iterator_category =
 		  daw::common_iterator_category_t<std::forward_iterator_tag,
-		                                  daw::iterator_category_t<SentinelFor>>;
+			                                daw::iterator_category_t<SentinelFor>>;
 		using difference_type = daw::iter_difference_t<SentinelFor>;
 		using value_type = std::common_type_t<iter_value_t<SentinelFor>>;
 		using reference = std::common_reference_t<iter_reference_t<SentinelFor>>;
@@ -60,7 +61,7 @@ namespace daw::pipelines::pimpl {
 	struct filter_iterator {
 		using iterator_category =
 		  common_iterator_category_t<std::forward_iterator_tag,
-		                             daw::iter_category_t<First>>;
+			                           daw::iter_category_t<First>>;
 		using value_type = daw::iter_value_t<First>;
 		using reference = daw::iter_reference_t<First>;
 		using const_reference = daw::iter_const_reference_t<First>;
@@ -168,7 +169,7 @@ namespace daw::pipelines {
 	      pimpl::filter_iterator<filter_view<R, Fn, Projection>, iterator_t<R>>,
 	      pimpl::filter_iterator_end<iterator_t<R>>,
 	      pimpl::filter_iterator<filter_view<R, Fn, Projection> const,
-	                             const_iterator_or_t<R>>,
+				                       const_iterator_or_t<R>>,
 	      pimpl::filter_iterator_end<const_iterator_or_t<R>>> {
 
 		using base_t = pimpl::stored_range_base_t<
@@ -259,9 +260,11 @@ namespace daw::pipelines {
 
 			template<Range R>
 			[[nodiscard]] constexpr auto operator( )( R &&r ) const {
-				static_assert( std::invocable<Projection, range_value_t<R>>,
-				               "Projection must be invocable with range_value_t<R>" );
-				using projected_t = std::invoke_result_t<Projection, range_value_t<R>>;
+				static_assert(
+				  std::invocable<Projection, range_const_reference_t<R>>,
+				  "Projection must be invocable with range_const_reference_t<R>" );
+				using projected_t =
+				  std::invoke_result_t<Projection, range_const_reference_t<R>>;
 				static_assert(
 				  std::invocable<Fn, projected_t>,
 				  "Filter requires an invokable function with the projected value" );
@@ -292,6 +295,21 @@ namespace daw::pipelines {
 
 		template<typename F, typename P>
 		filter_t( F, P ) -> filter_t<F, P>;
+
+		template<typename Fn>
+		struct filter_applier_t {
+			Fn fn;
+
+			[[nodiscard]] constexpr auto operator( )( auto &&tp ) {
+				return std::apply( fn, DAW_FWD( tp ) );
+			}
+
+			[[nodiscard]] constexpr auto operator( )( auto &&tp ) const {
+				return std::apply( fn, DAW_FWD( tp ) );
+			}
+		};
+		template<typename Fn>
+		filter_applier_t( Fn ) -> filter_applier_t<Fn>;
 	} // namespace pimpl
 
 	/// Filter a range with the given predicate function.
@@ -299,4 +317,9 @@ namespace daw::pipelines {
 	[[nodiscard]] constexpr auto Filter( Fn &&fn ) {
 		return pimpl::filter_t{ DAW_FWD( fn ) };
 	};
+
+	template<typename Fn>
+	[[nodiscard]] constexpr auto FilterApply( Fn &&fn ) {
+		return pimpl::filter_t( pimpl::filter_applier_t{ DAW_FWD( fn ) } );
+	}
 } // namespace daw::pipelines
