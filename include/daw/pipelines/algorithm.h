@@ -152,7 +152,7 @@ namespace daw::pipelines {
 						                    std::invoke( m_projection, lhs ),
 						                    std::invoke( m_projection, rhs ) );
 				  } );
-				return std::tuple{ result.first, result.second };
+				return std::tuple{ result.min, result.max };
 			}
 		};
 		MinMax_t( ) -> MinMax_t<>;

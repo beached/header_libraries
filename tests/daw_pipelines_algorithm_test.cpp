@@ -51,6 +51,21 @@ namespace tests {
 		daw_ensure( *pipeline( v, Min( std::less<>{ }, abs_value ) ) == -1 );
 	}
 
+	// MinMax returns a tuple of iterators: { min, max }
+	DAW_ATTRIB_NOINLINE void test_minmax_default( ) {
+		auto v = std::vector<int>{ 1, -5, 3 };
+		auto const [lo, hi] = pipeline( v, MinMax );
+		daw_ensure( *lo == -5 );
+		daw_ensure( *hi == 3 );
+	}
+
+	DAW_ATTRIB_NOINLINE void test_minmax_projection( ) {
+		auto v = std::vector<int>{ 1, -5, 3 };
+		auto const [lo, hi] = pipeline( v, MinMax( std::less<>{ }, abs_value ) );
+		daw_ensure( *lo == 1 );
+		daw_ensure( *hi == -5 );
+	}
+
 	DAW_ATTRIB_NOINLINE void test_sort_compare( ) {
 		auto v = std::vector<int>{ 1, -5, 3 };
 		(void)pipeline( v, Sort( std::greater<>{ } ) );
@@ -70,6 +85,8 @@ int main( ) {
 	tests::test_min_compare( );
 	tests::test_max_projection( );
 	tests::test_min_projection( );
+	tests::test_minmax_default( );
+	tests::test_minmax_projection( );
 	tests::test_sort_compare( );
 	tests::test_sort_projection( );
 }
