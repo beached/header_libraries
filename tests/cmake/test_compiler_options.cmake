@@ -1,7 +1,22 @@
+include( CheckCXXCompilerFlag )
 
 option( DAW_HEADERLIBS_USE_SANITIZERS "Enable address and undefined sanitizers" OFF )
 option( DAW_WERROR "Enable WError for test builds" OFF )
 option( DAW_HEADERLIBS_COVERAGE "Enable code coverage(gcc/clang)" OFF )
+
+function( disable_warning_if_supported warning )
+	string( MAKE_C_IDENTIFIER "${warning}" warning_id )
+
+	check_cxx_compiler_flag(
+			"${warning}"
+			"HAVE_${warning_id}"
+			)
+
+	if( HAVE_${warning_id} )
+		string( REGEX REPLACE "^-W" "-Wno-" disabled_warning "${warning}" )
+		add_compile_options( "${disabled_warning}" )
+	endif()
+endfunction()
 
 if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang" )
 	if( DAW_HEADERLIBS_COVERAGE )
@@ -16,12 +31,8 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 		if( DAW_WERROR )
 			add_compile_options( /WX )
 		endif()
-		add_compile_options( -Wno-missing-braces )
-		if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.1 )
-			add_compile_options(
-					-Wno-c++2c-extensions
-					)
-		endif()
+		disable_warning_if_supported( "-Wmissing-braces" )
+		disable_warning_if_supported( "-Wc++2c-extensions" )
 	else()
 		message( STATUS "Clang ${CMAKE_CXX_COMPILER_VERSION} detected" )
 		add_compile_options(
@@ -54,39 +65,25 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 			# When std::exception is the parent, this warning is emitted because the destructor is defined inline
 			add_compile_options( -Wno-weak-vtables )
 		endif()
+
+		disable_warning_if_supported( "-Wbitwise-instead-of-logical" )
+		disable_warning_if_supported( "-Wc++20-attribute-extensions" )
+		disable_warning_if_supported( "-Wc++20-compat" )
+		disable_warning_if_supported( "-Wc++20-extensions" )
+		disable_warning_if_supported( "-Wc++23-extensions" )
+		disable_warning_if_supported( "-Wc++26-extensions" )
+		disable_warning_if_supported( "-Wc++2b-extensions" )
+		disable_warning_if_supported( "-Wmaybe-uninitialized" )
+		disable_warning_if_supported( "-Wmissing-noreturn" )
+		disable_warning_if_supported( "-Wnrvo" )
+		disable_warning_if_supported( "-Wpoison-system-directories" )
+		disable_warning_if_supported( "-Wreturn-std-move-in-c++11" )
+		disable_warning_if_supported( "-Wreturn-std-move-in-c++11" )
+		disable_warning_if_supported( "-Wundefined-func-template" )
+		disable_warning_if_supported( "-Wunneeded-internal-declaration" )
+		disable_warning_if_supported( "-Wunsafe-buffer-usage" )
+
 		if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang" )
-			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 12 )
-				add_compile_options(
-						-Wno-c++20-extensions
-						)
-			endif()
-			if( CMAKE_CXX_COMPILER_VERSION VERSION_LESS 13.1.6 )
-				# This was removed in clang-13
-				add_compile_options( -Wno-return-std-move-in-c++11 )
-			endif()
-			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 14 )
-				add_compile_options(
-						-Wno-c++20-attribute-extensions
-						)
-			endif()
-			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 15 )
-				add_compile_options(
-						-Wno-c++2b-extensions
-						-Wno-c++20-compat
-						-Wno-undefined-func-template
-						)
-			endif()
-			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 17 )
-				add_compile_options(
-						-Wno-c++26-extensions
-						)
-			endif()
-			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 21 )
-				add_compile_options(
-						-Wno-nrvo
-						)
-			endif()
-			add_compile_options( -Wno-poison-system-directories )
 			if( DAW_WERROR )
 				add_compile_options( -Werror -pedantic-errors )
 				# Cannot add trapv for testing, it breaks 128bit processing on clang/libc++
@@ -97,50 +94,6 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 				endif()
 			endif()
 		else() # Not Apple Clang Clang
-			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 10 )
-				add_compile_options(
-						-Wno-poison-system-directories
-						-Wno-c++20-extensions
-						)
-			endif()
-			if( CMAKE_CXX_COMPILER_VERSION VERSION_LESS 13 )
-				# This was removed in clang-13
-				add_compile_options( -Wno-return-std-move-in-c++11 )
-			endif()
-			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 14 )
-				add_compile_options(
-						-Wno-c++20-attribute-extensions
-						-Wno-bitwise-instead-of-logical
-						-Wno-c++20-compat
-						)
-			endif()
-			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 16 )
-				add_compile_options(
-						-Wno-unsafe-buffer-usage
-						-Wno-c++2b-extensions
-						)
-				if( CMAKE_CXX_COMPILER_VERSION VERSION_LESS 17 )
-					add_compile_options(
-							-Wno-undefined-func-template
-							)
-				endif()
-			endif()
-			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 17 )
-				add_compile_options(
-						-Wno-c++23-extensions
-						)
-			endif()
-			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 20 )
-				add_compile_options(
-						-Wno-c++26-extensions
-						)
-			endif()
-			if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 21 )
-				add_compile_options(
-						-Wno-nrvo
-						-Wno-missing-noreturn
-						)
-			endif()
 			if( DAW_WERROR )
 				if( CMAKE_CXX_COMPILER_VERSION VERSION_LESS 13 )
 					add_compile_options( -Werror -pedantic-errors )
@@ -153,7 +106,6 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 				endif()
 			endif()
 		endif()
-
 		if( CMAKE_SYSTEM_PROCESSOR MATCHES "(x86)|(X86)|(amd64)|(AMD64)" )
 			if( NOT CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" )
 				if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 10 )
@@ -167,8 +119,6 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 
 		if( DAW_HEADERLIBS_USE_SANITIZERS )
 			message( STATUS "Using sanitizers" )
-			#set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=null")
-			#set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -fsanitize=null")
 			set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -fsanitize=undefined" )
 			set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -fsanitize=address" )
 			set( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=undefined" )
@@ -200,16 +150,10 @@ elseif( ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" )
 											 -Wconversion
 											 -Wsign-conversion
 											 )
-	#-Wno-deprecated-declarations
-	if( CMAKE_CXX_COMPILER_VERSION VERSION_LESS 14 )
-		add_compile_options(
-				-Wno-maybe-uninitialized
-				)
-	endif()
+
 	if( DAW_WERROR )
 		add_compile_options( -Werror -pedantic-errors -ftrapv )
 	endif()
-	#-Wdisabled-optimization)
 	if( CMAKE_SYSTEM_PROCESSOR MATCHES "(x86)|(X86)|(amd64)|(AMD64)" )
 		if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 9 )
 			if( LINUX )
