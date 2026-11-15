@@ -33,6 +33,7 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 		endif()
 		disable_warning_if_supported( "-Wmissing-braces" )
 		disable_warning_if_supported( "-Wc++2c-extensions" )
+		disable_warning_if_supported( "-Wunneeded-internal-declaration" )
 	else()
 		message( STATUS "Clang ${CMAKE_CXX_COMPILER_VERSION} detected" )
 		add_compile_options(
@@ -79,7 +80,6 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 		disable_warning_if_supported( "-Wreturn-std-move-in-c++11" )
 		disable_warning_if_supported( "-Wreturn-std-move-in-c++11" )
 		disable_warning_if_supported( "-Wundefined-func-template" )
-		disable_warning_if_supported( "-Wunneeded-internal-declaration" )
 		disable_warning_if_supported( "-Wunsafe-buffer-usage" )
 
 		if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang" )
