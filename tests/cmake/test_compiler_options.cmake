@@ -73,7 +73,6 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQU
 		disable_warning_if_supported( "-Wc++23-extensions" )
 		disable_warning_if_supported( "-Wc++26-extensions" )
 		disable_warning_if_supported( "-Wc++2b-extensions" )
-		disable_warning_if_supported( "-Wmaybe-uninitialized" )
 		disable_warning_if_supported( "-Wmissing-noreturn" )
 		disable_warning_if_supported( "-Wnrvo" )
 		disable_warning_if_supported( "-Wpoison-system-directories" )
@@ -150,7 +149,9 @@ elseif( ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" )
 											 -Wconversion
 											 -Wsign-conversion
 											 )
-
+	if( CMAKE_CXX_COMPILER_VERSION VERSION_LESS 14 )
+		add_compile_options( -Wno-maybe-uninitialized )
+	endif()
 	if( DAW_WERROR )
 		add_compile_options( -Werror -pedantic-errors -ftrapv )
 	endif()
