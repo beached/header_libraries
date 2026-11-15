@@ -12,6 +12,7 @@
 #include "daw/daw_cpp_feature_check.h"
 #include "daw/daw_iterator_traits.h"
 #include "daw/daw_move.h"
+#include "daw/daw_recursive_equality_comparable.h"
 #include "daw/daw_remove_cvref.h"
 #include "daw/daw_traits.h"
 #include "daw/pipelines/pipeline_traits.h"
@@ -26,7 +27,7 @@ namespace daw::pipelines::pimpl {
 	struct flatten_iterator_end {
 		using iterator_category =
 		  daw::common_iterator_category_t<std::forward_iterator_tag,
-		                                  daw::iterator_category_t<SentinelFor>>;
+			                                daw::iterator_category_t<SentinelFor>>;
 		using difference_type = daw::iter_difference_t<SentinelFor>;
 		using value_type = std::common_type_t<iter_value_t<SentinelFor>>;
 		using reference = std::common_reference_t<iter_reference_t<SentinelFor>>;
@@ -111,7 +112,7 @@ namespace daw::pipelines::pimpl {
 		  : m_iter( first )
 		  , m_last( last )
 		  , m_cur_first( m_iter == m_last ? sub_iterator_t{ }
-		                                  : std::begin( *m_iter ) ) {
+			                                : std::begin( *m_iter ) ) {
 			advance_to_non_empty_range( );
 		}
 
@@ -162,12 +163,14 @@ namespace daw::pipelines {
 	  : private pimpl::stored_range_base_t<
 	      R, pimpl::flatten_iterator<iterator_t<R>, iterator_end_t<R>>,
 	      pimpl::flatten_iterator_end<iterator_t<R>>,
-	      pimpl::flatten_iterator<const_iterator_or_t<R>, const_iterator_end_or_t<R>>,
+	      pimpl::flatten_iterator<const_iterator_or_t<R>,
+				                        const_iterator_end_or_t<R>>,
 	      pimpl::flatten_iterator_end<const_iterator_or_t<R>>> {
 		using base_t = pimpl::stored_range_base_t<
 		  R, pimpl::flatten_iterator<iterator_t<R>, iterator_end_t<R>>,
 		  pimpl::flatten_iterator_end<iterator_t<R>>,
-		  pimpl::flatten_iterator<const_iterator_or_t<R>, const_iterator_end_or_t<R>>,
+		  pimpl::flatten_iterator<const_iterator_or_t<R>,
+			                        const_iterator_end_or_t<R>>,
 		  pimpl::flatten_iterator_end<const_iterator_or_t<R>>>;
 
 		using iterator = typename base_t::iterator_first_t;
@@ -221,7 +224,12 @@ namespace daw::pipelines {
 
 	public:
 		[[nodiscard]] constexpr bool
-		operator==( flatten_view const & ) const = default;
+		operator==( flatten_view const &rhs ) const
+		requires( daw::is_recursively_equality_comparable_v<R> )
+		{
+			return static_cast<base_t const &>( *this ) ==
+			       static_cast<base_t const &>( rhs );
+		}
 	};
 	template<Range R>
 	flatten_view( R && ) -> flatten_view<daw::remove_rvalue_ref_t<R>>;

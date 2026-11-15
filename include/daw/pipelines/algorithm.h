@@ -35,7 +35,8 @@ namespace daw::pipelines {
 			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
 			operator( )( C &&compare,
 			             P &&projection = P{ } ) DAW_CPP23_STATIC_CALL_OP_CONST {
-				return Sort_t<C>{ DAW_FWD( compare ), DAW_FWD( projection ) };
+				return Sort_t<daw::remove_cvref_t<C>, daw::remove_cvref_t<P>>{
+				  DAW_FWD( compare ), DAW_FWD( projection ) };
 			}
 
 			[[nodiscard]] constexpr decltype( auto )
@@ -70,7 +71,8 @@ namespace daw::pipelines {
 			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
 			operator( )( C &&compare, P &&projection = Projection{ } )
 			  DAW_CPP23_STATIC_CALL_OP_CONST {
-				return Max_t{ DAW_FWD( compare ), DAW_FWD( projection ) };
+				return Max_t<daw::remove_cvref_t<C>, daw::remove_cvref_t<P>>{
+				  DAW_FWD( compare ), DAW_FWD( projection ) };
 			}
 
 			[[nodiscard]] constexpr auto operator( )( Range auto &&r ) const {
@@ -79,8 +81,8 @@ namespace daw::pipelines {
 				  std::end( r ),
 				  [&]( auto const &lhs, auto const &rhs ) {
 					  return std::invoke( m_compare,
-					                      std::invoke( m_projection, lhs ),
-					                      std::invoke( m_projection, rhs ) );
+						                    std::invoke( m_projection, lhs ),
+						                    std::invoke( m_projection, rhs ) );
 				  } );
 			}
 		};
@@ -103,7 +105,8 @@ namespace daw::pipelines {
 			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
 			operator( )( C &&compare, P &&projection = Projection{ } )
 			  DAW_CPP23_STATIC_CALL_OP_CONST {
-				return Min_t{ DAW_FWD( compare ), DAW_FWD( projection ) };
+				return Min_t<daw::remove_cvref_t<C>, daw::remove_cvref_t<P>>{
+				  DAW_FWD( compare ), DAW_FWD( projection ) };
 			}
 
 			[[nodiscard]] constexpr auto operator( )( Range auto &&r ) const {
@@ -112,8 +115,8 @@ namespace daw::pipelines {
 				  std::end( r ),
 				  [&]( auto const &lhs, auto const &rhs ) {
 					  return std::invoke( m_compare,
-					                      std::invoke( m_projection, lhs ),
-					                      std::invoke( m_projection, rhs ) );
+						                    std::invoke( m_projection, lhs ),
+						                    std::invoke( m_projection, rhs ) );
 				  } );
 			}
 		};
@@ -136,7 +139,8 @@ namespace daw::pipelines {
 			[[nodiscard]] DAW_CPP23_STATIC_CALL_OP constexpr auto
 			operator( )( C &&compare, P &&projection = Projection{ } )
 			  DAW_CPP23_STATIC_CALL_OP_CONST {
-				return MinMax_t{ DAW_FWD( compare ), DAW_FWD( projection ) };
+				return MinMax_t<daw::remove_cvref_t<C>, daw::remove_cvref_t<P>>{
+				  DAW_FWD( compare ), DAW_FWD( projection ) };
 			}
 
 			[[nodiscard]] constexpr auto operator( )( Range auto &&r ) const {
@@ -145,8 +149,8 @@ namespace daw::pipelines {
 				  std::end( r ),
 				  [&]( auto const &lhs, auto const &rhs ) {
 					  return std::invoke( m_compare,
-					                      std::invoke( m_projection, lhs ),
-					                      std::invoke( m_projection, rhs ) );
+						                    std::invoke( m_projection, lhs ),
+						                    std::invoke( m_projection, rhs ) );
 				  } );
 				return std::tuple{ result.first, result.second };
 			}

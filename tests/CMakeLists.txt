@@ -179,6 +179,7 @@ set( CPP20_TEST_SOURCES
 		 daw_observer_ptr_test.cpp
 		 daw_poly_value_test.cpp
 		 daw_ref_storage_test.cpp
+		 daw_recursive_equality_comparable_test.cpp
 		 )
 
 set( CPP20_NOT_MSVC_TEST_SOURCES

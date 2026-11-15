@@ -91,6 +91,26 @@ namespace tests {
 		auto r = pipeline( n, Flatten );
 		daw_ensure( std::begin( r ) == std::end( r ) );
 	}
+
+	// Flattening must not require the element type to have operator==; the
+	// view's defaulted operator== should drop out instead of failing to compile
+	struct no_equality {
+		int value;
+	};
+
+	DAW_ATTRIB_NOINLINE void test_flatten_elements_without_equality( ) {
+		using nested_ne_t = std::vector<std::vector<no_equality>>;
+		auto n = nested_ne_t{ { }, { { 1 }, { 2 } }, { { 3 } } };
+		auto r = pipeline( n, Flatten );
+		auto values = std::vector<int>{ };
+		for( auto it = std::begin( r ); it != std::end( r ); ++it ) {
+			values.push_back( ( *it ).value );
+		}
+		daw_ensure( ( values == std::vector<int>{ 1, 2, 3 } ) );
+		auto const &cn = n;
+		auto const rc = pipeline( cn, Flatten );
+		daw_ensure( ( *std::begin( rc ) ).value == 1 );
+	}
 } // namespace tests
 
 int main( ) {
@@ -100,4 +120,5 @@ int main( ) {
 	tests::test_flatten_copy_of_owning_view( );
 	tests::test_flatten_move_of_owning_view( );
 	tests::test_flatten_all_empty( );
+	tests::test_flatten_elements_without_equality( );
 }
