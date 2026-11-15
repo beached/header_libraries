@@ -123,14 +123,22 @@ namespace daw::pipelines::pimpl {
 
 		[[nodiscard]] constexpr bool
 		operator==( stored_range_base_t const &rhs ) const
-		requires( std::equality_comparable<daw::remove_cvref_t<R>> )
+		requires( std::equality_comparable<daw::remove_cvref_t<R>> and
+		          std::equality_comparable<range_value_t<R>> )
 		{
 			return get( ) == rhs.get( );
 		}
 
 		[[nodiscard]] constexpr bool
-		operator!=( stored_range_base_t const &rhs ) const {
-			return get( ) != rhs.get( );
+		operator!=( stored_range_base_t const &rhs ) const
+		requires( std::equality_comparable<daw::remove_cvref_t<R>> and
+		          std::equality_comparable<range_value_t<R>> )
+		{
+			if constexpr( requires { get( ) != rhs.get( ); } ) {
+				return get( ) != rhs.get( );
+			} else {
+				return not( get( ) == rhs.get( ) );
+			}
 		}
 
 		[[nodiscard]] constexpr decltype( auto ) operator*( ) {
@@ -210,7 +218,7 @@ namespace daw::pipelines::pimpl {
 			return [&]<std::size_t... Is>( std::index_sequence<Is...> ) -> bool {
 				return (
 				  ( Is == m_range.index( ) and *std::get_if<Is>( &m_range ) ==
-				                                 *std::get_if<Is>( &rhs.m_range ) ) or
+					                               *std::get_if<Is>( &rhs.m_range ) ) or
 				  ... );
 			}( std::make_index_sequence<sizeof...( Rs )>{ } );
 		}
